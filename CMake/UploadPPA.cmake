@@ -54,7 +54,7 @@ foreach(LINE ${DESC_LINES})
   set(DEB_LONG_DESCRIPTION "${DEB_LONG_DESCRIPTION} ${LINE}\n")
 endforeach(LINE ${DESC_LINES})
 
-function(UPLOAD_PPA UBUNTU_NAME) 
+function(UPLOAD_PPA UBUNTU_NAME)
   set(DEBIAN_BASE_DIR ${CMAKE_BINARY_DIR}/Debian/${UBUNTU_NAME})
   file(REMOVE_RECURSE ${DEBIAN_BASE_DIR})
   set(DEBIAN_SOURCE_DIR
@@ -79,7 +79,7 @@ function(UPLOAD_PPA UBUNTU_NAME)
 
   foreach(DEP ${CPACK_DEBIAN_BUILD_DEPENDS})
     file(APPEND ${DEBIAN_CONTROL} "${DEP}, ")
-  endforeach(DEP ${CPACK_DEBIAN_BUILD_DEPENDS})  
+  endforeach(DEP ${CPACK_DEBIAN_BUILD_DEPENDS})
 
   file(APPEND ${DEBIAN_CONTROL} "cmake\n"
     "Standards-Version: 3.9.1\n"
@@ -202,6 +202,7 @@ function(UPLOAD_PPA UBUNTU_NAME)
     OUTPUT ${DEBIAN_BASE_DIR}/${DEB_SOURCE_CHANGES}
     COMMAND ${DEBUILD_EXECUTABLE} -S
     WORKING_DIRECTORY ${DEBIAN_SOURCE_DIR}
+    COMMENT "Generate ${CPACK_DEBIAN_PACKAGE_NAME}-${CPACK_PACKAGE_VERSION} for ${DPUT_HOST}"
     )
 
   ##############################################################################
@@ -210,6 +211,7 @@ function(UPLOAD_PPA UBUNTU_NAME)
     ${DPUT_EXECUTABLE} ${DPUT_HOST} ${DEB_SOURCE_CHANGES}
     DEPENDS ${DEBIAN_BASE_DIR}/${DEB_SOURCE_CHANGES}
     WORKING_DIRECTORY ${DEBIAN_BASE_DIR}
+    COMMENT "Upload ${CPACK_DEBIAN_PACKAGE_NAME}-${CPACK_PACKAGE_VERSION} to ${DPUT_HOST}"
     )
   set(DPUT_TARGETS ${DPUT_TARGETS} dput_${UBUNTU_NAME} PARENT_SCOPE)
 endfunction()
@@ -217,5 +219,6 @@ endfunction()
 function(UPLOAD_PPAS)
   upload_ppa(oneiric)
   upload_ppa(precise)
+  upload_ppa(quantal)
   add_custom_target(dput DEPENDS ${DPUT_TARGETS})
 endfunction()
