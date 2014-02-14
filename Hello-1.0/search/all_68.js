@@ -2,7 +2,7 @@ var searchData=
 [
   ['hello',['hello',['../namespacehello.html',1,'']]],
   ['hello_2eh',['hello.h',['../hello_8h.html',1,'']]],
-  ['hello_5fuse_5fboost',['HELLO_USE_BOOST',['../defines_linux_8h.html#aa7050604991bef89ba8817931a5e1ae2',1,'definesLinux.h']]],
+  ['hello_5fuse_5fboost',['HELLO_USE_BOOST',['../defines_darwin_8h.html#aa7050604991bef89ba8817931a5e1ae2',1,'definesDarwin.h']]],
   ['hello_5fversion_5fge',['HELLO_VERSION_GE',['../version_8h.html#a1e9e327fea95a586494105328a3af042',1,'version.h']]],
   ['hello_5fversion_5fgt',['HELLO_VERSION_GT',['../version_8h.html#a597db094efa6c4980ce839b6cce00370',1,'version.h']]],
   ['hello_5fversion_5fle',['HELLO_VERSION_LE',['../version_8h.html#ab618cfa4cf5b24aaa3d12c5c4d1445d7',1,'version.h']]],
