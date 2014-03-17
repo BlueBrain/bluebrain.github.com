@@ -4,7 +4,6 @@ var searchData=
   ['operator_3c_3c',['operator&lt;&lt;',['../namespacedash.html#ac60830cefd3144233c733eeadcf952b5',1,'dash']]],
   ['operator_3d',['operator=',['../classdash_1_1_attribute.html#ad2eaf3c2cea503f30c631a5d8a103fac',1,'dash::Attribute::operator=(const Attribute &amp;from)'],['../classdash_1_1_attribute.html#a33a1ff01893fcdb5fc811f1276c438e4',1,'dash::Attribute::operator=(const T &amp;rhs)'],['../classdash_1_1_commit.html#a8b155757741b89adfdd291a3dcba9de2',1,'dash::Commit::operator=()'],['../classdash_1_1_node.html#a5cc56d801ed1451313903469def9186b',1,'dash::Node::operator=()']]],
   ['operator_3d_3d',['operator==',['../classdash_1_1_attribute.html#a412de4194fa3225fd101854f7b8513dd',1,'dash::Attribute::operator==()'],['../classdash_1_1_commit.html#ac9332ad66900d590f19643fd04b4bf1b',1,'dash::Commit::operator==()'],['../classdash_1_1_node.html#a57ce7ae14376a47bb169fd244fd303f0',1,'dash::Node::operator==()']]],
-  ['orphan',['orphan',['../classdash_1_1detail_1_1_attribute.html#a70122792050f96a334988dc9a831dcfb',1,'dash::detail::Attribute::orphan()'],['../classdash_1_1detail_1_1_node.html#ab78de156914211bade0734620b812d0a',1,'dash::detail::Node::orphan()']]],
   ['other_20documentation',['Other Documentation',['../other.html',1,'']]],
   ['overview',['Overview',['../overview.html',1,'']]]
 ];

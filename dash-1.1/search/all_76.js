@@ -1,6 +1,5 @@
 var searchData=
 [
-  ['value',['Value',['../classdash_1_1detail_1_1_context_ptr.html#a78ca79c230845cd409a09a11533ee301',1,'dash::detail::ContextPtr']]],
   ['version',['Version',['../classdash_1_1_version.html',1,'dash']]],
   ['visit',['visit',['../classdash_1_1_node_visitor.html#a256dcb9e68ba25b5b9616e1ef309045a',1,'dash::NodeVisitor']]],
   ['visitdown',['visitDown',['../classdash_1_1_node_visitor.html#afc10b0ef41e3f2b88586f17d87c9ca66',1,'dash::NodeVisitor']]],
