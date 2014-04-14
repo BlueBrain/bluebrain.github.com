@@ -1,0 +1,7 @@
+set(CODASH_MATURITY "EP")
+set(CODASH_DESCRIPTION "Serialization & distribution support for DASH via Collage")
+set(CODASH_GIT_ROOT_URL "https://github.com/BlueBrain/codash.git")
+set(CODASH_PACKAGE_URL "https://launchpad.net/~eilemann/+archive/equalizer-dev")
+set(CODASH_CI_URL "https://travis-ci.org/BlueBrain/codash")
+set(CODASH_CI_PNG "https://travis-ci.org/BlueBrain/codash.png")
+set(CODASH_ISSUES_URL "https://github.com/BlueBrain/codash/issues")
