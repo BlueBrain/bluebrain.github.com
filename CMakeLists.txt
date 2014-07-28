@@ -15,4 +15,4 @@ list(APPEND CMAKE_MODULE_PATH ${CMAKE_SOURCE_DIR}/CMake
 set(DOXYGIT_TOC_POST "<p>See also <a href=\"https://eyescale.github.io\">eyescale.github.io</a></p>")
 include(GitExternal)
 include(Common)
-include(github)
+include(Doxygit)
