@@ -1,0 +1,7 @@
+set(DASH_MATURITY "EP")
+set(DASH_DESCRIPTION "")
+set(DASH_GIT_ROOT_URL "https://github.com/BlueBrain/dash.git")
+set(DASH_PACKAGE_URL "")
+set(DASH_CI_URL "https://travis-ci.org/BlueBrain/dash")
+set(DASH_CI_PNG "https://travis-ci.org/BlueBrain/dash.png")
+set(DASH_ISSUES_URL "https://github.com/BlueBrain/dash/issues")
