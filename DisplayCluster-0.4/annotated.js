@@ -66,6 +66,7 @@ var annotated =
     [ "MovieContent", "class_movie_content.html", "class_movie_content" ],
     [ "MovieThumbnailGenerator", "class_movie_thumbnail_generator.html", "class_movie_thumbnail_generator" ],
     [ "MPIChannel", "class_m_p_i_channel.html", "class_m_p_i_channel" ],
+    [ "MPIChannelProxy", "class_m_p_i_channel_proxy.html", "class_m_p_i_channel_proxy" ],
     [ "MPIContext", "class_m_p_i_context.html", "class_m_p_i_context" ],
     [ "MultiTouchListener", "class_multi_touch_listener.html", "class_multi_touch_listener" ],
     [ "NetworkListener", "class_network_listener.html", "class_network_listener" ],

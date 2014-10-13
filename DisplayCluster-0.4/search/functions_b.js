@@ -12,5 +12,6 @@ var searchData=
   ['movecontentwindowtofront',['moveContentWindowToFront',['../class_display_group.html#a426a5219ee17a10f991dad5f2f35a21e',1,'DisplayGroup']]],
   ['moviecontent',['MovieContent',['../class_movie_content.html#a156808cda9a564dd70229ad2fe203e9c',1,'MovieContent']]],
   ['mpichannel',['MPIChannel',['../class_m_p_i_channel.html#a3d6135b9ea469f6242b8396699ee74fd',1,'MPIChannel::MPIChannel(int argc, char *argv[])'],['../class_m_p_i_channel.html#a5c3bda8826b4a9406e6a81446a8440d4',1,'MPIChannel::MPIChannel(const MPIChannel &amp;parent, const int color, const int key)']]],
+  ['mpichannelproxy',['MPIChannelProxy',['../class_m_p_i_channel_proxy.html#ac7e0cf90bd6a808e6446701a91a09ebd',1,'MPIChannelProxy']]],
   ['mpicontext',['MPIContext',['../class_m_p_i_context.html#a1fc58d205deca92b9a9a307d49a124cb',1,'MPIContext']]]
 ];

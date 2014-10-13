@@ -1,5 +1,6 @@
 var NAVTREEINDEX1 =
 {
+"class_content_window.html#aa0c0f351c96cbb263369733014a7f2b3":[5,0,12,24],
 "class_content_window.html#aa28da226d371e3a5cc27a9691bc704f9":[5,0,12,26],
 "class_content_window.html#aa2fc97e84d68dd36e020aea80f0d87ea":[5,0,12,18],
 "class_content_window.html#aa5e897e6d629f2430ab2cca62d80f66b":[5,0,12,31],
@@ -223,10 +224,13 @@ var NAVTREEINDEX1 =
 "class_m_p_i_channel.html#ae2e0e01ed84b527c31a9258878108cff":[5,0,49,11],
 "class_m_p_i_channel.html#ae881eeeabb1b4a29fa2386af9a7fb407":[5,0,49,16],
 "class_m_p_i_channel.html#affcb2f941b2293bc591a443f2ecf0218":[5,0,49,15],
-"class_m_p_i_context.html":[5,0,50],
-"class_m_p_i_context.html#a1fc58d205deca92b9a9a307d49a124cb":[5,0,50,0],
-"class_m_p_i_context.html#a3399b4521ba34fbe6977cc8c5358046b":[5,0,50,1],
-"class_m_p_i_context.html#a95db7bf4715f4f71db0954e382c81dd0":[5,0,50,2],
+"class_m_p_i_channel_proxy.html":[5,0,50],
+"class_m_p_i_channel_proxy.html#a7f860877fb92c22d49791e0ee161f018":[5,0,50,1],
+"class_m_p_i_channel_proxy.html#ac7e0cf90bd6a808e6446701a91a09ebd":[5,0,50,0],
+"class_m_p_i_context.html":[5,0,51],
+"class_m_p_i_context.html#a1fc58d205deca92b9a9a307d49a124cb":[5,0,51,0],
+"class_m_p_i_context.html#a3399b4521ba34fbe6977cc8c5358046b":[5,0,51,1],
+"class_m_p_i_context.html#a95db7bf4715f4f71db0954e382c81dd0":[5,0,51,2],
 "class_marker.html":[5,0,39],
 "class_marker.html#a4146232a49770f84278b49d7eb4baa72":[5,0,39,2],
 "class_marker.html#a5168316632777d9730e865db55fd7b37":[5,0,39,1],
@@ -245,9 +249,5 @@ var NAVTREEINDEX1 =
 "class_markers.html#a6616fe4a0e78b282a077ae4153a9c1fa":[5,0,41,3],
 "class_markers.html#abdb43ae7f96196dbc841d7e86a8e7a0e":[5,0,41,6],
 "class_markers.html#ac98d07dd8f7b70e16ccb9a01abf56b9c":[5,0,41,7],
-"class_markers.html#ae2bd7902a4485536ee205e3c66813b2f":[5,0,41,0],
-"class_markers.html#af6c8f7cd54a528ba8f44b5b14d4b03ef":[5,0,41,4],
-"class_master_configuration.html":[5,0,42],
-"class_master_configuration.html#a161728807fc81592ff865956942bc4c3":[5,0,42,3],
-"class_master_configuration.html#a1e9671231ef79842a80c80009584987e":[5,0,42,0]
+"class_markers.html#ae2bd7902a4485536ee205e3c66813b2f":[5,0,41,0]
 };

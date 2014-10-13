@@ -1,9 +1,9 @@
 var class_master_to_wall_channel =
 [
     [ "MasterToWallChannel", "class_master_to_wall_channel.html#a8f671d612ef52095bf7290d791df4fc0", null ],
-    [ "send", "class_master_to_wall_channel.html#a49602cd1e7a69efd20ffbaebc2f84169", null ],
-    [ "send", "class_master_to_wall_channel.html#ad3d53b56dce19e50269a0e8f17303aa6", null ],
-    [ "send", "class_master_to_wall_channel.html#a40551a5a29a90c81278ab358f8dd0776", null ],
     [ "send", "class_master_to_wall_channel.html#a308ed9827083ebb1092681342dacc891", null ],
+    [ "sendAsync", "class_master_to_wall_channel.html#a5d52c566dc2810af957d041759958116", null ],
+    [ "sendAsync", "class_master_to_wall_channel.html#ab363eb3caaeb7c843c1bc2d3eae219f1", null ],
+    [ "sendAsync", "class_master_to_wall_channel.html#a14f4b381b5a30ceb29d5bc24a977878f", null ],
     [ "sendQuit", "class_master_to_wall_channel.html#ad0d468ff235b833e89f854b067e16117", null ]
 ];

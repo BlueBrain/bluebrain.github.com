@@ -106,6 +106,7 @@ var hierarchy =
       [ "Markers", "class_markers.html", null ],
       [ "MasterFromWallChannel", "class_master_from_wall_channel.html", null ],
       [ "MasterToWallChannel", "class_master_to_wall_channel.html", null ],
+      [ "MPIChannelProxy", "class_m_p_i_channel_proxy.html", null ],
       [ "MultiTouchListener", "class_multi_touch_listener.html", null ],
       [ "Options", "class_options.html", null ],
       [ "PixelStream", "class_pixel_stream.html", null ],

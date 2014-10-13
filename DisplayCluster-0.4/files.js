@@ -60,6 +60,7 @@ var files =
     [ "MovieContent.h", "_movie_content_8h_source.html", null ],
     [ "MovieThumbnailGenerator.h", "_movie_thumbnail_generator_8h_source.html", null ],
     [ "MPIChannel.h", "_m_p_i_channel_8h_source.html", null ],
+    [ "MPIChannelProxy.h", "_m_p_i_channel_proxy_8h_source.html", null ],
     [ "MPIContext.h", "_m_p_i_context_8h_source.html", null ],
     [ "MultiTouchListener.h", "_multi_touch_listener_8h_source.html", null ],
     [ "NetworkListener.h", "_network_listener_8h_source.html", null ],

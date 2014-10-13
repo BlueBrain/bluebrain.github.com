@@ -12,6 +12,7 @@ var searchData=
   ['moviecontent',['MovieContent',['../class_movie_content.html',1,'']]],
   ['moviethumbnailgenerator',['MovieThumbnailGenerator',['../class_movie_thumbnail_generator.html',1,'']]],
   ['mpichannel',['MPIChannel',['../class_m_p_i_channel.html',1,'']]],
+  ['mpichannelproxy',['MPIChannelProxy',['../class_m_p_i_channel_proxy.html',1,'']]],
   ['mpicontext',['MPIContext',['../class_m_p_i_context.html',1,'']]],
   ['multitouchlistener',['MultiTouchListener',['../class_multi_touch_listener.html',1,'']]]
 ];
