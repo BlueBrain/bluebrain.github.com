@@ -1,0 +1,7 @@
+set(DEFLECT_MATURITY "EP")
+set(DEFLECT_DESCRIPTION "The library to write applications for DisplayCluster")
+set(DEFLECT_GIT_ROOT_URL "git@github.com:tribal-tec/Deflect.git")
+set(DEFLECT_PACKAGE_URL "https://github.com/BlueBrain/Deflect/releases")
+set(DEFLECT_CI_URL "git@travis-ci.org:tribal-tec/Deflect")
+set(DEFLECT_CI_PNG "git@travis-ci.org:tribal-tec/Deflect.png")
+set(DEFLECT_ISSUES_URL "https://github.com/BlueBrain/Deflect/issues")

@@ -1,0 +1,21 @@
+var searchData=
+[
+  ['data',['data',['../structdeflect_1_1_image_wrapper.html#a36c9098b98a8086e903ed777ebee9a35',1,'deflect::ImageWrapper']]],
+  ['decompress',['decompress',['../classdeflect_1_1_image_jpeg_decompressor.html#a91acc970a91d33a35127b95633a4e459',1,'deflect::ImageJpegDecompressor']]],
+  ['defaultportnumber_5f',['defaultPortNumber_',['../classdeflect_1_1_network_listener.html#acd7d666e01c89668a0bf65c1a790dde2',1,'deflect::NetworkListener::defaultPortNumber_()'],['../classdeflect_1_1_socket.html#abee778cfaea7d8736df3c49503985ec8',1,'deflect::Socket::defaultPortNumber_()']]],
+  ['defines_2eh',['defines.h',['../defines_8h.html',1,'']]],
+  ['deflect_5fversion_5fabi',['DEFLECT_VERSION_ABI',['../version_8h.html#aab0ced3f934c8c127ad7678102776039',1,'version.h']]],
+  ['deflect_5fversion_5fge',['DEFLECT_VERSION_GE',['../version_8h.html#aea712840105306381b2796df55f45e2a',1,'version.h']]],
+  ['deflect_5fversion_5fgt',['DEFLECT_VERSION_GT',['../version_8h.html#a45d6a7b7b556de87f4bf82f87c2604cd',1,'version.h']]],
+  ['deflect_5fversion_5fle',['DEFLECT_VERSION_LE',['../version_8h.html#af6790bb5cc318de25c30bfa96558913b',1,'version.h']]],
+  ['deflect_5fversion_5flt',['DEFLECT_VERSION_LT',['../version_8h.html#a48a9242c7729eac8473e59e05b86ec4d',1,'version.h']]],
+  ['deflect_5fversion_5fmajor',['DEFLECT_VERSION_MAJOR',['../version_8h.html#ae3eebd8e944254875015072f4cb7f37f',1,'version.h']]],
+  ['deflect_5fversion_5fminor',['DEFLECT_VERSION_MINOR',['../version_8h.html#ab48339917d1b2a14e87e49a8057b726a',1,'version.h']]],
+  ['deflect_5fversion_5fpatch',['DEFLECT_VERSION_PATCH',['../version_8h.html#adb67443327ce82101d0b9b9bc14f4ff7',1,'version.h']]],
+  ['deflect_5fversion_5frevision',['DEFLECT_VERSION_REVISION',['../version_8h.html#a1ab1cd6de5387ddfac49de020e6ae99a',1,'version.h']]],
+  ['deletepixelstream',['deletePixelStream',['../classdeflect_1_1_pixel_stream_dispatcher.html#ac5d28a20c58e07b686d4b0dd73aff870',1,'deflect::PixelStreamDispatcher']]],
+  ['deletestream',['deleteStream',['../classdeflect_1_1_pixel_stream_dispatcher.html#a2b9db2c623624ea9811e73d0b52292de',1,'deflect::PixelStreamDispatcher']]],
+  ['disconnected',['disconnected',['../classdeflect_1_1_stream.html#abd54f29817a870bc79788fa9f038c912',1,'deflect::Stream::disconnected()'],['../classdeflect_1_1_socket.html#ad51f7dad4334e501e4f22b46b943ae16',1,'deflect::Socket::disconnected()']]],
+  ['dx',['dx',['../structdeflect_1_1_event.html#a16b046b14e8d6f66685cc3db5f669f7d',1,'deflect::Event']]],
+  ['dy',['dy',['../structdeflect_1_1_event.html#a2a2dcc09ecccae9283d91290b2e33ced',1,'deflect::Event']]]
+];
