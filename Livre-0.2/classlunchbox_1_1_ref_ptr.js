@@ -1,0 +1,25 @@
+var classlunchbox_1_1_ref_ptr =
+[
+    [ "RefPtr", "classlunchbox_1_1_ref_ptr.html#a4e6e2e31b1521e9fa7c9e13b0328a84a", null ],
+    [ "RefPtr", "classlunchbox_1_1_ref_ptr.html#a4fc3c32f45bd44df425d4c20e27c410b", null ],
+    [ "RefPtr", "classlunchbox_1_1_ref_ptr.html#a0c326e86abaec254baeb23e29640b473", null ],
+    [ "RefPtr", "classlunchbox_1_1_ref_ptr.html#ac97a4cc6fe60c271d50a70ecc32fc537", null ],
+    [ "~RefPtr", "classlunchbox_1_1_ref_ptr.html#a9a5ba5ffaefc28f58ee1e9b578db30ca", null ],
+    [ "get", "classlunchbox_1_1_ref_ptr.html#a86e4121d34aea87e87980acb05c7f432", null ],
+    [ "get", "classlunchbox_1_1_ref_ptr.html#a6173f53229b1569b5663c7eddf6f31a5", null ],
+    [ "isValid", "classlunchbox_1_1_ref_ptr.html#ab93da2352d9394794adee5e3bd1fe9c9", null ],
+    [ "operator bool_t", "classlunchbox_1_1_ref_ptr.html#a6d2cc70e2c1c6302f20dabee76c05256", null ],
+    [ "operator!", "classlunchbox_1_1_ref_ptr.html#a5366f5a9b0a2c504f8cd50f6158aa076", null ],
+    [ "operator!=", "classlunchbox_1_1_ref_ptr.html#a63f026e705eb5a1cd5a4721158a32d9d", null ],
+    [ "operator!=", "classlunchbox_1_1_ref_ptr.html#a223555bb79099c7eb7a3b050435a4be2", null ],
+    [ "operator*", "classlunchbox_1_1_ref_ptr.html#ae520e31813d3b86e52b1efaf0ccc75c9", null ],
+    [ "operator*", "classlunchbox_1_1_ref_ptr.html#a9278d1f007f18d02901b0823d43d9480", null ],
+    [ "operator->", "classlunchbox_1_1_ref_ptr.html#ac80bb04737cda53d0f8002ca45865935", null ],
+    [ "operator->", "classlunchbox_1_1_ref_ptr.html#aa1b55787e9a2760b56bccb6743e60365", null ],
+    [ "operator<", "classlunchbox_1_1_ref_ptr.html#a9f61fd5e1e7da0edc7d23efc10041d23", null ],
+    [ "operator=", "classlunchbox_1_1_ref_ptr.html#a8ec4cfb5c5aaead38aedbcd91f11526f", null ],
+    [ "operator=", "classlunchbox_1_1_ref_ptr.html#a9bc8f4541ba0102780ad80af9b541761", null ],
+    [ "operator==", "classlunchbox_1_1_ref_ptr.html#a1826174d8680bfe9659041340ccae871", null ],
+    [ "operator==", "classlunchbox_1_1_ref_ptr.html#ac667d03d76cc8399abe6631b0377722b", null ],
+    [ "operator>", "classlunchbox_1_1_ref_ptr.html#a8689289b11ade04055515f012f0419e3", null ]
+];
