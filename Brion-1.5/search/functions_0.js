@@ -1,5 +1,4 @@
 var searchData=
 [
-  ['aabb',['AABB',['../classvmml_1_1_a_a_b_b.html#aaad2abccf145cea75879b0116380da04',1,'vmml::AABB']]],
-  ['add',['add',['../classvmml_1_1lowpass__filter.html#acdaaf460199cda3a03b4ccb6bc4df651',1,'vmml::lowpass_filter']]]
+  ['blueconfig',['BlueConfig',['../classbrion_1_1_blue_config.html#afbac59429e4019abf307e9f415efdace',1,'brion::BlueConfig']]]
 ];

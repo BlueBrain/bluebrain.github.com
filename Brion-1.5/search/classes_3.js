@@ -1,5 +1,4 @@
 var searchData=
 [
-  ['frustum',['frustum',['../classvmml_1_1frustum.html',1,'vmml']]],
-  ['frustum_5fculler',['frustum_culler',['../classvmml_1_1frustum__culler.html',1,'vmml']]]
+  ['plugininitdata',['PluginInitData',['../classbrion_1_1_plugin_init_data.html',1,'brion']]]
 ];

@@ -1,0 +1,25 @@
+var classbrion_1_1_compartment_report_plugin =
+[
+    [ "InitDataT", "classbrion_1_1_compartment_report_plugin.html#a867e7ff78471fe825ee7a72d60c387f8", null ],
+    [ "PluginT", "classbrion_1_1_compartment_report_plugin.html#a781072a332b98e0237786b0faa7333b6", null ],
+    [ "~CompartmentReportPlugin", "classbrion_1_1_compartment_report_plugin.html#a8d6113681c9f6587f33360bc597892f1", null ],
+    [ "clearBuffer", "classbrion_1_1_compartment_report_plugin.html#a7fe02b55cdecf384aa1ec33aff7a3620", null ],
+    [ "flush", "classbrion_1_1_compartment_report_plugin.html#a29f488ea011b60d69788eb5f28d39de8", null ],
+    [ "getBufferSize", "classbrion_1_1_compartment_report_plugin.html#ab8a1a38a2cc4ecbd0b8a55285a61545d", null ],
+    [ "getCompartmentCounts", "classbrion_1_1_compartment_report_plugin.html#af6ffd4a9f8050e38b7562f0cc431dda1", null ],
+    [ "getDataUnit", "classbrion_1_1_compartment_report_plugin.html#a6a191f3993f311a3624992ff88d3c571", null ],
+    [ "getEndTime", "classbrion_1_1_compartment_report_plugin.html#a1985f5b329183f6b04526ba76c97e0af", null ],
+    [ "getFrameSize", "classbrion_1_1_compartment_report_plugin.html#a70319410ff7c5db96705f61be80b0a1c", null ],
+    [ "getGIDs", "classbrion_1_1_compartment_report_plugin.html#a38eaf9923df3ffdf99947211a6a381cb", null ],
+    [ "getNumCompartments", "classbrion_1_1_compartment_report_plugin.html#a3c42fd88d4f88d351010025a9e41116b", null ],
+    [ "getOffsets", "classbrion_1_1_compartment_report_plugin.html#a6d3877f26cc06de3a3831515970a35e0", null ],
+    [ "getStartTime", "classbrion_1_1_compartment_report_plugin.html#a77d7425864f7419f4773f88a16aa26da", null ],
+    [ "getTimestep", "classbrion_1_1_compartment_report_plugin.html#ae71ced93bc847ec7d69040e5d9451bd7", null ],
+    [ "getTimeUnit", "classbrion_1_1_compartment_report_plugin.html#a61db21fb8152284cce8600261d01e617", null ],
+    [ "loadFrame", "classbrion_1_1_compartment_report_plugin.html#a1ff1151aeaa2ff23b617a90fd73aab72", null ],
+    [ "setBufferSize", "classbrion_1_1_compartment_report_plugin.html#a0ec00376da3b89b1215e687dfe9a65f9", null ],
+    [ "updateMapping", "classbrion_1_1_compartment_report_plugin.html#a979a0f56cfe3fc560eadc776dd865910", null ],
+    [ "writeCompartments", "classbrion_1_1_compartment_report_plugin.html#a878884cf31cac32660141d9ae2d2cd9b", null ],
+    [ "writeFrame", "classbrion_1_1_compartment_report_plugin.html#a51b4099cab5b14d04b0f21be7642e17f", null ],
+    [ "writeHeader", "classbrion_1_1_compartment_report_plugin.html#a4592a0896163764c694fc3e707b07bad", null ]
+];

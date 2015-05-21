@@ -1,5 +1,4 @@
 var searchData=
 [
-  ['operator_2a',['operator*',['../classvmml_1_1lowpass__filter.html#ae6006a24e302cfabe586560b3fdf628d',1,'vmml::lowpass_filter']]],
-  ['operator_2d_3e',['operator-&gt;',['../classvmml_1_1lowpass__filter.html#a356df6eab4f9430c10f418bcdfcc705a',1,'vmml::lowpass_filter']]]
+  ['loadframe',['loadFrame',['../classbrion_1_1_compartment_report.html#a6510af0acb912ec4149b391c43b1e441',1,'brion::CompartmentReport::loadFrame()'],['../classbrion_1_1_compartment_report_plugin.html#a1ff1151aeaa2ff23b617a90fd73aab72',1,'brion::CompartmentReportPlugin::loadFrame()']]]
 ];
