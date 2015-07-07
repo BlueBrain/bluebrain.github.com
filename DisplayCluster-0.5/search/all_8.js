@@ -11,6 +11,7 @@ var searchData=
   ['isactive',['isActive',['../class_marker.html#a4146232a49770f84278b49d7eb4baa72',1,'Marker']]],
   ['isateof',['isAtEOF',['../class_f_f_m_p_e_g_movie.html#a3447a5bac6e7a0c51d7109e91dc88e5b',1,'FFMPEGMovie']]],
   ['isempty',['isEmpty',['../class_display_group.html#a2bd3c3a118c0a2be043c10bb6ca8c3dd',1,'DisplayGroup']]],
+  ['isexposed',['isExposed',['../class_wall_window.html#a94600d13167b3b27159507676b8ae2d1',1,'WallWindow']]],
   ['ishidden',['isHidden',['../class_content_window.html#a5d8a2935e14cb43f890e776a1c9f2315',1,'ContentWindow']]],
   ['ismessageavailable',['isMessageAvailable',['../class_m_p_i_channel.html#ac2584270a0bbc486e27d357ffd48efd1',1,'MPIChannel::isMessageAvailable()'],['../class_wall_from_master_channel.html#a34a7629d9a71d873394d4bc51e687d04',1,'WallFromMasterChannel::isMessageAvailable()']]],
   ['ismoving',['isMoving',['../class_content_window.html#ac557a80bb17253cb4c2ecb3f5f468f1a',1,'ContentWindow']]],

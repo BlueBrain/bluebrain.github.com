@@ -2,10 +2,10 @@ var class_content =
 [
     [ "Content", "class_content.html#ae491288d2efce7fa63d3e777580630b4", null ],
     [ "Content", "class_content.html#af14b7b5ebc756686ecde73dc09b57c56", null ],
-    [ "createActions", "class_content.html#ae2110ac13e7653458ae24315da403a4f", null ],
     [ "getActions", "class_content.html#a7ae29df27d493e89dd7dccd775efbff8", null ],
     [ "getAspectRatio", "class_content.html#a113bd8ba35685e77bcf8a8650fab636a", null ],
     [ "getDimensions", "class_content.html#aa4681ca97acea99fbe88e20f0e664bc0", null ],
+    [ "getMaxDimensions", "class_content.html#a70fbc6b9c9dfd95c426819a1c14464f9", null ],
     [ "getType", "class_content.html#af9e369355bb2be4ab07ed23f0f82113d", null ],
     [ "getURI", "class_content.html#a887d2b952cd824d70f64106ae048a5f8", null ],
     [ "modified", "class_content.html#a44c022cb6fed6fb1b0dff45e39ececb9", null ],

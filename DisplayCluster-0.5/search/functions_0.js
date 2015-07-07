@@ -8,6 +8,7 @@ var searchData=
   ['addhandler',['addHandler',['../class_web_service_server.html#add4f995e1c87224bb4bef372f7eea186',1,'WebServiceServer::addHandler()'],['../classdc_webservice_1_1_mapper.html#aea1db2e397fcda132839427bed9bab50',1,'dcWebservice::Mapper::addHandler()'],['../classdc_webservice_1_1_server.html#aa6c8b914130b22705b39b35a6a072a6d',1,'dcWebservice::Server::addHandler()']]],
   ['addslide',['addSlide',['../class_picture_flow.html#a0c6a7233f5be8fdf76ca035c1ba31a01',1,'PictureFlow::addSlide(const QImage &amp;image, const QString &amp;caption)'],['../class_picture_flow.html#a5141d9830c68e66d67a5bc937361a749',1,'PictureFlow::addSlide(const QPixmap &amp;pixmap, const QString &amp;caption)']]],
   ['adjustsize',['adjustSize',['../class_content_window_controller.html#a42007dfd0544667544dcaef7e3fea231',1,'ContentWindowController']]],
+  ['adjustsizeonetoone',['adjustSizeOneToOne',['../class_content_window_controller.html#ad121ca248b1a4ea27f86f5cef4d69ff7',1,'ContentWindowController']]],
   ['allready',['allReady',['../class_wall_to_wall_channel.html#a5ed49d881339e80bf2e90f749fe157aa',1,'WallToWallChannel']]],
   ['asciitoqtkeycodemapper',['AsciiToQtKeyCodeMapper',['../class_ascii_to_qt_key_code_mapper.html#a5cccca313512372853b6a3b96048f94b',1,'AsciiToQtKeyCodeMapper']]],
   ['asyncimageloader',['AsyncImageLoader',['../class_async_image_loader.html#a06eca9683f23016ba38225c2b7aae9b4',1,'AsyncImageLoader']]]

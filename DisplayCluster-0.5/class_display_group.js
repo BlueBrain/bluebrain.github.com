@@ -8,16 +8,19 @@ var class_display_group =
     [ "contentWindowMovedToFront", "class_display_group.html#a018a418c963074c2fee79896c327e950", null ],
     [ "contentWindowRemoved", "class_display_group.html#a2901850c2b9893e2c3826cbdf6b1795a", null ],
     [ "getActiveWindow", "class_display_group.html#ac369a679a2abf36c39e3ea6bfd034cf0", null ],
-    [ "getBackgroundContent", "class_display_group.html#a3df1e9841a9a2b588bb933d9559b7e6e", null ],
     [ "getContentWindow", "class_display_group.html#a1b578c1cd18a8b8c8fe637de45b4302b", null ],
-    [ "getContentWindows", "class_display_group.html#aabe08d581ef0a610d8d7fcb1e59e73dc", null ],
+    [ "getContentWindows", "class_display_group.html#aa1940079d2bc1464f59e38c52ac1bffb", null ],
+    [ "getShowWindowTitles", "class_display_group.html#a1da05076e3571e8efd80f40e99973abc", null ],
     [ "isEmpty", "class_display_group.html#a2bd3c3a118c0a2be043c10bb6ca8c3dd", null ],
     [ "modified", "class_display_group.html#a2d45f47c71869da3799d9e1c88274cbd", null ],
     [ "moveContentWindowToFront", "class_display_group.html#a9b735afcd6d149658ff2ec7009188829", null ],
     [ "moveContentWindowToFront", "class_display_group.html#a426a5219ee17a10f991dad5f2f35a21e", null ],
+    [ "operator=", "class_display_group.html#ad19eede7a2c86a54f14d1daaf067d973", null ],
     [ "removeContentWindow", "class_display_group.html#a35bd8857aa1863163874a65d416d50f3", null ],
     [ "removeContentWindow", "class_display_group.html#a29eff017c9c16b6959a0991f13a3f5a5", null ],
-    [ "setBackgroundContent", "class_display_group.html#aa7f8760a761a0051485c0c7e690ab35c", null ],
     [ "setContentWindows", "class_display_group.html#aef0625b115fe22908ff5e9d1f1cc4d56", null ],
-    [ "boost::serialization::access", "class_display_group.html#ac98d07dd8f7b70e16ccb9a01abf56b9c", null ]
+    [ "setShowWindowTitles", "class_display_group.html#a4dd36607509226c8a2be889c044bd288", null ],
+    [ "showWindowTitlesChanged", "class_display_group.html#adafd5d363d4ae007a281306f1e9c44c8", null ],
+    [ "boost::serialization::access", "class_display_group.html#ac98d07dd8f7b70e16ccb9a01abf56b9c", null ],
+    [ "showWindowTitles", "class_display_group.html#ad5bdcd001c67abde8c563fce05b2dca8", null ]
 ];

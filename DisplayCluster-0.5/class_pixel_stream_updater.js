@@ -5,5 +5,5 @@ var class_pixel_stream_updater =
     [ "onWindowRemoved", "class_pixel_stream_updater.html#a39e268af96416969e00931ad0bf34470", null ],
     [ "requestFrame", "class_pixel_stream_updater.html#aa7a5c7435ad6f310bfc66096f9dea7ee", null ],
     [ "synchronizeFramesSwap", "class_pixel_stream_updater.html#a8598ac669ae055571d138671682e28d6", null ],
-    [ "updatePixelStream", "class_pixel_stream_updater.html#ad45610abbd8ab1cbacd6da29f97a2b01", null ]
+    [ "updatePixelStream", "class_pixel_stream_updater.html#a148f149b1b3ebd3d11feb6b20416b518", null ]
 ];

@@ -3,7 +3,7 @@ var searchData=
   ['caption',['caption',['../struct_toolbar_button.html#acd43eb85db6b0477a42c3a26cfa5bfee',1,'ToolbarButton']]],
   ['centerindex',['centerIndex',['../class_picture_flow.html#ab9aae9f93aac2f5428250ca44ffc3264',1,'PictureFlow']]],
   ['centerpoint',['centerPoint',['../class_pinch_gesture.html#ab3b08b7f5ae27c487b5585e0d8467482',1,'PinchGesture']]],
-  ['changeflags',['ChangeFlags',['../class_pinch_gesture.html#a351a8e108b70805356a9809e73005d3a',1,'PinchGesture::ChangeFlags()'],['../class_pinch_gesture.html#a67cd92d1bca096cd3558f7c93654fa72',1,'PinchGesture::changeFlags() const ']]],
+  ['changeflags',['changeFlags',['../class_pinch_gesture.html#a67cd92d1bca096cd3558f7c93654fa72',1,'PinchGesture::changeFlags() const '],['../class_pinch_gesture.html#a351a8e108b70805356a9809e73005d3a',1,'PinchGesture::ChangeFlags()']]],
   ['check',['check',['../classdc_1_1_version.html#ad59c2979ce6452bb8a0c0d725d1f278a',1,'dc::Version']]],
   ['checked',['checked',['../class_content_action.html#a563fe54bba76599da58a0da5d1eaf21e',1,'ContentAction']]],
   ['checkversion',['checkVersion',['../class_wall_to_wall_channel.html#ac46cfa16faf2fb46ea35b04bd78f5d7d',1,'WallToWallChannel']]],
@@ -27,7 +27,5 @@ var searchData=
   ['contentwindowremoved',['contentWindowRemoved',['../class_display_group.html#a2901850c2b9893e2c3826cbdf6b1795a',1,'DisplayGroup']]],
   ['convert',['convert',['../class_f_f_m_p_e_g_video_frame_converter.html#adc68950591682923e5d56a8aa30653f2',1,'FFMPEGVideoFrameConverter']]],
   ['coordinates',['Coordinates',['../class_coordinates.html',1,'']]],
-  ['create',['create',['../class_double_tap_gesture_recognizer.html#a525ef12c050e52ebb08cac6bf6d86613',1,'DoubleTapGestureRecognizer::create()'],['../class_pan_gesture_recognizer.html#a79cf2909bfb9b0ae7f4441cb18495dba',1,'PanGestureRecognizer::create()'],['../class_pinch_gesture_recognizer.html#a40424c41c68bc01153b6ca476ac10754',1,'PinchGestureRecognizer::create()'],['../class_pixel_streamer_factory.html#a901701ac6afa91292aad59749d3782ad',1,'PixelStreamerFactory::create()'],['../class_wall_content.html#afbaa3448bfc8c02404f8134a7b968f9d',1,'WallContent::create()']]],
-  ['createactions',['createActions',['../class_content.html#ae2110ac13e7653458ae24315da403a4f',1,'Content']]],
-  ['createcontentwindow',['createContentWindow',['../class_pixel_stream_window_manager.html#aaefb4c6acb41763c5b1265e0751c5d34',1,'PixelStreamWindowManager']]]
+  ['create',['create',['../class_double_tap_gesture_recognizer.html#a525ef12c050e52ebb08cac6bf6d86613',1,'DoubleTapGestureRecognizer::create()'],['../class_pan_gesture_recognizer.html#a79cf2909bfb9b0ae7f4441cb18495dba',1,'PanGestureRecognizer::create()'],['../class_pinch_gesture_recognizer.html#a40424c41c68bc01153b6ca476ac10754',1,'PinchGestureRecognizer::create()'],['../class_pixel_streamer_factory.html#a901701ac6afa91292aad59749d3782ad',1,'PixelStreamerFactory::create()'],['../class_wall_content.html#afbaa3448bfc8c02404f8134a7b968f9d',1,'WallContent::create()']]]
 ];

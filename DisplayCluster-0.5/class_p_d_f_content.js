@@ -1,6 +1,7 @@
 var class_p_d_f_content =
 [
     [ "PDFContent", "class_p_d_f_content.html#a4ae008684cb13c9a6bd52ed35f827781", null ],
+    [ "getMaxDimensions", "class_p_d_f_content.html#ac38ea78c76f4e6656f8043f95f9abcb7", null ],
     [ "getPage", "class_p_d_f_content.html#a7593da6369ce1925bcd1a98e96bf3f52", null ],
     [ "getSupportedExtensions", "class_p_d_f_content.html#ac42089a897e5072e24265483c8fd80f6", null ],
     [ "getType", "class_p_d_f_content.html#a1f062a289684e4b20107fb841b356352", null ],

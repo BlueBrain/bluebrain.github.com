@@ -16,6 +16,7 @@ var files =
     [ "ContentWindow.h", "_content_window_8h_source.html", null ],
     [ "ContentWindowController.h", "_content_window_controller_8h_source.html", null ],
     [ "Coordinates.h", "_coordinates_8h_source.html", null ],
+    [ "core.h", "core_8h_source.html", null ],
     [ "DefaultHandler.h", "_default_handler_8h_source.html", null ],
     [ "DefaultThumbnailGenerator.h", "_default_thumbnail_generator_8h_source.html", null ],
     [ "defines.h", "defines_8h_source.html", null ],

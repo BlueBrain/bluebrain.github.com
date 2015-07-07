@@ -6,6 +6,7 @@ var class_coordinates =
     [ "getCoordinates", "class_coordinates.html#ab9f965c6de6aa357c00b721571497c3a", null ],
     [ "height", "class_coordinates.html#a4cbe1a0685b9c9e9978d83a4ba95bd10", null ],
     [ "heightChanged", "class_coordinates.html#a816263e04ba481b175cae126f1a17f08", null ],
+    [ "setCoordinates", "class_coordinates.html#a8f38a65187e86cf033777b7496b96d57", null ],
     [ "setHeight", "class_coordinates.html#a1a5e7c5544a8d89d13543718df14fb7a", null ],
     [ "setWidth", "class_coordinates.html#a5acc90cd34a073c6cfb39c35a575a57b", null ],
     [ "setX", "class_coordinates.html#aa6e87f5869053b20878d2ac59d133fda", null ],

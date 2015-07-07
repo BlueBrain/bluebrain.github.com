@@ -19,6 +19,7 @@ var searchData=
   ['_7eqmlwindowrenderer',['~QmlWindowRenderer',['../class_qml_window_renderer.html#a64b49a4fef3f1bd26e2f2b1a6fa4db3c',1,'QmlWindowRenderer']]],
   ['_7erenderable',['~Renderable',['../class_renderable.html#a4c9e03ac345df99a010c2ad9f8632af2',1,'Renderable']]],
   ['_7erequestbuilder',['~RequestBuilder',['../classdc_webservice_1_1_request_builder.html#adf72aa68366f5f3d78af43064ca6e156',1,'dcWebservice::RequestBuilder']]],
+  ['_7etextinputdispatcher',['~TextInputDispatcher',['../class_text_input_dispatcher.html#aa8f6f5ed745229e60657e50e93e3c4f5',1,'TextInputDispatcher']]],
   ['_7etextinputhandler',['~TextInputHandler',['../class_text_input_handler.html#a3dd9adbbef083b4c07c50d188ffcd99f',1,'TextInputHandler']]],
   ['_7ewallcontent',['~WallContent',['../class_wall_content.html#a9bf85393c18ce6669f161becabc93229',1,'WallContent']]],
   ['_7ewebkitpixelstreamer',['~WebkitPixelStreamer',['../class_webkit_pixel_streamer.html#aa0a741712313a0963f69bc28cae292e3',1,'WebkitPixelStreamer']]],
