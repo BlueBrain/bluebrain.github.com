@@ -1,6 +1,6 @@
 var searchData=
 [
-  ['changelog',['ChangeLog',['../changelog.html',1,'']]],
+  ['changelog',['Changelog',['../_changelog.html',1,'']]],
   ['check',['check',['../classbrion_1_1_version.html#a899ec6e0102c68a690e8b9143c7908c4',1,'brion::Version']]],
   ['circuit',['Circuit',['../classbrion_1_1_circuit.html',1,'brion']]],
   ['circuit',['Circuit',['../classbrion_1_1_circuit.html#af64a9ed2225c8fc2a8f34a946892c3db',1,'brion::Circuit']]],

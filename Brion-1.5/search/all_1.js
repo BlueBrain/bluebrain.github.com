@@ -10,6 +10,5 @@ var searchData=
   ['brion_5fversion_5fmajor',['BRION_VERSION_MAJOR',['../version_8h.html#aa5be9a4351e20d44fa19574e589b2fb3',1,'version.h']]],
   ['brion_5fversion_5fminor',['BRION_VERSION_MINOR',['../version_8h.html#aa5a2357f391cbb650d1d8894ee1b526f',1,'version.h']]],
   ['brion_5fversion_5fpatch',['BRION_VERSION_PATCH',['../version_8h.html#ab7df48db132552459d856511d31fec71',1,'version.h']]],
-  ['brion_5fversion_5frevision',['BRION_VERSION_REVISION',['../version_8h.html#a6044ab3ac01614da058254ed01b5b206',1,'version.h']]],
-  ['brion_20api_20documentation',['Brion API Documentation',['../index.html',1,'']]]
+  ['brion_5fversion_5frevision',['BRION_VERSION_REVISION',['../version_8h.html#a6044ab3ac01614da058254ed01b5b206',1,'version.h']]]
 ];
