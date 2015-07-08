@@ -1,6 +1,5 @@
 var searchData=
 [
-  ['initializedashtree',['initializeDashTree',['../classlivre_1_1_volume_data_source_plugin.html#a7b65eed98efc0fb8cd76922e99796eb1',1,'livre::VolumeDataSourcePlugin']]],
   ['initializegl',['initializeGL',['../classlivre_1_1_volume_data_source_plugin.html#afa1aaf61968ce02c866ff7a7d5b5ce14',1,'livre::VolumeDataSourcePlugin']]],
   ['internalnodetolodnode',['internalNodeToLODNode',['../classlivre_1_1_volume_data_source_plugin.html#a587a5a64e50706a5032e8492f3821cc6',1,'livre::VolumeDataSourcePlugin']]],
   ['ischild',['isChild',['../classlivre_1_1_node_id.html#aa348a20bf04d2f53e2f464e26f29214f',1,'livre::NodeId']]],

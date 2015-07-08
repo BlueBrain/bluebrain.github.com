@@ -103,7 +103,7 @@ $(document).ready(function(){initNavTree('_user__guide.html','');});
 <div class="title">User Guide </div>  </div>
 </div><!--header-->
 <div class="contents">
-<div class="textblock"><h1><a class="anchor" id="TABLE_OF_CONTENTS"></a>
+<div class="textblock"><h1><a class="anchor" id="TABLE_OF_CONTENTS_User_guide"></a>
 Table of Contents</h1>
 <ol type="1">
 <li><a class="el" href="_user__guide.html#GENERAL_INFORMATION">General Information</a><ol type="a">
@@ -144,9 +144,10 @@ Setup</h2>
 </div><!-- fragment --><p>The above commands will fetch the necessary packages and build the dependencies, and install the executables and libraries.</p>
 <p>After a successful build and installation, the following executables will be available:</p>
 <ul>
-<li>livre ( The command line render application )</li>
-<li>livreGUI ( Transfer function editor )</li>
-<li>TuvokDataConverter ( <a class="el" href="_tuvok__tool.html#TuvokDataConverter">TuvokDataConverter</a> )</li>
+<li>livre (The command line render application)</li>
+<li>livre_batch.py (Python script to launch livre in batch mode using sbatch to render images on cluster nodes. Usage: livre_batch.py &ndash;config file.config)</li>
+<li>livreGUI (Transfer function editor)</li>
+<li>TuvokDataConverter (<a class="el" href="_tuvok__tool.html#TuvokDataConverter">TuvokDataConverter</a>)</li>
 </ul>
 <h1><a class="anchor" id="GETTING_STARTED"></a>
 Getting Started</h1>
@@ -156,26 +157,53 @@ Volume pre-processing tools</h2>
 <h2><a class="anchor" id="Livre"></a>
 Livre</h2>
 <p>The volume renderer is executed through the command line. To test if the volume renderer is working or not, you can simply execute :</p>
-<div class="fragment"><div class="line"><a class="code" href="namespacelivre.html">livre</a> --volume mem:<span class="comment">//1024,1024,1024,32</span></div>
-</div><!-- fragment --><p>which will render an in memory test volume data structure. Here 1024,1024 and 1024 are the width, height and length of the volume in voxels, respectively. 32 is the block size and "mem://" is the scheme to generate in memory volume. You should be getting an image like below:</p>
+<div class="fragment"><div class="line"><a class="code" href="namespacelivre.html">livre</a> [--volume mem:<span class="comment">//1024,1024,512,32]</span></div>
+</div><!-- fragment --><p>which will render an in memory test volume data structure. Here 1024, 1024 and 512 are the width, height and length of the volume in voxels, respectively. 32 is the block size and "mem://" is the scheme to generate in memory volume. You should be getting an image like below:</p>
 <div class="image">
 <img src="livre.png" alt="livre.png"/>
 <div class="caption">
 Livre</div></div>
 <p> The command line parameters are shown below:</p>
 <div class="fragment"><div class="line">Application Parameters</div>
-<div class="line">  --volume URL</div>
+<div class="line">  --volume arg                          URI of volume data source</div>
+<div class="line">  --animation [=arg(=1)] (=0)           Enable animation mode (optional frame</div>
+<div class="line">                                        delta <span class="keywordflow">for</span> animation speed, use</div>
+<div class="line">                                        --animation=-&lt;<span class="keywordtype">int</span>&gt; <span class="keywordflow">for</span> reverse</div>
+<div class="line">                                        animation)</div>
+<div class="line">  --frames arg (=[0 4294967295])</div>
+<div class="line">                                        Frames to render &#39;start end&#39;</div>
+<div class="line">  --num-frames arg (=4294967295)        Maximum nuber of frames to render</div>
+<div class="line">  --camera-position arg (=[0 0 2])</div>
+<div class="line">                                        Camera position</div>
+<div class="line">  --camera-lookat arg (=[0 0 0])</div>
+<div class="line">                                        Camera orientation</div>
+<div class="line">  --sync-camera                         Synchronize camera with other</div>
+<div class="line">                                        applications</div>
+<div class="line"></div>
+<div class="line">REST Parameters</div>
+<div class="line">  --rest-host arg (=localhost)          RESTBridge&#39;s http hostname</div>
+<div class="line">  --rest-port arg (=4020)               RESTBridge&#39;s http port</div>
+<div class="line">  --zeq-schema arg (=rest)              RESTBridge&#39;s internal zeq schema</div>
+<div class="line">  --use-rest                            Use RESTBridge</div>
 <div class="line"></div>
 <div class="line">Volume Renderer Parameters</div>
-<div class="line">  --sse arg (=1)                    Screen space error</div>
-<div class="line">  --datacachemem arg (=1024)        Maximum data cache memory (MB)</div>
-<div class="line">  --texturecachemem arg (=3072)     Maximum texture cache memory (MB)</div>
-<div class="line">  --texturedatacachemem arg (=8192) Maximum texture data cache memory (MB)</div>
-<div class="line">  --maxrendermem arg (=1536)        Maximum render memory</div>
+<div class="line">  --data-cache-mem arg (=1024)          Maximum data cache memory (MB) - caches</div>
+<div class="line">                                        the raw data read from I/O in system</div>
+<div class="line">                                        memory</div>
+<div class="line">  --texture-cache-mem arg (=3072)       Maximum texture cache memory (MB) -</div>
+<div class="line">                                        caches the texture data on GPU memory</div>
+<div class="line">  --texturedata-cache-mem arg (=8192)   Maximum texture data cache memory (MB) -</div>
+<div class="line">                                        caches the data that has been converted</div>
+<div class="line">                                        into internal texture format in system</div>
+<div class="line">                                        memory</div>
+<div class="line">  --sse arg (=4)                        Screen space error</div>
+<div class="line">  --synchronous                         Enable synchronous mode</div>
+<div class="line">  --min-lod arg (=0)                    Minimum level of detail</div>
+<div class="line">  --max-lod arg (=9)                    Maximum level of detail</div>
 </div><!-- fragment --><p>The important parameters are :</p>
 <ul>
-<li>"--volume" ( URL of the volume )</li>
-<li>"--sse" ( Quality of the rendering, the lower the value, the higher the quality. If value is 1, 1 pixel is 1 voxel, for lower quality values should be larger than 1 )</li>
+<li>"--volume" URL of the volume</li>
+<li>"--sse" Quality of the rendering, the lower the value, the higher the quality. If value is 1, 1 pixel is 1 voxel, for lower quality values should be larger than 1 (4 by default)</li>
 </ul>
 <h2><a class="anchor" id="LivreGUI"></a>
 Transfer function editor</h2>
@@ -200,8 +228,7 @@ Transfer Function Editor</div></div>
 <!-- start footer part -->
 <div id="nav-path" class="navpath"><!-- id is needed for treeview function! -->
   <ul>
-    <li class="navelem"><a class="el" href="index.html">Livre Documentation</a></li>
-    <li class="footer">Generated on Fri May 1 2015 15:04:13 for Livre by
+    <li class="footer">Generated on Wed Jul 8 2015 12:12:20 for Livre by
     <a href="http://www.doxygen.org/index.html">
     <img class="footer" src="doxygen.png" alt="doxygen"/></a> 1.8.9.1 </li>
   </ul>

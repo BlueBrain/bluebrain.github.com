@@ -1,12 +1,38 @@
 var NAVTREE =
 [
   [ "Livre", "index.html", [
-    [ "Livre Documentation", "index.html", "index" ],
+    [ "Changelog", "_changelog.html", null ],
+    [ "Technical Overview", "_technical__overview.html", [
+      [ "Table of Contents", "_technical__overview.html#TABLE_OF_CONTENTS_Technical_overview", null ],
+      [ "Technical Features", "_technical__overview.html#Technical_Features", null ],
+      [ "Architecture", "_technical__overview.html#Architecture", [
+        [ "Render thread", "_technical__overview.html#Render_Thread", null ],
+        [ "GPU upload thread", "_technical__overview.html#GPU_Thread", null ],
+        [ "Data thread", "_technical__overview.html#Data_Thread", null ],
+        [ "Livre library", "_technical__overview.html#Livre_Library", null ]
+      ] ],
+      [ "References", "_technical__overview.html#References", null ]
+    ] ],
     [ "Tuvok Volume Data Generation", "_tuvok__tool.html", [
-      [ "General Information", "_tuvok__tool.html#GENERAL_INFORMATION", null ],
+      [ "Table of Contents", "_tuvok__tool.html#TABLE_OF_CONTENTS_Tuvok", null ],
+      [ "General Information", "_tuvok__tool.html#GENERAL_INFORMATION_Tuvok", null ],
       [ "Pipeline", "_tuvok__tool.html#PIPELINE", [
         [ "Fiji", "_tuvok__tool.html#Fiji", null ],
         [ "TuvokDataConverter", "_tuvok__tool.html#TuvokDataConverter", null ]
+      ] ]
+    ] ],
+    [ "User Guide", "_user__guide.html", [
+      [ "Table of Contents", "_user__guide.html#TABLE_OF_CONTENTS_User_guide", null ],
+      [ "General Information", "_user__guide.html#GENERAL_INFORMATION", [
+        [ "Overview", "_user__guide.html#Overview", null ]
+      ] ],
+      [ "Installation", "_user__guide.html#INSTALLATION", [
+        [ "Setup", "_user__guide.html#Setup", null ]
+      ] ],
+      [ "Getting Started", "_user__guide.html#GETTING_STARTED", [
+        [ "Volume pre-processing tools", "_user__guide.html#Pre-processing_Tools", null ],
+        [ "Livre", "_user__guide.html#Livre", null ],
+        [ "Transfer function editor", "_user__guide.html#LivreGUI", null ]
       ] ]
     ] ],
     [ "Classes", null, [
