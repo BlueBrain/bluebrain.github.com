@@ -6,7 +6,7 @@ var files =
     [ "context.h", "context_8h_source.html", null ],
     [ "dash.h", "dash_8h_source.html", null ],
     [ "defines.h", "defines_8h.html", null ],
-    [ "definesDarwin.h", "defines_darwin_8h_source.html", null ],
+    [ "definesLinux.h", "defines_linux_8h_source.html", null ],
     [ "node.h", "node_8h_source.html", null ],
     [ "nodeVisitor.h", "node_visitor_8h_source.html", null ],
     [ "types.h", "types_8h.html", "types_8h" ],

@@ -1,4 +1,5 @@
 var annotated =
 [
-    [ "brion", "namespacebrion.html", "namespacebrion" ]
+    [ "brion", "namespacebrion.html", "namespacebrion" ],
+    [ "enums", "namespaceenums.html", null ]
 ];

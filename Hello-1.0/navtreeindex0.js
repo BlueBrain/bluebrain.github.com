@@ -22,7 +22,7 @@ var NAVTREEINDEX0 =
 "classhello_1_1_world.html#ad0fd2b6b8f2a972da8b35ad0eeffdd38":[3,0,0,1,1],
 "defines_8h.html":[4,0,1],
 "defines_8h_source.html":[4,0,1],
-"defines_darwin_8h_source.html":[4,0,2],
+"defines_linux_8h_source.html":[4,0,2],
 "documentation.html":[1],
 "files.html":[4,0],
 "functions.html":[3,2,0],

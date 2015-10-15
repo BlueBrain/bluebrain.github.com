@@ -7,7 +7,7 @@ var files =
     [ "compartmentReport.h", "compartment_report_8h_source.html", null ],
     [ "compartmentReportPlugin.h", "compartment_report_plugin_8h_source.html", null ],
     [ "defines.h", "defines_8h.html", null ],
-    [ "definesDarwin.h", "defines_darwin_8h_source.html", null ],
+    [ "definesLinux.h", "defines_linux_8h_source.html", null ],
     [ "enums.h", "enums_8h.html", "enums_8h" ],
     [ "mesh.h", "mesh_8h_source.html", null ],
     [ "morphology.h", "morphology_8h_source.html", null ],

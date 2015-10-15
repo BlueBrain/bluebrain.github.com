@@ -3,16 +3,16 @@ name: Livre
 version: "0.4"
 major: 0
 minor: 4
-description: Largescale Interactive Volume Rendering Engine
+description: Largescale Interactive Volume Rendering Engine (Livre)
 updated: 15/10/15
 homepage: https://github.com/BlueBrain/Livre
-repository: https://github.com/BlueBrain/Livre
-issuesurl: https://github.com/BlueBrain/Livre
+repository: https://github.com/BlueBrain/Livre.git
+issuesurl: https://github.com/BlueBrain/Livre/issues
 packageurl: 
-license: 
+license: LGPL
 maturity: EP
-maintainers: 
-contributors: 0x5f3759df - ( i  1 ); Ahmet Bilgili; Carsten Rohn; Cedric Stalder; Chevtchenko Grigori; Cyrille Favreau; Daniel Nachbaur; Daniel Pfeifer; Dardo D Kleiner; Enrique G. Paredes; Fabien Delalondre; Jafet Villafranca; Juan Hernando; Marwan; Rafael Ballester; Raphael Dumusc; Sarah Amsellem; Stefan Eilemann; bilgili; marwan-abdellah; rballester; steiner
+maintainers: Blue Brain Project (bbp-open-source@googlegroups.com)
+contributors: Ahmet Bilgili; Raphael Dumusc; Stefan Eilemann
 readmetype: text/x-markdown
 ---
 # Livre

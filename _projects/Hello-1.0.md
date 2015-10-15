@@ -9,9 +9,9 @@ homepage: https://github.com/BlueBrain/Hello
 repository: https://github.com/BlueBrain/Hello.git
 issuesurl: https://github.com/BlueBrain/Hello/issues
 packageurl: 
-license: LGPL;BSD
+license: 
 maturity: EP
-maintainers: Blue Brain Project (bbp-open-source@googlegroups.com)
+maintainers: 
 contributors: Ahmet Bilgili; Daniel Nachbaur; Raphael Dumusc; Stefan Eilemann
 readmetype: text/x-markdown
 ---

@@ -9,7 +9,6 @@ var hierarchy =
     [ "deflect::Frame", "classdeflect_1_1_frame.html", null ],
     [ "deflect::ImageWrapper", "structdeflect_1_1_image_wrapper.html", null ],
     [ "deflect::MTQueue< T >", "classdeflect_1_1_m_t_queue.html", null ],
-    [ "deflect::QmlStreamer", "classdeflect_1_1_qml_streamer.html", null ],
     [ "deflect::Segment", "structdeflect_1_1_segment.html", null ],
     [ "deflect::SegmentParameters", "structdeflect_1_1_segment_parameters.html", null ],
     [ "deflect::Stream", "classdeflect_1_1_stream.html", null ],

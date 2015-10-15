@@ -14,7 +14,6 @@ var searchData=
   ['getpixelstreamdispatcher',['getPixelStreamDispatcher',['../classdeflect_1_1_server.html#aa043e2e038925b380fa6fbc1a66cac10',1,'deflect::Server']]],
   ['getrevision',['getRevision',['../classdeflect_1_1_version.html#af3f12dad6076c78e85cba4c791ef0292',1,'deflect::Version']]],
   ['getrevstring',['getRevString',['../classdeflect_1_1_version.html#ad5609c825783681386c5cbb295c632d4',1,'deflect::Version']]],
-  ['getrootitem',['getRootItem',['../classdeflect_1_1_qml_streamer.html#ad9c381d38efea0d14267287c5773dfa9',1,'deflect::QmlStreamer']]],
   ['getstring',['getString',['../classdeflect_1_1_version.html#ac87161d36ea0dd6d8cc648f3cd6408d6',1,'deflect::Version']]],
   ['gettype',['getType',['../classdeflect_1_1_abstract_command_handler.html#af1069082a22e3ef896c6048fe2fa4744',1,'deflect::AbstractCommandHandler::getType()'],['../classdeflect_1_1_command.html#a331fa597af9557953cb3598a12569bda',1,'deflect::Command::getType()']]]
 ];

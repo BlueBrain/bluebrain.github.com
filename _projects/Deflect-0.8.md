@@ -9,10 +9,10 @@ homepage: https://github.com/BlueBrain/Deflect
 repository: https://github.com/BlueBrain/Deflect.git
 issuesurl: https://github.com/BlueBrain/Deflect/issues
 packageurl: 
-license: 
+license: BSD
 maturity: EP
-maintainers: 
-contributors: Cyrille Favreau; Daniel Nachbaur; Pablo Toharia; Patric Schmitz; Raphael Dumusc; Stefan Eilemann; hernando
+maintainers: Blue Brain Project (bbp-open-source@googlegroups.com)
+contributors: Cyrille Favreau; Daniel Nachbaur; Juan Hernando; Pablo Toharia; Patric Schmitz; Raphael Dumusc; Stefan Eilemann; hernando
 readmetype: text/x-markdown
 ---
 # Deflect

@@ -1,5 +1,5 @@
 var searchData=
 [
-  ['text',['text',['../structdeflect_1_1_event.html#ade0b96971d9b67e03c492b745bba2685',1,'deflect::Event']]],
-  ['type',['type',['../structdeflect_1_1_event.html#a53cf20f805ffc8b02eefc09630f2830c',1,'deflect::Event']]]
+  ['unregistercommandhandler',['unregisterCommandHandler',['../classdeflect_1_1_command_handler.html#a110d1730f81d7bba8967b5418423aa2d',1,'deflect::CommandHandler']]],
+  ['uri',['uri',['../classdeflect_1_1_frame.html#a930b8466220144877f4bbdd44db083f4',1,'deflect::Frame']]]
 ];

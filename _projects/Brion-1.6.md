@@ -6,12 +6,12 @@ minor: 6
 description: The Blue Brain C++ I/O library
 updated: 15/10/15
 homepage: https://github.com/BlueBrain/Brion
-repository: https://github.com/BlueBrain/Brion.git
-issuesurl: https://github.com/BlueBrain/Brion/issues
+repository: https://github.com/BlueBrain/Brion
+issuesurl: https://github.com/BlueBrain/Brion
 packageurl: 
 license: LGPL
 maturity: EP
-maintainers: Daniel Nachbaur (daniel.nachbaur@epfl.ch)
+maintainers: Blue Brain Project (bbp-open-source@googlegroups.com)
 contributors: Ahmet Bilgili; Daniel Nachbaur; Jafet Villafranca; Juan Hernando; Mike Gevaert; Raphael Dumusc; Stefan Eilemann; hernando
 readmetype: text/x-markdown
 ---
