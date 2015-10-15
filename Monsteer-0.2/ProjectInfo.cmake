@@ -1,5 +1,5 @@
 set(MONSTEER_MATURITY "EP")
-set(MONSTEER_DESCRIPTION "Interactive Supercomputing")
+set(MONSTEER_DESCRIPTION "Interactive Supercomputing: Monitoring and Steering for MUSIC simulations")
 set(MONSTEER_GIT_ROOT_URL "https://github.com/BlueBrain/Monsteer.git")
 set(MONSTEER_PACKAGE_URL "")
 set(MONSTEER_CI_URL "https://travis-ci.org/BlueBrain/Monsteer")

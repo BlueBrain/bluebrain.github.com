@@ -1,0 +1,7 @@
+set(LIVRE_MATURITY "EP")
+set(LIVRE_DESCRIPTION "Largescale Interactive Volume Rendering Engine")
+set(LIVRE_GIT_ROOT_URL "https://github.com/BlueBrain/Livre")
+set(LIVRE_PACKAGE_URL "")
+set(LIVRE_CI_URL "https://travis-ci.org/BlueBrain/Livre")
+set(LIVRE_CI_PNG "https://travis-ci.org/BlueBrain/Livre.png")
+set(LIVRE_ISSUES_URL "https://github.com/BlueBrain/Livre")

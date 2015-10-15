@@ -2,7 +2,7 @@ var files =
 [
     [ "api.h", "api_8h.html", "api_8h" ],
     [ "defines.h", "defines_8h.html", null ],
-    [ "definesLinux.h", "defines_linux_8h_source.html", null ],
+    [ "definesDarwin.h", "defines_darwin_8h_source.html", null ],
     [ "monsteer.h", "monsteer_8h_source.html", null ],
     [ "simulator.h", "simulator_8h_source.html", null ],
     [ "simulatorPlugin.h", "simulator_plugin_8h_source.html", null ],

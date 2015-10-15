@@ -16,3 +16,4 @@ include(GitExternal)
 include(Common)
 
 common_documentation()
+set(bluebrain_SKIP_FIND ON PARENT_SCOPE) # for superprojects
