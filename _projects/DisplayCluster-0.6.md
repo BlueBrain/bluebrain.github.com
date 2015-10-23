@@ -4,7 +4,7 @@ version: "0.6"
 major: 0
 minor: 6
 description: A collaborative software for driving large display walls
-updated: 15/10/15
+updated: 23/10/15
 homepage: https://github.com/BlueBrain/DisplayCluster
 repository: https://github.com/BlueBrain/DisplayCluster.git
 issuesurl: https://github.com/BlueBrain/DisplayCluster/issues

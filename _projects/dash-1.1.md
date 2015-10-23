@@ -4,7 +4,7 @@ version: "1.1"
 major: 1
 minor: 1
 description: C++ library for generic, efficient and thread-safe Data Access and Sharing
-updated: 15/10/15
+updated: 23/10/15
 homepage: https://github.com/BlueBrain/dash
 repository: https://github.com/BlueBrain/dash.git
 issuesurl: https://github.com/BlueBrain/dash/issues

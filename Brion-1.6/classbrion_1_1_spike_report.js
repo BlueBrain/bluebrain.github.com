@@ -14,6 +14,7 @@ var classbrion_1_1_spike_report =
     [ "getReadMode", "classbrion_1_1_spike_report.html#a1d8433ac94a00362728fdd8c6604b62e", null ],
     [ "getSpikes", "classbrion_1_1_spike_report.html#a5b1bb499244e474249dd178b067b0a00", null ],
     [ "getStartTime", "classbrion_1_1_spike_report.html#aeb593fe0eba5812e7ab75cedb016feb8", null ],
+    [ "getURI", "classbrion_1_1_spike_report.html#a6f1cda95189e96c42e26deef13230764", null ],
     [ "waitUntil", "classbrion_1_1_spike_report.html#acb3f3cbae66c0e037d4f473e50546ed6", null ],
     [ "writeSpikes", "classbrion_1_1_spike_report.html#a7c9b3ea51565b9aaf8443c28e6320c94", null ]
 ];

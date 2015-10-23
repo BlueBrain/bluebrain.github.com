@@ -9,5 +9,6 @@ var searchData=
   ['getrevstring',['getRevString',['../classmonsteer_1_1_version.html#a21bc16c5eef5cdc7c7de9b677231d967',1,'monsteer::Version']]],
   ['getspikes',['getSpikes',['../classmonsteer_1_1_spike_report_reader.html#a3d47e6cea33cc43b70862d1ea27f2483',1,'monsteer::SpikeReportReader::getSpikes()'],['../classmonsteer_1_1_spike_report_reader.html#a48a91dc7322a5d68926409aff4ed14d7',1,'monsteer::SpikeReportReader::getSpikes(const float start, const float end)']]],
   ['getstarttime',['getStartTime',['../classmonsteer_1_1_spike_report_reader.html#a081421c17ea8be2e577e4e17a88217fa',1,'monsteer::SpikeReportReader::getStartTime()'],['../classmonsteer_1_1_spikes.html#a6c054f3b274b4014420927faeff8ffd1',1,'monsteer::Spikes::getStartTime()']]],
-  ['getstring',['getString',['../classmonsteer_1_1_version.html#a18d70ba994a97b1ba9423ba0f7e5f9a4',1,'monsteer::Version']]]
+  ['getstring',['getString',['../classmonsteer_1_1_version.html#a18d70ba994a97b1ba9423ba0f7e5f9a4',1,'monsteer::Version']]],
+  ['geturi',['getURI',['../classmonsteer_1_1_spike_report_writer.html#afeb57a978839e03466b3280d68134047',1,'monsteer::SpikeReportWriter']]]
 ];

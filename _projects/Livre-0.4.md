@@ -4,7 +4,7 @@ version: "0.4"
 major: 0
 minor: 4
 description: Largescale Interactive Volume Rendering Engine (Livre)
-updated: 15/10/15
+updated: 23/10/15
 homepage: https://github.com/BlueBrain/Livre
 repository: https://github.com/BlueBrain/Livre.git
 issuesurl: https://github.com/BlueBrain/Livre/issues

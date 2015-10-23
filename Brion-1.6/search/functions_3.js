@@ -34,6 +34,6 @@ var searchData=
   ['gettimeunit',['getTimeUnit',['../classbrion_1_1_compartment_report.html#afaae51ed5455bf1b9c289efbc12b0ced',1,'brion::CompartmentReport::getTimeUnit()'],['../classbrion_1_1_compartment_report_plugin.html#a61db21fb8152284cce8600261d01e617',1,'brion::CompartmentReportPlugin::getTimeUnit()']]],
   ['gettristriplength',['getTriStripLength',['../classbrion_1_1_mesh.html#a486a67201381e0a29cf612cf259691c0',1,'brion::Mesh']]],
   ['gettypes',['getTypes',['../classbrion_1_1_circuit.html#a4c5a8c5b69236c7cec0dd9d98399ddf1',1,'brion::Circuit']]],
-  ['geturi',['getURI',['../classbrion_1_1_plugin_init_data.html#a3d0fb1d5cec4f9f119c10776be47f183',1,'brion::PluginInitData']]],
+  ['geturi',['getURI',['../classbrion_1_1_plugin_init_data.html#a3d0fb1d5cec4f9f119c10776be47f183',1,'brion::PluginInitData::getURI()'],['../classbrion_1_1_spike_report.html#a6f1cda95189e96c42e26deef13230764',1,'brion::SpikeReport::getURI()'],['../classbrion_1_1_spike_report_plugin.html#ac25b2bc53eefe5967167d5e518bd1959',1,'brion::SpikeReportPlugin::getURI()']]],
   ['getversion',['getVersion',['../classbrion_1_1_mesh.html#aecf427d45daf2b1e30075d474a8494d1',1,'brion::Mesh']]]
 ];

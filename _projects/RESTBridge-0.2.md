@@ -4,7 +4,7 @@ version: "0.2"
 major: 0
 minor: 2
 description: A library that provides a simple way to expose a REST interface in a C++ application
-updated: 15/10/15
+updated: 23/10/15
 homepage: https://github.com/BlueBrain/RESTBridge
 repository: https://github.com/BlueBrain/RESTBridge.git
 issuesurl: https://github.com/BlueBrain/RESTBridge/issues

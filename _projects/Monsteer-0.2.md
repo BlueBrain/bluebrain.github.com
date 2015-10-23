@@ -3,27 +3,28 @@ name: Monsteer
 version: "0.2"
 major: 0
 minor: 2
-description: Interactive Supercomputing
-updated: 15/10/15
+description: Interactive Supercomputing: Monitoring and Steering for NEST simulations
+updated: 23/10/15
 homepage: https://github.com/BlueBrain/Monsteer
 repository: https://github.com/BlueBrain/Monsteer.git
 issuesurl: https://github.com/BlueBrain/Monsteer/issues
 packageurl: 
-license: 
+license: LGPL
 maturity: EP
-maintainers: 
+maintainers: BBP Visualization Team (bbp-open-source@googlegroups.com)
 contributors: Ahmet Bilgili; Juan Hernando; hernando
 readmetype: text/x-markdown
 ---
 # Monsteer
 
-Monsteer is a library for Interactive Supercomputing in the neuroscience domain.
-Monsteer facilitates the coupling of running simulations (currently NEST) with
-interactive visualization and analysis applications. Monsteer support streaming
-of simulation data to clients (currenty only spikes) as well as control of the
-simulator from the clients (also kown as computational steering).
-Monsteer's main components are a C++ library, an MUSIC-based application and Python
-helpers
+Monsteer is a library for Interactive Supercomputing in the neuroscience
+domain. Monsteer facilitates the coupling of running simulations
+(currently NEST) with interactive visualization and analysis
+applications. Monsteer supports streaming of simulation data to clients
+(currenty only spikes) as well as control of the simulator from the
+clients (also kown as computational steering). Monsteer's main
+components are a C++ library, a MUSIC-based application and Python
+helpers.
 
 ## Features
 

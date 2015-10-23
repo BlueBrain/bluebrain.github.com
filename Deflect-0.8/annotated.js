@@ -14,6 +14,7 @@ var annotated =
       [ "SegmentDecoder", "classdeflect_1_1_segment_decoder.html", "classdeflect_1_1_segment_decoder" ],
       [ "SegmentParameters", "structdeflect_1_1_segment_parameters.html", "structdeflect_1_1_segment_parameters" ],
       [ "Server", "classdeflect_1_1_server.html", "classdeflect_1_1_server" ],
+      [ "SizeHints", "structdeflect_1_1_size_hints.html", "structdeflect_1_1_size_hints" ],
       [ "Stream", "classdeflect_1_1_stream.html", "classdeflect_1_1_stream" ],
       [ "Version", "classdeflect_1_1_version.html", "classdeflect_1_1_version" ]
     ] ]

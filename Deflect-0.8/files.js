@@ -19,6 +19,7 @@ var files =
     [ "SegmentDecoder.h", "_segment_decoder_8h_source.html", null ],
     [ "SegmentParameters.h", "_segment_parameters_8h_source.html", null ],
     [ "Server.h", "_server_8h_source.html", null ],
+    [ "SizeHints.h", "_size_hints_8h_source.html", null ],
     [ "Stream.h", "_stream_8h_source.html", null ],
     [ "types.h", "types_8h_source.html", null ],
     [ "version.h", "version_8h.html", "version_8h" ]

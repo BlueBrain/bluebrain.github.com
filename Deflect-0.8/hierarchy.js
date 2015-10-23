@@ -11,6 +11,7 @@ var hierarchy =
     [ "deflect::MTQueue< T >", "classdeflect_1_1_m_t_queue.html", null ],
     [ "deflect::Segment", "structdeflect_1_1_segment.html", null ],
     [ "deflect::SegmentParameters", "structdeflect_1_1_segment_parameters.html", null ],
+    [ "deflect::SizeHints", "structdeflect_1_1_size_hints.html", null ],
     [ "deflect::Stream", "classdeflect_1_1_stream.html", null ],
     [ "deflect::Version", "classdeflect_1_1_version.html", null ],
     [ "QObject", null, [

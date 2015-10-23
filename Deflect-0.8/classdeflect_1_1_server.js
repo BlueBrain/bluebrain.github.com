@@ -8,6 +8,7 @@ var classdeflect_1_1_server =
     [ "getPixelStreamDispatcher", "classdeflect_1_1_server.html#aa043e2e038925b380fa6fbc1a66cac10", null ],
     [ "onEventRegistrationReply", "classdeflect_1_1_server.html#adda79c828a58923c275d409ebb42fe68", null ],
     [ "onPixelStreamerClosed", "classdeflect_1_1_server.html#ada3db4b203c200c5cb901b933ad6e9e4", null ],
+    [ "receivedSizeHints", "classdeflect_1_1_server.html#ac53cfaa9263047a7b0aee478c3d5a360", null ],
     [ "registerToEvents", "classdeflect_1_1_server.html#a7877d2cbccd858b2757d14d8e3ba9228", null ],
     [ "defaultPortNumber", "classdeflect_1_1_server.html#a3011f59853f580e4f125766318955dd3", null ],
     [ "serviceName", "classdeflect_1_1_server.html#ae528ab7b82fa35c06266d1ed2eac6f19", null ]
