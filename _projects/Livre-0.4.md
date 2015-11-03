@@ -4,7 +4,7 @@ version: "0.4"
 major: 0
 minor: 4
 description: Largescale Interactive Volume Rendering Engine (Livre)
-updated: 23/10/15
+updated: 03/11/15
 homepage: https://github.com/BlueBrain/Livre
 repository: https://github.com/BlueBrain/Livre.git
 issuesurl: https://github.com/BlueBrain/Livre/issues
@@ -12,7 +12,7 @@ packageurl:
 license: LGPL
 maturity: EP
 maintainers: Blue Brain Project (bbp-open-source@googlegroups.com)
-contributors: Ahmet Bilgili; Raphael Dumusc; Stefan Eilemann
+contributors: Ahmet Bilgili; Daniel Nachbaur; Jafet Villafranca; Raphael Dumusc; Stefan Eilemann; hernando
 readmetype: text/x-markdown
 ---
 # Livre
@@ -30,19 +30,16 @@ It provides the following major features to facilitate rendering of large volume
   local-field potentials, etc) through the use of plugins.
 * Multi-node, multi-gpu rendering (Currently only sort-first rendering)
 
-
 To keep track of the changes between releases check the [changelog](doc/Changelog.md).
 
 Contact: bbp-open-source@googlegroups.com
 
 ## Known Bugs
 
-The following bugs were known at release time. Please file a
-[Bug Report](https://github.com/BlueBrain/Livre/issues) if you find
-any other issue with this release.
-
-* [#62](https://github.com/BlueBrain/Livre/issues/62):
-  Missing bricks in first frame after load_equalizer change
+Please file a [Bug Report](https://github.com/BlueBrain/Livre/issues) if you find new
+issues which have not already been reported in
+[Bug Report](https://github.com/BlueBrain/Livre/issues) page. If you find an already reported problem,
+please update the corresponding issue with your inputs and outputs.
 
 ## About
 
@@ -50,6 +47,6 @@ The following platforms and build environments are tested:
 
 * Linux: Ubuntu 14.04, RHEL 6.5 (Makefile, x64)
 
-The [API documentation](http://bluebrain.github.io/Livre-0.3/index.html)
+The [API documentation](http://bluebrain.github.io/Livre-0.4/index.html)
 can be found on [bluebrain.github.io](http://bluebrain.github.io/).
 
