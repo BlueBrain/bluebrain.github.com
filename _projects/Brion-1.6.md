@@ -4,7 +4,7 @@ version: "1.6"
 major: 1
 minor: 6
 description: The Blue Brain C++ I/O library
-updated: 23/10/15
+updated: 04/11/15
 homepage: https://github.com/BlueBrain/Brion
 repository: https://github.com/BlueBrain/Brion
 issuesurl: https://github.com/BlueBrain/Brion
@@ -50,11 +50,12 @@ Brion provides the following major features:
 
 ## Building
 
-~~~
-  git clone https://github.com/BlueBrain/Brion.git
-  cd Brion
-  make
-~~~
+    git clone https://github.com/BlueBrain/Brion.git
+    cd Brion
+    mkdir Brion/build
+    cd Brion/build
+    cmake ..
+    make
 
 ## ChangeLog
 
