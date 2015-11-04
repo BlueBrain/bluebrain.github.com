@@ -1,11 +1,10 @@
 var NAVTREE =
 [
   [ "Brion", "index.html", [
-    [ "Changelog", "_changelog.html", [
-      [ "Release 1.6.0 (2015-10-04)", "_changelog.html#Release010600", null ],
-      [ "Release 1.5.0 (2015-07-07)", "_changelog.html#Release010500", null ],
-      [ "Release 1.4.0 (2014-10-08)", "_changelog.html#Release010400", null ]
-    ] ],
+    [ "Introduction", "index.html#Introduction", null ],
+    [ "Features", "index.html#Features", null ],
+    [ "Building", "index.html#Building", null ],
+    [ "Changelog", "_changelog.html", null ],
     [ "Deprecated List", "deprecated.html", null ],
     [ "Namespaces", null, [
       [ "Namespace List", "namespaces.html", "namespaces" ],
@@ -40,7 +39,7 @@ var NAVTREE =
 var NAVTREEINDEX =
 [
 "_changelog.html",
-"enums_8h.html#a66e583bba6f011701c4d545b1bb28533ab7a3ae8e6050fb5a8567aae8607e3e38"
+"enums_8h.html#a66e583bba6f011701c4d545b1bb28533accbbc7ab5d34cd50122a2da54a3fa2dd"
 ];
 
 var SYNCONMSG = 'click to disable panel synchronisation';
