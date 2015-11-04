@@ -13,7 +13,7 @@ var searchData=
   ['isexposed',['isExposed',['../class_wall_window.html#a94600d13167b3b27159507676b8ae2d1',1,'WallWindow']]],
   ['isfocused',['isFocused',['../class_content_window.html#ab81535e0639c5bf3582f4df57e6ec7e2',1,'ContentWindow']]],
   ['ishidden',['isHidden',['../class_content_window.html#a5d8a2935e14cb43f890e776a1c9f2315',1,'ContentWindow']]],
-  ['ismessageavailable',['isMessageAvailable',['../class_m_p_i_channel.html#ac2584270a0bbc486e27d357ffd48efd1',1,'MPIChannel::isMessageAvailable()'],['../class_wall_from_master_channel.html#a34a7629d9a71d873394d4bc51e687d04',1,'WallFromMasterChannel::isMessageAvailable()']]],
+  ['ismessageavailable',['isMessageAvailable',['../class_m_p_i_channel.html#aa1e0f4381789f23123aff7c8b5fb1b0d',1,'MPIChannel::isMessageAvailable()'],['../class_wall_from_master_channel.html#a34a7629d9a71d873394d4bc51e687d04',1,'WallFromMasterChannel::isMessageAvailable()']]],
   ['ismoving',['isMoving',['../class_content_window.html#ac557a80bb17253cb4c2ecb3f5f468f1a',1,'ContentWindow']]],
   ['isresizing',['isResizing',['../class_content_window.html#ab29dccf5622f243136a0f2d7409542b6',1,'ContentWindow']]],
   ['isselected',['isSelected',['../class_content_window.html#a385e1d496a6f6155ddf9d40c328e02ab',1,'ContentWindow']]],

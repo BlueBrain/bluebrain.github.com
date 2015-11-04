@@ -18,7 +18,7 @@ var searchData=
   ['movie',['Movie',['../class_movie.html',1,'']]],
   ['moviecontent',['MovieContent',['../class_movie_content.html',1,'MovieContent'],['../class_movie_content.html#a156808cda9a564dd70229ad2fe203e9c',1,'MovieContent::MovieContent()']]],
   ['moviethumbnailgenerator',['MovieThumbnailGenerator',['../class_movie_thumbnail_generator.html',1,'']]],
-  ['mpichannel',['MPIChannel',['../class_m_p_i_channel.html',1,'MPIChannel'],['../class_m_p_i_channel.html#a3d6135b9ea469f6242b8396699ee74fd',1,'MPIChannel::MPIChannel(int argc, char *argv[])'],['../class_m_p_i_channel.html#a5c3bda8826b4a9406e6a81446a8440d4',1,'MPIChannel::MPIChannel(const MPIChannel &amp;parent, const int color, const int key)']]],
+  ['mpichannel',['MPIChannel',['../class_m_p_i_channel.html',1,'MPIChannel'],['../class_m_p_i_channel.html#a3d6135b9ea469f6242b8396699ee74fd',1,'MPIChannel::MPIChannel(int argc, char *argv[])'],['../class_m_p_i_channel.html#a466aa85d1bc711eca37eb73eb0101126',1,'MPIChannel::MPIChannel(const MPIChannel &amp;parent, int color, int key)']]],
   ['mpicontext',['MPIContext',['../class_m_p_i_context.html',1,'MPIContext'],['../class_m_p_i_context.html#a1fc58d205deca92b9a9a307d49a124cb',1,'MPIContext::MPIContext()']]],
   ['multitouchlistener',['MultiTouchListener',['../class_multi_touch_listener.html',1,'']]],
   ['version_2eh',['version.h',['../mock_2version_8h.html',1,'']]]

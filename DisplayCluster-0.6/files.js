@@ -66,6 +66,7 @@ var files =
     [ "MovieThumbnailGenerator.h", "_movie_thumbnail_generator_8h_source.html", null ],
     [ "MPIChannel.h", "_m_p_i_channel_8h_source.html", null ],
     [ "MPIContext.h", "_m_p_i_context_8h_source.html", null ],
+    [ "MPINospin.h", "_m_p_i_nospin_8h_source.html", null ],
     [ "MultiTouchListener.h", "_multi_touch_listener_8h_source.html", null ],
     [ "Options.h", "_options_8h_source.html", null ],
     [ "PanGesture.h", "_pan_gesture_8h_source.html", null ],

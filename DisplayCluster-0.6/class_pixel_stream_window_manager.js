@@ -5,9 +5,11 @@ var class_pixel_stream_window_manager =
     [ "eventRegistrationReply", "class_pixel_stream_window_manager.html#a1b3863d3e2718e80072d2db26004db08", null ],
     [ "getContentWindow", "class_pixel_stream_window_manager.html#a4465be2e1991152689dc4bb07b22c907", null ],
     [ "hideWindow", "class_pixel_stream_window_manager.html#a74bb0eb12ff7357fef0fbbd1d9c92aff", null ],
-    [ "openPixelStreamWindow", "class_pixel_stream_window_manager.html#ac70533468fa0f6dfa2c761cb1d3954d3", null ],
+    [ "openPixelStreamWindow", "class_pixel_stream_window_manager.html#a29d8232ee6b125dfdf4e9639741922ff", null ],
+    [ "openWindow", "class_pixel_stream_window_manager.html#a1734484578c2a3c535225780115457fb", null ],
     [ "pixelStreamWindowClosed", "class_pixel_stream_window_manager.html#a84442417ad4ed329a06ac08051e7266a", null ],
     [ "registerEventReceiver", "class_pixel_stream_window_manager.html#aa4317964b249dffd8ad5bc9fa4f49e6f", null ],
     [ "showWindow", "class_pixel_stream_window_manager.html#a6e68e2ca3ba0213a872e22acd082b468", null ],
+    [ "updateSizeHints", "class_pixel_stream_window_manager.html#a8f0622d497aa3a47157912dc9f59fbfe", null ],
     [ "updateStreamDimensions", "class_pixel_stream_window_manager.html#a212f02234877ba3df2222e0f314cae36", null ]
 ];

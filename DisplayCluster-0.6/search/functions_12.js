@@ -7,6 +7,7 @@ var searchData=
   ['updated',['updated',['../class_options.html#a3fa6a7dee05582eb932f4fc068575216',1,'Options']]],
   ['updateglwindows',['updateGLWindows',['../class_render_context.html#a54c962a3326654a4522a0e9288a8fe9e',1,'RenderContext']]],
   ['updatepixelstream',['updatePixelStream',['../class_pixel_stream_updater.html#a148f149b1b3ebd3d11feb6b20416b518',1,'PixelStreamUpdater']]],
+  ['updatesizehints',['updateSizeHints',['../class_pixel_stream_window_manager.html#a8f0622d497aa3a47157912dc9f59fbfe',1,'PixelStreamWindowManager']]],
   ['updatestreamdimensions',['updateStreamDimensions',['../class_pixel_stream_window_manager.html#a212f02234877ba3df2222e0f314cae36',1,'PixelStreamWindowManager']]],
   ['updatetexture',['updateTexture',['../class_pixel_stream_segment_renderer.html#abb7998c4717817218978c84bdd931e55',1,'PixelStreamSegmentRenderer']]]
 ];

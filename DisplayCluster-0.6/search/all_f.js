@@ -1,13 +1,13 @@
 var searchData=
 [
   ['readmetadata',['readMetadata',['../class_content.html#a6822bf4cf94ae866c561b23e62506303',1,'Content::readMetadata()'],['../class_dynamic_texture_content.html#ad98b51096a5a4b553b35d8c650909f99',1,'DynamicTextureContent::readMetadata()'],['../class_movie_content.html#ab6181c8f94aa26324a6c3ae5f3384dd3',1,'MovieContent::readMetadata()'],['../class_p_d_f_content.html#af7cf516a0351264f60c076b11c33a45d',1,'PDFContent::readMetadata()'],['../class_pixel_stream_content.html#af1fde82b270db2ed217ec6542924c3e4',1,'PixelStreamContent::readMetadata()'],['../class_s_v_g_content.html#ab1498c71f69ee1f0720fb5686bef3ecf',1,'SVGContent::readMetadata()'],['../class_texture_content.html#aac9af25e443cae0cfef848825719f56f',1,'TextureContent::readMetadata()']]],
-  ['receive',['receive',['../class_m_p_i_channel.html#a2fc6093fc173c84da8c2cd08f97011c3',1,'MPIChannel']]],
-  ['receivebroadcast',['receiveBroadcast',['../class_m_p_i_channel.html#aca342469d2005ae2b456fb14d2f11bff',1,'MPIChannel']]],
+  ['receive',['receive',['../class_m_p_i_channel.html#acf6c03c4fb40017c5a6c5a7b84967116',1,'MPIChannel']]],
+  ['receivebroadcast',['receiveBroadcast',['../class_m_p_i_channel.html#acfbacf7a49cc1ce09bac7d17f9de5bd7',1,'MPIChannel']]],
   ['received',['received',['../class_wall_from_master_channel.html#ab57f20a60ab6c83820e4344915a4f109',1,'WallFromMasterChannel::received()'],['../class_wall_from_master_channel.html#afb6a2af77cb53d4daff226e765de3338',1,'WallFromMasterChannel::received()'],['../class_wall_from_master_channel.html#a32ac04eade034a8cd78c198a1b6decfd',1,'WallFromMasterChannel::received()'],['../class_wall_from_master_channel.html#a7e9d59550c96986e0f417d86ee08f053',1,'WallFromMasterChannel::received()']]],
   ['receivedkeyinput',['receivedKeyInput',['../class_text_input_handler.html#a964b2f1980b806cba699e3aff87ad799',1,'TextInputHandler']]],
   ['receivedquit',['receivedQuit',['../class_wall_from_master_channel.html#af64048387bb958cc6678929489337ebc',1,'WallFromMasterChannel']]],
   ['receivedrequestframe',['receivedRequestFrame',['../class_master_from_wall_channel.html#ab34184bf2068baeed81bc652149c994e',1,'MasterFromWallChannel']]],
-  ['receiveheader',['receiveHeader',['../class_m_p_i_channel.html#a9f53af4a59872a8ba7c9277e72e86d64',1,'MPIChannel']]],
+  ['receiveheader',['receiveHeader',['../class_m_p_i_channel.html#a9c2fa2fd32d788ddc632396580afd38f',1,'MPIChannel']]],
   ['receivemessage',['receiveMessage',['../class_wall_from_master_channel.html#a8ee7bd69b551972aa732743a116c7c04',1,'WallFromMasterChannel']]],
   ['receivetimestampbroadcast',['receiveTimestampBroadcast',['../class_wall_to_wall_channel.html#a3e9656b0a41c6d18d7e3775e7cc1aa5b',1,'WallToWallChannel']]],
   ['recognize',['recognize',['../class_double_tap_gesture_recognizer.html#af5076763e4b8439a945d0fb0f2918011',1,'DoubleTapGestureRecognizer::recognize()'],['../class_pan_gesture_recognizer.html#a03122f876823b64c5f0c0cc68d2b15f3',1,'PanGestureRecognizer::recognize()'],['../class_pinch_gesture_recognizer.html#ab4865f74221fd2038ecb01695651fb60',1,'PinchGestureRecognizer::recognize()']]],
