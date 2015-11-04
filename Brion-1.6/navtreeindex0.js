@@ -1,6 +1,9 @@
 var NAVTREEINDEX0 =
 {
 "_changelog.html":[0],
+"_changelog.html#Release010400":[0,2],
+"_changelog.html#Release010500":[0,1],
+"_changelog.html#Release010600":[0,0],
 "annotated.html":[3,0],
 "api_8h.html":[4,0,0],
 "api_8h.html#a45e2d3e537ec7fa8ef494605d7362efc":[4,0,0,1],
@@ -246,8 +249,5 @@ var NAVTREEINDEX0 =
 "enums_8h.html#a66e583bba6f011701c4d545b1bb28533a593ccdf3e8f6153e7440ef1076663c24":[4,0,8,12,6],
 "enums_8h.html#a66e583bba6f011701c4d545b1bb28533a7bbc7847542dc50e9b6cce624e50a8c7":[4,0,8,12,7],
 "enums_8h.html#a66e583bba6f011701c4d545b1bb28533a84e40faacfd3cd6d5709c594e5823b57":[4,0,8,12,3],
-"enums_8h.html#a66e583bba6f011701c4d545b1bb28533aa968acc29c245c02ebd57752c3f8f30b":[4,0,8,12,12],
-"enums_8h.html#a66e583bba6f011701c4d545b1bb28533ab7a3ae8e6050fb5a8567aae8607e3e38":[4,0,8,12,5],
-"enums_8h.html#a66e583bba6f011701c4d545b1bb28533abc32ddc7c9e754c1dc909c40c3b27894":[4,0,8,12,14],
-"enums_8h.html#a66e583bba6f011701c4d545b1bb28533abf8e4333b2777a2992b6f948aa0c5076":[4,0,8,12,0]
+"enums_8h.html#a66e583bba6f011701c4d545b1bb28533aa968acc29c245c02ebd57752c3f8f30b":[4,0,8,12,12]
 };
