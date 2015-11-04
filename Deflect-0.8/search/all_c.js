@@ -1,7 +1,7 @@
 var searchData=
 [
-  ['registercommandhandler',['registerCommandHandler',['../classdeflect_1_1_command_handler.html#a7550869ca481559c8a76c7fc6e7e5f09',1,'deflect::CommandHandler']]],
-  ['registerforevents',['registerForEvents',['../classdeflect_1_1_stream.html#a3e448805a804952cc775fb7b3121c706',1,'deflect::Stream']]],
-  ['removesource',['removeSource',['../classdeflect_1_1_frame_dispatcher.html#a087580978abdaab5e974252859b53554',1,'deflect::FrameDispatcher']]],
-  ['requestframe',['requestFrame',['../classdeflect_1_1_frame_dispatcher.html#a6f0a4f618e6a54f8e33ea201792ec4b5',1,'deflect::FrameDispatcher']]]
+  ['api_2eh',['api.h',['../qt_2api_8h.html',1,'']]],
+  ['qmlstreamer',['QmlStreamer',['../classdeflect_1_1qt_1_1_qml_streamer.html#ab225aa00c6cdc4a0dcb54d25a5246a6e',1,'deflect::qt::QmlStreamer']]],
+  ['qmlstreamer',['QmlStreamer',['../classdeflect_1_1qt_1_1_qml_streamer.html',1,'deflect::qt']]],
+  ['version_2eh',['version.h',['../qt_2version_8h.html',1,'']]]
 ];

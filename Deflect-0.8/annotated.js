@@ -1,6 +1,9 @@
 var annotated =
 [
     [ "deflect", null, [
+      [ "qt", null, [
+        [ "QmlStreamer", "classdeflect_1_1qt_1_1_qml_streamer.html", "classdeflect_1_1qt_1_1_qml_streamer" ]
+      ] ],
       [ "AbstractCommandHandler", "classdeflect_1_1_abstract_command_handler.html", "classdeflect_1_1_abstract_command_handler" ],
       [ "Command", "classdeflect_1_1_command.html", "classdeflect_1_1_command" ],
       [ "CommandHandler", "classdeflect_1_1_command_handler.html", "classdeflect_1_1_command_handler" ],
@@ -17,5 +20,8 @@ var annotated =
       [ "SizeHints", "structdeflect_1_1_size_hints.html", "structdeflect_1_1_size_hints" ],
       [ "Stream", "classdeflect_1_1_stream.html", "classdeflect_1_1_stream" ],
       [ "Version", "classdeflect_1_1_version.html", "classdeflect_1_1_version" ]
+    ] ],
+    [ "deflectqt", null, [
+      [ "Version", "classdeflectqt_1_1_version.html", "classdeflectqt_1_1_version" ]
     ] ]
 ];
