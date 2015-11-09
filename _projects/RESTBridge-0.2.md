@@ -3,15 +3,16 @@ name: RESTBridge
 version: "0.2"
 major: 0
 minor: 2
-description: A library that provides a simple way to expose a REST interface in a C++ application
-updated: 23/10/15
+description: A library that provides a simple way to expose a 
+                            REST interface in a C++ application
+updated: 09/11/15
 homepage: https://github.com/BlueBrain/RESTBridge
 repository: https://github.com/BlueBrain/RESTBridge.git
 issuesurl: https://github.com/BlueBrain/RESTBridge/issues
 packageurl: 
-license: 
+license: LGPL
 maturity: EP
-maintainers: 
+maintainers: BBP Visualization Team (bbp-open-source@googlegroups.com)
 contributors: 0x5f3759df - ( i  1 ); Ahmet Bilgili; Chevtchenko Grigori; Cyrille Favreau; Daniel Nachbaur; Juan Hernando; Raphael Dumusc; Stefan Eilemann; chevtche; hernando
 readmetype: text/x-markdown
 ---
