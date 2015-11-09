@@ -3,8 +3,8 @@ name: Monsteer
 version: "0.3"
 major: 0
 minor: 3
-description: Interactive Supercomputing: Monitoring and Steering for NEST simulations
-updated: 05/11/15
+description: Interactive Supercomputing - Monitoring and Steering for NEST simulations
+updated: 09/11/15
 homepage: https://github.com/BlueBrain/Monsteer
 repository: https://github.com/BlueBrain/Monsteer.git
 issuesurl: https://github.com/BlueBrain/Monsteer/issues
