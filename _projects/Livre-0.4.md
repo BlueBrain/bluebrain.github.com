@@ -4,7 +4,7 @@ version: "0.4"
 major: 0
 minor: 4
 description: Largescale Interactive Volume Rendering Engine (Livre)
-updated: 03/11/15
+updated: 19/11/15
 homepage: https://github.com/BlueBrain/Livre
 repository: https://github.com/BlueBrain/Livre.git
 issuesurl: https://github.com/BlueBrain/Livre/issues
@@ -12,7 +12,7 @@ packageurl:
 license: LGPL
 maturity: EP
 maintainers: Blue Brain Project (bbp-open-source@googlegroups.com)
-contributors: Ahmet Bilgili; Daniel Nachbaur; Jafet Villafranca; Raphael Dumusc; Stefan Eilemann; hernando
+contributors: Ahmet Bilgili; Chevtchenko Grigori; Daniel Nachbaur; Jafet Villafranca; Raphael Dumusc; Stefan Eilemann; chevtche; hernando
 readmetype: text/x-markdown
 ---
 # Livre

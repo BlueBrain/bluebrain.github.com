@@ -1,7 +1,6 @@
 var classlivre_1_1_const_memory_unit =
 [
     [ "ConstMemoryUnit", "classlivre_1_1_const_memory_unit.html#a950d9584dab5997dbff363d5d6287e9a", null ],
-    [ "alloc", "classlivre_1_1_const_memory_unit.html#a44a31c1252dbf13d83d104c7aa7b08d3", null ],
     [ "getAllocSize", "classlivre_1_1_const_memory_unit.html#a6c184226100fcd8a78edc5c3de78f086", null ],
     [ "getData_", "classlivre_1_1_const_memory_unit.html#a1b389f77efec1521e530dd760bbaf5c6", null ],
     [ "getData_", "classlivre_1_1_const_memory_unit.html#aacdd8272251b9158f32b2f82b392608a", null ],
