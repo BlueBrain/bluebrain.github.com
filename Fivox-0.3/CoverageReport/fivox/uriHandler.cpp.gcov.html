@@ -1,0 +1,495 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+
+<html lang="en">
+
+<head>
+  <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+  <title>LCOV - Fivox - fivox/uriHandler.cpp</title>
+  <link rel="stylesheet" type="text/css" href="../gcov.css">
+</head>
+
+<body>
+
+  <table width="100%" border=0 cellspacing=0 cellpadding=0>
+    <tr><td class="title">LCOV - code coverage report</td></tr>
+    <tr><td class="ruler"><img src="../glass.png" width=3 height=3 alt=""></td></tr>
+
+    <tr>
+      <td width="100%">
+        <table cellpadding=1 border=0 width="100%">
+          <tr>
+            <td width="10%" class="headerItem">Current view:</td>
+            <td width="35%" class="headerValue"><a href="../index.html">top level</a> - <a href="index.html">fivox</a> - uriHandler.cpp<span style="font-size: 80%;"> (source / <a href="uriHandler.cpp.func-sort-c.html">functions</a>)</span></td>
+            <td width="5%"></td>
+            <td width="15%"></td>
+            <td width="10%" class="headerCovTableHead">Hit</td>
+            <td width="10%" class="headerCovTableHead">Total</td>
+            <td width="15%" class="headerCovTableHead">Coverage</td>
+          </tr>
+          <tr>
+            <td class="headerItem">Test:</td>
+            <td class="headerValue">Fivox</td>
+            <td></td>
+            <td class="headerItem">Lines:</td>
+            <td class="headerCovTableEntry">149</td>
+            <td class="headerCovTableEntry">179</td>
+            <td class="headerCovTableEntryHi">83.2 %</td>
+          </tr>
+          <tr>
+            <td class="headerItem">Date:</td>
+            <td class="headerValue">2016-01-28 15:19:58</td>
+            <td></td>
+            <td class="headerItem">Functions:</td>
+            <td class="headerCovTableEntry">37</td>
+            <td class="headerCovTableEntry">45</td>
+            <td class="headerCovTableEntryHi">82.2 %</td>
+          </tr>
+          <tr><td><img src="../glass.png" width=3 height=3 alt=""></td></tr>
+        </table>
+      </td>
+    </tr>
+
+    <tr><td class="ruler"><img src="../glass.png" width=3 height=3 alt=""></td></tr>
+  </table>
+
+  <table cellpadding=0 cellspacing=0 border=0>
+    <tr>
+      <td><br></td>
+    </tr>
+    <tr>
+      <td>
+<pre class="sourceHeading">          Line data    Source code</pre>
+<pre class="source">
+<a name="1"><span class="lineNum">       1 </span>            : /* Copyright (c) 2014-2016, EPFL/Blue Brain Project</a>
+<span class="lineNum">       2 </span>            :  *                          Stefan.Eilemann@epfl.ch
+<span class="lineNum">       3 </span>            :  *                          Jafet.VillafrancaDiaz@epfl.ch
+<span class="lineNum">       4 </span>            :  *
+<span class="lineNum">       5 </span>            :  * This file is part of Fivox &lt;https://github.com/BlueBrain/Fivox&gt;
+<span class="lineNum">       6 </span>            :  *
+<span class="lineNum">       7 </span>            :  * This library is free software; you can redistribute it and/or modify it under
+<span class="lineNum">       8 </span>            :  * the terms of the GNU Lesser General Public License version 3.0 as published
+<span class="lineNum">       9 </span>            :  * by the Free Software Foundation.
+<span class="lineNum">      10 </span>            :  *
+<span class="lineNum">      11 </span>            :  * This library is distributed in the hope that it will be useful, but WITHOUT
+<span class="lineNum">      12 </span>            :  * ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS
+<span class="lineNum">      13 </span>            :  * FOR A PARTICULAR PURPOSE.  See the GNU Lesser General Public License for more
+<span class="lineNum">      14 </span>            :  * details.
+<span class="lineNum">      15 </span>            :  *
+<span class="lineNum">      16 </span>            :  * You should have received a copy of the GNU Lesser General Public License
+<span class="lineNum">      17 </span>            :  * along with this library; if not, write to the Free Software Foundation, Inc.,
+<span class="lineNum">      18 </span>            :  * 51 Franklin Street, Fifth Floor, Boston, MA 02110-1301 USA.
+<span class="lineNum">      19 </span>            :  */
+<span class="lineNum">      20 </span>            : 
+<span class="lineNum">      21 </span>            : #include &quot;uriHandler.h&quot;
+<span class="lineNum">      22 </span>            : 
+<span class="lineNum">      23 </span>            : #include &lt;fivox/compartmentLoader.h&gt;
+<span class="lineNum">      24 </span>            : #include &lt;fivox/densityFunctor.h&gt;
+<span class="lineNum">      25 </span>            : #include &lt;fivox/fieldFunctor.h&gt;
+<span class="lineNum">      26 </span>            : #include &lt;fivox/frequencyFunctor.h&gt;
+<span class="lineNum">      27 </span>            : #include &lt;fivox/imageSource.h&gt;
+<span class="lineNum">      28 </span>            : #include &lt;fivox/somaLoader.h&gt;
+<span class="lineNum">      29 </span>            : #include &lt;fivox/spikeLoader.h&gt;
+<span class="lineNum">      30 </span>            : #include &lt;fivox/synapseLoader.h&gt;
+<span class="lineNum">      31 </span>            : #include &lt;fivox/vsdLoader.h&gt;
+<span class="lineNum">      32 </span>            : #ifdef FIVOX_USE_BBPTESTDATA
+<span class="lineNum">      33 </span>            : #  include &lt;BBP/TestDatasets.h&gt;
+<span class="lineNum">      34 </span>            : #endif
+<span class="lineNum">      35 </span>            : #include &lt;lunchbox/file.h&gt;
+<span class="lineNum">      36 </span>            : #include &lt;lunchbox/log.h&gt;
+<span class="lineNum">      37 </span>            : #include &lt;lunchbox/uri.h&gt;
+<span class="lineNum">      38 </span>            : #include &lt;boost/lexical_cast.hpp&gt;
+<span class="lineNum">      39 </span>            : #include &lt;fivox/itk.h&gt;
+<span class="lineNum">      40 </span>            : 
+<span class="lineNum">      41 </span>            : namespace fivox
+<span class="lineNum">      42 </span>            : {
+<span class="lineNum">      43 </span>            : namespace
+<span class="lineNum">      44 </span>            : {
+<span class="lineNum">      45 </span>            : using boost::lexical_cast;
+<span class="lineNum">      46 </span>            : const float _duration = 10.0f;
+<span class="lineNum">      47 </span>            : const float _dt = -1.0f; // loaders use experiment/report dt
+<span class="lineNum">      48 </span>            : const size_t _maxBlockSize = LB_64MB;
+<span class="lineNum">      49 </span>            : const float _resolution = 10.0f; // voxels per unit
+<a name="50"><span class="lineNum">      50 </span>            : const float _maxError = 0.001f;</a>
+<span class="lineNum">      51 </span>            : 
+<span class="lineNum">      52 </span><span class="lineCov">          9 : EventSourcePtr _newLoader( const URIHandler&amp; data )</span>
+<span class="lineNum">      53 </span>            : {
+<span class="lineNum">      54 </span><span class="lineCov">          9 :     switch( data.getType( ))</span>
+<span class="lineNum">      55 </span>            :     {
+<span class="lineNum">      56 </span><span class="lineCov">          2 :     case TYPE_SOMAS:        return std::make_shared&lt; SomaLoader &gt;( data );</span>
+<span class="lineNum">      57 </span><span class="lineCov">          2 :     case TYPE_COMPARTMENTS: return std::make_shared&lt; CompartmentLoader &gt;( data );</span>
+<span class="lineNum">      58 </span><span class="lineNoCov">          0 :     case TYPE_VSD:          return std::make_shared&lt; VSDLoader &gt;( data );</span>
+<span class="lineNum">      59 </span><span class="lineCov">          3 :     case TYPE_SPIKES:       return std::make_shared&lt; SpikeLoader &gt;( data );</span>
+<span class="lineNum">      60 </span><span class="lineCov">          2 :     case TYPE_SYNAPSES:     return std::make_shared&lt; SynapseLoader &gt;( data );</span>
+<span class="lineNum">      61 </span><span class="lineNoCov">          0 :     default:           return nullptr;</span>
+<span class="lineNum">      62 </span>            :     }
+<span class="lineNum">      63 </span>            : }
+<a name="64"><span class="lineNum">      64 </span>            : </a>
+<span class="lineNum">      65 </span>            : template&lt; class T &gt; std::shared_ptr&lt; EventFunctor&lt; itk::Image&lt; T, 3 &gt;&gt;&gt;
+<span class="lineNum">      66 </span><span class="lineCov">          9 : _newFunctor( const URIHandler&amp; data )</span>
+<span class="lineNum">      67 </span>            : {
+<span class="lineNum">      68 </span><span class="lineCov">          9 :     switch( data.getFunctorType( ))</span>
+<span class="lineNum">      69 </span>            :     {
+<span class="lineNum">      70 </span>            :     case FUNCTOR_DENSITY:
+<span class="lineNum">      71 </span><span class="lineCov">          2 :         return std::make_shared&lt; DensityFunctor&lt; itk::Image&lt; T, 3  &gt;&gt;&gt;();</span>
+<span class="lineNum">      72 </span>            :     case FUNCTOR_FIELD:
+<span class="lineNum">      73 </span>            :         return std::make_shared&lt; FieldFunctor&lt; itk::Image&lt; T, 3  &gt;&gt;&gt;
+<span class="lineNum">      74 </span><span class="lineCov">          4 :                                                          ( data.getMaxError( ));</span>
+<span class="lineNum">      75 </span>            :     case FUNCTOR_FREQUENCY:
+<span class="lineNum">      76 </span><span class="lineCov">          3 :         return std::make_shared&lt; FrequencyFunctor&lt; itk::Image&lt; T, 3  &gt;&gt;&gt;();</span>
+<span class="lineNum">      77 </span>            :     case FUNCTOR_UNKNOWN:
+<span class="lineNum">      78 </span>            :     default:
+<span class="lineNum">      79 </span><span class="lineNoCov">          0 :         return nullptr;</span>
+<span class="lineNum">      80 </span>            :     }
+<span class="lineNum">      81 </span>            : }
+<a name="82"><span class="lineNum">      82 </span>            : }</a>
+<span class="lineNum">      83 </span>            : 
+<span class="lineNum">      84 </span><span class="lineCov">         13 : class URIHandler::Impl</span>
+<a name="85"><span class="lineNum">      85 </span>            : {</a>
+<span class="lineNum">      86 </span>            : public:
+<span class="lineNum">      87 </span><span class="lineCov">         13 :     explicit Impl( const std::string&amp; parameters )</span>
+<span class="lineNum">      88 </span>            :         : uri( parameters )
+<span class="lineNum">      89 </span><span class="lineCov">         13 :         , config( uri.getPath( ))</span>
+<span class="lineNum">      90 </span><span class="lineCov">         37 :         , target( _get( &quot;target&quot; ).empty() ? uri.getFragment() :</span>
+<span class="lineNum">      91 </span>            :                                              _get( &quot;target&quot; ))
+<span class="lineNum">      92 </span>            : #ifdef FIVOX_USE_BBPTESTDATA
+<span class="lineNum">      93 </span><span class="lineCov">         63 :         , useTestData( config.empty( ))</span>
+<span class="lineNum">      94 </span>            : #else
+<span class="lineNum">      95 </span>            :         , useTestData( false )
+<span class="lineNum">      96 </span>            : #endif
+<a name="97"><span class="lineNum">      97 </span><span class="lineCov">         13 :     {}</span></a>
+<span class="lineNum">      98 </span>            : 
+<span class="lineNum">      99 </span><span class="lineCov">         21 :     std::string getConfig() const</span>
+<span class="lineNum">     100 </span>            :     {
+<span class="lineNum">     101 </span><span class="lineCov">         21 :         if( useTestData )</span>
+<span class="lineNum">     102 </span>            :         {
+<span class="lineNum">     103 </span><span class="lineCov">         18 :             if( getType() == TYPE_VSD )</span>
+<span class="lineNum">     104 </span>            :                 return lunchbox::getExecutablePath() +
+<span class="lineNum">     105 </span><span class="lineCov">          1 :                            &quot;/../share/Fivox/configs/BlueConfigVSD&quot;;</span>
+<span class="lineNum">     106 </span>            : #ifdef FIVOX_USE_BBPTESTDATA
+<span class="lineNum">     107 </span><span class="lineCov">         17 :             return BBP_TEST_BLUECONFIG;</span>
+<span class="lineNum">     108 </span>            : #endif
+<span class="lineNum">     109 </span>            :         }
+<span class="lineNum">     110 </span><span class="lineCov">          3 :         return config;</span>
+<a name="111"><span class="lineNum">     111 </span>            :     }</a>
+<span class="lineNum">     112 </span>            : 
+<span class="lineNum">     113 </span><span class="lineCov">         19 :     std::string getTarget( const std::string&amp; defaultTarget ) const</span>
+<span class="lineNum">     114 </span>            :     {
+<span class="lineNum">     115 </span><span class="lineCov">         19 :         if( target.empty( ))</span>
+<span class="lineNum">     116 </span>            :         {
+<span class="lineNum">     117 </span><span class="lineCov">         15 :             if( defaultTarget.empty() &amp;&amp; useTestData )</span>
+<span class="lineNum">     118 </span>            :             {
+<span class="lineNum">     119 </span><span class="lineCov">         14 :                 if( getType() == TYPE_SPIKES || getType() == TYPE_SYNAPSES )</span>
+<span class="lineNum">     120 </span><span class="lineCov">          7 :                     return &quot;Column&quot;;</span>
+<span class="lineNum">     121 </span><span class="lineCov">          7 :                 return &quot;Layer1&quot;;</span>
+<span class="lineNum">     122 </span>            :             }
+<span class="lineNum">     123 </span><span class="lineCov">          1 :             return defaultTarget;</span>
+<span class="lineNum">     124 </span>            :         }
+<span class="lineNum">     125 </span><span class="lineCov">          4 :         return target;</span>
+<a name="126"><span class="lineNum">     126 </span>            :     }</a>
+<span class="lineNum">     127 </span>            : 
+<span class="lineNum">     128 </span><span class="lineCov">         15 :     std::string getReport() const</span>
+<span class="lineNum">     129 </span>            :     {
+<span class="lineNum">     130 </span><span class="lineCov">         15 :         const std::string&amp; report( _get( &quot;report&quot; ));</span>
+<span class="lineNum">     131 </span><span class="lineCov">         15 :         if( report.empty( ))</span>
+<span class="lineNum">     132 </span>            :         {
+<span class="lineNum">     133 </span><span class="lineCov">         13 :             switch( getType( ))</span>
+<span class="lineNum">     134 </span>            :             {
+<span class="lineNum">     135 </span>            :             case TYPE_SOMAS:
+<span class="lineNum">     136 </span>            :             case TYPE_VSD:
+<span class="lineNum">     137 </span><span class="lineCov">          6 :                 return useTestData ? &quot;voltage&quot; : &quot;soma&quot;;</span>
+<span class="lineNum">     138 </span>            :             default:
+<span class="lineNum">     139 </span><span class="lineCov">          7 :                 return useTestData ? &quot;allvoltage&quot; : &quot;voltage&quot;;</span>
+<span class="lineNum">     140 </span>            :             }
+<span class="lineNum">     141 </span>            :         }
+<span class="lineNum">     142 </span><span class="lineCov">          2 :         return report;</span>
+<a name="143"><span class="lineNum">     143 </span>            :     }</a>
+<span class="lineNum">     144 </span>            : 
+<a name="145"><span class="lineNum">     145 </span><span class="lineCov">         11 :     float getDt() const { return _get( &quot;dt&quot;, _dt ); }</span></a>
+<span class="lineNum">     146 </span>            : 
+<a name="147"><span class="lineNum">     147 </span><span class="lineCov">          7 :     std::string getSpikes() const { return _get( &quot;spikes&quot; ); }</span></a>
+<span class="lineNum">     148 </span>            : 
+<a name="149"><span class="lineNum">     149 </span><span class="lineCov">         13 :     float getDuration() const { return _get( &quot;duration&quot;,  _duration ); }</span></a>
+<span class="lineNum">     150 </span>            : 
+<span class="lineNum">     151 </span><span class="lineCov">         20 :     float getMagnitude() const</span>
+<span class="lineNum">     152 </span>            :     {
+<span class="lineNum">     153 </span><span class="lineCov">         20 :         float defaultValue = 1.f;</span>
+<span class="lineNum">     154 </span><span class="lineCov">         20 :         switch( getType( ))</span>
+<span class="lineNum">     155 </span>            :         {
+<span class="lineNum">     156 </span>            :         case TYPE_COMPARTMENTS:
+<span class="lineNum">     157 </span>            :         case TYPE_SOMAS:
+<span class="lineNum">     158 </span><span class="lineCov">          8 :             defaultValue = 0.1f;</span>
+<span class="lineNum">     159 </span><span class="lineCov">          8 :             break;</span>
+<span class="lineNum">     160 </span>            :         case TYPE_SPIKES:
+<span class="lineNum">     161 </span><span class="lineCov">          6 :             defaultValue = 1.5f / getDuration();</span>
+<span class="lineNum">     162 </span><span class="lineCov">          6 :             break;</span>
+<span class="lineNum">     163 </span>            :         case TYPE_SYNAPSES:
+<span class="lineNum">     164 </span><span class="lineCov">          6 :             defaultValue = 10.0f;</span>
+<span class="lineNum">     165 </span><span class="lineCov">          6 :             break;</span>
+<span class="lineNum">     166 </span>            :         case TYPE_VSD:
+<span class="lineNum">     167 </span>            :         default:
+<span class="lineNum">     168 </span><span class="lineNoCov">          0 :             break;</span>
+<span class="lineNum">     169 </span>            :         }
+<span class="lineNum">     170 </span>            : 
+<span class="lineNum">     171 </span><span class="lineCov">         20 :         return _get( &quot;magnitude&quot;, defaultValue );</span>
+<a name="172"><span class="lineNum">     172 </span>            :     }</a>
+<span class="lineNum">     173 </span>            : 
+<a name="174"><span class="lineNum">     174 </span><span class="lineNoCov">          0 :     std::string getDyeCurve() const { return _get( &quot;dyecurve&quot; ); }</span></a>
+<span class="lineNum">     175 </span>            : 
+<a name="176"><span class="lineNum">     176 </span><span class="lineNoCov">          0 :     float getResolution() const { return _get( &quot;resolution&quot;, _resolution ); }</span></a>
+<span class="lineNum">     177 </span>            : 
+<span class="lineNum">     178 </span><span class="lineNoCov">          0 :     size_t getMaxBlockSize() const</span>
+<a name="179"><span class="lineNum">     179 </span><span class="lineNoCov">          0 :         { return _get( &quot;maxBlockSize&quot;, _maxBlockSize ); }</span></a>
+<span class="lineNum">     180 </span>            : 
+<span class="lineNum">     181 </span><span class="lineCov">          8 :     float getMaxError() const</span>
+<span class="lineNum">     182 </span><span class="lineCov">         16 :         { return std::max( _get( &quot;maxError&quot;, _maxError ),</span>
+<a name="183"><span class="lineNum">     183 </span><span class="lineCov">         24 :                            std::numeric_limits&lt;float&gt;::min( )); }</span></a>
+<span class="lineNum">     184 </span>            : 
+<span class="lineNum">     185 </span><span class="lineCov">          9 :     bool showProgress() const</span>
+<a name="186"><span class="lineNum">     186 </span><span class="lineCov">          9 :         { return _get( &quot;showProgress&quot;, false ); }</span></a>
+<span class="lineNum">     187 </span>            : 
+<span class="lineNum">     188 </span><span class="lineCov">        116 :     VolumeType getType() const</span>
+<span class="lineNum">     189 </span>            :     {
+<span class="lineNum">     190 </span><span class="lineCov">        116 :         const std::string&amp; scheme = uri.getScheme();</span>
+<span class="lineNum">     191 </span><span class="lineCov">        116 :         if( scheme == &quot;fivoxsomas&quot; )</span>
+<span class="lineNum">     192 </span><span class="lineCov">         27 :             return TYPE_SOMAS;</span>
+<span class="lineNum">     193 </span><span class="lineCov">         89 :         if( scheme == &quot;fivoxspikes&quot; )</span>
+<span class="lineNum">     194 </span><span class="lineCov">         30 :             return TYPE_SPIKES;</span>
+<span class="lineNum">     195 </span><span class="lineCov">         59 :         if( scheme == &quot;fivoxsynapses&quot; )</span>
+<span class="lineNum">     196 </span><span class="lineCov">         27 :             return TYPE_SYNAPSES;</span>
+<span class="lineNum">     197 </span><span class="lineCov">         32 :         if( scheme == &quot;fivoxvsd&quot; )</span>
+<span class="lineNum">     198 </span><span class="lineCov">          5 :             return TYPE_VSD;</span>
+<span class="lineNum">     199 </span><span class="lineCov">         27 :         if( scheme == &quot;fivox&quot; || scheme == &quot;fivoxcompartments&quot; )</span>
+<span class="lineNum">     200 </span><span class="lineCov">         27 :             return TYPE_COMPARTMENTS;</span>
+<span class="lineNum">     201 </span>            : 
+<span class="lineNum">     202 </span><span class="lineNoCov">          0 :         LBERROR &lt;&lt; &quot;Unknown URI scheme: &quot; &lt;&lt; scheme &lt;&lt; std::endl;</span>
+<span class="lineNum">     203 </span><span class="lineNoCov">          0 :         return TYPE_UNKNOWN;</span>
+<a name="204"><span class="lineNum">     204 </span>            :     }</a>
+<span class="lineNum">     205 </span>            : 
+<span class="lineNum">     206 </span><span class="lineCov">         18 :     FunctorType getFunctorType() const</span>
+<span class="lineNum">     207 </span>            :     {
+<span class="lineNum">     208 </span><span class="lineCov">         18 :         const std::string&amp; functor = _get( &quot;functor&quot; );</span>
+<span class="lineNum">     209 </span><span class="lineCov">         18 :         if( functor == &quot;density&quot; )</span>
+<span class="lineNum">     210 </span><span class="lineNoCov">          0 :             return FUNCTOR_DENSITY;</span>
+<span class="lineNum">     211 </span><span class="lineCov">         18 :         if( functor == &quot;field&quot; )</span>
+<span class="lineNum">     212 </span><span class="lineNoCov">          0 :             return FUNCTOR_FIELD;</span>
+<span class="lineNum">     213 </span><span class="lineCov">         18 :         if( functor == &quot;frequency&quot; )</span>
+<span class="lineNum">     214 </span><span class="lineNoCov">          0 :             return FUNCTOR_FREQUENCY;</span>
+<span class="lineNum">     215 </span>            : 
+<span class="lineNum">     216 </span><span class="lineCov">         18 :         switch( getType( ))</span>
+<span class="lineNum">     217 </span>            :         {
+<span class="lineNum">     218 </span>            :         case TYPE_SPIKES:
+<span class="lineNum">     219 </span><span class="lineCov">          6 :             return FUNCTOR_FREQUENCY;</span>
+<span class="lineNum">     220 </span>            :         case TYPE_SYNAPSES:
+<span class="lineNum">     221 </span><span class="lineCov">          4 :             return FUNCTOR_DENSITY;</span>
+<span class="lineNum">     222 </span>            :         case TYPE_COMPARTMENTS:
+<span class="lineNum">     223 </span>            :         case TYPE_SOMAS:
+<span class="lineNum">     224 </span>            :         case TYPE_VSD:
+<span class="lineNum">     225 </span>            :         default:
+<span class="lineNum">     226 </span><span class="lineCov">          8 :             return FUNCTOR_FIELD;</span>
+<span class="lineNum">     227 </span><span class="lineCov">         18 :         }</span>
+<span class="lineNum">     228 </span>            :     }
+<a name="229"><span class="lineNum">     229 </span>            : </a>
+<span class="lineNum">     230 </span>            : private:
+<span class="lineNum">     231 </span><span class="lineCov">        116 :     std::string _get( const std::string&amp; param ) const</span>
+<span class="lineNum">     232 </span>            :     {
+<span class="lineNum">     233 </span><span class="lineCov">        116 :         lunchbox::URI::ConstKVIter i = uri.findQuery( param );</span>
+<span class="lineNum">     234 </span><span class="lineCov">        116 :         return i == uri.queryEnd() ? std::string() : i-&gt;second;</span>
+<span class="lineNum">     235 </span>            :     }
+<a name="236"><span class="lineNum">     236 </span>            : </a>
+<span class="lineNum">     237 </span>            :     template&lt; class T &gt;
+<span class="lineNum">     238 </span><span class="lineCov">         61 :     T _get( const std::string&amp; param, const T defaultValue ) const</span>
+<span class="lineNum">     239 </span>            :     {
+<span class="lineNum">     240 </span><span class="lineCov">         61 :         const std::string&amp; value = _get( param );</span>
+<span class="lineNum">     241 </span><span class="lineCov">         61 :         if( value.empty( ))</span>
+<span class="lineNum">     242 </span><span class="lineCov">         55 :             return defaultValue;</span>
+<span class="lineNum">     243 </span>            : 
+<span class="lineNum">     244 </span>            :         try
+<span class="lineNum">     245 </span>            :         {
+<span class="lineNum">     246 </span><span class="lineCov">          6 :             return lexical_cast&lt; T &gt;( value );</span>
+<span class="lineNum">     247 </span>            :         }
+<span class="lineNum">     248 </span><span class="lineNoCov">          0 :         catch( boost::bad_lexical_cast&amp; )</span>
+<span class="lineNum">     249 </span>            :         {
+<span class="lineNum">     250 </span><span class="lineNoCov">          0 :             LBWARN &lt;&lt; &quot;Invalid &quot; &lt;&lt; param &lt;&lt; &quot; specified, using &quot;</span>
+<span class="lineNum">     251 </span><span class="lineNoCov">          0 :                    &lt;&lt; defaultValue &lt;&lt; std::endl;</span>
+<span class="lineNum">     252 </span><span class="lineNoCov">          0 :             return defaultValue;</span>
+<span class="lineNum">     253 </span><span class="lineCov">         61 :         }</span>
+<span class="lineNum">     254 </span>            :     }
+<span class="lineNum">     255 </span>            : 
+<span class="lineNum">     256 </span>            :     const lunchbox::URI uri;
+<span class="lineNum">     257 </span>            :     const std::string config;
+<span class="lineNum">     258 </span>            :     const std::string target;
+<span class="lineNum">     259 </span>            :     const bool useTestData;
+<a name="260"><span class="lineNum">     260 </span>            : };</a>
+<span class="lineNum">     261 </span>            : 
+<span class="lineNum">     262 </span><span class="lineCov">         13 : URIHandler::URIHandler( const std::string&amp; params )</span>
+<span class="lineNum">     263 </span><span class="lineCov">         13 :     : _impl( new URIHandler::Impl( params ))</span>
+<a name="264"><span class="lineNum">     264 </span><span class="lineCov">         13 : {}</span></a>
+<span class="lineNum">     265 </span>            : 
+<span class="lineNum">     266 </span><span class="lineCov">         13 : URIHandler::~URIHandler()</span>
+<a name="267"><span class="lineNum">     267 </span><span class="lineCov">         13 : {}</span></a>
+<span class="lineNum">     268 </span>            : 
+<span class="lineNum">     269 </span><span class="lineCov">         21 : std::string URIHandler::getConfig() const</span>
+<span class="lineNum">     270 </span>            : {
+<span class="lineNum">     271 </span><span class="lineCov">         21 :     return _impl-&gt;getConfig();</span>
+<a name="272"><span class="lineNum">     272 </span>            : }</a>
+<span class="lineNum">     273 </span>            : 
+<span class="lineNum">     274 </span><span class="lineCov">         15 : std::string URIHandler::getTarget( const std::string&amp; defaultTarget ) const</span>
+<span class="lineNum">     275 </span>            : {
+<span class="lineNum">     276 </span><span class="lineCov">         15 :     return _impl-&gt;getTarget( defaultTarget );</span>
+<a name="277"><span class="lineNum">     277 </span>            : }</a>
+<span class="lineNum">     278 </span>            : 
+<span class="lineNum">     279 </span><span class="lineCov">          4 : std::string URIHandler::getTarget() const</span>
+<span class="lineNum">     280 </span>            : {
+<span class="lineNum">     281 </span><span class="lineCov">          4 :     return _impl-&gt;getTarget( std::string( ));</span>
+<a name="282"><span class="lineNum">     282 </span>            : }</a>
+<span class="lineNum">     283 </span>            : 
+<span class="lineNum">     284 </span><span class="lineCov">         15 : std::string URIHandler::getReport() const</span>
+<span class="lineNum">     285 </span>            : {
+<span class="lineNum">     286 </span><span class="lineCov">         15 :     return _impl-&gt;getReport();</span>
+<a name="287"><span class="lineNum">     287 </span>            : }</a>
+<span class="lineNum">     288 </span>            : 
+<span class="lineNum">     289 </span><span class="lineCov">         11 : float URIHandler::getDt() const</span>
+<span class="lineNum">     290 </span>            : {
+<span class="lineNum">     291 </span><span class="lineCov">         11 :     return _impl-&gt;getDt();</span>
+<a name="292"><span class="lineNum">     292 </span>            : }</a>
+<span class="lineNum">     293 </span>            : 
+<span class="lineNum">     294 </span><span class="lineCov">          7 : std::string URIHandler::getSpikes() const</span>
+<span class="lineNum">     295 </span>            : {
+<span class="lineNum">     296 </span><span class="lineCov">          7 :     return _impl-&gt;getSpikes();</span>
+<a name="297"><span class="lineNum">     297 </span>            : }</a>
+<span class="lineNum">     298 </span>            : 
+<span class="lineNum">     299 </span><span class="lineCov">          7 : float URIHandler::getDuration() const</span>
+<span class="lineNum">     300 </span>            : {
+<span class="lineNum">     301 </span><span class="lineCov">          7 :     return _impl-&gt;getDuration();</span>
+<a name="302"><span class="lineNum">     302 </span>            : }</a>
+<span class="lineNum">     303 </span>            : 
+<span class="lineNum">     304 </span><span class="lineCov">         20 : float URIHandler::getMagnitude() const</span>
+<span class="lineNum">     305 </span>            : {
+<span class="lineNum">     306 </span><span class="lineCov">         20 :     return _impl-&gt;getMagnitude();</span>
+<a name="307"><span class="lineNum">     307 </span>            : }</a>
+<span class="lineNum">     308 </span>            : 
+<span class="lineNum">     309 </span><span class="lineNoCov">          0 : std::string URIHandler::getDyeCurve() const</span>
+<span class="lineNum">     310 </span>            : {
+<span class="lineNum">     311 </span><span class="lineNoCov">          0 :     return _impl-&gt;getDyeCurve();</span>
+<a name="312"><span class="lineNum">     312 </span>            : }</a>
+<span class="lineNum">     313 </span>            : 
+<span class="lineNum">     314 </span><span class="lineNoCov">          0 : float URIHandler::getResolution() const</span>
+<span class="lineNum">     315 </span>            : {
+<span class="lineNum">     316 </span><span class="lineNoCov">          0 :     return _impl-&gt;getResolution();</span>
+<a name="317"><span class="lineNum">     317 </span>            : }</a>
+<span class="lineNum">     318 </span>            : 
+<span class="lineNum">     319 </span><span class="lineNoCov">          0 : size_t URIHandler::getMaxBlockSize() const</span>
+<span class="lineNum">     320 </span>            : {
+<span class="lineNum">     321 </span><span class="lineNoCov">          0 :     return _impl-&gt;getMaxBlockSize();</span>
+<a name="322"><span class="lineNum">     322 </span>            : }</a>
+<span class="lineNum">     323 </span>            : 
+<span class="lineNum">     324 </span><span class="lineCov">          8 : float URIHandler::getMaxError() const</span>
+<span class="lineNum">     325 </span>            : {
+<span class="lineNum">     326 </span><span class="lineCov">          8 :     return _impl-&gt;getMaxError();</span>
+<a name="327"><span class="lineNum">     327 </span>            : }</a>
+<span class="lineNum">     328 </span>            : 
+<span class="lineNum">     329 </span><span class="lineCov">         23 : VolumeType URIHandler::getType() const</span>
+<span class="lineNum">     330 </span>            : {
+<span class="lineNum">     331 </span><span class="lineCov">         23 :     return _impl-&gt;getType();</span>
+<a name="332"><span class="lineNum">     332 </span>            : }</a>
+<span class="lineNum">     333 </span>            : 
+<span class="lineNum">     334 </span><span class="lineCov">         18 : FunctorType URIHandler::getFunctorType() const</span>
+<span class="lineNum">     335 </span>            : {
+<span class="lineNum">     336 </span><span class="lineCov">         18 :     return _impl-&gt;getFunctorType();</span>
+<span class="lineNum">     337 </span>            : }
+<a name="338"><span class="lineNum">     338 </span>            : </a>
+<span class="lineNum">     339 </span>            : template&lt; class T &gt; itk::SmartPointer&lt; ImageSource&lt; itk::Image&lt; T, 3 &gt;&gt;&gt;
+<span class="lineNum">     340 </span><span class="lineCov">          9 : URIHandler::newImageSource() const</span>
+<span class="lineNum">     341 </span>            : {
+<span class="lineNum">     342 </span><span class="lineCov">          9 :     LBINFO &lt;&lt; &quot;Start loading of events...&quot; &lt;&lt; std::endl;</span>
+<span class="lineNum">     343 </span>            : 
+<span class="lineNum">     344 </span>            :     itk::SmartPointer&lt; ImageSource&lt; itk::Image&lt; T, 3 &gt;&gt;&gt; source =
+<span class="lineNum">     345 </span><span class="lineCov">          9 :         ImageSource&lt; itk::Image&lt; T, 3 &gt;&gt;::New();</span>
+<span class="lineNum">     346 </span>            :     std::shared_ptr&lt; EventFunctor&lt; itk::Image&lt; T, 3 &gt;&gt;&gt; functor =
+<span class="lineNum">     347 </span><span class="lineCov">         18 :         _newFunctor&lt; T &gt;( *this );</span>
+<span class="lineNum">     348 </span><span class="lineCov">         18 :     EventSourcePtr loader = _newLoader( *this );</span>
+<span class="lineNum">     349 </span>            : 
+<span class="lineNum">     350 </span><span class="lineCov">         18 :     LBINFO &lt;&lt; &quot;Finished loading of &quot; &lt;&lt; loader-&gt;getEvents().size() &lt;&lt; &quot; events&quot;</span>
+<span class="lineNum">     351 </span><span class="lineCov">          9 :            &lt;&lt; std::endl;</span>
+<span class="lineNum">     352 </span>            : 
+<span class="lineNum">     353 </span><span class="lineCov">         18 :     LBINFO &lt;&lt; &quot;Ready to voxelize &quot; &lt;&lt; *this &lt;&lt; &quot;, dt = &quot; &lt;&lt; loader-&gt;getDt()</span>
+<span class="lineNum">     354 </span><span class="lineCov">          9 :            &lt;&lt; std::endl;</span>
+<span class="lineNum">     355 </span>            : 
+<span class="lineNum">     356 </span><span class="lineCov">          9 :     if( _impl-&gt;showProgress( ))</span>
+<span class="lineNum">     357 </span><span class="lineNoCov">          0 :         source-&gt;showProgress();</span>
+<span class="lineNum">     358 </span>            : 
+<span class="lineNum">     359 </span><span class="lineCov">          9 :     functor-&gt;setSource( loader );</span>
+<span class="lineNum">     360 </span><span class="lineCov">          9 :     source-&gt;setFunctor( functor );</span>
+<span class="lineNum">     361 </span><span class="lineCov">         18 :     return source;</span>
+<a name="362"><span class="lineNum">     362 </span>            : }</a>
+<span class="lineNum">     363 </span>            : 
+<span class="lineNum">     364 </span><span class="lineCov">          9 : std::ostream&amp; operator &lt;&lt; ( std::ostream&amp; os, const URIHandler&amp; params )</span>
+<span class="lineNum">     365 </span>            : {
+<span class="lineNum">     366 </span><span class="lineCov">          9 :     switch( params.getType( ))</span>
+<span class="lineNum">     367 </span>            :     {
+<span class="lineNum">     368 </span>            :     case TYPE_COMPARTMENTS:
+<span class="lineNum">     369 </span><span class="lineCov">          2 :         os &lt;&lt; &quot;compartment voltages from &quot; &lt;&lt; params.getReport();</span>
+<span class="lineNum">     370 </span><span class="lineCov">          2 :         break;</span>
+<span class="lineNum">     371 </span>            :     case TYPE_SOMAS:
+<span class="lineNum">     372 </span><span class="lineCov">          2 :         os &lt;&lt; &quot;soma voltages from &quot; &lt;&lt; params.getReport();</span>
+<span class="lineNum">     373 </span><span class="lineCov">          2 :         break;</span>
+<span class="lineNum">     374 </span>            :     case TYPE_SPIKES:
+<span class="lineNum">     375 </span><span class="lineCov">          9 :         os &lt;&lt; &quot;spikes from &quot; &lt;&lt; (params.getSpikes().empty() ? params.getConfig()</span>
+<span class="lineNum">     376 </span><span class="lineCov">          9 :                                                            : params.getSpikes())</span>
+<span class="lineNum">     377 </span><span class="lineCov">          6 :            &lt;&lt; &quot;, duration = &quot; &lt;&lt; params.getDuration();</span>
+<span class="lineNum">     378 </span><span class="lineCov">          3 :         break;</span>
+<span class="lineNum">     379 </span>            :     case TYPE_SYNAPSES:
+<span class="lineNum">     380 </span><span class="lineCov">          2 :         os &lt;&lt; &quot;synapse positions from &quot; &lt;&lt; params.getConfig();</span>
+<span class="lineNum">     381 </span><span class="lineCov">          2 :         break;</span>
+<span class="lineNum">     382 </span>            :     case TYPE_VSD:
+<span class="lineNum">     383 </span><span class="lineNoCov">          0 :         os &lt;&lt; &quot;VSD from &quot; &lt;&lt; params.getReport();</span>
+<span class="lineNum">     384 </span><span class="lineNoCov">          0 :         break;</span>
+<span class="lineNum">     385 </span>            :     case TYPE_UNKNOWN:
+<span class="lineNum">     386 </span>            :     default:
+<span class="lineNum">     387 </span><span class="lineNoCov">          0 :         os &lt;&lt; &quot;unknown data source &quot; &lt;&lt; params.getConfig();</span>
+<span class="lineNum">     388 </span><span class="lineNoCov">          0 :         break;</span>
+<span class="lineNum">     389 </span>            :     }
+<span class="lineNum">     390 </span>            : 
+<span class="lineNum">     391 </span><span class="lineCov">          9 :     os &lt;&lt; &quot;, using &quot;;</span>
+<span class="lineNum">     392 </span>            : 
+<span class="lineNum">     393 </span><span class="lineCov">          9 :     switch( params.getFunctorType( ))</span>
+<span class="lineNum">     394 </span>            :     {
+<span class="lineNum">     395 </span>            :     case FUNCTOR_DENSITY:
+<span class="lineNum">     396 </span><span class="lineCov">          2 :         os &lt;&lt; &quot;density functor&quot;;</span>
+<span class="lineNum">     397 </span><span class="lineCov">          2 :         break;</span>
+<span class="lineNum">     398 </span>            :     case FUNCTOR_FIELD:
+<span class="lineNum">     399 </span><span class="lineCov">          4 :         os &lt;&lt; &quot;field functor with max error &quot; &lt;&lt; params.getMaxError();</span>
+<span class="lineNum">     400 </span><span class="lineCov">          4 :         break;</span>
+<span class="lineNum">     401 </span>            :     case FUNCTOR_FREQUENCY:
+<span class="lineNum">     402 </span><span class="lineCov">          3 :         os &lt;&lt; &quot;frequency functor&quot;;</span>
+<span class="lineNum">     403 </span><span class="lineCov">          3 :         break;</span>
+<span class="lineNum">     404 </span>            :     case FUNCTOR_UNKNOWN:
+<span class="lineNum">     405 </span>            :     default:
+<span class="lineNum">     406 </span><span class="lineNoCov">          0 :         os &lt;&lt; &quot;unknown functor&quot;;</span>
+<span class="lineNum">     407 </span><span class="lineNoCov">          0 :         break;</span>
+<span class="lineNum">     408 </span>            :     }
+<span class="lineNum">     409 </span>            : 
+<span class="lineNum">     410 </span><span class="lineCov">          9 :     return os &lt;&lt; &quot;, magnitude = &quot; &lt;&lt; params.getMagnitude();</span>
+<span class="lineNum">     411 </span>            : }
+<span class="lineNum">     412 </span>            : 
+<span class="lineNum">     413 </span>            : }
+<span class="lineNum">     414 </span>            : 
+<span class="lineNum">     415 </span>            : // template instantiations
+<span class="lineNum">     416 </span>            : template fivox::ImageSource&lt; itk::Image&lt; uint8_t, 3 &gt;&gt;::Pointer
+<a name="417"><span class="lineNum">     417 </span>            :     fivox::URIHandler::newImageSource() const;</a>
+<span class="lineNum">     418 </span>            : template fivox::ImageSource&lt; itk::Image&lt; float, 3 &gt;&gt;::Pointer
+<span class="lineNum">     419 </span><span class="lineCov">          9 :     fivox::URIHandler::newImageSource() const;</span>
+</pre>
+      </td>
+    </tr>
+  </table>
+  <br>
+
+  <table width="100%" border=0 cellspacing=0 cellpadding=0>
+    <tr><td class="ruler"><img src="../glass.png" width=3 height=3 alt=""></td></tr>
+    <tr><td class="versionInfo">Generated by: <a href="http://ltp.sourceforge.net/coverage/lcov.php" target="_parent">LCOV version 1.11 pre (CVS 1.77)</a></td></tr>
+  </table>
+  <br>
+
+</body>
+</html>
