@@ -1,0 +1,525 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+
+<html lang="en">
+
+<head>
+  <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+  <title>LCOV - Livre - Equalizer/eq/glx/eventHandler.cpp</title>
+  <link rel="stylesheet" type="text/css" href="../../../gcov.css">
+</head>
+
+<body>
+
+  <table width="100%" border=0 cellspacing=0 cellpadding=0>
+    <tr><td class="title">LCOV - code coverage report</td></tr>
+    <tr><td class="ruler"><img src="../../../glass.png" width=3 height=3 alt=""></td></tr>
+
+    <tr>
+      <td width="100%">
+        <table cellpadding=1 border=0 width="100%">
+          <tr>
+            <td width="10%" class="headerItem">Current view:</td>
+            <td width="35%" class="headerValue"><a href="../../../index.html">top level</a> - <a href="index.html">Equalizer/eq/glx</a> - eventHandler.cpp<span style="font-size: 80%;"> (source / <a href="eventHandler.cpp.func-sort-c.html">functions</a>)</span></td>
+            <td width="5%"></td>
+            <td width="15%"></td>
+            <td width="10%" class="headerCovTableHead">Hit</td>
+            <td width="10%" class="headerCovTableHead">Total</td>
+            <td width="15%" class="headerCovTableHead">Coverage</td>
+          </tr>
+          <tr>
+            <td class="headerItem">Test:</td>
+            <td class="headerValue">Livre</td>
+            <td></td>
+            <td class="headerItem">Lines:</td>
+            <td class="headerCovTableEntry">4</td>
+            <td class="headerCovTableEntry">228</td>
+            <td class="headerCovTableEntryLo">1.8 %</td>
+          </tr>
+          <tr>
+            <td class="headerItem">Date:</td>
+            <td class="headerValue">2016-03-10 14:06:39</td>
+            <td></td>
+            <td class="headerItem">Functions:</td>
+            <td class="headerCovTableEntry">3</td>
+            <td class="headerCovTableEntry">13</td>
+            <td class="headerCovTableEntryLo">23.1 %</td>
+          </tr>
+          <tr><td><img src="../../../glass.png" width=3 height=3 alt=""></td></tr>
+        </table>
+      </td>
+    </tr>
+
+    <tr><td class="ruler"><img src="../../../glass.png" width=3 height=3 alt=""></td></tr>
+  </table>
+
+  <table cellpadding=0 cellspacing=0 border=0>
+    <tr>
+      <td><br></td>
+    </tr>
+    <tr>
+      <td>
+<pre class="sourceHeading">          Line data    Source code</pre>
+<pre class="source">
+<a name="1"><span class="lineNum">       1 </span>            : </a>
+<span class="lineNum">       2 </span>            : /* Copyright (c) 2006-2014, Stefan Eilemann &lt;eile@equalizergraphics.com&gt;
+<span class="lineNum">       3 </span>            :  *                    2014, Daniel Nachbaur &lt;danielnachbaur@gmail.com&gt;
+<span class="lineNum">       4 </span>            :  *                    2011, Cedric Stalder &lt;cedric.stalder@gmail.com&gt;
+<span class="lineNum">       5 </span>            :  *
+<span class="lineNum">       6 </span>            :  * This library is free software; you can redistribute it and/or modify it under
+<span class="lineNum">       7 </span>            :  * the terms of the GNU Lesser General Public License version 2.1 as published
+<span class="lineNum">       8 </span>            :  * by the Free Software Foundation.
+<span class="lineNum">       9 </span>            :  *
+<span class="lineNum">      10 </span>            :  * This library is distributed in the hope that it will be useful, but WITHOUT
+<span class="lineNum">      11 </span>            :  * ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS
+<span class="lineNum">      12 </span>            :  * FOR A PARTICULAR PURPOSE.  See the GNU Lesser General Public License for more
+<span class="lineNum">      13 </span>            :  * details.
+<span class="lineNum">      14 </span>            :  *
+<span class="lineNum">      15 </span>            :  * You should have received a copy of the GNU Lesser General Public License
+<span class="lineNum">      16 </span>            :  * along with this library; if not, write to the Free Software Foundation, Inc.,
+<span class="lineNum">      17 </span>            :  * 51 Franklin Street, Fifth Floor, Boston, MA 02110-1301 USA.
+<span class="lineNum">      18 </span>            :  */
+<span class="lineNum">      19 </span>            : 
+<span class="lineNum">      20 </span>            : #include &quot;eventHandler.h&quot;
+<span class="lineNum">      21 </span>            : 
+<span class="lineNum">      22 </span>            : #include &quot;window.h&quot;
+<span class="lineNum">      23 </span>            : #include &quot;windowEvent.h&quot;
+<span class="lineNum">      24 </span>            : #include &quot;../config.h&quot;
+<span class="lineNum">      25 </span>            : #include &quot;../global.h&quot;
+<span class="lineNum">      26 </span>            : #include &quot;../log.h&quot;
+<span class="lineNum">      27 </span>            : #include &quot;../os.h&quot;
+<span class="lineNum">      28 </span>            : #include &quot;../pipe.h&quot;
+<span class="lineNum">      29 </span>            : #include &quot;../window.h&quot;
+<span class="lineNum">      30 </span>            : 
+<span class="lineNum">      31 </span>            : #include &lt;eq/fabric/event.h&gt;
+<span class="lineNum">      32 </span>            : #include &lt;lunchbox/lockable.h&gt;
+<span class="lineNum">      33 </span>            : #include &lt;lunchbox/perThread.h&gt;
+<span class="lineNum">      34 </span>            : #include &lt;lunchbox/scopedMutex.h&gt;
+<span class="lineNum">      35 </span>            : #include &lt;lunchbox/spinLock.h&gt;
+<span class="lineNum">      36 </span>            : 
+<span class="lineNum">      37 </span>            : #include &lt;X11/keysym.h&gt;
+<span class="lineNum">      38 </span>            : #include &lt;X11/XKBlib.h&gt;
+<span class="lineNum">      39 </span>            : 
+<span class="lineNum">      40 </span>            : #ifdef EQUALIZER_USE_MAGELLAN_GLX
+<span class="lineNum">      41 </span>            : #  include &lt;spnav.h&gt;
+<span class="lineNum">      42 </span>            : #endif
+<span class="lineNum">      43 </span>            : 
+<span class="lineNum">      44 </span>            : namespace eq
+<span class="lineNum">      45 </span>            : {
+<span class="lineNum">      46 </span>            : namespace glx
+<span class="lineNum">      47 </span>            : {
+<span class="lineNum">      48 </span>            : namespace
+<a name="49"><span class="lineNum">      49 </span>            : {</a>
+<span class="lineNum">      50 </span>            : typedef std::vector&lt; EventHandler* &gt; EventHandlers;
+<span class="lineNum">      51 </span><span class="lineCov">         20 : static lunchbox::PerThread&lt; EventHandlers &gt; _eventHandlers;</span>
+<span class="lineNum">      52 </span>            : 
+<a name="53"><span class="lineNum">      53 </span>            : struct MagellanData</a>
+<span class="lineNum">      54 </span>            : {
+<span class="lineNum">      55 </span><span class="lineCov">         20 :     MagellanData() : display( 0 ), used( 0 ) {}</span>
+<span class="lineNum">      56 </span>            : 
+<span class="lineNum">      57 </span>            :     Display* display;
+<span class="lineNum">      58 </span>            :     size_t used;
+<span class="lineNum">      59 </span>            : };
+<span class="lineNum">      60 </span>            : 
+<span class="lineNum">      61 </span><span class="lineCov">         20 : static lunchbox::Lockable&lt; MagellanData, lunchbox::SpinLock &gt; _magellan;</span>
+<a name="62"><span class="lineNum">      62 </span>            : }</a>
+<span class="lineNum">      63 </span>            : 
+<span class="lineNum">      64 </span><span class="lineNoCov">          0 : EventHandler::EventHandler( WindowIF* window )</span>
+<span class="lineNum">      65 </span>            :         : _window( window )
+<span class="lineNum">      66 </span><span class="lineNoCov">          0 :         , _magellanUsed( false )</span>
+<span class="lineNum">      67 </span>            : {
+<span class="lineNum">      68 </span><span class="lineNoCov">          0 :     LBASSERT( window );</span>
+<span class="lineNum">      69 </span>            : 
+<span class="lineNum">      70 </span><span class="lineNoCov">          0 :     if( !_eventHandlers )</span>
+<span class="lineNum">      71 </span><span class="lineNoCov">          0 :         _eventHandlers = new EventHandlers;</span>
+<span class="lineNum">      72 </span><span class="lineNoCov">          0 :     _eventHandlers-&gt;push_back( this );</span>
+<span class="lineNum">      73 </span>            : 
+<span class="lineNum">      74 </span>            : #ifdef EQUALIZER_USE_MAGELLAN_GLX
+<span class="lineNum">      75 </span><span class="lineNoCov">          0 :     Display* display = window-&gt;getXDisplay();</span>
+<span class="lineNum">      76 </span><span class="lineNoCov">          0 :     LBASSERT( display );</span>
+<span class="lineNum">      77 </span><span class="lineNoCov">          0 :     lunchbox::ScopedFastWrite mutex( _magellan );</span>
+<span class="lineNum">      78 </span><span class="lineNoCov">          0 :     if( !_magellan-&gt;display )</span>
+<span class="lineNum">      79 </span>            :     {
+<span class="lineNum">      80 </span><span class="lineNoCov">          0 :         if( spnav_x11_open( display, window-&gt;getXDrawable( )) == -1 )</span>
+<span class="lineNum">      81 </span>            :         {
+<span class="lineNum">      82 </span><span class="lineNoCov">          0 :             LBDEBUG &lt;&lt; &quot;Cannot connect to the space navigator daemon&quot;</span>
+<span class="lineNum">      83 </span><span class="lineNoCov">          0 :                     &lt;&lt; std::endl;</span>
+<span class="lineNum">      84 </span><span class="lineNoCov">          0 :             return;</span>
+<span class="lineNum">      85 </span>            :         }
+<span class="lineNum">      86 </span><span class="lineNoCov">          0 :         _magellan-&gt;display = display;</span>
+<span class="lineNum">      87 </span>            :     }
+<span class="lineNum">      88 </span><span class="lineNoCov">          0 :     else if( _magellan-&gt;display != display )</span>
+<span class="lineNum">      89 </span>            :     {
+<span class="lineNum">      90 </span><span class="lineNoCov">          0 :         LBINFO &lt;&lt; &quot;Multi-display space mouse support incomplete&quot; &lt;&lt; std::endl;</span>
+<span class="lineNum">      91 </span><span class="lineNoCov">          0 :         return;</span>
+<span class="lineNum">      92 </span>            :     }
+<span class="lineNum">      93 </span><span class="lineNoCov">          0 :     else if( spnav_x11_window( window-&gt;getXDrawable( )) == -1 )</span>
+<span class="lineNum">      94 </span>            :     {
+<span class="lineNum">      95 </span><span class="lineNoCov">          0 :         LBWARN &lt;&lt; &quot;Failed to register window with the space navigator daemon&quot;</span>
+<span class="lineNum">      96 </span><span class="lineNoCov">          0 :                &lt;&lt; std::endl;</span>
+<span class="lineNum">      97 </span><span class="lineNoCov">          0 :         return;</span>
+<span class="lineNum">      98 </span>            :     }
+<span class="lineNum">      99 </span>            : 
+<span class="lineNum">     100 </span><span class="lineNoCov">          0 :     ++_magellan-&gt;used;</span>
+<span class="lineNum">     101 </span><span class="lineNoCov">          0 :     _magellanUsed = true;</span>
+<span class="lineNum">     102 </span>            : #endif
+<a name="103"><span class="lineNum">     103 </span>            : }</a>
+<span class="lineNum">     104 </span>            : 
+<span class="lineNum">     105 </span><span class="lineNoCov">          0 : EventHandler::~EventHandler()</span>
+<span class="lineNum">     106 </span>            : {
+<span class="lineNum">     107 </span><span class="lineNoCov">          0 :     if( _magellanUsed )</span>
+<span class="lineNum">     108 </span>            :     {
+<span class="lineNum">     109 </span>            : #ifdef EQUALIZER_USE_MAGELLAN_GLX
+<span class="lineNum">     110 </span><span class="lineNoCov">          0 :         lunchbox::ScopedFastWrite mutex( _magellan );</span>
+<span class="lineNum">     111 </span><span class="lineNoCov">          0 :         if( --_magellan-&gt;used == 0 )</span>
+<span class="lineNum">     112 </span>            :         {
+<span class="lineNum">     113 </span><span class="lineNoCov">          0 :             if( spnav_close() == -1 )</span>
+<span class="lineNum">     114 </span>            :             {
+<span class="lineNum">     115 </span><span class="lineNoCov">          0 :                 LBWARN</span>
+<span class="lineNum">     116 </span><span class="lineNoCov">          0 :                     &lt;&lt; &quot;Couldn't close connection to the space navigator daemon&quot;</span>
+<span class="lineNum">     117 </span><span class="lineNoCov">          0 :                     &lt;&lt; std::endl;</span>
+<span class="lineNum">     118 </span>            :             }
+<span class="lineNum">     119 </span>            :         }
+<span class="lineNum">     120 </span>            : #endif
+<span class="lineNum">     121 </span><span class="lineNoCov">          0 :         _magellanUsed = false;</span>
+<span class="lineNum">     122 </span>            :     }
+<span class="lineNum">     123 </span>            : 
+<span class="lineNum">     124 </span><span class="lineNoCov">          0 :     EventHandlers::iterator i = lunchbox::find( *_eventHandlers, this );</span>
+<span class="lineNum">     125 </span><span class="lineNoCov">          0 :     LBASSERT( i != _eventHandlers-&gt;end( ));</span>
+<span class="lineNum">     126 </span><span class="lineNoCov">          0 :     _eventHandlers-&gt;erase( i );</span>
+<span class="lineNum">     127 </span><span class="lineNoCov">          0 :     if( _eventHandlers-&gt;empty( ))</span>
+<span class="lineNum">     128 </span>            :     {
+<span class="lineNum">     129 </span><span class="lineNoCov">          0 :         delete _eventHandlers.get();</span>
+<span class="lineNum">     130 </span><span class="lineNoCov">          0 :         _eventHandlers = 0;</span>
+<span class="lineNum">     131 </span>            :     }
+<a name="132"><span class="lineNum">     132 </span><span class="lineNoCov">          0 : }</span></a>
+<span class="lineNum">     133 </span>            : 
+<span class="lineNum">     134 </span><span class="lineNoCov">          0 : void EventHandler::dispatch()</span>
+<span class="lineNum">     135 </span>            : {
+<span class="lineNum">     136 </span><span class="lineNoCov">          0 :     if( !_eventHandlers )</span>
+<span class="lineNum">     137 </span><span class="lineNoCov">          0 :         return;</span>
+<span class="lineNum">     138 </span>            : 
+<span class="lineNum">     139 </span><span class="lineNoCov">          0 :     for( EventHandlers::const_iterator i = _eventHandlers-&gt;begin();</span>
+<span class="lineNum">     140 </span><span class="lineNoCov">          0 :          i != _eventHandlers-&gt;end(); ++i )</span>
+<span class="lineNum">     141 </span>            :     {
+<span class="lineNum">     142 </span><span class="lineNoCov">          0 :         (*i)-&gt;_dispatch();</span>
+<span class="lineNum">     143 </span>            :     }
+<a name="144"><span class="lineNum">     144 </span>            : }</a>
+<span class="lineNum">     145 </span>            : 
+<span class="lineNum">     146 </span><span class="lineNoCov">          0 : void EventHandler::_dispatch()</span>
+<span class="lineNum">     147 </span>            : {
+<span class="lineNum">     148 </span><span class="lineNoCov">          0 :     Display* display = _window-&gt;getXDisplay();</span>
+<span class="lineNum">     149 </span><span class="lineNoCov">          0 :     LBASSERT( display );</span>
+<span class="lineNum">     150 </span><span class="lineNoCov">          0 :     if( !display )</span>
+<span class="lineNum">     151 </span><span class="lineNoCov">          0 :         return;</span>
+<span class="lineNum">     152 </span>            : 
+<span class="lineNum">     153 </span><span class="lineNoCov">          0 :     while( XPending( display ))</span>
+<span class="lineNum">     154 </span>            :     {
+<span class="lineNum">     155 </span><span class="lineNoCov">          0 :         WindowEvent event;</span>
+<span class="lineNum">     156 </span><span class="lineNoCov">          0 :         XEvent&amp; xEvent = event.xEvent;</span>
+<span class="lineNum">     157 </span>            : 
+<span class="lineNum">     158 </span><span class="lineNoCov">          0 :         XNextEvent( display, &amp;xEvent );</span>
+<span class="lineNum">     159 </span>            : 
+<span class="lineNum">     160 </span><span class="lineNoCov">          0 :         for( EventHandlers::const_iterator i = _eventHandlers-&gt;begin();</span>
+<span class="lineNum">     161 </span><span class="lineNoCov">          0 :              i != _eventHandlers-&gt;end(); ++i )</span>
+<span class="lineNum">     162 </span>            :         {
+<span class="lineNum">     163 </span><span class="lineNoCov">          0 :             EventHandler* handler = *i;</span>
+<span class="lineNum">     164 </span><span class="lineNoCov">          0 :             handler-&gt;_processEvent( event );</span>
+<span class="lineNum">     165 </span>            :         }
+<span class="lineNum">     166 </span><span class="lineNoCov">          0 :     }</span>
+<span class="lineNum">     167 </span>            : }
+<span class="lineNum">     168 </span>            : 
+<a name="169"><span class="lineNum">     169 </span>            : namespace</a>
+<span class="lineNum">     170 </span>            : {
+<span class="lineNum">     171 </span><span class="lineNoCov">          0 : void _getWindowSize( Display* display, XID drawable, ResizeEvent&amp; event )</span>
+<span class="lineNum">     172 </span>            : {
+<span class="lineNum">     173 </span>            :     // Get window coordinates from X11, the event data is relative to window
+<span class="lineNum">     174 </span>            :     // parent, but we report pvp relative to root window.
+<span class="lineNum">     175 </span>            :     XWindowAttributes windowAttrs;
+<span class="lineNum">     176 </span><span class="lineNoCov">          0 :     XGetWindowAttributes( display, drawable, &amp;windowAttrs );</span>
+<span class="lineNum">     177 </span>            : 
+<span class="lineNum">     178 </span>            :     XID child;
+<span class="lineNum">     179 </span>            :     XTranslateCoordinates( display, drawable,
+<span class="lineNum">     180 </span>            :                            RootWindowOfScreen( windowAttrs.screen ),
+<span class="lineNum">     181 </span>            :                            windowAttrs.x, windowAttrs.y,
+<span class="lineNum">     182 </span><span class="lineNoCov">          0 :                            &amp;event.x, &amp;event.y, &amp;child );</span>
+<span class="lineNum">     183 </span>            : 
+<span class="lineNum">     184 </span><span class="lineNoCov">          0 :     event.w = windowAttrs.width;</span>
+<span class="lineNum">     185 </span><span class="lineNoCov">          0 :     event.h = windowAttrs.height;</span>
+<span class="lineNum">     186 </span><span class="lineNoCov">          0 : }</span>
+<a name="187"><span class="lineNum">     187 </span>            : }</a>
+<span class="lineNum">     188 </span>            : 
+<span class="lineNum">     189 </span><span class="lineNoCov">          0 : void EventHandler::_processEvent( WindowEvent&amp; event )</span>
+<span class="lineNum">     190 </span>            : {
+<span class="lineNum">     191 </span><span class="lineNoCov">          0 :     LB_TS_THREAD( _thread );</span>
+<span class="lineNum">     192 </span>            : 
+<span class="lineNum">     193 </span><span class="lineNoCov">          0 :     XEvent&amp; xEvent = event.xEvent;</span>
+<span class="lineNum">     194 </span><span class="lineNoCov">          0 :     XID drawable = xEvent.xany.window;</span>
+<span class="lineNum">     195 </span>            : 
+<span class="lineNum">     196 </span><span class="lineNoCov">          0 :     if( _window-&gt;getXDrawable() != drawable )</span>
+<span class="lineNum">     197 </span><span class="lineNoCov">          0 :         return;</span>
+<span class="lineNum">     198 </span>            : 
+<span class="lineNum">     199 </span><span class="lineNoCov">          0 :     switch( xEvent.type )</span>
+<span class="lineNum">     200 </span>            :     {
+<span class="lineNum">     201 </span>            :         case Expose:
+<span class="lineNum">     202 </span><span class="lineNoCov">          0 :             if( xEvent.xexpose.count ) // Only report last expose event</span>
+<span class="lineNum">     203 </span><span class="lineNoCov">          0 :                 return;</span>
+<span class="lineNum">     204 </span>            : 
+<span class="lineNum">     205 </span><span class="lineNoCov">          0 :             event.type = Event::WINDOW_EXPOSE;</span>
+<span class="lineNum">     206 </span><span class="lineNoCov">          0 :             break;</span>
+<span class="lineNum">     207 </span>            : 
+<span class="lineNum">     208 </span>            :         case ConfigureNotify:
+<span class="lineNum">     209 </span><span class="lineNoCov">          0 :             event.type = Event::WINDOW_RESIZE;</span>
+<span class="lineNum">     210 </span><span class="lineNoCov">          0 :             _getWindowSize( xEvent.xany.display, drawable, event.resize );</span>
+<span class="lineNum">     211 </span><span class="lineNoCov">          0 :             break;</span>
+<span class="lineNum">     212 </span>            : 
+<span class="lineNum">     213 </span>            :         case UnmapNotify:
+<span class="lineNum">     214 </span><span class="lineNoCov">          0 :             event.type = Event::WINDOW_HIDE;</span>
+<span class="lineNum">     215 </span><span class="lineNoCov">          0 :             _getWindowSize( xEvent.xany.display, drawable, event.resize );</span>
+<span class="lineNum">     216 </span><span class="lineNoCov">          0 :             break;</span>
+<span class="lineNum">     217 </span>            : 
+<span class="lineNum">     218 </span>            :         case MapNotify:
+<span class="lineNum">     219 </span><span class="lineNoCov">          0 :             event.type = Event::WINDOW_SHOW;</span>
+<span class="lineNum">     220 </span><span class="lineNoCov">          0 :             _getWindowSize( xEvent.xany.display, drawable, event.resize );</span>
+<span class="lineNum">     221 </span><span class="lineNoCov">          0 :             break;</span>
+<span class="lineNum">     222 </span>            : 
+<span class="lineNum">     223 </span>            :         case ClientMessage:
+<span class="lineNum">     224 </span>            :         {
+<span class="lineNum">     225 </span>            : #ifdef EQUALIZER_USE_MAGELLAN_GLX
+<span class="lineNum">     226 </span>            :             spnav_event spev;
+<span class="lineNum">     227 </span>            : 
+<span class="lineNum">     228 </span>            :             /* spacenav event */
+<span class="lineNum">     229 </span><span class="lineNoCov">          0 :             if( spnav_x11_event( &amp;xEvent, &amp;spev ))</span>
+<span class="lineNum">     230 </span>            :             {
+<span class="lineNum">     231 </span><span class="lineNoCov">          0 :                 switch( spev.type )</span>
+<span class="lineNum">     232 </span>            :                 {
+<span class="lineNum">     233 </span>            :                   case SPNAV_EVENT_MOTION:
+<span class="lineNum">     234 </span><span class="lineNoCov">          0 :                     event.type = Event::MAGELLAN_AXIS;</span>
+<span class="lineNum">     235 </span><span class="lineNoCov">          0 :                     event.magellan.xAxis =  spev.motion.x;</span>
+<span class="lineNum">     236 </span><span class="lineNoCov">          0 :                     event.magellan.yAxis =  spev.motion.y;</span>
+<span class="lineNum">     237 </span><span class="lineNoCov">          0 :                     event.magellan.zAxis = -spev.motion.z;</span>
+<span class="lineNum">     238 </span><span class="lineNoCov">          0 :                     event.magellan.xRotation = -spev.motion.rx;</span>
+<span class="lineNum">     239 </span><span class="lineNoCov">          0 :                     event.magellan.yRotation = -spev.motion.ry;</span>
+<span class="lineNum">     240 </span><span class="lineNoCov">          0 :                     event.magellan.zRotation =  spev.motion.rz;</span>
+<span class="lineNum">     241 </span><span class="lineNoCov">          0 :                     break;</span>
+<span class="lineNum">     242 </span>            : 
+<span class="lineNum">     243 </span>            :                   case SPNAV_EVENT_BUTTON:
+<span class="lineNum">     244 </span><span class="lineNoCov">          0 :                     event.type = Event::MAGELLAN_BUTTON;</span>
+<span class="lineNum">     245 </span><span class="lineNoCov">          0 :                     event.magellan.buttons = spev.button.press;</span>
+<span class="lineNum">     246 </span><span class="lineNoCov">          0 :                     event.magellan.button = spev.button.bnum;</span>
+<span class="lineNum">     247 </span><span class="lineNoCov">          0 :                     break;</span>
+<span class="lineNum">     248 </span>            : 
+<span class="lineNum">     249 </span>            :                   default:
+<span class="lineNum">     250 </span><span class="lineNoCov">          0 :                     LBUNIMPLEMENTED;</span>
+<span class="lineNum">     251 </span><span class="lineNoCov">          0 :                     return;</span>
+<span class="lineNum">     252 </span>            :                 }
+<span class="lineNum">     253 </span>            : 
+<span class="lineNum">     254 </span>            :                 /* remove any other queued motion events */
+<span class="lineNum">     255 </span>            :                 //? spnav_remove_events( SPNAV_EVENT_MOTION );
+<span class="lineNum">     256 </span><span class="lineNoCov">          0 :                 break;</span>
+<span class="lineNum">     257 </span>            :             }
+<span class="lineNum">     258 </span>            :  #endif
+<span class="lineNum">     259 </span>            : 
+<span class="lineNum">     260 </span>            :             Atom deleteAtom = XInternAtom( xEvent.xany.display,
+<span class="lineNum">     261 </span><span class="lineNoCov">          0 :                                            &quot;WM_DELETE_WINDOW&quot;, False );</span>
+<span class="lineNum">     262 </span>            : 
+<span class="lineNum">     263 </span><span class="lineNoCov">          0 :             if( static_cast&lt;Atom&gt;( xEvent.xclient.data.l[0] ) != deleteAtom )</span>
+<span class="lineNum">     264 </span><span class="lineNoCov">          0 :                 return; // not a delete message, ignore.</span>
+<span class="lineNum">     265 </span>            :         }
+<span class="lineNum">     266 </span>            :         // else: delete message, fall through
+<span class="lineNum">     267 </span>            :         case DestroyNotify:
+<span class="lineNum">     268 </span><span class="lineNoCov">          0 :             event.type = Event::WINDOW_CLOSE;</span>
+<span class="lineNum">     269 </span><span class="lineNoCov">          0 :             break;</span>
+<span class="lineNum">     270 </span>            : 
+<span class="lineNum">     271 </span>            :         case MotionNotify:
+<span class="lineNum">     272 </span><span class="lineNoCov">          0 :             event.type = Event::WINDOW_POINTER_MOTION;</span>
+<span class="lineNum">     273 </span><span class="lineNoCov">          0 :             event.pointerMotion.x = xEvent.xmotion.x;</span>
+<span class="lineNum">     274 </span><span class="lineNoCov">          0 :             event.pointerMotion.y = xEvent.xmotion.y;</span>
+<span class="lineNum">     275 </span><span class="lineNoCov">          0 :             event.pointerMotion.buttons = _getButtonState( xEvent );</span>
+<span class="lineNum">     276 </span><span class="lineNoCov">          0 :             event.pointerMotion.button  = PTR_BUTTON_NONE;</span>
+<span class="lineNum">     277 </span>            : 
+<span class="lineNum">     278 </span><span class="lineNoCov">          0 :             _computePointerDelta( event );</span>
+<span class="lineNum">     279 </span><span class="lineNoCov">          0 :             break;</span>
+<span class="lineNum">     280 </span>            : 
+<span class="lineNum">     281 </span>            :         case ButtonPress:
+<span class="lineNum">     282 </span><span class="lineNoCov">          0 :             event.type = Event::WINDOW_POINTER_BUTTON_PRESS;</span>
+<span class="lineNum">     283 </span><span class="lineNoCov">          0 :             event.pointerButtonPress.x = xEvent.xbutton.x;</span>
+<span class="lineNum">     284 </span><span class="lineNoCov">          0 :             event.pointerButtonPress.y = xEvent.xbutton.y;</span>
+<span class="lineNum">     285 </span><span class="lineNoCov">          0 :             event.pointerButtonPress.buttons = _getButtonState( xEvent );</span>
+<span class="lineNum">     286 </span><span class="lineNoCov">          0 :             event.pointerButtonPress.button  = _getButtonAction( xEvent );</span>
+<span class="lineNum">     287 </span>            : 
+<span class="lineNum">     288 </span>            :             // Translate wheel events
+<span class="lineNum">     289 </span><span class="lineNoCov">          0 :             switch( event.pointerButtonPress.button )</span>
+<span class="lineNum">     290 </span>            :             {
+<span class="lineNum">     291 </span><span class="lineNoCov">          0 :               case PTR_BUTTON4: event.pointerWheel.yAxis = 1; break;</span>
+<span class="lineNum">     292 </span><span class="lineNoCov">          0 :               case PTR_BUTTON5: event.pointerWheel.yAxis = -1; break;</span>
+<span class="lineNum">     293 </span><span class="lineNoCov">          0 :               case PTR_BUTTON6: event.pointerWheel.xAxis = 1; break;</span>
+<span class="lineNum">     294 </span><span class="lineNoCov">          0 :               case PTR_BUTTON7: event.pointerWheel.xAxis = -1; break;</span>
+<span class="lineNum">     295 </span>            :             }
+<span class="lineNum">     296 </span><span class="lineNoCov">          0 :             switch( event.pointerButtonPress.button )</span>
+<span class="lineNum">     297 </span>            :             {
+<span class="lineNum">     298 </span>            :               case PTR_BUTTON4:
+<span class="lineNum">     299 </span>            :               case PTR_BUTTON5:
+<span class="lineNum">     300 </span>            :               case PTR_BUTTON6:
+<span class="lineNum">     301 </span>            :               case PTR_BUTTON7:
+<span class="lineNum">     302 </span><span class="lineNoCov">          0 :                 event.type = Event::WINDOW_POINTER_WHEEL;</span>
+<span class="lineNum">     303 </span><span class="lineNoCov">          0 :                 event.pointerWheel.button = PTR_BUTTON_NONE;</span>
+<span class="lineNum">     304 </span>            :             }
+<span class="lineNum">     305 </span>            : 
+<span class="lineNum">     306 </span><span class="lineNoCov">          0 :             _computePointerDelta( event );</span>
+<span class="lineNum">     307 </span><span class="lineNoCov">          0 :             break;</span>
+<span class="lineNum">     308 </span>            : 
+<span class="lineNum">     309 </span>            :         case ButtonRelease:
+<span class="lineNum">     310 </span><span class="lineNoCov">          0 :             event.type = Event::WINDOW_POINTER_BUTTON_RELEASE;</span>
+<span class="lineNum">     311 </span><span class="lineNoCov">          0 :             event.pointerButtonRelease.x = xEvent.xbutton.x;</span>
+<span class="lineNum">     312 </span><span class="lineNoCov">          0 :             event.pointerButtonRelease.y = xEvent.xbutton.y;</span>
+<span class="lineNum">     313 </span><span class="lineNoCov">          0 :             event.pointerButtonRelease.buttons = _getButtonState( xEvent );</span>
+<span class="lineNum">     314 </span><span class="lineNoCov">          0 :             event.pointerButtonRelease.button  = _getButtonAction( xEvent);</span>
+<span class="lineNum">     315 </span>            : 
+<span class="lineNum">     316 </span><span class="lineNoCov">          0 :             _computePointerDelta( event );</span>
+<span class="lineNum">     317 </span><span class="lineNoCov">          0 :             break;</span>
+<span class="lineNum">     318 </span>            : 
+<span class="lineNum">     319 </span>            :         case KeyPress:
+<span class="lineNum">     320 </span><span class="lineNoCov">          0 :             event.type = Event::KEY_PRESS;</span>
+<span class="lineNum">     321 </span><span class="lineNoCov">          0 :             event.keyPress.key = _getKey( xEvent );</span>
+<span class="lineNum">     322 </span><span class="lineNoCov">          0 :             break;</span>
+<span class="lineNum">     323 </span>            : 
+<span class="lineNum">     324 </span>            :         case KeyRelease:
+<span class="lineNum">     325 </span><span class="lineNoCov">          0 :             event.type = Event::KEY_RELEASE;</span>
+<span class="lineNum">     326 </span><span class="lineNoCov">          0 :             event.keyPress.key = _getKey( xEvent );</span>
+<span class="lineNum">     327 </span><span class="lineNoCov">          0 :             break;</span>
+<span class="lineNum">     328 </span>            : 
+<span class="lineNum">     329 </span>            :         case ReparentNotify:
+<span class="lineNum">     330 </span>            :         case VisibilityNotify:
+<span class="lineNum">     331 </span><span class="lineNoCov">          0 :             event.type = Event::UNKNOWN;</span>
+<span class="lineNum">     332 </span><span class="lineNoCov">          0 :             LBVERB &lt;&lt; &quot;Ignored X event, type &quot; &lt;&lt; xEvent.type &lt;&lt; std::endl;</span>
+<span class="lineNum">     333 </span><span class="lineNoCov">          0 :             break;</span>
+<span class="lineNum">     334 </span>            : 
+<span class="lineNum">     335 </span>            :         default:
+<span class="lineNum">     336 </span><span class="lineNoCov">          0 :             event.type = Event::UNKNOWN;</span>
+<span class="lineNum">     337 </span><span class="lineNoCov">          0 :             LBWARN &lt;&lt; &quot;Unhandled X event, type &quot; &lt;&lt; xEvent.type &lt;&lt; std::endl;</span>
+<span class="lineNum">     338 </span><span class="lineNoCov">          0 :             break;</span>
+<span class="lineNum">     339 </span>            :     }
+<span class="lineNum">     340 </span>            : 
+<span class="lineNum">     341 </span><span class="lineNoCov">          0 :     _window-&gt;processEvent( event );</span>
+<a name="342"><span class="lineNum">     342 </span>            : }</a>
+<span class="lineNum">     343 </span>            : 
+<span class="lineNum">     344 </span><span class="lineNoCov">          0 : uint32_t EventHandler::_getButtonState( XEvent&amp; event )</span>
+<span class="lineNum">     345 </span>            : {
+<span class="lineNum">     346 </span><span class="lineNoCov">          0 :     const int xState = event.xbutton.state;</span>
+<span class="lineNum">     347 </span><span class="lineNoCov">          0 :     uint32_t   state  = 0;</span>
+<span class="lineNum">     348 </span>            : 
+<span class="lineNum">     349 </span><span class="lineNoCov">          0 :     if( xState &amp; Button1Mask ) state |= PTR_BUTTON1;</span>
+<span class="lineNum">     350 </span><span class="lineNoCov">          0 :     if( xState &amp; Button2Mask ) state |= PTR_BUTTON2;</span>
+<span class="lineNum">     351 </span><span class="lineNoCov">          0 :     if( xState &amp; Button3Mask ) state |= PTR_BUTTON3;</span>
+<span class="lineNum">     352 </span><span class="lineNoCov">          0 :     if( xState &amp; Button4Mask ) state |= PTR_BUTTON4;</span>
+<span class="lineNum">     353 </span><span class="lineNoCov">          0 :     if( xState &amp; Button5Mask ) state |= PTR_BUTTON5;</span>
+<span class="lineNum">     354 </span>            : 
+<span class="lineNum">     355 </span><span class="lineNoCov">          0 :     switch( event.type )</span>
+<span class="lineNum">     356 </span>            :     {   // state is state before event
+<span class="lineNum">     357 </span>            :         case ButtonPress:
+<span class="lineNum">     358 </span><span class="lineNoCov">          0 :             state |= _getButtonAction( event );</span>
+<span class="lineNum">     359 </span><span class="lineNoCov">          0 :             break;</span>
+<span class="lineNum">     360 </span>            : 
+<span class="lineNum">     361 </span>            :         case ButtonRelease:
+<span class="lineNum">     362 </span><span class="lineNoCov">          0 :             state &amp;= ~_getButtonAction( event );</span>
+<span class="lineNum">     363 </span><span class="lineNoCov">          0 :             break;</span>
+<span class="lineNum">     364 </span>            : 
+<span class="lineNum">     365 </span>            :         default:
+<span class="lineNum">     366 </span><span class="lineNoCov">          0 :             break;</span>
+<span class="lineNum">     367 </span>            :     }
+<span class="lineNum">     368 </span><span class="lineNoCov">          0 :     return state;</span>
+<a name="369"><span class="lineNum">     369 </span>            : }</a>
+<span class="lineNum">     370 </span>            : 
+<span class="lineNum">     371 </span><span class="lineNoCov">          0 : uint32_t EventHandler::_getButtonAction( XEvent&amp; event )</span>
+<span class="lineNum">     372 </span>            : {
+<span class="lineNum">     373 </span><span class="lineNoCov">          0 :     switch( event.xbutton.button )</span>
+<span class="lineNum">     374 </span>            :     {
+<span class="lineNum">     375 </span><span class="lineNoCov">          0 :         case Button1: return PTR_BUTTON1;</span>
+<span class="lineNum">     376 </span><span class="lineNoCov">          0 :         case Button2: return PTR_BUTTON2;</span>
+<span class="lineNum">     377 </span><span class="lineNoCov">          0 :         case Button3: return PTR_BUTTON3;</span>
+<span class="lineNum">     378 </span><span class="lineNoCov">          0 :         case Button4: return PTR_BUTTON4;</span>
+<span class="lineNum">     379 </span><span class="lineNoCov">          0 :         case Button5: return PTR_BUTTON5;</span>
+<span class="lineNum">     380 </span><span class="lineNoCov">          0 :         case 6: return PTR_BUTTON6;</span>
+<span class="lineNum">     381 </span><span class="lineNoCov">          0 :         case 7: return PTR_BUTTON7;</span>
+<span class="lineNum">     382 </span><span class="lineNoCov">          0 :         default: return PTR_BUTTON_NONE;</span>
+<span class="lineNum">     383 </span>            :     }
+<span class="lineNum">     384 </span>            : }
+<a name="385"><span class="lineNum">     385 </span>            : </a>
+<span class="lineNum">     386 </span>            : 
+<span class="lineNum">     387 </span><span class="lineNoCov">          0 : uint32_t EventHandler::_getKey( XEvent&amp; event )</span>
+<span class="lineNum">     388 </span>            : {
+<span class="lineNum">     389 </span><span class="lineNoCov">          0 :     int index = 0;</span>
+<span class="lineNum">     390 </span><span class="lineNoCov">          0 :     if( event.xkey.state &amp; ShiftMask )</span>
+<span class="lineNum">     391 </span><span class="lineNoCov">          0 :         index = 1;</span>
+<span class="lineNum">     392 </span>            : 
+<span class="lineNum">     393 </span>            :     const KeySym key = XkbKeycodeToKeysym( event.xany.display,
+<span class="lineNum">     394 </span><span class="lineNoCov">          0 :                                            event.xkey.keycode, 0, index );</span>
+<span class="lineNum">     395 </span><span class="lineNoCov">          0 :     switch( key )</span>
+<span class="lineNum">     396 </span>            :     {
+<span class="lineNum">     397 </span><span class="lineNoCov">          0 :         case XK_Escape:    return KC_ESCAPE;</span>
+<span class="lineNum">     398 </span><span class="lineNoCov">          0 :         case XK_BackSpace: return KC_BACKSPACE;</span>
+<span class="lineNum">     399 </span><span class="lineNoCov">          0 :         case XK_Return:    return KC_RETURN;</span>
+<span class="lineNum">     400 </span><span class="lineNoCov">          0 :         case XK_Tab:       return KC_TAB;</span>
+<span class="lineNum">     401 </span><span class="lineNoCov">          0 :         case XK_Home:      return KC_HOME;</span>
+<span class="lineNum">     402 </span><span class="lineNoCov">          0 :         case XK_Left:      return KC_LEFT;</span>
+<span class="lineNum">     403 </span><span class="lineNoCov">          0 :         case XK_Up:        return KC_UP;</span>
+<span class="lineNum">     404 </span><span class="lineNoCov">          0 :         case XK_Right:     return KC_RIGHT;</span>
+<span class="lineNum">     405 </span><span class="lineNoCov">          0 :         case XK_Down:      return KC_DOWN;</span>
+<span class="lineNum">     406 </span><span class="lineNoCov">          0 :         case XK_Page_Up:   return KC_PAGE_UP;</span>
+<span class="lineNum">     407 </span><span class="lineNoCov">          0 :         case XK_Page_Down: return KC_PAGE_DOWN;</span>
+<span class="lineNum">     408 </span><span class="lineNoCov">          0 :         case XK_End:       return KC_END;</span>
+<span class="lineNum">     409 </span><span class="lineNoCov">          0 :         case XK_F1:        return KC_F1;</span>
+<span class="lineNum">     410 </span><span class="lineNoCov">          0 :         case XK_F2:        return KC_F2;</span>
+<span class="lineNum">     411 </span><span class="lineNoCov">          0 :         case XK_F3:        return KC_F3;</span>
+<span class="lineNum">     412 </span><span class="lineNoCov">          0 :         case XK_F4:        return KC_F4;</span>
+<span class="lineNum">     413 </span><span class="lineNoCov">          0 :         case XK_F5:        return KC_F5;</span>
+<span class="lineNum">     414 </span><span class="lineNoCov">          0 :         case XK_F6:        return KC_F6;</span>
+<span class="lineNum">     415 </span><span class="lineNoCov">          0 :         case XK_F7:        return KC_F7;</span>
+<span class="lineNum">     416 </span><span class="lineNoCov">          0 :         case XK_F8:        return KC_F8;</span>
+<span class="lineNum">     417 </span><span class="lineNoCov">          0 :         case XK_F9:        return KC_F9;</span>
+<span class="lineNum">     418 </span><span class="lineNoCov">          0 :         case XK_F10:       return KC_F10;</span>
+<span class="lineNum">     419 </span><span class="lineNoCov">          0 :         case XK_F11:       return KC_F11;</span>
+<span class="lineNum">     420 </span><span class="lineNoCov">          0 :         case XK_F12:       return KC_F12;</span>
+<span class="lineNum">     421 </span><span class="lineNoCov">          0 :         case XK_F13:       return KC_F13;</span>
+<span class="lineNum">     422 </span><span class="lineNoCov">          0 :         case XK_F14:       return KC_F14;</span>
+<span class="lineNum">     423 </span><span class="lineNoCov">          0 :         case XK_F15:       return KC_F15;</span>
+<span class="lineNum">     424 </span><span class="lineNoCov">          0 :         case XK_F16:       return KC_F16;</span>
+<span class="lineNum">     425 </span><span class="lineNoCov">          0 :         case XK_F17:       return KC_F17;</span>
+<span class="lineNum">     426 </span><span class="lineNoCov">          0 :         case XK_F18:       return KC_F18;</span>
+<span class="lineNum">     427 </span><span class="lineNoCov">          0 :         case XK_F19:       return KC_F19;</span>
+<span class="lineNum">     428 </span><span class="lineNoCov">          0 :         case XK_F20:       return KC_F20;</span>
+<span class="lineNum">     429 </span><span class="lineNoCov">          0 :         case XK_Shift_L:   return KC_SHIFT_L;</span>
+<span class="lineNum">     430 </span><span class="lineNoCov">          0 :         case XK_Shift_R:   return KC_SHIFT_R;</span>
+<span class="lineNum">     431 </span><span class="lineNoCov">          0 :         case XK_Control_L: return KC_CONTROL_L;</span>
+<span class="lineNum">     432 </span><span class="lineNoCov">          0 :         case XK_Control_R: return KC_CONTROL_R;</span>
+<span class="lineNum">     433 </span><span class="lineNoCov">          0 :         case XK_Alt_L:     return KC_ALT_L;</span>
+<span class="lineNum">     434 </span><span class="lineNoCov">          0 :         case XK_Alt_R:     return KC_ALT_R;</span>
+<span class="lineNum">     435 </span>            : 
+<span class="lineNum">     436 </span>            :         default:
+<span class="lineNum">     437 </span><span class="lineNoCov">          0 :             if( (key &gt;= XK_space &amp;&amp; key &lt;= XK_asciitilde ) ||</span>
+<span class="lineNum">     438 </span><span class="lineNoCov">          0 :                 (key &gt;= XK_nobreakspace &amp;&amp; key &lt;= XK_ydiaeresis))</span>
+<span class="lineNum">     439 </span>            :             {
+<span class="lineNum">     440 </span><span class="lineNoCov">          0 :                 return key;</span>
+<span class="lineNum">     441 </span>            :             }
+<span class="lineNum">     442 </span><span class="lineNoCov">          0 :             LBWARN &lt;&lt; &quot;Unrecognized X11 key code &quot; &lt;&lt; key &lt;&lt; std::endl;</span>
+<span class="lineNum">     443 </span><span class="lineNoCov">          0 :             return KC_VOID;</span>
+<span class="lineNum">     444 </span>            :     }
+<span class="lineNum">     445 </span>            : }
+<span class="lineNum">     446 </span>            : 
+<a name="447"><span class="lineNum">     447 </span>            : </a>
+<span class="lineNum">     448 </span>            : }
+<span class="lineNum">     449 </span><span class="lineCov">         60 : }</span>
+</pre>
+      </td>
+    </tr>
+  </table>
+  <br>
+
+  <table width="100%" border=0 cellspacing=0 cellpadding=0>
+    <tr><td class="ruler"><img src="../../../glass.png" width=3 height=3 alt=""></td></tr>
+    <tr><td class="versionInfo">Generated by: <a href="http://ltp.sourceforge.net/coverage/lcov.php" target="_parent">LCOV version 1.11</a></td></tr>
+  </table>
+  <br>
+
+</body>
+</html>

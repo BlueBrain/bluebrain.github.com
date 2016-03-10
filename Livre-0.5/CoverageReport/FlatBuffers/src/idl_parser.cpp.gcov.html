@@ -1,0 +1,1231 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+
+<html lang="en">
+
+<head>
+  <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+  <title>LCOV - Livre - FlatBuffers/src/idl_parser.cpp</title>
+  <link rel="stylesheet" type="text/css" href="../../gcov.css">
+</head>
+
+<body>
+
+  <table width="100%" border=0 cellspacing=0 cellpadding=0>
+    <tr><td class="title">LCOV - code coverage report</td></tr>
+    <tr><td class="ruler"><img src="../../glass.png" width=3 height=3 alt=""></td></tr>
+
+    <tr>
+      <td width="100%">
+        <table cellpadding=1 border=0 width="100%">
+          <tr>
+            <td width="10%" class="headerItem">Current view:</td>
+            <td width="35%" class="headerValue"><a href="../../index.html">top level</a> - <a href="index.html">FlatBuffers/src</a> - idl_parser.cpp<span style="font-size: 80%;"> (source / <a href="idl_parser.cpp.func-sort-c.html">functions</a>)</span></td>
+            <td width="5%"></td>
+            <td width="15%"></td>
+            <td width="10%" class="headerCovTableHead">Hit</td>
+            <td width="10%" class="headerCovTableHead">Total</td>
+            <td width="15%" class="headerCovTableHead">Coverage</td>
+          </tr>
+          <tr>
+            <td class="headerItem">Test:</td>
+            <td class="headerValue">Livre</td>
+            <td></td>
+            <td class="headerItem">Lines:</td>
+            <td class="headerCovTableEntry">284</td>
+            <td class="headerCovTableEntry">721</td>
+            <td class="headerCovTableEntryLo">39.4 %</td>
+          </tr>
+          <tr>
+            <td class="headerItem">Date:</td>
+            <td class="headerValue">2016-03-10 14:06:39</td>
+            <td></td>
+            <td class="headerItem">Functions:</td>
+            <td class="headerCovTableEntry">19</td>
+            <td class="headerCovTableEntry">42</td>
+            <td class="headerCovTableEntryMed">45.2 %</td>
+          </tr>
+          <tr><td><img src="../../glass.png" width=3 height=3 alt=""></td></tr>
+        </table>
+      </td>
+    </tr>
+
+    <tr><td class="ruler"><img src="../../glass.png" width=3 height=3 alt=""></td></tr>
+  </table>
+
+  <table cellpadding=0 cellspacing=0 border=0>
+    <tr>
+      <td><br></td>
+    </tr>
+    <tr>
+      <td>
+<pre class="sourceHeading">          Line data    Source code</pre>
+<pre class="source">
+<a name="1"><span class="lineNum">       1 </span>            : /*</a>
+<span class="lineNum">       2 </span>            :  * Copyright 2014 Google Inc. All rights reserved.
+<span class="lineNum">       3 </span>            :  *
+<span class="lineNum">       4 </span>            :  * Licensed under the Apache License, Version 2.0 (the &quot;License&quot;);
+<span class="lineNum">       5 </span>            :  * you may not use this file except in compliance with the License.
+<span class="lineNum">       6 </span>            :  * You may obtain a copy of the License at
+<span class="lineNum">       7 </span>            :  *
+<span class="lineNum">       8 </span>            :  *     http://www.apache.org/licenses/LICENSE-2.0
+<span class="lineNum">       9 </span>            :  *
+<span class="lineNum">      10 </span>            :  * Unless required by applicable law or agreed to in writing, software
+<span class="lineNum">      11 </span>            :  * distributed under the License is distributed on an &quot;AS IS&quot; BASIS,
+<span class="lineNum">      12 </span>            :  * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+<span class="lineNum">      13 </span>            :  * See the License for the specific language governing permissions and
+<span class="lineNum">      14 </span>            :  * limitations under the License.
+<span class="lineNum">      15 </span>            :  */
+<span class="lineNum">      16 </span>            : 
+<span class="lineNum">      17 </span>            : #include &lt;algorithm&gt;
+<span class="lineNum">      18 </span>            : 
+<span class="lineNum">      19 </span>            : #include &quot;flatbuffers/flatbuffers.h&quot;
+<span class="lineNum">      20 </span>            : #include &quot;flatbuffers/idl.h&quot;
+<span class="lineNum">      21 </span>            : #include &quot;flatbuffers/util.h&quot;
+<span class="lineNum">      22 </span>            : #include &quot;base64.h&quot;
+<span class="lineNum">      23 </span>            : 
+<span class="lineNum">      24 </span>            : namespace flatbuffers {
+<span class="lineNum">      25 </span>            : 
+<span class="lineNum">      26 </span>            : const char *const kTypeNames[] = {
+<span class="lineNum">      27 </span>            :   #define FLATBUFFERS_TD(ENUM, IDLTYPE, CTYPE, JTYPE, GTYPE, NTYPE) IDLTYPE,
+<span class="lineNum">      28 </span>            :     FLATBUFFERS_GEN_TYPES(FLATBUFFERS_TD)
+<span class="lineNum">      29 </span>            :   #undef FLATBUFFERS_TD
+<span class="lineNum">      30 </span>            :   nullptr
+<span class="lineNum">      31 </span>            : };
+<span class="lineNum">      32 </span>            : 
+<span class="lineNum">      33 </span>            : const char kTypeSizes[] = {
+<span class="lineNum">      34 </span>            :   #define FLATBUFFERS_TD(ENUM, IDLTYPE, CTYPE, JTYPE, GTYPE, NTYPE) \
+<span class="lineNum">      35 </span>            :       sizeof(CTYPE),
+<span class="lineNum">      36 </span>            :     FLATBUFFERS_GEN_TYPES(FLATBUFFERS_TD)
+<span class="lineNum">      37 </span>            :   #undef FLATBUFFERS_TD
+<a name="38"><span class="lineNum">      38 </span>            : };</a>
+<span class="lineNum">      39 </span>            : 
+<span class="lineNum">      40 </span><span class="lineNoCov">          0 : static void Error(const std::string &amp;msg) {</span>
+<span class="lineNum">      41 </span><span class="lineNoCov">          0 :   throw msg;</span>
+<span class="lineNum">      42 </span>            : }
+<a name="43"><span class="lineNum">      43 </span>            : </a>
+<span class="lineNum">      44 </span>            : // Ensure that integer values we parse fit inside the declared integer type.
+<span class="lineNum">      45 </span><span class="lineNoCov">          0 : static void CheckBitsFit(int64_t val, size_t bits) {</span>
+<span class="lineNum">      46 </span><span class="lineNoCov">          0 :   auto mask = (1ll &lt;&lt; bits) - 1;  // Bits we allow to be used.</span>
+<span class="lineNum">      47 </span><span class="lineNoCov">          0 :   if (bits &lt; 64 &amp;&amp;</span>
+<span class="lineNum">      48 </span><span class="lineNoCov">          0 :       (val &amp; ~mask) != 0 &amp;&amp;  // Positive or unsigned.</span>
+<span class="lineNum">      49 </span><span class="lineNoCov">          0 :       (val |  mask) != -1)   // Negative.</span>
+<span class="lineNum">      50 </span><span class="lineNoCov">          0 :     Error(&quot;constant does not fit in a &quot; + NumToString(bits) + &quot;-bit field&quot;);</span>
+<span class="lineNum">      51 </span><span class="lineNoCov">          0 : }</span>
+<a name="52"><span class="lineNum">      52 </span>            : </a>
+<span class="lineNum">      53 </span>            : // atot: templated version of atoi/atof: convert a string to an instance of T.
+<span class="lineNum">      54 </span><span class="lineNoCov">          0 : template&lt;typename T&gt; inline T atot(const char *s) {</span>
+<span class="lineNum">      55 </span><span class="lineNoCov">          0 :   auto val = StringToInt(s);</span>
+<span class="lineNum">      56 </span><span class="lineNoCov">          0 :   CheckBitsFit(val, sizeof(T) * 8);</span>
+<span class="lineNum">      57 </span><span class="lineNoCov">          0 :   return (T)val;</span>
+<span class="lineNum">      58 </span>            : }
+<span class="lineNum">      59 </span>            : template&lt;&gt; inline bool atot&lt;bool&gt;(const char *s) {
+<a name="60"><span class="lineNum">      60 </span>            :   return 0 != atoi(s);</a>
+<span class="lineNum">      61 </span>            : }
+<span class="lineNum">      62 </span><span class="lineNoCov">          0 : template&lt;&gt; inline float atot&lt;float&gt;(const char *s) {</span>
+<a name="63"><span class="lineNum">      63 </span><span class="lineNoCov">          0 :   return static_cast&lt;float&gt;(strtod(s, nullptr));</span></a>
+<span class="lineNum">      64 </span>            : }
+<span class="lineNum">      65 </span><span class="lineNoCov">          0 : template&lt;&gt; inline double atot&lt;double&gt;(const char *s) {</span>
+<span class="lineNum">      66 </span><span class="lineNoCov">          0 :   return strtod(s, nullptr);</span>
+<a name="67"><span class="lineNum">      67 </span>            : }</a>
+<span class="lineNum">      68 </span>            : 
+<span class="lineNum">      69 </span><span class="lineNoCov">          0 : template&lt;&gt; inline Offset&lt;void&gt; atot&lt;Offset&lt;void&gt;&gt;(const char *s) {</span>
+<span class="lineNum">      70 </span><span class="lineNoCov">          0 :   return Offset&lt;void&gt;(atoi(s));</span>
+<span class="lineNum">      71 </span>            : }
+<span class="lineNum">      72 </span>            : 
+<span class="lineNum">      73 </span>            : // Declare tokens we'll use. Single character tokens are represented by their
+<span class="lineNum">      74 </span>            : // ascii character code (e.g. '{'), others above 256.
+<span class="lineNum">      75 </span>            : #define FLATBUFFERS_GEN_TOKENS(TD) \
+<span class="lineNum">      76 </span>            :   TD(Eof, 256, &quot;end of file&quot;) \
+<span class="lineNum">      77 </span>            :   TD(StringConstant, 257, &quot;string constant&quot;) \
+<span class="lineNum">      78 </span>            :   TD(IntegerConstant, 258, &quot;integer constant&quot;) \
+<span class="lineNum">      79 </span>            :   TD(FloatConstant, 259, &quot;float constant&quot;) \
+<span class="lineNum">      80 </span>            :   TD(Identifier, 260, &quot;identifier&quot;) \
+<span class="lineNum">      81 </span>            :   TD(Table, 261, &quot;table&quot;) \
+<span class="lineNum">      82 </span>            :   TD(Struct, 262, &quot;struct&quot;) \
+<span class="lineNum">      83 </span>            :   TD(Enum, 263, &quot;enum&quot;) \
+<span class="lineNum">      84 </span>            :   TD(Union, 264, &quot;union&quot;) \
+<span class="lineNum">      85 </span>            :   TD(NameSpace, 265, &quot;namespace&quot;) \
+<span class="lineNum">      86 </span>            :   TD(RootType, 266, &quot;root_type&quot;) \
+<span class="lineNum">      87 </span>            :   TD(FileIdentifier, 267, &quot;file_identifier&quot;) \
+<span class="lineNum">      88 </span>            :   TD(FileExtension, 268, &quot;file_extension&quot;) \
+<span class="lineNum">      89 </span>            :   TD(Include, 269, &quot;include&quot;) \
+<span class="lineNum">      90 </span>            :   TD(Attribute, 270, &quot;attribute&quot;)
+<span class="lineNum">      91 </span>            : #ifdef __GNUC__
+<span class="lineNum">      92 </span>            : __extension__  // Stop GCC complaining about trailing comma with -Wpendantic.
+<span class="lineNum">      93 </span>            : #endif
+<span class="lineNum">      94 </span>            : enum {
+<span class="lineNum">      95 </span>            :   #define FLATBUFFERS_TOKEN(NAME, VALUE, STRING) kToken ## NAME = VALUE,
+<span class="lineNum">      96 </span>            :     FLATBUFFERS_GEN_TOKENS(FLATBUFFERS_TOKEN)
+<span class="lineNum">      97 </span>            :   #undef FLATBUFFERS_TOKEN
+<span class="lineNum">      98 </span>            :   #define FLATBUFFERS_TD(ENUM, IDLTYPE, CTYPE, JTYPE, GTYPE, NTYPE) \
+<span class="lineNum">      99 </span>            :       kToken ## ENUM,
+<span class="lineNum">     100 </span>            :     FLATBUFFERS_GEN_TYPES(FLATBUFFERS_TD)
+<span class="lineNum">     101 </span>            :   #undef FLATBUFFERS_TD
+<a name="102"><span class="lineNum">     102 </span>            : };</a>
+<span class="lineNum">     103 </span>            : 
+<span class="lineNum">     104 </span><span class="lineNoCov">          0 : static std::string TokenToString(int t) {</span>
+<span class="lineNum">     105 </span>            :   static const char *tokens[] = {
+<span class="lineNum">     106 </span>            :     #define FLATBUFFERS_TOKEN(NAME, VALUE, STRING) STRING,
+<span class="lineNum">     107 </span>            :       FLATBUFFERS_GEN_TOKENS(FLATBUFFERS_TOKEN)
+<span class="lineNum">     108 </span>            :     #undef FLATBUFFERS_TOKEN
+<span class="lineNum">     109 </span>            :     #define FLATBUFFERS_TD(ENUM, IDLTYPE, CTYPE, JTYPE, GTYPE, NTYPE) IDLTYPE,
+<span class="lineNum">     110 </span>            :       FLATBUFFERS_GEN_TYPES(FLATBUFFERS_TD)
+<span class="lineNum">     111 </span>            :     #undef FLATBUFFERS_TD
+<span class="lineNum">     112 </span>            :   };
+<span class="lineNum">     113 </span><span class="lineNoCov">          0 :   if (t &lt; 256) {  // A single ascii char token.</span>
+<span class="lineNum">     114 </span><span class="lineNoCov">          0 :     std::string s;</span>
+<span class="lineNum">     115 </span><span class="lineNoCov">          0 :     s.append(1, static_cast&lt;char&gt;(t));</span>
+<span class="lineNum">     116 </span><span class="lineNoCov">          0 :     return s;</span>
+<span class="lineNum">     117 </span>            :   } else {       // Other tokens.
+<span class="lineNum">     118 </span><span class="lineNoCov">          0 :     return tokens[t - 256];</span>
+<span class="lineNum">     119 </span>            :   }
+<span class="lineNum">     120 </span>            : }
+<a name="121"><span class="lineNum">     121 </span>            : </a>
+<span class="lineNum">     122 </span>            : // Parses exactly nibbles worth of hex digits into a number, or error.
+<span class="lineNum">     123 </span><span class="lineNoCov">          0 : int64_t Parser::ParseHexNum(int nibbles) {</span>
+<span class="lineNum">     124 </span><span class="lineNoCov">          0 :   for (int i = 0; i &lt; nibbles; i++)</span>
+<span class="lineNum">     125 </span><span class="lineNoCov">          0 :     if (!isxdigit(cursor_[i]))</span>
+<span class="lineNum">     126 </span><span class="lineNoCov">          0 :       Error(&quot;escape code must be followed by &quot; + NumToString(nibbles) +</span>
+<span class="lineNum">     127 </span><span class="lineNoCov">          0 :             &quot; hex digits&quot;);</span>
+<span class="lineNum">     128 </span><span class="lineNoCov">          0 :   auto val = StringToInt(cursor_, 16);</span>
+<span class="lineNum">     129 </span><span class="lineNoCov">          0 :   cursor_ += nibbles;</span>
+<span class="lineNum">     130 </span><span class="lineNoCov">          0 :   return val;</span>
+<a name="131"><span class="lineNum">     131 </span>            : }</a>
+<span class="lineNum">     132 </span>            : 
+<span class="lineNum">     133 </span><span class="lineCov">        842 : void Parser::Next() {</span>
+<span class="lineNum">     134 </span><span class="lineCov">        842 :   doc_comment_.clear();</span>
+<span class="lineNum">     135 </span><span class="lineCov">        842 :   bool seen_newline = false;</span>
+<span class="lineNum">     136 </span>            :   for (;;) {
+<span class="lineNum">     137 </span><span class="lineCov">       1594 :     char c = *cursor_++;</span>
+<span class="lineNum">     138 </span><span class="lineCov">       1594 :     token_ = c;</span>
+<span class="lineNum">     139 </span><span class="lineCov">       1594 :     switch (c) {</span>
+<span class="lineNum">     140 </span><span class="lineCov">        872 :       case '\0': cursor_--; token_ = kTokenEof; return;</span>
+<span class="lineNum">     141 </span><span class="lineCov">       1074 :       case ' ': case '\r': case '\t': break;</span>
+<span class="lineNum">     142 </span><span class="lineCov">        368 :       case '\n': line_++; seen_newline = true; break;</span>
+<span class="lineNum">     143 </span><span class="lineCov">        164 :       case '{': case '}': case '(': case ')': case '[': case ']': return;</span>
+<span class="lineNum">     144 </span><span class="lineCov">        230 :       case ',': case ':': case ';': case '=': return;</span>
+<span class="lineNum">     145 </span>            :       case '.':
+<span class="lineNum">     146 </span><span class="lineCov">         30 :         if(!isdigit(*cursor_)) return;</span>
+<span class="lineNum">     147 </span><span class="lineNoCov">          0 :         Error(&quot;floating point constant can\'t start with \&quot;.\&quot;&quot;);</span>
+<span class="lineNum">     148 </span><span class="lineNoCov">          0 :         break;</span>
+<span class="lineNum">     149 </span>            :       case '\&quot;':
+<span class="lineNum">     150 </span><span class="lineNoCov">          0 :         attribute_ = &quot;&quot;;</span>
+<span class="lineNum">     151 </span><span class="lineNoCov">          0 :         while (*cursor_ != '\&quot;') {</span>
+<span class="lineNum">     152 </span>            : 
+<span class="lineNum">     153 </span>            : #pragma GCC diagnostic push
+<span class="lineNum">     154 </span>            : #pragma GCC diagnostic ignored &quot;-Wtype-limits&quot;
+<span class="lineNum">     155 </span><span class="lineNoCov">          0 :           if (*cursor_ &lt; ' ' &amp;&amp; *cursor_ &gt;= 0)</span>
+<span class="lineNum">     156 </span><span class="lineNoCov">          0 :             Error(&quot;illegal character in string constant&quot;);</span>
+<span class="lineNum">     157 </span>            : #pragma GCC diagnostic pop
+<span class="lineNum">     158 </span>            : 
+<span class="lineNum">     159 </span><span class="lineNoCov">          0 :           if (*cursor_ == '\\') {</span>
+<span class="lineNum">     160 </span><span class="lineNoCov">          0 :             cursor_++;</span>
+<span class="lineNum">     161 </span><span class="lineNoCov">          0 :             switch (*cursor_) {</span>
+<span class="lineNum">     162 </span><span class="lineNoCov">          0 :               case 'n':  attribute_ += '\n'; cursor_++; break;</span>
+<span class="lineNum">     163 </span><span class="lineNoCov">          0 :               case 't':  attribute_ += '\t'; cursor_++; break;</span>
+<span class="lineNum">     164 </span><span class="lineNoCov">          0 :               case 'r':  attribute_ += '\r'; cursor_++; break;</span>
+<span class="lineNum">     165 </span><span class="lineNoCov">          0 :               case 'b':  attribute_ += '\b'; cursor_++; break;</span>
+<span class="lineNum">     166 </span><span class="lineNoCov">          0 :               case 'f':  attribute_ += '\f'; cursor_++; break;</span>
+<span class="lineNum">     167 </span><span class="lineNoCov">          0 :               case '\&quot;': attribute_ += '\&quot;'; cursor_++; break;</span>
+<span class="lineNum">     168 </span><span class="lineNoCov">          0 :               case '\\': attribute_ += '\\'; cursor_++; break;</span>
+<span class="lineNum">     169 </span><span class="lineNoCov">          0 :               case '/':  attribute_ += '/';  cursor_++; break;</span>
+<span class="lineNum">     170 </span>            :               case 'x': {  // Not in the JSON standard
+<span class="lineNum">     171 </span><span class="lineNoCov">          0 :                 cursor_++;</span>
+<span class="lineNum">     172 </span><span class="lineNoCov">          0 :                 attribute_ += static_cast&lt;char&gt;(ParseHexNum(2));</span>
+<span class="lineNum">     173 </span><span class="lineNoCov">          0 :                 break;</span>
+<span class="lineNum">     174 </span>            :               }
+<span class="lineNum">     175 </span>            :               case 'u': {
+<span class="lineNum">     176 </span><span class="lineNoCov">          0 :                 cursor_++;</span>
+<span class="lineNum">     177 </span><span class="lineNoCov">          0 :                 ToUTF8(static_cast&lt;int&gt;(ParseHexNum(4)), &amp;attribute_);</span>
+<span class="lineNum">     178 </span><span class="lineNoCov">          0 :                 break;</span>
+<span class="lineNum">     179 </span>            :               }
+<span class="lineNum">     180 </span><span class="lineNoCov">          0 :               default: Error(&quot;unknown escape code in string constant&quot;); break;</span>
+<span class="lineNum">     181 </span>            :             }
+<span class="lineNum">     182 </span>            :           } else { // printable chars + UTF-8 bytes
+<span class="lineNum">     183 </span><span class="lineNoCov">          0 :             attribute_ += *cursor_++;</span>
+<span class="lineNum">     184 </span>            :           }
+<span class="lineNum">     185 </span>            :         }
+<span class="lineNum">     186 </span><span class="lineNoCov">          0 :         cursor_++;</span>
+<span class="lineNum">     187 </span><span class="lineNoCov">          0 :         token_ = kTokenStringConstant;</span>
+<span class="lineNum">     188 </span><span class="lineNoCov">          0 :         return;</span>
+<span class="lineNum">     189 </span>            :       case '/':
+<span class="lineNum">     190 </span><span class="lineCov">         62 :         if (*cursor_ == '/') {</span>
+<span class="lineNum">     191 </span><span class="lineCov">         62 :           const char *start = ++cursor_;</span>
+<span class="lineNum">     192 </span><span class="lineCov">         62 :           while (*cursor_ &amp;&amp; *cursor_ != '\n') cursor_++;</span>
+<span class="lineNum">     193 </span><span class="lineCov">         62 :           if (*start == '/') {  // documentation comment</span>
+<span class="lineNum">     194 </span><span class="lineCov">          8 :             if (cursor_ != source_ &amp;&amp; !seen_newline)</span>
+<span class="lineNum">     195 </span><span class="lineNoCov">          0 :               Error(&quot;a documentation comment should be on a line on its own&quot;);</span>
+<span class="lineNum">     196 </span><span class="lineCov">          8 :             doc_comment_.push_back(std::string(start + 1, cursor_));</span>
+<span class="lineNum">     197 </span>            :           }
+<span class="lineNum">     198 </span><span class="lineCov">         62 :           break;</span>
+<span class="lineNum">     199 </span>            :         }
+<span class="lineNum">     200 </span>            :         // fall thru
+<span class="lineNum">     201 </span>            :       default:
+<span class="lineNum">     202 </span><span class="lineCov">        388 :         if (isalpha(static_cast&lt;unsigned char&gt;(c))) {</span>
+<span class="lineNum">     203 </span>            :           // Collect all chars of an identifier:
+<span class="lineNum">     204 </span><span class="lineCov">        386 :           const char *start = cursor_ - 1;</span>
+<span class="lineNum">     205 </span><span class="lineCov">       3396 :           while (isalnum(static_cast&lt;unsigned char&gt;(*cursor_)) ||</span>
+<span class="lineNum">     206 </span><span class="lineCov">        414 :                  *cursor_ == '_')</span>
+<span class="lineNum">     207 </span><span class="lineCov">       2210 :             cursor_++;</span>
+<span class="lineNum">     208 </span><span class="lineCov">        386 :           attribute_.clear();</span>
+<span class="lineNum">     209 </span><span class="lineCov">        386 :           attribute_.append(start, cursor_);</span>
+<span class="lineNum">     210 </span>            :           // First, see if it is a type keyword from the table of types:
+<span class="lineNum">     211 </span>            :           #define FLATBUFFERS_TD(ENUM, IDLTYPE, CTYPE, JTYPE, GTYPE, NTYPE) \
+<span class="lineNum">     212 </span>            :             if (attribute_ == IDLTYPE) { \
+<span class="lineNum">     213 </span>            :               token_ = kToken ## ENUM; \
+<span class="lineNum">     214 </span>            :               return; \
+<span class="lineNum">     215 </span>            :             }
+<span class="lineNum">     216 </span><span class="lineCov">        386 :             FLATBUFFERS_GEN_TYPES(FLATBUFFERS_TD)</span>
+<span class="lineNum">     217 </span>            :           #undef FLATBUFFERS_TD
+<span class="lineNum">     218 </span>            :           // If it's a boolean constant keyword, turn those into integers,
+<span class="lineNum">     219 </span>            :           // which simplifies our logic downstream.
+<span class="lineNum">     220 </span><span class="lineCov">        304 :           if (attribute_ == &quot;true&quot; || attribute_ == &quot;false&quot;) {</span>
+<span class="lineNum">     221 </span><span class="lineNoCov">          0 :             attribute_ = NumToString(attribute_ == &quot;true&quot;);</span>
+<span class="lineNum">     222 </span><span class="lineNoCov">          0 :             token_ = kTokenIntegerConstant;</span>
+<span class="lineNum">     223 </span><span class="lineNoCov">          0 :             return;</span>
+<span class="lineNum">     224 </span>            :           }
+<span class="lineNum">     225 </span>            :           // Check for declaration keywords:
+<span class="lineNum">     226 </span><span class="lineCov">        304 :           if (attribute_ == &quot;table&quot;)     { token_ = kTokenTable;     return; }</span>
+<span class="lineNum">     227 </span><span class="lineCov">        272 :           if (attribute_ == &quot;struct&quot;)    { token_ = kTokenStruct;    return; }</span>
+<span class="lineNum">     228 </span><span class="lineCov">        272 :           if (attribute_ == &quot;enum&quot;)      { token_ = kTokenEnum;      return; }</span>
+<span class="lineNum">     229 </span><span class="lineCov">        270 :           if (attribute_ == &quot;union&quot;)     { token_ = kTokenUnion;     return; }</span>
+<span class="lineNum">     230 </span><span class="lineCov">        270 :           if (attribute_ == &quot;namespace&quot;) { token_ = kTokenNameSpace; return; }</span>
+<span class="lineNum">     231 </span><span class="lineCov">        240 :           if (attribute_ == &quot;root_type&quot;) { token_ = kTokenRootType;  return; }</span>
+<span class="lineNum">     232 </span><span class="lineCov">        212 :           if (attribute_ == &quot;include&quot;)   { token_ = kTokenInclude;   return; }</span>
+<span class="lineNum">     233 </span><span class="lineCov">        212 :           if (attribute_ == &quot;attribute&quot;) { token_ = kTokenAttribute; return; }</span>
+<span class="lineNum">     234 </span><span class="lineCov">        212 :           if (attribute_ == &quot;file_identifier&quot;) {</span>
+<span class="lineNum">     235 </span><span class="lineNoCov">          0 :             token_ = kTokenFileIdentifier;</span>
+<span class="lineNum">     236 </span><span class="lineNoCov">          0 :             return;</span>
+<span class="lineNum">     237 </span>            :           }
+<span class="lineNum">     238 </span><span class="lineCov">        212 :           if (attribute_ == &quot;file_extension&quot;) {</span>
+<span class="lineNum">     239 </span><span class="lineNoCov">          0 :             token_ = kTokenFileExtension;</span>
+<span class="lineNum">     240 </span><span class="lineNoCov">          0 :             return;</span>
+<span class="lineNum">     241 </span>            :           }
+<span class="lineNum">     242 </span>            :           // If not, it is a user-defined identifier:
+<span class="lineNum">     243 </span><span class="lineCov">        212 :           token_ = kTokenIdentifier;</span>
+<span class="lineNum">     244 </span><span class="lineCov">        212 :           return;</span>
+<span class="lineNum">     245 </span><span class="lineCov">          2 :         } else if (isdigit(static_cast&lt;unsigned char&gt;(c)) || c == '-') {</span>
+<span class="lineNum">     246 </span><span class="lineCov">          2 :           const char *start = cursor_ - 1;</span>
+<span class="lineNum">     247 </span><span class="lineCov">          2 :           while (isdigit(static_cast&lt;unsigned char&gt;(*cursor_))) cursor_++;</span>
+<span class="lineNum">     248 </span><span class="lineCov">          2 :           if (*cursor_ == '.') {</span>
+<span class="lineNum">     249 </span><span class="lineNoCov">          0 :             cursor_++;</span>
+<span class="lineNum">     250 </span><span class="lineNoCov">          0 :             while (isdigit(static_cast&lt;unsigned char&gt;(*cursor_))) cursor_++;</span>
+<span class="lineNum">     251 </span>            :             // See if this float has a scientific notation suffix. Both JSON
+<span class="lineNum">     252 </span>            :             // and C++ (through strtod() we use) have the same format:
+<span class="lineNum">     253 </span><span class="lineNoCov">          0 :             if (*cursor_ == 'e' || *cursor_ == 'E') {</span>
+<span class="lineNum">     254 </span><span class="lineNoCov">          0 :               cursor_++;</span>
+<span class="lineNum">     255 </span><span class="lineNoCov">          0 :               if (*cursor_ == '+' || *cursor_ == '-') cursor_++;</span>
+<span class="lineNum">     256 </span><span class="lineNoCov">          0 :               while (isdigit(static_cast&lt;unsigned char&gt;(*cursor_))) cursor_++;</span>
+<span class="lineNum">     257 </span>            :             }
+<span class="lineNum">     258 </span><span class="lineNoCov">          0 :             token_ = kTokenFloatConstant;</span>
+<span class="lineNum">     259 </span>            :           } else {
+<span class="lineNum">     260 </span><span class="lineCov">          2 :             token_ = kTokenIntegerConstant;</span>
+<span class="lineNum">     261 </span>            :           }
+<span class="lineNum">     262 </span><span class="lineCov">          2 :           attribute_.clear();</span>
+<span class="lineNum">     263 </span><span class="lineCov">          2 :           attribute_.append(start, cursor_);</span>
+<span class="lineNum">     264 </span><span class="lineCov">          2 :           return;</span>
+<span class="lineNum">     265 </span>            :         }
+<span class="lineNum">     266 </span><span class="lineNoCov">          0 :         std::string ch;</span>
+<span class="lineNum">     267 </span><span class="lineNoCov">          0 :         ch = c;</span>
+<span class="lineNum">     268 </span><span class="lineNoCov">          0 :         if (c &lt; ' ' || c &gt; '~') ch = &quot;code: &quot; + NumToString(c);</span>
+<span class="lineNum">     269 </span><span class="lineNoCov">          0 :         Error(&quot;illegal character: &quot; + ch);</span>
+<span class="lineNum">     270 </span><span class="lineNoCov">          0 :         break;</span>
+<span class="lineNum">     271 </span>            :     }
+<span class="lineNum">     272 </span><span class="lineCov">        752 :   }</span>
+<span class="lineNum">     273 </span>            : }
+<a name="274"><span class="lineNum">     274 </span>            : </a>
+<span class="lineNum">     275 </span>            : // Check if a given token is next, if so, consume it as well.
+<span class="lineNum">     276 </span><span class="lineCov">        252 : bool Parser::IsNext(int t) {</span>
+<span class="lineNum">     277 </span><span class="lineCov">        252 :   bool isnext = t == token_;</span>
+<span class="lineNum">     278 </span><span class="lineCov">        252 :   if (isnext) Next();</span>
+<span class="lineNum">     279 </span><span class="lineCov">        252 :   return isnext;</span>
+<span class="lineNum">     280 </span>            : }
+<a name="281"><span class="lineNum">     281 </span>            : </a>
+<span class="lineNum">     282 </span>            : // Expect a given token to be next, consume it, or error if not present.
+<span class="lineNum">     283 </span><span class="lineCov">        580 : void Parser::Expect(int t) {</span>
+<span class="lineNum">     284 </span><span class="lineCov">        580 :   if (t != token_) {</span>
+<span class="lineNum">     285 </span><span class="lineNoCov">          0 :     Error(&quot;expecting: &quot; + TokenToString(t) + &quot; instead got: &quot; +</span>
+<span class="lineNum">     286 </span><span class="lineNoCov">          0 :           TokenToString(token_));</span>
+<span class="lineNum">     287 </span>            :   }
+<span class="lineNum">     288 </span><span class="lineCov">        580 :   Next();</span>
+<a name="289"><span class="lineNum">     289 </span><span class="lineCov">        580 : }</span></a>
+<span class="lineNum">     290 </span>            : 
+<span class="lineNum">     291 </span><span class="lineCov">          2 : void Parser::ParseTypeIdent(Type &amp;type) {</span>
+<span class="lineNum">     292 </span><span class="lineCov">          2 :   auto enum_def = enums_.Lookup(attribute_);</span>
+<span class="lineNum">     293 </span><span class="lineCov">          2 :   if (enum_def) {</span>
+<span class="lineNum">     294 </span><span class="lineCov">          2 :     type = enum_def-&gt;underlying_type;</span>
+<span class="lineNum">     295 </span><span class="lineCov">          2 :     if (enum_def-&gt;is_union) type.base_type = BASE_TYPE_UNION;</span>
+<span class="lineNum">     296 </span>            :   } else {
+<span class="lineNum">     297 </span><span class="lineNoCov">          0 :     type.base_type = BASE_TYPE_STRUCT;</span>
+<span class="lineNum">     298 </span><span class="lineNoCov">          0 :     type.struct_def = LookupCreateStruct(attribute_);</span>
+<span class="lineNum">     299 </span>            :   }
+<span class="lineNum">     300 </span><span class="lineCov">          2 : }</span>
+<a name="301"><span class="lineNum">     301 </span>            : </a>
+<span class="lineNum">     302 </span>            : // Parse any IDL type.
+<span class="lineNum">     303 </span><span class="lineCov">        132 : void Parser::ParseType(Type &amp;type) {</span>
+<span class="lineNum">     304 </span><span class="lineCov">        132 :   if (token_ &gt;= kTokenBOOL &amp;&amp; token_ &lt;= kTokenSTRING) {</span>
+<span class="lineNum">     305 </span><span class="lineCov">         82 :     type.base_type = static_cast&lt;BaseType&gt;(token_ - kTokenNONE);</span>
+<span class="lineNum">     306 </span>            :   } else {
+<span class="lineNum">     307 </span><span class="lineCov">         50 :     if (token_ == kTokenIdentifier) {</span>
+<span class="lineNum">     308 </span><span class="lineCov">          2 :       ParseTypeIdent(type);</span>
+<span class="lineNum">     309 </span><span class="lineCov">         48 :     } else if (token_ == '[') {</span>
+<span class="lineNum">     310 </span><span class="lineCov">         48 :       Next();</span>
+<span class="lineNum">     311 </span><span class="lineCov">         48 :       Type subtype;</span>
+<span class="lineNum">     312 </span><span class="lineCov">         48 :       ParseType(subtype);</span>
+<span class="lineNum">     313 </span><span class="lineCov">         48 :       if (subtype.base_type == BASE_TYPE_VECTOR) {</span>
+<span class="lineNum">     314 </span>            :         // We could support this, but it will complicate things, and it's
+<span class="lineNum">     315 </span>            :         // easier to work around with a struct around the inner vector.
+<span class="lineNum">     316 </span><span class="lineNoCov">          0 :         Error(&quot;nested vector types not supported (wrap in table first).&quot;);</span>
+<span class="lineNum">     317 </span>            :       }
+<span class="lineNum">     318 </span><span class="lineCov">         48 :       if (subtype.base_type == BASE_TYPE_UNION) {</span>
+<span class="lineNum">     319 </span>            :         // We could support this if we stored a struct of 2 elements per
+<span class="lineNum">     320 </span>            :         // union element.
+<span class="lineNum">     321 </span><span class="lineNoCov">          0 :         Error(&quot;vector of union types not supported (wrap in table first).&quot;);</span>
+<span class="lineNum">     322 </span>            :       }
+<span class="lineNum">     323 </span><span class="lineCov">         48 :       type = Type(BASE_TYPE_VECTOR, subtype.struct_def, subtype.enum_def);</span>
+<span class="lineNum">     324 </span><span class="lineCov">         48 :       type.element = subtype.base_type;</span>
+<span class="lineNum">     325 </span><span class="lineCov">         48 :       Expect(']');</span>
+<span class="lineNum">     326 </span><span class="lineCov">        180 :       return;</span>
+<span class="lineNum">     327 </span>            :     } else {
+<span class="lineNum">     328 </span><span class="lineNoCov">          0 :       Error(&quot;illegal type syntax&quot;);</span>
+<span class="lineNum">     329 </span>            :     }
+<span class="lineNum">     330 </span>            :   }
+<span class="lineNum">     331 </span><span class="lineCov">         84 :   Next();</span>
+<a name="332"><span class="lineNum">     332 </span>            : }</a>
+<span class="lineNum">     333 </span>            : 
+<span class="lineNum">     334 </span><span class="lineCov">         82 : FieldDef &amp;Parser::AddField(StructDef &amp;struct_def,</span>
+<span class="lineNum">     335 </span>            :                            const std::string &amp;name,
+<span class="lineNum">     336 </span>            :                            const Type &amp;type) {
+<span class="lineNum">     337 </span><span class="lineCov">         82 :   auto &amp;field = *new FieldDef();</span>
+<span class="lineNum">     338 </span>            :   field.value.offset =
+<span class="lineNum">     339 </span><span class="lineCov">         82 :     FieldIndexToOffset(static_cast&lt;voffset_t&gt;(struct_def.fields.vec.size()));</span>
+<span class="lineNum">     340 </span><span class="lineCov">         82 :   field.name = name;</span>
+<span class="lineNum">     341 </span><span class="lineCov">         82 :   field.value.type = type;</span>
+<span class="lineNum">     342 </span><span class="lineCov">         82 :   if (struct_def.fixed) {  // statically compute the field offset</span>
+<span class="lineNum">     343 </span><span class="lineNoCov">          0 :     auto size = InlineSize(type);</span>
+<span class="lineNum">     344 </span><span class="lineNoCov">          0 :     auto alignment = InlineAlignment(type);</span>
+<span class="lineNum">     345 </span>            :     // structs_ need to have a predictable format, so we need to align to
+<span class="lineNum">     346 </span>            :     // the largest scalar
+<span class="lineNum">     347 </span><span class="lineNoCov">          0 :     struct_def.minalign = std::max(struct_def.minalign, alignment);</span>
+<span class="lineNum">     348 </span><span class="lineNoCov">          0 :     struct_def.PadLastField(alignment);</span>
+<span class="lineNum">     349 </span><span class="lineNoCov">          0 :     field.value.offset = static_cast&lt;voffset_t&gt;(struct_def.bytesize);</span>
+<span class="lineNum">     350 </span><span class="lineNoCov">          0 :     struct_def.bytesize += size;</span>
+<span class="lineNum">     351 </span>            :   }
+<span class="lineNum">     352 </span><span class="lineCov">         82 :   if (struct_def.fields.Add(name, &amp;field))</span>
+<span class="lineNum">     353 </span><span class="lineNoCov">          0 :     Error(&quot;field already exists: &quot; + name);</span>
+<span class="lineNum">     354 </span><span class="lineCov">         82 :   return field;</span>
+<a name="355"><span class="lineNum">     355 </span>            : }</a>
+<span class="lineNum">     356 </span>            : 
+<span class="lineNum">     357 </span><span class="lineCov">         82 : void Parser::ParseField(StructDef &amp;struct_def) {</span>
+<span class="lineNum">     358 </span><span class="lineCov">         82 :   std::string name = attribute_;</span>
+<span class="lineNum">     359 </span><span class="lineCov">        164 :   std::vector&lt;std::string&gt; dc = doc_comment_;</span>
+<span class="lineNum">     360 </span><span class="lineCov">         82 :   Expect(kTokenIdentifier);</span>
+<span class="lineNum">     361 </span><span class="lineCov">         82 :   Expect(':');</span>
+<span class="lineNum">     362 </span><span class="lineCov">         82 :   Type type;</span>
+<span class="lineNum">     363 </span><span class="lineCov">         82 :   ParseType(type);</span>
+<span class="lineNum">     364 </span>            : 
+<span class="lineNum">     365 </span><span class="lineCov">         82 :   if (struct_def.fixed &amp;&amp; !IsScalar(type.base_type) &amp;&amp; !IsStruct(type))</span>
+<span class="lineNum">     366 </span><span class="lineNoCov">          0 :     Error(&quot;structs_ may contain only scalar or struct fields&quot;);</span>
+<span class="lineNum">     367 </span>            : 
+<span class="lineNum">     368 </span><span class="lineCov">         82 :   FieldDef *typefield = nullptr;</span>
+<span class="lineNum">     369 </span><span class="lineCov">         82 :   if (type.base_type == BASE_TYPE_UNION) {</span>
+<span class="lineNum">     370 </span>            :     // For union fields, add a second auto-generated field to hold the type,
+<span class="lineNum">     371 </span>            :     // with _type appended as the name.
+<span class="lineNum">     372 </span><span class="lineNoCov">          0 :     typefield = &amp;AddField(struct_def, name + &quot;_type&quot;,</span>
+<span class="lineNum">     373 </span><span class="lineNoCov">          0 :                           type.enum_def-&gt;underlying_type);</span>
+<span class="lineNum">     374 </span>            :   }
+<span class="lineNum">     375 </span>            : 
+<span class="lineNum">     376 </span><span class="lineCov">         82 :   auto &amp;field = AddField(struct_def, name, type);</span>
+<span class="lineNum">     377 </span>            : 
+<span class="lineNum">     378 </span><span class="lineCov">         82 :   if (token_ == '=') {</span>
+<span class="lineNum">     379 </span><span class="lineCov">          2 :     Next();</span>
+<span class="lineNum">     380 </span><span class="lineCov">          2 :     if (!IsScalar(type.base_type))</span>
+<span class="lineNum">     381 </span><span class="lineNoCov">          0 :       Error(&quot;default values currently only supported for scalars&quot;);</span>
+<span class="lineNum">     382 </span><span class="lineCov">          2 :     ParseSingleValue(field.value);</span>
+<span class="lineNum">     383 </span>            :   }
+<span class="lineNum">     384 </span>            : 
+<span class="lineNum">     385 </span><span class="lineCov">        248 :   if (type.enum_def &amp;&amp;</span>
+<span class="lineNum">     386 </span><span class="lineCov">          2 :       IsScalar(type.base_type) &amp;&amp;</span>
+<span class="lineNum">     387 </span><span class="lineNoCov">          0 :       !struct_def.fixed &amp;&amp;</span>
+<span class="lineNum">     388 </span><span class="lineCov">        164 :       !type.enum_def-&gt;attributes.Lookup(&quot;bit_flags&quot;) &amp;&amp;</span>
+<span class="lineNum">     389 </span>            :       !type.enum_def-&gt;ReverseLookup(static_cast&lt;int&gt;(
+<span class="lineNum">     390 </span><span class="lineNoCov">          0 :                          StringToInt(field.value.constant.c_str()))))</span>
+<span class="lineNum">     391 </span><span class="lineNoCov">          0 :     Error(&quot;enum &quot; + type.enum_def-&gt;name +</span>
+<span class="lineNum">     392 </span><span class="lineNoCov">          0 :           &quot; does not have a declaration for this field\'s default of &quot; +</span>
+<span class="lineNum">     393 </span><span class="lineNoCov">          0 :           field.value.constant);</span>
+<span class="lineNum">     394 </span>            : 
+<span class="lineNum">     395 </span><span class="lineCov">         82 :   field.doc_comment = dc;</span>
+<span class="lineNum">     396 </span><span class="lineCov">         82 :   ParseMetaData(field);</span>
+<span class="lineNum">     397 </span><span class="lineCov">         82 :   field.deprecated = field.attributes.Lookup(&quot;deprecated&quot;) != nullptr;</span>
+<span class="lineNum">     398 </span><span class="lineCov">         82 :   if (field.deprecated &amp;&amp; struct_def.fixed)</span>
+<span class="lineNum">     399 </span><span class="lineNoCov">          0 :     Error(&quot;can't deprecate fields in a struct&quot;);</span>
+<span class="lineNum">     400 </span><span class="lineCov">         82 :   field.required = field.attributes.Lookup(&quot;required&quot;) != nullptr;</span>
+<span class="lineNum">     401 </span><span class="lineCov">         82 :   if (field.required &amp;&amp; (struct_def.fixed ||</span>
+<span class="lineNum">     402 </span><span class="lineNoCov">          0 :                          IsScalar(field.value.type.base_type)))</span>
+<span class="lineNum">     403 </span><span class="lineNoCov">          0 :     Error(&quot;only non-scalar fields in tables may be 'required'&quot;);</span>
+<span class="lineNum">     404 </span><span class="lineCov">         82 :   auto nested = field.attributes.Lookup(&quot;nested_flatbuffer&quot;);</span>
+<span class="lineNum">     405 </span><span class="lineCov">         82 :   if (nested) {</span>
+<span class="lineNum">     406 </span><span class="lineNoCov">          0 :     if (nested-&gt;type.base_type != BASE_TYPE_STRING)</span>
+<span class="lineNum">     407 </span><span class="lineNoCov">          0 :       Error(&quot;nested_flatbuffer attribute must be a string (the root type)&quot;);</span>
+<span class="lineNum">     408 </span><span class="lineNoCov">          0 :     if (field.value.type.base_type != BASE_TYPE_VECTOR ||</span>
+<span class="lineNum">     409 </span><span class="lineNoCov">          0 :         field.value.type.element != BASE_TYPE_UCHAR)</span>
+<span class="lineNum">     410 </span><span class="lineNoCov">          0 :       Error(&quot;nested_flatbuffer attribute may only apply to a vector of ubyte&quot;);</span>
+<span class="lineNum">     411 </span>            :     // This will cause an error if the root type of the nested flatbuffer
+<span class="lineNum">     412 </span>            :     // wasn't defined elsewhere.
+<span class="lineNum">     413 </span><span class="lineNoCov">          0 :     LookupCreateStruct(nested-&gt;constant);</span>
+<span class="lineNum">     414 </span>            :   }
+<span class="lineNum">     415 </span>            : 
+<span class="lineNum">     416 </span><span class="lineCov">         82 :   if (typefield) {</span>
+<span class="lineNum">     417 </span>            :     // If this field is a union, and it has a manually assigned id,
+<span class="lineNum">     418 </span>            :     // the automatically added type field should have an id as well (of N - 1).
+<span class="lineNum">     419 </span><span class="lineNoCov">          0 :     auto attr = field.attributes.Lookup(&quot;id&quot;);</span>
+<span class="lineNum">     420 </span><span class="lineNoCov">          0 :     if (attr) {</span>
+<span class="lineNum">     421 </span><span class="lineNoCov">          0 :       auto id = atoi(attr-&gt;constant.c_str());</span>
+<span class="lineNum">     422 </span><span class="lineNoCov">          0 :       auto val = new Value();</span>
+<span class="lineNum">     423 </span><span class="lineNoCov">          0 :       val-&gt;type = attr-&gt;type;</span>
+<span class="lineNum">     424 </span><span class="lineNoCov">          0 :       val-&gt;constant = NumToString(id - 1);</span>
+<span class="lineNum">     425 </span><span class="lineNoCov">          0 :       typefield-&gt;attributes.Add(&quot;id&quot;, val);</span>
+<span class="lineNum">     426 </span>            :     }
+<span class="lineNum">     427 </span>            :   }
+<span class="lineNum">     428 </span>            : 
+<span class="lineNum">     429 </span><span class="lineCov">        164 :   Expect(';');</span>
+<a name="430"><span class="lineNum">     430 </span><span class="lineCov">         82 : }</span></a>
+<span class="lineNum">     431 </span>            : 
+<span class="lineNum">     432 </span><span class="lineNoCov">          0 : void Parser::ParseAnyValue(Value &amp;val, FieldDef *field) {</span>
+<span class="lineNum">     433 </span><span class="lineNoCov">          0 :   switch (val.type.base_type) {</span>
+<span class="lineNum">     434 </span>            :     case BASE_TYPE_UNION: {
+<span class="lineNum">     435 </span><span class="lineNoCov">          0 :       assert(field);</span>
+<span class="lineNum">     436 </span><span class="lineNoCov">          0 :       if (!field_stack_.size() ||</span>
+<span class="lineNum">     437 </span><span class="lineNoCov">          0 :           field_stack_.back().second-&gt;value.type.base_type != BASE_TYPE_UTYPE)</span>
+<span class="lineNum">     438 </span><span class="lineNoCov">          0 :         Error(&quot;missing type field before this union value: &quot; + field-&gt;name);</span>
+<span class="lineNum">     439 </span>            :       auto enum_idx = atot&lt;unsigned char&gt;(
+<span class="lineNum">     440 </span><span class="lineNoCov">          0 :                                     field_stack_.back().first.constant.c_str());</span>
+<span class="lineNum">     441 </span><span class="lineNoCov">          0 :       auto enum_val = val.type.enum_def-&gt;ReverseLookup(enum_idx);</span>
+<span class="lineNum">     442 </span><span class="lineNoCov">          0 :       if (!enum_val) Error(&quot;illegal type id for: &quot; + field-&gt;name);</span>
+<span class="lineNum">     443 </span><span class="lineNoCov">          0 :       val.constant = NumToString(ParseTable(*enum_val-&gt;struct_def));</span>
+<span class="lineNum">     444 </span><span class="lineNoCov">          0 :       break;</span>
+<span class="lineNum">     445 </span>            :     }
+<span class="lineNum">     446 </span>            :     case BASE_TYPE_STRUCT:
+<span class="lineNum">     447 </span><span class="lineNoCov">          0 :       val.constant = NumToString(ParseTable(*val.type.struct_def));</span>
+<span class="lineNum">     448 </span><span class="lineNoCov">          0 :       break;</span>
+<span class="lineNum">     449 </span>            :     case BASE_TYPE_STRING: {
+<span class="lineNum">     450 </span><span class="lineNoCov">          0 :       auto s = attribute_;</span>
+<span class="lineNum">     451 </span><span class="lineNoCov">          0 :       Expect(kTokenStringConstant);</span>
+<span class="lineNum">     452 </span><span class="lineNoCov">          0 :       val.constant = NumToString(builder_.CreateString(s).o);</span>
+<span class="lineNum">     453 </span><span class="lineNoCov">          0 :       break;</span>
+<span class="lineNum">     454 </span>            :     }
+<span class="lineNum">     455 </span>            :     case BASE_TYPE_VECTOR: {
+<span class="lineNum">     456 </span>            :       // binary vectors in JSON can be base64 encoded aka a string
+<span class="lineNum">     457 </span><span class="lineNoCov">          0 :       if ('[' != token_ &amp;&amp; val.type.element == BASE_TYPE_UCHAR)</span>
+<span class="lineNum">     458 </span>            :       {
+<span class="lineNum">     459 </span><span class="lineNoCov">          0 :         auto s = attribute_;</span>
+<span class="lineNum">     460 </span><span class="lineNoCov">          0 :         Expect(kTokenStringConstant);</span>
+<span class="lineNum">     461 </span><span class="lineNoCov">          0 :         auto decoded = base64_decode(s);</span>
+<span class="lineNum">     462 </span><span class="lineNoCov">          0 :         val.constant = NumToString(builder_.CreateVector(decoded.data(), decoded.size()).o);</span>
+<span class="lineNum">     463 </span>            :       }
+<span class="lineNum">     464 </span>            :       else
+<span class="lineNum">     465 </span>            :       {
+<span class="lineNum">     466 </span><span class="lineNoCov">          0 :         Expect('[');</span>
+<span class="lineNum">     467 </span><span class="lineNoCov">          0 :         val.constant = NumToString(ParseVector(val.type.VectorType()));</span>
+<span class="lineNum">     468 </span>            :       }
+<span class="lineNum">     469 </span><span class="lineNoCov">          0 :       break;</span>
+<span class="lineNum">     470 </span>            :     }
+<span class="lineNum">     471 </span>            :     default:
+<span class="lineNum">     472 </span><span class="lineNoCov">          0 :       ParseSingleValue(val);</span>
+<span class="lineNum">     473 </span><span class="lineNoCov">          0 :       break;</span>
+<span class="lineNum">     474 </span>            :   }
+<a name="475"><span class="lineNum">     475 </span><span class="lineNoCov">          0 : }</span></a>
+<span class="lineNum">     476 </span>            : 
+<span class="lineNum">     477 </span><span class="lineNoCov">          0 : void Parser::SerializeStruct(const StructDef &amp;struct_def, const Value &amp;val) {</span>
+<span class="lineNum">     478 </span><span class="lineNoCov">          0 :   auto off = atot&lt;uoffset_t&gt;(val.constant.c_str());</span>
+<span class="lineNum">     479 </span><span class="lineNoCov">          0 :   assert(struct_stack_.size() - off == struct_def.bytesize);</span>
+<span class="lineNum">     480 </span><span class="lineNoCov">          0 :   builder_.Align(struct_def.minalign);</span>
+<span class="lineNum">     481 </span><span class="lineNoCov">          0 :   builder_.PushBytes(&amp;struct_stack_[off], struct_def.bytesize);</span>
+<span class="lineNum">     482 </span><span class="lineNoCov">          0 :   struct_stack_.resize(struct_stack_.size() - struct_def.bytesize);</span>
+<span class="lineNum">     483 </span><span class="lineNoCov">          0 :   builder_.AddStructOffset(val.offset, builder_.GetSize());</span>
+<a name="484"><span class="lineNum">     484 </span><span class="lineNoCov">          0 : }</span></a>
+<span class="lineNum">     485 </span>            : 
+<span class="lineNum">     486 </span><span class="lineNoCov">          0 : uoffset_t Parser::ParseTable(const StructDef &amp;struct_def) {</span>
+<span class="lineNum">     487 </span><span class="lineNoCov">          0 :   Expect('{');</span>
+<span class="lineNum">     488 </span><span class="lineNoCov">          0 :   size_t fieldn = 0;</span>
+<span class="lineNum">     489 </span><span class="lineNoCov">          0 :   if (!IsNext('}')) for (;;) {</span>
+<span class="lineNum">     490 </span><span class="lineNoCov">          0 :     std::string name = attribute_;</span>
+<span class="lineNum">     491 </span><span class="lineNoCov">          0 :     if (!IsNext(kTokenStringConstant)) Expect(kTokenIdentifier);</span>
+<span class="lineNum">     492 </span><span class="lineNoCov">          0 :     auto field = struct_def.fields.Lookup(name);</span>
+<span class="lineNum">     493 </span><span class="lineNoCov">          0 :     if (!field) Error(&quot;unknown field: &quot; + name);</span>
+<span class="lineNum">     494 </span><span class="lineNoCov">          0 :     if (struct_def.fixed &amp;&amp; (fieldn &gt;= struct_def.fields.vec.size()</span>
+<span class="lineNum">     495 </span><span class="lineNoCov">          0 :                             || struct_def.fields.vec[fieldn] != field)) {</span>
+<span class="lineNum">     496 </span><span class="lineNoCov">          0 :        Error(&quot;struct field appearing out of order: &quot; + name);</span>
+<span class="lineNum">     497 </span>            :     }
+<span class="lineNum">     498 </span><span class="lineNoCov">          0 :     Expect(':');</span>
+<span class="lineNum">     499 </span><span class="lineNoCov">          0 :     Value val = field-&gt;value;</span>
+<span class="lineNum">     500 </span><span class="lineNoCov">          0 :     ParseAnyValue(val, field);</span>
+<span class="lineNum">     501 </span><span class="lineNoCov">          0 :     field_stack_.push_back(std::make_pair(val, field));</span>
+<span class="lineNum">     502 </span><span class="lineNoCov">          0 :     fieldn++;</span>
+<span class="lineNum">     503 </span><span class="lineNoCov">          0 :     if (IsNext('}')) break;</span>
+<span class="lineNum">     504 </span><span class="lineNoCov">          0 :     Expect(',');</span>
+<span class="lineNum">     505 </span><span class="lineNoCov">          0 :   }</span>
+<span class="lineNum">     506 </span><span class="lineNoCov">          0 :   for (auto it = field_stack_.rbegin();</span>
+<span class="lineNum">     507 </span><span class="lineNoCov">          0 :            it != field_stack_.rbegin() + fieldn; ++it) {</span>
+<span class="lineNum">     508 </span><span class="lineNoCov">          0 :     if (it-&gt;second-&gt;used)</span>
+<span class="lineNum">     509 </span><span class="lineNoCov">          0 :       Error(&quot;field set more than once: &quot; + it-&gt;second-&gt;name);</span>
+<span class="lineNum">     510 </span><span class="lineNoCov">          0 :     it-&gt;second-&gt;used = true;</span>
+<span class="lineNum">     511 </span>            :   }
+<span class="lineNum">     512 </span><span class="lineNoCov">          0 :   for (auto it = field_stack_.rbegin();</span>
+<span class="lineNum">     513 </span><span class="lineNoCov">          0 :            it != field_stack_.rbegin() + fieldn; ++it) {</span>
+<span class="lineNum">     514 </span><span class="lineNoCov">          0 :     it-&gt;second-&gt;used = false;</span>
+<span class="lineNum">     515 </span>            :   }
+<span class="lineNum">     516 </span><span class="lineNoCov">          0 :   if (struct_def.fixed &amp;&amp; fieldn != struct_def.fields.vec.size())</span>
+<span class="lineNum">     517 </span><span class="lineNoCov">          0 :     Error(&quot;incomplete struct initialization: &quot; + struct_def.name);</span>
+<span class="lineNum">     518 </span>            :   auto start = struct_def.fixed
+<span class="lineNum">     519 </span><span class="lineNoCov">          0 :                  ? builder_.StartStruct(struct_def.minalign)</span>
+<span class="lineNum">     520 </span><span class="lineNoCov">          0 :                  : builder_.StartTable();</span>
+<span class="lineNum">     521 </span>            : 
+<span class="lineNum">     522 </span><span class="lineNoCov">          0 :   for (size_t size = struct_def.sortbysize ? sizeof(largest_scalar_t) : 1;</span>
+<span class="lineNum">     523 </span>            :        size;
+<span class="lineNum">     524 </span>            :        size /= 2) {
+<span class="lineNum">     525 </span>            :     // Go through elements in reverse, since we're building the data backwards.
+<span class="lineNum">     526 </span><span class="lineNoCov">          0 :     for (auto it = field_stack_.rbegin();</span>
+<span class="lineNum">     527 </span><span class="lineNoCov">          0 :              it != field_stack_.rbegin() + fieldn; ++it) {</span>
+<span class="lineNum">     528 </span><span class="lineNoCov">          0 :       auto &amp;value = it-&gt;first;</span>
+<span class="lineNum">     529 </span><span class="lineNoCov">          0 :       auto field = it-&gt;second;</span>
+<span class="lineNum">     530 </span><span class="lineNoCov">          0 :       if (!struct_def.sortbysize || size == SizeOf(value.type.base_type)) {</span>
+<span class="lineNum">     531 </span><span class="lineNoCov">          0 :         switch (value.type.base_type) {</span>
+<span class="lineNum">     532 </span>            :           #define FLATBUFFERS_TD(ENUM, IDLTYPE, CTYPE, JTYPE, GTYPE, NTYPE) \
+<span class="lineNum">     533 </span>            :             case BASE_TYPE_ ## ENUM: \
+<span class="lineNum">     534 </span>            :               builder_.Pad(field-&gt;padding); \
+<span class="lineNum">     535 </span>            :               if (struct_def.fixed) { \
+<span class="lineNum">     536 </span>            :                 builder_.PushElement(atot&lt;CTYPE&gt;(value.constant.c_str())); \
+<span class="lineNum">     537 </span>            :               } else { \
+<span class="lineNum">     538 </span>            :                 builder_.AddElement(value.offset, \
+<span class="lineNum">     539 </span>            :                              atot&lt;CTYPE&gt;(       value.constant.c_str()), \
+<span class="lineNum">     540 </span>            :                              atot&lt;CTYPE&gt;(field-&gt;value.constant.c_str())); \
+<span class="lineNum">     541 </span>            :               } \
+<span class="lineNum">     542 </span>            :               break;
+<span class="lineNum">     543 </span><span class="lineNoCov">          0 :             FLATBUFFERS_GEN_TYPES_SCALAR(FLATBUFFERS_TD);</span>
+<span class="lineNum">     544 </span>            :           #undef FLATBUFFERS_TD
+<span class="lineNum">     545 </span>            :           #define FLATBUFFERS_TD(ENUM, IDLTYPE, CTYPE, JTYPE, GTYPE, NTYPE) \
+<span class="lineNum">     546 </span>            :             case BASE_TYPE_ ## ENUM: \
+<span class="lineNum">     547 </span>            :               builder_.Pad(field-&gt;padding); \
+<span class="lineNum">     548 </span>            :               if (IsStruct(field-&gt;value.type)) { \
+<span class="lineNum">     549 </span>            :                 SerializeStruct(*field-&gt;value.type.struct_def, value); \
+<span class="lineNum">     550 </span>            :               } else { \
+<span class="lineNum">     551 </span>            :                 builder_.AddOffset(value.offset, \
+<span class="lineNum">     552 </span>            :                   atot&lt;CTYPE&gt;(value.constant.c_str())); \
+<span class="lineNum">     553 </span>            :               } \
+<span class="lineNum">     554 </span>            :               break;
+<span class="lineNum">     555 </span><span class="lineNoCov">          0 :             FLATBUFFERS_GEN_TYPES_POINTER(FLATBUFFERS_TD);</span>
+<span class="lineNum">     556 </span>            :           #undef FLATBUFFERS_TD
+<span class="lineNum">     557 </span>            :         }
+<span class="lineNum">     558 </span>            :       }
+<span class="lineNum">     559 </span>            :     }
+<span class="lineNum">     560 </span>            :   }
+<span class="lineNum">     561 </span><span class="lineNoCov">          0 :   for (size_t i = 0; i &lt; fieldn; i++) field_stack_.pop_back();</span>
+<span class="lineNum">     562 </span>            : 
+<span class="lineNum">     563 </span><span class="lineNoCov">          0 :   if (struct_def.fixed) {</span>
+<span class="lineNum">     564 </span><span class="lineNoCov">          0 :     builder_.ClearOffsets();</span>
+<span class="lineNum">     565 </span><span class="lineNoCov">          0 :     builder_.EndStruct();</span>
+<span class="lineNum">     566 </span>            :     // Temporarily store this struct in a side buffer, since this data has to
+<span class="lineNum">     567 </span>            :     // be stored in-line later in the parent object.
+<span class="lineNum">     568 </span><span class="lineNoCov">          0 :     auto off = struct_stack_.size();</span>
+<span class="lineNum">     569 </span>            :     struct_stack_.insert(struct_stack_.end(),
+<span class="lineNum">     570 </span>            :                          builder_.GetBufferPointer(),
+<span class="lineNum">     571 </span><span class="lineNoCov">          0 :                          builder_.GetBufferPointer() + struct_def.bytesize);</span>
+<span class="lineNum">     572 </span><span class="lineNoCov">          0 :     builder_.PopBytes(struct_def.bytesize);</span>
+<span class="lineNum">     573 </span><span class="lineNoCov">          0 :     return static_cast&lt;uoffset_t&gt;(off);</span>
+<span class="lineNum">     574 </span>            :   } else {
+<span class="lineNum">     575 </span>            :     return builder_.EndTable(
+<span class="lineNum">     576 </span>            :       start,
+<span class="lineNum">     577 </span><span class="lineNoCov">          0 :       static_cast&lt;voffset_t&gt;(struct_def.fields.vec.size()));</span>
+<span class="lineNum">     578 </span>            :   }
+<a name="579"><span class="lineNum">     579 </span>            : }</a>
+<span class="lineNum">     580 </span>            : 
+<span class="lineNum">     581 </span><span class="lineNoCov">          0 : uoffset_t Parser::ParseVector(const Type &amp;type) {</span>
+<span class="lineNum">     582 </span><span class="lineNoCov">          0 :   int count = 0;</span>
+<span class="lineNum">     583 </span><span class="lineNoCov">          0 :   if (token_ != ']') for (;;) {</span>
+<span class="lineNum">     584 </span><span class="lineNoCov">          0 :     Value val;</span>
+<span class="lineNum">     585 </span><span class="lineNoCov">          0 :     val.type = type;</span>
+<span class="lineNum">     586 </span><span class="lineNoCov">          0 :     ParseAnyValue(val, NULL);</span>
+<span class="lineNum">     587 </span><span class="lineNoCov">          0 :     field_stack_.push_back(std::make_pair(val, nullptr));</span>
+<span class="lineNum">     588 </span><span class="lineNoCov">          0 :     count++;</span>
+<span class="lineNum">     589 </span><span class="lineNoCov">          0 :     if (token_ == ']') break;</span>
+<span class="lineNum">     590 </span><span class="lineNoCov">          0 :     Expect(',');</span>
+<span class="lineNum">     591 </span><span class="lineNoCov">          0 :   }</span>
+<span class="lineNum">     592 </span><span class="lineNoCov">          0 :   Next();</span>
+<span class="lineNum">     593 </span>            : 
+<span class="lineNum">     594 </span><span class="lineNoCov">          0 :   builder_.StartVector(count * InlineSize(type) / InlineAlignment(type),</span>
+<span class="lineNum">     595 </span><span class="lineNoCov">          0 :                        InlineAlignment(type));</span>
+<span class="lineNum">     596 </span><span class="lineNoCov">          0 :   for (int i = 0; i &lt; count; i++) {</span>
+<span class="lineNum">     597 </span>            :     // start at the back, since we're building the data backwards.
+<span class="lineNum">     598 </span><span class="lineNoCov">          0 :     auto &amp;val = field_stack_.back().first;</span>
+<span class="lineNum">     599 </span><span class="lineNoCov">          0 :     switch (val.type.base_type) {</span>
+<span class="lineNum">     600 </span>            :       #define FLATBUFFERS_TD(ENUM, IDLTYPE, CTYPE, JTYPE, GTYPE, NTYPE) \
+<span class="lineNum">     601 </span>            :         case BASE_TYPE_ ## ENUM: \
+<span class="lineNum">     602 </span>            :           if (IsStruct(val.type)) SerializeStruct(*val.type.struct_def, val); \
+<span class="lineNum">     603 </span>            :           else builder_.PushElement(atot&lt;CTYPE&gt;(val.constant.c_str())); \
+<span class="lineNum">     604 </span>            :           break;
+<span class="lineNum">     605 </span><span class="lineNoCov">          0 :         FLATBUFFERS_GEN_TYPES(FLATBUFFERS_TD)</span>
+<span class="lineNum">     606 </span>            :       #undef FLATBUFFERS_TD
+<span class="lineNum">     607 </span>            :     }
+<span class="lineNum">     608 </span><span class="lineNoCov">          0 :     field_stack_.pop_back();</span>
+<span class="lineNum">     609 </span>            :   }
+<span class="lineNum">     610 </span>            : 
+<span class="lineNum">     611 </span><span class="lineNoCov">          0 :   builder_.ClearOffsets();</span>
+<span class="lineNum">     612 </span><span class="lineNoCov">          0 :   return builder_.EndVector(count);</span>
+<a name="613"><span class="lineNum">     613 </span>            : }</a>
+<span class="lineNum">     614 </span>            : 
+<span class="lineNum">     615 </span><span class="lineCov">        116 : void Parser::ParseMetaData(Definition &amp;def) {</span>
+<span class="lineNum">     616 </span><span class="lineCov">        116 :   if (IsNext('(')) {</span>
+<span class="lineNum">     617 </span>            :     for (;;) {
+<span class="lineNum">     618 </span><span class="lineNoCov">          0 :       auto name = attribute_;</span>
+<span class="lineNum">     619 </span><span class="lineNoCov">          0 :       Expect(kTokenIdentifier);</span>
+<span class="lineNum">     620 </span><span class="lineNoCov">          0 :       if (known_attributes_.find(name) == known_attributes_.end())</span>
+<span class="lineNum">     621 </span><span class="lineNoCov">          0 :         Error(&quot;user define attributes must be declared before use: &quot; + name);</span>
+<span class="lineNum">     622 </span><span class="lineNoCov">          0 :       auto e = new Value();</span>
+<span class="lineNum">     623 </span><span class="lineNoCov">          0 :       def.attributes.Add(name, e);</span>
+<span class="lineNum">     624 </span><span class="lineNoCov">          0 :       if (IsNext(':')) {</span>
+<span class="lineNum">     625 </span><span class="lineNoCov">          0 :         ParseSingleValue(*e);</span>
+<span class="lineNum">     626 </span>            :       }
+<span class="lineNum">     627 </span><span class="lineNoCov">          0 :       if (IsNext(')')) break;</span>
+<span class="lineNum">     628 </span><span class="lineNoCov">          0 :       Expect(',');</span>
+<span class="lineNum">     629 </span><span class="lineNoCov">          0 :     }</span>
+<span class="lineNum">     630 </span>            :   }
+<a name="631"><span class="lineNum">     631 </span><span class="lineCov">        116 : }</span></a>
+<span class="lineNum">     632 </span>            : 
+<span class="lineNum">     633 </span><span class="lineCov">          2 : bool Parser::TryTypedValue(int dtoken,</span>
+<span class="lineNum">     634 </span>            :                            bool check,
+<span class="lineNum">     635 </span>            :                            Value &amp;e,
+<span class="lineNum">     636 </span>            :                            BaseType req) {
+<span class="lineNum">     637 </span><span class="lineCov">          2 :   bool match = dtoken == token_;</span>
+<span class="lineNum">     638 </span><span class="lineCov">          2 :   if (match) {</span>
+<span class="lineNum">     639 </span><span class="lineCov">          2 :     e.constant = attribute_;</span>
+<span class="lineNum">     640 </span><span class="lineCov">          2 :     if (!check) {</span>
+<span class="lineNum">     641 </span><span class="lineNoCov">          0 :       if (e.type.base_type == BASE_TYPE_NONE) {</span>
+<span class="lineNum">     642 </span><span class="lineNoCov">          0 :         e.type.base_type = req;</span>
+<span class="lineNum">     643 </span>            :       } else {
+<span class="lineNum">     644 </span><span class="lineNoCov">          0 :         Error(std::string(&quot;type mismatch: expecting: &quot;) +</span>
+<span class="lineNum">     645 </span><span class="lineNoCov">          0 :               kTypeNames[e.type.base_type] +</span>
+<span class="lineNum">     646 </span><span class="lineNoCov">          0 :               &quot;, found: &quot; +</span>
+<span class="lineNum">     647 </span><span class="lineNoCov">          0 :               kTypeNames[req]);</span>
+<span class="lineNum">     648 </span>            :       }
+<span class="lineNum">     649 </span>            :     }
+<span class="lineNum">     650 </span><span class="lineCov">          2 :     Next();</span>
+<span class="lineNum">     651 </span>            :   }
+<span class="lineNum">     652 </span><span class="lineCov">          2 :   return match;</span>
+<a name="653"><span class="lineNum">     653 </span>            : }</a>
+<span class="lineNum">     654 </span>            : 
+<span class="lineNum">     655 </span><span class="lineNoCov">          0 : int64_t Parser::ParseIntegerFromString(Type &amp;type) {</span>
+<span class="lineNum">     656 </span><span class="lineNoCov">          0 :   int64_t result = 0;</span>
+<span class="lineNum">     657 </span>            :   // Parse one or more enum identifiers, separated by spaces.
+<span class="lineNum">     658 </span><span class="lineNoCov">          0 :   const char *next = attribute_.c_str();</span>
+<span class="lineNum">     659 </span><span class="lineNoCov">          0 :   do {</span>
+<span class="lineNum">     660 </span><span class="lineNoCov">          0 :     const char *divider = strchr(next, ' ');</span>
+<span class="lineNum">     661 </span><span class="lineNoCov">          0 :     std::string word;</span>
+<span class="lineNum">     662 </span><span class="lineNoCov">          0 :     if (divider) {</span>
+<span class="lineNum">     663 </span><span class="lineNoCov">          0 :       word = std::string(next, divider);</span>
+<span class="lineNum">     664 </span><span class="lineNoCov">          0 :       next = divider + strspn(divider, &quot; &quot;);</span>
+<span class="lineNum">     665 </span>            :     } else {
+<span class="lineNum">     666 </span><span class="lineNoCov">          0 :       word = next;</span>
+<span class="lineNum">     667 </span><span class="lineNoCov">          0 :       next += word.length();</span>
+<span class="lineNum">     668 </span>            :     }
+<span class="lineNum">     669 </span><span class="lineNoCov">          0 :     if (type.enum_def) {  // The field has an enum type</span>
+<span class="lineNum">     670 </span><span class="lineNoCov">          0 :       auto enum_val = type.enum_def-&gt;vals.Lookup(word);</span>
+<span class="lineNum">     671 </span><span class="lineNoCov">          0 :       if (!enum_val)</span>
+<span class="lineNum">     672 </span><span class="lineNoCov">          0 :         Error(&quot;unknown enum value: &quot; + word +</span>
+<span class="lineNum">     673 </span><span class="lineNoCov">          0 :               &quot;, for enum: &quot; + type.enum_def-&gt;name);</span>
+<span class="lineNum">     674 </span><span class="lineNoCov">          0 :       result |= enum_val-&gt;value;</span>
+<span class="lineNum">     675 </span>            :     } else {  // No enum type, probably integral field.
+<span class="lineNum">     676 </span><span class="lineNoCov">          0 :       if (!IsInteger(type.base_type))</span>
+<span class="lineNum">     677 </span><span class="lineNoCov">          0 :         Error(&quot;not a valid value for this field: &quot; + word);</span>
+<span class="lineNum">     678 </span>            :       // TODO: could check if its a valid number constant here.
+<span class="lineNum">     679 </span><span class="lineNoCov">          0 :       const char *dot = strchr(word.c_str(), '.');</span>
+<span class="lineNum">     680 </span><span class="lineNoCov">          0 :       if (!dot) Error(&quot;enum values need to be qualified by an enum type&quot;);</span>
+<span class="lineNum">     681 </span><span class="lineNoCov">          0 :       std::string enum_def_str(word.c_str(), dot);</span>
+<span class="lineNum">     682 </span><span class="lineNoCov">          0 :       std::string enum_val_str(dot + 1, word.c_str() + word.length());</span>
+<span class="lineNum">     683 </span><span class="lineNoCov">          0 :       auto enum_def = enums_.Lookup(enum_def_str);</span>
+<span class="lineNum">     684 </span><span class="lineNoCov">          0 :       if (!enum_def) Error(&quot;unknown enum: &quot; + enum_def_str);</span>
+<span class="lineNum">     685 </span><span class="lineNoCov">          0 :       auto enum_val = enum_def-&gt;vals.Lookup(enum_val_str);</span>
+<span class="lineNum">     686 </span><span class="lineNoCov">          0 :       if (!enum_val) Error(&quot;unknown enum value: &quot; + enum_val_str);</span>
+<span class="lineNum">     687 </span><span class="lineNoCov">          0 :       result |= enum_val-&gt;value;</span>
+<span class="lineNum">     688 </span><span class="lineNoCov">          0 :     }</span>
+<span class="lineNum">     689 </span>            :   } while(*next);
+<span class="lineNum">     690 </span><span class="lineNoCov">          0 :   return result;</span>
+<a name="691"><span class="lineNum">     691 </span>            : }</a>
+<span class="lineNum">     692 </span>            : 
+<span class="lineNum">     693 </span><span class="lineCov">          2 : void Parser::ParseSingleValue(Value &amp;e) {</span>
+<span class="lineNum">     694 </span>            :   // First check if this could be a string/identifier enum value:
+<span class="lineNum">     695 </span><span class="lineCov">          4 :   if (e.type.base_type != BASE_TYPE_STRING &amp;&amp;</span>
+<span class="lineNum">     696 </span><span class="lineCov">          4 :       e.type.base_type != BASE_TYPE_NONE &amp;&amp;</span>
+<span class="lineNum">     697 </span><span class="lineCov">          4 :       (token_ == kTokenIdentifier || token_ == kTokenStringConstant)) {</span>
+<span class="lineNum">     698 </span><span class="lineNoCov">          0 :       e.constant = NumToString(ParseIntegerFromString(e.type));</span>
+<span class="lineNum">     699 </span><span class="lineNoCov">          0 :       Next();</span>
+<span class="lineNum">     700 </span><span class="lineCov">          2 :   } else if (TryTypedValue(kTokenIntegerConstant,</span>
+<span class="lineNum">     701 </span><span class="lineCov">          2 :                     IsScalar(e.type.base_type),</span>
+<span class="lineNum">     702 </span>            :                     e,
+<span class="lineNum">     703 </span><span class="lineCov">          2 :                     BASE_TYPE_INT) ||</span>
+<span class="lineNum">     704 </span>            :       TryTypedValue(kTokenFloatConstant,
+<span class="lineNum">     705 </span><span class="lineNoCov">          0 :                     IsFloat(e.type.base_type),</span>
+<span class="lineNum">     706 </span>            :                     e,
+<span class="lineNum">     707 </span><span class="lineCov">          2 :                     BASE_TYPE_FLOAT) ||</span>
+<span class="lineNum">     708 </span>            :       TryTypedValue(kTokenStringConstant,
+<span class="lineNum">     709 </span>            :                     e.type.base_type == BASE_TYPE_STRING,
+<span class="lineNum">     710 </span>            :                     e,
+<span class="lineNum">     711 </span><span class="lineNoCov">          0 :                     BASE_TYPE_STRING)) {</span>
+<span class="lineNum">     712 </span>            :   } else {
+<span class="lineNum">     713 </span><span class="lineNoCov">          0 :     Error(&quot;cannot parse value starting with: &quot; + TokenToString(token_));</span>
+<span class="lineNum">     714 </span>            :   }
+<a name="715"><span class="lineNum">     715 </span><span class="lineCov">          2 : }</span></a>
+<span class="lineNum">     716 </span>            : 
+<span class="lineNum">     717 </span><span class="lineCov">         32 : StructDef *Parser::LookupCreateStruct(const std::string &amp;name) {</span>
+<span class="lineNum">     718 </span><span class="lineCov">         32 :   auto struct_def = structs_.Lookup(name);</span>
+<span class="lineNum">     719 </span><span class="lineCov">         32 :   if (!struct_def) {</span>
+<span class="lineNum">     720 </span>            :     // Rather than failing, we create a &quot;pre declared&quot; StructDef, due to
+<span class="lineNum">     721 </span>            :     // circular references, and check for errors at the end of parsing.
+<span class="lineNum">     722 </span><span class="lineCov">         32 :     struct_def = new StructDef();</span>
+<span class="lineNum">     723 </span><span class="lineCov">         32 :     structs_.Add(name, struct_def);</span>
+<span class="lineNum">     724 </span><span class="lineCov">         32 :     struct_def-&gt;name = name;</span>
+<span class="lineNum">     725 </span><span class="lineCov">         32 :     struct_def-&gt;predecl = true;</span>
+<span class="lineNum">     726 </span><span class="lineCov">         32 :     struct_def-&gt;defined_namespace = namespaces_.back();</span>
+<span class="lineNum">     727 </span>            :   }
+<span class="lineNum">     728 </span><span class="lineCov">         32 :   return struct_def;</span>
+<a name="729"><span class="lineNum">     729 </span>            : }</a>
+<span class="lineNum">     730 </span>            : 
+<span class="lineNum">     731 </span><span class="lineCov">          2 : void Parser::ParseEnum(bool is_union) {</span>
+<span class="lineNum">     732 </span><span class="lineCov">          2 :   std::vector&lt;std::string&gt; dc = doc_comment_;</span>
+<span class="lineNum">     733 </span><span class="lineCov">          2 :   Next();</span>
+<span class="lineNum">     734 </span><span class="lineCov">          4 :   std::string name = attribute_;</span>
+<span class="lineNum">     735 </span><span class="lineCov">          2 :   Expect(kTokenIdentifier);</span>
+<span class="lineNum">     736 </span><span class="lineCov">          2 :   auto &amp;enum_def = *new EnumDef();</span>
+<span class="lineNum">     737 </span><span class="lineCov">          2 :   enum_def.name = name;</span>
+<span class="lineNum">     738 </span><span class="lineCov">          2 :   enum_def.doc_comment = dc;</span>
+<span class="lineNum">     739 </span><span class="lineCov">          2 :   enum_def.is_union = is_union;</span>
+<span class="lineNum">     740 </span><span class="lineCov">          2 :   enum_def.defined_namespace = namespaces_.back();</span>
+<span class="lineNum">     741 </span><span class="lineCov">          2 :   if (enums_.Add(name, &amp;enum_def)) Error(&quot;enum already exists: &quot; + name);</span>
+<span class="lineNum">     742 </span><span class="lineCov">          2 :   if (is_union) {</span>
+<span class="lineNum">     743 </span><span class="lineNoCov">          0 :     enum_def.underlying_type.base_type = BASE_TYPE_UTYPE;</span>
+<span class="lineNum">     744 </span><span class="lineNoCov">          0 :     enum_def.underlying_type.enum_def = &amp;enum_def;</span>
+<span class="lineNum">     745 </span>            :   } else {
+<span class="lineNum">     746 </span><span class="lineCov">          2 :     if (proto_mode_) {</span>
+<span class="lineNum">     747 </span><span class="lineNoCov">          0 :       enum_def.underlying_type.base_type = BASE_TYPE_SHORT;</span>
+<span class="lineNum">     748 </span>            :     } else {
+<span class="lineNum">     749 </span>            :       // Give specialized error message, since this type spec used to
+<span class="lineNum">     750 </span>            :       // be optional in the first FlatBuffers release.
+<span class="lineNum">     751 </span><span class="lineCov">          2 :       if (!IsNext(':')) Error(&quot;must specify the underlying integer type for this&quot;</span>
+<span class="lineNum">     752 </span><span class="lineNoCov">          0 :                               &quot; enum (e.g. \': short\', which was the default).&quot;);</span>
+<span class="lineNum">     753 </span>            :       // Specify the integer type underlying this enum.
+<span class="lineNum">     754 </span><span class="lineCov">          2 :       ParseType(enum_def.underlying_type);</span>
+<span class="lineNum">     755 </span><span class="lineCov">          2 :       if (!IsInteger(enum_def.underlying_type.base_type))</span>
+<span class="lineNum">     756 </span><span class="lineNoCov">          0 :         Error(&quot;underlying enum type must be integral&quot;);</span>
+<span class="lineNum">     757 </span>            :     }
+<span class="lineNum">     758 </span>            :     // Make this type refer back to the enum it was derived from.
+<span class="lineNum">     759 </span><span class="lineCov">          2 :     enum_def.underlying_type.enum_def = &amp;enum_def;</span>
+<span class="lineNum">     760 </span>            :   }
+<span class="lineNum">     761 </span><span class="lineCov">          2 :   ParseMetaData(enum_def);</span>
+<span class="lineNum">     762 </span><span class="lineCov">          2 :   Expect('{');</span>
+<span class="lineNum">     763 </span><span class="lineCov">          2 :   if (is_union) enum_def.vals.Add(&quot;NONE&quot;, new EnumVal(&quot;NONE&quot;, 0));</span>
+<span class="lineNum">     764 </span><span class="lineCov">          6 :   do {</span>
+<span class="lineNum">     765 </span><span class="lineCov">          6 :     std::string name = attribute_;</span>
+<span class="lineNum">     766 </span><span class="lineCov">         12 :     std::vector&lt;std::string&gt; dc = doc_comment_;</span>
+<span class="lineNum">     767 </span><span class="lineCov">          6 :     Expect(kTokenIdentifier);</span>
+<span class="lineNum">     768 </span><span class="lineCov">          6 :     auto prevsize = enum_def.vals.vec.size();</span>
+<span class="lineNum">     769 </span><span class="lineCov">          6 :     auto value = enum_def.vals.vec.size()</span>
+<span class="lineNum">     770 </span><span class="lineCov">          4 :       ? enum_def.vals.vec.back()-&gt;value + 1</span>
+<span class="lineNum">     771 </span><span class="lineCov">         10 :       : 0;</span>
+<span class="lineNum">     772 </span><span class="lineCov">          6 :     auto &amp;ev = *new EnumVal(name, value);</span>
+<span class="lineNum">     773 </span><span class="lineCov">          6 :     if (enum_def.vals.Add(name, &amp;ev))</span>
+<span class="lineNum">     774 </span><span class="lineNoCov">          0 :       Error(&quot;enum value already exists: &quot; + name);</span>
+<span class="lineNum">     775 </span><span class="lineCov">          6 :     ev.doc_comment = dc;</span>
+<span class="lineNum">     776 </span><span class="lineCov">          6 :     if (is_union) {</span>
+<span class="lineNum">     777 </span><span class="lineNoCov">          0 :       ev.struct_def = LookupCreateStruct(name);</span>
+<span class="lineNum">     778 </span>            :     }
+<span class="lineNum">     779 </span><span class="lineCov">          6 :     if (IsNext('=')) {</span>
+<span class="lineNum">     780 </span><span class="lineNoCov">          0 :       ev.value = atoi(attribute_.c_str());</span>
+<span class="lineNum">     781 </span><span class="lineNoCov">          0 :       Expect(kTokenIntegerConstant);</span>
+<span class="lineNum">     782 </span><span class="lineNoCov">          0 :       if (prevsize &amp;&amp; enum_def.vals.vec[prevsize - 1]-&gt;value &gt;= ev.value)</span>
+<span class="lineNum">     783 </span><span class="lineNoCov">          0 :         Error(&quot;enum values must be specified in ascending order&quot;);</span>
+<span class="lineNum">     784 </span><span class="lineCov">          6 :     }</span>
+<span class="lineNum">     785 </span><span class="lineCov">          6 :   } while (IsNext(proto_mode_ ? ';' : ',') &amp;&amp; token_ != '}');</span>
+<span class="lineNum">     786 </span><span class="lineCov">          2 :   Expect('}');</span>
+<span class="lineNum">     787 </span><span class="lineCov">          2 :   if (enum_def.attributes.Lookup(&quot;bit_flags&quot;)) {</span>
+<span class="lineNum">     788 </span><span class="lineNoCov">          0 :     for (auto it = enum_def.vals.vec.begin(); it != enum_def.vals.vec.end();</span>
+<span class="lineNum">     789 </span>            :          ++it) {
+<span class="lineNum">     790 </span><span class="lineNoCov">          0 :       if (static_cast&lt;size_t&gt;((*it)-&gt;value) &gt;=</span>
+<span class="lineNum">     791 </span><span class="lineNoCov">          0 :            SizeOf(enum_def.underlying_type.base_type) * 8)</span>
+<span class="lineNum">     792 </span><span class="lineNoCov">          0 :         Error(&quot;bit flag out of range of underlying integral type&quot;);</span>
+<span class="lineNum">     793 </span><span class="lineNoCov">          0 :       (*it)-&gt;value = 1LL &lt;&lt; (*it)-&gt;value;</span>
+<span class="lineNum">     794 </span>            :     }
+<span class="lineNum">     795 </span><span class="lineCov">          2 :   }</span>
+<a name="796"><span class="lineNum">     796 </span><span class="lineCov">          2 : }</span></a>
+<span class="lineNum">     797 </span>            : 
+<span class="lineNum">     798 </span><span class="lineCov">         32 : StructDef &amp;Parser::StartStruct() {</span>
+<span class="lineNum">     799 </span><span class="lineCov">         32 :   std::string name = attribute_;</span>
+<span class="lineNum">     800 </span><span class="lineCov">         32 :   Expect(kTokenIdentifier);</span>
+<span class="lineNum">     801 </span><span class="lineCov">         32 :   auto &amp;struct_def = *LookupCreateStruct(name);</span>
+<span class="lineNum">     802 </span><span class="lineCov">         32 :   if (!struct_def.predecl) Error(&quot;datatype already exists: &quot; + name);</span>
+<span class="lineNum">     803 </span><span class="lineCov">         32 :   struct_def.predecl = false;</span>
+<span class="lineNum">     804 </span><span class="lineCov">         32 :   struct_def.name = name;</span>
+<span class="lineNum">     805 </span>            :   // Move this struct to the back of the vector just in case it was predeclared,
+<span class="lineNum">     806 </span>            :   // to preserve declaration order.
+<span class="lineNum">     807 </span><span class="lineCov">         32 :   remove(structs_.vec.begin(), structs_.vec.end(), &amp;struct_def);</span>
+<span class="lineNum">     808 </span><span class="lineCov">         32 :   structs_.vec.back() = &amp;struct_def;</span>
+<span class="lineNum">     809 </span><span class="lineCov">         32 :   return struct_def;</span>
+<a name="810"><span class="lineNum">     810 </span>            : }</a>
+<span class="lineNum">     811 </span>            : 
+<span class="lineNum">     812 </span><span class="lineCov">         32 : void Parser::ParseDecl() {</span>
+<span class="lineNum">     813 </span><span class="lineCov">         32 :   std::vector&lt;std::string&gt; dc = doc_comment_;</span>
+<span class="lineNum">     814 </span><span class="lineCov">         32 :   bool fixed = IsNext(kTokenStruct);</span>
+<span class="lineNum">     815 </span><span class="lineCov">         32 :   if (!fixed) Expect(kTokenTable);</span>
+<span class="lineNum">     816 </span><span class="lineCov">         32 :   auto &amp;struct_def = StartStruct();</span>
+<span class="lineNum">     817 </span><span class="lineCov">         32 :   struct_def.doc_comment = dc;</span>
+<span class="lineNum">     818 </span><span class="lineCov">         32 :   struct_def.fixed = fixed;</span>
+<span class="lineNum">     819 </span><span class="lineCov">         32 :   ParseMetaData(struct_def);</span>
+<span class="lineNum">     820 </span>            :   struct_def.sortbysize =
+<span class="lineNum">     821 </span><span class="lineCov">         32 :     struct_def.attributes.Lookup(&quot;original_order&quot;) == nullptr &amp;&amp; !fixed;</span>
+<span class="lineNum">     822 </span><span class="lineCov">         32 :   Expect('{');</span>
+<span class="lineNum">     823 </span><span class="lineCov">         32 :   while (token_ != '}') ParseField(struct_def);</span>
+<span class="lineNum">     824 </span><span class="lineCov">         32 :   auto force_align = struct_def.attributes.Lookup(&quot;force_align&quot;);</span>
+<span class="lineNum">     825 </span><span class="lineCov">         32 :   if (fixed &amp;&amp; force_align) {</span>
+<span class="lineNum">     826 </span><span class="lineNoCov">          0 :     auto align = static_cast&lt;size_t&gt;(atoi(force_align-&gt;constant.c_str()));</span>
+<span class="lineNum">     827 </span><span class="lineNoCov">          0 :     if (force_align-&gt;type.base_type != BASE_TYPE_INT ||</span>
+<span class="lineNum">     828 </span><span class="lineNoCov">          0 :         align &lt; struct_def.minalign ||</span>
+<span class="lineNum">     829 </span><span class="lineNoCov">          0 :         align &gt; 256 ||</span>
+<span class="lineNum">     830 </span><span class="lineNoCov">          0 :         align &amp; (align - 1))</span>
+<span class="lineNum">     831 </span>            :       Error(&quot;force_align must be a power of two integer ranging from the&quot;
+<span class="lineNum">     832 </span><span class="lineNoCov">          0 :             &quot;struct\'s natural alignment to 256&quot;);</span>
+<span class="lineNum">     833 </span><span class="lineNoCov">          0 :     struct_def.minalign = align;</span>
+<span class="lineNum">     834 </span>            :   }
+<span class="lineNum">     835 </span><span class="lineCov">         32 :   struct_def.PadLastField(struct_def.minalign);</span>
+<span class="lineNum">     836 </span>            :   // Check if this is a table that has manual id assignments
+<span class="lineNum">     837 </span><span class="lineCov">         32 :   auto &amp;fields = struct_def.fields.vec;</span>
+<span class="lineNum">     838 </span><span class="lineCov">         32 :   if (!struct_def.fixed &amp;&amp; fields.size()) {</span>
+<span class="lineNum">     839 </span><span class="lineCov">         28 :     size_t num_id_fields = 0;</span>
+<span class="lineNum">     840 </span><span class="lineCov">        110 :     for (auto it = fields.begin(); it != fields.end(); ++it) {</span>
+<span class="lineNum">     841 </span><span class="lineCov">         82 :       if ((*it)-&gt;attributes.Lookup(&quot;id&quot;)) num_id_fields++;</span>
+<span class="lineNum">     842 </span>            :     }
+<span class="lineNum">     843 </span>            :     // If any fields have ids..
+<span class="lineNum">     844 </span><span class="lineCov">         28 :     if (num_id_fields) {</span>
+<span class="lineNum">     845 </span>            :       // Then all fields must have them.
+<span class="lineNum">     846 </span><span class="lineNoCov">          0 :       if (num_id_fields != fields.size())</span>
+<span class="lineNum">     847 </span><span class="lineNoCov">          0 :         Error(&quot;either all fields or no fields must have an 'id' attribute&quot;);</span>
+<span class="lineNum">     848 </span>            :       // Simply sort by id, then the fields are the same as if no ids had
+<a name="849"><span class="lineNum">     849 </span>            :       // been specified.</a>
+<span class="lineNum">     850 </span>            :       std::sort(fields.begin(), fields.end(),
+<span class="lineNum">     851 </span><span class="lineNoCov">          0 :         [](const FieldDef *a, const FieldDef *b) -&gt; bool {</span>
+<span class="lineNum">     852 </span><span class="lineNoCov">          0 :           auto a_id = atoi(a-&gt;attributes.Lookup(&quot;id&quot;)-&gt;constant.c_str());</span>
+<span class="lineNum">     853 </span><span class="lineNoCov">          0 :           auto b_id = atoi(b-&gt;attributes.Lookup(&quot;id&quot;)-&gt;constant.c_str());</span>
+<span class="lineNum">     854 </span><span class="lineNoCov">          0 :           return a_id &lt; b_id;</span>
+<span class="lineNum">     855 </span><span class="lineNoCov">          0 :       });</span>
+<span class="lineNum">     856 </span>            :       // Verify we have a contiguous set, and reassign vtable offsets.
+<span class="lineNum">     857 </span><span class="lineNoCov">          0 :       for (int i = 0; i &lt; static_cast&lt;int&gt;(fields.size()); i++) {</span>
+<span class="lineNum">     858 </span><span class="lineNoCov">          0 :         if (i != atoi(fields[i]-&gt;attributes.Lookup(&quot;id&quot;)-&gt;constant.c_str()))</span>
+<span class="lineNum">     859 </span><span class="lineNoCov">          0 :           Error(&quot;field id\'s must be consecutive from 0, id &quot; +</span>
+<span class="lineNum">     860 </span><span class="lineNoCov">          0 :                 NumToString(i) + &quot; missing or set twice&quot;);</span>
+<span class="lineNum">     861 </span><span class="lineNoCov">          0 :         fields[i]-&gt;value.offset = FieldIndexToOffset(static_cast&lt;voffset_t&gt;(i));</span>
+<span class="lineNum">     862 </span>            :       }
+<span class="lineNum">     863 </span>            :     }
+<span class="lineNum">     864 </span>            :   }
+<span class="lineNum">     865 </span>            :   // Check that no identifiers clash with auto generated fields.
+<span class="lineNum">     866 </span>            :   // This is not an ideal situation, but should occur very infrequently,
+<span class="lineNum">     867 </span>            :   // and allows us to keep using very readable names for type &amp; length fields
+<a name="868"><span class="lineNum">     868 </span>            :   // without inducing compile errors.</a>
+<span class="lineNum">     869 </span>            :   auto CheckClash = [&amp;fields, &amp;struct_def](const char *suffix,
+<span class="lineNum">     870 </span><span class="lineCov">        128 :                                            BaseType basetype) {</span>
+<span class="lineNum">     871 </span><span class="lineCov">        128 :     auto len = strlen(suffix);</span>
+<span class="lineNum">     872 </span><span class="lineCov">        456 :     for (auto it = fields.begin(); it != fields.end(); ++it) {</span>
+<span class="lineNum">     873 </span><span class="lineCov">        328 :       auto &amp;name = (*it)-&gt;name;</span>
+<span class="lineNum">     874 </span><span class="lineCov">        872 :       if (name.length() &gt; len &amp;&amp;</span>
+<span class="lineNum">     875 </span><span class="lineCov">        330 :           name.compare(name.length() - len, len, suffix) == 0 &amp;&amp;</span>
+<span class="lineNum">     876 </span><span class="lineCov">          2 :           (*it)-&gt;value.type.base_type != BASE_TYPE_UTYPE) {</span>
+<span class="lineNum">     877 </span>            :         auto field = struct_def.fields.Lookup(
+<span class="lineNum">     878 </span><span class="lineCov">          2 :                        name.substr(0, name.length() - len));</span>
+<span class="lineNum">     879 </span><span class="lineCov">          2 :         if (field &amp;&amp; field-&gt;value.type.base_type == basetype)</span>
+<span class="lineNum">     880 </span><span class="lineNoCov">          0 :           Error(&quot;Field &quot; + name +</span>
+<span class="lineNum">     881 </span><span class="lineNoCov">          0 :                 &quot; would clash with generated functions for field &quot; +</span>
+<span class="lineNum">     882 </span><span class="lineNoCov">          0 :                 field-&gt;name);</span>
+<span class="lineNum">     883 </span>            :       }
+<span class="lineNum">     884 </span>            :     }
+<span class="lineNum">     885 </span><span class="lineCov">        160 :   };</span>
+<span class="lineNum">     886 </span><span class="lineCov">         32 :   CheckClash(&quot;_type&quot;, BASE_TYPE_UNION);</span>
+<span class="lineNum">     887 </span><span class="lineCov">         32 :   CheckClash(&quot;Type&quot;, BASE_TYPE_UNION);</span>
+<span class="lineNum">     888 </span><span class="lineCov">         32 :   CheckClash(&quot;_length&quot;, BASE_TYPE_VECTOR);</span>
+<span class="lineNum">     889 </span><span class="lineCov">         32 :   CheckClash(&quot;Length&quot;, BASE_TYPE_VECTOR);</span>
+<span class="lineNum">     890 </span><span class="lineCov">         32 :   Expect('}');</span>
+<a name="891"><span class="lineNum">     891 </span><span class="lineCov">         32 : }</span></a>
+<span class="lineNum">     892 </span>            : 
+<span class="lineNum">     893 </span><span class="lineCov">         28 : bool Parser::SetRootType(const char *name) {</span>
+<span class="lineNum">     894 </span><span class="lineCov">         28 :   root_struct_def = structs_.Lookup(name);</span>
+<span class="lineNum">     895 </span><span class="lineCov">         28 :   return root_struct_def != nullptr;</span>
+<a name="896"><span class="lineNum">     896 </span>            : }</a>
+<span class="lineNum">     897 </span>            : 
+<span class="lineNum">     898 </span><span class="lineCov">         30 : void Parser::MarkGenerated() {</span>
+<span class="lineNum">     899 </span>            :   // Since the Parser object retains definitions across files, we must
+<span class="lineNum">     900 </span>            :   // ensure we only output code for definitions once, in the file they are first
+<span class="lineNum">     901 </span>            :   // declared. This function marks all existing definitions as having already
+<span class="lineNum">     902 </span>            :   // been generated.
+<span class="lineNum">     903 </span><span class="lineCov">         96 :   for (auto it = enums_.vec.begin();</span>
+<span class="lineNum">     904 </span><span class="lineCov">         64 :            it != enums_.vec.end(); ++it) {</span>
+<span class="lineNum">     905 </span><span class="lineCov">          2 :     (*it)-&gt;generated = true;</span>
+<span class="lineNum">     906 </span>            :   }
+<span class="lineNum">     907 </span><span class="lineCov">        186 :   for (auto it = structs_.vec.begin();</span>
+<span class="lineNum">     908 </span><span class="lineCov">        124 :            it != structs_.vec.end(); ++it) {</span>
+<span class="lineNum">     909 </span><span class="lineCov">         32 :     (*it)-&gt;generated = true;</span>
+<span class="lineNum">     910 </span>            :   }
+<a name="911"><span class="lineNum">     911 </span><span class="lineCov">         30 : }</span></a>
+<span class="lineNum">     912 </span>            : 
+<span class="lineNum">     913 </span><span class="lineCov">         30 : void Parser::ParseNamespace() {</span>
+<span class="lineNum">     914 </span><span class="lineCov">         30 :   Next();</span>
+<span class="lineNum">     915 </span><span class="lineCov">         30 :   auto ns = new Namespace();</span>
+<span class="lineNum">     916 </span><span class="lineCov">         30 :   namespaces_.push_back(ns);</span>
+<span class="lineNum">     917 </span>            :   for (;;) {
+<span class="lineNum">     918 </span><span class="lineCov">         60 :     ns-&gt;components.push_back(attribute_);</span>
+<span class="lineNum">     919 </span><span class="lineCov">         60 :     Expect(kTokenIdentifier);</span>
+<span class="lineNum">     920 </span><span class="lineCov">         60 :     if (!IsNext('.')) break;</span>
+<span class="lineNum">     921 </span>            :   }
+<span class="lineNum">     922 </span><span class="lineCov">         30 :   Expect(';');</span>
+<span class="lineNum">     923 </span><span class="lineCov">         30 : }</span>
+<span class="lineNum">     924 </span>            : 
+<span class="lineNum">     925 </span>            : // Best effort parsing of .proto declarations, with the aim to turn them
+<span class="lineNum">     926 </span>            : // in the closest corresponding FlatBuffer equivalent.
+<a name="927"><span class="lineNum">     927 </span>            : // We parse everything as identifiers instead of keywords, since we don't</a>
+<span class="lineNum">     928 </span>            : // want protobuf keywords to become invalid identifiers in FlatBuffers.
+<span class="lineNum">     929 </span><span class="lineNoCov">          0 : void Parser::ParseProtoDecl() {</span>
+<span class="lineNum">     930 </span><span class="lineNoCov">          0 :   if (attribute_ == &quot;package&quot;) {</span>
+<span class="lineNum">     931 </span>            :     // These are identical in syntax to FlatBuffer's namespace decl.
+<span class="lineNum">     932 </span><span class="lineNoCov">          0 :     ParseNamespace();</span>
+<span class="lineNum">     933 </span><span class="lineNoCov">          0 :   } else if (attribute_ == &quot;message&quot;) {</span>
+<span class="lineNum">     934 </span><span class="lineNoCov">          0 :     Next();</span>
+<span class="lineNum">     935 </span><span class="lineNoCov">          0 :     auto &amp;struct_def = StartStruct();</span>
+<span class="lineNum">     936 </span><span class="lineNoCov">          0 :     Expect('{');</span>
+<span class="lineNum">     937 </span><span class="lineNoCov">          0 :     while (token_ != '}') {</span>
+<span class="lineNum">     938 </span>            :       // Parse the qualifier.
+<span class="lineNum">     939 </span><span class="lineNoCov">          0 :       bool required = false;</span>
+<span class="lineNum">     940 </span><span class="lineNoCov">          0 :       bool repeated = false;</span>
+<span class="lineNum">     941 </span><span class="lineNoCov">          0 :       if (attribute_ == &quot;optional&quot;) {</span>
+<span class="lineNum">     942 </span>            :         // This is the default.
+<span class="lineNum">     943 </span><span class="lineNoCov">          0 :       } else if (attribute_ == &quot;required&quot;) {</span>
+<span class="lineNum">     944 </span><span class="lineNoCov">          0 :         required = true;</span>
+<span class="lineNum">     945 </span><span class="lineNoCov">          0 :       } else if (attribute_ == &quot;repeated&quot;) {</span>
+<span class="lineNum">     946 </span><span class="lineNoCov">          0 :         repeated = true;</span>
+<span class="lineNum">     947 </span>            :       } else {
+<span class="lineNum">     948 </span><span class="lineNoCov">          0 :         Error(&quot;expecting optional/required/repeated, got: &quot; + attribute_);</span>
+<span class="lineNum">     949 </span>            :       }
+<span class="lineNum">     950 </span><span class="lineNoCov">          0 :       Type type = ParseTypeFromProtoType();</span>
+<span class="lineNum">     951 </span>            :       // Repeated elements get mapped to a vector.
+<span class="lineNum">     952 </span><span class="lineNoCov">          0 :       if (repeated) {</span>
+<span class="lineNum">     953 </span><span class="lineNoCov">          0 :         type.element = type.base_type;</span>
+<span class="lineNum">     954 </span><span class="lineNoCov">          0 :         type.base_type = BASE_TYPE_VECTOR;</span>
+<span class="lineNum">     955 </span>            :       }
+<span class="lineNum">     956 </span><span class="lineNoCov">          0 :       std::string name = attribute_;</span>
+<span class="lineNum">     957 </span><span class="lineNoCov">          0 :       Expect(kTokenIdentifier);</span>
+<span class="lineNum">     958 </span>            :       // Parse the field id. Since we're just translating schemas, not
+<span class="lineNum">     959 </span>            :       // any kind of binary compatibility, we can safely ignore these, and
+<span class="lineNum">     960 </span>            :       // assign our own.
+<span class="lineNum">     961 </span><span class="lineNoCov">          0 :       Expect('=');</span>
+<span class="lineNum">     962 </span><span class="lineNoCov">          0 :       Expect(kTokenIntegerConstant);</span>
+<span class="lineNum">     963 </span><span class="lineNoCov">          0 :       auto &amp;field = AddField(struct_def, name, type);</span>
+<span class="lineNum">     964 </span><span class="lineNoCov">          0 :       field.required = required;</span>
+<span class="lineNum">     965 </span>            :       // See if there's a default specified.
+<span class="lineNum">     966 </span><span class="lineNoCov">          0 :       if (IsNext('[')) {</span>
+<span class="lineNum">     967 </span><span class="lineNoCov">          0 :         if (attribute_ != &quot;default&quot;) Error(&quot;\'default\' expected&quot;);</span>
+<span class="lineNum">     968 </span><span class="lineNoCov">          0 :         Next();</span>
+<span class="lineNum">     969 </span><span class="lineNoCov">          0 :         Expect('=');</span>
+<span class="lineNum">     970 </span><span class="lineNoCov">          0 :         field.value.constant = attribute_;</span>
+<span class="lineNum">     971 </span><span class="lineNoCov">          0 :         Next();</span>
+<span class="lineNum">     972 </span><span class="lineNoCov">          0 :         Expect(']');</span>
+<span class="lineNum">     973 </span>            :       }
+<span class="lineNum">     974 </span><span class="lineNoCov">          0 :       Expect(';');</span>
+<span class="lineNum">     975 </span><span class="lineNoCov">          0 :     }</span>
+<span class="lineNum">     976 </span><span class="lineNoCov">          0 :     Next();</span>
+<span class="lineNum">     977 </span><span class="lineNoCov">          0 :   } else if (attribute_ == &quot;enum&quot;) {</span>
+<span class="lineNum">     978 </span>            :     // These are almost the same, just with different terminator:
+<span class="lineNum">     979 </span><span class="lineNoCov">          0 :     ParseEnum(false);</span>
+<span class="lineNum">     980 </span><span class="lineNoCov">          0 :   } else if (attribute_ == &quot;import&quot;) {</span>
+<span class="lineNum">     981 </span><span class="lineNoCov">          0 :     Next();</span>
+<span class="lineNum">     982 </span><span class="lineNoCov">          0 :     included_files_[attribute_] = true;</span>
+<span class="lineNum">     983 </span><span class="lineNoCov">          0 :     Expect(kTokenStringConstant);</span>
+<span class="lineNum">     984 </span><span class="lineNoCov">          0 :     Expect(';');</span>
+<span class="lineNum">     985 </span><span class="lineNoCov">          0 :   } else if (attribute_ == &quot;option&quot;) {  // Skip these.</span>
+<span class="lineNum">     986 </span><span class="lineNoCov">          0 :     Next();</span>
+<span class="lineNum">     987 </span><span class="lineNoCov">          0 :     Expect(kTokenIdentifier);</span>
+<span class="lineNum">     988 </span><span class="lineNoCov">          0 :     Expect('=');</span>
+<span class="lineNum">     989 </span><span class="lineNoCov">          0 :     Next();  // Any single token.</span>
+<span class="lineNum">     990 </span><span class="lineNoCov">          0 :     Expect(';');</span>
+<span class="lineNum">     991 </span>            :   } else {
+<span class="lineNum">     992 </span><span class="lineNoCov">          0 :     Error(&quot;don\'t know how to parse .proto declaration starting with &quot; +</span>
+<span class="lineNum">     993 </span><span class="lineNoCov">          0 :           attribute_);</span>
+<span class="lineNum">     994 </span>            :   }
+<span class="lineNum">     995 </span><span class="lineNoCov">          0 : }</span>
+<a name="996"><span class="lineNum">     996 </span>            : </a>
+<span class="lineNum">     997 </span>            : // Parse a protobuf type, and map it to the corresponding FlatBuffer one.
+<span class="lineNum">     998 </span><span class="lineNoCov">          0 : Type Parser::ParseTypeFromProtoType() {</span>
+<span class="lineNum">     999 </span><span class="lineNoCov">          0 :   Expect(kTokenIdentifier);</span>
+<span class="lineNum">    1000 </span>            :   struct type_lookup { const char *proto_type; BaseType fb_type; };
+<span class="lineNum">    1001 </span>            :   static type_lookup lookup[] = {
+<span class="lineNum">    1002 </span>            :     { &quot;float&quot;, BASE_TYPE_FLOAT },  { &quot;double&quot;, BASE_TYPE_DOUBLE },
+<span class="lineNum">    1003 </span>            :     { &quot;int32&quot;, BASE_TYPE_INT },    { &quot;int64&quot;, BASE_TYPE_LONG },
+<span class="lineNum">    1004 </span>            :     { &quot;uint32&quot;, BASE_TYPE_UINT },  { &quot;uint64&quot;, BASE_TYPE_ULONG },
+<span class="lineNum">    1005 </span>            :     { &quot;sint32&quot;, BASE_TYPE_INT },   { &quot;sint64&quot;, BASE_TYPE_LONG },
+<span class="lineNum">    1006 </span>            :     { &quot;fixed32&quot;, BASE_TYPE_UINT }, { &quot;fixed64&quot;, BASE_TYPE_ULONG },
+<span class="lineNum">    1007 </span>            :     { &quot;sfixed32&quot;, BASE_TYPE_INT }, { &quot;sfixed64&quot;, BASE_TYPE_LONG },
+<span class="lineNum">    1008 </span>            :     { &quot;bool&quot;, BASE_TYPE_BOOL },
+<span class="lineNum">    1009 </span>            :     { &quot;string&quot;, BASE_TYPE_STRING },
+<span class="lineNum">    1010 </span>            :     { &quot;bytes&quot;, BASE_TYPE_STRING },
+<span class="lineNum">    1011 </span>            :     { nullptr, BASE_TYPE_NONE }
+<span class="lineNum">    1012 </span>            :   };
+<span class="lineNum">    1013 </span><span class="lineNoCov">          0 :   Type type;</span>
+<span class="lineNum">    1014 </span><span class="lineNoCov">          0 :   for (auto tl = lookup; tl-&gt;proto_type; tl++) {</span>
+<span class="lineNum">    1015 </span><span class="lineNoCov">          0 :     if (attribute_ == tl-&gt;proto_type) {</span>
+<span class="lineNum">    1016 </span><span class="lineNoCov">          0 :       type.base_type = tl-&gt;fb_type;</span>
+<span class="lineNum">    1017 </span><span class="lineNoCov">          0 :       Next();</span>
+<span class="lineNum">    1018 </span><span class="lineNoCov">          0 :       return type;</span>
+<span class="lineNum">    1019 </span>            :     }
+<span class="lineNum">    1020 </span>            :   }
+<span class="lineNum">    1021 </span><span class="lineNoCov">          0 :   ParseTypeIdent(type);</span>
+<span class="lineNum">    1022 </span><span class="lineNoCov">          0 :   Expect(kTokenIdentifier);</span>
+<span class="lineNum">    1023 </span><span class="lineNoCov">          0 :   return type;</span>
+<a name="1024"><span class="lineNum">    1024 </span>            : }</a>
+<span class="lineNum">    1025 </span>            : 
+<span class="lineNum">    1026 </span><span class="lineCov">         30 : bool Parser::Parse(const char *source, const char **include_paths,</span>
+<span class="lineNum">    1027 </span>            :                    const char *source_filename) {
+<span class="lineNum">    1028 </span><span class="lineCov">         30 :   if (source_filename) included_files_[source_filename] = true;</span>
+<span class="lineNum">    1029 </span><span class="lineCov">         30 :   source_ = cursor_ = source;</span>
+<span class="lineNum">    1030 </span><span class="lineCov">         30 :   line_ = 1;</span>
+<span class="lineNum">    1031 </span><span class="lineCov">         30 :   error_.clear();</span>
+<span class="lineNum">    1032 </span><span class="lineCov">         30 :   builder_.Clear();</span>
+<span class="lineNum">    1033 </span>            :   try {
+<span class="lineNum">    1034 </span><span class="lineCov">         30 :     Next();</span>
+<span class="lineNum">    1035 </span>            :     // Includes must come first:
+<span class="lineNum">    1036 </span><span class="lineCov">         60 :     while (IsNext(kTokenInclude)) {</span>
+<span class="lineNum">    1037 </span><span class="lineNoCov">          0 :       auto name = attribute_;</span>
+<span class="lineNum">    1038 </span><span class="lineNoCov">          0 :       Expect(kTokenStringConstant);</span>
+<span class="lineNum">    1039 </span><span class="lineNoCov">          0 :       if (included_files_.find(name) == included_files_.end()) {</span>
+<span class="lineNum">    1040 </span>            :         // We found an include file that we have not parsed yet.
+<span class="lineNum">    1041 </span>            :         // Load it and parse it.
+<span class="lineNum">    1042 </span><span class="lineNoCov">          0 :         std::string contents;</span>
+<span class="lineNum">    1043 </span><span class="lineNoCov">          0 :         if (!include_paths) {</span>
+<span class="lineNum">    1044 </span><span class="lineNoCov">          0 :           const char *current_directory[] = { &quot;&quot;, nullptr };</span>
+<span class="lineNum">    1045 </span><span class="lineNoCov">          0 :           include_paths = current_directory;</span>
+<span class="lineNum">    1046 </span>            :         }
+<span class="lineNum">    1047 </span><span class="lineNoCov">          0 :         for (auto paths = include_paths; paths &amp;&amp; *paths; paths++) {</span>
+<span class="lineNum">    1048 </span><span class="lineNoCov">          0 :           auto filepath = flatbuffers::ConCatPathFileName(*paths, name);</span>
+<span class="lineNum">    1049 </span><span class="lineNoCov">          0 :           if(LoadFile(filepath.c_str(), true, &amp;contents)) break;</span>
+<span class="lineNum">    1050 </span><span class="lineNoCov">          0 :         }</span>
+<span class="lineNum">    1051 </span><span class="lineNoCov">          0 :         if (contents.empty())</span>
+<span class="lineNum">    1052 </span><span class="lineNoCov">          0 :           Error(&quot;unable to load include file: &quot; + name);</span>
+<span class="lineNum">    1053 </span><span class="lineNoCov">          0 :         included_files_[name] = true;</span>
+<span class="lineNum">    1054 </span><span class="lineNoCov">          0 :         if (!Parse(contents.c_str(), include_paths)) {</span>
+<span class="lineNum">    1055 </span>            :           // Any errors, we're done.
+<span class="lineNum">    1056 </span><span class="lineNoCov">          0 :           return false;</span>
+<span class="lineNum">    1057 </span>            :         }
+<span class="lineNum">    1058 </span>            :         // We do not want to output code for any included files:
+<span class="lineNum">    1059 </span><span class="lineNoCov">          0 :         MarkGenerated();</span>
+<span class="lineNum">    1060 </span>            :         // This is the easiest way to continue this file after an include:
+<span class="lineNum">    1061 </span>            :         // instead of saving and restoring all the state, we simply start the
+<span class="lineNum">    1062 </span>            :         // file anew. This will cause it to encounter the same include statement
+<span class="lineNum">    1063 </span>            :         // again, but this time it will skip it, because it was entered into
+<span class="lineNum">    1064 </span>            :         // included_files_.
+<span class="lineNum">    1065 </span>            :         // This is recursive, but only go as deep as the number of include
+<span class="lineNum">    1066 </span>            :         // statements.
+<span class="lineNum">    1067 </span><span class="lineNoCov">          0 :         return Parse(source, include_paths, source_filename);</span>
+<span class="lineNum">    1068 </span>            :       }
+<span class="lineNum">    1069 </span><span class="lineNoCov">          0 :       Expect(';');</span>
+<span class="lineNum">    1070 </span><span class="lineNoCov">          0 :     }</span>
+<span class="lineNum">    1071 </span>            :     // Now parse all other kinds of declarations:
+<span class="lineNum">    1072 </span><span class="lineCov">        152 :     while (token_ != kTokenEof) {</span>
+<span class="lineNum">    1073 </span><span class="lineCov">         92 :       if (proto_mode_) {</span>
+<span class="lineNum">    1074 </span><span class="lineNoCov">          0 :         ParseProtoDecl();</span>
+<span class="lineNum">    1075 </span><span class="lineCov">         92 :       } else if (token_ == kTokenNameSpace) {</span>
+<span class="lineNum">    1076 </span><span class="lineCov">         30 :         ParseNamespace();</span>
+<span class="lineNum">    1077 </span><span class="lineCov">         62 :       } else if (token_ == '{') {</span>
+<span class="lineNum">    1078 </span><span class="lineNoCov">          0 :         if (!root_struct_def) Error(&quot;no root type set to parse json with&quot;);</span>
+<span class="lineNum">    1079 </span><span class="lineNoCov">          0 :         if (builder_.GetSize()) {</span>
+<span class="lineNum">    1080 </span><span class="lineNoCov">          0 :           Error(&quot;cannot have more than one json object in a file&quot;);</span>
+<span class="lineNum">    1081 </span>            :         }
+<span class="lineNum">    1082 </span>            :         builder_.Finish(Offset&lt;Table&gt;(ParseTable(*root_struct_def)),
+<span class="lineNum">    1083 </span><span class="lineNoCov">          0 :           file_identifier_.length() ? file_identifier_.c_str() : nullptr);</span>
+<span class="lineNum">    1084 </span><span class="lineCov">         62 :       } else if (token_ == kTokenEnum) {</span>
+<span class="lineNum">    1085 </span><span class="lineCov">          2 :         ParseEnum(false);</span>
+<span class="lineNum">    1086 </span><span class="lineCov">         60 :       } else if (token_ == kTokenUnion) {</span>
+<span class="lineNum">    1087 </span><span class="lineNoCov">          0 :         ParseEnum(true);</span>
+<span class="lineNum">    1088 </span><span class="lineCov">         60 :       } else if (token_ == kTokenRootType) {</span>
+<span class="lineNum">    1089 </span><span class="lineCov">         28 :         Next();</span>
+<span class="lineNum">    1090 </span><span class="lineCov">         28 :         auto root_type = attribute_;</span>
+<span class="lineNum">    1091 </span><span class="lineCov">         28 :         Expect(kTokenIdentifier);</span>
+<span class="lineNum">    1092 </span><span class="lineCov">         28 :         if (!SetRootType(root_type.c_str()))</span>
+<span class="lineNum">    1093 </span><span class="lineNoCov">          0 :           Error(&quot;unknown root type: &quot; + root_type);</span>
+<span class="lineNum">    1094 </span><span class="lineCov">         28 :         if (root_struct_def-&gt;fixed)</span>
+<span class="lineNum">    1095 </span><span class="lineNoCov">          0 :           Error(&quot;root type must be a table&quot;);</span>
+<span class="lineNum">    1096 </span><span class="lineCov">         28 :         Expect(';');</span>
+<span class="lineNum">    1097 </span><span class="lineCov">         32 :       } else if (token_ == kTokenFileIdentifier) {</span>
+<span class="lineNum">    1098 </span><span class="lineNoCov">          0 :         Next();</span>
+<span class="lineNum">    1099 </span><span class="lineNoCov">          0 :         file_identifier_ = attribute_;</span>
+<span class="lineNum">    1100 </span><span class="lineNoCov">          0 :         Expect(kTokenStringConstant);</span>
+<span class="lineNum">    1101 </span><span class="lineNoCov">          0 :         if (file_identifier_.length() !=</span>
+<span class="lineNum">    1102 </span>            :             FlatBufferBuilder::kFileIdentifierLength)
+<span class="lineNum">    1103 </span><span class="lineNoCov">          0 :           Error(&quot;file_identifier must be exactly &quot; +</span>
+<span class="lineNum">    1104 </span><span class="lineNoCov">          0 :                 NumToString(FlatBufferBuilder::kFileIdentifierLength) +</span>
+<span class="lineNum">    1105 </span><span class="lineNoCov">          0 :                 &quot; characters&quot;);</span>
+<span class="lineNum">    1106 </span><span class="lineNoCov">          0 :         Expect(';');</span>
+<span class="lineNum">    1107 </span><span class="lineCov">         32 :       } else if (token_ == kTokenFileExtension) {</span>
+<span class="lineNum">    1108 </span><span class="lineNoCov">          0 :         Next();</span>
+<span class="lineNum">    1109 </span><span class="lineNoCov">          0 :         file_extension_ = attribute_;</span>
+<span class="lineNum">    1110 </span><span class="lineNoCov">          0 :         Expect(kTokenStringConstant);</span>
+<span class="lineNum">    1111 </span><span class="lineNoCov">          0 :         Expect(';');</span>
+<span class="lineNum">    1112 </span><span class="lineCov">         32 :       } else if(token_ == kTokenInclude) {</span>
+<span class="lineNum">    1113 </span><span class="lineNoCov">          0 :         Error(&quot;includes must come before declarations&quot;);</span>
+<span class="lineNum">    1114 </span><span class="lineCov">         32 :       } else if(token_ == kTokenAttribute) {</span>
+<span class="lineNum">    1115 </span><span class="lineNoCov">          0 :         Next();</span>
+<span class="lineNum">    1116 </span><span class="lineNoCov">          0 :         auto name = attribute_;</span>
+<span class="lineNum">    1117 </span><span class="lineNoCov">          0 :         Expect(kTokenStringConstant);</span>
+<span class="lineNum">    1118 </span><span class="lineNoCov">          0 :         Expect(';');</span>
+<span class="lineNum">    1119 </span><span class="lineNoCov">          0 :         known_attributes_.insert(name);</span>
+<span class="lineNum">    1120 </span>            :       } else {
+<span class="lineNum">    1121 </span><span class="lineCov">         32 :         ParseDecl();</span>
+<span class="lineNum">    1122 </span>            :       }
+<span class="lineNum">    1123 </span>            :     }
+<span class="lineNum">    1124 </span><span class="lineCov">         62 :     for (auto it = structs_.vec.begin(); it != structs_.vec.end(); ++it) {</span>
+<span class="lineNum">    1125 </span><span class="lineCov">         32 :       if ((*it)-&gt;predecl)</span>
+<span class="lineNum">    1126 </span><span class="lineNoCov">          0 :         Error(&quot;type referenced but not defined: &quot; + (*it)-&gt;name);</span>
+<span class="lineNum">    1127 </span>            :     }
+<span class="lineNum">    1128 </span><span class="lineCov">         32 :     for (auto it = enums_.vec.begin(); it != enums_.vec.end(); ++it) {</span>
+<span class="lineNum">    1129 </span><span class="lineCov">          2 :       auto &amp;enum_def = **it;</span>
+<span class="lineNum">    1130 </span><span class="lineCov">          2 :       if (enum_def.is_union) {</span>
+<span class="lineNum">    1131 </span><span class="lineNoCov">          0 :         for (auto it = enum_def.vals.vec.begin();</span>
+<span class="lineNum">    1132 </span><span class="lineNoCov">          0 :              it != enum_def.vals.vec.end();</span>
+<span class="lineNum">    1133 </span>            :              ++it) {
+<span class="lineNum">    1134 </span><span class="lineNoCov">          0 :           auto &amp;val = **it;</span>
+<span class="lineNum">    1135 </span><span class="lineNoCov">          0 :           if (val.struct_def &amp;&amp; val.struct_def-&gt;fixed)</span>
+<span class="lineNum">    1136 </span><span class="lineNoCov">          0 :             Error(&quot;only tables can be union elements: &quot; + val.name);</span>
+<span class="lineNum">    1137 </span>            :         }
+<span class="lineNum">    1138 </span>            :       }
+<span class="lineNum">    1139 </span>            :     }
+<span class="lineNum">    1140 </span><span class="lineNoCov">          0 :   } catch (const std::string &amp;msg) {</span>
+<span class="lineNum">    1141 </span><span class="lineNoCov">          0 :     error_ = source_filename ? AbsolutePath(source_filename) : &quot;&quot;;</span>
+<span class="lineNum">    1142 </span>            :     #ifdef _WIN32
+<span class="lineNum">    1143 </span>            :       error_ += &quot;(&quot; + NumToString(line_) + &quot;)&quot;;  // MSVC alike
+<span class="lineNum">    1144 </span>            :     #else
+<span class="lineNum">    1145 </span><span class="lineNoCov">          0 :       if (source_filename) error_ += &quot;:&quot;;</span>
+<span class="lineNum">    1146 </span><span class="lineNoCov">          0 :       error_ += NumToString(line_) + &quot;:0&quot;;  // gcc alike</span>
+<span class="lineNum">    1147 </span>            :     #endif
+<span class="lineNum">    1148 </span><span class="lineNoCov">          0 :     error_ += &quot;: error: &quot; + msg;</span>
+<span class="lineNum">    1149 </span><span class="lineNoCov">          0 :     return false;</span>
+<span class="lineNum">    1150 </span>            :   }
+<span class="lineNum">    1151 </span><span class="lineCov">         30 :   assert(!struct_stack_.size());</span>
+<span class="lineNum">    1152 </span><span class="lineCov">         30 :   return true;</span>
+<span class="lineNum">    1153 </span>            : }
+<span class="lineNum">    1154 </span>            : 
+<span class="lineNum">    1155 </span>            : }  // namespace flatbuffers
+</pre>
+      </td>
+    </tr>
+  </table>
+  <br>
+
+  <table width="100%" border=0 cellspacing=0 cellpadding=0>
+    <tr><td class="ruler"><img src="../../glass.png" width=3 height=3 alt=""></td></tr>
+    <tr><td class="versionInfo">Generated by: <a href="http://ltp.sourceforge.net/coverage/lcov.php" target="_parent">LCOV version 1.11</a></td></tr>
+  </table>
+  <br>
+
+</body>
+</html>

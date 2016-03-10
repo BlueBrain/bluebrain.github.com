@@ -1,0 +1,264 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+
+<html lang="en">
+
+<head>
+  <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+  <title>LCOV - Livre - livre/core/render/TransferFunction1D.cpp</title>
+  <link rel="stylesheet" type="text/css" href="../../../gcov.css">
+</head>
+
+<body>
+
+  <table width="100%" border=0 cellspacing=0 cellpadding=0>
+    <tr><td class="title">LCOV - code coverage report</td></tr>
+    <tr><td class="ruler"><img src="../../../glass.png" width=3 height=3 alt=""></td></tr>
+
+    <tr>
+      <td width="100%">
+        <table cellpadding=1 border=0 width="100%">
+          <tr>
+            <td width="10%" class="headerItem">Current view:</td>
+            <td width="35%" class="headerValue"><a href="../../../index.html">top level</a> - <a href="index.html">livre/core/render</a> - TransferFunction1D.cpp<span style="font-size: 80%;"> (source / <a href="TransferFunction1D.cpp.func-sort-c.html">functions</a>)</span></td>
+            <td width="5%"></td>
+            <td width="15%"></td>
+            <td width="10%" class="headerCovTableHead">Hit</td>
+            <td width="10%" class="headerCovTableHead">Total</td>
+            <td width="15%" class="headerCovTableHead">Coverage</td>
+          </tr>
+          <tr>
+            <td class="headerItem">Test:</td>
+            <td class="headerValue">Livre</td>
+            <td></td>
+            <td class="headerItem">Lines:</td>
+            <td class="headerCovTableEntry">81</td>
+            <td class="headerCovTableEntry">87</td>
+            <td class="headerCovTableEntryHi">93.1 %</td>
+          </tr>
+          <tr>
+            <td class="headerItem">Date:</td>
+            <td class="headerValue">2016-03-10 14:06:39</td>
+            <td></td>
+            <td class="headerItem">Functions:</td>
+            <td class="headerCovTableEntry">8</td>
+            <td class="headerCovTableEntry">8</td>
+            <td class="headerCovTableEntryHi">100.0 %</td>
+          </tr>
+          <tr><td><img src="../../../glass.png" width=3 height=3 alt=""></td></tr>
+        </table>
+      </td>
+    </tr>
+
+    <tr><td class="ruler"><img src="../../../glass.png" width=3 height=3 alt=""></td></tr>
+  </table>
+
+  <table cellpadding=0 cellspacing=0 border=0>
+    <tr>
+      <td><br></td>
+    </tr>
+    <tr>
+      <td>
+<pre class="sourceHeading">          Line data    Source code</pre>
+<pre class="source">
+<a name="1"><span class="lineNum">       1 </span>            : /* Copyright (c) 2011-2015, EPFL/Blue Brain Project</a>
+<span class="lineNum">       2 </span>            :  *                          Ahmet Bilgili &lt;ahmet.bilgili@epfl.ch&gt;
+<span class="lineNum">       3 </span>            :  *
+<span class="lineNum">       4 </span>            :  * This file is part of Livre &lt;https://github.com/BlueBrain/Livre&gt;
+<span class="lineNum">       5 </span>            :  *
+<span class="lineNum">       6 </span>            :  * This library is free software; you can redistribute it and/or modify it under
+<span class="lineNum">       7 </span>            :  * the terms of the GNU Lesser General Public License version 3.0 as published
+<span class="lineNum">       8 </span>            :  * by the Free Software Foundation.
+<span class="lineNum">       9 </span>            :  *
+<span class="lineNum">      10 </span>            :  * This library is distributed in the hope that it will be useful, but WITHOUT
+<span class="lineNum">      11 </span>            :  * ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS
+<span class="lineNum">      12 </span>            :  * FOR A PARTICULAR PURPOSE.  See the GNU Lesser General Public License for more
+<span class="lineNum">      13 </span>            :  * details.
+<span class="lineNum">      14 </span>            :  *
+<span class="lineNum">      15 </span>            :  * You should have received a copy of the GNU Lesser General Public License
+<span class="lineNum">      16 </span>            :  * along with this library; if not, write to the Free Software Foundation, Inc.,
+<span class="lineNum">      17 </span>            :  * 51 Franklin Street, Fifth Floor, Boston, MA 02110-1301 USA.
+<span class="lineNum">      18 </span>            :  */
+<span class="lineNum">      19 </span>            : 
+<span class="lineNum">      20 </span>            : #include &quot;TransferFunction1D.h&quot;
+<span class="lineNum">      21 </span>            : 
+<span class="lineNum">      22 </span>            : #include &lt;co/dataIStream.h&gt;
+<span class="lineNum">      23 </span>            : #include &lt;co/dataOStream.h&gt;
+<span class="lineNum">      24 </span>            : 
+<span class="lineNum">      25 </span>            : #include &lt;fstream&gt;
+<span class="lineNum">      26 </span>            : #include &lt;iterator&gt;
+<span class="lineNum">      27 </span>            : 
+<span class="lineNum">      28 </span>            : #define DEFAULT_COLOR1_DENSITY 128u
+<span class="lineNum">      29 </span>            : #define DEFAULT_COLOR2_DENSITY 255u
+<span class="lineNum">      30 </span>            : #define DEFAULT_COLOR1_ALPHA 0.39f
+<span class="lineNum">      31 </span>            : #define DEFAULT_COLOR2_ALPHA 0.03f
+<span class="lineNum">      32 </span>            : #define DEFAULT_TF_SIZE 256u
+<span class="lineNum">      33 </span>            : #define DEFAULT_COLOR1_RGB Vector3f( 0.0f, 1.0f, 1.0f )
+<span class="lineNum">      34 </span>            : #define DEFAULT_COLOR2_RGB Vector3f( 1.0f, 0.0f, 1.0f )
+<span class="lineNum">      35 </span>            : 
+<span class="lineNum">      36 </span>            : namespace livre
+<span class="lineNum">      37 </span>            : {
+<span class="lineNum">      38 </span>            : namespace
+<span class="lineNum">      39 </span>            : {
+<span class="lineNum">      40 </span>            : enum SamplePointsType
+<span class="lineNum">      41 </span>            : {
+<span class="lineNum">      42 </span>            :     UINT8,
+<span class="lineNum">      43 </span>            :     FLOAT,
+<span class="lineNum">      44 </span>            :     DEFAULT = FLOAT
+<a name="45"><span class="lineNum">      45 </span>            : };</a>
+<span class="lineNum">      46 </span>            : 
+<span class="lineNum">      47 </span><span class="lineCov">         14 : Floats create2ColorTF( const uint32_t surfaceColorPos,</span>
+<span class="lineNum">      48 </span>            :                             const float surfaceColorAlpha,
+<span class="lineNum">      49 </span>            :                             const float solidColorAlpha, const size_t size,
+<span class="lineNum">      50 </span>            :                             const Vector3f&amp; surfaceColorRGB,
+<span class="lineNum">      51 </span>            :                             const Vector3f&amp; solidColorRGB )
+<span class="lineNum">      52 </span>            : {
+<span class="lineNum">      53 </span><span class="lineCov">         14 :     Vector3f finalColorRGB;</span>
+<span class="lineNum">      54 </span>            :     float alpha;
+<span class="lineNum">      55 </span><span class="lineCov">         14 :     Floats transferFunction;</span>
+<span class="lineNum">      56 </span>            : 
+<span class="lineNum">      57 </span><span class="lineCov">         14 :     const Vector3f colorDiff = solidColorRGB - surfaceColorRGB;</span>
+<span class="lineNum">      58 </span><span class="lineCov">         14 :     const float alphaDiff = solidColorAlpha - surfaceColorAlpha;</span>
+<span class="lineNum">      59 </span>            : 
+<span class="lineNum">      60 </span><span class="lineCov">       3598 :     for( uint32_t i = 0; i &lt; size; ++i )</span>
+<span class="lineNum">      61 </span>            :     {
+<span class="lineNum">      62 </span><span class="lineCov">       3584 :         if( i == 0 )</span>
+<span class="lineNum">      63 </span>            :         {
+<span class="lineNum">      64 </span><span class="lineCov">         14 :             finalColorRGB = Vector3f(0.0f);</span>
+<span class="lineNum">      65 </span><span class="lineCov">         14 :             alpha = 0;</span>
+<span class="lineNum">      66 </span>            :         }
+<span class="lineNum">      67 </span><span class="lineCov">       3570 :         else if( ( 0 &lt; i ) &amp;&amp; ( i&lt;= surfaceColorPos ) )</span>
+<span class="lineNum">      68 </span>            :         {
+<span class="lineNum">      69 </span><span class="lineCov">       1792 :             finalColorRGB = surfaceColorRGB;</span>
+<span class="lineNum">      70 </span><span class="lineCov">       1792 :             alpha = surfaceColorAlpha * ( float(i) / (float)surfaceColorPos );</span>
+<span class="lineNum">      71 </span>            :         }
+<span class="lineNum">      72 </span>            :         else
+<span class="lineNum">      73 </span>            :         {
+<span class="lineNum">      74 </span><span class="lineCov">       1778 :             finalColorRGB = ( (float)( i - surfaceColorPos + 1u ) /</span>
+<span class="lineNum">      75 </span>            :                               (float)( DEFAULT_COLOR2_DENSITY -
+<span class="lineNum">      76 </span><span class="lineCov">       3556 :                                        surfaceColorPos + 1u ) ) * colorDiff +</span>
+<span class="lineNum">      77 </span><span class="lineCov">       1778 :                              surfaceColorRGB;</span>
+<span class="lineNum">      78 </span><span class="lineCov">       3556 :             alpha = ( (float)( i - surfaceColorPos + 1u ) /</span>
+<span class="lineNum">      79 </span><span class="lineCov">       3556 :                     (float)( DEFAULT_COLOR2_DENSITY - surfaceColorPos + 1u ) ) *</span>
+<span class="lineNum">      80 </span><span class="lineCov">       1778 :                     alphaDiff + surfaceColorAlpha;</span>
+<span class="lineNum">      81 </span>            :         }
+<span class="lineNum">      82 </span>            : 
+<span class="lineNum">      83 </span><span class="lineCov">       3584 :         transferFunction.push_back( finalColorRGB[0] );</span>
+<span class="lineNum">      84 </span><span class="lineCov">       3584 :         transferFunction.push_back( finalColorRGB[1] );</span>
+<span class="lineNum">      85 </span><span class="lineCov">       3584 :         transferFunction.push_back( finalColorRGB[2] );</span>
+<span class="lineNum">      86 </span><span class="lineCov">       3584 :         transferFunction.push_back( alpha );</span>
+<span class="lineNum">      87 </span>            :     }
+<span class="lineNum">      88 </span><span class="lineCov">         14 :     return transferFunction;</span>
+<a name="89"><span class="lineNum">      89 </span>            : }</a>
+<span class="lineNum">      90 </span>            : 
+<span class="lineNum">      91 </span><span class="lineCov">         14 : Floats createDefault2ColorTF()</span>
+<span class="lineNum">      92 </span>            : {
+<span class="lineNum">      93 </span>            :     return create2ColorTF( DEFAULT_COLOR1_DENSITY, DEFAULT_COLOR1_ALPHA,
+<span class="lineNum">      94 </span>            :                            DEFAULT_COLOR2_ALPHA,
+<span class="lineNum">      95 </span>            :                            DEFAULT_TF_SIZE, DEFAULT_COLOR1_RGB,
+<span class="lineNum">      96 </span><span class="lineCov">         14 :                            DEFAULT_COLOR2_RGB );</span>
+<a name="97"><span class="lineNum">      97 </span>            : }</a>
+<span class="lineNum">      98 </span>            : 
+<span class="lineNum">      99 </span><span class="lineCov">          8 : SamplePointsType readTransferFunction( const std::string&amp; file,</span>
+<span class="lineNum">     100 </span>            :                                        Floats&amp; transferFunction )
+<span class="lineNum">     101 </span>            : {
+<span class="lineNum">     102 </span><span class="lineCov">          8 :     transferFunction = createDefault2ColorTF();</span>
+<span class="lineNum">     103 </span><span class="lineCov">          8 :     if( file.empty( ))</span>
+<span class="lineNum">     104 </span>            :     {
+<span class="lineNum">     105 </span><span class="lineNoCov">          0 :         LBWARN &lt;&lt; &quot;Using default transfer function&quot; &lt;&lt; std::endl;</span>
+<span class="lineNum">     106 </span><span class="lineNoCov">          0 :         return DEFAULT;</span>
+<span class="lineNum">     107 </span>            :     }
+<span class="lineNum">     108 </span><span class="lineCov">          8 :     if( file.substr( file.find_last_of(&quot;.&quot;) + 1 ) != &quot;1dt&quot; )</span>
+<span class="lineNum">     109 </span>            :     {
+<span class="lineNum">     110 </span><span class="lineCov">          6 :         LBWARN &lt;&lt; &quot;Wrong transfer function file format: &quot; &lt;&lt; file</span>
+<span class="lineNum">     111 </span><span class="lineCov">          2 :                &lt;&lt; &quot;, it must be '.1dt'. Using default transfer function&quot;</span>
+<span class="lineNum">     112 </span><span class="lineCov">          6 :                &lt;&lt; std::endl;</span>
+<span class="lineNum">     113 </span><span class="lineCov">          2 :         return DEFAULT;</span>
+<span class="lineNum">     114 </span>            :     }
+<span class="lineNum">     115 </span>            : 
+<span class="lineNum">     116 </span><span class="lineCov">          6 :     std::ifstream ifs( file );</span>
+<span class="lineNum">     117 </span><span class="lineCov">          6 :     if( !ifs.is_open( ))</span>
+<span class="lineNum">     118 </span>            :     {
+<span class="lineNum">     119 </span><span class="lineCov">          6 :         LBWARN &lt;&lt; &quot;The specified transfer function file: &quot; &lt;&lt; file</span>
+<span class="lineNum">     120 </span><span class="lineCov">          2 :                &lt;&lt; &quot;, could not be opened. Using default transfer function&quot;</span>
+<span class="lineNum">     121 </span><span class="lineCov">          6 :                &lt;&lt; std::endl;</span>
+<span class="lineNum">     122 </span><span class="lineCov">          2 :         return DEFAULT;</span>
+<span class="lineNum">     123 </span>            :     }
+<span class="lineNum">     124 </span>            : 
+<span class="lineNum">     125 </span><span class="lineCov">          8 :     std::string line, val;</span>
+<span class="lineNum">     126 </span><span class="lineCov">          4 :     std::getline( ifs, line );</span>
+<span class="lineNum">     127 </span><span class="lineCov">          8 :     const std::string&amp; formatStr = line.substr( line.find(' ') + 1 );</span>
+<span class="lineNum">     128 </span><span class="lineCov">          4 :     const SamplePointsType format = formatStr == &quot;uint8&quot; ? UINT8 : DEFAULT;</span>
+<span class="lineNum">     129 </span>            : 
+<span class="lineNum">     130 </span><span class="lineCov">          4 :     const size_t numValues = atoi( line.c_str( )) * TF_NCHANNELS;</span>
+<span class="lineNum">     131 </span><span class="lineCov">          4 :     if( !numValues )</span>
+<span class="lineNum">     132 </span>            :     {
+<span class="lineNum">     133 </span><span class="lineNoCov">          0 :         LBWARN &lt;&lt; &quot;Wrong format in transfer function file: &quot; &lt;&lt; file</span>
+<span class="lineNum">     134 </span><span class="lineNoCov">          0 :                &lt;&lt; &quot;, the number of values must be specified. &quot;</span>
+<span class="lineNum">     135 </span><span class="lineNoCov">          0 :                &lt;&lt; &quot;Using default transfer function&quot; &lt;&lt; std::endl;</span>
+<span class="lineNum">     136 </span><span class="lineNoCov">          0 :         return DEFAULT;</span>
+<span class="lineNum">     137 </span>            :     }
+<span class="lineNum">     138 </span><span class="lineCov">          4 :     transferFunction.resize( numValues );</span>
+<span class="lineNum">     139 </span><span class="lineCov">          4 :     size_t i = 0;</span>
+<span class="lineNum">     140 </span><span class="lineCov">       4104 :     while( ifs &gt;&gt; val &amp;&amp; i &lt; numValues )</span>
+<span class="lineNum">     141 </span><span class="lineCov">       4096 :         transferFunction[i++] = atof( val.c_str( ));</span>
+<span class="lineNum">     142 </span>            : 
+<span class="lineNum">     143 </span><span class="lineCov">         10 :     return format;</span>
+<span class="lineNum">     144 </span>            : }
+<a name="145"><span class="lineNum">     145 </span>            : }</a>
+<span class="lineNum">     146 </span>            : 
+<span class="lineNum">     147 </span><span class="lineCov">          6 : void TransferFunction1D::reset()</span>
+<span class="lineNum">     148 </span>            : {
+<span class="lineNum">     149 </span><span class="lineCov">          6 :     const Floats defaultTF = createDefault2ColorTF();</span>
+<span class="lineNum">     150 </span><span class="lineCov">          6 :     const float maxVal = std::numeric_limits&lt; uint8_t &gt;::max();</span>
+<span class="lineNum">     151 </span><span class="lineCov">          6 :     const size_t size = defaultTF.size();</span>
+<span class="lineNum">     152 </span>            : 
+<span class="lineNum">     153 </span><span class="lineCov">          6 :     rgba_.resize( size );</span>
+<span class="lineNum">     154 </span><span class="lineCov">       6150 :     for( size_t i = 0; i &lt; size; ++i )</span>
+<span class="lineNum">     155 </span><span class="lineCov">       6150 :         rgba_[i] = maxVal * defaultTF[i];</span>
+<a name="156"><span class="lineNum">     156 </span><span class="lineCov">          6 : }</span></a>
+<span class="lineNum">     157 </span>            : 
+<span class="lineNum">     158 </span><span class="lineCov">          2 : void TransferFunction1D::createCustomTF_( const uint32_t size )</span>
+<span class="lineNum">     159 </span>            : {
+<span class="lineNum">     160 </span><span class="lineCov">          2 :     rgba_.resize( size * TF_NCHANNELS );</span>
+<span class="lineNum">     161 </span>            : 
+<span class="lineNum">     162 </span><span class="lineCov">          2 :     rgba_[0] = 0u;</span>
+<span class="lineNum">     163 </span><span class="lineCov">          2 :     rgba_[1] = 0u;</span>
+<span class="lineNum">     164 </span><span class="lineCov">          2 :     rgba_[2] = 0u;</span>
+<span class="lineNum">     165 </span><span class="lineCov">          2 :     rgba_[3] = 0u;</span>
+<span class="lineNum">     166 </span><span class="lineCov">         10 :     for( size_t i = 1; i &lt; size; ++i )</span>
+<span class="lineNum">     167 </span>            :     {
+<span class="lineNum">     168 </span><span class="lineCov">          8 :         rgba_[ i * TF_NCHANNELS ] = 0u;</span>
+<span class="lineNum">     169 </span><span class="lineCov">          8 :         rgba_[ i * TF_NCHANNELS + 1 ] = 0u;</span>
+<span class="lineNum">     170 </span><span class="lineCov">          8 :         rgba_[ i * TF_NCHANNELS + 2 ] = 255u;</span>
+<span class="lineNum">     171 </span><span class="lineCov">          8 :         rgba_[ i * TF_NCHANNELS + 3 ] = 2u;</span>
+<span class="lineNum">     172 </span>            :     }
+<a name="173"><span class="lineNum">     173 </span><span class="lineCov">          2 : }</span></a>
+<span class="lineNum">     174 </span>            : 
+<span class="lineNum">     175 </span><span class="lineCov">          8 : void TransferFunction1D::createTfFromFile_( const std::string&amp; file )</span>
+<span class="lineNum">     176 </span>            : {
+<span class="lineNum">     177 </span><span class="lineCov">          8 :     Floats transferFunction;</span>
+<span class="lineNum">     178 </span><span class="lineCov">          8 :     const SamplePointsType&amp; format = readTransferFunction( file, transferFunction );</span>
+<span class="lineNum">     179 </span><span class="lineCov">          8 :     const size_t size = transferFunction.size();</span>
+<span class="lineNum">     180 </span><span class="lineCov">          8 :     rgba_.resize( size );</span>
+<span class="lineNum">     181 </span>            : 
+<span class="lineNum">     182 </span><span class="lineCov">          8 :     const uint8_t maxVal = std::numeric_limits&lt; uint8_t &gt;::max();</span>
+<span class="lineNum">     183 </span><span class="lineCov">          8 :     const uint8_t conversionFactor = format == UINT8 ? 1u : maxVal;</span>
+<span class="lineNum">     184 </span>            : 
+<span class="lineNum">     185 </span><span class="lineCov">       8200 :     for( size_t i = 0; i &lt; size; ++i )</span>
+<a name="186"><span class="lineNum">     186 </span><span class="lineCov">       8200 :         rgba_[i] = conversionFactor * transferFunction[i];</span></a>
+<span class="lineNum">     187 </span><span class="lineCov">          8 : }</span>
+<span class="lineNum">     188 </span><span class="lineCov">         60 : }</span>
+</pre>
+      </td>
+    </tr>
+  </table>
+  <br>
+
+  <table width="100%" border=0 cellspacing=0 cellpadding=0>
+    <tr><td class="ruler"><img src="../../../glass.png" width=3 height=3 alt=""></td></tr>
+    <tr><td class="versionInfo">Generated by: <a href="http://ltp.sourceforge.net/coverage/lcov.php" target="_parent">LCOV version 1.11</a></td></tr>
+  </table>
+  <br>
+
+</body>
+</html>

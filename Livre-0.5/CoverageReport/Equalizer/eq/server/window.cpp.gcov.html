@@ -1,0 +1,662 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+
+<html lang="en">
+
+<head>
+  <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+  <title>LCOV - Livre - Equalizer/eq/server/window.cpp</title>
+  <link rel="stylesheet" type="text/css" href="../../../gcov.css">
+</head>
+
+<body>
+
+  <table width="100%" border=0 cellspacing=0 cellpadding=0>
+    <tr><td class="title">LCOV - code coverage report</td></tr>
+    <tr><td class="ruler"><img src="../../../glass.png" width=3 height=3 alt=""></td></tr>
+
+    <tr>
+      <td width="100%">
+        <table cellpadding=1 border=0 width="100%">
+          <tr>
+            <td width="10%" class="headerItem">Current view:</td>
+            <td width="35%" class="headerValue"><a href="../../../index.html">top level</a> - <a href="index.html">Equalizer/eq/server</a> - window.cpp<span style="font-size: 80%;"> (source / <a href="window.cpp.func-sort-c.html">functions</a>)</span></td>
+            <td width="5%"></td>
+            <td width="15%"></td>
+            <td width="10%" class="headerCovTableHead">Hit</td>
+            <td width="10%" class="headerCovTableHead">Total</td>
+            <td width="15%" class="headerCovTableHead">Coverage</td>
+          </tr>
+          <tr>
+            <td class="headerItem">Test:</td>
+            <td class="headerValue">Livre</td>
+            <td></td>
+            <td class="headerItem">Lines:</td>
+            <td class="headerCovTableEntry">1</td>
+            <td class="headerCovTableEntry">273</td>
+            <td class="headerCovTableEntryLo">0.4 %</td>
+          </tr>
+          <tr>
+            <td class="headerItem">Date:</td>
+            <td class="headerValue">2016-03-10 14:06:39</td>
+            <td></td>
+            <td class="headerItem">Functions:</td>
+            <td class="headerCovTableEntry">2</td>
+            <td class="headerCovTableEntry">33</td>
+            <td class="headerCovTableEntryLo">6.1 %</td>
+          </tr>
+          <tr><td><img src="../../../glass.png" width=3 height=3 alt=""></td></tr>
+        </table>
+      </td>
+    </tr>
+
+    <tr><td class="ruler"><img src="../../../glass.png" width=3 height=3 alt=""></td></tr>
+  </table>
+
+  <table cellpadding=0 cellspacing=0 border=0>
+    <tr>
+      <td><br></td>
+    </tr>
+    <tr>
+      <td>
+<pre class="sourceHeading">          Line data    Source code</pre>
+<pre class="source">
+<a name="1"><span class="lineNum">       1 </span>            : </a>
+<span class="lineNum">       2 </span>            : /* Copyright (c) 2005-2015, Stefan Eilemann &lt;eile@equalizergraphics.com&gt;
+<span class="lineNum">       3 </span>            :  *                          Cedric Stalder &lt;cedric.stalder@gmail.com&gt;
+<span class="lineNum">       4 </span>            :  *                          Daniel Nachbaur &lt;danielnachbaur@gmail.com&gt;
+<span class="lineNum">       5 </span>            :  *
+<span class="lineNum">       6 </span>            :  * This library is free software; you can redistribute it and/or modify it under
+<span class="lineNum">       7 </span>            :  * the terms of the GNU Lesser General Public License version 2.1 as published
+<span class="lineNum">       8 </span>            :  * by the Free Software Foundation.
+<span class="lineNum">       9 </span>            :  *
+<span class="lineNum">      10 </span>            :  * This library is distributed in the hope that it will be useful, but WITHOUT
+<span class="lineNum">      11 </span>            :  * ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS
+<span class="lineNum">      12 </span>            :  * FOR A PARTICULAR PURPOSE.  See the GNU Lesser General Public License for more
+<span class="lineNum">      13 </span>            :  * details.
+<span class="lineNum">      14 </span>            :  *
+<span class="lineNum">      15 </span>            :  * You should have received a copy of the GNU Lesser General Public License
+<span class="lineNum">      16 </span>            :  * along with this library; if not, write to the Free Software Foundation, Inc.,
+<span class="lineNum">      17 </span>            :  * 51 Franklin Street, Fifth Floor, Boston, MA 02110-1301 USA.
+<span class="lineNum">      18 </span>            :  */
+<span class="lineNum">      19 </span>            : 
+<span class="lineNum">      20 </span>            : #include &quot;window.h&quot;
+<span class="lineNum">      21 </span>            : 
+<span class="lineNum">      22 </span>            : #include &quot;global.h&quot;
+<span class="lineNum">      23 </span>            : #include &quot;channel.h&quot;
+<span class="lineNum">      24 </span>            : #include &quot;config.h&quot;
+<span class="lineNum">      25 </span>            : #include &quot;compound.h&quot;
+<span class="lineNum">      26 </span>            : #include &quot;log.h&quot;
+<span class="lineNum">      27 </span>            : #include &quot;node.h&quot;
+<span class="lineNum">      28 </span>            : #include &quot;nodeFactory.h&quot;
+<span class="lineNum">      29 </span>            : #include &quot;pipe.h&quot;
+<span class="lineNum">      30 </span>            : 
+<span class="lineNum">      31 </span>            : #include &lt;eq/fabric/commands.h&gt;
+<span class="lineNum">      32 </span>            : #include &lt;eq/fabric/elementVisitor.h&gt;
+<span class="lineNum">      33 </span>            : #include &lt;eq/fabric/leafVisitor.h&gt;
+<span class="lineNum">      34 </span>            : #include &lt;eq/fabric/paths.h&gt;
+<span class="lineNum">      35 </span>            : #include &lt;co/objectICommand.h&gt;
+<span class="lineNum">      36 </span>            : 
+<span class="lineNum">      37 </span>            : #include &lt;boost/foreach.hpp&gt;
+<span class="lineNum">      38 </span>            : 
+<span class="lineNum">      39 </span>            : namespace eq
+<span class="lineNum">      40 </span>            : {
+<span class="lineNum">      41 </span>            : namespace server
+<span class="lineNum">      42 </span>            : {
+<span class="lineNum">      43 </span>            : typedef fabric::Window&lt; Pipe, Window, Channel &gt; Super;
+<a name="44"><span class="lineNum">      44 </span>            : typedef co::CommandFunc&lt;Window&gt; WindowFunc;</a>
+<span class="lineNum">      45 </span>            : 
+<span class="lineNum">      46 </span><span class="lineNoCov">          0 : Window::Window( Pipe* parent )</span>
+<span class="lineNum">      47 </span>            :         : Super( parent )
+<span class="lineNum">      48 </span>            :         , _active( 0 )
+<span class="lineNum">      49 </span>            :         , _state( STATE_STOPPED )
+<span class="lineNum">      50 </span><span class="lineNoCov">          0 :         , _maxFPS( std::numeric_limits&lt; float &gt;::max( ))</span>
+<span class="lineNum">      51 </span>            :         , _nvSwapBarrier( 0 )
+<span class="lineNum">      52 </span>            :         , _nvNetBarrier( 0 )
+<span class="lineNum">      53 </span>            :         , _lastDrawChannel( 0 )
+<span class="lineNum">      54 </span>            :         , _swapFinish( false )
+<span class="lineNum">      55 </span><span class="lineNoCov">          0 :         , _swap( false )</span>
+<span class="lineNum">      56 </span>            : {
+<span class="lineNum">      57 </span><span class="lineNoCov">          0 :     const Global* global = Global::instance();</span>
+<span class="lineNum">      58 </span><span class="lineNoCov">          0 :     for( unsigned i = 0; i &lt; WindowSettings::IATTR_ALL; ++i )</span>
+<span class="lineNum">      59 </span>            :     {
+<span class="lineNum">      60 </span><span class="lineNoCov">          0 :         const WindowSettings::IAttribute attr = static_cast&lt; WindowSettings::IAttribute &gt;( i );</span>
+<span class="lineNum">      61 </span><span class="lineNoCov">          0 :         setIAttribute( attr, global-&gt;getWindowIAttribute( attr ));</span>
+<span class="lineNum">      62 </span>            :     }
+<a name="63"><span class="lineNum">      63 </span><span class="lineNoCov">          0 : }</span></a>
+<span class="lineNum">      64 </span>            : 
+<span class="lineNum">      65 </span><span class="lineNoCov">          0 : Window::~Window()</span>
+<span class="lineNum">      66 </span>            : {
+<a name="67"><span class="lineNum">      67 </span><span class="lineNoCov">          0 : }</span></a>
+<span class="lineNum">      68 </span>            : 
+<span class="lineNum">      69 </span><span class="lineNoCov">          0 : void Window::attach( const uint128_t&amp; id, const uint32_t instanceID )</span>
+<span class="lineNum">      70 </span>            : {
+<span class="lineNum">      71 </span><span class="lineNoCov">          0 :     Super::attach( id, instanceID );</span>
+<span class="lineNum">      72 </span>            : 
+<span class="lineNum">      73 </span><span class="lineNoCov">          0 :     co::CommandQueue* cmdQ = getCommandThreadQueue();</span>
+<span class="lineNum">      74 </span>            :     registerCommand( fabric::CMD_OBJECT_SYNC,
+<span class="lineNum">      75 </span><span class="lineNoCov">          0 :                      WindowFunc( this, &amp;Window::_cmdSync ), cmdQ );</span>
+<span class="lineNum">      76 </span>            :     registerCommand( fabric::CMD_WINDOW_CONFIG_INIT_REPLY,
+<span class="lineNum">      77 </span><span class="lineNoCov">          0 :                      WindowFunc( this, &amp;Window::_cmdConfigInitReply ), cmdQ );</span>
+<span class="lineNum">      78 </span>            :     registerCommand( fabric::CMD_WINDOW_CONFIG_EXIT_REPLY,
+<span class="lineNum">      79 </span><span class="lineNoCov">          0 :                      WindowFunc( this, &amp;Window::_cmdConfigExitReply ), cmdQ );</span>
+<a name="80"><span class="lineNum">      80 </span><span class="lineNoCov">          0 : }</span></a>
+<span class="lineNum">      81 </span>            : 
+<span class="lineNum">      82 </span><span class="lineNoCov">          0 : void Window::removeChild( const uint128_t&amp; id )</span>
+<span class="lineNum">      83 </span>            : {
+<span class="lineNum">      84 </span><span class="lineNoCov">          0 :     LBASSERT( getConfig()-&gt;isRunning( ));</span>
+<span class="lineNum">      85 </span>            : 
+<span class="lineNum">      86 </span><span class="lineNoCov">          0 :     Channel* channel = _findChannel( id );</span>
+<span class="lineNum">      87 </span><span class="lineNoCov">          0 :     LBASSERT( channel );</span>
+<span class="lineNum">      88 </span><span class="lineNoCov">          0 :     if( channel )</span>
+<span class="lineNum">      89 </span><span class="lineNoCov">          0 :         channel-&gt;postDelete();</span>
+<a name="90"><span class="lineNum">      90 </span><span class="lineNoCov">          0 : }</span></a>
+<span class="lineNum">      91 </span>            : 
+<span class="lineNum">      92 </span><span class="lineNoCov">          0 : void Window::postDelete()</span>
+<span class="lineNum">      93 </span>            : {
+<span class="lineNum">      94 </span><span class="lineNoCov">          0 :     _state = State( _state.get() | STATE_DELETE );</span>
+<span class="lineNum">      95 </span><span class="lineNoCov">          0 :     getConfig()-&gt;postNeedsFinish();</span>
+<span class="lineNum">      96 </span>            : 
+<span class="lineNum">      97 </span><span class="lineNoCov">          0 :     const Channels&amp; channels = getChannels();</span>
+<span class="lineNum">      98 </span><span class="lineNoCov">          0 :     for( Channels::const_iterator i = channels.begin(); i!=channels.end(); ++i )</span>
+<span class="lineNum">      99 </span>            :     {
+<span class="lineNum">     100 </span><span class="lineNoCov">          0 :         (*i)-&gt;postDelete();</span>
+<span class="lineNum">     101 </span>            :     }
+<a name="102"><span class="lineNum">     102 </span><span class="lineNoCov">          0 : }</span></a>
+<span class="lineNum">     103 </span>            : 
+<span class="lineNum">     104 </span><span class="lineNoCov">          0 : const Node* Window::getNode() const</span>
+<span class="lineNum">     105 </span>            : {
+<span class="lineNum">     106 </span><span class="lineNoCov">          0 :     const Pipe* pipe = getPipe();</span>
+<span class="lineNum">     107 </span><span class="lineNoCov">          0 :     LBASSERT( pipe );</span>
+<span class="lineNum">     108 </span><span class="lineNoCov">          0 :     return ( pipe ? pipe-&gt;getNode() : 0 );</span>
+<a name="109"><span class="lineNum">     109 </span>            : }</a>
+<span class="lineNum">     110 </span>            : 
+<span class="lineNum">     111 </span><span class="lineNoCov">          0 : Node* Window::getNode()</span>
+<span class="lineNum">     112 </span>            : {
+<span class="lineNum">     113 </span><span class="lineNoCov">          0 :     Pipe* pipe = getPipe();</span>
+<span class="lineNum">     114 </span><span class="lineNoCov">          0 :     LBASSERT( pipe );</span>
+<span class="lineNum">     115 </span><span class="lineNoCov">          0 :     return ( pipe ? pipe-&gt;getNode() : 0 );</span>
+<a name="116"><span class="lineNum">     116 </span>            : }</a>
+<span class="lineNum">     117 </span>            : 
+<span class="lineNum">     118 </span><span class="lineNoCov">          0 : const Config* Window::getConfig() const</span>
+<span class="lineNum">     119 </span>            : {
+<span class="lineNum">     120 </span><span class="lineNoCov">          0 :     const Pipe* pipe = getPipe();</span>
+<span class="lineNum">     121 </span><span class="lineNoCov">          0 :     LBASSERT( pipe );</span>
+<span class="lineNum">     122 </span><span class="lineNoCov">          0 :     return ( pipe ? pipe-&gt;getConfig() : 0);</span>
+<a name="123"><span class="lineNum">     123 </span>            : }</a>
+<span class="lineNum">     124 </span>            : 
+<span class="lineNum">     125 </span><span class="lineNoCov">          0 : Config* Window::getConfig()</span>
+<span class="lineNum">     126 </span>            : {
+<span class="lineNum">     127 </span><span class="lineNoCov">          0 :     Pipe* pipe = getPipe();</span>
+<span class="lineNum">     128 </span><span class="lineNoCov">          0 :     LBASSERT( pipe );</span>
+<span class="lineNum">     129 </span><span class="lineNoCov">          0 :     return ( pipe ? pipe-&gt;getConfig() : 0);</span>
+<a name="130"><span class="lineNum">     130 </span>            : }</a>
+<span class="lineNum">     131 </span>            : 
+<span class="lineNum">     132 </span><span class="lineNoCov">          0 : ServerPtr Window::getServer()</span>
+<span class="lineNum">     133 </span>            : {
+<span class="lineNum">     134 </span><span class="lineNoCov">          0 :     Pipe* pipe = getPipe();</span>
+<span class="lineNum">     135 </span><span class="lineNoCov">          0 :     LBASSERT( pipe );</span>
+<span class="lineNum">     136 </span><span class="lineNoCov">          0 :     return ( pipe ? pipe-&gt;getServer() : 0 );</span>
+<a name="137"><span class="lineNum">     137 </span>            : }</a>
+<span class="lineNum">     138 </span>            : 
+<span class="lineNum">     139 </span><span class="lineNoCov">          0 : co::CommandQueue* Window::getMainThreadQueue()</span>
+<span class="lineNum">     140 </span>            : {
+<span class="lineNum">     141 </span><span class="lineNoCov">          0 :     Pipe* pipe = getPipe();</span>
+<span class="lineNum">     142 </span><span class="lineNoCov">          0 :     LBASSERT( pipe );</span>
+<span class="lineNum">     143 </span><span class="lineNoCov">          0 :     return pipe-&gt;getMainThreadQueue();</span>
+<a name="144"><span class="lineNum">     144 </span>            : }</a>
+<span class="lineNum">     145 </span>            : 
+<span class="lineNum">     146 </span><span class="lineNoCov">          0 : co::CommandQueue* Window::getCommandThreadQueue()</span>
+<span class="lineNum">     147 </span>            : {
+<span class="lineNum">     148 </span><span class="lineNoCov">          0 :     Pipe* pipe = getPipe();</span>
+<span class="lineNum">     149 </span><span class="lineNoCov">          0 :     LBASSERT( pipe );</span>
+<span class="lineNum">     150 </span><span class="lineNoCov">          0 :     return pipe-&gt;getCommandThreadQueue();</span>
+<a name="151"><span class="lineNum">     151 </span>            : }</a>
+<span class="lineNum">     152 </span>            : 
+<span class="lineNum">     153 </span><span class="lineNoCov">          0 : Channel* Window::getChannel( const ChannelPath&amp; path )</span>
+<span class="lineNum">     154 </span>            : {
+<span class="lineNum">     155 </span><span class="lineNoCov">          0 :     const Channels&amp; channels = getChannels();</span>
+<span class="lineNum">     156 </span><span class="lineNoCov">          0 :     LBASSERT( channels.size() &gt; path.channelIndex );</span>
+<span class="lineNum">     157 </span>            : 
+<span class="lineNum">     158 </span><span class="lineNoCov">          0 :     if( channels.size() &lt;= path.channelIndex )</span>
+<span class="lineNum">     159 </span><span class="lineNoCov">          0 :         return 0;</span>
+<span class="lineNum">     160 </span>            : 
+<span class="lineNum">     161 </span><span class="lineNoCov">          0 :     return channels[ path.channelIndex ];</span>
+<a name="162"><span class="lineNum">     162 </span>            : }</a>
+<span class="lineNum">     163 </span>            : 
+<span class="lineNum">     164 </span><span class="lineNoCov">          0 : void Window::activate()</span>
+<span class="lineNum">     165 </span>            : {
+<span class="lineNum">     166 </span><span class="lineNoCov">          0 :     Pipe* pipe = getPipe();</span>
+<span class="lineNum">     167 </span><span class="lineNoCov">          0 :     LBASSERT( pipe );</span>
+<span class="lineNum">     168 </span>            : 
+<span class="lineNum">     169 </span><span class="lineNoCov">          0 :     ++_active;</span>
+<span class="lineNum">     170 </span><span class="lineNoCov">          0 :     pipe-&gt;activate();</span>
+<span class="lineNum">     171 </span>            : 
+<span class="lineNum">     172 </span><span class="lineNoCov">          0 :     LBLOG( LOG_VIEW ) &lt;&lt; &quot;activate: &quot; &lt;&lt; _active &lt;&lt; std::endl;</span>
+<a name="173"><span class="lineNum">     173 </span><span class="lineNoCov">          0 : }</span></a>
+<span class="lineNum">     174 </span>            : 
+<span class="lineNum">     175 </span><span class="lineNoCov">          0 : void Window::deactivate()</span>
+<span class="lineNum">     176 </span>            : {
+<span class="lineNum">     177 </span><span class="lineNoCov">          0 :     LBASSERT( _active != 0 );</span>
+<span class="lineNum">     178 </span><span class="lineNoCov">          0 :     Pipe* pipe = getPipe();</span>
+<span class="lineNum">     179 </span><span class="lineNoCov">          0 :     LBASSERT( pipe );</span>
+<span class="lineNum">     180 </span>            : 
+<span class="lineNum">     181 </span><span class="lineNoCov">          0 :     --_active;</span>
+<span class="lineNum">     182 </span><span class="lineNoCov">          0 :     pipe-&gt;deactivate();</span>
+<span class="lineNum">     183 </span>            : 
+<span class="lineNum">     184 </span><span class="lineNoCov">          0 :     LBLOG( LOG_VIEW ) &lt;&lt; &quot;deactivate: &quot; &lt;&lt; _active &lt;&lt; std::endl;</span>
+<a name="185"><span class="lineNum">     185 </span><span class="lineNoCov">          0 : }</span></a>
+<span class="lineNum">     186 </span>            : 
+<span class="lineNum">     187 </span><span class="lineNoCov">          0 : void Window::addTasks( const uint32_t tasks )</span>
+<span class="lineNum">     188 </span>            : {
+<span class="lineNum">     189 </span><span class="lineNoCov">          0 :     Pipe* pipe = getPipe();</span>
+<span class="lineNum">     190 </span><span class="lineNoCov">          0 :     LBASSERT( pipe );</span>
+<span class="lineNum">     191 </span><span class="lineNoCov">          0 :     setTasks( getTasks() | tasks );</span>
+<span class="lineNum">     192 </span><span class="lineNoCov">          0 :     pipe-&gt;addTasks( tasks );</span>
+<span class="lineNum">     193 </span><span class="lineNoCov">          0 : }</span>
+<span class="lineNum">     194 </span>            : 
+<span class="lineNum">     195 </span>            : //---------------------------------------------------------------------------
+<a name="196"><span class="lineNum">     196 </span>            : // swap barrier operations</a>
+<span class="lineNum">     197 </span>            : //---------------------------------------------------------------------------
+<span class="lineNum">     198 </span><span class="lineNoCov">          0 : void Window::_resetSwapBarriers()</span>
+<span class="lineNum">     199 </span>            : {
+<span class="lineNum">     200 </span><span class="lineNoCov">          0 :     Node* node = getNode();</span>
+<span class="lineNum">     201 </span><span class="lineNoCov">          0 :     LBASSERT( node );</span>
+<span class="lineNum">     202 </span>            : 
+<span class="lineNum">     203 </span><span class="lineNoCov">          0 :     BOOST_FOREACH( co::Barrier* barrier, _masterBarriers )</span>
+<span class="lineNum">     204 </span>            :     {
+<span class="lineNum">     205 </span><span class="lineNoCov">          0 :         node-&gt;releaseBarrier( barrier );</span>
+<span class="lineNum">     206 </span>            :     }
+<span class="lineNum">     207 </span>            : 
+<span class="lineNum">     208 </span><span class="lineNoCov">          0 :     _nvNetBarrier = 0;</span>
+<span class="lineNum">     209 </span><span class="lineNoCov">          0 :     _masterBarriers.clear();</span>
+<span class="lineNum">     210 </span><span class="lineNoCov">          0 :     _barriers.clear();</span>
+<a name="211"><span class="lineNum">     211 </span><span class="lineNoCov">          0 : }</span></a>
+<span class="lineNum">     212 </span>            : 
+<span class="lineNum">     213 </span><span class="lineNoCov">          0 : co::Barrier* Window::joinSwapBarrier( co::Barrier* barrier )</span>
+<span class="lineNum">     214 </span>            : {
+<span class="lineNum">     215 </span><span class="lineNoCov">          0 :     _swapFinish = true;</span>
+<span class="lineNum">     216 </span>            : 
+<span class="lineNum">     217 </span><span class="lineNoCov">          0 :     if( !barrier )</span>
+<span class="lineNum">     218 </span>            :     {
+<span class="lineNum">     219 </span><span class="lineNoCov">          0 :         Node* node = getNode();</span>
+<span class="lineNum">     220 </span><span class="lineNoCov">          0 :         barrier = node-&gt;getBarrier();</span>
+<span class="lineNum">     221 </span><span class="lineNoCov">          0 :         barrier-&gt;increase();</span>
+<span class="lineNum">     222 </span>            : 
+<span class="lineNum">     223 </span><span class="lineNoCov">          0 :         _masterBarriers.push_back( barrier );</span>
+<span class="lineNum">     224 </span><span class="lineNoCov">          0 :         _barriers.push_back( barrier );</span>
+<span class="lineNum">     225 </span><span class="lineNoCov">          0 :         return barrier;</span>
+<span class="lineNum">     226 </span>            :     }
+<span class="lineNum">     227 </span>            : 
+<span class="lineNum">     228 </span><span class="lineNoCov">          0 :     co::BarriersCIter i = lunchbox::find( _barriers, barrier );</span>
+<span class="lineNum">     229 </span><span class="lineNoCov">          0 :     if( i != _barriers.end( )) // Issue #39: window already has this barrier</span>
+<span class="lineNum">     230 </span><span class="lineNoCov">          0 :         return barrier;</span>
+<span class="lineNum">     231 </span>            : 
+<span class="lineNum">     232 </span><span class="lineNoCov">          0 :     LBASSERT( getPipe() );</span>
+<span class="lineNum">     233 </span><span class="lineNoCov">          0 :     const Windows&amp; windows = getPipe()-&gt;getWindows();</span>
+<span class="lineNum">     234 </span><span class="lineNoCov">          0 :     bool beforeSelf = true;</span>
+<span class="lineNum">     235 </span>            : 
+<span class="lineNum">     236 </span>            :     // Check if another window in the same thread is using the swap barrier
+<span class="lineNum">     237 </span><span class="lineNoCov">          0 :     for( WindowsCIter j = windows.begin(); j != windows.end(); ++j )</span>
+<span class="lineNum">     238 </span>            :     {
+<span class="lineNum">     239 </span><span class="lineNoCov">          0 :         Window* window = *j;</span>
+<span class="lineNum">     240 </span><span class="lineNoCov">          0 :         if( window == this ) // skip self</span>
+<span class="lineNum">     241 </span>            :         {
+<span class="lineNum">     242 </span><span class="lineNoCov">          0 :             beforeSelf = false;</span>
+<span class="lineNum">     243 </span><span class="lineNoCov">          0 :             continue;</span>
+<span class="lineNum">     244 </span>            :         }
+<span class="lineNum">     245 </span>            : 
+<span class="lineNum">     246 </span><span class="lineNoCov">          0 :         co::Barriers&amp; barriers = window-&gt;_barriers;</span>
+<span class="lineNum">     247 </span><span class="lineNoCov">          0 :         co::BarriersIter k = lunchbox::find( barriers, barrier );</span>
+<span class="lineNum">     248 </span><span class="lineNoCov">          0 :         if( k == barriers.end( ))</span>
+<span class="lineNum">     249 </span><span class="lineNoCov">          0 :             continue;</span>
+<span class="lineNum">     250 </span>            : 
+<span class="lineNum">     251 </span><span class="lineNoCov">          0 :         if( beforeSelf ) // some earlier window will do the barrier for us</span>
+<span class="lineNum">     252 </span><span class="lineNoCov">          0 :             return barrier;</span>
+<span class="lineNum">     253 </span>            : 
+<span class="lineNum">     254 </span>            :         // else we will do the barrier, remove from later window
+<span class="lineNum">     255 </span><span class="lineNoCov">          0 :         barriers.erase( k );</span>
+<span class="lineNum">     256 </span><span class="lineNoCov">          0 :         _barriers.push_back( barrier );</span>
+<span class="lineNum">     257 </span><span class="lineNoCov">          0 :         return barrier;</span>
+<span class="lineNum">     258 </span>            :     }
+<span class="lineNum">     259 </span>            : 
+<span class="lineNum">     260 </span>            :     // No other window on this pipe does the barrier yet
+<span class="lineNum">     261 </span><span class="lineNoCov">          0 :     barrier-&gt;increase();</span>
+<span class="lineNum">     262 </span><span class="lineNoCov">          0 :     _barriers.push_back( barrier );</span>
+<span class="lineNum">     263 </span><span class="lineNoCov">          0 :     return barrier;</span>
+<a name="264"><span class="lineNum">     264 </span>            : }</a>
+<span class="lineNum">     265 </span>            : 
+<span class="lineNum">     266 </span><span class="lineNoCov">          0 : co::Barrier* Window::joinNVSwapBarrier( SwapBarrierConstPtr swapBarrier,</span>
+<span class="lineNum">     267 </span>            :                                         co::Barrier* netBarrier )
+<span class="lineNum">     268 </span>            : {
+<span class="lineNum">     269 </span><span class="lineNoCov">          0 :     LBASSERTINFO( !_nvSwapBarrier,</span>
+<span class="lineNum">     270 </span>            :                   &quot;Only one NV_swap_group barrier per window allowed&quot; );
+<span class="lineNum">     271 </span>            : 
+<span class="lineNum">     272 </span><span class="lineNoCov">          0 :     _nvSwapBarrier = swapBarrier;</span>
+<span class="lineNum">     273 </span><span class="lineNoCov">          0 :     _nvNetBarrier = netBarrier;</span>
+<span class="lineNum">     274 </span>            :     // no _swapFinish = true since NV_swap_group takes care of this
+<span class="lineNum">     275 </span>            : 
+<span class="lineNum">     276 </span><span class="lineNoCov">          0 :     if( !_nvNetBarrier )</span>
+<span class="lineNum">     277 </span>            :     {
+<span class="lineNum">     278 </span><span class="lineNoCov">          0 :         Node* node = getNode();</span>
+<span class="lineNum">     279 </span><span class="lineNoCov">          0 :         _nvNetBarrier = node-&gt;getBarrier();</span>
+<span class="lineNum">     280 </span><span class="lineNoCov">          0 :         _masterBarriers.push_back( _nvNetBarrier );</span>
+<span class="lineNum">     281 </span>            :     }
+<span class="lineNum">     282 </span>            : 
+<span class="lineNum">     283 </span><span class="lineNoCov">          0 :     _nvNetBarrier-&gt;increase();</span>
+<span class="lineNum">     284 </span><span class="lineNoCov">          0 :     _barriers.push_back( _nvNetBarrier );</span>
+<span class="lineNum">     285 </span><span class="lineNoCov">          0 :     return _nvNetBarrier;</span>
+<span class="lineNum">     286 </span>            : }
+<a name="287"><span class="lineNum">     287 </span>            : </a>
+<span class="lineNum">     288 </span>            : 
+<span class="lineNum">     289 </span><span class="lineNoCov">          0 : co::ObjectOCommand Window::send( const uint32_t cmd )</span>
+<span class="lineNum">     290 </span>            : {
+<span class="lineNum">     291 </span><span class="lineNoCov">          0 :     return getNode()-&gt;send( cmd, getID( ));</span>
+<span class="lineNum">     292 </span>            : }
+<span class="lineNum">     293 </span>            : 
+<span class="lineNum">     294 </span>            : //===========================================================================
+<span class="lineNum">     295 </span>            : // Operations
+<span class="lineNum">     296 </span>            : //===========================================================================
+<span class="lineNum">     297 </span>            : //---------------------------------------------------------------------------
+<a name="298"><span class="lineNum">     298 </span>            : // init</a>
+<span class="lineNum">     299 </span>            : //---------------------------------------------------------------------------
+<span class="lineNum">     300 </span><span class="lineNoCov">          0 : void Window::configInit( const uint128_t&amp; initID, const uint32_t /*frame*/ )</span>
+<span class="lineNum">     301 </span>            : {
+<span class="lineNum">     302 </span><span class="lineNoCov">          0 :     LBASSERT( !needsDelete( ));</span>
+<span class="lineNum">     303 </span><span class="lineNoCov">          0 :     LBASSERT( _state == STATE_STOPPED );</span>
+<span class="lineNum">     304 </span><span class="lineNoCov">          0 :     _state = STATE_INITIALIZING;</span>
+<span class="lineNum">     305 </span>            : 
+<span class="lineNum">     306 </span><span class="lineNoCov">          0 :     LBLOG( LOG_INIT ) &lt;&lt; &quot;Create Window&quot; &lt;&lt; std::endl;</span>
+<span class="lineNum">     307 </span><span class="lineNoCov">          0 :     getPipe()-&gt;send( fabric::CMD_PIPE_CREATE_WINDOW ) &lt;&lt; getID();</span>
+<span class="lineNum">     308 </span>            : 
+<span class="lineNum">     309 </span><span class="lineNoCov">          0 :     LBLOG( LOG_INIT ) &lt;&lt; &quot;Init Window&quot; &lt;&lt; std::endl;</span>
+<span class="lineNum">     310 </span><span class="lineNoCov">          0 :     send( fabric::CMD_WINDOW_CONFIG_INIT ) &lt;&lt; initID;</span>
+<span class="lineNum">     311 </span><span class="lineNoCov">          0 :     LBLOG( LOG_TASKS ) &lt;&lt; &quot;TASK window configInit  &quot; &lt;&lt; &quot; id &quot; &lt;&lt; getID()</span>
+<span class="lineNum">     312 </span><span class="lineNoCov">          0 :                        &lt;&lt; std::endl;</span>
+<a name="313"><span class="lineNum">     313 </span><span class="lineNoCov">          0 : }</span></a>
+<span class="lineNum">     314 </span>            : 
+<span class="lineNum">     315 </span><span class="lineNoCov">          0 : bool Window::syncConfigInit()</span>
+<span class="lineNum">     316 </span>            : {
+<span class="lineNum">     317 </span><span class="lineNoCov">          0 :     LBASSERT( !needsDelete( ));</span>
+<span class="lineNum">     318 </span><span class="lineNoCov">          0 :     LBASSERT( _state == STATE_INITIALIZING || _state == STATE_INIT_SUCCESS ||</span>
+<span class="lineNum">     319 </span>            :               _state == STATE_INIT_FAILED );
+<span class="lineNum">     320 </span>            : 
+<span class="lineNum">     321 </span><span class="lineNoCov">          0 :     _state.waitNE( STATE_INITIALIZING );</span>
+<span class="lineNum">     322 </span>            : 
+<span class="lineNum">     323 </span><span class="lineNoCov">          0 :     if( _state == STATE_INIT_SUCCESS )</span>
+<span class="lineNum">     324 </span>            :     {
+<span class="lineNum">     325 </span><span class="lineNoCov">          0 :         _state = STATE_RUNNING;</span>
+<span class="lineNum">     326 </span><span class="lineNoCov">          0 :         return true;</span>
+<span class="lineNum">     327 </span>            :     }
+<span class="lineNum">     328 </span>            : 
+<span class="lineNum">     329 </span><span class="lineNoCov">          0 :     configExit();</span>
+<span class="lineNum">     330 </span><span class="lineNoCov">          0 :     return false;</span>
+<span class="lineNum">     331 </span>            : }
+<span class="lineNum">     332 </span>            : 
+<span class="lineNum">     333 </span>            : //---------------------------------------------------------------------------
+<a name="334"><span class="lineNum">     334 </span>            : // exit</a>
+<span class="lineNum">     335 </span>            : //---------------------------------------------------------------------------
+<span class="lineNum">     336 </span><span class="lineNoCov">          0 : void Window::configExit()</span>
+<span class="lineNum">     337 </span>            : {
+<span class="lineNum">     338 </span><span class="lineNoCov">          0 :     if( _state &amp; STATE_EXITING )</span>
+<span class="lineNum">     339 </span><span class="lineNoCov">          0 :         return;</span>
+<span class="lineNum">     340 </span>            : 
+<span class="lineNum">     341 </span><span class="lineNoCov">          0 :     LBASSERT( isRunning() || _state == STATE_INIT_FAILED );</span>
+<span class="lineNum">     342 </span><span class="lineNoCov">          0 :     _state =</span>
+<span class="lineNum">     343 </span><span class="lineNoCov">          0 :         State( needsDelete() ? STATE_EXITING | STATE_DELETE : STATE_EXITING );</span>
+<span class="lineNum">     344 </span>            : 
+<span class="lineNum">     345 </span><span class="lineNoCov">          0 :     LBLOG( LOG_INIT ) &lt;&lt; &quot;Exit Window&quot; &lt;&lt; std::endl;</span>
+<span class="lineNum">     346 </span><span class="lineNoCov">          0 :     send( fabric::CMD_WINDOW_CONFIG_EXIT );</span>
+<a name="347"><span class="lineNum">     347 </span>            : }</a>
+<span class="lineNum">     348 </span>            : 
+<span class="lineNum">     349 </span><span class="lineNoCov">          0 : bool Window::syncConfigExit()</span>
+<span class="lineNum">     350 </span>            : {
+<span class="lineNum">     351 </span><span class="lineNoCov">          0 :     _state.waitNE( STATE_EXITING, State( STATE_EXITING | STATE_DELETE ));</span>
+<span class="lineNum">     352 </span><span class="lineNoCov">          0 :     const bool success = ( _state &amp; STATE_EXIT_SUCCESS );</span>
+<span class="lineNum">     353 </span><span class="lineNoCov">          0 :     LBASSERT( success || _state &amp; STATE_EXIT_FAILED );</span>
+<span class="lineNum">     354 </span>            : 
+<span class="lineNum">     355 </span>            :     // EXIT_FAILED -&gt; STOPPED transition
+<span class="lineNum">     356 </span><span class="lineNoCov">          0 :     uint32_t state = needsDelete() ? STATE_DELETE : 0;</span>
+<span class="lineNum">     357 </span><span class="lineNoCov">          0 :     state |= ( isActive() ? STATE_FAILED : STATE_STOPPED );</span>
+<span class="lineNum">     358 </span><span class="lineNoCov">          0 :     _state = State( state );</span>
+<span class="lineNum">     359 </span><span class="lineNoCov">          0 :     _nvSwapBarrier = 0;</span>
+<span class="lineNum">     360 </span><span class="lineNoCov">          0 :     return success;</span>
+<span class="lineNum">     361 </span>            : }
+<span class="lineNum">     362 </span>            : 
+<span class="lineNum">     363 </span>            : //---------------------------------------------------------------------------
+<a name="364"><span class="lineNum">     364 </span>            : // update</a>
+<span class="lineNum">     365 </span>            : //---------------------------------------------------------------------------
+<span class="lineNum">     366 </span><span class="lineNoCov">          0 : void Window::updateDraw( const uint128_t&amp; frameID, const uint32_t frameNumber )</span>
+<span class="lineNum">     367 </span>            : {
+<span class="lineNum">     368 </span><span class="lineNoCov">          0 :     if( !isRunning( ))</span>
+<span class="lineNum">     369 </span><span class="lineNoCov">          0 :         return;</span>
+<span class="lineNum">     370 </span>            : 
+<span class="lineNum">     371 </span><span class="lineNoCov">          0 :     LBASSERT( isActive( ))</span>
+<span class="lineNum">     372 </span>            : 
+<span class="lineNum">     373 </span>            :     send( fabric::CMD_WINDOW_FRAME_START )
+<span class="lineNum">     374 </span><span class="lineNoCov">          0 :             &lt;&lt; getVersion() &lt;&lt; frameID &lt;&lt; frameNumber;</span>
+<span class="lineNum">     375 </span><span class="lineNoCov">          0 :     LBLOG( LOG_TASKS ) &lt;&lt; &quot;TASK window start frame &quot; &lt;&lt; frameNumber</span>
+<span class="lineNum">     376 </span><span class="lineNoCov">          0 :                        &lt;&lt; &quot; id &quot; &lt;&lt; frameID &lt;&lt; std::endl;</span>
+<span class="lineNum">     377 </span>            : 
+<span class="lineNum">     378 </span><span class="lineNoCov">          0 :     const Channels&amp; channels = getChannels();</span>
+<span class="lineNum">     379 </span><span class="lineNoCov">          0 :     _swap = false;</span>
+<span class="lineNum">     380 </span>            : 
+<span class="lineNum">     381 </span><span class="lineNoCov">          0 :     for( ChannelsCIter i = channels.begin(); i != channels.end(); ++i )</span>
+<span class="lineNum">     382 </span>            :     {
+<span class="lineNum">     383 </span><span class="lineNoCov">          0 :         Channel* channel = *i;</span>
+<span class="lineNum">     384 </span><span class="lineNoCov">          0 :         if( channel-&gt;update( frameID, frameNumber ))</span>
+<span class="lineNum">     385 </span><span class="lineNoCov">          0 :             _swap = true;</span>
+<span class="lineNum">     386 </span>            :     }
+<span class="lineNum">     387 </span>            : 
+<span class="lineNum">     388 </span><span class="lineNoCov">          0 :     if( _lastDrawChannel )</span>
+<span class="lineNum">     389 </span><span class="lineNoCov">          0 :         _lastDrawChannel = 0;</span>
+<span class="lineNum">     390 </span>            :     else // no FrameDrawFinish sent
+<span class="lineNum">     391 </span>            :     {
+<span class="lineNum">     392 </span><span class="lineNoCov">          0 :         send( fabric::CMD_WINDOW_FRAME_DRAW_FINISH ) &lt;&lt; frameID &lt;&lt; frameNumber;</span>
+<span class="lineNum">     393 </span><span class="lineNoCov">          0 :         LBLOG( LOG_TASKS ) &lt;&lt; &quot;TASK window draw finish &quot; &lt;&lt; getName()</span>
+<span class="lineNum">     394 </span><span class="lineNoCov">          0 :                            &lt;&lt; &quot; frame &quot; &lt;&lt; frameNumber</span>
+<span class="lineNum">     395 </span><span class="lineNoCov">          0 :                            &lt;&lt; &quot; id &quot; &lt;&lt; frameID &lt;&lt; std::endl;</span>
+<span class="lineNum">     396 </span>            :     }
+<span class="lineNum">     397 </span>            : 
+<span class="lineNum">     398 </span><span class="lineNoCov">          0 :     if( _swapFinish )</span>
+<span class="lineNum">     399 </span>            :     {
+<span class="lineNum">     400 </span><span class="lineNoCov">          0 :         send( fabric::CMD_WINDOW_FLUSH );</span>
+<span class="lineNum">     401 </span><span class="lineNoCov">          0 :         LBLOG( LOG_TASKS ) &lt;&lt; &quot;TASK flush &quot; &lt;&lt; std::endl;</span>
+<span class="lineNum">     402 </span>            :     }
+<a name="403"><span class="lineNum">     403 </span>            : }</a>
+<span class="lineNum">     404 </span>            : 
+<span class="lineNum">     405 </span><span class="lineNoCov">          0 : void Window::updatePost( const uint128_t&amp; frameID,</span>
+<span class="lineNum">     406 </span>            :                          const uint32_t frameNumber )
+<span class="lineNum">     407 </span>            : {
+<span class="lineNum">     408 </span><span class="lineNoCov">          0 :     if( !isRunning( ))</span>
+<span class="lineNum">     409 </span><span class="lineNoCov">          0 :         return;</span>
+<span class="lineNum">     410 </span>            : 
+<span class="lineNum">     411 </span><span class="lineNoCov">          0 :     LBASSERT( isActive( ))</span>
+<span class="lineNum">     412 </span><span class="lineNoCov">          0 :     _updateSwap( frameNumber );</span>
+<span class="lineNum">     413 </span>            : 
+<span class="lineNum">     414 </span><span class="lineNoCov">          0 :     send( fabric::CMD_WINDOW_FRAME_FINISH ) &lt;&lt; frameID &lt;&lt; frameNumber;</span>
+<span class="lineNum">     415 </span><span class="lineNoCov">          0 :     LBLOG( LOG_TASKS ) &lt;&lt; &quot;TASK window finish frame &quot; &lt;&lt; frameNumber</span>
+<span class="lineNum">     416 </span><span class="lineNoCov">          0 :                        &lt;&lt; &quot; id &quot; &lt;&lt; frameID &lt;&lt; std::endl;</span>
+<a name="417"><span class="lineNum">     417 </span>            : }</a>
+<span class="lineNum">     418 </span>            : 
+<span class="lineNum">     419 </span><span class="lineNoCov">          0 : void Window::_updateSwap( const uint32_t frameNumber )</span>
+<span class="lineNum">     420 </span>            : {
+<span class="lineNum">     421 </span><span class="lineNoCov">          0 :     if( _swapFinish )</span>
+<span class="lineNum">     422 </span>            :     {
+<span class="lineNum">     423 </span><span class="lineNoCov">          0 :         send( fabric::CMD_WINDOW_FINISH );</span>
+<span class="lineNum">     424 </span><span class="lineNoCov">          0 :         LBLOG( LOG_TASKS ) &lt;&lt; &quot;TASK finish &quot; &lt;&lt; frameNumber &lt;&lt; std::endl;</span>
+<span class="lineNum">     425 </span><span class="lineNoCov">          0 :         _swapFinish = false;</span>
+<span class="lineNum">     426 </span>            :     }
+<span class="lineNum">     427 </span>            : 
+<span class="lineNum">     428 </span><span class="lineNoCov">          0 :     if( _maxFPS &lt; std::numeric_limits&lt; float &gt;::max( ))</span>
+<span class="lineNum">     429 </span>            :     {
+<span class="lineNum">     430 </span><span class="lineNoCov">          0 :         const float minFrameTime = 1000.0f / _maxFPS;</span>
+<span class="lineNum">     431 </span><span class="lineNoCov">          0 :         send( fabric::CMD_WINDOW_THROTTLE_FRAMERATE ) &lt;&lt; minFrameTime;</span>
+<span class="lineNum">     432 </span><span class="lineNoCov">          0 :         LBLOG( LOG_TASKS ) &lt;&lt; &quot;TASK Throttle framerate  &quot;</span>
+<span class="lineNum">     433 </span><span class="lineNoCov">          0 :                                &lt;&lt; minFrameTime &lt;&lt; std::endl;</span>
+<span class="lineNum">     434 </span>            : 
+<span class="lineNum">     435 </span><span class="lineNoCov">          0 :         _maxFPS = std::numeric_limits&lt; float &gt;::max();</span>
+<span class="lineNum">     436 </span>            :     }
+<span class="lineNum">     437 </span>            : 
+<span class="lineNum">     438 </span><span class="lineNoCov">          0 :     for( co::BarriersCIter i = _barriers.begin(); i != _barriers.end(); ++i )</span>
+<span class="lineNum">     439 </span>            :     {
+<span class="lineNum">     440 </span><span class="lineNoCov">          0 :         const co::Barrier* barrier = *i;</span>
+<span class="lineNum">     441 </span><span class="lineNoCov">          0 :         if( barrier-&gt;getHeight() &lt;= 1 )</span>
+<span class="lineNum">     442 </span>            :         {
+<span class="lineNum">     443 </span><span class="lineNoCov">          0 :             LBVERB &lt;&lt; &quot;Ignoring swap barrier of height &quot; &lt;&lt; barrier-&gt;getHeight()</span>
+<span class="lineNum">     444 </span><span class="lineNoCov">          0 :                    &lt;&lt; std::endl;</span>
+<span class="lineNum">     445 </span><span class="lineNoCov">          0 :             continue;</span>
+<span class="lineNum">     446 </span>            :         }
+<span class="lineNum">     447 </span>            : 
+<span class="lineNum">     448 </span><span class="lineNoCov">          0 :         send( fabric::CMD_WINDOW_BARRIER ) &lt;&lt; co::ObjectVersion( barrier );</span>
+<span class="lineNum">     449 </span><span class="lineNoCov">          0 :         LBLOG( LOG_TASKS ) &lt;&lt; &quot;TASK barrier  barrier &quot;</span>
+<span class="lineNum">     450 </span><span class="lineNoCov">          0 :                            &lt;&lt; co::ObjectVersion( barrier ) &lt;&lt; std::endl;</span>
+<span class="lineNum">     451 </span>            :     }
+<span class="lineNum">     452 </span>            : 
+<span class="lineNum">     453 </span><span class="lineNoCov">          0 :     if( _nvNetBarrier )</span>
+<span class="lineNum">     454 </span>            :     {
+<span class="lineNum">     455 </span><span class="lineNoCov">          0 :         if( _nvNetBarrier-&gt;getHeight() &lt;= 1 )</span>
+<span class="lineNum">     456 </span>            :         {
+<span class="lineNum">     457 </span><span class="lineNoCov">          0 :             LBWARN &lt;&lt; &quot;Ignoring NV swap barrier of height &quot;</span>
+<span class="lineNum">     458 </span><span class="lineNoCov">          0 :                    &lt;&lt; _nvNetBarrier-&gt;getHeight() &lt;&lt; std::endl;</span>
+<span class="lineNum">     459 </span>            :         }
+<span class="lineNum">     460 </span>            :         else
+<span class="lineNum">     461 </span>            :         {
+<span class="lineNum">     462 </span><span class="lineNoCov">          0 :             LBASSERT( _nvSwapBarrier );</span>
+<span class="lineNum">     463 </span><span class="lineNoCov">          0 :             LBASSERT( _nvSwapBarrier-&gt;isNvSwapBarrier( ));</span>
+<span class="lineNum">     464 </span>            :             // Entering the NV_swap_group. The _nvNetBarrier is also part of
+<span class="lineNum">     465 </span>            :             // _barriers, which means that the pre-join was already sync'ed
+<span class="lineNum">     466 </span>            :             // with a barrier.
+<span class="lineNum">     467 </span>            : 
+<span class="lineNum">     468 </span>            :             // Now enter the swap group and post-sync with the barrier again.
+<span class="lineNum">     469 </span>            :             send( fabric::CMD_WINDOW_NV_BARRIER )
+<span class="lineNum">     470 </span><span class="lineNoCov">          0 :                     &lt;&lt; co::ObjectVersion( _nvNetBarrier )</span>
+<span class="lineNum">     471 </span><span class="lineNoCov">          0 :                     &lt;&lt; _nvSwapBarrier-&gt;getNVSwapGroup()</span>
+<span class="lineNum">     472 </span><span class="lineNoCov">          0 :                     &lt;&lt; _nvSwapBarrier-&gt;getNVSwapBarrier();</span>
+<span class="lineNum">     473 </span>            :         }
+<span class="lineNum">     474 </span>            :     }
+<span class="lineNum">     475 </span>            : 
+<span class="lineNum">     476 </span><span class="lineNoCov">          0 :     _resetSwapBarriers();</span>
+<span class="lineNum">     477 </span>            : 
+<span class="lineNum">     478 </span><span class="lineNoCov">          0 :     if( _swap )</span>
+<span class="lineNum">     479 </span>            :     {
+<span class="lineNum">     480 </span><span class="lineNoCov">          0 :         send( fabric::CMD_WINDOW_SWAP );</span>
+<span class="lineNum">     481 </span><span class="lineNoCov">          0 :         LBLOG( LOG_TASKS ) &lt;&lt; &quot;TASK swap  &quot; &lt;&lt; frameNumber &lt;&lt; std::endl;</span>
+<span class="lineNum">     482 </span>            :     }
+<span class="lineNum">     483 </span><span class="lineNoCov">          0 : }</span>
+<span class="lineNum">     484 </span>            : 
+<span class="lineNum">     485 </span>            : //===========================================================================
+<a name="486"><span class="lineNum">     486 </span>            : // command handling</a>
+<span class="lineNum">     487 </span>            : //===========================================================================
+<span class="lineNum">     488 </span><span class="lineNoCov">          0 : bool Window::_cmdConfigInitReply( co::ICommand&amp; cmd )</span>
+<span class="lineNum">     489 </span>            : {
+<span class="lineNum">     490 </span><span class="lineNoCov">          0 :     co::ObjectICommand command( cmd );</span>
+<span class="lineNum">     491 </span><span class="lineNoCov">          0 :     LBVERB &lt;&lt; &quot;handle window configInit reply &quot; &lt;&lt; command &lt;&lt; std::endl;</span>
+<span class="lineNum">     492 </span>            : 
+<span class="lineNum">     493 </span><span class="lineNoCov">          0 :     LBASSERT( !needsDelete( ));</span>
+<span class="lineNum">     494 </span><span class="lineNoCov">          0 :     _state = command.read&lt; bool &gt;() ? STATE_INIT_SUCCESS : STATE_INIT_FAILED;</span>
+<span class="lineNum">     495 </span><span class="lineNoCov">          0 :     return true;</span>
+<a name="496"><span class="lineNum">     496 </span>            : }</a>
+<span class="lineNum">     497 </span>            : 
+<span class="lineNum">     498 </span><span class="lineNoCov">          0 : bool Window::_cmdConfigExitReply( co::ICommand&amp; cmd )</span>
+<span class="lineNum">     499 </span>            : {
+<span class="lineNum">     500 </span><span class="lineNoCov">          0 :     co::ObjectICommand command( cmd );</span>
+<span class="lineNum">     501 </span><span class="lineNoCov">          0 :     LBVERB &lt;&lt; &quot;handle window configExit reply &quot; &lt;&lt; command &lt;&lt; std::endl;</span>
+<span class="lineNum">     502 </span>            : 
+<span class="lineNum">     503 </span><span class="lineNoCov">          0 :     if( command.read&lt; bool &gt;( ))</span>
+<span class="lineNum">     504 </span><span class="lineNoCov">          0 :         _state = State( needsDelete() ?</span>
+<span class="lineNum">     505 </span><span class="lineNoCov">          0 :                         STATE_EXIT_SUCCESS|STATE_DELETE : STATE_EXIT_SUCCESS );</span>
+<span class="lineNum">     506 </span>            :     else
+<span class="lineNum">     507 </span><span class="lineNoCov">          0 :         _state = State( needsDelete() ?</span>
+<span class="lineNum">     508 </span><span class="lineNoCov">          0 :                         STATE_EXIT_FAILED | STATE_DELETE : STATE_EXIT_FAILED );</span>
+<span class="lineNum">     509 </span><span class="lineNoCov">          0 :     return true;</span>
+<a name="510"><span class="lineNum">     510 </span>            : }</a>
+<span class="lineNum">     511 </span>            : 
+<span class="lineNum">     512 </span><span class="lineNoCov">          0 : void Window::output( std::ostream&amp; os ) const</span>
+<span class="lineNum">     513 </span>            : {
+<span class="lineNum">     514 </span><span class="lineNoCov">          0 :     bool attrPrinted   = false;</span>
+<span class="lineNum">     515 </span>            : 
+<span class="lineNum">     516 </span><span class="lineNoCov">          0 :     for( WindowSettings::IAttribute i = static_cast&lt;WindowSettings::IAttribute&gt;( 0 );</span>
+<span class="lineNum">     517 </span><span class="lineNoCov">          0 :          i &lt; WindowSettings::IATTR_LAST;</span>
+<span class="lineNum">     518 </span>            :          i = static_cast&lt;WindowSettings::IAttribute&gt;( static_cast&lt;uint32_t&gt;( i )+1))
+<span class="lineNum">     519 </span>            :     {
+<span class="lineNum">     520 </span><span class="lineNoCov">          0 :         const int value = getIAttribute( i );</span>
+<span class="lineNum">     521 </span><span class="lineNoCov">          0 :         if( value == Global::instance()-&gt;getWindowIAttribute( i ))</span>
+<span class="lineNum">     522 </span><span class="lineNoCov">          0 :             continue;</span>
+<span class="lineNum">     523 </span>            : 
+<span class="lineNum">     524 </span><span class="lineNoCov">          0 :         if( !attrPrinted )</span>
+<span class="lineNum">     525 </span>            :         {
+<span class="lineNum">     526 </span><span class="lineNoCov">          0 :             os &lt;&lt; std::endl &lt;&lt; &quot;attributes&quot; &lt;&lt; std::endl;</span>
+<span class="lineNum">     527 </span><span class="lineNoCov">          0 :             os &lt;&lt; &quot;{&quot; &lt;&lt; std::endl &lt;&lt; lunchbox::indent;</span>
+<span class="lineNum">     528 </span><span class="lineNoCov">          0 :             attrPrinted = true;</span>
+<span class="lineNum">     529 </span>            :         }
+<span class="lineNum">     530 </span>            : 
+<span class="lineNum">     531 </span>            :         os &lt;&lt; ( i == WindowSettings::IATTR_HINT_CORE_PROFILE ?
+<span class="lineNum">     532 </span>            :                     &quot;hint_core_profile  &quot; :
+<span class="lineNum">     533 </span>            :                 i == WindowSettings::IATTR_HINT_OPENGL_MAJOR ?
+<span class="lineNum">     534 </span>            :                     &quot;hint_opengl_major  &quot; :
+<span class="lineNum">     535 </span>            :                 i == WindowSettings::IATTR_HINT_OPENGL_MINOR ?
+<span class="lineNum">     536 </span>            :                     &quot;hint_opengl_minor  &quot; :
+<span class="lineNum">     537 </span>            :                 i == WindowSettings::IATTR_HINT_STEREO ?
+<span class="lineNum">     538 </span>            :                     &quot;hint_stereo        &quot; :
+<span class="lineNum">     539 </span>            :                 i == WindowSettings::IATTR_HINT_DOUBLEBUFFER ?
+<span class="lineNum">     540 </span>            :                     &quot;hint_doublebuffer  &quot; :
+<span class="lineNum">     541 </span>            :                 i == WindowSettings::IATTR_HINT_FULLSCREEN ?
+<span class="lineNum">     542 </span>            :                     &quot;hint_fullscreen    &quot; :
+<span class="lineNum">     543 </span>            :                 i == WindowSettings::IATTR_HINT_DECORATION ?
+<span class="lineNum">     544 </span>            :                     &quot;hint_decoration    &quot; :
+<span class="lineNum">     545 </span>            :                 i == WindowSettings::IATTR_HINT_SWAPSYNC ?
+<span class="lineNum">     546 </span>            :                     &quot;hint_swapsync      &quot; :
+<span class="lineNum">     547 </span>            :                 i == WindowSettings::IATTR_HINT_DRAWABLE ?
+<span class="lineNum">     548 </span>            :                     &quot;hint_drawable      &quot; :
+<span class="lineNum">     549 </span>            :                 i == WindowSettings::IATTR_HINT_STATISTICS ?
+<span class="lineNum">     550 </span>            :                     &quot;hint_statistics    &quot; :
+<span class="lineNum">     551 </span>            :                 i == WindowSettings::IATTR_HINT_SCREENSAVER ?
+<span class="lineNum">     552 </span>            :                     &quot;hint_screensaver   &quot; :
+<span class="lineNum">     553 </span>            :                 i == WindowSettings::IATTR_HINT_GRAB_POINTER ?
+<span class="lineNum">     554 </span>            :                     &quot;hint_grab_pointer  &quot; :
+<span class="lineNum">     555 </span>            :                 i == WindowSettings::IATTR_PLANES_COLOR ?
+<span class="lineNum">     556 </span>            :                     &quot;planes_color       &quot; :
+<span class="lineNum">     557 </span>            :                 i == WindowSettings::IATTR_PLANES_ALPHA ?
+<span class="lineNum">     558 </span>            :                     &quot;planes_alpha       &quot; :
+<span class="lineNum">     559 </span>            :                 i == WindowSettings::IATTR_PLANES_DEPTH ?
+<span class="lineNum">     560 </span>            :                     &quot;planes_depth       &quot; :
+<span class="lineNum">     561 </span>            :                 i == WindowSettings::IATTR_PLANES_STENCIL ?
+<span class="lineNum">     562 </span>            :                     &quot;planes_stencil     &quot; :
+<span class="lineNum">     563 </span>            :                 i == WindowSettings::IATTR_PLANES_ACCUM ?
+<span class="lineNum">     564 </span>            :                     &quot;planes_accum       &quot; :
+<span class="lineNum">     565 </span>            :                 i == WindowSettings::IATTR_PLANES_ACCUM_ALPHA ?
+<span class="lineNum">     566 </span>            :                     &quot;planes_accum_alpha &quot; :
+<span class="lineNum">     567 </span>            :                 i == WindowSettings::IATTR_PLANES_SAMPLES ?
+<span class="lineNum">     568 </span><span class="lineNoCov">          0 :                     &quot;planes_samples     &quot; : &quot;ERROR&quot; )</span>
+<span class="lineNum">     569 </span><span class="lineNoCov">          0 :            &lt;&lt; static_cast&lt; fabric::IAttribute &gt;( value ) &lt;&lt; std::endl;</span>
+<span class="lineNum">     570 </span>            :     }
+<span class="lineNum">     571 </span>            : 
+<span class="lineNum">     572 </span><span class="lineNoCov">          0 :     if( attrPrinted )</span>
+<span class="lineNum">     573 </span><span class="lineNoCov">          0 :         os &lt;&lt; lunchbox::exdent &lt;&lt; &quot;}&quot; &lt;&lt; std::endl &lt;&lt; std::endl;</span>
+<span class="lineNum">     574 </span><span class="lineNoCov">          0 : }</span>
+<span class="lineNum">     575 </span>            : 
+<span class="lineNum">     576 </span>            : }
+<span class="lineNum">     577 </span>            : }
+<span class="lineNum">     578 </span>            : 
+<span class="lineNum">     579 </span>            : #include &quot;../fabric/window.ipp&quot;
+<span class="lineNum">     580 </span>            : template class eq::fabric::Window&lt; eq::server::Pipe, eq::server::Window,
+<span class="lineNum">     581 </span>            :                                    eq::server::Channel &gt;;
+<span class="lineNum">     582 </span>            : 
+<a name="583"><span class="lineNum">     583 </span>            : /** @cond IGNORE */</a>
+<span class="lineNum">     584 </span>            : template std::ostream&amp; eq::fabric::operator &lt;&lt; ( std::ostream&amp;,
+<span class="lineNum">     585 </span><span class="lineCov">         60 :                                                  const eq::server::Super&amp; );</span>
+<span class="lineNum">     586 </span>            : /** @endcond */
+</pre>
+      </td>
+    </tr>
+  </table>
+  <br>
+
+  <table width="100%" border=0 cellspacing=0 cellpadding=0>
+    <tr><td class="ruler"><img src="../../../glass.png" width=3 height=3 alt=""></td></tr>
+    <tr><td class="versionInfo">Generated by: <a href="http://ltp.sourceforge.net/coverage/lcov.php" target="_parent">LCOV version 1.11</a></td></tr>
+  </table>
+  <br>
+
+</body>
+</html>

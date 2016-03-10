@@ -1,0 +1,510 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+
+<html lang="en">
+
+<head>
+  <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+  <title>LCOV - Livre - Equalizer/eq/client.cpp</title>
+  <link rel="stylesheet" type="text/css" href="../../gcov.css">
+</head>
+
+<body>
+
+  <table width="100%" border=0 cellspacing=0 cellpadding=0>
+    <tr><td class="title">LCOV - code coverage report</td></tr>
+    <tr><td class="ruler"><img src="../../glass.png" width=3 height=3 alt=""></td></tr>
+
+    <tr>
+      <td width="100%">
+        <table cellpadding=1 border=0 width="100%">
+          <tr>
+            <td width="10%" class="headerItem">Current view:</td>
+            <td width="35%" class="headerValue"><a href="../../index.html">top level</a> - <a href="index.html">Equalizer/eq</a> - client.cpp<span style="font-size: 80%;"> (source / <a href="client.cpp.func-sort-c.html">functions</a>)</span></td>
+            <td width="5%"></td>
+            <td width="15%"></td>
+            <td width="10%" class="headerCovTableHead">Hit</td>
+            <td width="10%" class="headerCovTableHead">Total</td>
+            <td width="15%" class="headerCovTableHead">Coverage</td>
+          </tr>
+          <tr>
+            <td class="headerItem">Test:</td>
+            <td class="headerValue">Livre</td>
+            <td></td>
+            <td class="headerItem">Lines:</td>
+            <td class="headerCovTableEntry">1</td>
+            <td class="headerCovTableEntry">184</td>
+            <td class="headerCovTableEntryLo">0.5 %</td>
+          </tr>
+          <tr>
+            <td class="headerItem">Date:</td>
+            <td class="headerValue">2016-03-10 14:06:39</td>
+            <td></td>
+            <td class="headerItem">Functions:</td>
+            <td class="headerCovTableEntry">2</td>
+            <td class="headerCovTableEntry">34</td>
+            <td class="headerCovTableEntryLo">5.9 %</td>
+          </tr>
+          <tr><td><img src="../../glass.png" width=3 height=3 alt=""></td></tr>
+        </table>
+      </td>
+    </tr>
+
+    <tr><td class="ruler"><img src="../../glass.png" width=3 height=3 alt=""></td></tr>
+  </table>
+
+  <table cellpadding=0 cellspacing=0 border=0>
+    <tr>
+      <td><br></td>
+    </tr>
+    <tr>
+      <td>
+<pre class="sourceHeading">          Line data    Source code</pre>
+<pre class="source">
+<a name="1"><span class="lineNum">       1 </span>            : </a>
+<span class="lineNum">       2 </span>            : /* Copyright (c) 2005-2015, Stefan Eilemann &lt;eile@equalizergraphics.com&gt;
+<span class="lineNum">       3 </span>            :  *                          Daniel Nachbaur &lt;danielnachbaur@gmail.com&gt;
+<span class="lineNum">       4 </span>            :  *
+<span class="lineNum">       5 </span>            :  * This library is free software; you can redistribute it and/or modify it under
+<span class="lineNum">       6 </span>            :  * the terms of the GNU Lesser General Public License version 2.1 as published
+<span class="lineNum">       7 </span>            :  * by the Free Software Foundation.
+<span class="lineNum">       8 </span>            :  *
+<span class="lineNum">       9 </span>            :  * This library is distributed in the hope that it will be useful, but WITHOUT
+<span class="lineNum">      10 </span>            :  * ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS
+<span class="lineNum">      11 </span>            :  * FOR A PARTICULAR PURPOSE.  See the GNU Lesser General Public License for more
+<span class="lineNum">      12 </span>            :  * details.
+<span class="lineNum">      13 </span>            :  *
+<span class="lineNum">      14 </span>            :  * You should have received a copy of the GNU Lesser General Public License
+<span class="lineNum">      15 </span>            :  * along with this library; if not, write to the Free Software Foundation, Inc.,
+<span class="lineNum">      16 </span>            :  * 51 Franklin Street, Fifth Floor, Boston, MA 02110-1301 USA.
+<span class="lineNum">      17 </span>            :  */
+<span class="lineNum">      18 </span>            : 
+<span class="lineNum">      19 </span>            : #include &quot;client.h&quot;
+<span class="lineNum">      20 </span>            : 
+<span class="lineNum">      21 </span>            : #include &quot;commandQueue.h&quot;
+<span class="lineNum">      22 </span>            : #include &quot;config.h&quot;
+<span class="lineNum">      23 </span>            : #include &quot;node.h&quot;
+<span class="lineNum">      24 </span>            : #include &quot;global.h&quot;
+<span class="lineNum">      25 </span>            : #include &quot;init.h&quot;
+<span class="lineNum">      26 </span>            : #include &quot;nodeFactory.h&quot;
+<span class="lineNum">      27 </span>            : #include &quot;server.h&quot;
+<span class="lineNum">      28 </span>            : 
+<span class="lineNum">      29 </span>            : #include &lt;eq/fabric/commands.h&gt;
+<span class="lineNum">      30 </span>            : #include &lt;eq/fabric/configVisitor.h&gt;
+<span class="lineNum">      31 </span>            : #include &lt;eq/fabric/leafVisitor.h&gt;
+<span class="lineNum">      32 </span>            : #include &lt;eq/fabric/elementVisitor.h&gt;
+<span class="lineNum">      33 </span>            : #include &lt;eq/fabric/nodeType.h&gt;
+<span class="lineNum">      34 </span>            : #include &lt;eq/fabric/view.h&gt;
+<span class="lineNum">      35 </span>            : 
+<span class="lineNum">      36 </span>            : #include &lt;eq/server/localServer.h&gt;
+<span class="lineNum">      37 </span>            : 
+<span class="lineNum">      38 </span>            : #include &lt;co/iCommand.h&gt;
+<span class="lineNum">      39 </span>            : #include &lt;co/connection.h&gt;
+<span class="lineNum">      40 </span>            : #include &lt;co/connectionDescription.h&gt;
+<span class="lineNum">      41 </span>            : #include &lt;co/global.h&gt;
+<span class="lineNum">      42 </span>            : #include &lt;lunchbox/dso.h&gt;
+<span class="lineNum">      43 </span>            : #include &lt;lunchbox/file.h&gt;
+<span class="lineNum">      44 </span>            : #include &lt;boost/filesystem/path.hpp&gt;
+<span class="lineNum">      45 </span>            : 
+<span class="lineNum">      46 </span>            : #ifdef WIN32_API
+<span class="lineNum">      47 </span>            : #  include &lt;direct.h&gt;  // for chdir
+<span class="lineNum">      48 </span>            : #  define chdir _chdir
+<span class="lineNum">      49 </span>            : #endif
+<span class="lineNum">      50 </span>            : #ifdef EQ_QT_USED
+<span class="lineNum">      51 </span>            : #  include &lt;QApplication&gt; // must be included before any header defining Bool
+<span class="lineNum">      52 </span>            : 
+<span class="lineNum">      53 </span>            : #  include &quot;os.h&quot;
+<span class="lineNum">      54 </span>            : #else
+<span class="lineNum">      55 </span>            : class QApplication;
+<span class="lineNum">      56 </span>            : #endif
+<span class="lineNum">      57 </span>            : 
+<span class="lineNum">      58 </span>            : namespace eq
+<span class="lineNum">      59 </span>            : {
+<span class="lineNum">      60 </span>            : namespace
+<span class="lineNum">      61 </span>            : {
+<span class="lineNum">      62 </span>            : typedef stde::hash_set&lt; Server* &gt; ServerSet;
+<span class="lineNum">      63 </span>            : }
+<span class="lineNum">      64 </span>            : 
+<span class="lineNum">      65 </span>            : /** @cond IGNORE */
+<a name="66"><span class="lineNum">      66 </span>            : namespace detail</a>
+<span class="lineNum">      67 </span>            : {
+<span class="lineNum">      68 </span><span class="lineNoCov">          0 : class Client</span>
+<a name="69"><span class="lineNum">      69 </span>            : {</a>
+<span class="lineNum">      70 </span>            : public:
+<span class="lineNum">      71 </span><span class="lineNoCov">          0 :     Client()</span>
+<span class="lineNum">      72 </span>            :         : queue( co::Global::getCommandQueueLimit( ))
+<span class="lineNum">      73 </span>            :         , modelUnit( EQ_UNDEFINED_UNIT )
+<span class="lineNum">      74 </span>            :         , qtApp( 0 )
+<span class="lineNum">      75 </span><span class="lineNoCov">          0 :         , running( false )</span>
+<span class="lineNum">      76 </span><span class="lineNoCov">          0 :     {}</span>
+<span class="lineNum">      77 </span>            : 
+<span class="lineNum">      78 </span>            :     CommandQueue queue; //!&lt; The command-&gt;node command queue.
+<span class="lineNum">      79 </span>            :     std::string name;
+<span class="lineNum">      80 </span>            :     Strings activeLayouts;
+<span class="lineNum">      81 </span>            :     ServerSet localServers;
+<span class="lineNum">      82 </span>            :     std::string gpuFilter;
+<span class="lineNum">      83 </span>            :     float modelUnit;
+<span class="lineNum">      84 </span>            :     QApplication* qtApp;
+<a name="85"><span class="lineNum">      85 </span>            :     bool running;</a>
+<span class="lineNum">      86 </span>            : 
+<span class="lineNum">      87 </span><span class="lineNoCov">          0 :     void initQt( int argc LB_UNUSED, char** argv LB_UNUSED )</span>
+<span class="lineNum">      88 </span>            :     {
+<span class="lineNum">      89 </span>            : #if EQ_GLX_USED || EQ_WGL_USED || EQ_AGL_USED
+<span class="lineNum">      90 </span><span class="lineNoCov">          0 :         return;</span>
+<span class="lineNum">      91 </span>            : #endif
+<span class="lineNum">      92 </span>            : #ifdef EQ_QT_USED
+<span class="lineNum">      93 </span>            :         if( !QApplication::instance( ))
+<span class="lineNum">      94 </span>            :         {
+<span class="lineNum">      95 </span>            : #  ifdef __linux__
+<span class="lineNum">      96 </span>            :             ::XInitThreads();
+<span class="lineNum">      97 </span>            : #  endif
+<span class="lineNum">      98 </span>            :             qtApp = new QApplication( argc, argv );
+<span class="lineNum">      99 </span>            :         }
+<span class="lineNum">     100 </span>            : #endif
+<span class="lineNum">     101 </span>            :     }
+<span class="lineNum">     102 </span>            : };
+<span class="lineNum">     103 </span>            : }
+<span class="lineNum">     104 </span>            : 
+<span class="lineNum">     105 </span>            : typedef co::CommandFunc&lt;Client&gt; ClientFunc;
+<span class="lineNum">     106 </span>            : 
+<span class="lineNum">     107 </span>            : typedef fabric::Client Super;
+<a name="108"><span class="lineNum">     108 </span>            : /** @endcond */</a>
+<span class="lineNum">     109 </span>            : 
+<span class="lineNum">     110 </span><span class="lineNoCov">          0 : Client::Client()</span>
+<span class="lineNum">     111 </span>            :         : Super()
+<span class="lineNum">     112 </span><span class="lineNoCov">          0 :         , _impl( new detail::Client )</span>
+<span class="lineNum">     113 </span>            : {
+<span class="lineNum">     114 </span>            :     registerCommand( fabric::CMD_CLIENT_EXIT,
+<span class="lineNum">     115 </span><span class="lineNoCov">          0 :                      ClientFunc( this, &amp;Client::_cmdExit ), &amp;_impl-&gt;queue );</span>
+<span class="lineNum">     116 </span>            :     registerCommand( fabric::CMD_CLIENT_INTERRUPT,
+<span class="lineNum">     117 </span><span class="lineNoCov">          0 :                      ClientFunc( this, &amp;Client::_cmdInterrupt ), &amp;_impl-&gt;queue);</span>
+<span class="lineNum">     118 </span>            : 
+<span class="lineNum">     119 </span><span class="lineNoCov">          0 :     LBVERB &lt;&lt; &quot;New client at &quot; &lt;&lt; (void*)this &lt;&lt; std::endl;</span>
+<a name="120"><span class="lineNum">     120 </span><span class="lineNoCov">          0 : }</span></a>
+<span class="lineNum">     121 </span>            : 
+<span class="lineNum">     122 </span><span class="lineNoCov">          0 : Client::~Client()</span>
+<span class="lineNum">     123 </span>            : {
+<span class="lineNum">     124 </span><span class="lineNoCov">          0 :     LBVERB &lt;&lt; &quot;Delete client at &quot; &lt;&lt; (void*)this &lt;&lt; std::endl;</span>
+<span class="lineNum">     125 </span><span class="lineNoCov">          0 :     LBASSERT( isClosed( ));</span>
+<span class="lineNum">     126 </span><span class="lineNoCov">          0 :     close();</span>
+<span class="lineNum">     127 </span><span class="lineNoCov">          0 :     delete _impl;</span>
+<a name="128"><span class="lineNum">     128 </span><span class="lineNoCov">          0 : }</span></a>
+<span class="lineNum">     129 </span>            : 
+<span class="lineNum">     130 </span><span class="lineNoCov">          0 : bool Client::connectServer( ServerPtr server )</span>
+<span class="lineNum">     131 </span>            : {
+<span class="lineNum">     132 </span><span class="lineNoCov">          0 :     if( Super::connectServer( server ))</span>
+<span class="lineNum">     133 </span>            :     {
+<span class="lineNum">     134 </span><span class="lineNoCov">          0 :         server-&gt;setClient( this );</span>
+<span class="lineNum">     135 </span><span class="lineNoCov">          0 :         return true;</span>
+<span class="lineNum">     136 </span>            :     }
+<span class="lineNum">     137 </span>            : 
+<span class="lineNum">     138 </span><span class="lineNoCov">          0 :     if( !server-&gt;getConnectionDescriptions().empty() ||</span>
+<span class="lineNum">     139 </span><span class="lineNoCov">          0 :         !Global::getServer().empty() || getenv( &quot;EQ_SERVER&quot; ))</span>
+<span class="lineNum">     140 </span>            :     {
+<span class="lineNum">     141 </span><span class="lineNoCov">          0 :         return false;</span>
+<span class="lineNum">     142 </span>            :     }
+<span class="lineNum">     143 </span>            : 
+<span class="lineNum">     144 </span>            :     // Use app-local server if no explicit server was set
+<span class="lineNum">     145 </span><span class="lineNoCov">          0 :     if( !server::startLocalServer( Global::getConfigFile( )))</span>
+<span class="lineNum">     146 </span><span class="lineNoCov">          0 :         return false;</span>
+<span class="lineNum">     147 </span>            : 
+<span class="lineNum">     148 </span><span class="lineNoCov">          0 :     co::ConnectionPtr connection = server::connectLocalServer();</span>
+<span class="lineNum">     149 </span><span class="lineNoCov">          0 :     if( !connection || !connect( server, connection ))</span>
+<span class="lineNum">     150 </span><span class="lineNoCov">          0 :         return false;</span>
+<span class="lineNum">     151 </span>            : 
+<span class="lineNum">     152 </span><span class="lineNoCov">          0 :     server-&gt;setClient( this );</span>
+<span class="lineNum">     153 </span><span class="lineNoCov">          0 :     _impl-&gt;localServers.insert( server.get( ));</span>
+<span class="lineNum">     154 </span><span class="lineNoCov">          0 :     return true;</span>
+<a name="155"><span class="lineNum">     155 </span>            : }</a>
+<span class="lineNum">     156 </span>            : 
+<span class="lineNum">     157 </span><span class="lineNoCov">          0 : bool Client::disconnectServer( ServerPtr server )</span>
+<span class="lineNum">     158 </span>            : {
+<span class="lineNum">     159 </span><span class="lineNoCov">          0 :     ServerSet::iterator i = _impl-&gt;localServers.find( server.get( ));</span>
+<span class="lineNum">     160 </span><span class="lineNoCov">          0 :     if( i == _impl-&gt;localServers.end( ))</span>
+<span class="lineNum">     161 </span>            :     {
+<span class="lineNum">     162 </span><span class="lineNoCov">          0 :         server-&gt;setClient( 0 );</span>
+<span class="lineNum">     163 </span><span class="lineNoCov">          0 :         const bool success = Super::disconnectServer( server );</span>
+<span class="lineNum">     164 </span><span class="lineNoCov">          0 :         _impl-&gt;queue.flush();</span>
+<span class="lineNum">     165 </span><span class="lineNoCov">          0 :         return success;</span>
+<span class="lineNum">     166 </span>            :     }
+<span class="lineNum">     167 </span>            : 
+<span class="lineNum">     168 </span>            :     // shut down process-local server (see _startLocalServer)
+<span class="lineNum">     169 </span><span class="lineNoCov">          0 :     LBASSERT( server-&gt;isConnected( ));</span>
+<span class="lineNum">     170 </span><span class="lineNoCov">          0 :     const bool success = server-&gt;shutdown();</span>
+<span class="lineNum">     171 </span><span class="lineNoCov">          0 :     server::joinLocalServer();</span>
+<span class="lineNum">     172 </span><span class="lineNoCov">          0 :     server-&gt;setClient( 0 );</span>
+<span class="lineNum">     173 </span>            : 
+<span class="lineNum">     174 </span><span class="lineNoCov">          0 :     LBASSERT( !server-&gt;isConnected( ));</span>
+<span class="lineNum">     175 </span><span class="lineNoCov">          0 :     _impl-&gt;localServers.erase( i );</span>
+<span class="lineNum">     176 </span><span class="lineNoCov">          0 :     _impl-&gt;queue.flush();</span>
+<span class="lineNum">     177 </span><span class="lineNoCov">          0 :     return success;</span>
+<span class="lineNum">     178 </span>            : }
+<span class="lineNum">     179 </span>            : 
+<a name="180"><span class="lineNum">     180 </span>            : namespace</a>
+<span class="lineNum">     181 </span>            : {
+<span class="lineNum">     182 </span><span class="lineNoCov">          0 : bool _isParameterOption( const std::string&amp; name, const int argc, char** argv,</span>
+<span class="lineNum">     183 </span>            :                          const int index )
+<span class="lineNum">     184 </span>            : {
+<span class="lineNum">     185 </span><span class="lineNoCov">          0 :     return ( index &lt; argc-1 &amp;&amp;          // has enough total arguments</span>
+<span class="lineNum">     186 </span><span class="lineNoCov">          0 :              name == argv[index] &amp;&amp;     // name matches</span>
+<span class="lineNum">     187 </span><span class="lineNoCov">          0 :              argv[index+1][0] != '-' ); // next arg not an option</span>
+<span class="lineNum">     188 </span>            : }
+<a name="189"><span class="lineNum">     189 </span>            : }</a>
+<span class="lineNum">     190 </span>            : 
+<span class="lineNum">     191 </span><span class="lineNoCov">          0 : bool Client::initLocal( const int argc, char** argv )</span>
+<span class="lineNum">     192 </span>            : {
+<span class="lineNum">     193 </span><span class="lineNoCov">          0 :     bool isClient = false;</span>
+<span class="lineNum">     194 </span><span class="lineNoCov">          0 :     std::string clientOpts;</span>
+<span class="lineNum">     195 </span>            : 
+<span class="lineNum">     196 </span><span class="lineNoCov">          0 :     if( _impl-&gt;name.empty() &amp;&amp; argc &gt; 0 &amp;&amp; argv )</span>
+<span class="lineNum">     197 </span>            :     {
+<span class="lineNum">     198 </span><span class="lineNoCov">          0 :         const boost::filesystem::path prog = argv[0];</span>
+<span class="lineNum">     199 </span><span class="lineNoCov">          0 :         setName( prog.stem().string( ));</span>
+<span class="lineNum">     200 </span>            :     }
+<span class="lineNum">     201 </span>            : 
+<span class="lineNum">     202 </span><span class="lineNoCov">          0 :     for( int i=1; i&lt;argc; ++i )</span>
+<span class="lineNum">     203 </span>            :     {
+<span class="lineNum">     204 </span><span class="lineNoCov">          0 :         if( std::string( &quot;--eq-client&quot; ) == argv[i] )</span>
+<span class="lineNum">     205 </span>            :         {
+<span class="lineNum">     206 </span><span class="lineNoCov">          0 :             isClient = true;</span>
+<span class="lineNum">     207 </span><span class="lineNoCov">          0 :             if( i &lt; argc-1 &amp;&amp; argv[i+1][0] != '-' ) // server-started client</span>
+<span class="lineNum">     208 </span>            :             {
+<span class="lineNum">     209 </span><span class="lineNoCov">          0 :                 clientOpts = argv[++i];</span>
+<span class="lineNum">     210 </span>            : 
+<span class="lineNum">     211 </span><span class="lineNoCov">          0 :                 if( !deserialize( clientOpts ))</span>
+<span class="lineNum">     212 </span><span class="lineNoCov">          0 :                     LBWARN &lt;&lt; &quot;Failed to parse client listen port parameters&quot;</span>
+<span class="lineNum">     213 </span><span class="lineNoCov">          0 :                            &lt;&lt; std::endl;</span>
+<span class="lineNum">     214 </span><span class="lineNoCov">          0 :                 LBASSERT( !clientOpts.empty( ));</span>
+<span class="lineNum">     215 </span>            :             }
+<span class="lineNum">     216 </span>            :         }
+<span class="lineNum">     217 </span><span class="lineNoCov">          0 :         else if( _isParameterOption( &quot;--eq-layout&quot;, argc, argv, i ))</span>
+<span class="lineNum">     218 </span><span class="lineNoCov">          0 :             _impl-&gt;activeLayouts.push_back( argv[++i] );</span>
+<span class="lineNum">     219 </span><span class="lineNoCov">          0 :         else if( _isParameterOption( &quot;--eq-gpufilter&quot; , argc, argv, i ))</span>
+<span class="lineNum">     220 </span><span class="lineNoCov">          0 :             _impl-&gt;gpuFilter = argv[ ++i ];</span>
+<span class="lineNum">     221 </span><span class="lineNoCov">          0 :         else if( _isParameterOption( &quot;--eq-modelunit&quot;, argc, argv, i ))</span>
+<span class="lineNum">     222 </span>            :         {
+<span class="lineNum">     223 </span><span class="lineNoCov">          0 :             std::istringstream unitString( argv[++i] );</span>
+<span class="lineNum">     224 </span><span class="lineNoCov">          0 :             unitString &gt;&gt; _impl-&gt;modelUnit;</span>
+<span class="lineNum">     225 </span>            :         }
+<span class="lineNum">     226 </span>            :     }
+<span class="lineNum">     227 </span><span class="lineNoCov">          0 :     LBVERB &lt;&lt; &quot;Launching &quot; &lt;&lt; getNodeID() &lt;&lt; std::endl;</span>
+<span class="lineNum">     228 </span>            : 
+<span class="lineNum">     229 </span><span class="lineNoCov">          0 :     if( !Super::initLocal( argc, argv ))</span>
+<span class="lineNum">     230 </span><span class="lineNoCov">          0 :         return false;</span>
+<span class="lineNum">     231 </span>            : 
+<span class="lineNum">     232 </span><span class="lineNoCov">          0 :     if( isClient )</span>
+<span class="lineNum">     233 </span>            :     {
+<span class="lineNum">     234 </span><span class="lineNoCov">          0 :         LBVERB &lt;&lt; &quot;Client node started from command line with option &quot;</span>
+<span class="lineNum">     235 </span><span class="lineNoCov">          0 :                &lt;&lt; clientOpts &lt;&lt; std::endl;</span>
+<span class="lineNum">     236 </span>            : 
+<span class="lineNum">     237 </span><span class="lineNoCov">          0 :         if( !_setupClient( clientOpts ))</span>
+<span class="lineNum">     238 </span>            :         {
+<span class="lineNum">     239 </span><span class="lineNoCov">          0 :             exitLocal();</span>
+<span class="lineNum">     240 </span><span class="lineNoCov">          0 :             return false;</span>
+<span class="lineNum">     241 </span>            :         }
+<span class="lineNum">     242 </span>            : 
+<span class="lineNum">     243 </span><span class="lineNoCov">          0 :         _impl-&gt;running = true;</span>
+<span class="lineNum">     244 </span><span class="lineNoCov">          0 :         clientLoop();</span>
+<span class="lineNum">     245 </span><span class="lineNoCov">          0 :         exitClient();</span>
+<span class="lineNum">     246 </span>            :     }
+<span class="lineNum">     247 </span>            : 
+<span class="lineNum">     248 </span><span class="lineNoCov">          0 :     _impl-&gt;initQt( argc, argv );</span>
+<span class="lineNum">     249 </span><span class="lineNoCov">          0 :     return true;</span>
+<a name="250"><span class="lineNum">     250 </span>            : }</a>
+<span class="lineNum">     251 </span>            : 
+<span class="lineNum">     252 </span><span class="lineNoCov">          0 : bool Client::_setupClient( const std::string&amp; clientArgs )</span>
+<span class="lineNum">     253 </span>            : {
+<span class="lineNum">     254 </span><span class="lineNoCov">          0 :     LBASSERT( isListening( ));</span>
+<span class="lineNum">     255 </span><span class="lineNoCov">          0 :     if( clientArgs.empty( ))</span>
+<span class="lineNum">     256 </span><span class="lineNoCov">          0 :         return true;</span>
+<span class="lineNum">     257 </span>            : 
+<span class="lineNum">     258 </span><span class="lineNoCov">          0 :     size_t nextPos = clientArgs.find( CO_SEPARATOR );</span>
+<span class="lineNum">     259 </span><span class="lineNoCov">          0 :     if( nextPos == std::string::npos )</span>
+<span class="lineNum">     260 </span>            :     {
+<span class="lineNum">     261 </span><span class="lineNoCov">          0 :         LBERROR &lt;&lt; &quot;Could not parse working directory: &quot; &lt;&lt; clientArgs</span>
+<span class="lineNum">     262 </span><span class="lineNoCov">          0 :                 &lt;&lt; std::endl;</span>
+<span class="lineNum">     263 </span><span class="lineNoCov">          0 :         return false;</span>
+<span class="lineNum">     264 </span>            :     }
+<span class="lineNum">     265 </span>            : 
+<span class="lineNum">     266 </span><span class="lineNoCov">          0 :     const std::string workDir = clientArgs.substr( 0, nextPos );</span>
+<span class="lineNum">     267 </span><span class="lineNoCov">          0 :     std::string description = clientArgs.substr( nextPos + 1 );</span>
+<span class="lineNum">     268 </span>            : 
+<span class="lineNum">     269 </span><span class="lineNoCov">          0 :     Global::setWorkDir( workDir );</span>
+<span class="lineNum">     270 </span><span class="lineNoCov">          0 :     if( !workDir.empty() &amp;&amp; chdir( workDir.c_str( )) == -1 )</span>
+<span class="lineNum">     271 </span><span class="lineNoCov">          0 :         LBWARN &lt;&lt; &quot;Can't change working directory to &quot; &lt;&lt; workDir &lt;&lt; &quot;: &quot;</span>
+<span class="lineNum">     272 </span><span class="lineNoCov">          0 :                &lt;&lt; lunchbox::sysError &lt;&lt; std::endl;</span>
+<span class="lineNum">     273 </span>            : 
+<span class="lineNum">     274 </span><span class="lineNoCov">          0 :     nextPos = description.find( CO_SEPARATOR );</span>
+<span class="lineNum">     275 </span><span class="lineNoCov">          0 :     if( nextPos == std::string::npos )</span>
+<span class="lineNum">     276 </span>            :     {
+<span class="lineNum">     277 </span><span class="lineNoCov">          0 :         LBERROR &lt;&lt; &quot;Could not parse server node type: &quot; &lt;&lt; description</span>
+<span class="lineNum">     278 </span><span class="lineNoCov">          0 :                 &lt;&lt; &quot; is left from &quot; &lt;&lt; clientArgs &lt;&lt; std::endl;</span>
+<span class="lineNum">     279 </span><span class="lineNoCov">          0 :         return false;</span>
+<span class="lineNum">     280 </span>            :     }
+<span class="lineNum">     281 </span>            : 
+<span class="lineNum">     282 </span><span class="lineNoCov">          0 :     co::NodePtr server = createNode( fabric::NODETYPE_SERVER );</span>
+<span class="lineNum">     283 </span><span class="lineNoCov">          0 :     if( !server-&gt;deserialize( description ))</span>
+<span class="lineNum">     284 </span><span class="lineNoCov">          0 :         LBWARN &lt;&lt; &quot;Can't parse server data&quot; &lt;&lt; std::endl;</span>
+<span class="lineNum">     285 </span>            : 
+<span class="lineNum">     286 </span><span class="lineNoCov">          0 :     LBASSERTINFO( description.empty(), description );</span>
+<span class="lineNum">     287 </span><span class="lineNoCov">          0 :     if( !connect( server ))</span>
+<span class="lineNum">     288 </span>            :     {
+<span class="lineNum">     289 </span><span class="lineNoCov">          0 :         LBERROR &lt;&lt; &quot;Can't connect server node using &quot; &lt;&lt; *server &lt;&lt; std::endl;</span>
+<span class="lineNum">     290 </span><span class="lineNoCov">          0 :         return false;</span>
+<span class="lineNum">     291 </span>            :     }
+<span class="lineNum">     292 </span>            : 
+<span class="lineNum">     293 </span><span class="lineNoCov">          0 :     return true;</span>
+<a name="294"><span class="lineNum">     294 </span>            : }</a>
+<span class="lineNum">     295 </span>            : 
+<span class="lineNum">     296 </span><span class="lineNoCov">          0 : void Client::clientLoop()</span>
+<span class="lineNum">     297 </span>            : {
+<span class="lineNum">     298 </span><span class="lineNoCov">          0 :     LBINFO &lt;&lt; &quot;Entered client loop&quot; &lt;&lt; std::endl;</span>
+<span class="lineNum">     299 </span><span class="lineNoCov">          0 :     while( isRunning( ))</span>
+<span class="lineNum">     300 </span><span class="lineNoCov">          0 :         processCommand();</span>
+<a name="301"><span class="lineNum">     301 </span><span class="lineNoCov">          0 : }</span></a>
+<span class="lineNum">     302 </span>            : 
+<span class="lineNum">     303 </span><span class="lineNoCov">          0 : bool Client::exitLocal()</span>
+<span class="lineNum">     304 </span>            : {
+<span class="lineNum">     305 </span>            : #ifdef EQ_QT_USED
+<span class="lineNum">     306 </span><span class="lineNoCov">          0 :     delete _impl-&gt;qtApp;</span>
+<span class="lineNum">     307 </span><span class="lineNoCov">          0 :     _impl-&gt;qtApp = 0;</span>
+<span class="lineNum">     308 </span>            : #endif
+<span class="lineNum">     309 </span><span class="lineNoCov">          0 :     _impl-&gt;activeLayouts.clear();</span>
+<span class="lineNum">     310 </span><span class="lineNoCov">          0 :     _impl-&gt;modelUnit = EQ_UNDEFINED_UNIT;</span>
+<span class="lineNum">     311 </span><span class="lineNoCov">          0 :     return fabric::Client::exitLocal();</span>
+<a name="312"><span class="lineNum">     312 </span>            : }</a>
+<span class="lineNum">     313 </span>            : 
+<span class="lineNum">     314 </span><span class="lineNoCov">          0 : void Client::exitClient()</span>
+<span class="lineNum">     315 </span>            : {
+<span class="lineNum">     316 </span><span class="lineNoCov">          0 :     _impl-&gt;queue.flush();</span>
+<span class="lineNum">     317 </span><span class="lineNoCov">          0 :     bool ret = exitLocal();</span>
+<span class="lineNum">     318 </span><span class="lineNoCov">          0 :     LBINFO &lt;&lt; &quot;Exit &quot; &lt;&lt; lunchbox::className( this ) &lt;&lt; &quot; process used &quot;</span>
+<span class="lineNum">     319 </span><span class="lineNoCov">          0 :            &lt;&lt; getRefCount() &lt;&lt; std::endl;</span>
+<span class="lineNum">     320 </span>            : 
+<span class="lineNum">     321 </span><span class="lineNoCov">          0 :     if( !eq::exit( ))</span>
+<span class="lineNum">     322 </span><span class="lineNoCov">          0 :         ret = false;</span>
+<span class="lineNum">     323 </span><span class="lineNoCov">          0 :     ::exit( ret ? EXIT_SUCCESS : EXIT_FAILURE );</span>
+<a name="324"><span class="lineNum">     324 </span>            : }</a>
+<span class="lineNum">     325 </span>            : 
+<span class="lineNum">     326 </span><span class="lineNoCov">          0 : bool Client::hasCommands()</span>
+<span class="lineNum">     327 </span>            : {
+<span class="lineNum">     328 </span><span class="lineNoCov">          0 :     return !_impl-&gt;queue.isEmpty();</span>
+<a name="329"><span class="lineNum">     329 </span>            : }</a>
+<span class="lineNum">     330 </span>            : 
+<span class="lineNum">     331 </span><span class="lineNoCov">          0 : bool Client::isRunning() const</span>
+<span class="lineNum">     332 </span>            : {
+<span class="lineNum">     333 </span><span class="lineNoCov">          0 :     return _impl-&gt;running;</span>
+<a name="334"><span class="lineNum">     334 </span>            : }</a>
+<span class="lineNum">     335 </span>            : 
+<span class="lineNum">     336 </span><span class="lineNoCov">          0 : co::CommandQueue* Client::getMainThreadQueue()</span>
+<span class="lineNum">     337 </span>            : {
+<span class="lineNum">     338 </span><span class="lineNoCov">          0 :     return &amp;_impl-&gt;queue;</span>
+<a name="339"><span class="lineNum">     339 </span>            : }</a>
+<span class="lineNum">     340 </span>            : 
+<span class="lineNum">     341 </span><span class="lineNoCov">          0 : void Client::addActiveLayout( const std::string&amp; activeLayout )</span>
+<span class="lineNum">     342 </span>            : {
+<span class="lineNum">     343 </span><span class="lineNoCov">          0 :     _impl-&gt;activeLayouts.push_back( activeLayout );</span>
+<a name="344"><span class="lineNum">     344 </span><span class="lineNoCov">          0 : }</span></a>
+<span class="lineNum">     345 </span>            : 
+<span class="lineNum">     346 </span><span class="lineNoCov">          0 : void Client::setName( const std::string&amp; name )</span>
+<span class="lineNum">     347 </span>            : {
+<span class="lineNum">     348 </span><span class="lineNoCov">          0 :     _impl-&gt;name = name;</span>
+<a name="349"><span class="lineNum">     349 </span><span class="lineNoCov">          0 : }</span></a>
+<span class="lineNum">     350 </span>            : 
+<span class="lineNum">     351 </span><span class="lineNoCov">          0 : const std::string&amp; Client::getName() const</span>
+<span class="lineNum">     352 </span>            : {
+<span class="lineNum">     353 </span><span class="lineNoCov">          0 :     return _impl-&gt;name;</span>
+<a name="354"><span class="lineNum">     354 </span>            : }</a>
+<span class="lineNum">     355 </span>            : 
+<span class="lineNum">     356 </span><span class="lineNoCov">          0 : const Strings&amp; Client::getActiveLayouts() const</span>
+<span class="lineNum">     357 </span>            : {
+<span class="lineNum">     358 </span><span class="lineNoCov">          0 :     return _impl-&gt;activeLayouts;</span>
+<a name="359"><span class="lineNum">     359 </span>            : }</a>
+<span class="lineNum">     360 </span>            : 
+<span class="lineNum">     361 </span><span class="lineNoCov">          0 : const std::string&amp; Client::getGPUFilter() const</span>
+<span class="lineNum">     362 </span>            : {
+<span class="lineNum">     363 </span><span class="lineNoCov">          0 :     return _impl-&gt;gpuFilter;</span>
+<a name="364"><span class="lineNum">     364 </span>            : }</a>
+<span class="lineNum">     365 </span>            : 
+<span class="lineNum">     366 </span><span class="lineNoCov">          0 : float Client::getModelUnit() const</span>
+<span class="lineNum">     367 </span>            : {
+<span class="lineNum">     368 </span><span class="lineNoCov">          0 :     return _impl-&gt;modelUnit;</span>
+<a name="369"><span class="lineNum">     369 </span>            : }</a>
+<span class="lineNum">     370 </span>            : 
+<span class="lineNum">     371 </span><span class="lineNoCov">          0 : void Client::interruptMainThread()</span>
+<span class="lineNum">     372 </span>            : {
+<span class="lineNum">     373 </span><span class="lineNoCov">          0 :     send( fabric::CMD_CLIENT_INTERRUPT );</span>
+<a name="374"><span class="lineNum">     374 </span><span class="lineNoCov">          0 : }</span></a>
+<span class="lineNum">     375 </span>            : 
+<span class="lineNum">     376 </span><span class="lineNoCov">          0 : co::NodePtr Client::createNode( const uint32_t type )</span>
+<span class="lineNum">     377 </span>            : {
+<span class="lineNum">     378 </span><span class="lineNoCov">          0 :     switch( type )</span>
+<span class="lineNum">     379 </span>            :     {
+<span class="lineNum">     380 </span>            :         case fabric::NODETYPE_SERVER:
+<span class="lineNum">     381 </span>            :         {
+<span class="lineNum">     382 </span><span class="lineNoCov">          0 :             Server* server = new Server;</span>
+<span class="lineNum">     383 </span><span class="lineNoCov">          0 :             server-&gt;setClient( this );</span>
+<span class="lineNum">     384 </span><span class="lineNoCov">          0 :             return server;</span>
+<span class="lineNum">     385 </span>            :         }
+<span class="lineNum">     386 </span>            : 
+<span class="lineNum">     387 </span>            :         default:
+<span class="lineNum">     388 </span><span class="lineNoCov">          0 :             return Super::createNode( type );</span>
+<span class="lineNum">     389 </span>            :     }
+<a name="390"><span class="lineNum">     390 </span>            : }</a>
+<span class="lineNum">     391 </span>            : 
+<span class="lineNum">     392 </span><span class="lineNoCov">          0 : bool Client::_cmdExit( co::ICommand&amp; command )</span>
+<span class="lineNum">     393 </span>            : {
+<span class="lineNum">     394 </span><span class="lineNoCov">          0 :     _impl-&gt;running = false;</span>
+<span class="lineNum">     395 </span>            :     // Close connection here, this is the last command we'll get on it
+<span class="lineNum">     396 </span><span class="lineNoCov">          0 :     command.getLocalNode()-&gt;disconnect( command.getRemoteNode( ));</span>
+<span class="lineNum">     397 </span><span class="lineNoCov">          0 :     return true;</span>
+<a name="398"><span class="lineNum">     398 </span>            : }</a>
+<span class="lineNum">     399 </span>            : 
+<span class="lineNum">     400 </span><span class="lineNoCov">          0 : bool Client::_cmdInterrupt( co::ICommand&amp; )</span>
+<span class="lineNum">     401 </span>            : {
+<span class="lineNum">     402 </span><span class="lineNoCov">          0 :     return true;</span>
+<span class="lineNum">     403 </span>            : }
+<span class="lineNum">     404 </span>            : 
+<a name="405"><span class="lineNum">     405 </span>            : namespace</a>
+<span class="lineNum">     406 </span>            : {
+<span class="lineNum">     407 </span><span class="lineNoCov">          0 : class StopNodesVisitor : public ServerVisitor</span>
+<a name="408"><span class="lineNum">     408 </span>            : {</a>
+<a name="409"><span class="lineNum">     409 </span>            : public:</a>
+<span class="lineNum">     410 </span><span class="lineNoCov">          0 :     virtual ~StopNodesVisitor() {}</span>
+<span class="lineNum">     411 </span><span class="lineNoCov">          0 :     virtual VisitorResult visitPre( Node* node )</span>
+<span class="lineNum">     412 </span>            :     {
+<span class="lineNum">     413 </span><span class="lineNoCov">          0 :         node-&gt;dirtyClientExit();</span>
+<span class="lineNum">     414 </span><span class="lineNoCov">          0 :         return TRAVERSE_CONTINUE;</span>
+<span class="lineNum">     415 </span>            :     }
+<span class="lineNum">     416 </span>            : };
+<a name="417"><span class="lineNum">     417 </span>            : }</a>
+<span class="lineNum">     418 </span>            : 
+<span class="lineNum">     419 </span><span class="lineNoCov">          0 : void Client::notifyDisconnect( co::NodePtr node )</span>
+<span class="lineNum">     420 </span>            : {
+<span class="lineNum">     421 </span><span class="lineNoCov">          0 :     if( node-&gt;getType() == fabric::NODETYPE_SERVER )</span>
+<span class="lineNum">     422 </span>            :     {
+<span class="lineNum">     423 </span>            :         // local command dispatching
+<span class="lineNum">     424 </span>            :         co::OCommand( this, this, fabric::CMD_CLIENT_EXIT,
+<span class="lineNum">     425 </span><span class="lineNoCov">          0 :                       co::COMMANDTYPE_NODE );</span>
+<span class="lineNum">     426 </span>            : 
+<span class="lineNum">     427 </span><span class="lineNoCov">          0 :         ServerPtr server = static_cast&lt; Server* &gt;( node.get( ));</span>
+<span class="lineNum">     428 </span><span class="lineNoCov">          0 :         StopNodesVisitor stopNodes;</span>
+<span class="lineNum">     429 </span><span class="lineNoCov">          0 :         server-&gt;accept( stopNodes );</span>
+<span class="lineNum">     430 </span>            :     }
+<span class="lineNum">     431 </span><span class="lineNoCov">          0 :     fabric::Client::notifyDisconnect( node );</span>
+<a name="432"><span class="lineNum">     432 </span><span class="lineNoCov">          0 : }</span></a>
+<span class="lineNum">     433 </span>            : 
+<span class="lineNum">     434 </span><span class="lineCov">         60 : }</span>
+</pre>
+      </td>
+    </tr>
+  </table>
+  <br>
+
+  <table width="100%" border=0 cellspacing=0 cellpadding=0>
+    <tr><td class="ruler"><img src="../../glass.png" width=3 height=3 alt=""></td></tr>
+    <tr><td class="versionInfo">Generated by: <a href="http://ltp.sourceforge.net/coverage/lcov.php" target="_parent">LCOV version 1.11</a></td></tr>
+  </table>
+  <br>
+
+</body>
+</html>

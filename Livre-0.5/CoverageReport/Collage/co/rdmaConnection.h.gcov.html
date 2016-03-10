@@ -1,0 +1,455 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+
+<html lang="en">
+
+<head>
+  <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+  <title>LCOV - Livre - Collage/co/rdmaConnection.h</title>
+  <link rel="stylesheet" type="text/css" href="../../gcov.css">
+</head>
+
+<body>
+
+  <table width="100%" border=0 cellspacing=0 cellpadding=0>
+    <tr><td class="title">LCOV - code coverage report</td></tr>
+    <tr><td class="ruler"><img src="../../glass.png" width=3 height=3 alt=""></td></tr>
+
+    <tr>
+      <td width="100%">
+        <table cellpadding=1 border=0 width="100%">
+          <tr>
+            <td width="10%" class="headerItem">Current view:</td>
+            <td width="35%" class="headerValue"><a href="../../index.html">top level</a> - <a href="index.html">Collage/co</a> - rdmaConnection.h<span style="font-size: 80%;"> (source / <a href="rdmaConnection.h.func-sort-c.html">functions</a>)</span></td>
+            <td width="5%"></td>
+            <td width="15%"></td>
+            <td width="10%" class="headerCovTableHead">Hit</td>
+            <td width="10%" class="headerCovTableHead">Total</td>
+            <td width="15%" class="headerCovTableHead">Coverage</td>
+          </tr>
+          <tr>
+            <td class="headerItem">Test:</td>
+            <td class="headerValue">Livre</td>
+            <td></td>
+            <td class="headerItem">Lines:</td>
+            <td class="headerCovTableEntry">0</td>
+            <td class="headerCovTableEntry">19</td>
+            <td class="headerCovTableEntryLo">0.0 %</td>
+          </tr>
+          <tr>
+            <td class="headerItem">Date:</td>
+            <td class="headerValue">2016-03-10 14:06:39</td>
+            <td></td>
+            <td class="headerItem">Functions:</td>
+            <td class="headerCovTableEntry">0</td>
+            <td class="headerCovTableEntry">10</td>
+            <td class="headerCovTableEntryLo">0.0 %</td>
+          </tr>
+          <tr><td><img src="../../glass.png" width=3 height=3 alt=""></td></tr>
+        </table>
+      </td>
+    </tr>
+
+    <tr><td class="ruler"><img src="../../glass.png" width=3 height=3 alt=""></td></tr>
+  </table>
+
+  <table cellpadding=0 cellspacing=0 border=0>
+    <tr>
+      <td><br></td>
+    </tr>
+    <tr>
+      <td>
+<pre class="sourceHeading">          Line data    Source code</pre>
+<pre class="source">
+<a name="1"><span class="lineNum">       1 </span>            : // -*- mode: c++ -*-</a>
+<span class="lineNum">       2 </span>            : /* Copyright (c) 2012, Computer Integration &amp; Programming Solutions, Corp. and
+<span class="lineNum">       3 </span>            :  *                     United States Naval Research Laboratory
+<span class="lineNum">       4 </span>            :  *
+<span class="lineNum">       5 </span>            :  * This file is part of Collage &lt;https://github.com/Eyescale/Collage&gt;
+<span class="lineNum">       6 </span>            :  *
+<span class="lineNum">       7 </span>            :  * This library is free software; you can redistribute it and/or modify it under
+<span class="lineNum">       8 </span>            :  * the terms of the GNU Lesser General Public License version 2.1 as published
+<span class="lineNum">       9 </span>            :  * by the Free Software Foundation.
+<span class="lineNum">      10 </span>            :  *
+<span class="lineNum">      11 </span>            :  * This library is distributed in the hope that it will be useful, but WITHOUT
+<span class="lineNum">      12 </span>            :  * ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS
+<span class="lineNum">      13 </span>            :  * FOR A PARTICULAR PURPOSE.  See the GNU Lesser General Public License for more
+<span class="lineNum">      14 </span>            :  * details.
+<span class="lineNum">      15 </span>            :  *
+<span class="lineNum">      16 </span>            :  * You should have received a copy of the GNU Lesser General Public License
+<span class="lineNum">      17 </span>            :  * along with this library; if not, write to the Free Software Foundation, Inc.,
+<span class="lineNum">      18 </span>            :  * 51 Franklin Street, Fifth Floor, Boston, MA 02110-1301 USA.
+<span class="lineNum">      19 </span>            :  */
+<span class="lineNum">      20 </span>            : #pragma once
+<span class="lineNum">      21 </span>            : 
+<span class="lineNum">      22 </span>            : #include &lt;co/connection.h&gt;
+<span class="lineNum">      23 </span>            : #include &quot;ring.h&quot;
+<span class="lineNum">      24 </span>            : 
+<span class="lineNum">      25 </span>            : #include &lt;lunchbox/thread.h&gt;
+<span class="lineNum">      26 </span>            : #include &lt;lunchbox/monitor.h&gt;
+<span class="lineNum">      27 </span>            : #include &lt;lunchbox/scopedMutex.h&gt;
+<span class="lineNum">      28 </span>            : #include &lt;lunchbox/spinLock.h&gt;
+<span class="lineNum">      29 </span>            : 
+<span class="lineNum">      30 </span>            : #include &lt;bitset&gt;
+<span class="lineNum">      31 </span>            : 
+<span class="lineNum">      32 </span>            : #define NOMINMAX // WIN32 :-/
+<span class="lineNum">      33 </span>            : #include &lt;rdma/rdma_cma.h&gt;
+<span class="lineNum">      34 </span>            : 
+<span class="lineNum">      35 </span>            : #ifndef _WIN32
+<span class="lineNum">      36 </span>            : #  include &lt;netdb.h&gt;
+<span class="lineNum">      37 </span>            : #endif
+<span class="lineNum">      38 </span>            : 
+<span class="lineNum">      39 </span>            : namespace co
+<span class="lineNum">      40 </span>            : {
+<span class="lineNum">      41 </span>            : /**
+<span class="lineNum">      42 </span>            :  * A registered memory region (MR) broken up into a number of fixed size
+<span class="lineNum">      43 </span>            :  * buffers.
+<span class="lineNum">      44 </span>            :  */
+<span class="lineNum">      45 </span>            : class BufferPool
+<span class="lineNum">      46 </span>            : {
+<span class="lineNum">      47 </span>            : public:
+<span class="lineNum">      48 </span>            :     BufferPool( size_t buffer_size );
+<a name="49"><span class="lineNum">      49 </span>            :     ~BufferPool( );</a>
+<a name="50"><span class="lineNum">      50 </span>            : </a>
+<a name="51"><span class="lineNum">      51 </span><span class="lineNoCov">          0 :     ibv_mr *getMR( ) const { return _mr; }</span></a>
+<span class="lineNum">      52 </span><span class="lineNoCov">          0 :     size_t getBufferSize( ) const { return _buffer_size; }</span>
+<span class="lineNum">      53 </span><span class="lineNoCov">          0 :     void *getBuffer( )</span>
+<span class="lineNum">      54 </span>            :     {
+<span class="lineNum">      55 </span><span class="lineNoCov">          0 :         lunchbox::ScopedWrite mutex( _buffer_lock );</span>
+<span class="lineNum">      56 </span>            : 
+<a name="57"><span class="lineNum">      57 </span><span class="lineNoCov">          0 :         return (void *)( (uintptr_t)_buffer + ( _ring.get( ) * _buffer_size ));</span></a>
+<span class="lineNum">      58 </span>            :     }
+<span class="lineNum">      59 </span><span class="lineNoCov">          0 :     void freeBuffer( void *buf )</span>
+<span class="lineNum">      60 </span>            :     {
+<span class="lineNum">      61 </span><span class="lineNoCov">          0 :         lunchbox::ScopedWrite mutex( _buffer_lock );</span>
+<span class="lineNum">      62 </span>            : 
+<span class="lineNum">      63 </span><span class="lineNoCov">          0 :         ::memset( buf, 0xff, _buffer_size ); // Paranoid</span>
+<span class="lineNum">      64 </span>            : 
+<span class="lineNum">      65 </span><span class="lineNoCov">          0 :         _ring.put((uint32_t)(( (uintptr_t)buf - (uintptr_t)_buffer ) /</span>
+<span class="lineNum">      66 </span><span class="lineNoCov">          0 :             _buffer_size ));</span>
+<span class="lineNum">      67 </span><span class="lineNoCov">          0 :     }</span>
+<span class="lineNum">      68 </span>            : 
+<span class="lineNum">      69 </span>            :     void clear( );
+<span class="lineNum">      70 </span>            :     bool resize( ibv_pd *pd, uint32_t num_bufs );
+<span class="lineNum">      71 </span>            : private:
+<span class="lineNum">      72 </span>            :     const size_t _buffer_size;
+<span class="lineNum">      73 </span>            :     uint32_t _num_bufs;
+<span class="lineNum">      74 </span>            :     void *_buffer;
+<span class="lineNum">      75 </span>            :     struct ibv_mr *_mr;
+<span class="lineNum">      76 </span>            :     BufferQ&lt;uint32_t&gt; _ring;
+<span class="lineNum">      77 </span>            :     lunchbox::Lock _buffer_lock;
+<span class="lineNum">      78 </span>            : }; // BufferPool
+<span class="lineNum">      79 </span>            : 
+<span class="lineNum">      80 </span>            : /**
+<span class="lineNum">      81 </span>            :  * A registered memory region (MR) backed by a fixed size circular buffer
+<span class="lineNum">      82 </span>            :  * &lt;a href=&quot;http://en.wikipedia.org/wiki/Circular_buffer#Optimization&quot;&gt;mapped
+<span class="lineNum">      83 </span>            :  * to two contiguous regions of virtual memory&lt;/a&gt;.
+<span class="lineNum">      84 </span>            :  */
+<span class="lineNum">      85 </span>            : class RingBuffer
+<span class="lineNum">      86 </span>            : {
+<span class="lineNum">      87 </span>            : public:
+<span class="lineNum">      88 </span>            :     RingBuffer( int access = 0 );
+<a name="89"><span class="lineNum">      89 </span>            :     ~RingBuffer( );</a>
+<a name="90"><span class="lineNum">      90 </span>            : </a>
+<a name="91"><span class="lineNum">      91 </span><span class="lineNoCov">          0 :     ibv_mr *getMR( ) const { return _mr; }</span></a>
+<span class="lineNum">      92 </span><span class="lineNoCov">          0 :     size_t getSize( ) const { return _size; }</span>
+<span class="lineNum">      93 </span><span class="lineNoCov">          0 :     void *getBase( ) const { return _map; }</span>
+<span class="lineNum">      94 </span>            : 
+<span class="lineNum">      95 </span>            :     void clear( );
+<span class="lineNum">      96 </span>            :     bool resize( ibv_pd *pd, size_t size );
+<span class="lineNum">      97 </span>            : private:
+<span class="lineNum">      98 </span>            :     const int _access;
+<span class="lineNum">      99 </span>            :     size_t _size;
+<span class="lineNum">     100 </span>            :     void* _map;
+<span class="lineNum">     101 </span>            :     struct ibv_mr *_mr;
+<span class="lineNum">     102 </span>            : #ifdef _WIN32
+<span class="lineNum">     103 </span>            :     HANDLE _mapping;
+<span class="lineNum">     104 </span>            :     void* determineViableAddr( size_t size );
+<span class="lineNum">     105 </span>            :     void  allocAt( size_t size, void* desiredAddr );
+<span class="lineNum">     106 </span>            : #endif
+<span class="lineNum">     107 </span>            : }; // RingBuffer
+<span class="lineNum">     108 </span>            : 
+<span class="lineNum">     109 </span>            : /**
+<span class="lineNum">     110 </span>            :   * Private data sent with connect/accept to validate protocol version and
+<span class="lineNum">     111 </span>            :   * pass protocol parameters (NB: limited to 56 bytes for RDMA_PS_TCP).
+<span class="lineNum">     112 </span>            :   */
+<a name="113"><span class="lineNum">     113 </span>            : struct RDMAConnParamData</a>
+<span class="lineNum">     114 </span>            : {
+<span class="lineNum">     115 </span><span class="lineNoCov">          0 :     RDMAConnParamData() : magic( 0 ), version( 0 ), depth( 0 ) {}</span>
+<span class="lineNum">     116 </span>            :     uint16_t magic;
+<span class="lineNum">     117 </span>            :     uint16_t version;
+<span class="lineNum">     118 </span>            :     uint32_t depth;
+<span class="lineNum">     119 </span>            : };
+<span class="lineNum">     120 </span>            : 
+<span class="lineNum">     121 </span>            : struct RDMASetupPayload;
+<span class="lineNum">     122 </span>            : struct RDMAFCPayload;
+<span class="lineNum">     123 </span>            : struct RDMAMessage;
+<span class="lineNum">     124 </span>            : 
+<span class="lineNum">     125 </span>            : class EventConnection;
+<span class="lineNum">     126 </span>            : 
+<span class="lineNum">     127 </span>            : /**
+<span class="lineNum">     128 </span>            :  * An RDMA connection implementation.
+<span class="lineNum">     129 </span>            :  *
+<span class="lineNum">     130 </span>            :  * This connection utilizes the OFED RDMA library to send Collage messages by
+<span class="lineNum">     131 </span>            :  * RDMA write operations on a remote memory region.
+<span class="lineNum">     132 </span>            :  *
+<span class="lineNum">     133 </span>            :  * In order to use this connection type, at least:
+<span class="lineNum">     134 </span>            :  *
+<span class="lineNum">     135 </span>            :  * 1) The rdma_ucm kernel module must be loaded
+<span class="lineNum">     136 </span>            :  * 2) The application must have read/write access to the RDMA device nodes
+<span class="lineNum">     137 </span>            :  *    (typically /dev/infiniband/[rdma_cm|uverbs*])
+<span class="lineNum">     138 </span>            :  * 3) The IP address assigned to the connection must be an address assigned to
+<span class="lineNum">     139 </span>            :  *    an RDMA-capable device (i.e. IPoIB)
+<span class="lineNum">     140 </span>            :  * 4) Shared memory must be sufficient for all RDMA connections,
+<span class="lineNum">     141 </span>            :  *    2 * Global::IATTR_RDMA_RING_BUFFER_SIZE_MB for each
+<span class="lineNum">     142 </span>            :  *    (i.e. /dev/shm, kernel.shm[min|max|all])
+<span class="lineNum">     143 </span>            :  * 5) The user must be able to lock the memory registered with verbs, such that
+<span class="lineNum">     144 </span>            :  *    the locked memory limit needs to be sufficient (&quot;ulimit -l&quot; for bash,
+<span class="lineNum">     145 </span>            :  *    &quot;limit memorylocked&quot; for csh).  Updating /etc/security/limits.conf with
+<span class="lineNum">     146 </span>            :  *    entries like this is usually adequate (e.g. to raise the limit to 2GB for
+<span class="lineNum">     147 </span>            :  *    all users):
+<span class="lineNum">     148 </span>            :  *    * soft memlock 2048000
+<span class="lineNum">     149 </span>            :  *    * hard memlock 2048000
+<span class="lineNum">     150 </span>            :  *
+<span class="lineNum">     151 </span>            :  * NB : Binding to &quot;localhost&quot; does *not* limit remote access, rdma_cm will
+<span class="lineNum">     152 </span>            :  * bind to all available RDMA interfaces as if bound to a wildcard address!
+<span class="lineNum">     153 </span>            :  *
+<span class="lineNum">     154 </span>            :  * TODO? : Binding to wildcard address updates the description with the
+<span class="lineNum">     155 </span>            :  * canonical hostname, which is possibly not a valid RDMA IPoIB name.
+<span class="lineNum">     156 </span>            :  *
+<span class="lineNum">     157 </span>            :  * TODO? : Mixed IPv6/IPv4 naming isn't handled correctly.  If one listens on
+<span class="lineNum">     158 </span>            :  * IPv6 and gets an IPv4 connection the address in the route struct doesn't
+<span class="lineNum">     159 </span>            :  * appear to be valid, and vice versa.  Not sure if this is an RDMA CM
+<span class="lineNum">     160 </span>            :  * issue or improper handling.
+<span class="lineNum">     161 </span>            :  *
+<span class="lineNum">     162 </span>            :  */
+<span class="lineNum">     163 </span>            : class RDMAConnection : public Connection
+<span class="lineNum">     164 </span>            : {
+<span class="lineNum">     165 </span>            : public:
+<span class="lineNum">     166 </span>            :     RDMAConnection( );
+<span class="lineNum">     167 </span>            : 
+<a name="168"><span class="lineNum">     168 </span>            :     bool connect() override;</a>
+<span class="lineNum">     169 </span>            :     bool listen() override;
+<span class="lineNum">     170 </span><span class="lineNoCov">          0 :     void close() override { _close( ); }</span>
+<span class="lineNum">     171 </span>            : 
+<span class="lineNum">     172 </span>            :     void acceptNB() override;
+<span class="lineNum">     173 </span>            :     ConnectionPtr acceptSync() override;
+<span class="lineNum">     174 </span>            : 
+<span class="lineNum">     175 </span>            : protected:
+<span class="lineNum">     176 </span>            :     void    readNB  ( void* buffer, const uint64_t bytes ) override;
+<span class="lineNum">     177 </span>            :     int64_t readSync( void* buffer, const uint64_t bytes,
+<span class="lineNum">     178 </span>            :                               const bool block ) override;
+<span class="lineNum">     179 </span>            :     int64_t write( const void* buffer, const uint64_t bytes ) override;
+<span class="lineNum">     180 </span>            : 
+<span class="lineNum">     181 </span>            : public:
+<span class="lineNum">     182 </span>            :     Notifier getNotifier() const override;
+<span class="lineNum">     183 </span>            : 
+<span class="lineNum">     184 </span>            : protected:
+<span class="lineNum">     185 </span>            :     virtual ~RDMAConnection();
+<span class="lineNum">     186 </span>            : 
+<span class="lineNum">     187 </span>            : private:
+<span class="lineNum">     188 </span>            :     /* Teardown */
+<span class="lineNum">     189 </span>            :     void _close( );
+<span class="lineNum">     190 </span>            :     void _cleanup( );
+<span class="lineNum">     191 </span>            : 
+<span class="lineNum">     192 </span>            :     /* Setup */
+<span class="lineNum">     193 </span>            :     bool _finishAccept( struct rdma_cm_id *new_cm_id,
+<span class="lineNum">     194 </span>            :         const RDMAConnParamData &amp;cpd );
+<span class="lineNum">     195 </span>            : 
+<span class="lineNum">     196 </span>            :     bool _lookupAddress( const bool passive );
+<span class="lineNum">     197 </span>            :     void _updateInfo( struct sockaddr *addr );
+<span class="lineNum">     198 </span>            : 
+<span class="lineNum">     199 </span>            :     bool _createEventChannel( );
+<span class="lineNum">     200 </span>            :     bool _createId( );
+<span class="lineNum">     201 </span>            : 
+<span class="lineNum">     202 </span>            :     bool _initVerbs( );
+<span class="lineNum">     203 </span>            :     bool _createQP( );
+<span class="lineNum">     204 </span>            :     bool _initBuffers( );
+<span class="lineNum">     205 </span>            : 
+<span class="lineNum">     206 </span>            :     bool _resolveAddress( );
+<span class="lineNum">     207 </span>            :     bool _resolveRoute( );
+<span class="lineNum">     208 </span>            :     bool _connect( );
+<span class="lineNum">     209 </span>            : 
+<span class="lineNum">     210 </span>            :     bool _bindAddress( );
+<span class="lineNum">     211 </span>            :     bool _listen( int backlog );
+<span class="lineNum">     212 </span>            :     bool _migrateId( );
+<span class="lineNum">     213 </span>            :     bool _accept( );
+<span class="lineNum">     214 </span>            :     bool _reject( );
+<span class="lineNum">     215 </span>            : 
+<span class="lineNum">     216 </span>            :     /* Protocol */
+<span class="lineNum">     217 </span>            :     bool _initProtocol( int32_t depth );
+<span class="lineNum">     218 </span>            : 
+<span class="lineNum">     219 </span>            :     inline bool _needFC( );
+<span class="lineNum">     220 </span>            : 
+<span class="lineNum">     221 </span>            :     bool _postReceives( const uint32_t count );
+<span class="lineNum">     222 </span>            : 
+<span class="lineNum">     223 </span>            :     inline void _recvRDMAWrite( const uint32_t imm_data );
+<span class="lineNum">     224 </span>            :     inline uint32_t _makeImm( const uint32_t b );
+<span class="lineNum">     225 </span>            :     bool _postRDMAWrite( );
+<span class="lineNum">     226 </span>            : 
+<span class="lineNum">     227 </span>            :     bool _postMessage( const RDMAMessage &amp;message );
+<span class="lineNum">     228 </span>            :     void _recvMessage( const RDMAMessage &amp;message );
+<span class="lineNum">     229 </span>            :     inline void _recvFC( const RDMAFCPayload &amp;fc );
+<span class="lineNum">     230 </span>            :     bool _postFC();
+<span class="lineNum">     231 </span>            :     void _recvSetup( const RDMASetupPayload &amp;setup );
+<span class="lineNum">     232 </span>            :     bool _postSetup( );
+<span class="lineNum">     233 </span>            : 
+<span class="lineNum">     234 </span>            :     bool _waitRecvSetup( );
+<span class="lineNum">     235 </span>            : 
+<span class="lineNum">     236 </span>            : private:
+<span class="lineNum">     237 </span>            :     enum Events
+<span class="lineNum">     238 </span>            :     {
+<span class="lineNum">     239 </span>            :         CM_EVENT  = 0,
+<span class="lineNum">     240 </span>            :         CQ_EVENT  = 1,
+<span class="lineNum">     241 </span>            :         BUF_EVENT = 2,
+<span class="lineNum">     242 </span>            :     };
+<span class="lineNum">     243 </span>            :     typedef std::bitset&lt;3&gt; eventset;
+<span class="lineNum">     244 </span>            : 
+<span class="lineNum">     245 </span>            :     bool _createNotifier( );
+<span class="lineNum">     246 </span>            :     void _updateNotifier();
+<span class="lineNum">     247 </span>            :     bool _checkEvents( eventset &amp;events );
+<span class="lineNum">     248 </span>            : 
+<span class="lineNum">     249 </span>            :     /* Connection manager events */
+<span class="lineNum">     250 </span>            :     bool _checkDisconnected( eventset &amp;events );
+<span class="lineNum">     251 </span>            :     bool _waitForCMEvent( enum rdma_cm_event_type expected );
+<span class="lineNum">     252 </span>            :     bool _doCMEvent( enum rdma_cm_event_type expected );
+<span class="lineNum">     253 </span>            : 
+<span class="lineNum">     254 </span>            :     /* Completion queue events */
+<span class="lineNum">     255 </span>            :     bool _rearmCQ( );
+<span class="lineNum">     256 </span>            :     bool _checkCQ( bool drain );
+<span class="lineNum">     257 </span>            : 
+<span class="lineNum">     258 </span>            :     /* Available byte events */
+<span class="lineNum">     259 </span>            :     bool _createBytesAvailableFD( );
+<span class="lineNum">     260 </span>            :     bool _incrAvailableBytes( const uint64_t b );
+<span class="lineNum">     261 </span>            :     uint64_t _getAvailableBytes( );
+<span class="lineNum">     262 </span>            : 
+<span class="lineNum">     263 </span>            : #ifdef _WIN32
+<span class="lineNum">     264 </span>            :     static void _triggerNotifierCQ( RDMAConnection* conn );
+<span class="lineNum">     265 </span>            :     static void _triggerNotifierCM( RDMAConnection* conn );
+<span class="lineNum">     266 </span>            :     void _triggerNotifierWorker( Events event );
+<span class="lineNum">     267 </span>            : #endif
+<span class="lineNum">     268 </span>            : 
+<span class="lineNum">     269 </span>            : private:
+<span class="lineNum">     270 </span>            :     Notifier _notifier;
+<span class="lineNum">     271 </span>            : 
+<span class="lineNum">     272 </span>            :     /* Protect RDMA/Verbs vars from multiple threads */
+<span class="lineNum">     273 </span>            :     lunchbox::Lock _poll_lock;
+<span class="lineNum">     274 </span>            : 
+<span class="lineNum">     275 </span>            :     /* Timeout for resolving RDMA address &amp; route */
+<span class="lineNum">     276 </span>            :     const int32_t _timeout;
+<span class="lineNum">     277 </span>            : 
+<span class="lineNum">     278 </span>            :     /* Final connection info */
+<span class="lineNum">     279 </span>            :     char _addr[NI_MAXHOST], _serv[NI_MAXSERV];
+<span class="lineNum">     280 </span>            :     std::string _device_name;
+<span class="lineNum">     281 </span>            : 
+<span class="lineNum">     282 </span>            :     /* RDMA/Verbs vars */
+<span class="lineNum">     283 </span>            :     struct rdma_addrinfo *_rai;
+<span class="lineNum">     284 </span>            :     struct rdma_event_channel *_cm;
+<span class="lineNum">     285 </span>            :     struct rdma_cm_id *_cm_id;
+<span class="lineNum">     286 </span>            :     struct rdma_cm_id *_new_cm_id;
+<span class="lineNum">     287 </span>            :     struct ibv_comp_channel *_cc;
+<span class="lineNum">     288 </span>            :     struct ibv_cq *_cq;
+<span class="lineNum">     289 </span>            :     struct ibv_pd *_pd;
+<span class="lineNum">     290 </span>            :     struct ibv_wc* _wcs;
+<span class="lineNum">     291 </span>            : 
+<span class="lineNum">     292 </span>            : #ifndef _WIN32
+<span class="lineNum">     293 </span>            :     int _pipe_fd[2];
+<span class="lineNum">     294 </span>            : #else
+<span class="lineNum">     295 </span>            :     uint64_t _availBytes;
+<span class="lineNum">     296 </span>            :     uint32_t _eventFlag;
+<span class="lineNum">     297 </span>            :     lunchbox::SpinLock _eventLock;
+<span class="lineNum">     298 </span>            : #endif
+<span class="lineNum">     299 </span>            : 
+<span class="lineNum">     300 </span>            :     uint64_t _readBytes;
+<span class="lineNum">     301 </span>            : 
+<span class="lineNum">     302 </span>            :     struct RDMAConnParamData _cpd;
+<span class="lineNum">     303 </span>            :     bool _established;
+<span class="lineNum">     304 </span>            : 
+<span class="lineNum">     305 </span>            :     int32_t _depth;               // Maximum sends in flight (RDMA &amp; FC)
+<span class="lineNum">     306 </span>            :     lunchbox::a_int32_t _writes;  // Number of unacked RDMA writes received
+<span class="lineNum">     307 </span>            :     lunchbox::a_int32_t _fcs;     // Number of unacked FC messages received
+<span class="lineNum">     308 </span>            :     lunchbox::a_int32_t _wcredits; // Number of RDMA write credits available
+<span class="lineNum">     309 </span>            :     lunchbox::a_int32_t _fcredits; // Number of FC message credits available
+<span class="lineNum">     310 </span>            : 
+<span class="lineNum">     311 </span>            :     unsigned int _completions;
+<span class="lineNum">     312 </span>            : 
+<span class="lineNum">     313 </span>            :     /* MR for setup and ack messages */
+<span class="lineNum">     314 </span>            :     BufferPool _msgbuf;
+<span class="lineNum">     315 </span>            : 
+<span class="lineNum">     316 </span>            :     /* source RDMA MR */
+<span class="lineNum">     317 </span>            :     RingBuffer _sourcebuf;
+<span class="lineNum">     318 </span>            :     Ring&lt;uint32_t, 3&gt; _sourceptr;
+<span class="lineNum">     319 </span>            :         //        : initialized during connect/accept
+<span class="lineNum">     320 </span>            :         // HEAD   : advanced after copying buffer (fill) on local write
+<span class="lineNum">     321 </span>            :         //          - write thread only
+<span class="lineNum">     322 </span>            :         // MIDDLE : advanced before posting RDMA write
+<span class="lineNum">     323 </span>            :         //          - write thread only
+<span class="lineNum">     324 </span>            :         // TAIL   : advanced after completing RDMA write
+<span class="lineNum">     325 </span>            :         //          - write &amp; read threads (in pollCQ)
+<span class="lineNum">     326 </span>            : 
+<span class="lineNum">     327 </span>            :     /* sink RDMA MR */
+<span class="lineNum">     328 </span>            :     RingBuffer _sinkbuf;
+<span class="lineNum">     329 </span>            :     Ring&lt;uint32_t, 2&gt; _sinkptr;
+<span class="lineNum">     330 </span>            :         //        : initialized during connect/accept
+<span class="lineNum">     331 </span>            :         // HEAD   : advanced on receipt of RDMA WRITE
+<span class="lineNum">     332 </span>            :         //          - write &amp; read threads (in pollCQ)
+<span class="lineNum">     333 </span>            :         // TAIL   : advanced after copying buffer (drain) on local read
+<span class="lineNum">     334 </span>            :         //          - read thread only
+<span class="lineNum">     335 </span>            : 
+<span class="lineNum">     336 </span>            :     /* local &quot;view&quot; of remote sink MR */
+<span class="lineNum">     337 </span>            :     Ring&lt;uint32_t, 2&gt; _rptr;
+<span class="lineNum">     338 </span>            :         //        : initialized on receipt of setup message
+<span class="lineNum">     339 </span>            :         // HEAD   : advanced before posting RDMA write
+<span class="lineNum">     340 </span>            :         //          - write thread only
+<span class="lineNum">     341 </span>            :         // TAIL   : advanced on receipt of FC
+<span class="lineNum">     342 </span>            :         //          - write &amp; read threads (in pollCQ)
+<span class="lineNum">     343 </span>            : 
+<span class="lineNum">     344 </span>            :     /* remote sink MR parameters */
+<span class="lineNum">     345 </span>            :     uint64_t _rbase, _rkey;
+<span class="lineNum">     346 </span>            : 
+<span class="lineNum">     347 </span>            :     /* copy bytes out of the sink buffer */
+<span class="lineNum">     348 </span>            :     inline uint32_t _drain( void *buffer, const uint32_t bytes );
+<span class="lineNum">     349 </span>            :     /* copy bytes in to the source buffer */
+<span class="lineNum">     350 </span>            :     inline uint32_t _fill( const void *buffer, const uint32_t bytes );
+<span class="lineNum">     351 </span>            : 
+<span class="lineNum">     352 </span>            : #ifdef WIN32
+<span class="lineNum">     353 </span>            :     HANDLE _ccWaitObj;
+<span class="lineNum">     354 </span>            :     HANDLE _cmWaitObj;
+<span class="lineNum">     355 </span>            : #endif
+<span class="lineNum">     356 </span>            : 
+<span class="lineNum">     357 </span>            : private:
+<a name="358"><span class="lineNum">     358 </span>            :     struct stats</a>
+<span class="lineNum">     359 </span>            :     {
+<span class="lineNum">     360 </span><span class="lineNoCov">          0 :         stats( )</span>
+<span class="lineNum">     361 </span>            :             : reads( 0ULL )
+<span class="lineNum">     362 </span>            :             , buffer_empty( 0ULL )
+<span class="lineNum">     363 </span>            :             , no_credits_fc( 0ULL )
+<span class="lineNum">     364 </span>            :             , writes( 0ULL )
+<span class="lineNum">     365 </span>            :             , buffer_full( 0ULL )
+<span class="lineNum">     366 </span><span class="lineNoCov">          0 :             , no_credits_rdma( 0ULL )</span>
+<span class="lineNum">     367 </span><span class="lineNoCov">          0 :         { }</span>
+<span class="lineNum">     368 </span>            : 
+<span class="lineNum">     369 </span>            :         uint64_t reads;
+<span class="lineNum">     370 </span>            :         uint64_t buffer_empty;
+<span class="lineNum">     371 </span>            :         uint64_t no_credits_fc;
+<span class="lineNum">     372 </span>            :         uint64_t writes;
+<span class="lineNum">     373 </span>            :         uint64_t buffer_full;
+<span class="lineNum">     374 </span>            :         uint64_t no_credits_rdma;
+<span class="lineNum">     375 </span>            :     } _stats;
+<span class="lineNum">     376 </span>            : 
+<span class="lineNum">     377 </span>            :     void _showStats( );
+<span class="lineNum">     378 </span>            : }; // RDMAConnection
+<span class="lineNum">     379 </span>            : } // namespace co
+</pre>
+      </td>
+    </tr>
+  </table>
+  <br>
+
+  <table width="100%" border=0 cellspacing=0 cellpadding=0>
+    <tr><td class="ruler"><img src="../../glass.png" width=3 height=3 alt=""></td></tr>
+    <tr><td class="versionInfo">Generated by: <a href="http://ltp.sourceforge.net/coverage/lcov.php" target="_parent">LCOV version 1.11</a></td></tr>
+  </table>
+  <br>
+
+</body>
+</html>

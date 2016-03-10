@@ -1,0 +1,321 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+
+<html lang="en">
+
+<head>
+  <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+  <title>LCOV - Livre - Equalizer/eq/util/frameBufferObject.cpp</title>
+  <link rel="stylesheet" type="text/css" href="../../../gcov.css">
+</head>
+
+<body>
+
+  <table width="100%" border=0 cellspacing=0 cellpadding=0>
+    <tr><td class="title">LCOV - code coverage report</td></tr>
+    <tr><td class="ruler"><img src="../../../glass.png" width=3 height=3 alt=""></td></tr>
+
+    <tr>
+      <td width="100%">
+        <table cellpadding=1 border=0 width="100%">
+          <tr>
+            <td width="10%" class="headerItem">Current view:</td>
+            <td width="35%" class="headerValue"><a href="../../../index.html">top level</a> - <a href="index.html">Equalizer/eq/util</a> - frameBufferObject.cpp<span style="font-size: 80%;"> (source / <a href="frameBufferObject.cpp.func-sort-c.html">functions</a>)</span></td>
+            <td width="5%"></td>
+            <td width="15%"></td>
+            <td width="10%" class="headerCovTableHead">Hit</td>
+            <td width="10%" class="headerCovTableHead">Total</td>
+            <td width="15%" class="headerCovTableHead">Coverage</td>
+          </tr>
+          <tr>
+            <td class="headerItem">Test:</td>
+            <td class="headerValue">Livre</td>
+            <td></td>
+            <td class="headerItem">Lines:</td>
+            <td class="headerCovTableEntry">1</td>
+            <td class="headerCovTableEntry">117</td>
+            <td class="headerCovTableEntryLo">0.9 %</td>
+          </tr>
+          <tr>
+            <td class="headerItem">Date:</td>
+            <td class="headerValue">2016-03-10 14:06:39</td>
+            <td></td>
+            <td class="headerItem">Functions:</td>
+            <td class="headerCovTableEntry">2</td>
+            <td class="headerCovTableEntry">11</td>
+            <td class="headerCovTableEntryLo">18.2 %</td>
+          </tr>
+          <tr><td><img src="../../../glass.png" width=3 height=3 alt=""></td></tr>
+        </table>
+      </td>
+    </tr>
+
+    <tr><td class="ruler"><img src="../../../glass.png" width=3 height=3 alt=""></td></tr>
+  </table>
+
+  <table cellpadding=0 cellspacing=0 border=0>
+    <tr>
+      <td><br></td>
+    </tr>
+    <tr>
+      <td>
+<pre class="sourceHeading">          Line data    Source code</pre>
+<pre class="source">
+<a name="1"><span class="lineNum">       1 </span>            : </a>
+<span class="lineNum">       2 </span>            : /* Copyright (c) 2008-2015, Cedric Stalder &lt;cedric.stalder@gmail.com&gt;
+<span class="lineNum">       3 </span>            :  *                          Stefan Eilemann &lt;eile@equalizergraphics.com&gt;
+<span class="lineNum">       4 </span>            :  *                          Daniel Nachbaur &lt;danielnachbaur@gmail.com&gt;
+<span class="lineNum">       5 </span>            :  *
+<span class="lineNum">       6 </span>            :  * This library is free software; you can redistribute it and/or modify it under
+<span class="lineNum">       7 </span>            :  * the terms of the GNU Lesser General Public License version 2.1 as published
+<span class="lineNum">       8 </span>            :  * by the Free Software Foundation.
+<span class="lineNum">       9 </span>            :  *
+<span class="lineNum">      10 </span>            :  * This library is distributed in the hope that it will be useful, but WITHOUT
+<span class="lineNum">      11 </span>            :  * ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS
+<span class="lineNum">      12 </span>            :  * FOR A PARTICULAR PURPOSE.  See the GNU Lesser General Public License for more
+<span class="lineNum">      13 </span>            :  * details.
+<span class="lineNum">      14 </span>            :  *
+<span class="lineNum">      15 </span>            :  * You should have received a copy of the GNU Lesser General Public License
+<span class="lineNum">      16 </span>            :  * along with this library; if not, write to the Free Software Foundation, Inc.,
+<span class="lineNum">      17 </span>            :  * 51 Franklin Street, Fifth Floor, Boston, MA 02110-1301 USA.
+<span class="lineNum">      18 </span>            :  */
+<span class="lineNum">      19 </span>            : 
+<span class="lineNum">      20 </span>            : #include &quot;frameBufferObject.h&quot;
+<span class="lineNum">      21 </span>            : 
+<span class="lineNum">      22 </span>            : #include &lt;eq/gl.h&gt;
+<span class="lineNum">      23 </span>            : #include &lt;eq/fabric/pixelViewport.h&gt;
+<span class="lineNum">      24 </span>            : 
+<span class="lineNum">      25 </span>            : #ifdef _WIN32
+<span class="lineNum">      26 </span>            : #  define bzero( ptr, size ) memset( ptr, 0, size );
+<span class="lineNum">      27 </span>            : #endif
+<span class="lineNum">      28 </span>            : 
+<span class="lineNum">      29 </span>            : namespace eq
+<span class="lineNum">      30 </span>            : {
+<span class="lineNum">      31 </span>            : namespace util
+<a name="32"><span class="lineNum">      32 </span>            : {</a>
+<span class="lineNum">      33 </span>            : 
+<span class="lineNum">      34 </span><span class="lineNoCov">          0 : FrameBufferObject::FrameBufferObject( const GLEWContext* glewContext,</span>
+<span class="lineNum">      35 </span>            :                                       const GLenum textureTarget )
+<span class="lineNum">      36 </span>            :     : _fboID( 0 )
+<span class="lineNum">      37 </span>            :     , _depth( textureTarget, glewContext )
+<span class="lineNum">      38 </span>            :     , _glewContext( glewContext )
+<span class="lineNum">      39 </span><span class="lineNoCov">          0 :     , _valid( false )</span>
+<span class="lineNum">      40 </span>            : {
+<span class="lineNum">      41 </span><span class="lineNoCov">          0 :     LBASSERT( GLEW_EXT_framebuffer_object );</span>
+<span class="lineNum">      42 </span><span class="lineNoCov">          0 :     _colors.push_back( new Texture( textureTarget, glewContext ));</span>
+<a name="43"><span class="lineNum">      43 </span><span class="lineNoCov">          0 : }</span></a>
+<span class="lineNum">      44 </span>            : 
+<span class="lineNum">      45 </span><span class="lineNoCov">          0 : FrameBufferObject::~FrameBufferObject()</span>
+<span class="lineNum">      46 </span>            : {
+<span class="lineNum">      47 </span><span class="lineNoCov">          0 :     this-&gt;exit();</span>
+<span class="lineNum">      48 </span><span class="lineNoCov">          0 :     for( Texture* color : _colors )</span>
+<span class="lineNum">      49 </span><span class="lineNoCov">          0 :         delete color;</span>
+<a name="50"><span class="lineNum">      50 </span><span class="lineNoCov">          0 : }</span></a>
+<span class="lineNum">      51 </span>            : 
+<span class="lineNum">      52 </span><span class="lineNoCov">          0 : bool FrameBufferObject::addColorTexture()</span>
+<span class="lineNum">      53 </span>            : {
+<span class="lineNum">      54 </span><span class="lineNoCov">          0 :     if( _colors.size() &gt;= 16 )</span>
+<span class="lineNum">      55 </span>            :     {
+<span class="lineNum">      56 </span><span class="lineNoCov">          0 :         LBWARN &lt;&lt; &quot;Too many color textures, can't add another one&quot; &lt;&lt; std::endl;</span>
+<span class="lineNum">      57 </span><span class="lineNoCov">          0 :         return false;</span>
+<span class="lineNum">      58 </span>            :     }
+<span class="lineNum">      59 </span>            : 
+<span class="lineNum">      60 </span><span class="lineNoCov">          0 :     _colors.push_back( new Texture(_colors.front()-&gt;getTarget(), _glewContext));</span>
+<span class="lineNum">      61 </span><span class="lineNoCov">          0 :     _valid = false;</span>
+<span class="lineNum">      62 </span><span class="lineNoCov">          0 :     return true;</span>
+<a name="63"><span class="lineNum">      63 </span>            : }</a>
+<span class="lineNum">      64 </span>            : 
+<span class="lineNum">      65 </span><span class="lineNoCov">          0 : Error FrameBufferObject::init( const int32_t width, const int32_t height,</span>
+<span class="lineNum">      66 </span>            :                                const GLuint colorFormat,
+<span class="lineNum">      67 </span>            :                                const int32_t depthSize,
+<span class="lineNum">      68 </span>            :                                const int32_t stencilSize,
+<span class="lineNum">      69 </span>            :                                const int32_t samplesSize )
+<span class="lineNum">      70 </span>            : {
+<span class="lineNum">      71 </span><span class="lineNoCov">          0 :     LB_TS_THREAD( _thread );</span>
+<span class="lineNum">      72 </span>            : 
+<span class="lineNum">      73 </span>            :     // Check for frame dimensions
+<span class="lineNum">      74 </span>            :     GLint maxViewportDims[2];
+<span class="lineNum">      75 </span><span class="lineNoCov">          0 :     EQ_GL_CALL( glGetIntegerv( GL_MAX_VIEWPORT_DIMS, &amp;maxViewportDims[0] ));</span>
+<span class="lineNum">      76 </span><span class="lineNoCov">          0 :     if( width &gt; maxViewportDims[0] || height &gt; maxViewportDims[1] )</span>
+<span class="lineNum">      77 </span><span class="lineNoCov">          0 :         return Error( ERROR_FRAMEBUFFER_INVALID_SIZE );</span>
+<span class="lineNum">      78 </span>            : 
+<span class="lineNum">      79 </span>            :     // Check for MAX_SAMPLES
+<span class="lineNum">      80 </span>            :     GLint maxSamples;
+<span class="lineNum">      81 </span><span class="lineNoCov">          0 :     glGetIntegerv( GL_MAX_SAMPLES, &amp;maxSamples );</span>
+<span class="lineNum">      82 </span><span class="lineNoCov">          0 :     if( samplesSize &lt; 0 || samplesSize &gt; maxSamples )</span>
+<span class="lineNum">      83 </span><span class="lineNoCov">          0 :         return Error( ERROR_FRAMEBUFFER_INVALID_SAMPLES );</span>
+<span class="lineNum">      84 </span>            : 
+<span class="lineNum">      85 </span><span class="lineNoCov">          0 :     if( _fboID )</span>
+<span class="lineNum">      86 </span><span class="lineNoCov">          0 :         return Error( ERROR_FRAMEBUFFER_INITIALIZED );</span>
+<span class="lineNum">      87 </span>            : 
+<span class="lineNum">      88 </span>            :     // generate and bind the framebuffer
+<span class="lineNum">      89 </span><span class="lineNoCov">          0 :     EQ_GL_CALL( glGenFramebuffersEXT( 1, &amp;_fboID ));</span>
+<span class="lineNum">      90 </span><span class="lineNoCov">          0 :     EQ_GL_CALL( glBindFramebufferEXT( GL_FRAMEBUFFER_EXT, _fboID ));</span>
+<span class="lineNum">      91 </span>            : 
+<span class="lineNum">      92 </span>            :     GLint mask;
+<span class="lineNum">      93 </span><span class="lineNoCov">          0 :     glGetIntegerv( GL_CONTEXT_PROFILE_MASK, &amp;mask );</span>
+<span class="lineNum">      94 </span><span class="lineNoCov">          0 :     const GLenum glError = glGetError(); // might get GL_INVALID_ENUM</span>
+<span class="lineNum">      95 </span>            :     const bool coreContext =
+<span class="lineNum">      96 </span><span class="lineNoCov">          0 :         glError ? false : mask &amp; GL_CONTEXT_CORE_PROFILE_BIT;</span>
+<span class="lineNum">      97 </span>            : 
+<span class="lineNum">      98 </span>            :     // create and bind textures
+<span class="lineNum">      99 </span><span class="lineNoCov">          0 :     for( unsigned i = 0; i &lt; _colors.size(); ++i )</span>
+<span class="lineNum">     100 </span>            :     {
+<span class="lineNum">     101 </span><span class="lineNoCov">          0 :         _colors[i]-&gt;init( colorFormat, width, height );</span>
+<span class="lineNum">     102 </span><span class="lineNoCov">          0 :         _colors[i]-&gt;bindToFBO( GL_COLOR_ATTACHMENT0 + i, width, height,</span>
+<span class="lineNum">     103 </span><span class="lineNoCov">          0 :                                samplesSize );</span>
+<span class="lineNum">     104 </span><span class="lineNoCov">          0 :         const Error error = _checkStatus();</span>
+<span class="lineNum">     105 </span><span class="lineNoCov">          0 :         if( error )</span>
+<span class="lineNum">     106 </span>            :         {
+<span class="lineNum">     107 </span><span class="lineNoCov">          0 :             LBDEBUG &lt;&lt; &quot;FrameBufferObject::init: &quot; &lt;&lt; error &lt;&lt; &quot; when binding &quot;</span>
+<span class="lineNum">     108 </span><span class="lineNoCov">          0 :                     &lt;&lt; _colors.size() &lt;&lt; &quot; color texture(s) of format 0x&quot;</span>
+<span class="lineNum">     109 </span><span class="lineNoCov">          0 :                     &lt;&lt; std::hex &lt;&lt; colorFormat &lt;&lt; std::dec &lt;&lt; &quot; size &quot; &lt;&lt; width</span>
+<span class="lineNum">     110 </span><span class="lineNoCov">          0 :                     &lt;&lt; &quot;x&quot; &lt;&lt; height &lt;&lt; &quot; FBO &quot; &lt;&lt; _fboID &lt;&lt; std::endl;</span>
+<span class="lineNum">     111 </span><span class="lineNoCov">          0 :             exit();</span>
+<span class="lineNum">     112 </span><span class="lineNoCov">          0 :             return error;</span>
+<span class="lineNum">     113 </span>            :         }
+<span class="lineNum">     114 </span>            :     }
+<span class="lineNum">     115 </span><span class="lineNoCov">          0 :     if( stencilSize &gt; 0 &amp;&amp; ( GLEW_EXT_packed_depth_stencil || coreContext ))</span>
+<span class="lineNum">     116 </span>            :     {
+<span class="lineNum">     117 </span><span class="lineNoCov">          0 :         _depth.init( GL_DEPTH24_STENCIL8, width, height );</span>
+<span class="lineNum">     118 </span>            :         _depth.bindToFBO( GL_DEPTH_STENCIL_ATTACHMENT, width, height,
+<span class="lineNum">     119 </span><span class="lineNoCov">          0 :                           samplesSize );</span>
+<span class="lineNum">     120 </span><span class="lineNoCov">          0 :         const Error error = _checkStatus();</span>
+<span class="lineNum">     121 </span><span class="lineNoCov">          0 :         if( error )</span>
+<span class="lineNum">     122 </span>            :         {
+<span class="lineNum">     123 </span><span class="lineNoCov">          0 :             LBDEBUG &lt;&lt; &quot;FrameBufferObject::init: &quot; &lt;&lt; error</span>
+<span class="lineNum">     124 </span><span class="lineNoCov">          0 :                     &lt;&lt; &quot; when binding GL_DEPTH24_STENCIL8 texture&quot; &lt;&lt; std::endl;</span>
+<span class="lineNum">     125 </span><span class="lineNoCov">          0 :             exit();</span>
+<span class="lineNum">     126 </span><span class="lineNoCov">          0 :             return error;</span>
+<span class="lineNum">     127 </span>            :         }
+<span class="lineNum">     128 </span>            :     }
+<span class="lineNum">     129 </span><span class="lineNoCov">          0 :     else if( depthSize &gt; 0 )</span>
+<span class="lineNum">     130 </span>            :     {
+<span class="lineNum">     131 </span><span class="lineNoCov">          0 :         _depth.init( GL_DEPTH_COMPONENT, width, height );</span>
+<span class="lineNum">     132 </span><span class="lineNoCov">          0 :         _depth.bindToFBO( GL_DEPTH_ATTACHMENT, width, height, samplesSize );</span>
+<span class="lineNum">     133 </span><span class="lineNoCov">          0 :         const Error error = _checkStatus();</span>
+<span class="lineNum">     134 </span><span class="lineNoCov">          0 :         if( error )</span>
+<span class="lineNum">     135 </span>            :         {
+<span class="lineNum">     136 </span><span class="lineNoCov">          0 :             LBDEBUG &lt;&lt; &quot;FrameBufferObject::init: &quot; &lt;&lt; error</span>
+<span class="lineNum">     137 </span><span class="lineNoCov">          0 :                     &lt;&lt; &quot; when binding GL_DEPTH_COMPONENT texture&quot; &lt;&lt; std::endl;</span>
+<span class="lineNum">     138 </span><span class="lineNoCov">          0 :             exit();</span>
+<span class="lineNum">     139 </span><span class="lineNoCov">          0 :             return error;</span>
+<span class="lineNum">     140 </span>            :         }
+<span class="lineNum">     141 </span>            :     }
+<span class="lineNum">     142 </span>            : 
+<span class="lineNum">     143 </span><span class="lineNoCov">          0 :     const Error error = _checkStatus();</span>
+<span class="lineNum">     144 </span><span class="lineNoCov">          0 :     if( error )</span>
+<span class="lineNum">     145 </span>            :     {
+<span class="lineNum">     146 </span><span class="lineNoCov">          0 :         LBDEBUG &lt;&lt; &quot;FrameBufferObject::init: &quot; &lt;&lt; error &lt;&lt; std::endl;</span>
+<span class="lineNum">     147 </span><span class="lineNoCov">          0 :         exit();</span>
+<span class="lineNum">     148 </span>            :     }
+<span class="lineNum">     149 </span><span class="lineNoCov">          0 :     return error;</span>
+<a name="150"><span class="lineNum">     150 </span>            : }</a>
+<span class="lineNum">     151 </span>            : 
+<span class="lineNum">     152 </span><span class="lineNoCov">          0 : void FrameBufferObject::exit()</span>
+<span class="lineNum">     153 </span>            : {
+<span class="lineNum">     154 </span><span class="lineNoCov">          0 :     LB_TS_THREAD( _thread );</span>
+<span class="lineNum">     155 </span><span class="lineNoCov">          0 :     if( _fboID )</span>
+<span class="lineNum">     156 </span>            :     {
+<span class="lineNum">     157 </span><span class="lineNoCov">          0 :         glBindFramebufferEXT( GL_FRAMEBUFFER_EXT, 0 );</span>
+<span class="lineNum">     158 </span><span class="lineNoCov">          0 :         glDeleteFramebuffersEXT( 1, &amp;_fboID );</span>
+<span class="lineNum">     159 </span><span class="lineNoCov">          0 :         _fboID = 0;</span>
+<span class="lineNum">     160 </span>            :     }
+<span class="lineNum">     161 </span>            : 
+<span class="lineNum">     162 </span><span class="lineNoCov">          0 :     for( size_t i = 0; i &lt; _colors.size(); ++i )</span>
+<span class="lineNum">     163 </span><span class="lineNoCov">          0 :         _colors[i]-&gt;flush();</span>
+<span class="lineNum">     164 </span><span class="lineNoCov">          0 :     _depth.flush();</span>
+<span class="lineNum">     165 </span>            : 
+<span class="lineNum">     166 </span><span class="lineNoCov">          0 :     _valid = false;</span>
+<a name="167"><span class="lineNum">     167 </span><span class="lineNoCov">          0 : }</span></a>
+<span class="lineNum">     168 </span>            : 
+<span class="lineNum">     169 </span><span class="lineNoCov">          0 : Error FrameBufferObject::_checkStatus()</span>
+<span class="lineNum">     170 </span>            : {
+<span class="lineNum">     171 </span><span class="lineNoCov">          0 :     _valid = false;</span>
+<span class="lineNum">     172 </span>            : 
+<span class="lineNum">     173 </span><span class="lineNoCov">          0 :     const GLenum status = glCheckFramebufferStatusEXT( GL_FRAMEBUFFER_EXT );</span>
+<span class="lineNum">     174 </span><span class="lineNoCov">          0 :     switch( status )</span>
+<span class="lineNum">     175 </span>            :     {
+<span class="lineNum">     176 </span>            :     case GL_FRAMEBUFFER_COMPLETE_EXT:
+<span class="lineNum">     177 </span><span class="lineNoCov">          0 :         _valid = true;</span>
+<span class="lineNum">     178 </span><span class="lineNoCov">          0 :         return Error( ERROR_NONE );</span>
+<span class="lineNum">     179 </span>            : 
+<span class="lineNum">     180 </span>            :     case 0: // error?!
+<span class="lineNum">     181 </span><span class="lineNoCov">          0 :         EQ_GL_ERROR( &quot;glCheckFramebufferStatusEXT&quot; );</span>
+<span class="lineNum">     182 </span><span class="lineNoCov">          0 :         return Error( ERROR_FRAMEBUFFER_STATUS );</span>
+<span class="lineNum">     183 </span>            : 
+<span class="lineNum">     184 </span>            :     case GL_FRAMEBUFFER_UNSUPPORTED_EXT:
+<span class="lineNum">     185 </span><span class="lineNoCov">          0 :         return Error( ERROR_FRAMEBUFFER_UNSUPPORTED );</span>
+<span class="lineNum">     186 </span>            : 
+<span class="lineNum">     187 </span>            :     case GL_FRAMEBUFFER_INCOMPLETE_MISSING_ATTACHMENT_EXT:
+<span class="lineNum">     188 </span><span class="lineNoCov">          0 :         return Error( ERROR_FRAMEBUFFER_INCOMPLETE_MISSING_ATTACHMENT );</span>
+<span class="lineNum">     189 </span>            : 
+<span class="lineNum">     190 </span>            :     case GL_FRAMEBUFFER_INCOMPLETE_ATTACHMENT_EXT:
+<span class="lineNum">     191 </span><span class="lineNoCov">          0 :         return Error( ERROR_FRAMEBUFFER_INCOMPLETE_ATTACHMENT );</span>
+<span class="lineNum">     192 </span>            : 
+<span class="lineNum">     193 </span>            :     case GL_FRAMEBUFFER_INCOMPLETE_DIMENSIONS_EXT:
+<span class="lineNum">     194 </span><span class="lineNoCov">          0 :         return Error( ERROR_FRAMEBUFFER_INCOMPLETE_DIMENSIONS );</span>
+<span class="lineNum">     195 </span>            : 
+<span class="lineNum">     196 </span>            :     case GL_FRAMEBUFFER_INCOMPLETE_FORMATS_EXT:
+<span class="lineNum">     197 </span><span class="lineNoCov">          0 :         return Error( ERROR_FRAMEBUFFER_INCOMPLETE_FORMATS );</span>
+<span class="lineNum">     198 </span>            : 
+<span class="lineNum">     199 </span>            :     case GL_FRAMEBUFFER_INCOMPLETE_DRAW_BUFFER_EXT:
+<span class="lineNum">     200 </span><span class="lineNoCov">          0 :         return Error( ERROR_FRAMEBUFFER_INCOMPLETE_DRAW_BUFFER );</span>
+<span class="lineNum">     201 </span>            : 
+<span class="lineNum">     202 </span>            :     case GL_FRAMEBUFFER_INCOMPLETE_READ_BUFFER_EXT:
+<span class="lineNum">     203 </span><span class="lineNoCov">          0 :         return Error( ERROR_FRAMEBUFFER_INCOMPLETE_READ_BUFFER );</span>
+<span class="lineNum">     204 </span>            : 
+<span class="lineNum">     205 </span>            :     default:
+<span class="lineNum">     206 </span><span class="lineNoCov">          0 :         LBWARN &lt;&lt; &quot;Unhandled frame buffer status 0x&quot; &lt;&lt; std::hex</span>
+<span class="lineNum">     207 </span><span class="lineNoCov">          0 :                &lt;&lt; status &lt;&lt; std::dec &lt;&lt; std::endl;</span>
+<span class="lineNum">     208 </span><span class="lineNoCov">          0 :         return Error( ERROR_FRAMEBUFFER_STATUS );</span>
+<span class="lineNum">     209 </span>            :     }
+<a name="210"><span class="lineNum">     210 </span>            : }</a>
+<span class="lineNum">     211 </span>            : 
+<span class="lineNum">     212 </span><span class="lineNoCov">          0 : void FrameBufferObject::bind( const uint32_t target )</span>
+<span class="lineNum">     213 </span>            : {
+<span class="lineNum">     214 </span><span class="lineNoCov">          0 :     LB_TS_THREAD( _thread );</span>
+<span class="lineNum">     215 </span><span class="lineNoCov">          0 :     LBASSERT( _fboID );</span>
+<span class="lineNum">     216 </span><span class="lineNoCov">          0 :     EQ_GL_CALL( glBindFramebufferEXT( target, _fboID ));</span>
+<a name="217"><span class="lineNum">     217 </span><span class="lineNoCov">          0 : }</span></a>
+<span class="lineNum">     218 </span>            : 
+<span class="lineNum">     219 </span><span class="lineNoCov">          0 : void FrameBufferObject::unbind( const uint32_t target )</span>
+<span class="lineNum">     220 </span>            : {
+<span class="lineNum">     221 </span><span class="lineNoCov">          0 :     EQ_GL_CALL( glBindFramebufferEXT( target, 0 ));</span>
+<a name="222"><span class="lineNum">     222 </span><span class="lineNoCov">          0 : }</span></a>
+<span class="lineNum">     223 </span>            : 
+<span class="lineNum">     224 </span><span class="lineNoCov">          0 : Error FrameBufferObject::resize( const int32_t width, const int32_t height )</span>
+<span class="lineNum">     225 </span>            : {
+<span class="lineNum">     226 </span><span class="lineNoCov">          0 :     LB_TS_THREAD( _thread );</span>
+<span class="lineNum">     227 </span><span class="lineNoCov">          0 :     LBASSERT( width &gt; 0 &amp;&amp; height &gt; 0 );</span>
+<span class="lineNum">     228 </span>            : 
+<span class="lineNum">     229 </span><span class="lineNoCov">          0 :     LBASSERT( !_colors.empty( ));</span>
+<span class="lineNum">     230 </span><span class="lineNoCov">          0 :     Texture* color = _colors.front();</span>
+<span class="lineNum">     231 </span>            : 
+<span class="lineNum">     232 </span><span class="lineNoCov">          0 :     if( color-&gt;getWidth() == width &amp;&amp; color-&gt;getHeight() == height &amp;&amp; _valid )</span>
+<span class="lineNum">     233 </span><span class="lineNoCov">          0 :         return Error( ERROR_NONE );</span>
+<span class="lineNum">     234 </span>            : 
+<span class="lineNum">     235 </span><span class="lineNoCov">          0 :     for( size_t i = 0; i &lt; _colors.size(); ++i )</span>
+<span class="lineNum">     236 </span><span class="lineNoCov">          0 :         _colors[i]-&gt;resize( width, height );</span>
+<span class="lineNum">     237 </span>            : 
+<span class="lineNum">     238 </span><span class="lineNoCov">          0 :     if ( _depth.isValid( ))</span>
+<span class="lineNum">     239 </span><span class="lineNoCov">          0 :         _depth.resize( width, height );</span>
+<span class="lineNum">     240 </span>            : 
+<span class="lineNum">     241 </span><span class="lineNoCov">          0 :     return _checkStatus();</span>
+<span class="lineNum">     242 </span>            : }
+<a name="243"><span class="lineNum">     243 </span>            : </a>
+<span class="lineNum">     244 </span>            : }
+<span class="lineNum">     245 </span><span class="lineCov">         60 : }</span>
+</pre>
+      </td>
+    </tr>
+  </table>
+  <br>
+
+  <table width="100%" border=0 cellspacing=0 cellpadding=0>
+    <tr><td class="ruler"><img src="../../../glass.png" width=3 height=3 alt=""></td></tr>
+    <tr><td class="versionInfo">Generated by: <a href="http://ltp.sourceforge.net/coverage/lcov.php" target="_parent">LCOV version 1.11</a></td></tr>
+  </table>
+  <br>
+
+</body>
+</html>

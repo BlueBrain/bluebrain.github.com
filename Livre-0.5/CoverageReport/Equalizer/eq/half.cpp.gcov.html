@@ -1,0 +1,797 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+
+<html lang="en">
+
+<head>
+  <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+  <title>LCOV - Livre - Equalizer/eq/half.cpp</title>
+  <link rel="stylesheet" type="text/css" href="../../gcov.css">
+</head>
+
+<body>
+
+  <table width="100%" border=0 cellspacing=0 cellpadding=0>
+    <tr><td class="title">LCOV - code coverage report</td></tr>
+    <tr><td class="ruler"><img src="../../glass.png" width=3 height=3 alt=""></td></tr>
+
+    <tr>
+      <td width="100%">
+        <table cellpadding=1 border=0 width="100%">
+          <tr>
+            <td width="10%" class="headerItem">Current view:</td>
+            <td width="35%" class="headerValue"><a href="../../index.html">top level</a> - <a href="index.html">Equalizer/eq</a> - half.cpp<span style="font-size: 80%;"> (source / <a href="half.cpp.func-sort-c.html">functions</a>)</span></td>
+            <td width="5%"></td>
+            <td width="15%"></td>
+            <td width="10%" class="headerCovTableHead">Hit</td>
+            <td width="10%" class="headerCovTableHead">Total</td>
+            <td width="15%" class="headerCovTableHead">Coverage</td>
+          </tr>
+          <tr>
+            <td class="headerItem">Test:</td>
+            <td class="headerValue">Livre</td>
+            <td></td>
+            <td class="headerItem">Lines:</td>
+            <td class="headerCovTableEntry">0</td>
+            <td class="headerCovTableEntry">404</td>
+            <td class="headerCovTableEntryLo">0.0 %</td>
+          </tr>
+          <tr>
+            <td class="headerItem">Date:</td>
+            <td class="headerValue">2016-03-10 14:06:39</td>
+            <td></td>
+            <td class="headerItem">Functions:</td>
+            <td class="headerCovTableEntry">0</td>
+            <td class="headerCovTableEntry">38</td>
+            <td class="headerCovTableEntryLo">0.0 %</td>
+          </tr>
+          <tr><td><img src="../../glass.png" width=3 height=3 alt=""></td></tr>
+        </table>
+      </td>
+    </tr>
+
+    <tr><td class="ruler"><img src="../../glass.png" width=3 height=3 alt=""></td></tr>
+  </table>
+
+  <table cellpadding=0 cellspacing=0 border=0>
+    <tr>
+      <td><br></td>
+    </tr>
+    <tr>
+      <td>
+<pre class="sourceHeading">          Line data    Source code</pre>
+<pre class="source">
+<a name="1"><span class="lineNum">       1 </span>            : // Branch-free implementation of half-precision (16 bit) floating point</a>
+<span class="lineNum">       2 </span>            : // Copyright 2006 Mike Acton &lt;macton@gmail.com&gt;
+<span class="lineNum">       3 </span>            : //
+<span class="lineNum">       4 </span>            : // Permission is hereby granted, free of charge, to any person obtaining a
+<span class="lineNum">       5 </span>            : // copy of this software and associated documentation files (the &quot;Software&quot;),
+<span class="lineNum">       6 </span>            : // to deal in the Software without restriction, including without limitation
+<span class="lineNum">       7 </span>            : // the rights to use, copy, modify, merge, publish, distribute, sublicense,
+<span class="lineNum">       8 </span>            : // and/or sell copies of the Software, and to permit persons to whom the
+<span class="lineNum">       9 </span>            : // Software is furnished to do so, subject to the following conditions:
+<span class="lineNum">      10 </span>            : //
+<span class="lineNum">      11 </span>            : // The above copyright notice and this permission notice shall be included
+<span class="lineNum">      12 </span>            : // in all copies or substantial portions of the Software.
+<span class="lineNum">      13 </span>            : //
+<span class="lineNum">      14 </span>            : // THE SOFTWARE IS PROVIDED &quot;AS IS&quot;, WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
+<span class="lineNum">      15 </span>            : // IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
+<span class="lineNum">      16 </span>            : // FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
+<span class="lineNum">      17 </span>            : // AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
+<span class="lineNum">      18 </span>            : // LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
+<span class="lineNum">      19 </span>            : // OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
+<span class="lineNum">      20 </span>            : // THE SOFTWARE
+<span class="lineNum">      21 </span>            : //
+<span class="lineNum">      22 </span>            : // Half-precision floating point format
+<span class="lineNum">      23 </span>            : // ------------------------------------
+<span class="lineNum">      24 </span>            : //
+<span class="lineNum">      25 </span>            : //   | Field    | Last | First | Note
+<span class="lineNum">      26 </span>            : //   |----------|------|-------|----------
+<span class="lineNum">      27 </span>            : //   | Sign     | 15   | 15    |
+<span class="lineNum">      28 </span>            : //   | Exponent | 14   | 10    | Bias = 15
+<span class="lineNum">      29 </span>            : //   | Mantissa | 9    | 0     |
+<span class="lineNum">      30 </span>            : //
+<span class="lineNum">      31 </span>            : // Compiling
+<span class="lineNum">      32 </span>            : // ---------
+<span class="lineNum">      33 </span>            : //
+<span class="lineNum">      34 </span>            : //  Preferred compile flags for GCC:
+<span class="lineNum">      35 </span>            : //     -O3 -fstrict-aliasing -std=c99 -pedantic -Wall -Wstrict-aliasing
+<span class="lineNum">      36 </span>            : //
+<span class="lineNum">      37 </span>            : //     This file is a C99 source file, intended to be compiled with a C99
+<span class="lineNum">      38 </span>            : //     compliant compiler. However, for the moment it remains combatible
+<span class="lineNum">      39 </span>            : //     with C++98. Therefore if you are using a compiler that poorly implements
+<span class="lineNum">      40 </span>            : //     C standards (e.g. MSVC), it may be compiled as C++. This is not
+<span class="lineNum">      41 </span>            : //     guaranteed for future versions.
+<span class="lineNum">      42 </span>            : //
+<span class="lineNum">      43 </span>            : 
+<span class="lineNum">      44 </span>            : #include &quot;half.h&quot;
+<a name="45"><span class="lineNum">      45 </span>            : </a>
+<span class="lineNum">      46 </span>            : // Load immediate
+<span class="lineNum">      47 </span><span class="lineNoCov">          0 : static inline uint32_t _uint32_li( uint32_t a )</span>
+<span class="lineNum">      48 </span>            : {
+<span class="lineNum">      49 </span><span class="lineNoCov">          0 :   return (a);</span>
+<span class="lineNum">      50 </span>            : }
+<a name="51"><span class="lineNum">      51 </span>            : </a>
+<span class="lineNum">      52 </span>            : // Decrement
+<span class="lineNum">      53 </span><span class="lineNoCov">          0 : static inline uint32_t _uint32_dec( uint32_t a )</span>
+<span class="lineNum">      54 </span>            : {
+<span class="lineNum">      55 </span><span class="lineNoCov">          0 :   return (a - 1);</span>
+<span class="lineNum">      56 </span>            : }
+<a name="57"><span class="lineNum">      57 </span>            : </a>
+<span class="lineNum">      58 </span>            : // Increment
+<span class="lineNum">      59 </span><span class="lineNoCov">          0 : static inline uint32_t _uint32_inc( uint32_t a )</span>
+<span class="lineNum">      60 </span>            : {
+<span class="lineNum">      61 </span><span class="lineNoCov">          0 :   return (a + 1);</span>
+<span class="lineNum">      62 </span>            : }
+<a name="63"><span class="lineNum">      63 </span>            : </a>
+<span class="lineNum">      64 </span>            : // Complement
+<span class="lineNum">      65 </span><span class="lineNoCov">          0 : static inline uint32_t _uint32_not( uint32_t a )</span>
+<span class="lineNum">      66 </span>            : {
+<span class="lineNum">      67 </span><span class="lineNoCov">          0 :   return (~a);</span>
+<span class="lineNum">      68 </span>            : }
+<a name="69"><span class="lineNum">      69 </span>            : </a>
+<span class="lineNum">      70 </span>            : // Negate
+<span class="lineNum">      71 </span><span class="lineNoCov">          0 : static inline uint32_t _uint32_neg( uint32_t a )</span>
+<span class="lineNum">      72 </span>            : {
+<span class="lineNum">      73 </span>            : #pragma warning (disable: 4146)
+<span class="lineNum">      74 </span><span class="lineNoCov">          0 :   return (-a);</span>
+<span class="lineNum">      75 </span>            : #pragma warning( default: 4146)
+<span class="lineNum">      76 </span>            : }
+<a name="77"><span class="lineNum">      77 </span>            : </a>
+<span class="lineNum">      78 </span>            : // Extend sign
+<span class="lineNum">      79 </span><span class="lineNoCov">          0 : static inline uint32_t _uint32_ext( uint32_t a )</span>
+<span class="lineNum">      80 </span>            : {
+<span class="lineNum">      81 </span><span class="lineNoCov">          0 :   return (((int32_t)a)&gt;&gt;31);</span>
+<span class="lineNum">      82 </span>            : }
+<a name="83"><span class="lineNum">      83 </span>            : </a>
+<span class="lineNum">      84 </span>            : // And
+<span class="lineNum">      85 </span><span class="lineNoCov">          0 : static inline uint32_t _uint32_and( uint32_t a, uint32_t b )</span>
+<span class="lineNum">      86 </span>            : {
+<span class="lineNum">      87 </span><span class="lineNoCov">          0 :   return (a &amp; b);</span>
+<span class="lineNum">      88 </span>            : }
+<a name="89"><span class="lineNum">      89 </span>            : </a>
+<span class="lineNum">      90 </span>            : // Exclusive Or
+<span class="lineNum">      91 </span><span class="lineNoCov">          0 : static inline uint32_t _uint32_xor( uint32_t a, uint32_t b )</span>
+<span class="lineNum">      92 </span>            : {
+<span class="lineNum">      93 </span><span class="lineNoCov">          0 :   return (a ^ b);</span>
+<span class="lineNum">      94 </span>            : }
+<a name="95"><span class="lineNum">      95 </span>            : </a>
+<span class="lineNum">      96 </span>            : // And with Complement
+<span class="lineNum">      97 </span><span class="lineNoCov">          0 : static inline uint32_t _uint32_andc( uint32_t a, uint32_t b )</span>
+<span class="lineNum">      98 </span>            : {
+<span class="lineNum">      99 </span><span class="lineNoCov">          0 :   return (a &amp; ~b);</span>
+<span class="lineNum">     100 </span>            : }
+<a name="101"><span class="lineNum">     101 </span>            : </a>
+<span class="lineNum">     102 </span>            : // Or
+<span class="lineNum">     103 </span><span class="lineNoCov">          0 : static inline uint32_t _uint32_or( uint32_t a, uint32_t b )</span>
+<span class="lineNum">     104 </span>            : {
+<span class="lineNum">     105 </span><span class="lineNoCov">          0 :   return (a | b);</span>
+<span class="lineNum">     106 </span>            : }
+<a name="107"><span class="lineNum">     107 </span>            : </a>
+<span class="lineNum">     108 </span>            : // Shift Right Logical
+<span class="lineNum">     109 </span><span class="lineNoCov">          0 : static inline uint32_t _uint32_srl( uint32_t a, int sa )</span>
+<span class="lineNum">     110 </span>            : {
+<span class="lineNum">     111 </span><span class="lineNoCov">          0 :   return (a &gt;&gt; sa);</span>
+<span class="lineNum">     112 </span>            : }
+<a name="113"><span class="lineNum">     113 </span>            : </a>
+<span class="lineNum">     114 </span>            : // Shift Left Logical
+<span class="lineNum">     115 </span><span class="lineNoCov">          0 : static inline uint32_t _uint32_sll( uint32_t a, int sa )</span>
+<span class="lineNum">     116 </span>            : {
+<span class="lineNum">     117 </span><span class="lineNoCov">          0 :   return (a &lt;&lt; sa);</span>
+<span class="lineNum">     118 </span>            : }
+<a name="119"><span class="lineNum">     119 </span>            : </a>
+<span class="lineNum">     120 </span>            : // Add
+<span class="lineNum">     121 </span><span class="lineNoCov">          0 : static inline uint32_t _uint32_add( uint32_t a, uint32_t b )</span>
+<span class="lineNum">     122 </span>            : {
+<span class="lineNum">     123 </span><span class="lineNoCov">          0 :   return (a + b);</span>
+<span class="lineNum">     124 </span>            : }
+<a name="125"><span class="lineNum">     125 </span>            : </a>
+<span class="lineNum">     126 </span>            : // Subtract
+<span class="lineNum">     127 </span><span class="lineNoCov">          0 : static inline uint32_t _uint32_sub( uint32_t a, uint32_t b )</span>
+<span class="lineNum">     128 </span>            : {
+<span class="lineNum">     129 </span><span class="lineNoCov">          0 :   return (a - b);</span>
+<span class="lineNum">     130 </span>            : }
+<a name="131"><span class="lineNum">     131 </span>            : </a>
+<span class="lineNum">     132 </span>            : // Multiply
+<span class="lineNum">     133 </span><span class="lineNoCov">          0 : static inline uint32_t _uint32_mul( uint32_t a, uint32_t b )</span>
+<span class="lineNum">     134 </span>            : {
+<span class="lineNum">     135 </span><span class="lineNoCov">          0 :   return (a * b);</span>
+<span class="lineNum">     136 </span>            : }
+<a name="137"><span class="lineNum">     137 </span>            : </a>
+<span class="lineNum">     138 </span>            : // Select on Sign bit
+<span class="lineNum">     139 </span><span class="lineNoCov">          0 : static inline uint32_t _uint32_sels( uint32_t test, uint32_t a, uint32_t b )</span>
+<span class="lineNum">     140 </span>            : {
+<span class="lineNum">     141 </span><span class="lineNoCov">          0 :   const uint32_t mask   = _uint32_ext( test );</span>
+<span class="lineNum">     142 </span><span class="lineNoCov">          0 :   const uint32_t sel_a  = _uint32_and(  a,     mask  );</span>
+<span class="lineNum">     143 </span><span class="lineNoCov">          0 :   const uint32_t sel_b  = _uint32_andc( b,     mask  );</span>
+<span class="lineNum">     144 </span><span class="lineNoCov">          0 :   const uint32_t result = _uint32_or(   sel_a, sel_b );</span>
+<span class="lineNum">     145 </span>            : 
+<span class="lineNum">     146 </span><span class="lineNoCov">          0 :   return (result);</span>
+<span class="lineNum">     147 </span>            : }
+<a name="148"><span class="lineNum">     148 </span>            : </a>
+<span class="lineNum">     149 </span>            : // Select Bits on mask
+<span class="lineNum">     150 </span><span class="lineNoCov">          0 : static inline uint32_t _uint32_selb( uint32_t mask, uint32_t a, uint32_t b )</span>
+<span class="lineNum">     151 </span>            : {
+<span class="lineNum">     152 </span><span class="lineNoCov">          0 :   const uint32_t sel_a  = _uint32_and(  a,     mask  );</span>
+<span class="lineNum">     153 </span><span class="lineNoCov">          0 :   const uint32_t sel_b  = _uint32_andc( b,     mask  );</span>
+<span class="lineNum">     154 </span><span class="lineNoCov">          0 :   const uint32_t result = _uint32_or(   sel_a, sel_b );</span>
+<span class="lineNum">     155 </span>            : 
+<span class="lineNum">     156 </span><span class="lineNoCov">          0 :   return (result);</span>
+<span class="lineNum">     157 </span>            : }
+<a name="158"><span class="lineNum">     158 </span>            : </a>
+<span class="lineNum">     159 </span>            : // Load Immediate
+<span class="lineNum">     160 </span><span class="lineNoCov">          0 : static inline uint16_t _uint16_li( uint16_t a )</span>
+<span class="lineNum">     161 </span>            : {
+<span class="lineNum">     162 </span><span class="lineNoCov">          0 :   return (a);</span>
+<span class="lineNum">     163 </span>            : }
+<a name="164"><span class="lineNum">     164 </span>            : </a>
+<span class="lineNum">     165 </span>            : // Extend sign
+<span class="lineNum">     166 </span><span class="lineNoCov">          0 : static inline uint16_t _uint16_ext( uint16_t a )</span>
+<span class="lineNum">     167 </span>            : {
+<span class="lineNum">     168 </span><span class="lineNoCov">          0 :   return (((int16_t)a)&gt;&gt;15);</span>
+<span class="lineNum">     169 </span>            : }
+<a name="170"><span class="lineNum">     170 </span>            : </a>
+<span class="lineNum">     171 </span>            : // Negate
+<span class="lineNum">     172 </span><span class="lineNoCov">          0 : static inline uint16_t _uint16_neg( uint16_t a )</span>
+<span class="lineNum">     173 </span>            : {
+<span class="lineNum">     174 </span><span class="lineNoCov">          0 :   return (-a);</span>
+<span class="lineNum">     175 </span>            : }
+<span class="lineNum">     176 </span>            : 
+<span class="lineNum">     177 </span>            : #ifndef __GNUC__
+<span class="lineNum">     178 </span>            : // Complement
+<span class="lineNum">     179 </span>            : static inline uint16_t _uint16_not( uint16_t a )
+<span class="lineNum">     180 </span>            : {
+<span class="lineNum">     181 </span>            :   return (~a);
+<span class="lineNum">     182 </span>            : }
+<span class="lineNum">     183 </span>            : // Add then Mask
+<span class="lineNum">     184 </span>            : static inline uint16_t _uint16_addm( uint16_t a, uint16_t b, uint16_t mask )
+<span class="lineNum">     185 </span>            : {
+<span class="lineNum">     186 </span>            :   return ((a + b) &amp; mask);
+<span class="lineNum">     187 </span>            : }
+<span class="lineNum">     188 </span>            : #endif
+<a name="189"><span class="lineNum">     189 </span>            : </a>
+<span class="lineNum">     190 </span>            : // Decrement
+<span class="lineNum">     191 </span><span class="lineNoCov">          0 : static inline uint16_t _uint16_dec( uint16_t a )</span>
+<span class="lineNum">     192 </span>            : {
+<span class="lineNum">     193 </span><span class="lineNoCov">          0 :   return (a - 1);</span>
+<span class="lineNum">     194 </span>            : }
+<a name="195"><span class="lineNum">     195 </span>            : </a>
+<span class="lineNum">     196 </span>            : // Shift Left Logical
+<span class="lineNum">     197 </span><span class="lineNoCov">          0 : static inline uint16_t _uint16_sll( uint16_t a, int sa )</span>
+<span class="lineNum">     198 </span>            : {
+<span class="lineNum">     199 </span><span class="lineNoCov">          0 :   return (a &lt;&lt; sa);</span>
+<span class="lineNum">     200 </span>            : }
+<a name="201"><span class="lineNum">     201 </span>            : </a>
+<span class="lineNum">     202 </span>            : // Shift Right Logical
+<span class="lineNum">     203 </span><span class="lineNoCov">          0 : static inline uint16_t _uint16_srl( uint16_t a, int sa )</span>
+<span class="lineNum">     204 </span>            : {
+<span class="lineNum">     205 </span><span class="lineNoCov">          0 :   return (a &gt;&gt; sa);</span>
+<span class="lineNum">     206 </span>            : }
+<a name="207"><span class="lineNum">     207 </span>            : </a>
+<span class="lineNum">     208 </span>            : // Add
+<span class="lineNum">     209 </span><span class="lineNoCov">          0 : static inline uint16_t _uint16_add( uint16_t a, uint16_t b )</span>
+<span class="lineNum">     210 </span>            : {
+<span class="lineNum">     211 </span><span class="lineNoCov">          0 :   return (a + b);</span>
+<span class="lineNum">     212 </span>            : }
+<a name="213"><span class="lineNum">     213 </span>            : </a>
+<span class="lineNum">     214 </span>            : // Subtract
+<span class="lineNum">     215 </span><span class="lineNoCov">          0 : static inline uint16_t _uint16_sub( uint16_t a, uint16_t b )</span>
+<span class="lineNum">     216 </span>            : {
+<span class="lineNum">     217 </span><span class="lineNoCov">          0 :   return (a - b);</span>
+<span class="lineNum">     218 </span>            : }
+<a name="219"><span class="lineNum">     219 </span>            : </a>
+<span class="lineNum">     220 </span>            : // And
+<span class="lineNum">     221 </span><span class="lineNoCov">          0 : static inline uint16_t _uint16_and( uint16_t a, uint16_t b )</span>
+<span class="lineNum">     222 </span>            : {
+<span class="lineNum">     223 </span><span class="lineNoCov">          0 :   return (a &amp; b);</span>
+<span class="lineNum">     224 </span>            : }
+<a name="225"><span class="lineNum">     225 </span>            : </a>
+<span class="lineNum">     226 </span>            : // Or
+<span class="lineNum">     227 </span><span class="lineNoCov">          0 : static inline uint16_t _uint16_or( uint16_t a, uint16_t b )</span>
+<span class="lineNum">     228 </span>            : {
+<span class="lineNum">     229 </span><span class="lineNoCov">          0 :   return (a | b);</span>
+<span class="lineNum">     230 </span>            : }
+<a name="231"><span class="lineNum">     231 </span>            : </a>
+<span class="lineNum">     232 </span>            : // Exclusive Or
+<span class="lineNum">     233 </span><span class="lineNoCov">          0 : static inline uint16_t _uint16_xor( uint16_t a, uint16_t b )</span>
+<span class="lineNum">     234 </span>            : {
+<span class="lineNum">     235 </span><span class="lineNoCov">          0 :   return (a ^ b);</span>
+<span class="lineNum">     236 </span>            : }
+<a name="237"><span class="lineNum">     237 </span>            : </a>
+<span class="lineNum">     238 </span>            : // And with Complement
+<span class="lineNum">     239 </span><span class="lineNoCov">          0 : static inline uint16_t _uint16_andc( uint16_t a, uint16_t b )</span>
+<span class="lineNum">     240 </span>            : {
+<span class="lineNum">     241 </span><span class="lineNoCov">          0 :   return (a &amp; ~b);</span>
+<span class="lineNum">     242 </span>            : }
+<a name="243"><span class="lineNum">     243 </span>            : </a>
+<span class="lineNum">     244 </span>            : // And then Shift Right Logical
+<span class="lineNum">     245 </span><span class="lineNoCov">          0 : static inline uint16_t _uint16_andsrl( uint16_t a, uint16_t b, int sa )</span>
+<span class="lineNum">     246 </span>            : {
+<span class="lineNum">     247 </span><span class="lineNoCov">          0 :   return ((a &amp; b) &gt;&gt; sa);</span>
+<span class="lineNum">     248 </span>            : }
+<a name="249"><span class="lineNum">     249 </span>            : </a>
+<span class="lineNum">     250 </span>            : // Shift Right Logical then Mask
+<span class="lineNum">     251 </span><span class="lineNoCov">          0 : static inline uint16_t _uint16_srlm( uint16_t a, int sa, uint16_t mask )</span>
+<span class="lineNum">     252 </span>            : {
+<span class="lineNum">     253 </span><span class="lineNoCov">          0 :   return ((a &gt;&gt; sa) &amp; mask);</span>
+<span class="lineNum">     254 </span>            : }
+<a name="255"><span class="lineNum">     255 </span>            : </a>
+<span class="lineNum">     256 </span>            : // Select on Sign bit
+<span class="lineNum">     257 </span><span class="lineNoCov">          0 : static inline uint16_t _uint16_sels( uint16_t test, uint16_t a, uint16_t b )</span>
+<span class="lineNum">     258 </span>            : {
+<span class="lineNum">     259 </span><span class="lineNoCov">          0 :   const uint16_t mask   = _uint16_ext( test );</span>
+<span class="lineNum">     260 </span><span class="lineNoCov">          0 :   const uint16_t sel_a  = _uint16_and(  a,     mask  );</span>
+<span class="lineNum">     261 </span><span class="lineNoCov">          0 :   const uint16_t sel_b  = _uint16_andc( b,     mask  );</span>
+<span class="lineNum">     262 </span><span class="lineNoCov">          0 :   const uint16_t result = _uint16_or(   sel_a, sel_b );</span>
+<span class="lineNum">     263 </span>            : 
+<span class="lineNum">     264 </span><span class="lineNoCov">          0 :   return (result);</span>
+<span class="lineNum">     265 </span>            : }
+<a name="266"><span class="lineNum">     266 </span>            : </a>
+<span class="lineNum">     267 </span>            : // Count Leading Zeros
+<span class="lineNum">     268 </span><span class="lineNoCov">          0 : static inline uint32_t _uint32_cntlz( uint32_t x )</span>
+<span class="lineNum">     269 </span>            : {
+<span class="lineNum">     270 </span>            : #ifdef __GNUC__
+<span class="lineNum">     271 </span>            :   /* NOTE: __builtin_clz is undefined for x == 0 */
+<span class="lineNum">     272 </span>            :   /* On PowerPC, this will map to insn: cntlzw   */
+<span class="lineNum">     273 </span>            :   /* On Pentium, this will map to insn: clz      */
+<span class="lineNum">     274 </span><span class="lineNoCov">          0 :   uint32_t is_x_nez_msb = _uint32_neg( x );</span>
+<span class="lineNum">     275 </span><span class="lineNoCov">          0 :   uint32_t nlz          = __builtin_clz( x );</span>
+<span class="lineNum">     276 </span><span class="lineNoCov">          0 :   uint32_t result       = _uint32_sels( is_x_nez_msb, nlz, 0x00000020 );</span>
+<span class="lineNum">     277 </span><span class="lineNoCov">          0 :   return (result);</span>
+<span class="lineNum">     278 </span>            : #else
+<span class="lineNum">     279 </span>            :   const uint32_t x0  = _uint32_srl(  x,  1 );
+<span class="lineNum">     280 </span>            :   const uint32_t x1  = _uint32_or(   x,  x0 );
+<span class="lineNum">     281 </span>            :   const uint32_t x2  = _uint32_srl(  x1, 2 );
+<span class="lineNum">     282 </span>            :   const uint32_t x3  = _uint32_or(   x1, x2 );
+<span class="lineNum">     283 </span>            :   const uint32_t x4  = _uint32_srl(  x3, 4 );
+<span class="lineNum">     284 </span>            :   const uint32_t x5  = _uint32_or(   x3, x4 );
+<span class="lineNum">     285 </span>            :   const uint32_t x6  = _uint32_srl(  x5, 8 );
+<span class="lineNum">     286 </span>            :   const uint32_t x7  = _uint32_or(   x5, x6 );
+<span class="lineNum">     287 </span>            :   const uint32_t x8  = _uint32_srl(  x7, 16 );
+<span class="lineNum">     288 </span>            :   const uint32_t x9  = _uint32_or(   x7, x8 );
+<span class="lineNum">     289 </span>            :   const uint32_t xA  = _uint32_not(  x9 );
+<span class="lineNum">     290 </span>            :   const uint32_t xB  = _uint32_srl(  xA, 1 );
+<span class="lineNum">     291 </span>            :   const uint32_t xC  = _uint32_and(  xB, 0x55555555 );
+<span class="lineNum">     292 </span>            :   const uint32_t xD  = _uint32_sub(  xA, xC );
+<span class="lineNum">     293 </span>            :   const uint32_t xE  = _uint32_and(  xD, 0x33333333 );
+<span class="lineNum">     294 </span>            :   const uint32_t xF  = _uint32_srl(  xD, 2 );
+<span class="lineNum">     295 </span>            :   const uint32_t x10 = _uint32_and(  xF, 0x33333333 );
+<span class="lineNum">     296 </span>            :   const uint32_t x11 = _uint32_add(  xE, x10 );
+<span class="lineNum">     297 </span>            :   const uint32_t x12 = _uint32_srl(  x11, 4 );
+<span class="lineNum">     298 </span>            :   const uint32_t x13 = _uint32_add(  x11, x12 );
+<span class="lineNum">     299 </span>            :   const uint32_t x14 = _uint32_and(  x13, 0x0f0f0f0f );
+<span class="lineNum">     300 </span>            :   const uint32_t x15 = _uint32_srl(  x14, 8 );
+<span class="lineNum">     301 </span>            :   const uint32_t x16 = _uint32_add(  x14, x15 );
+<span class="lineNum">     302 </span>            :   const uint32_t x17 = _uint32_srl(  x16, 16 );
+<span class="lineNum">     303 </span>            :   const uint32_t x18 = _uint32_add(  x16, x17 );
+<span class="lineNum">     304 </span>            :   const uint32_t x19 = _uint32_and(  x18, 0x0000003f );
+<span class="lineNum">     305 </span>            :   return ( x19 );
+<span class="lineNum">     306 </span>            : #endif
+<span class="lineNum">     307 </span>            : }
+<a name="308"><span class="lineNum">     308 </span>            : </a>
+<span class="lineNum">     309 </span>            : // Count Leading Zeros
+<span class="lineNum">     310 </span><span class="lineNoCov">          0 : static inline uint16_t _uint16_cntlz( uint16_t x )</span>
+<span class="lineNum">     311 </span>            : {
+<span class="lineNum">     312 </span>            : #ifdef __GNUC__
+<span class="lineNum">     313 </span><span class="lineNoCov">          0 :   uint16_t nlz32 = (uint16_t)_uint32_cntlz( (uint32_t)x );</span>
+<span class="lineNum">     314 </span><span class="lineNoCov">          0 :   uint32_t nlz   = _uint32_sub( nlz32, 16 );</span>
+<span class="lineNum">     315 </span><span class="lineNoCov">          0 :   return (nlz);</span>
+<span class="lineNum">     316 </span>            : #else
+<span class="lineNum">     317 </span>            :   const uint16_t x0  = _uint16_srl(  x,  1 );
+<span class="lineNum">     318 </span>            :   const uint16_t x1  = _uint16_or(   x,  x0 );
+<span class="lineNum">     319 </span>            :   const uint16_t x2  = _uint16_srl(  x1, 2 );
+<span class="lineNum">     320 </span>            :   const uint16_t x3  = _uint16_or(   x1, x2 );
+<span class="lineNum">     321 </span>            :   const uint16_t x4  = _uint16_srl(  x3, 4 );
+<span class="lineNum">     322 </span>            :   const uint16_t x5  = _uint16_or(   x3, x4 );
+<span class="lineNum">     323 </span>            :   const uint16_t x6  = _uint16_srl(  x5, 8 );
+<span class="lineNum">     324 </span>            :   const uint16_t x7  = _uint16_or(   x5, x6 );
+<span class="lineNum">     325 </span>            :   const uint16_t x8  = _uint16_not(  x7 );
+<span class="lineNum">     326 </span>            :   const uint16_t x9  = _uint16_srlm( x8, 1, 0x5555 );
+<span class="lineNum">     327 </span>            :   const uint16_t xA  = _uint16_sub(  x8, x9 );
+<span class="lineNum">     328 </span>            :   const uint16_t xB  = _uint16_and(  xA, 0x3333 );
+<span class="lineNum">     329 </span>            :   const uint16_t xC  = _uint16_srlm( xA, 2, 0x3333 );
+<span class="lineNum">     330 </span>            :   const uint16_t xD  = _uint16_add(  xB, xC );
+<span class="lineNum">     331 </span>            :   const uint16_t xE  = _uint16_srl(  xD, 4 );
+<span class="lineNum">     332 </span>            :   const uint16_t xF  = _uint16_addm( xD, xE, 0x0f0f );
+<span class="lineNum">     333 </span>            :   const uint16_t x10 = _uint16_srl(  xF, 8 );
+<span class="lineNum">     334 </span>            :   const uint16_t x11 = _uint16_addm( xF, x10, 0x001f );
+<span class="lineNum">     335 </span>            :   return ( x11 );
+<span class="lineNum">     336 </span>            : #endif
+<span class="lineNum">     337 </span>            : }
+<a name="338"><span class="lineNum">     338 </span>            : </a>
+<span class="lineNum">     339 </span>            : uint16_t
+<span class="lineNum">     340 </span><span class="lineNoCov">          0 : half_from_float( float f_ )</span>
+<span class="lineNum">     341 </span>            : {
+<span class="lineNum">     342 </span><span class="lineNoCov">          0 :   const uint32_t f = *reinterpret_cast&lt; uint32_t* &gt;( &amp;f_ );</span>
+<span class="lineNum">     343 </span><span class="lineNoCov">          0 :   const uint32_t one                        = _uint32_li( 0x00000001 );</span>
+<span class="lineNum">     344 </span><span class="lineNoCov">          0 :   const uint32_t f_s_mask                   = _uint32_li( 0x80000000 );</span>
+<span class="lineNum">     345 </span><span class="lineNoCov">          0 :   const uint32_t f_e_mask                   = _uint32_li( 0x7f800000 );</span>
+<span class="lineNum">     346 </span><span class="lineNoCov">          0 :   const uint32_t f_m_mask                   = _uint32_li( 0x007fffff );</span>
+<span class="lineNum">     347 </span><span class="lineNoCov">          0 :   const uint32_t f_m_hidden_bit             = _uint32_li( 0x00800000 );</span>
+<span class="lineNum">     348 </span><span class="lineNoCov">          0 :   const uint32_t f_m_round_bit              = _uint32_li( 0x00001000 );</span>
+<span class="lineNum">     349 </span><span class="lineNoCov">          0 :   const uint32_t f_snan_mask                = _uint32_li( 0x7fc00000 );</span>
+<span class="lineNum">     350 </span><span class="lineNoCov">          0 :   const uint32_t f_e_pos                    = _uint32_li( 0x00000017 );</span>
+<span class="lineNum">     351 </span><span class="lineNoCov">          0 :   const uint32_t h_e_pos                    = _uint32_li( 0x0000000a );</span>
+<span class="lineNum">     352 </span><span class="lineNoCov">          0 :   const uint32_t h_e_mask                   = _uint32_li( 0x00007c00 );</span>
+<span class="lineNum">     353 </span><span class="lineNoCov">          0 :   const uint32_t h_snan_mask                = _uint32_li( 0x00007e00 );</span>
+<span class="lineNum">     354 </span><span class="lineNoCov">          0 :   const uint32_t h_e_mask_value             = _uint32_li( 0x0000001f );</span>
+<span class="lineNum">     355 </span><span class="lineNoCov">          0 :   const uint32_t f_h_s_pos_offset           = _uint32_li( 0x00000010 );</span>
+<span class="lineNum">     356 </span><span class="lineNoCov">          0 :   const uint32_t f_h_bias_offset            = _uint32_li( 0x00000070 );</span>
+<span class="lineNum">     357 </span><span class="lineNoCov">          0 :   const uint32_t f_h_m_pos_offset           = _uint32_li( 0x0000000d );</span>
+<span class="lineNum">     358 </span><span class="lineNoCov">          0 :   const uint32_t h_nan_min                  = _uint32_li( 0x00007c01 );</span>
+<span class="lineNum">     359 </span><span class="lineNoCov">          0 :   const uint32_t f_h_e_biased_flag          = _uint32_li( 0x0000008f );</span>
+<span class="lineNum">     360 </span><span class="lineNoCov">          0 :   const uint32_t f_s                        = _uint32_and( f,               f_s_mask         );</span>
+<span class="lineNum">     361 </span><span class="lineNoCov">          0 :   const uint32_t f_e                        = _uint32_and( f,               f_e_mask         );</span>
+<span class="lineNum">     362 </span><span class="lineNoCov">          0 :   const uint16_t h_s                        = _uint32_srl( f_s,             f_h_s_pos_offset );</span>
+<span class="lineNum">     363 </span><span class="lineNoCov">          0 :   const uint32_t f_m                        = _uint32_and( f,               f_m_mask         );</span>
+<span class="lineNum">     364 </span><span class="lineNoCov">          0 :   const uint16_t f_e_amount                 = _uint32_srl( f_e,             f_e_pos          );</span>
+<span class="lineNum">     365 </span><span class="lineNoCov">          0 :   const uint32_t f_e_half_bias              = _uint32_sub( f_e_amount,      f_h_bias_offset  );</span>
+<span class="lineNum">     366 </span><span class="lineNoCov">          0 :   const uint32_t f_snan                     = _uint32_and( f,               f_snan_mask      );</span>
+<span class="lineNum">     367 </span><span class="lineNoCov">          0 :   const uint32_t f_m_round_mask             = _uint32_and( f_m,             f_m_round_bit    );</span>
+<span class="lineNum">     368 </span><span class="lineNoCov">          0 :   const uint32_t f_m_round_offset           = _uint32_sll( f_m_round_mask,  one              );</span>
+<span class="lineNum">     369 </span><span class="lineNoCov">          0 :   const uint32_t f_m_rounded                = _uint32_add( f_m,             f_m_round_offset );</span>
+<span class="lineNum">     370 </span><span class="lineNoCov">          0 :   const uint32_t f_m_denorm_sa              = _uint32_sub( one,             f_e_half_bias    );</span>
+<span class="lineNum">     371 </span><span class="lineNoCov">          0 :   const uint32_t f_m_with_hidden            = _uint32_or(  f_m_rounded,     f_m_hidden_bit   );</span>
+<span class="lineNum">     372 </span><span class="lineNoCov">          0 :   const uint32_t f_m_denorm                 = _uint32_srl( f_m_with_hidden, f_m_denorm_sa    );</span>
+<span class="lineNum">     373 </span><span class="lineNoCov">          0 :   const uint32_t h_m_denorm                 = _uint32_srl( f_m_denorm,      f_h_m_pos_offset );</span>
+<span class="lineNum">     374 </span><span class="lineNoCov">          0 :   const uint32_t f_m_rounded_overflow       = _uint32_and( f_m_rounded,     f_m_hidden_bit   );</span>
+<span class="lineNum">     375 </span><span class="lineNoCov">          0 :   const uint32_t m_nan                      = _uint32_srl( f_m,             f_h_m_pos_offset );</span>
+<span class="lineNum">     376 </span><span class="lineNoCov">          0 :   const uint32_t h_em_nan                   = _uint32_or(  h_e_mask,        m_nan            );</span>
+<span class="lineNum">     377 </span><span class="lineNoCov">          0 :   const uint32_t h_e_norm_overflow_offset   = _uint32_inc( f_e_half_bias );</span>
+<span class="lineNum">     378 </span><span class="lineNoCov">          0 :   const uint32_t h_e_norm_overflow          = _uint32_sll( h_e_norm_overflow_offset, h_e_pos          );</span>
+<span class="lineNum">     379 </span><span class="lineNoCov">          0 :   const uint32_t h_e_norm                   = _uint32_sll( f_e_half_bias,            h_e_pos          );</span>
+<span class="lineNum">     380 </span><span class="lineNoCov">          0 :   const uint32_t h_m_norm                   = _uint32_srl( f_m_rounded,              f_h_m_pos_offset );</span>
+<span class="lineNum">     381 </span><span class="lineNoCov">          0 :   const uint32_t h_em_norm                  = _uint32_or(  h_e_norm,                 h_m_norm         );</span>
+<span class="lineNum">     382 </span><span class="lineNoCov">          0 :   const uint32_t is_h_ndenorm_msb           = _uint32_sub( f_h_bias_offset,   f_e_amount    );</span>
+<span class="lineNum">     383 </span><span class="lineNoCov">          0 :   const uint32_t is_f_e_flagged_msb         = _uint32_sub( f_h_e_biased_flag, f_e_half_bias );</span>
+<span class="lineNum">     384 </span><span class="lineNoCov">          0 :   const uint32_t is_h_denorm_msb            = _uint32_not( is_h_ndenorm_msb );</span>
+<span class="lineNum">     385 </span><span class="lineNoCov">          0 :   const uint32_t is_f_m_eqz_msb             = _uint32_dec( f_m   );</span>
+<span class="lineNum">     386 </span><span class="lineNoCov">          0 :   const uint32_t is_h_nan_eqz_msb           = _uint32_dec( m_nan );</span>
+<span class="lineNum">     387 </span><span class="lineNoCov">          0 :   const uint32_t is_f_inf_msb               = _uint32_and( is_f_e_flagged_msb, is_f_m_eqz_msb   );</span>
+<span class="lineNum">     388 </span><span class="lineNoCov">          0 :   const uint32_t is_f_nan_underflow_msb     = _uint32_and( is_f_e_flagged_msb, is_h_nan_eqz_msb );</span>
+<span class="lineNum">     389 </span><span class="lineNoCov">          0 :   const uint32_t is_e_overflow_msb          = _uint32_sub( h_e_mask_value,     f_e_half_bias    );</span>
+<span class="lineNum">     390 </span><span class="lineNoCov">          0 :   const uint32_t is_h_inf_msb               = _uint32_or(  is_e_overflow_msb,  is_f_inf_msb     );</span>
+<span class="lineNum">     391 </span><span class="lineNoCov">          0 :   const uint32_t is_f_nsnan_msb             = _uint32_sub( f_snan,             f_snan_mask      );</span>
+<span class="lineNum">     392 </span><span class="lineNoCov">          0 :   const uint32_t is_m_norm_overflow_msb     = _uint32_neg( f_m_rounded_overflow );</span>
+<span class="lineNum">     393 </span><span class="lineNoCov">          0 :   const uint32_t is_f_snan_msb              = _uint32_not( is_f_nsnan_msb );</span>
+<span class="lineNum">     394 </span><span class="lineNoCov">          0 :   const uint32_t h_em_overflow_result       = _uint32_sels( is_m_norm_overflow_msb, h_e_norm_overflow, h_em_norm                 );</span>
+<span class="lineNum">     395 </span><span class="lineNoCov">          0 :   const uint32_t h_em_nan_result            = _uint32_sels( is_f_e_flagged_msb,     h_em_nan,          h_em_overflow_result      );</span>
+<span class="lineNum">     396 </span><span class="lineNoCov">          0 :   const uint32_t h_em_nan_underflow_result  = _uint32_sels( is_f_nan_underflow_msb, h_nan_min,         h_em_nan_result           );</span>
+<span class="lineNum">     397 </span><span class="lineNoCov">          0 :   const uint32_t h_em_inf_result            = _uint32_sels( is_h_inf_msb,           h_e_mask,          h_em_nan_underflow_result );</span>
+<span class="lineNum">     398 </span><span class="lineNoCov">          0 :   const uint32_t h_em_denorm_result         = _uint32_sels( is_h_denorm_msb,        h_m_denorm,        h_em_inf_result           );</span>
+<span class="lineNum">     399 </span><span class="lineNoCov">          0 :   const uint32_t h_em_snan_result           = _uint32_sels( is_f_snan_msb,          h_snan_mask,       h_em_denorm_result        );</span>
+<span class="lineNum">     400 </span><span class="lineNoCov">          0 :   const uint32_t h_result                   = _uint32_or( h_s, h_em_snan_result );</span>
+<span class="lineNum">     401 </span>            : 
+<span class="lineNum">     402 </span><span class="lineNoCov">          0 :   return (uint16_t)(h_result);</span>
+<a name="403"><span class="lineNum">     403 </span>            : }</a>
+<span class="lineNum">     404 </span>            : 
+<span class="lineNum">     405 </span><span class="lineNoCov">          0 : float half_to_float( uint16_t h )</span>
+<span class="lineNum">     406 </span>            : {
+<span class="lineNum">     407 </span><span class="lineNoCov">          0 :   const uint32_t h_e_mask              = _uint32_li( 0x00007c00 );</span>
+<span class="lineNum">     408 </span><span class="lineNoCov">          0 :   const uint32_t h_m_mask              = _uint32_li( 0x000003ff );</span>
+<span class="lineNum">     409 </span><span class="lineNoCov">          0 :   const uint32_t h_s_mask              = _uint32_li( 0x00008000 );</span>
+<span class="lineNum">     410 </span><span class="lineNoCov">          0 :   const uint32_t h_f_s_pos_offset      = _uint32_li( 0x00000010 );</span>
+<span class="lineNum">     411 </span><span class="lineNoCov">          0 :   const uint32_t h_f_e_pos_offset      = _uint32_li( 0x0000000d );</span>
+<span class="lineNum">     412 </span><span class="lineNoCov">          0 :   const uint32_t h_f_bias_offset       = _uint32_li( 0x0001c000 );</span>
+<span class="lineNum">     413 </span><span class="lineNoCov">          0 :   const uint32_t f_e_mask              = _uint32_li( 0x7f800000 );</span>
+<span class="lineNum">     414 </span><span class="lineNoCov">          0 :   const uint32_t f_m_mask              = _uint32_li( 0x007fffff );</span>
+<span class="lineNum">     415 </span><span class="lineNoCov">          0 :   const uint32_t h_f_e_denorm_bias     = _uint32_li( 0x0000007e );</span>
+<span class="lineNum">     416 </span><span class="lineNoCov">          0 :   const uint32_t h_f_m_denorm_sa_bias  = _uint32_li( 0x00000008 );</span>
+<span class="lineNum">     417 </span><span class="lineNoCov">          0 :   const uint32_t f_e_pos               = _uint32_li( 0x00000017 );</span>
+<span class="lineNum">     418 </span><span class="lineNoCov">          0 :   const uint32_t h_e_mask_minus_one    = _uint32_li( 0x00007bff );</span>
+<span class="lineNum">     419 </span><span class="lineNoCov">          0 :   const uint32_t h_e                   = _uint32_and( h, h_e_mask );</span>
+<span class="lineNum">     420 </span><span class="lineNoCov">          0 :   const uint32_t h_m                   = _uint32_and( h, h_m_mask );</span>
+<span class="lineNum">     421 </span><span class="lineNoCov">          0 :   const uint32_t h_s                   = _uint32_and( h, h_s_mask );</span>
+<span class="lineNum">     422 </span><span class="lineNoCov">          0 :   const uint32_t h_e_f_bias            = _uint32_add( h_e, h_f_bias_offset );</span>
+<span class="lineNum">     423 </span><span class="lineNoCov">          0 :   const uint32_t h_m_nlz               = _uint32_cntlz( h_m );</span>
+<span class="lineNum">     424 </span><span class="lineNoCov">          0 :   const uint32_t f_s                   = _uint32_sll( h_s,        h_f_s_pos_offset );</span>
+<span class="lineNum">     425 </span><span class="lineNoCov">          0 :   const uint32_t f_e                   = _uint32_sll( h_e_f_bias, h_f_e_pos_offset );</span>
+<span class="lineNum">     426 </span><span class="lineNoCov">          0 :   const uint32_t f_m                   = _uint32_sll( h_m,        h_f_e_pos_offset );</span>
+<span class="lineNum">     427 </span><span class="lineNoCov">          0 :   const uint32_t f_em                  = _uint32_or(  f_e,        f_m              );</span>
+<span class="lineNum">     428 </span><span class="lineNoCov">          0 :   const uint32_t h_f_m_sa              = _uint32_sub( h_m_nlz,             h_f_m_denorm_sa_bias );</span>
+<span class="lineNum">     429 </span><span class="lineNoCov">          0 :   const uint32_t f_e_denorm_unpacked   = _uint32_sub( h_f_e_denorm_bias,   h_f_m_sa             );</span>
+<span class="lineNum">     430 </span><span class="lineNoCov">          0 :   const uint32_t h_f_m                 = _uint32_sll( h_m,                 h_f_m_sa             );</span>
+<span class="lineNum">     431 </span><span class="lineNoCov">          0 :   const uint32_t f_m_denorm            = _uint32_and( h_f_m,               f_m_mask             );</span>
+<span class="lineNum">     432 </span><span class="lineNoCov">          0 :   const uint32_t f_e_denorm            = _uint32_sll( f_e_denorm_unpacked, f_e_pos              );</span>
+<span class="lineNum">     433 </span><span class="lineNoCov">          0 :   const uint32_t f_em_denorm           = _uint32_or(  f_e_denorm,          f_m_denorm           );</span>
+<span class="lineNum">     434 </span><span class="lineNoCov">          0 :   const uint32_t f_em_nan              = _uint32_or(  f_e_mask,            f_m                  );</span>
+<span class="lineNum">     435 </span><span class="lineNoCov">          0 :   const uint32_t is_e_eqz_msb          = _uint32_dec(  h_e );</span>
+<span class="lineNum">     436 </span><span class="lineNoCov">          0 :   const uint32_t is_m_nez_msb          = _uint32_neg(  h_m );</span>
+<span class="lineNum">     437 </span><span class="lineNoCov">          0 :   const uint32_t is_e_flagged_msb      = _uint32_sub(  h_e_mask_minus_one, h_e );</span>
+<span class="lineNum">     438 </span><span class="lineNoCov">          0 :   const uint32_t is_zero_msb           = _uint32_andc( is_e_eqz_msb,       is_m_nez_msb );</span>
+<span class="lineNum">     439 </span><span class="lineNoCov">          0 :   const uint32_t is_inf_msb            = _uint32_andc( is_e_flagged_msb,   is_m_nez_msb );</span>
+<span class="lineNum">     440 </span><span class="lineNoCov">          0 :   const uint32_t is_denorm_msb         = _uint32_and(  is_m_nez_msb,       is_e_eqz_msb );</span>
+<span class="lineNum">     441 </span><span class="lineNoCov">          0 :   const uint32_t is_nan_msb            = _uint32_and(  is_e_flagged_msb,   is_m_nez_msb );</span>
+<span class="lineNum">     442 </span><span class="lineNoCov">          0 :   const uint32_t is_zero               = _uint32_ext(  is_zero_msb );</span>
+<span class="lineNum">     443 </span><span class="lineNoCov">          0 :   const uint32_t f_zero_result         = _uint32_andc( f_em, is_zero );</span>
+<span class="lineNum">     444 </span><span class="lineNoCov">          0 :   const uint32_t f_denorm_result       = _uint32_sels( is_denorm_msb, f_em_denorm, f_zero_result );</span>
+<span class="lineNum">     445 </span><span class="lineNoCov">          0 :   const uint32_t f_inf_result          = _uint32_sels( is_inf_msb,    f_e_mask,    f_denorm_result );</span>
+<span class="lineNum">     446 </span><span class="lineNoCov">          0 :   const uint32_t f_nan_result          = _uint32_sels( is_nan_msb,    f_em_nan,    f_inf_result    );</span>
+<span class="lineNum">     447 </span><span class="lineNoCov">          0 :   const uint32_t f_result              = _uint32_or( f_s, f_nan_result );</span>
+<span class="lineNum">     448 </span>            : 
+<span class="lineNum">     449 </span><span class="lineNoCov">          0 :   return *reinterpret_cast&lt; const float* &gt;( &amp;f_result );</span>
+<span class="lineNum">     450 </span>            : }
+<span class="lineNum">     451 </span>            : 
+<span class="lineNum">     452 </span>            : // half_add
+<span class="lineNum">     453 </span>            : // --------
+<span class="lineNum">     454 </span>            : //
+<span class="lineNum">     455 </span>            : //  (SUM)        uint16_t z = half_add( x, y );
+<span class="lineNum">     456 </span>            : //  (DIFFERENCE) uint16_t z = half_add( x, -y );
+<span class="lineNum">     457 </span>            : //
+<span class="lineNum">     458 </span>            : //  * Difference of ZEROs is always +ZERO
+<span class="lineNum">     459 </span>            : //  * Sum round with guard + round + sticky bit (grs)
+<span class="lineNum">     460 </span>            : //  * QNaN + &lt;x&gt;  = QNaN
+<span class="lineNum">     461 </span>            : //  * &lt;x&gt;  + +INF = +INF
+<span class="lineNum">     462 </span>            : //  * &lt;x&gt;  - -INF = -INF
+<span class="lineNum">     463 </span>            : //  * INF  - INF  = SNaN
+<span class="lineNum">     464 </span>            : //
+<span class="lineNum">     465 </span>            : //  Will have exactly (0 ulps difference) the same result as:
+<span class="lineNum">     466 </span>            : //  (Round up)
+<span class="lineNum">     467 </span>            : //
+<span class="lineNum">     468 </span>            : //     union FLOAT_32
+<span class="lineNum">     469 </span>            : //     {
+<span class="lineNum">     470 </span>            : //       float    f32;
+<span class="lineNum">     471 </span>            : //       uint32_t u32;
+<span class="lineNum">     472 </span>            : //     };
+<span class="lineNum">     473 </span>            : //
+<span class="lineNum">     474 </span>            : //     union FLOAT_32 fx = { .u32 = half_to_float( x ) };
+<span class="lineNum">     475 </span>            : //     union FLOAT_32 fy = { .u32 = half_to_float( y ) };
+<span class="lineNum">     476 </span>            : //     union FLOAT_32 fz = { .f32 = fx.f32 + fy.f32    };
+<span class="lineNum">     477 </span>            : //     uint16_t       z  = float_to_half( fz );
+<a name="478"><span class="lineNum">     478 </span>            : //</a>
+<span class="lineNum">     479 </span>            : uint16_t
+<span class="lineNum">     480 </span><span class="lineNoCov">          0 : half_add( uint16_t x, uint16_t y )</span>
+<span class="lineNum">     481 </span>            : {
+<span class="lineNum">     482 </span><span class="lineNoCov">          0 :   const uint16_t one                       = _uint16_li( 0x0001 );</span>
+<span class="lineNum">     483 </span><span class="lineNoCov">          0 :   const uint16_t msb_to_lsb_sa             = _uint16_li( 0x000f );</span>
+<span class="lineNum">     484 </span><span class="lineNoCov">          0 :   const uint16_t h_s_mask                  = _uint16_li( 0x8000 );</span>
+<span class="lineNum">     485 </span><span class="lineNoCov">          0 :   const uint16_t h_e_mask                  = _uint16_li( 0x7c00 );</span>
+<span class="lineNum">     486 </span><span class="lineNoCov">          0 :   const uint16_t h_m_mask                  = _uint16_li( 0x03ff );</span>
+<span class="lineNum">     487 </span><span class="lineNoCov">          0 :   const uint16_t h_m_msb_mask              = _uint16_li( 0x2000 );</span>
+<span class="lineNum">     488 </span><span class="lineNoCov">          0 :   const uint16_t h_m_msb_sa                = _uint16_li( 0x000d );</span>
+<span class="lineNum">     489 </span><span class="lineNoCov">          0 :   const uint16_t h_m_hidden                = _uint16_li( 0x0400 );</span>
+<span class="lineNum">     490 </span><span class="lineNoCov">          0 :   const uint16_t h_e_pos                   = _uint16_li( 0x000a );</span>
+<span class="lineNum">     491 </span><span class="lineNoCov">          0 :   const uint16_t h_e_bias_minus_one        = _uint16_li( 0x000e );</span>
+<span class="lineNum">     492 </span><span class="lineNoCov">          0 :   const uint16_t h_m_grs_carry             = _uint16_li( 0x4000 );</span>
+<span class="lineNum">     493 </span><span class="lineNoCov">          0 :   const uint16_t h_m_grs_carry_pos         = _uint16_li( 0x000e );</span>
+<span class="lineNum">     494 </span><span class="lineNoCov">          0 :   const uint16_t h_grs_size                = _uint16_li( 0x0003 );</span>
+<span class="lineNum">     495 </span><span class="lineNoCov">          0 :   const uint16_t h_snan                    = _uint16_li( 0xfe00 );</span>
+<span class="lineNum">     496 </span><span class="lineNoCov">          0 :   const uint16_t h_e_mask_minus_one        = _uint16_li( 0x7bff );</span>
+<span class="lineNum">     497 </span><span class="lineNoCov">          0 :   const uint16_t h_grs_round_carry         = _uint16_sll( one, h_grs_size );</span>
+<span class="lineNum">     498 </span><span class="lineNoCov">          0 :   const uint16_t h_grs_round_mask          = _uint16_sub( h_grs_round_carry, one );</span>
+<span class="lineNum">     499 </span><span class="lineNoCov">          0 :   const uint16_t x_e                       = _uint16_and( x, h_e_mask );</span>
+<span class="lineNum">     500 </span><span class="lineNoCov">          0 :   const uint16_t y_e                       = _uint16_and( y, h_e_mask );</span>
+<span class="lineNum">     501 </span><span class="lineNoCov">          0 :   const uint16_t is_y_e_larger_msb         = _uint16_sub( x_e, y_e );</span>
+<span class="lineNum">     502 </span><span class="lineNoCov">          0 :   const uint16_t a                         = _uint16_sels( is_y_e_larger_msb, y, x);</span>
+<span class="lineNum">     503 </span><span class="lineNoCov">          0 :   const uint16_t a_s                       = _uint16_and( a, h_s_mask );</span>
+<span class="lineNum">     504 </span><span class="lineNoCov">          0 :   const uint16_t a_e                       = _uint16_and( a, h_e_mask );</span>
+<span class="lineNum">     505 </span><span class="lineNoCov">          0 :   const uint16_t a_m_no_hidden_bit         = _uint16_and( a, h_m_mask );</span>
+<span class="lineNum">     506 </span><span class="lineNoCov">          0 :   const uint16_t a_em_no_hidden_bit        = _uint16_or( a_e, a_m_no_hidden_bit );</span>
+<span class="lineNum">     507 </span><span class="lineNoCov">          0 :   const uint16_t b                         = _uint16_sels( is_y_e_larger_msb, x, y);</span>
+<span class="lineNum">     508 </span><span class="lineNoCov">          0 :   const uint16_t b_s                       = _uint16_and( b, h_s_mask );</span>
+<span class="lineNum">     509 </span><span class="lineNoCov">          0 :   const uint16_t b_e                       = _uint16_and( b, h_e_mask );</span>
+<span class="lineNum">     510 </span><span class="lineNoCov">          0 :   const uint16_t b_m_no_hidden_bit         = _uint16_and( b, h_m_mask );</span>
+<span class="lineNum">     511 </span><span class="lineNoCov">          0 :   const uint16_t b_em_no_hidden_bit        = _uint16_or( b_e, b_m_no_hidden_bit );</span>
+<span class="lineNum">     512 </span><span class="lineNoCov">          0 :   const uint16_t is_diff_sign_msb          = _uint16_xor( a_s, b_s );</span>
+<span class="lineNum">     513 </span><span class="lineNoCov">          0 :   const uint16_t is_a_inf_msb              = _uint16_sub( h_e_mask_minus_one, a_em_no_hidden_bit );</span>
+<span class="lineNum">     514 </span><span class="lineNoCov">          0 :   const uint16_t is_b_inf_msb              = _uint16_sub( h_e_mask_minus_one, b_em_no_hidden_bit );</span>
+<span class="lineNum">     515 </span><span class="lineNoCov">          0 :   const uint16_t is_undenorm_msb           = _uint16_dec( a_e );</span>
+<span class="lineNum">     516 </span><span class="lineNoCov">          0 :   const uint16_t is_undenorm               = _uint16_ext( is_undenorm_msb );</span>
+<span class="lineNum">     517 </span><span class="lineNoCov">          0 :   const uint16_t is_both_inf_msb           = _uint16_and( is_a_inf_msb, is_b_inf_msb );</span>
+<span class="lineNum">     518 </span><span class="lineNoCov">          0 :   const uint16_t is_invalid_inf_op_msb     = _uint16_and( is_both_inf_msb, b_s );</span>
+<span class="lineNum">     519 </span><span class="lineNoCov">          0 :   const uint16_t is_a_e_nez_msb            = _uint16_neg( a_e );</span>
+<span class="lineNum">     520 </span><span class="lineNoCov">          0 :   const uint16_t is_b_e_nez_msb            = _uint16_neg( b_e );</span>
+<span class="lineNum">     521 </span><span class="lineNoCov">          0 :   const uint16_t is_a_e_nez                = _uint16_ext( is_a_e_nez_msb );</span>
+<span class="lineNum">     522 </span><span class="lineNoCov">          0 :   const uint16_t is_b_e_nez                = _uint16_ext( is_b_e_nez_msb );</span>
+<span class="lineNum">     523 </span><span class="lineNoCov">          0 :   const uint16_t a_m_hidden_bit            = _uint16_and( is_a_e_nez, h_m_hidden );</span>
+<span class="lineNum">     524 </span><span class="lineNoCov">          0 :   const uint16_t b_m_hidden_bit            = _uint16_and( is_b_e_nez, h_m_hidden );</span>
+<span class="lineNum">     525 </span><span class="lineNoCov">          0 :   const uint16_t a_m_no_grs                = _uint16_or( a_m_no_hidden_bit, a_m_hidden_bit );</span>
+<span class="lineNum">     526 </span><span class="lineNoCov">          0 :   const uint16_t b_m_no_grs                = _uint16_or( b_m_no_hidden_bit, b_m_hidden_bit );</span>
+<span class="lineNum">     527 </span><span class="lineNoCov">          0 :   const uint16_t diff_e                    = _uint16_sub( a_e,        b_e );</span>
+<span class="lineNum">     528 </span><span class="lineNoCov">          0 :   const uint16_t a_e_unbias                = _uint16_sub( a_e,        h_e_bias_minus_one );</span>
+<span class="lineNum">     529 </span><span class="lineNoCov">          0 :   const uint16_t a_m                       = _uint16_sll( a_m_no_grs, h_grs_size );</span>
+<span class="lineNum">     530 </span><span class="lineNoCov">          0 :   const uint16_t a_e_biased                = _uint16_srl( a_e,        h_e_pos );</span>
+<span class="lineNum">     531 </span><span class="lineNoCov">          0 :   const uint16_t m_sa_unbias               = _uint16_srl( a_e_unbias, h_e_pos );</span>
+<span class="lineNum">     532 </span><span class="lineNoCov">          0 :   const uint16_t m_sa_default              = _uint16_srl( diff_e,     h_e_pos );</span>
+<span class="lineNum">     533 </span><span class="lineNoCov">          0 :   const uint16_t m_sa_unbias_mask          = _uint16_andc( is_a_e_nez_msb,   is_b_e_nez_msb );</span>
+<span class="lineNum">     534 </span><span class="lineNoCov">          0 :   const uint16_t m_sa                      = _uint16_sels( m_sa_unbias_mask, m_sa_unbias, m_sa_default );</span>
+<span class="lineNum">     535 </span><span class="lineNoCov">          0 :   const uint16_t b_m_no_sticky             = _uint16_sll( b_m_no_grs,        h_grs_size );</span>
+<span class="lineNum">     536 </span><span class="lineNoCov">          0 :   const uint16_t sh_m                      = _uint16_srl( b_m_no_sticky,     m_sa );</span>
+<span class="lineNum">     537 </span><span class="lineNoCov">          0 :   const uint16_t sticky_overflow           = _uint16_sll( one,               m_sa );</span>
+<span class="lineNum">     538 </span><span class="lineNoCov">          0 :   const uint16_t sticky_mask               = _uint16_dec( sticky_overflow );</span>
+<span class="lineNum">     539 </span><span class="lineNoCov">          0 :   const uint16_t sticky_collect            = _uint16_and( b_m_no_sticky, sticky_mask );</span>
+<span class="lineNum">     540 </span><span class="lineNoCov">          0 :   const uint16_t is_sticky_set_msb         = _uint16_neg( sticky_collect );</span>
+<span class="lineNum">     541 </span><span class="lineNoCov">          0 :   const uint16_t sticky                    = _uint16_srl( is_sticky_set_msb, msb_to_lsb_sa);</span>
+<span class="lineNum">     542 </span><span class="lineNoCov">          0 :   const uint16_t b_m                       = _uint16_or( sh_m, sticky );</span>
+<span class="lineNum">     543 </span><span class="lineNoCov">          0 :   const uint16_t is_c_m_ab_pos_msb         = _uint16_sub( b_m, a_m );</span>
+<span class="lineNum">     544 </span><span class="lineNoCov">          0 :   const uint16_t c_inf                     = _uint16_or( a_s, h_e_mask );</span>
+<span class="lineNum">     545 </span><span class="lineNoCov">          0 :   const uint16_t c_m_sum                   = _uint16_add( a_m, b_m );</span>
+<span class="lineNum">     546 </span><span class="lineNoCov">          0 :   const uint16_t c_m_diff_ab               = _uint16_sub( a_m, b_m );</span>
+<span class="lineNum">     547 </span><span class="lineNoCov">          0 :   const uint16_t c_m_diff_ba               = _uint16_sub( b_m, a_m );</span>
+<span class="lineNum">     548 </span><span class="lineNoCov">          0 :   const uint16_t c_m_smag_diff             = _uint16_sels( is_c_m_ab_pos_msb, c_m_diff_ab, c_m_diff_ba );</span>
+<span class="lineNum">     549 </span><span class="lineNoCov">          0 :   const uint16_t c_s_diff                  = _uint16_sels( is_c_m_ab_pos_msb, a_s,         b_s         );</span>
+<span class="lineNum">     550 </span><span class="lineNoCov">          0 :   const uint16_t c_s                       = _uint16_sels( is_diff_sign_msb,  c_s_diff,    a_s         );</span>
+<span class="lineNum">     551 </span><span class="lineNoCov">          0 :   const uint16_t c_m_smag_diff_nlz         = _uint16_cntlz( c_m_smag_diff );</span>
+<span class="lineNum">     552 </span><span class="lineNoCov">          0 :   const uint16_t diff_norm_sa              = _uint16_sub( c_m_smag_diff_nlz, one );</span>
+<span class="lineNum">     553 </span><span class="lineNoCov">          0 :   const uint16_t is_diff_denorm_msb        = _uint16_sub( a_e_biased, diff_norm_sa );</span>
+<span class="lineNum">     554 </span><span class="lineNoCov">          0 :   const uint16_t is_diff_denorm            = _uint16_ext( is_diff_denorm_msb );</span>
+<span class="lineNum">     555 </span><span class="lineNoCov">          0 :   const uint16_t is_a_or_b_norm_msb        = _uint16_neg( a_e_biased );</span>
+<span class="lineNum">     556 </span><span class="lineNoCov">          0 :   const uint16_t diff_denorm_sa            = _uint16_dec( a_e_biased );</span>
+<span class="lineNum">     557 </span><span class="lineNoCov">          0 :   const uint16_t c_m_diff_denorm           = _uint16_sll( c_m_smag_diff, diff_denorm_sa );</span>
+<span class="lineNum">     558 </span><span class="lineNoCov">          0 :   const uint16_t c_m_diff_norm             = _uint16_sll( c_m_smag_diff, diff_norm_sa );</span>
+<span class="lineNum">     559 </span><span class="lineNoCov">          0 :   const uint16_t c_e_diff_norm             = _uint16_sub( a_e_biased,  diff_norm_sa );</span>
+<span class="lineNum">     560 </span><span class="lineNoCov">          0 :   const uint16_t c_m_diff_ab_norm          = _uint16_sels( is_diff_denorm_msb, c_m_diff_denorm, c_m_diff_norm );</span>
+<span class="lineNum">     561 </span><span class="lineNoCov">          0 :   const uint16_t c_e_diff_ab_norm          = _uint16_andc( c_e_diff_norm, is_diff_denorm );</span>
+<span class="lineNum">     562 </span><span class="lineNoCov">          0 :   const uint16_t c_m_diff                  = _uint16_sels( is_a_or_b_norm_msb, c_m_diff_ab_norm, c_m_smag_diff );</span>
+<span class="lineNum">     563 </span><span class="lineNoCov">          0 :   const uint16_t c_e_diff                  = _uint16_sels( is_a_or_b_norm_msb, c_e_diff_ab_norm, a_e_biased    );</span>
+<span class="lineNum">     564 </span><span class="lineNoCov">          0 :   const uint16_t is_diff_eqz_msb           = _uint16_dec( c_m_diff );</span>
+<span class="lineNum">     565 </span><span class="lineNoCov">          0 :   const uint16_t is_diff_exactly_zero_msb  = _uint16_and( is_diff_sign_msb, is_diff_eqz_msb );</span>
+<span class="lineNum">     566 </span><span class="lineNoCov">          0 :   const uint16_t is_diff_exactly_zero      = _uint16_ext( is_diff_exactly_zero_msb );</span>
+<span class="lineNum">     567 </span><span class="lineNoCov">          0 :   const uint16_t c_m_added                 = _uint16_sels( is_diff_sign_msb, c_m_diff, c_m_sum );</span>
+<span class="lineNum">     568 </span><span class="lineNoCov">          0 :   const uint16_t c_e_added                 = _uint16_sels( is_diff_sign_msb, c_e_diff, a_e_biased );</span>
+<span class="lineNum">     569 </span><span class="lineNoCov">          0 :   const uint16_t c_m_carry                 = _uint16_and( c_m_added, h_m_grs_carry );</span>
+<span class="lineNum">     570 </span><span class="lineNoCov">          0 :   const uint16_t is_c_m_carry_msb          = _uint16_neg( c_m_carry );</span>
+<span class="lineNum">     571 </span><span class="lineNoCov">          0 :   const uint16_t c_e_hidden_offset         = _uint16_andsrl( c_m_added, h_m_grs_carry, h_m_grs_carry_pos );</span>
+<span class="lineNum">     572 </span><span class="lineNoCov">          0 :   const uint16_t c_m_sub_hidden            = _uint16_srl( c_m_added, one );</span>
+<span class="lineNum">     573 </span><span class="lineNoCov">          0 :   const uint16_t c_m_no_hidden             = _uint16_sels( is_c_m_carry_msb, c_m_sub_hidden, c_m_added );</span>
+<span class="lineNum">     574 </span><span class="lineNoCov">          0 :   const uint16_t c_e_no_hidden             = _uint16_add( c_e_added,         c_e_hidden_offset  );</span>
+<span class="lineNum">     575 </span><span class="lineNoCov">          0 :   const uint16_t c_m_no_hidden_msb         = _uint16_and( c_m_no_hidden,     h_m_msb_mask       );</span>
+<span class="lineNum">     576 </span><span class="lineNoCov">          0 :   const uint16_t undenorm_m_msb_odd        = _uint16_srl( c_m_no_hidden_msb, h_m_msb_sa         );</span>
+<span class="lineNum">     577 </span><span class="lineNoCov">          0 :   const uint16_t undenorm_fix_e            = _uint16_and( is_undenorm,       undenorm_m_msb_odd );</span>
+<span class="lineNum">     578 </span><span class="lineNoCov">          0 :   const uint16_t c_e_fixed                 = _uint16_add( c_e_no_hidden,     undenorm_fix_e     );</span>
+<span class="lineNum">     579 </span><span class="lineNoCov">          0 :   const uint16_t c_m_round_amount          = _uint16_and( c_m_no_hidden,     h_grs_round_mask   );</span>
+<span class="lineNum">     580 </span><span class="lineNoCov">          0 :   const uint16_t c_m_rounded               = _uint16_add( c_m_no_hidden,     c_m_round_amount   );</span>
+<span class="lineNum">     581 </span><span class="lineNoCov">          0 :   const uint16_t c_m_round_overflow        = _uint16_andsrl( c_m_rounded, h_m_grs_carry, h_m_grs_carry_pos );</span>
+<span class="lineNum">     582 </span><span class="lineNoCov">          0 :   const uint16_t c_e_rounded               = _uint16_add( c_e_fixed, c_m_round_overflow );</span>
+<span class="lineNum">     583 </span><span class="lineNoCov">          0 :   const uint16_t c_m_no_grs                = _uint16_srlm( c_m_rounded, h_grs_size,  h_m_mask );</span>
+<span class="lineNum">     584 </span><span class="lineNoCov">          0 :   const uint16_t c_e                       = _uint16_sll( c_e_rounded, h_e_pos );</span>
+<span class="lineNum">     585 </span><span class="lineNoCov">          0 :   const uint16_t c_em                      = _uint16_or( c_e, c_m_no_grs );</span>
+<span class="lineNum">     586 </span><span class="lineNoCov">          0 :   const uint16_t c_normal                  = _uint16_or( c_s, c_em );</span>
+<span class="lineNum">     587 </span><span class="lineNoCov">          0 :   const uint16_t c_inf_result              = _uint16_sels( is_a_inf_msb, c_inf, c_normal );</span>
+<span class="lineNum">     588 </span><span class="lineNoCov">          0 :   const uint16_t c_zero_result             = _uint16_andc( c_inf_result, is_diff_exactly_zero );</span>
+<span class="lineNum">     589 </span><span class="lineNoCov">          0 :   const uint16_t c_result                  = _uint16_sels( is_invalid_inf_op_msb, h_snan, c_zero_result );</span>
+<span class="lineNum">     590 </span>            : 
+<span class="lineNum">     591 </span><span class="lineNoCov">          0 :   return (c_result);</span>
+<span class="lineNum">     592 </span>            : }
+<span class="lineNum">     593 </span>            : 
+<span class="lineNum">     594 </span>            : // half_mul
+<span class="lineNum">     595 </span>            : // --------
+<span class="lineNum">     596 </span>            : //
+<span class="lineNum">     597 </span>            : //  May have 0 or 1 ulp difference from the following result:
+<span class="lineNum">     598 </span>            : //  (Round to nearest)
+<span class="lineNum">     599 </span>            : //  NOTE: Rounding mode differs between conversion and multiply
+<span class="lineNum">     600 </span>            : //
+<span class="lineNum">     601 </span>            : //     union FLOAT_32
+<span class="lineNum">     602 </span>            : //     {
+<span class="lineNum">     603 </span>            : //       float    f32;
+<span class="lineNum">     604 </span>            : //       uint32_t u32;
+<span class="lineNum">     605 </span>            : //     };
+<span class="lineNum">     606 </span>            : //
+<span class="lineNum">     607 </span>            : //     union FLOAT_32 fx = { .u32 = half_to_float( x ) };
+<span class="lineNum">     608 </span>            : //     union FLOAT_32 fy = { .u32 = half_to_float( y ) };
+<span class="lineNum">     609 </span>            : //     union FLOAT_32 fz = { .f32 = fx.f32 * fy.f32    };
+<span class="lineNum">     610 </span>            : //     uint16_t       z  = float_to_half( fz );
+<a name="611"><span class="lineNum">     611 </span>            : //</a>
+<span class="lineNum">     612 </span>            : uint16_t
+<span class="lineNum">     613 </span><span class="lineNoCov">          0 : half_mul( uint16_t x, uint16_t y )</span>
+<span class="lineNum">     614 </span>            : {
+<span class="lineNum">     615 </span><span class="lineNoCov">          0 :   const uint32_t one                                = _uint32_li( 0x00000001 );</span>
+<span class="lineNum">     616 </span><span class="lineNoCov">          0 :   const uint32_t h_s_mask                           = _uint32_li( 0x00008000 );</span>
+<span class="lineNum">     617 </span><span class="lineNoCov">          0 :   const uint32_t h_e_mask                           = _uint32_li( 0x00007c00 );</span>
+<span class="lineNum">     618 </span><span class="lineNoCov">          0 :   const uint32_t h_m_mask                           = _uint32_li( 0x000003ff );</span>
+<span class="lineNum">     619 </span><span class="lineNoCov">          0 :   const uint32_t h_m_hidden                         = _uint32_li( 0x00000400 );</span>
+<span class="lineNum">     620 </span><span class="lineNoCov">          0 :   const uint32_t h_e_pos                            = _uint32_li( 0x0000000a );</span>
+<span class="lineNum">     621 </span><span class="lineNoCov">          0 :   const uint32_t h_e_bias                           = _uint32_li( 0x0000000f );</span>
+<span class="lineNum">     622 </span><span class="lineNoCov">          0 :   const uint32_t h_m_bit_count                      = _uint32_li( 0x0000000a );</span>
+<span class="lineNum">     623 </span><span class="lineNoCov">          0 :   const uint32_t h_m_bit_half_count                 = _uint32_li( 0x00000005 );</span>
+<span class="lineNum">     624 </span><span class="lineNoCov">          0 :   const uint32_t h_nan_min                          = _uint32_li( 0x00007c01 );</span>
+<span class="lineNum">     625 </span><span class="lineNoCov">          0 :   const uint32_t h_e_mask_minus_one                 = _uint32_li( 0x00007bff );</span>
+<span class="lineNum">     626 </span><span class="lineNoCov">          0 :   const uint32_t h_snan                             = _uint32_li( 0x0000fe00 );</span>
+<span class="lineNum">     627 </span><span class="lineNoCov">          0 :   const uint32_t m_round_overflow_bit               = _uint32_li( 0x00000020 );</span>
+<span class="lineNum">     628 </span><span class="lineNoCov">          0 :   const uint32_t m_hidden_bit                       = _uint32_li( 0x00100000 );</span>
+<span class="lineNum">     629 </span><span class="lineNoCov">          0 :   const uint32_t a_s                                = _uint32_and(  x,   h_s_mask );</span>
+<span class="lineNum">     630 </span><span class="lineNoCov">          0 :   const uint32_t b_s                                = _uint32_and(  y,   h_s_mask );</span>
+<span class="lineNum">     631 </span><span class="lineNoCov">          0 :   const uint32_t c_s                                = _uint32_xor(  a_s, b_s      );</span>
+<span class="lineNum">     632 </span><span class="lineNoCov">          0 :   const uint32_t x_e                                = _uint32_and(  x,   h_e_mask );</span>
+<span class="lineNum">     633 </span><span class="lineNoCov">          0 :   const uint32_t x_e_eqz_msb                        = _uint32_dec(  x_e );</span>
+<span class="lineNum">     634 </span><span class="lineNoCov">          0 :   const uint32_t a                                  = _uint32_sels( x_e_eqz_msb, y, x );</span>
+<span class="lineNum">     635 </span><span class="lineNoCov">          0 :   const uint32_t b                                  = _uint32_sels( x_e_eqz_msb, x, y );</span>
+<span class="lineNum">     636 </span><span class="lineNoCov">          0 :   const uint32_t a_e                                = _uint32_and(  a,   h_e_mask );</span>
+<span class="lineNum">     637 </span><span class="lineNoCov">          0 :   const uint32_t b_e                                = _uint32_and(  b,   h_e_mask );</span>
+<span class="lineNum">     638 </span><span class="lineNoCov">          0 :   const uint32_t a_m                                = _uint32_and(  a,   h_m_mask );</span>
+<span class="lineNum">     639 </span><span class="lineNoCov">          0 :   const uint32_t b_m                                = _uint32_and(  b,   h_m_mask );</span>
+<span class="lineNum">     640 </span><span class="lineNoCov">          0 :   const uint32_t a_e_amount                         = _uint32_srl(  a_e,                 h_e_pos                 );</span>
+<span class="lineNum">     641 </span><span class="lineNoCov">          0 :   const uint32_t b_e_amount                         = _uint32_srl(  b_e,                 h_e_pos                 );</span>
+<span class="lineNum">     642 </span><span class="lineNoCov">          0 :   const uint32_t a_m_with_hidden                    = _uint32_or(   a_m,                 h_m_hidden              );</span>
+<span class="lineNum">     643 </span><span class="lineNoCov">          0 :   const uint32_t b_m_with_hidden                    = _uint32_or(   b_m,                 h_m_hidden              );</span>
+<span class="lineNum">     644 </span><span class="lineNoCov">          0 :   const uint32_t c_m_normal                         = _uint32_mul(  a_m_with_hidden,     b_m_with_hidden         );</span>
+<span class="lineNum">     645 </span><span class="lineNoCov">          0 :   const uint32_t c_m_denorm_biased                  = _uint32_mul(  a_m_with_hidden,     b_m                     );</span>
+<span class="lineNum">     646 </span><span class="lineNoCov">          0 :   const uint32_t c_e_denorm_unbias_e                = _uint32_sub(  h_e_bias,            a_e_amount              );</span>
+<span class="lineNum">     647 </span><span class="lineNoCov">          0 :   const uint32_t c_m_denorm_round_amount            = _uint32_and(  c_m_denorm_biased,   h_m_mask                );</span>
+<span class="lineNum">     648 </span><span class="lineNoCov">          0 :   const uint32_t c_m_denorm_rounded                 = _uint32_add(  c_m_denorm_biased,   c_m_denorm_round_amount );</span>
+<span class="lineNum">     649 </span><span class="lineNoCov">          0 :   const uint32_t c_m_denorm_inplace                 = _uint32_srl(  c_m_denorm_rounded,  h_m_bit_count           );</span>
+<span class="lineNum">     650 </span><span class="lineNoCov">          0 :   const uint32_t c_m_denorm_unbiased                = _uint32_srl(  c_m_denorm_inplace,  c_e_denorm_unbias_e     );</span>
+<span class="lineNum">     651 </span><span class="lineNoCov">          0 :   const uint32_t c_m_denorm                         = _uint32_and(  c_m_denorm_unbiased, h_m_mask                );</span>
+<span class="lineNum">     652 </span><span class="lineNoCov">          0 :   const uint32_t c_e_amount_biased                  = _uint32_add(  a_e_amount,          b_e_amount              );</span>
+<span class="lineNum">     653 </span><span class="lineNoCov">          0 :   const uint32_t c_e_amount_unbiased                = _uint32_sub(  c_e_amount_biased,   h_e_bias                );</span>
+<span class="lineNum">     654 </span><span class="lineNoCov">          0 :   const uint32_t is_c_e_unbiased_underflow          = _uint32_ext(  c_e_amount_unbiased );</span>
+<span class="lineNum">     655 </span><span class="lineNoCov">          0 :   const uint32_t c_e_underflow_half_sa              = _uint32_neg(  c_e_amount_unbiased );</span>
+<span class="lineNum">     656 </span><span class="lineNoCov">          0 :   const uint32_t c_e_underflow_sa                   = _uint32_sll(  c_e_underflow_half_sa,     one );</span>
+<span class="lineNum">     657 </span><span class="lineNoCov">          0 :   const uint32_t c_m_underflow                      = _uint32_srl(  c_m_normal,                c_e_underflow_sa );</span>
+<span class="lineNum">     658 </span><span class="lineNoCov">          0 :   const uint32_t c_e_underflow_added                = _uint32_andc( c_e_amount_unbiased,       is_c_e_unbiased_underflow );</span>
+<span class="lineNum">     659 </span><span class="lineNoCov">          0 :   const uint32_t c_m_underflow_added                = _uint32_selb( is_c_e_unbiased_underflow, c_m_underflow, c_m_normal );</span>
+<span class="lineNum">     660 </span><span class="lineNoCov">          0 :   const uint32_t is_mul_overflow_test               = _uint32_and(  c_e_underflow_added, m_round_overflow_bit );</span>
+<span class="lineNum">     661 </span><span class="lineNoCov">          0 :   const uint32_t is_mul_overflow_msb                = _uint32_neg(  is_mul_overflow_test );</span>
+<span class="lineNum">     662 </span><span class="lineNoCov">          0 :   const uint32_t c_e_norm_radix_corrected           = _uint32_inc(  c_e_underflow_added );</span>
+<span class="lineNum">     663 </span><span class="lineNoCov">          0 :   const uint32_t c_m_norm_radix_corrected           = _uint32_srl(  c_m_underflow_added, one );</span>
+<span class="lineNum">     664 </span><span class="lineNoCov">          0 :   const uint32_t c_m_norm_hidden_bit                = _uint32_and(  c_m_norm_radix_corrected,  m_hidden_bit );</span>
+<span class="lineNum">     665 </span><span class="lineNoCov">          0 :   const uint32_t is_c_m_norm_no_hidden_msb          = _uint32_dec(  c_m_norm_hidden_bit );</span>
+<span class="lineNum">     666 </span><span class="lineNoCov">          0 :   const uint32_t c_m_norm_lo                        = _uint32_srl(  c_m_norm_radix_corrected, h_m_bit_half_count );</span>
+<span class="lineNum">     667 </span><span class="lineNoCov">          0 :   const uint32_t c_m_norm_lo_nlz                    = _uint16_cntlz( c_m_norm_lo );</span>
+<span class="lineNum">     668 </span><span class="lineNoCov">          0 :   const uint32_t is_c_m_hidden_nunderflow_msb       = _uint32_sub(  c_m_norm_lo_nlz, c_e_norm_radix_corrected );</span>
+<span class="lineNum">     669 </span><span class="lineNoCov">          0 :   const uint32_t is_c_m_hidden_underflow_msb        = _uint32_not(  is_c_m_hidden_nunderflow_msb );</span>
+<span class="lineNum">     670 </span><span class="lineNoCov">          0 :   const uint32_t is_c_m_hidden_underflow            = _uint32_ext(  is_c_m_hidden_underflow_msb  );</span>
+<span class="lineNum">     671 </span><span class="lineNoCov">          0 :   const uint32_t c_m_hidden_underflow_normalized_sa = _uint32_srl(  c_m_norm_lo_nlz, one );</span>
+<span class="lineNum">     672 </span><span class="lineNoCov">          0 :   const uint32_t c_m_hidden_underflow_normalized    = _uint32_sll(  c_m_norm_radix_corrected, c_m_hidden_underflow_normalized_sa );</span>
+<span class="lineNum">     673 </span><span class="lineNoCov">          0 :   const uint32_t c_m_hidden_normalized              = _uint32_sll(  c_m_norm_radix_corrected, c_m_norm_lo_nlz );</span>
+<span class="lineNum">     674 </span><span class="lineNoCov">          0 :   const uint32_t c_e_hidden_normalized              = _uint32_sub(  c_e_norm_radix_corrected, c_m_norm_lo_nlz );</span>
+<span class="lineNum">     675 </span><span class="lineNoCov">          0 :   const uint32_t c_e_hidden                         = _uint32_andc( c_e_hidden_normalized, is_c_m_hidden_underflow );</span>
+<span class="lineNum">     676 </span><span class="lineNoCov">          0 :   const uint32_t c_m_hidden                         = _uint32_sels( is_c_m_hidden_underflow_msb, c_m_hidden_underflow_normalized, c_m_hidden_normalized );</span>
+<span class="lineNum">     677 </span><span class="lineNoCov">          0 :   const uint32_t c_m_normalized                     = _uint32_sels( is_c_m_norm_no_hidden_msb, c_m_hidden, c_m_norm_radix_corrected );</span>
+<span class="lineNum">     678 </span><span class="lineNoCov">          0 :   const uint32_t c_e_normalized                     = _uint32_sels( is_c_m_norm_no_hidden_msb, c_e_hidden, c_e_norm_radix_corrected );</span>
+<span class="lineNum">     679 </span><span class="lineNoCov">          0 :   const uint32_t c_m_norm_round_amount              = _uint32_and(  c_m_normalized, h_m_mask );</span>
+<span class="lineNum">     680 </span><span class="lineNoCov">          0 :   const uint32_t c_m_norm_rounded                   = _uint32_add(  c_m_normalized, c_m_norm_round_amount );</span>
+<span class="lineNum">     681 </span><span class="lineNoCov">          0 :   const uint32_t is_round_overflow_test             = _uint32_and(  c_e_normalized, m_round_overflow_bit  );</span>
+<span class="lineNum">     682 </span><span class="lineNoCov">          0 :   const uint32_t is_round_overflow_msb              = _uint32_neg(  is_round_overflow_test );</span>
+<span class="lineNum">     683 </span><span class="lineNoCov">          0 :   const uint32_t c_m_norm_inplace                   = _uint32_srl(  c_m_norm_rounded,    h_m_bit_count );</span>
+<span class="lineNum">     684 </span><span class="lineNoCov">          0 :   const uint32_t c_m                                = _uint32_and(  c_m_norm_inplace,    h_m_mask      );</span>
+<span class="lineNum">     685 </span><span class="lineNoCov">          0 :   const uint32_t c_e_norm_inplace                   = _uint32_sll(  c_e_normalized, h_e_pos       );</span>
+<span class="lineNum">     686 </span><span class="lineNoCov">          0 :   const uint32_t c_e                                = _uint32_and(  c_e_norm_inplace,    h_e_mask      );</span>
+<span class="lineNum">     687 </span><span class="lineNoCov">          0 :   const uint32_t c_em_nan                           = _uint32_or(   h_e_mask,  a_m        );</span>
+<span class="lineNum">     688 </span><span class="lineNoCov">          0 :   const uint32_t c_nan                              = _uint32_or(   a_s,       c_em_nan   );</span>
+<span class="lineNum">     689 </span><span class="lineNoCov">          0 :   const uint32_t c_denorm                           = _uint32_or(   c_s,       c_m_denorm );</span>
+<span class="lineNum">     690 </span><span class="lineNoCov">          0 :   const uint32_t c_inf                              = _uint32_or(   c_s,       h_e_mask   );</span>
+<span class="lineNum">     691 </span><span class="lineNoCov">          0 :   const uint32_t c_em_norm                          = _uint32_or(   c_e,       c_m        );</span>
+<span class="lineNum">     692 </span><span class="lineNoCov">          0 :   const uint32_t is_a_e_flagged_msb                 = _uint32_sub(  h_e_mask_minus_one, a_e );</span>
+<span class="lineNum">     693 </span><span class="lineNoCov">          0 :   const uint32_t is_b_e_flagged_msb                 = _uint32_sub(  h_e_mask_minus_one, b_e );</span>
+<span class="lineNum">     694 </span><span class="lineNoCov">          0 :   const uint32_t is_a_e_eqz_msb                     = _uint32_dec(  a_e );</span>
+<span class="lineNum">     695 </span><span class="lineNoCov">          0 :   const uint32_t is_a_m_eqz_msb                     = _uint32_dec(  a_m );</span>
+<span class="lineNum">     696 </span><span class="lineNoCov">          0 :   const uint32_t is_b_e_eqz_msb                     = _uint32_dec(  b_e );</span>
+<span class="lineNum">     697 </span><span class="lineNoCov">          0 :   const uint32_t is_b_m_eqz_msb                     = _uint32_dec(  b_m );</span>
+<span class="lineNum">     698 </span><span class="lineNoCov">          0 :   const uint32_t is_b_eqz_msb                       = _uint32_and(  is_b_e_eqz_msb,          is_b_m_eqz_msb         );</span>
+<span class="lineNum">     699 </span><span class="lineNoCov">          0 :   const uint32_t is_a_eqz_msb                       = _uint32_and(  is_a_e_eqz_msb,          is_a_m_eqz_msb         );</span>
+<span class="lineNum">     700 </span><span class="lineNoCov">          0 :   const uint32_t is_c_nan_via_a_msb                 = _uint32_andc( is_a_e_flagged_msb,      is_b_e_flagged_msb     );</span>
+<span class="lineNum">     701 </span><span class="lineNoCov">          0 :   const uint32_t is_c_nan_via_b_msb                 = _uint32_andc( is_b_e_flagged_msb,      is_b_m_eqz_msb         );</span>
+<span class="lineNum">     702 </span><span class="lineNoCov">          0 :   const uint32_t is_c_nan_msb                       = _uint32_or(   is_c_nan_via_a_msb,      is_c_nan_via_b_msb     );</span>
+<span class="lineNum">     703 </span><span class="lineNoCov">          0 :   const uint32_t is_c_denorm_msb                    = _uint32_andc( is_b_e_eqz_msb,          is_a_e_flagged_msb     );</span>
+<span class="lineNum">     704 </span><span class="lineNoCov">          0 :   const uint32_t is_a_inf_msb                       = _uint32_and(  is_a_e_flagged_msb,      is_a_m_eqz_msb         );</span>
+<span class="lineNum">     705 </span><span class="lineNoCov">          0 :   const uint32_t is_c_snan_msb                      = _uint32_and(  is_a_inf_msb,            is_b_eqz_msb           );</span>
+<span class="lineNum">     706 </span><span class="lineNoCov">          0 :   const uint32_t is_c_nan_min_via_a_msb             = _uint32_and(  is_a_e_flagged_msb,      is_b_eqz_msb           );</span>
+<span class="lineNum">     707 </span><span class="lineNoCov">          0 :   const uint32_t is_c_nan_min_via_b_msb             = _uint32_and(  is_b_e_flagged_msb,      is_a_eqz_msb           );</span>
+<span class="lineNum">     708 </span><span class="lineNoCov">          0 :   const uint32_t is_c_nan_min_msb                   = _uint32_or(   is_c_nan_min_via_a_msb,  is_c_nan_min_via_b_msb );</span>
+<span class="lineNum">     709 </span><span class="lineNoCov">          0 :   const uint32_t is_c_inf_msb                       = _uint32_or(   is_a_e_flagged_msb,      is_b_e_flagged_msb     );</span>
+<span class="lineNum">     710 </span><span class="lineNoCov">          0 :   const uint32_t is_overflow_msb                    = _uint32_or(   is_round_overflow_msb,   is_mul_overflow_msb    );</span>
+<span class="lineNum">     711 </span><span class="lineNoCov">          0 :   const uint32_t c_em_overflow_result               = _uint32_sels( is_overflow_msb, h_e_mask, c_em_norm );</span>
+<span class="lineNum">     712 </span><span class="lineNoCov">          0 :   const uint32_t c_common_result                    = _uint32_or(   c_s, c_em_overflow_result );</span>
+<span class="lineNum">     713 </span><span class="lineNoCov">          0 :   const uint32_t c_zero_result                      = _uint32_sels( is_b_eqz_msb,     c_s,       c_common_result  );</span>
+<span class="lineNum">     714 </span><span class="lineNoCov">          0 :   const uint32_t c_nan_result                       = _uint32_sels( is_c_nan_msb,     c_nan,     c_zero_result );</span>
+<span class="lineNum">     715 </span><span class="lineNoCov">          0 :   const uint32_t c_nan_min_result                   = _uint32_sels( is_c_nan_min_msb, h_nan_min, c_nan_result     );</span>
+<span class="lineNum">     716 </span><span class="lineNoCov">          0 :   const uint32_t c_inf_result                       = _uint32_sels( is_c_inf_msb,     c_inf,     c_nan_min_result   );</span>
+<span class="lineNum">     717 </span><span class="lineNoCov">          0 :   const uint32_t c_denorm_result                    = _uint32_sels( is_c_denorm_msb,  c_denorm,  c_inf_result);</span>
+<span class="lineNum">     718 </span><span class="lineNoCov">          0 :   const uint32_t c_result                           = _uint32_sels( is_c_snan_msb,    h_snan,    c_denorm_result );</span>
+<span class="lineNum">     719 </span>            : 
+<span class="lineNum">     720 </span><span class="lineNoCov">          0 :   return (uint16_t)(c_result);</span>
+<span class="lineNum">     721 </span>            : }
+</pre>
+      </td>
+    </tr>
+  </table>
+  <br>
+
+  <table width="100%" border=0 cellspacing=0 cellpadding=0>
+    <tr><td class="ruler"><img src="../../glass.png" width=3 height=3 alt=""></td></tr>
+    <tr><td class="versionInfo">Generated by: <a href="http://ltp.sourceforge.net/coverage/lcov.php" target="_parent">LCOV version 1.11</a></td></tr>
+  </table>
+  <br>
+
+</body>
+</html>

@@ -1,0 +1,1023 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+
+<html lang="en">
+
+<head>
+  <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+  <title>LCOV - Livre - Equalizer/eq/util/objectManager.cpp</title>
+  <link rel="stylesheet" type="text/css" href="../../../gcov.css">
+</head>
+
+<body>
+
+  <table width="100%" border=0 cellspacing=0 cellpadding=0>
+    <tr><td class="title">LCOV - code coverage report</td></tr>
+    <tr><td class="ruler"><img src="../../../glass.png" width=3 height=3 alt=""></td></tr>
+
+    <tr>
+      <td width="100%">
+        <table cellpadding=1 border=0 width="100%">
+          <tr>
+            <td width="10%" class="headerItem">Current view:</td>
+            <td width="35%" class="headerValue"><a href="../../../index.html">top level</a> - <a href="index.html">Equalizer/eq/util</a> - objectManager.cpp<span style="font-size: 80%;"> (source / <a href="objectManager.cpp.func-sort-c.html">functions</a>)</span></td>
+            <td width="5%"></td>
+            <td width="15%"></td>
+            <td width="10%" class="headerCovTableHead">Hit</td>
+            <td width="10%" class="headerCovTableHead">Total</td>
+            <td width="15%" class="headerCovTableHead">Coverage</td>
+          </tr>
+          <tr>
+            <td class="headerItem">Test:</td>
+            <td class="headerValue">Livre</td>
+            <td></td>
+            <td class="headerItem">Lines:</td>
+            <td class="headerCovTableEntry">1</td>
+            <td class="headerCovTableEntry">507</td>
+            <td class="headerCovTableEntryLo">0.2 %</td>
+          </tr>
+          <tr>
+            <td class="headerItem">Date:</td>
+            <td class="headerValue">2016-03-10 14:06:39</td>
+            <td></td>
+            <td class="headerItem">Functions:</td>
+            <td class="headerCovTableEntry">2</td>
+            <td class="headerCovTableEntry">68</td>
+            <td class="headerCovTableEntryLo">2.9 %</td>
+          </tr>
+          <tr><td><img src="../../../glass.png" width=3 height=3 alt=""></td></tr>
+        </table>
+      </td>
+    </tr>
+
+    <tr><td class="ruler"><img src="../../../glass.png" width=3 height=3 alt=""></td></tr>
+  </table>
+
+  <table cellpadding=0 cellspacing=0 border=0>
+    <tr>
+      <td><br></td>
+    </tr>
+    <tr>
+      <td>
+<pre class="sourceHeading">          Line data    Source code</pre>
+<pre class="source">
+<a name="1"><span class="lineNum">       1 </span>            : </a>
+<span class="lineNum">       2 </span>            : /* Copyright (c) 2007-2015, Stefan Eilemann &lt;eile@equalizergraphics.com&gt;
+<span class="lineNum">       3 </span>            :  *                          Cedric Stalder &lt;cedric.stalder@gmail.com&gt;
+<span class="lineNum">       4 </span>            :  *                          Daniel Nachbaur &lt;danielnachbaur@gmail.com&gt;
+<span class="lineNum">       5 </span>            :  *
+<span class="lineNum">       6 </span>            :  * This library is free software; you can redistribute it and/or modify it under
+<span class="lineNum">       7 </span>            :  * the terms of the GNU Lesser General Public License version 2.1 as published
+<span class="lineNum">       8 </span>            :  * by the Free Software Foundation.
+<span class="lineNum">       9 </span>            :  *
+<span class="lineNum">      10 </span>            :  * This library is distributed in the hope that it will be useful, but WITHOUT
+<span class="lineNum">      11 </span>            :  * ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS
+<span class="lineNum">      12 </span>            :  * FOR A PARTICULAR PURPOSE.  See the GNU Lesser General Public License for more
+<span class="lineNum">      13 </span>            :  * details.
+<span class="lineNum">      14 </span>            :  *
+<span class="lineNum">      15 </span>            :  * You should have received a copy of the GNU Lesser General Public License
+<span class="lineNum">      16 </span>            :  * along with this library; if not, write to the Free Software Foundation, Inc.,
+<span class="lineNum">      17 </span>            :  * 51 Franklin Street, Fifth Floor, Boston, MA 02110-1301 USA.
+<span class="lineNum">      18 </span>            :  */
+<span class="lineNum">      19 </span>            : 
+<span class="lineNum">      20 </span>            : #include &quot;objectManager.h&quot;
+<span class="lineNum">      21 </span>            : 
+<span class="lineNum">      22 </span>            : #include &quot;accum.h&quot;
+<span class="lineNum">      23 </span>            : #include &quot;bitmapFont.h&quot;
+<span class="lineNum">      24 </span>            : #include &quot;frameBufferObject.h&quot;
+<span class="lineNum">      25 </span>            : #include &quot;pixelBufferObject.h&quot;
+<span class="lineNum">      26 </span>            : #include &quot;texture.h&quot;
+<span class="lineNum">      27 </span>            : 
+<span class="lineNum">      28 </span>            : #include &lt;eq/gl.h&gt;
+<span class="lineNum">      29 </span>            : #include &lt;lunchbox/hash.h&gt;
+<span class="lineNum">      30 </span>            : #include &lt;lunchbox/os.h&gt;
+<span class="lineNum">      31 </span>            : #include &lt;lunchbox/referenced.h&gt;
+<span class="lineNum">      32 </span>            : #include &lt;pression/uploader.h&gt;
+<span class="lineNum">      33 </span>            : #include &lt;string.h&gt;
+<span class="lineNum">      34 </span>            : 
+<span class="lineNum">      35 </span>            : //#define EQ_OM_TRACE_ALLOCATIONS
+<span class="lineNum">      36 </span>            : 
+<span class="lineNum">      37 </span>            : namespace eq
+<span class="lineNum">      38 </span>            : {
+<span class="lineNum">      39 </span>            : namespace util
+<span class="lineNum">      40 </span>            : {
+<span class="lineNum">      41 </span>            : namespace
+<span class="lineNum">      42 </span>            : {
+<span class="lineNum">      43 </span>            : struct Object
+<span class="lineNum">      44 </span>            : {
+<span class="lineNum">      45 </span>            :     unsigned id;
+<span class="lineNum">      46 </span>            :     unsigned num;
+<span class="lineNum">      47 </span>            : };
+<span class="lineNum">      48 </span>            : 
+<span class="lineNum">      49 </span>            : typedef stde::hash_map&lt; const void*, Object &gt;     ObjectHash;
+<span class="lineNum">      50 </span>            : typedef stde::hash_map&lt; const void*, Texture* &gt;   TextureHash;
+<span class="lineNum">      51 </span>            : typedef stde::hash_map&lt; const void*, FrameBufferObject* &gt; FBOHash;
+<span class="lineNum">      52 </span>            : typedef stde::hash_map&lt; const void*, PixelBufferObject* &gt; PBOHash;
+<span class="lineNum">      53 </span>            : typedef stde::hash_map&lt; const void*, util::BitmapFont* &gt; FontHash;
+<span class="lineNum">      54 </span>            : typedef stde::hash_map&lt; const void*, Accum* &gt; AccumHash;
+<span class="lineNum">      55 </span>            : typedef stde::hash_map&lt; const void*, pression::Uploader* &gt; UploaderHash;
+<span class="lineNum">      56 </span>            : #ifdef EQ_OM_TRACE_ALLOCATIONS
+<span class="lineNum">      57 </span>            : typedef stde::hash_map&lt; const void*, std::string &gt; UploaderAllocs;
+<span class="lineNum">      58 </span>            : #endif
+<span class="lineNum">      59 </span>            : }
+<span class="lineNum">      60 </span>            : 
+<span class="lineNum">      61 </span>            : namespace detail
+<span class="lineNum">      62 </span>            : {
+<span class="lineNum">      63 </span>            : class ObjectManager : public lunchbox::Referenced
+<a name="64"><span class="lineNum">      64 </span>            : {</a>
+<span class="lineNum">      65 </span>            : public:
+<span class="lineNum">      66 </span><span class="lineNoCov">          0 :     explicit ObjectManager( const GLEWContext* gl )</span>
+<span class="lineNum">      67 </span><span class="lineNoCov">          0 :     {</span>
+<span class="lineNum">      68 </span><span class="lineNoCov">          0 :         if( gl )</span>
+<span class="lineNum">      69 </span><span class="lineNoCov">          0 :             memcpy( &amp;glewContext, gl, sizeof( GLEWContext ));</span>
+<span class="lineNum">      70 </span>            :         else
+<span class="lineNum">      71 </span><span class="lineNoCov">          0 :             lunchbox::setZero( &amp;glewContext, sizeof( GLEWContext ));</span>
+<a name="72"><span class="lineNum">      72 </span><span class="lineNoCov">          0 :     }</span></a>
+<span class="lineNum">      73 </span>            : 
+<span class="lineNum">      74 </span><span class="lineNoCov">          0 :     virtual ~ObjectManager()</span>
+<span class="lineNum">      75 </span><span class="lineNoCov">          0 :     {</span>
+<span class="lineNum">      76 </span>            :         // Do not delete GL objects, we may no longer have a GL context.
+<span class="lineNum">      77 </span><span class="lineNoCov">          0 :         if( !lists.empty( ))</span>
+<span class="lineNum">      78 </span><span class="lineNoCov">          0 :             LBWARN &lt;&lt; lists.size()</span>
+<span class="lineNum">      79 </span><span class="lineNoCov">          0 :                    &lt;&lt; &quot; lists allocated in ObjectManager destructor&quot;</span>
+<span class="lineNum">      80 </span><span class="lineNoCov">          0 :                    &lt;&lt; std::endl;</span>
+<span class="lineNum">      81 </span><span class="lineNoCov">          0 :         LBASSERT( lists.empty( ));</span>
+<span class="lineNum">      82 </span><span class="lineNoCov">          0 :         lists.clear();</span>
+<span class="lineNum">      83 </span>            : 
+<span class="lineNum">      84 </span><span class="lineNoCov">          0 :         if( !textures.empty( ))</span>
+<span class="lineNum">      85 </span><span class="lineNoCov">          0 :             LBWARN &lt;&lt; textures.size()</span>
+<span class="lineNum">      86 </span><span class="lineNoCov">          0 :                    &lt;&lt; &quot; textures allocated in ObjectManager destructor&quot;</span>
+<span class="lineNum">      87 </span><span class="lineNoCov">          0 :                    &lt;&lt; std::endl;</span>
+<span class="lineNum">      88 </span><span class="lineNoCov">          0 :         LBASSERT( textures.empty( ));</span>
+<span class="lineNum">      89 </span><span class="lineNoCov">          0 :         textures.clear();</span>
+<span class="lineNum">      90 </span>            : 
+<span class="lineNum">      91 </span><span class="lineNoCov">          0 :         if( !buffers.empty( ))</span>
+<span class="lineNum">      92 </span><span class="lineNoCov">          0 :             LBWARN &lt;&lt; buffers.size()</span>
+<span class="lineNum">      93 </span><span class="lineNoCov">          0 :                    &lt;&lt; &quot; buffers allocated in ObjectManager destructor&quot;</span>
+<span class="lineNum">      94 </span><span class="lineNoCov">          0 :                    &lt;&lt; std::endl;</span>
+<span class="lineNum">      95 </span><span class="lineNoCov">          0 :         LBASSERT( buffers.empty( ));</span>
+<span class="lineNum">      96 </span><span class="lineNoCov">          0 :         buffers.clear();</span>
+<span class="lineNum">      97 </span>            : 
+<span class="lineNum">      98 </span><span class="lineNoCov">          0 :         if( !programs.empty( ))</span>
+<span class="lineNum">      99 </span><span class="lineNoCov">          0 :             LBWARN &lt;&lt; programs.size()</span>
+<span class="lineNum">     100 </span><span class="lineNoCov">          0 :                    &lt;&lt; &quot; programs allocated in ObjectManager destructor&quot;</span>
+<span class="lineNum">     101 </span><span class="lineNoCov">          0 :                    &lt;&lt; std::endl;</span>
+<span class="lineNum">     102 </span><span class="lineNoCov">          0 :         LBASSERT( programs.empty( ));</span>
+<span class="lineNum">     103 </span><span class="lineNoCov">          0 :         programs.clear();</span>
+<span class="lineNum">     104 </span>            : 
+<span class="lineNum">     105 </span><span class="lineNoCov">          0 :         if( !shaders.empty( ))</span>
+<span class="lineNum">     106 </span><span class="lineNoCov">          0 :             LBWARN &lt;&lt; shaders.size()</span>
+<span class="lineNum">     107 </span><span class="lineNoCov">          0 :                    &lt;&lt; &quot; shaders allocated in ObjectManager destructor&quot;</span>
+<span class="lineNum">     108 </span><span class="lineNoCov">          0 :                    &lt;&lt; std::endl;</span>
+<span class="lineNum">     109 </span><span class="lineNoCov">          0 :         LBASSERT( shaders.empty( ));</span>
+<span class="lineNum">     110 </span><span class="lineNoCov">          0 :         shaders.clear();</span>
+<span class="lineNum">     111 </span>            : 
+<span class="lineNum">     112 </span><span class="lineNoCov">          0 :         if( !eqTextures.empty( ))</span>
+<span class="lineNum">     113 </span><span class="lineNoCov">          0 :             LBWARN &lt;&lt; eqTextures.size()</span>
+<span class="lineNum">     114 </span><span class="lineNoCov">          0 :                    &lt;&lt; &quot; eq::Texture allocated in ObjectManager destructor&quot;</span>
+<span class="lineNum">     115 </span><span class="lineNoCov">          0 :                    &lt;&lt; std::endl;</span>
+<span class="lineNum">     116 </span><span class="lineNoCov">          0 :         LBASSERT( eqTextures.empty( ));</span>
+<span class="lineNum">     117 </span><span class="lineNoCov">          0 :         eqTextures.clear();</span>
+<span class="lineNum">     118 </span>            : 
+<span class="lineNum">     119 </span><span class="lineNoCov">          0 :         if( !eqFonts.empty( ))</span>
+<span class="lineNum">     120 </span><span class="lineNoCov">          0 :             LBWARN &lt;&lt; eqFonts.size()</span>
+<span class="lineNum">     121 </span><span class="lineNoCov">          0 :                    &lt;&lt; &quot; eq::BitmapFont allocated in ObjectManager destructor&quot;</span>
+<span class="lineNum">     122 </span><span class="lineNoCov">          0 :                    &lt;&lt; std::endl;</span>
+<span class="lineNum">     123 </span><span class="lineNoCov">          0 :         LBASSERT( eqFonts.empty( ));</span>
+<span class="lineNum">     124 </span><span class="lineNoCov">          0 :         eqFonts.clear();</span>
+<span class="lineNum">     125 </span>            : 
+<span class="lineNum">     126 </span><span class="lineNoCov">          0 :         if( !eqFrameBufferObjects.empty( ))</span>
+<span class="lineNum">     127 </span><span class="lineNoCov">          0 :             LBWARN &lt;&lt; eqFrameBufferObjects.size()</span>
+<span class="lineNum">     128 </span><span class="lineNoCov">          0 :                    &lt;&lt; &quot; eq::FrameBufferObject's allocated in ObjectManager &quot;</span>
+<span class="lineNum">     129 </span><span class="lineNoCov">          0 :                    &lt;&lt; &quot;destructor&quot; &lt;&lt; std::endl;</span>
+<span class="lineNum">     130 </span><span class="lineNoCov">          0 :         LBASSERT( eqFrameBufferObjects.empty( ));</span>
+<span class="lineNum">     131 </span><span class="lineNoCov">          0 :         eqFrameBufferObjects.clear();</span>
+<span class="lineNum">     132 </span>            : 
+<span class="lineNum">     133 </span><span class="lineNoCov">          0 :         if( !eqUploaders.empty( ))</span>
+<span class="lineNum">     134 </span><span class="lineNoCov">          0 :             LBWARN &lt;&lt; eqUploaders.size()</span>
+<span class="lineNum">     135 </span><span class="lineNoCov">          0 :                    &lt;&lt; &quot; uploader allocated in ObjectManager destructor&quot;</span>
+<span class="lineNum">     136 </span><span class="lineNoCov">          0 :                    &lt;&lt; std::endl;</span>
+<span class="lineNum">     137 </span>            : 
+<span class="lineNum">     138 </span>            : #ifdef EQ_OM_TRACE_ALLOCATIONS
+<span class="lineNum">     139 </span>            :         LBASSERTINFO( eqUploaders.empty(), eqUploaderAllocs.begin()-&gt;second );
+<span class="lineNum">     140 </span>            : #else
+<span class="lineNum">     141 </span><span class="lineNoCov">          0 :         LBASSERTINFO( eqUploaders.empty(), (void*)eqUploaders.begin()-&gt;second );</span>
+<span class="lineNum">     142 </span>            : #endif
+<span class="lineNum">     143 </span><span class="lineNoCov">          0 :         eqUploaders.clear();</span>
+<span class="lineNum">     144 </span><span class="lineNoCov">          0 :     }</span>
+<span class="lineNum">     145 </span>            : 
+<span class="lineNum">     146 </span>            : 
+<span class="lineNum">     147 </span>            :     GLEWContext glewContext;
+<span class="lineNum">     148 </span>            :     ObjectHash lists;
+<span class="lineNum">     149 </span>            :     ObjectHash vertexArrays;
+<span class="lineNum">     150 </span>            :     ObjectHash textures;
+<span class="lineNum">     151 </span>            :     ObjectHash buffers;
+<span class="lineNum">     152 </span>            :     ObjectHash programs;
+<span class="lineNum">     153 </span>            :     ObjectHash shaders;
+<span class="lineNum">     154 </span>            :     ObjectHash uploaderDatas;
+<span class="lineNum">     155 </span>            :     AccumHash  accums;
+<span class="lineNum">     156 </span>            :     TextureHash eqTextures;
+<span class="lineNum">     157 </span>            :     FBOHash eqFrameBufferObjects;
+<span class="lineNum">     158 </span>            :     PBOHash eqPixelBufferObjects;
+<span class="lineNum">     159 </span>            :     FontHash eqFonts;
+<span class="lineNum">     160 </span>            :     UploaderHash eqUploaders;
+<span class="lineNum">     161 </span>            : #ifdef EQ_OM_TRACE_ALLOCATIONS
+<span class="lineNum">     162 </span>            :     UploaderAllocs eqUploaderAllocs;
+<span class="lineNum">     163 </span>            : #endif
+<span class="lineNum">     164 </span>            : };
+<a name="165"><span class="lineNum">     165 </span>            : }</a>
+<span class="lineNum">     166 </span>            : 
+<span class="lineNum">     167 </span><span class="lineNoCov">          0 : ObjectManager::ObjectManager( const GLEWContext* const glewContext )</span>
+<span class="lineNum">     168 </span><span class="lineNoCov">          0 :     : _impl( new detail::ObjectManager( glewContext ))</span>
+<span class="lineNum">     169 </span>            : {
+<a name="170"><span class="lineNum">     170 </span><span class="lineNoCov">          0 : }</span></a>
+<span class="lineNum">     171 </span>            : 
+<span class="lineNum">     172 </span><span class="lineNoCov">          0 : ObjectManager::ObjectManager( const ObjectManager&amp; shared )</span>
+<span class="lineNum">     173 </span><span class="lineNoCov">          0 :         : _impl( shared._impl )</span>
+<span class="lineNum">     174 </span>            : {
+<span class="lineNum">     175 </span><span class="lineNoCov">          0 :     LBASSERT( _impl );</span>
+<span class="lineNum">     176 </span><span class="lineNoCov">          0 :     LBASSERT( glewGetContext( ));</span>
+<a name="177"><span class="lineNum">     177 </span><span class="lineNoCov">          0 : }</span></a>
+<span class="lineNum">     178 </span>            : 
+<span class="lineNum">     179 </span><span class="lineNoCov">          0 : ObjectManager::~ObjectManager()</span>
+<span class="lineNum">     180 </span>            : {
+<a name="181"><span class="lineNum">     181 </span><span class="lineNoCov">          0 : }</span></a>
+<span class="lineNum">     182 </span>            : 
+<span class="lineNum">     183 </span><span class="lineNoCov">          0 : ObjectManager&amp; ObjectManager::operator = ( const ObjectManager&amp; rhs )</span>
+<span class="lineNum">     184 </span>            : {
+<span class="lineNum">     185 </span><span class="lineNoCov">          0 :     if( this != &amp;rhs )</span>
+<span class="lineNum">     186 </span><span class="lineNoCov">          0 :         _impl = rhs._impl;</span>
+<span class="lineNum">     187 </span><span class="lineNoCov">          0 :     LBASSERT( glewGetContext( ));</span>
+<span class="lineNum">     188 </span><span class="lineNoCov">          0 :     return *this;</span>
+<a name="189"><span class="lineNum">     189 </span>            : }</a>
+<span class="lineNum">     190 </span>            : 
+<span class="lineNum">     191 </span><span class="lineNoCov">          0 : void ObjectManager::clear()</span>
+<span class="lineNum">     192 </span>            : {
+<span class="lineNum">     193 </span><span class="lineNoCov">          0 :     _impl = new detail::ObjectManager( 0 );</span>
+<a name="194"><span class="lineNum">     194 </span><span class="lineNoCov">          0 : }</span></a>
+<span class="lineNum">     195 </span>            : 
+<span class="lineNum">     196 </span><span class="lineNoCov">          0 : bool ObjectManager::isShared() const</span>
+<span class="lineNum">     197 </span>            : {
+<span class="lineNum">     198 </span><span class="lineNoCov">          0 :     return _impl-&gt;getRefCount() &gt; 1;</span>
+<a name="199"><span class="lineNum">     199 </span>            : }</a>
+<span class="lineNum">     200 </span>            : 
+<span class="lineNum">     201 </span><span class="lineNoCov">          0 : const GLEWContext* ObjectManager::glewGetContext() const</span>
+<span class="lineNum">     202 </span>            : {
+<span class="lineNum">     203 </span><span class="lineNoCov">          0 :     return &amp;_impl-&gt;glewContext;</span>
+<a name="204"><span class="lineNum">     204 </span>            : }</a>
+<span class="lineNum">     205 </span>            : 
+<span class="lineNum">     206 </span><span class="lineNoCov">          0 : void ObjectManager::deleteAll()</span>
+<span class="lineNum">     207 </span>            : {
+<span class="lineNum">     208 </span><span class="lineNoCov">          0 :     for( ObjectHash::const_iterator i = _impl-&gt;lists.begin();</span>
+<span class="lineNum">     209 </span><span class="lineNoCov">          0 :          i != _impl-&gt;lists.end(); ++i )</span>
+<span class="lineNum">     210 </span>            :     {
+<span class="lineNum">     211 </span><span class="lineNoCov">          0 :         const Object&amp; object = i-&gt;second;</span>
+<span class="lineNum">     212 </span><span class="lineNoCov">          0 :         LBVERB &lt;&lt; &quot;Delete list &quot; &lt;&lt; object.id &lt;&lt; std::endl;</span>
+<span class="lineNum">     213 </span><span class="lineNoCov">          0 :         EQ_GL_CALL( glDeleteLists( object.id, object.num ));</span>
+<span class="lineNum">     214 </span>            :     }
+<span class="lineNum">     215 </span><span class="lineNoCov">          0 :     _impl-&gt;lists.clear();</span>
+<span class="lineNum">     216 </span>            : 
+<span class="lineNum">     217 </span><span class="lineNoCov">          0 :     for( ObjectHash::const_iterator i = _impl-&gt;textures.begin();</span>
+<span class="lineNum">     218 </span><span class="lineNoCov">          0 :          i != _impl-&gt;textures.end(); ++i )</span>
+<span class="lineNum">     219 </span>            :     {
+<span class="lineNum">     220 </span><span class="lineNoCov">          0 :         const Object&amp; object = i-&gt;second;</span>
+<span class="lineNum">     221 </span><span class="lineNoCov">          0 :         LBVERB &lt;&lt; &quot;Delete texture &quot; &lt;&lt; object.id &lt;&lt; std::endl;</span>
+<span class="lineNum">     222 </span><span class="lineNoCov">          0 :         EQ_GL_CALL( glDeleteTextures( 1, &amp;object.id ));</span>
+<span class="lineNum">     223 </span>            :     }
+<span class="lineNum">     224 </span><span class="lineNoCov">          0 :     _impl-&gt;textures.clear();</span>
+<span class="lineNum">     225 </span>            : 
+<span class="lineNum">     226 </span><span class="lineNoCov">          0 :     for( ObjectHash::const_iterator i = _impl-&gt;buffers.begin();</span>
+<span class="lineNum">     227 </span><span class="lineNoCov">          0 :          i != _impl-&gt;buffers.end(); ++i )</span>
+<span class="lineNum">     228 </span>            :     {
+<span class="lineNum">     229 </span><span class="lineNoCov">          0 :         const Object&amp; object = i-&gt;second;</span>
+<span class="lineNum">     230 </span><span class="lineNoCov">          0 :         LBVERB &lt;&lt; &quot;Delete buffer &quot; &lt;&lt; object.id &lt;&lt; std::endl;</span>
+<span class="lineNum">     231 </span><span class="lineNoCov">          0 :         EQ_GL_CALL( glDeleteBuffers( 1, &amp;object.id ));</span>
+<span class="lineNum">     232 </span>            :     }
+<span class="lineNum">     233 </span><span class="lineNoCov">          0 :     _impl-&gt;buffers.clear();</span>
+<span class="lineNum">     234 </span>            : 
+<span class="lineNum">     235 </span><span class="lineNoCov">          0 :     for( ObjectHash::const_iterator i = _impl-&gt;programs.begin();</span>
+<span class="lineNum">     236 </span><span class="lineNoCov">          0 :          i != _impl-&gt;programs.end(); ++i )</span>
+<span class="lineNum">     237 </span>            :     {
+<span class="lineNum">     238 </span><span class="lineNoCov">          0 :         const Object&amp; object = i-&gt;second;</span>
+<span class="lineNum">     239 </span><span class="lineNoCov">          0 :         LBVERB &lt;&lt; &quot;Delete program &quot; &lt;&lt; object.id &lt;&lt; std::endl;</span>
+<span class="lineNum">     240 </span><span class="lineNoCov">          0 :         EQ_GL_CALL( glDeleteProgram( object.id ));</span>
+<span class="lineNum">     241 </span>            :     }
+<span class="lineNum">     242 </span><span class="lineNoCov">          0 :     _impl-&gt;programs.clear();</span>
+<span class="lineNum">     243 </span>            : 
+<span class="lineNum">     244 </span><span class="lineNoCov">          0 :     for( ObjectHash::const_iterator i = _impl-&gt;shaders.begin();</span>
+<span class="lineNum">     245 </span><span class="lineNoCov">          0 :          i != _impl-&gt;shaders.end(); ++i )</span>
+<span class="lineNum">     246 </span>            :     {
+<span class="lineNum">     247 </span><span class="lineNoCov">          0 :         const Object&amp; object = i-&gt;second;</span>
+<span class="lineNum">     248 </span><span class="lineNoCov">          0 :         LBVERB &lt;&lt; &quot;Delete shader &quot; &lt;&lt; object.id &lt;&lt; std::endl;</span>
+<span class="lineNum">     249 </span><span class="lineNoCov">          0 :         EQ_GL_CALL( glDeleteShader( object.id ));</span>
+<span class="lineNum">     250 </span>            :     }
+<span class="lineNum">     251 </span><span class="lineNoCov">          0 :     _impl-&gt;shaders.clear();</span>
+<span class="lineNum">     252 </span>            : 
+<span class="lineNum">     253 </span><span class="lineNoCov">          0 :     for( TextureHash::const_iterator i = _impl-&gt;eqTextures.begin();</span>
+<span class="lineNum">     254 </span><span class="lineNoCov">          0 :          i != _impl-&gt;eqTextures.end(); ++i )</span>
+<span class="lineNum">     255 </span>            :     {
+<span class="lineNum">     256 </span><span class="lineNoCov">          0 :         Texture* texture = i-&gt;second;</span>
+<span class="lineNum">     257 </span><span class="lineNoCov">          0 :         LBVERB &lt;&lt; &quot;Delete eq::Texture &quot; &lt;&lt; i-&gt;first &lt;&lt; &quot; @&quot; &lt;&lt; (void*)texture</span>
+<span class="lineNum">     258 </span><span class="lineNoCov">          0 :                &lt;&lt; std::endl;</span>
+<span class="lineNum">     259 </span><span class="lineNoCov">          0 :         texture-&gt;flush();</span>
+<span class="lineNum">     260 </span><span class="lineNoCov">          0 :         delete texture;</span>
+<span class="lineNum">     261 </span>            :     }
+<span class="lineNum">     262 </span><span class="lineNoCov">          0 :     _impl-&gt;eqTextures.clear();</span>
+<span class="lineNum">     263 </span>            : 
+<span class="lineNum">     264 </span><span class="lineNoCov">          0 :     for( FontHash::const_iterator i = _impl-&gt;eqFonts.begin();</span>
+<span class="lineNum">     265 </span><span class="lineNoCov">          0 :          i != _impl-&gt;eqFonts.end(); ++i )</span>
+<span class="lineNum">     266 </span>            :     {
+<span class="lineNum">     267 </span><span class="lineNoCov">          0 :         util::BitmapFont* font = i-&gt;second;</span>
+<span class="lineNum">     268 </span><span class="lineNoCov">          0 :         LBVERB &lt;&lt; &quot;Delete eq::Font &quot; &lt;&lt; i-&gt;first &lt;&lt; &quot; @&quot; &lt;&lt; (void*)font</span>
+<span class="lineNum">     269 </span><span class="lineNoCov">          0 :                &lt;&lt; std::endl;</span>
+<span class="lineNum">     270 </span><span class="lineNoCov">          0 :         font-&gt;exit();</span>
+<span class="lineNum">     271 </span><span class="lineNoCov">          0 :         delete font;</span>
+<span class="lineNum">     272 </span>            :     }
+<span class="lineNum">     273 </span><span class="lineNoCov">          0 :     _impl-&gt;eqFonts.clear();</span>
+<span class="lineNum">     274 </span>            : 
+<span class="lineNum">     275 </span><span class="lineNoCov">          0 :     for( FBOHash::const_iterator i =</span>
+<span class="lineNum">     276 </span><span class="lineNoCov">          0 :              _impl-&gt;eqFrameBufferObjects.begin();</span>
+<span class="lineNum">     277 </span><span class="lineNoCov">          0 :          i != _impl-&gt;eqFrameBufferObjects.end(); ++i )</span>
+<span class="lineNum">     278 </span>            :     {
+<span class="lineNum">     279 </span><span class="lineNoCov">          0 :         FrameBufferObject* frameBufferObject = i-&gt;second;</span>
+<span class="lineNum">     280 </span><span class="lineNoCov">          0 :         LBVERB &lt;&lt; &quot;Delete eq::FrameBufferObject &quot; &lt;&lt; i-&gt;first &lt;&lt; &quot; @&quot;</span>
+<span class="lineNum">     281 </span><span class="lineNoCov">          0 :                &lt;&lt; (void*)frameBufferObject &lt;&lt; std::endl;</span>
+<span class="lineNum">     282 </span><span class="lineNoCov">          0 :         frameBufferObject-&gt;exit();</span>
+<span class="lineNum">     283 </span><span class="lineNoCov">          0 :         delete frameBufferObject;</span>
+<span class="lineNum">     284 </span>            :     }
+<span class="lineNum">     285 </span><span class="lineNoCov">          0 :     _impl-&gt;eqFrameBufferObjects.clear();</span>
+<span class="lineNum">     286 </span>            : 
+<span class="lineNum">     287 </span><span class="lineNoCov">          0 :     for( UploaderHash::const_iterator i = _impl-&gt;eqUploaders.begin();</span>
+<span class="lineNum">     288 </span><span class="lineNoCov">          0 :          i != _impl-&gt;eqUploaders.end(); ++i )</span>
+<span class="lineNum">     289 </span>            :     {
+<span class="lineNum">     290 </span><span class="lineNoCov">          0 :         pression::Uploader* uploader = i-&gt;second;</span>
+<span class="lineNum">     291 </span><span class="lineNoCov">          0 :         LBVERB &lt;&lt; &quot;Delete uploader &quot; &lt;&lt; i-&gt;first &lt;&lt; &quot; @&quot; &lt;&lt; (void*)uploader</span>
+<span class="lineNum">     292 </span><span class="lineNoCov">          0 :                &lt;&lt; std::endl;</span>
+<span class="lineNum">     293 </span><span class="lineNoCov">          0 :         uploader-&gt;clear();</span>
+<span class="lineNum">     294 </span><span class="lineNoCov">          0 :         delete uploader;</span>
+<span class="lineNum">     295 </span>            :     }
+<span class="lineNum">     296 </span><span class="lineNoCov">          0 :     _impl-&gt;eqUploaders.clear();</span>
+<span class="lineNum">     297 </span><span class="lineNoCov">          0 : }</span>
+<span class="lineNum">     298 </span>            : 
+<a name="299"><span class="lineNum">     299 </span>            : // display list functions</a>
+<span class="lineNum">     300 </span>            : 
+<span class="lineNum">     301 </span><span class="lineNoCov">          0 : GLuint ObjectManager::getList( const void* key ) const</span>
+<span class="lineNum">     302 </span>            : {
+<span class="lineNum">     303 </span><span class="lineNoCov">          0 :     ObjectHash::const_iterator i = _impl-&gt;lists.find( key );</span>
+<span class="lineNum">     304 </span><span class="lineNoCov">          0 :     if( i == _impl-&gt;lists.end( ))</span>
+<span class="lineNum">     305 </span><span class="lineNoCov">          0 :         return INVALID;</span>
+<span class="lineNum">     306 </span>            : 
+<span class="lineNum">     307 </span><span class="lineNoCov">          0 :     const Object&amp; object = i-&gt;second;</span>
+<span class="lineNum">     308 </span><span class="lineNoCov">          0 :     return object.id;</span>
+<a name="309"><span class="lineNum">     309 </span>            : }</a>
+<span class="lineNum">     310 </span>            : 
+<span class="lineNum">     311 </span><span class="lineNoCov">          0 : GLuint ObjectManager::newList( const void* key, const GLsizei num )</span>
+<span class="lineNum">     312 </span>            : {
+<span class="lineNum">     313 </span><span class="lineNoCov">          0 :     if( _impl-&gt;lists.find( key ) != _impl-&gt;lists.end( ))</span>
+<span class="lineNum">     314 </span>            :     {
+<span class="lineNum">     315 </span><span class="lineNoCov">          0 :         LBWARN &lt;&lt; &quot;Requested new list for existing key&quot; &lt;&lt; std::endl;</span>
+<span class="lineNum">     316 </span><span class="lineNoCov">          0 :         return INVALID;</span>
+<span class="lineNum">     317 </span>            :     }
+<span class="lineNum">     318 </span>            : 
+<span class="lineNum">     319 </span><span class="lineNoCov">          0 :     const GLuint id = glGenLists( num );</span>
+<span class="lineNum">     320 </span><span class="lineNoCov">          0 :     if( !id )</span>
+<span class="lineNum">     321 </span>            :     {
+<span class="lineNum">     322 </span><span class="lineNoCov">          0 :         LBWARN &lt;&lt; &quot;glGenLists failed: &quot; &lt;&lt; glGetError() &lt;&lt; std::endl;</span>
+<span class="lineNum">     323 </span><span class="lineNoCov">          0 :         return INVALID;</span>
+<span class="lineNum">     324 </span>            :     }
+<span class="lineNum">     325 </span>            : 
+<span class="lineNum">     326 </span><span class="lineNoCov">          0 :     Object&amp; object   = _impl-&gt;lists[ key ];</span>
+<span class="lineNum">     327 </span><span class="lineNoCov">          0 :     object.id        = id;</span>
+<span class="lineNum">     328 </span><span class="lineNoCov">          0 :     object.num       = num;</span>
+<span class="lineNum">     329 </span>            : 
+<span class="lineNum">     330 </span><span class="lineNoCov">          0 :     return id;</span>
+<a name="331"><span class="lineNum">     331 </span>            : }</a>
+<span class="lineNum">     332 </span>            : 
+<span class="lineNum">     333 </span><span class="lineNoCov">          0 : GLuint ObjectManager::obtainList( const void* key, const GLsizei num )</span>
+<span class="lineNum">     334 </span>            : {
+<span class="lineNum">     335 </span><span class="lineNoCov">          0 :     const GLuint id = getList( key );</span>
+<span class="lineNum">     336 </span><span class="lineNoCov">          0 :     if( id != INVALID )</span>
+<span class="lineNum">     337 </span><span class="lineNoCov">          0 :         return id;</span>
+<span class="lineNum">     338 </span><span class="lineNoCov">          0 :     return newList( key, num );</span>
+<a name="339"><span class="lineNum">     339 </span>            : }</a>
+<span class="lineNum">     340 </span>            : 
+<span class="lineNum">     341 </span><span class="lineNoCov">          0 : void ObjectManager::deleteList( const void* key )</span>
+<span class="lineNum">     342 </span>            : {
+<span class="lineNum">     343 </span><span class="lineNoCov">          0 :     ObjectHash::iterator i = _impl-&gt;lists.find( key );</span>
+<span class="lineNum">     344 </span><span class="lineNoCov">          0 :     if( i == _impl-&gt;lists.end( ))</span>
+<span class="lineNum">     345 </span><span class="lineNoCov">          0 :         return;</span>
+<span class="lineNum">     346 </span>            : 
+<span class="lineNum">     347 </span><span class="lineNoCov">          0 :     const Object&amp; object = i-&gt;second;</span>
+<span class="lineNum">     348 </span><span class="lineNoCov">          0 :     EQ_GL_CALL( glDeleteLists( object.id, object.num ));</span>
+<span class="lineNum">     349 </span><span class="lineNoCov">          0 :     _impl-&gt;lists.erase( i );</span>
+<span class="lineNum">     350 </span>            : }
+<span class="lineNum">     351 </span>            : 
+<a name="352"><span class="lineNum">     352 </span>            : // vertex array functions</a>
+<span class="lineNum">     353 </span>            : 
+<span class="lineNum">     354 </span><span class="lineNoCov">          0 : GLuint ObjectManager::getVertexArray( const void* key ) const</span>
+<span class="lineNum">     355 </span>            : {
+<span class="lineNum">     356 </span><span class="lineNoCov">          0 :     ObjectHash::const_iterator i = _impl-&gt;vertexArrays.find( key );</span>
+<span class="lineNum">     357 </span><span class="lineNoCov">          0 :     if( i == _impl-&gt;vertexArrays.end( ))</span>
+<span class="lineNum">     358 </span><span class="lineNoCov">          0 :         return INVALID;</span>
+<span class="lineNum">     359 </span>            : 
+<span class="lineNum">     360 </span><span class="lineNoCov">          0 :     const Object&amp; object = i-&gt;second;</span>
+<span class="lineNum">     361 </span><span class="lineNoCov">          0 :     return object.id;</span>
+<a name="362"><span class="lineNum">     362 </span>            : }</a>
+<span class="lineNum">     363 </span>            : 
+<span class="lineNum">     364 </span><span class="lineNoCov">          0 : GLuint ObjectManager::newVertexArray( const void* key )</span>
+<span class="lineNum">     365 </span>            : {
+<span class="lineNum">     366 </span><span class="lineNoCov">          0 :     if( _impl-&gt;vertexArrays.find( key ) != _impl-&gt;vertexArrays.end( ))</span>
+<span class="lineNum">     367 </span>            :     {
+<span class="lineNum">     368 </span><span class="lineNoCov">          0 :         LBWARN &lt;&lt; &quot;Requested new vertex array for existing key&quot; &lt;&lt; std::endl;</span>
+<span class="lineNum">     369 </span><span class="lineNoCov">          0 :         return INVALID;</span>
+<span class="lineNum">     370 </span>            :     }
+<span class="lineNum">     371 </span>            : 
+<span class="lineNum">     372 </span><span class="lineNoCov">          0 :     GLuint id = INVALID;</span>
+<span class="lineNum">     373 </span><span class="lineNoCov">          0 :     EQ_GL_CALL( glGenVertexArrays( 1, &amp;id ));</span>
+<span class="lineNum">     374 </span><span class="lineNoCov">          0 :     if( !id )</span>
+<span class="lineNum">     375 </span>            :     {
+<span class="lineNum">     376 </span><span class="lineNoCov">          0 :         LBWARN &lt;&lt; &quot;glGenVertexArrays failed: &quot; &lt;&lt; glGetError() &lt;&lt; std::endl;</span>
+<span class="lineNum">     377 </span><span class="lineNoCov">          0 :         return INVALID;</span>
+<span class="lineNum">     378 </span>            :     }
+<span class="lineNum">     379 </span>            : 
+<span class="lineNum">     380 </span><span class="lineNoCov">          0 :     Object&amp; object   = _impl-&gt;vertexArrays[ key ];</span>
+<span class="lineNum">     381 </span><span class="lineNoCov">          0 :     object.id        = id;</span>
+<span class="lineNum">     382 </span><span class="lineNoCov">          0 :     return id;</span>
+<a name="383"><span class="lineNum">     383 </span>            : }</a>
+<span class="lineNum">     384 </span>            : 
+<span class="lineNum">     385 </span><span class="lineNoCov">          0 : GLuint ObjectManager::obtainVertexArray( const void* key )</span>
+<span class="lineNum">     386 </span>            : {
+<span class="lineNum">     387 </span><span class="lineNoCov">          0 :     const GLuint id = getVertexArray( key );</span>
+<span class="lineNum">     388 </span><span class="lineNoCov">          0 :     if( id != INVALID )</span>
+<span class="lineNum">     389 </span><span class="lineNoCov">          0 :         return id;</span>
+<span class="lineNum">     390 </span><span class="lineNoCov">          0 :     return newVertexArray( key );</span>
+<a name="391"><span class="lineNum">     391 </span>            : }</a>
+<span class="lineNum">     392 </span>            : 
+<span class="lineNum">     393 </span><span class="lineNoCov">          0 : void ObjectManager::deleteVertexArray( const void* key )</span>
+<span class="lineNum">     394 </span>            : {
+<span class="lineNum">     395 </span><span class="lineNoCov">          0 :     ObjectHash::iterator i = _impl-&gt;vertexArrays.find( key );</span>
+<span class="lineNum">     396 </span><span class="lineNoCov">          0 :     if( i == _impl-&gt;vertexArrays.end( ))</span>
+<span class="lineNum">     397 </span><span class="lineNoCov">          0 :         return;</span>
+<span class="lineNum">     398 </span>            : 
+<span class="lineNum">     399 </span><span class="lineNoCov">          0 :     const Object&amp; object = i-&gt;second;</span>
+<span class="lineNum">     400 </span><span class="lineNoCov">          0 :     EQ_GL_CALL( glDeleteVertexArrays( 1, &amp;object.id ));</span>
+<span class="lineNum">     401 </span><span class="lineNoCov">          0 :     _impl-&gt;vertexArrays.erase( i );</span>
+<span class="lineNum">     402 </span>            : }
+<span class="lineNum">     403 </span>            : 
+<a name="404"><span class="lineNum">     404 </span>            : // texture object functions</a>
+<span class="lineNum">     405 </span>            : 
+<span class="lineNum">     406 </span><span class="lineNoCov">          0 : GLuint ObjectManager::getTexture( const void* key ) const</span>
+<span class="lineNum">     407 </span>            : {
+<span class="lineNum">     408 </span><span class="lineNoCov">          0 :     ObjectHash::const_iterator i = _impl-&gt;textures.find( key );</span>
+<span class="lineNum">     409 </span><span class="lineNoCov">          0 :     if( i == _impl-&gt;textures.end( ))</span>
+<span class="lineNum">     410 </span><span class="lineNoCov">          0 :         return INVALID;</span>
+<span class="lineNum">     411 </span>            : 
+<span class="lineNum">     412 </span><span class="lineNoCov">          0 :     const Object&amp; object = i-&gt;second;</span>
+<span class="lineNum">     413 </span><span class="lineNoCov">          0 :     return object.id;</span>
+<a name="414"><span class="lineNum">     414 </span>            : }</a>
+<span class="lineNum">     415 </span>            : 
+<span class="lineNum">     416 </span><span class="lineNoCov">          0 : GLuint ObjectManager::newTexture( const void* key )</span>
+<span class="lineNum">     417 </span>            : {
+<span class="lineNum">     418 </span><span class="lineNoCov">          0 :     if( _impl-&gt;textures.find( key ) != _impl-&gt;textures.end( ))</span>
+<span class="lineNum">     419 </span>            :     {
+<span class="lineNum">     420 </span><span class="lineNoCov">          0 :         LBWARN &lt;&lt; &quot;Requested new texture for existing key&quot; &lt;&lt; std::endl;</span>
+<span class="lineNum">     421 </span><span class="lineNoCov">          0 :         return INVALID;</span>
+<span class="lineNum">     422 </span>            :     }
+<span class="lineNum">     423 </span>            : 
+<span class="lineNum">     424 </span><span class="lineNoCov">          0 :     GLuint id = INVALID;</span>
+<span class="lineNum">     425 </span><span class="lineNoCov">          0 :     glGenTextures( 1, &amp;id );</span>
+<span class="lineNum">     426 </span><span class="lineNoCov">          0 :     if( id == INVALID )</span>
+<span class="lineNum">     427 </span>            :     {
+<span class="lineNum">     428 </span><span class="lineNoCov">          0 :         LBWARN &lt;&lt; &quot;glGenTextures failed: &quot; &lt;&lt; glGetError() &lt;&lt; std::endl;</span>
+<span class="lineNum">     429 </span><span class="lineNoCov">          0 :         return INVALID;</span>
+<span class="lineNum">     430 </span>            :     }
+<span class="lineNum">     431 </span>            : 
+<span class="lineNum">     432 </span><span class="lineNoCov">          0 :     Object&amp; object   = _impl-&gt;textures[ key ];</span>
+<span class="lineNum">     433 </span><span class="lineNoCov">          0 :     object.id        = id;</span>
+<span class="lineNum">     434 </span><span class="lineNoCov">          0 :     return id;</span>
+<a name="435"><span class="lineNum">     435 </span>            : }</a>
+<span class="lineNum">     436 </span>            : 
+<span class="lineNum">     437 </span><span class="lineNoCov">          0 : GLuint ObjectManager::obtainTexture( const void* key )</span>
+<span class="lineNum">     438 </span>            : {
+<span class="lineNum">     439 </span><span class="lineNoCov">          0 :     const GLuint id = getTexture( key );</span>
+<span class="lineNum">     440 </span><span class="lineNoCov">          0 :     if( id != INVALID )</span>
+<span class="lineNum">     441 </span><span class="lineNoCov">          0 :         return id;</span>
+<span class="lineNum">     442 </span><span class="lineNoCov">          0 :     return newTexture( key );</span>
+<a name="443"><span class="lineNum">     443 </span>            : }</a>
+<span class="lineNum">     444 </span>            : 
+<span class="lineNum">     445 </span><span class="lineNoCov">          0 : void ObjectManager::deleteTexture( const void* key )</span>
+<span class="lineNum">     446 </span>            : {
+<span class="lineNum">     447 </span><span class="lineNoCov">          0 :     ObjectHash::iterator i = _impl-&gt;textures.find( key );</span>
+<span class="lineNum">     448 </span><span class="lineNoCov">          0 :     if( i == _impl-&gt;textures.end( ))</span>
+<span class="lineNum">     449 </span><span class="lineNoCov">          0 :         return;</span>
+<span class="lineNum">     450 </span>            : 
+<span class="lineNum">     451 </span><span class="lineNoCov">          0 :     const Object&amp; object = i-&gt;second;</span>
+<span class="lineNum">     452 </span><span class="lineNoCov">          0 :     EQ_GL_CALL( glDeleteTextures( 1, &amp;object.id ));</span>
+<span class="lineNum">     453 </span><span class="lineNoCov">          0 :     _impl-&gt;textures.erase( i );</span>
+<span class="lineNum">     454 </span>            : }
+<span class="lineNum">     455 </span>            : 
+<a name="456"><span class="lineNum">     456 </span>            : // buffer object functions</a>
+<span class="lineNum">     457 </span>            : 
+<span class="lineNum">     458 </span><span class="lineNoCov">          0 : bool ObjectManager::supportsBuffers() const</span>
+<span class="lineNum">     459 </span>            : {
+<span class="lineNum">     460 </span><span class="lineNoCov">          0 :     return ( GLEW_VERSION_1_5 );</span>
+<a name="461"><span class="lineNum">     461 </span>            : }</a>
+<span class="lineNum">     462 </span>            : 
+<span class="lineNum">     463 </span><span class="lineNoCov">          0 : GLuint ObjectManager::getBuffer( const void* key ) const</span>
+<span class="lineNum">     464 </span>            : {
+<span class="lineNum">     465 </span><span class="lineNoCov">          0 :     ObjectHash::const_iterator i = _impl-&gt;buffers.find( key );</span>
+<span class="lineNum">     466 </span><span class="lineNoCov">          0 :     if( i == _impl-&gt;buffers.end() )</span>
+<span class="lineNum">     467 </span><span class="lineNoCov">          0 :         return INVALID;</span>
+<span class="lineNum">     468 </span>            : 
+<span class="lineNum">     469 </span><span class="lineNoCov">          0 :     const Object&amp; object = i-&gt;second;</span>
+<span class="lineNum">     470 </span><span class="lineNoCov">          0 :     return object.id;</span>
+<a name="471"><span class="lineNum">     471 </span>            : }</a>
+<span class="lineNum">     472 </span>            : 
+<span class="lineNum">     473 </span><span class="lineNoCov">          0 : GLuint ObjectManager::newBuffer( const void* key )</span>
+<span class="lineNum">     474 </span>            : {
+<span class="lineNum">     475 </span><span class="lineNoCov">          0 :     if( !GLEW_VERSION_1_5 )</span>
+<span class="lineNum">     476 </span>            :     {
+<span class="lineNum">     477 </span><span class="lineNoCov">          0 :         LBWARN &lt;&lt; &quot;glGenBuffers not available&quot; &lt;&lt; std::endl;</span>
+<span class="lineNum">     478 </span><span class="lineNoCov">          0 :         return INVALID;</span>
+<span class="lineNum">     479 </span>            :     }
+<span class="lineNum">     480 </span>            : 
+<span class="lineNum">     481 </span><span class="lineNoCov">          0 :     if( _impl-&gt;buffers.find( key ) != _impl-&gt;buffers.end() )</span>
+<span class="lineNum">     482 </span>            :     {
+<span class="lineNum">     483 </span><span class="lineNoCov">          0 :         LBWARN &lt;&lt; &quot;Requested new buffer for existing key &quot; &lt;&lt; key &lt;&lt; std::endl;</span>
+<span class="lineNum">     484 </span><span class="lineNoCov">          0 :         return INVALID;</span>
+<span class="lineNum">     485 </span>            :     }
+<span class="lineNum">     486 </span>            : 
+<span class="lineNum">     487 </span><span class="lineNoCov">          0 :     GLuint id = INVALID;</span>
+<span class="lineNum">     488 </span><span class="lineNoCov">          0 :     glGenBuffers( 1, &amp;id );</span>
+<span class="lineNum">     489 </span><span class="lineNoCov">          0 :     if( id == INVALID )</span>
+<span class="lineNum">     490 </span>            :     {
+<span class="lineNum">     491 </span><span class="lineNoCov">          0 :         LBWARN &lt;&lt; &quot;glGenBuffers failed: &quot; &lt;&lt; glGetError() &lt;&lt; std::endl;</span>
+<span class="lineNum">     492 </span><span class="lineNoCov">          0 :         return INVALID;</span>
+<span class="lineNum">     493 </span>            :     }
+<span class="lineNum">     494 </span>            : 
+<span class="lineNum">     495 </span><span class="lineNoCov">          0 :     Object&amp; object     = _impl-&gt;buffers[ key ];</span>
+<span class="lineNum">     496 </span><span class="lineNoCov">          0 :     object.id          = id;</span>
+<span class="lineNum">     497 </span><span class="lineNoCov">          0 :     return id;</span>
+<a name="498"><span class="lineNum">     498 </span>            : }</a>
+<span class="lineNum">     499 </span>            : 
+<span class="lineNum">     500 </span><span class="lineNoCov">          0 : GLuint ObjectManager::obtainBuffer( const void* key )</span>
+<span class="lineNum">     501 </span>            : {
+<span class="lineNum">     502 </span><span class="lineNoCov">          0 :     const GLuint id = getBuffer( key );</span>
+<span class="lineNum">     503 </span><span class="lineNoCov">          0 :     if( id != INVALID )</span>
+<span class="lineNum">     504 </span><span class="lineNoCov">          0 :         return id;</span>
+<span class="lineNum">     505 </span><span class="lineNoCov">          0 :     return newBuffer( key );</span>
+<a name="506"><span class="lineNum">     506 </span>            : }</a>
+<span class="lineNum">     507 </span>            : 
+<span class="lineNum">     508 </span><span class="lineNoCov">          0 : void ObjectManager::deleteBuffer( const void* key )</span>
+<span class="lineNum">     509 </span>            : {
+<span class="lineNum">     510 </span><span class="lineNoCov">          0 :     ObjectHash::iterator i = _impl-&gt;buffers.find( key );</span>
+<span class="lineNum">     511 </span><span class="lineNoCov">          0 :     if( i == _impl-&gt;buffers.end() )</span>
+<span class="lineNum">     512 </span><span class="lineNoCov">          0 :         return;</span>
+<span class="lineNum">     513 </span>            : 
+<span class="lineNum">     514 </span><span class="lineNoCov">          0 :     const Object&amp; object = i-&gt;second;</span>
+<span class="lineNum">     515 </span><span class="lineNoCov">          0 :     EQ_GL_CALL( glDeleteBuffers( 1, &amp;object.id ));</span>
+<span class="lineNum">     516 </span><span class="lineNoCov">          0 :     _impl-&gt;buffers.erase( i );</span>
+<span class="lineNum">     517 </span>            : }
+<span class="lineNum">     518 </span>            : 
+<a name="519"><span class="lineNum">     519 </span>            : // program object functions</a>
+<span class="lineNum">     520 </span>            : 
+<span class="lineNum">     521 </span><span class="lineNoCov">          0 : bool ObjectManager::supportsPrograms() const</span>
+<span class="lineNum">     522 </span>            : {
+<span class="lineNum">     523 </span><span class="lineNoCov">          0 :     return ( GLEW_VERSION_2_0 );</span>
+<a name="524"><span class="lineNum">     524 </span>            : }</a>
+<span class="lineNum">     525 </span>            : 
+<span class="lineNum">     526 </span><span class="lineNoCov">          0 : GLuint ObjectManager::getProgram( const void* key ) const</span>
+<span class="lineNum">     527 </span>            : {
+<span class="lineNum">     528 </span><span class="lineNoCov">          0 :     ObjectHash::const_iterator i = _impl-&gt;programs.find( key );</span>
+<span class="lineNum">     529 </span><span class="lineNoCov">          0 :     if( i == _impl-&gt;programs.end() )</span>
+<span class="lineNum">     530 </span><span class="lineNoCov">          0 :         return INVALID;</span>
+<span class="lineNum">     531 </span>            : 
+<span class="lineNum">     532 </span><span class="lineNoCov">          0 :     const Object&amp; object = i-&gt;second;</span>
+<span class="lineNum">     533 </span><span class="lineNoCov">          0 :     return object.id;</span>
+<a name="534"><span class="lineNum">     534 </span>            : }</a>
+<span class="lineNum">     535 </span>            : 
+<span class="lineNum">     536 </span><span class="lineNoCov">          0 : GLuint ObjectManager::newProgram( const void* key )</span>
+<span class="lineNum">     537 </span>            : {
+<span class="lineNum">     538 </span><span class="lineNoCov">          0 :     if( !GLEW_VERSION_2_0 )</span>
+<span class="lineNum">     539 </span>            :     {
+<span class="lineNum">     540 </span><span class="lineNoCov">          0 :         LBWARN &lt;&lt; &quot;glCreateProgram not available&quot; &lt;&lt; std::endl;</span>
+<span class="lineNum">     541 </span><span class="lineNoCov">          0 :         return INVALID;</span>
+<span class="lineNum">     542 </span>            :     }
+<span class="lineNum">     543 </span>            : 
+<span class="lineNum">     544 </span><span class="lineNoCov">          0 :     if( _impl-&gt;programs.find( key ) != _impl-&gt;programs.end() )</span>
+<span class="lineNum">     545 </span>            :     {
+<span class="lineNum">     546 </span><span class="lineNoCov">          0 :         LBWARN &lt;&lt; &quot;Requested new program for existing key&quot; &lt;&lt; std::endl;</span>
+<span class="lineNum">     547 </span><span class="lineNoCov">          0 :         return INVALID;</span>
+<span class="lineNum">     548 </span>            :     }
+<span class="lineNum">     549 </span>            : 
+<span class="lineNum">     550 </span><span class="lineNoCov">          0 :     const GLuint id = glCreateProgram();</span>
+<span class="lineNum">     551 </span><span class="lineNoCov">          0 :     if( !id )</span>
+<span class="lineNum">     552 </span>            :     {
+<span class="lineNum">     553 </span><span class="lineNoCov">          0 :         LBWARN &lt;&lt; &quot;glCreateProgram failed: &quot; &lt;&lt; glGetError() &lt;&lt; std::endl;</span>
+<span class="lineNum">     554 </span><span class="lineNoCov">          0 :         return INVALID;</span>
+<span class="lineNum">     555 </span>            :     }
+<span class="lineNum">     556 </span>            : 
+<span class="lineNum">     557 </span><span class="lineNoCov">          0 :     Object&amp; object     = _impl-&gt;programs[ key ];</span>
+<span class="lineNum">     558 </span><span class="lineNoCov">          0 :     object.id          = id;</span>
+<span class="lineNum">     559 </span><span class="lineNoCov">          0 :     return id;</span>
+<a name="560"><span class="lineNum">     560 </span>            : }</a>
+<span class="lineNum">     561 </span>            : 
+<span class="lineNum">     562 </span><span class="lineNoCov">          0 : GLuint ObjectManager::obtainProgram( const void* key )</span>
+<span class="lineNum">     563 </span>            : {
+<span class="lineNum">     564 </span><span class="lineNoCov">          0 :     const GLuint id = getProgram( key );</span>
+<span class="lineNum">     565 </span><span class="lineNoCov">          0 :     if( id != INVALID )</span>
+<span class="lineNum">     566 </span><span class="lineNoCov">          0 :         return id;</span>
+<span class="lineNum">     567 </span><span class="lineNoCov">          0 :     return newProgram( key );</span>
+<a name="568"><span class="lineNum">     568 </span>            : }</a>
+<span class="lineNum">     569 </span>            : 
+<span class="lineNum">     570 </span><span class="lineNoCov">          0 : void ObjectManager::deleteProgram( const void* key )</span>
+<span class="lineNum">     571 </span>            : {
+<span class="lineNum">     572 </span><span class="lineNoCov">          0 :     ObjectHash::iterator i = _impl-&gt;programs.find( key );</span>
+<span class="lineNum">     573 </span><span class="lineNoCov">          0 :     if( i == _impl-&gt;programs.end() )</span>
+<span class="lineNum">     574 </span><span class="lineNoCov">          0 :         return;</span>
+<span class="lineNum">     575 </span>            : 
+<span class="lineNum">     576 </span><span class="lineNoCov">          0 :     const Object&amp; object = i-&gt;second;</span>
+<span class="lineNum">     577 </span><span class="lineNoCov">          0 :     EQ_GL_CALL( glDeleteProgram( object.id ));</span>
+<span class="lineNum">     578 </span><span class="lineNoCov">          0 :     _impl-&gt;programs.erase( i );</span>
+<span class="lineNum">     579 </span>            : }
+<span class="lineNum">     580 </span>            : 
+<a name="581"><span class="lineNum">     581 </span>            : // shader object functions</a>
+<span class="lineNum">     582 </span>            : 
+<span class="lineNum">     583 </span><span class="lineNoCov">          0 : bool ObjectManager::supportsShaders() const</span>
+<span class="lineNum">     584 </span>            : {
+<span class="lineNum">     585 </span><span class="lineNoCov">          0 :     return ( GLEW_VERSION_2_0 );</span>
+<a name="586"><span class="lineNum">     586 </span>            : }</a>
+<span class="lineNum">     587 </span>            : 
+<span class="lineNum">     588 </span><span class="lineNoCov">          0 : GLuint ObjectManager::getShader( const void* key ) const</span>
+<span class="lineNum">     589 </span>            : {
+<span class="lineNum">     590 </span><span class="lineNoCov">          0 :     ObjectHash::const_iterator i = _impl-&gt;shaders.find( key );</span>
+<span class="lineNum">     591 </span><span class="lineNoCov">          0 :     if( i == _impl-&gt;shaders.end() )</span>
+<span class="lineNum">     592 </span><span class="lineNoCov">          0 :         return INVALID;</span>
+<span class="lineNum">     593 </span>            : 
+<span class="lineNum">     594 </span><span class="lineNoCov">          0 :     const Object&amp; object = i-&gt;second;</span>
+<span class="lineNum">     595 </span><span class="lineNoCov">          0 :     return object.id;</span>
+<a name="596"><span class="lineNum">     596 </span>            : }</a>
+<span class="lineNum">     597 </span>            : 
+<span class="lineNum">     598 </span><span class="lineNoCov">          0 : GLuint ObjectManager::newShader( const void* key, const GLenum type )</span>
+<span class="lineNum">     599 </span>            : {
+<span class="lineNum">     600 </span><span class="lineNoCov">          0 :     if( !GLEW_VERSION_2_0 )</span>
+<span class="lineNum">     601 </span>            :     {
+<span class="lineNum">     602 </span><span class="lineNoCov">          0 :         LBWARN &lt;&lt; &quot;glCreateShader not available&quot; &lt;&lt; std::endl;</span>
+<span class="lineNum">     603 </span><span class="lineNoCov">          0 :         return INVALID;</span>
+<span class="lineNum">     604 </span>            :     }
+<span class="lineNum">     605 </span>            : 
+<span class="lineNum">     606 </span><span class="lineNoCov">          0 :     if( _impl-&gt;shaders.find( key ) != _impl-&gt;shaders.end() )</span>
+<span class="lineNum">     607 </span>            :     {
+<span class="lineNum">     608 </span><span class="lineNoCov">          0 :         LBWARN &lt;&lt; &quot;Requested new shader for existing key&quot; &lt;&lt; std::endl;</span>
+<span class="lineNum">     609 </span><span class="lineNoCov">          0 :         return INVALID;</span>
+<span class="lineNum">     610 </span>            :     }
+<span class="lineNum">     611 </span>            : 
+<span class="lineNum">     612 </span><span class="lineNoCov">          0 :     const GLuint id = glCreateShader( type );</span>
+<span class="lineNum">     613 </span><span class="lineNoCov">          0 :     if( !id )</span>
+<span class="lineNum">     614 </span>            :     {
+<span class="lineNum">     615 </span><span class="lineNoCov">          0 :         LBWARN &lt;&lt; &quot;glCreateShader failed: &quot; &lt;&lt; glGetError() &lt;&lt; std::endl;</span>
+<span class="lineNum">     616 </span><span class="lineNoCov">          0 :         return INVALID;</span>
+<span class="lineNum">     617 </span>            :     }
+<span class="lineNum">     618 </span>            : 
+<span class="lineNum">     619 </span><span class="lineNoCov">          0 :     Object&amp; object     = _impl-&gt;shaders[ key ];</span>
+<span class="lineNum">     620 </span><span class="lineNoCov">          0 :     object.id          = id;</span>
+<span class="lineNum">     621 </span><span class="lineNoCov">          0 :     return id;</span>
+<a name="622"><span class="lineNum">     622 </span>            : }</a>
+<span class="lineNum">     623 </span>            : 
+<span class="lineNum">     624 </span><span class="lineNoCov">          0 : GLuint ObjectManager::obtainShader( const void* key, const GLenum type )</span>
+<span class="lineNum">     625 </span>            : {
+<span class="lineNum">     626 </span><span class="lineNoCov">          0 :     const GLuint id = getShader( key );</span>
+<span class="lineNum">     627 </span><span class="lineNoCov">          0 :     if( id != INVALID )</span>
+<span class="lineNum">     628 </span><span class="lineNoCov">          0 :         return id;</span>
+<span class="lineNum">     629 </span><span class="lineNoCov">          0 :     return newShader( key, type );</span>
+<a name="630"><span class="lineNum">     630 </span>            : }</a>
+<span class="lineNum">     631 </span>            : 
+<span class="lineNum">     632 </span><span class="lineNoCov">          0 : void ObjectManager::deleteShader( const void* key )</span>
+<span class="lineNum">     633 </span>            : {
+<span class="lineNum">     634 </span><span class="lineNoCov">          0 :     ObjectHash::iterator i = _impl-&gt;shaders.find( key );</span>
+<span class="lineNum">     635 </span><span class="lineNoCov">          0 :     if( i == _impl-&gt;shaders.end() )</span>
+<span class="lineNum">     636 </span><span class="lineNoCov">          0 :         return;</span>
+<span class="lineNum">     637 </span>            : 
+<span class="lineNum">     638 </span><span class="lineNoCov">          0 :     const Object&amp; object = i-&gt;second;</span>
+<span class="lineNum">     639 </span><span class="lineNoCov">          0 :     EQ_GL_CALL( glDeleteShader( object.id ));</span>
+<span class="lineNum">     640 </span><span class="lineNoCov">          0 :     _impl-&gt;shaders.erase( i );</span>
+<a name="641"><span class="lineNum">     641 </span>            : }</a>
+<span class="lineNum">     642 </span>            : 
+<span class="lineNum">     643 </span><span class="lineNoCov">          0 : Accum* ObjectManager::getEqAccum( const void* key ) const</span>
+<span class="lineNum">     644 </span>            : {
+<span class="lineNum">     645 </span><span class="lineNoCov">          0 :     AccumHash::const_iterator i = _impl-&gt;accums.find( key );</span>
+<span class="lineNum">     646 </span><span class="lineNoCov">          0 :     if( i == _impl-&gt;accums.end( ))</span>
+<span class="lineNum">     647 </span><span class="lineNoCov">          0 :         return 0;</span>
+<span class="lineNum">     648 </span>            : 
+<span class="lineNum">     649 </span><span class="lineNoCov">          0 :     return i-&gt;second;</span>
+<a name="650"><span class="lineNum">     650 </span>            : }</a>
+<span class="lineNum">     651 </span>            : 
+<span class="lineNum">     652 </span><span class="lineNoCov">          0 : Accum* ObjectManager::newEqAccum( const void* key )</span>
+<span class="lineNum">     653 </span>            : {
+<span class="lineNum">     654 </span><span class="lineNoCov">          0 :     if( _impl-&gt;accums.find( key ) != _impl-&gt;accums.end( ))</span>
+<span class="lineNum">     655 </span>            :     {
+<span class="lineNum">     656 </span><span class="lineNoCov">          0 :         LBWARN &lt;&lt; &quot;Requested new Accumulation for existing key&quot; &lt;&lt; std::endl;</span>
+<span class="lineNum">     657 </span><span class="lineNoCov">          0 :         return 0;</span>
+<span class="lineNum">     658 </span>            :     }
+<span class="lineNum">     659 </span>            : 
+<span class="lineNum">     660 </span><span class="lineNoCov">          0 :     Accum* accum = new Accum( &amp;_impl-&gt;glewContext );</span>
+<span class="lineNum">     661 </span><span class="lineNoCov">          0 :     _impl-&gt;accums[ key ] = accum;</span>
+<span class="lineNum">     662 </span><span class="lineNoCov">          0 :     return accum;</span>
+<a name="663"><span class="lineNum">     663 </span>            : }</a>
+<span class="lineNum">     664 </span>            : 
+<span class="lineNum">     665 </span><span class="lineNoCov">          0 : Accum* ObjectManager::obtainEqAccum( const void* key )</span>
+<span class="lineNum">     666 </span>            : {
+<span class="lineNum">     667 </span><span class="lineNoCov">          0 :     Accum* accum = getEqAccum( key );</span>
+<span class="lineNum">     668 </span><span class="lineNoCov">          0 :     if( accum )</span>
+<span class="lineNum">     669 </span><span class="lineNoCov">          0 :         return accum;</span>
+<span class="lineNum">     670 </span><span class="lineNoCov">          0 :     return newEqAccum( key );</span>
+<a name="671"><span class="lineNum">     671 </span>            : }</a>
+<span class="lineNum">     672 </span>            : 
+<span class="lineNum">     673 </span><span class="lineNoCov">          0 : void ObjectManager::deleteEqAccum( const void* key )</span>
+<span class="lineNum">     674 </span>            : {
+<span class="lineNum">     675 </span><span class="lineNoCov">          0 :     AccumHash::iterator i = _impl-&gt;accums.find( key );</span>
+<span class="lineNum">     676 </span><span class="lineNoCov">          0 :     if( i == _impl-&gt;accums.end( ))</span>
+<span class="lineNum">     677 </span><span class="lineNoCov">          0 :         return;</span>
+<span class="lineNum">     678 </span>            : 
+<span class="lineNum">     679 </span><span class="lineNoCov">          0 :     Accum* accum = i-&gt;second;</span>
+<span class="lineNum">     680 </span><span class="lineNoCov">          0 :     _impl-&gt;accums.erase( i );</span>
+<span class="lineNum">     681 </span>            : 
+<span class="lineNum">     682 </span><span class="lineNoCov">          0 :     accum-&gt;exit();</span>
+<span class="lineNum">     683 </span><span class="lineNoCov">          0 :     delete accum;</span>
+<span class="lineNum">     684 </span>            : }
+<a name="685"><span class="lineNum">     685 </span>            : </a>
+<span class="lineNum">     686 </span>            : // eq::CompressorData object functions
+<span class="lineNum">     687 </span><span class="lineNoCov">          0 : pression::Uploader* ObjectManager::getEqUploader( const void* key ) const</span>
+<span class="lineNum">     688 </span>            : {
+<span class="lineNum">     689 </span><span class="lineNoCov">          0 :     UploaderHash::const_iterator i = _impl-&gt;eqUploaders.find( key );</span>
+<span class="lineNum">     690 </span><span class="lineNoCov">          0 :     if( i == _impl-&gt;eqUploaders.end( ))</span>
+<span class="lineNum">     691 </span><span class="lineNoCov">          0 :         return 0;</span>
+<span class="lineNum">     692 </span>            : 
+<span class="lineNum">     693 </span><span class="lineNoCov">          0 :     return i-&gt;second;</span>
+<a name="694"><span class="lineNum">     694 </span>            : }</a>
+<span class="lineNum">     695 </span>            : 
+<span class="lineNum">     696 </span><span class="lineNoCov">          0 : pression::Uploader* ObjectManager::newEqUploader( const void* key )</span>
+<span class="lineNum">     697 </span>            : {
+<span class="lineNum">     698 </span><span class="lineNoCov">          0 :     if( _impl-&gt;eqUploaders.find( key ) != _impl-&gt;eqUploaders.end( ))</span>
+<span class="lineNum">     699 </span>            :     {
+<span class="lineNum">     700 </span><span class="lineNoCov">          0 :         LBWARN &lt;&lt; &quot;Requested new compressor for existing key&quot; &lt;&lt; std::endl;</span>
+<span class="lineNum">     701 </span><span class="lineNoCov">          0 :         return 0;</span>
+<span class="lineNum">     702 </span>            :     }
+<span class="lineNum">     703 </span>            : 
+<span class="lineNum">     704 </span><span class="lineNoCov">          0 :     pression::Uploader* compressor = new pression::Uploader;</span>
+<span class="lineNum">     705 </span><span class="lineNoCov">          0 :     _impl-&gt;eqUploaders[ key ] = compressor;</span>
+<span class="lineNum">     706 </span>            : #ifdef EQ_OM_TRACE_ALLOCATIONS
+<span class="lineNum">     707 </span>            :     std::ostringstream out;
+<span class="lineNum">     708 </span>            :     out &lt;&lt; lunchbox::backtrace;
+<span class="lineNum">     709 </span>            :     _impl-&gt;eqUploaderAllocs[ key ] = out.str();
+<span class="lineNum">     710 </span>            : #endif
+<span class="lineNum">     711 </span>            : 
+<span class="lineNum">     712 </span><span class="lineNoCov">          0 :     return compressor;</span>
+<a name="713"><span class="lineNum">     713 </span>            : }</a>
+<span class="lineNum">     714 </span>            : 
+<span class="lineNum">     715 </span><span class="lineNoCov">          0 : pression::Uploader* ObjectManager::obtainEqUploader( const void* key )</span>
+<span class="lineNum">     716 </span>            : {
+<span class="lineNum">     717 </span><span class="lineNoCov">          0 :     pression::Uploader* compressor = getEqUploader( key );</span>
+<span class="lineNum">     718 </span><span class="lineNoCov">          0 :     if( compressor )</span>
+<span class="lineNum">     719 </span><span class="lineNoCov">          0 :         return compressor;</span>
+<span class="lineNum">     720 </span><span class="lineNoCov">          0 :     return newEqUploader( key );</span>
+<a name="721"><span class="lineNum">     721 </span>            : }</a>
+<span class="lineNum">     722 </span>            : 
+<span class="lineNum">     723 </span><span class="lineNoCov">          0 : void ObjectManager::deleteEqUploader( const void* key )</span>
+<span class="lineNum">     724 </span>            : {
+<span class="lineNum">     725 </span><span class="lineNoCov">          0 :     UploaderHash::iterator i = _impl-&gt;eqUploaders.find( key );</span>
+<span class="lineNum">     726 </span><span class="lineNoCov">          0 :     if( i == _impl-&gt;eqUploaders.end( ))</span>
+<span class="lineNum">     727 </span><span class="lineNoCov">          0 :         return;</span>
+<span class="lineNum">     728 </span>            : 
+<span class="lineNum">     729 </span><span class="lineNoCov">          0 :     pression::Uploader* uploader = i-&gt;second;</span>
+<span class="lineNum">     730 </span><span class="lineNoCov">          0 :     _impl-&gt;eqUploaders.erase( i );</span>
+<span class="lineNum">     731 </span>            : #ifdef EQ_OM_TRACE_ALLOCATIONS
+<span class="lineNum">     732 </span>            :     _impl-&gt;eqUploaderAllocs.erase( key );
+<span class="lineNum">     733 </span>            : #endif
+<span class="lineNum">     734 </span><span class="lineNoCov">          0 :     uploader-&gt;clear();</span>
+<span class="lineNum">     735 </span><span class="lineNoCov">          0 :     delete uploader;</span>
+<span class="lineNum">     736 </span>            : }
+<a name="737"><span class="lineNum">     737 </span>            : </a>
+<span class="lineNum">     738 </span>            : // eq::Texture object functions
+<span class="lineNum">     739 </span><span class="lineNoCov">          0 : bool ObjectManager::supportsEqTexture() const</span>
+<span class="lineNum">     740 </span>            : {
+<span class="lineNum">     741 </span><span class="lineNoCov">          0 :     return (GLEW_ARB_texture_rectangle);</span>
+<a name="742"><span class="lineNum">     742 </span>            : }</a>
+<span class="lineNum">     743 </span>            : 
+<span class="lineNum">     744 </span><span class="lineNoCov">          0 : Texture* ObjectManager::getEqTexture( const void* key ) const</span>
+<span class="lineNum">     745 </span>            : {
+<span class="lineNum">     746 </span><span class="lineNoCov">          0 :     TextureHash::const_iterator i = _impl-&gt;eqTextures.find( key );</span>
+<span class="lineNum">     747 </span><span class="lineNoCov">          0 :     if( i == _impl-&gt;eqTextures.end( ))</span>
+<span class="lineNum">     748 </span><span class="lineNoCov">          0 :         return 0;</span>
+<span class="lineNum">     749 </span>            : 
+<span class="lineNum">     750 </span><span class="lineNoCov">          0 :     return i-&gt;second;</span>
+<a name="751"><span class="lineNum">     751 </span>            : }</a>
+<span class="lineNum">     752 </span>            : 
+<span class="lineNum">     753 </span><span class="lineNoCov">          0 : Texture* ObjectManager::newEqTexture( const void* key, const GLenum target )</span>
+<span class="lineNum">     754 </span>            : {
+<span class="lineNum">     755 </span><span class="lineNoCov">          0 :     if( _impl-&gt;eqTextures.find( key ) != _impl-&gt;eqTextures.end( ))</span>
+<span class="lineNum">     756 </span>            :     {
+<span class="lineNum">     757 </span><span class="lineNoCov">          0 :         LBWARN &lt;&lt; &quot;Requested new eqTexture for existing key&quot; &lt;&lt; std::endl;</span>
+<span class="lineNum">     758 </span><span class="lineNoCov">          0 :         return 0;</span>
+<span class="lineNum">     759 </span>            :     }
+<span class="lineNum">     760 </span>            : 
+<span class="lineNum">     761 </span><span class="lineNoCov">          0 :     Texture* texture = new Texture( target, &amp;_impl-&gt;glewContext );</span>
+<span class="lineNum">     762 </span><span class="lineNoCov">          0 :     _impl-&gt;eqTextures[ key ] = texture;</span>
+<span class="lineNum">     763 </span><span class="lineNoCov">          0 :     return texture;</span>
+<a name="764"><span class="lineNum">     764 </span>            : }</a>
+<span class="lineNum">     765 </span>            : 
+<span class="lineNum">     766 </span><span class="lineNoCov">          0 : Texture* ObjectManager::obtainEqTexture( const void* key, const GLenum target )</span>
+<span class="lineNum">     767 </span>            : {
+<span class="lineNum">     768 </span><span class="lineNoCov">          0 :     Texture* texture = getEqTexture( key );</span>
+<span class="lineNum">     769 </span><span class="lineNoCov">          0 :     if( texture )</span>
+<span class="lineNum">     770 </span><span class="lineNoCov">          0 :         return texture;</span>
+<span class="lineNum">     771 </span><span class="lineNoCov">          0 :     return newEqTexture( key, target );</span>
+<a name="772"><span class="lineNum">     772 </span>            : }</a>
+<span class="lineNum">     773 </span>            : 
+<span class="lineNum">     774 </span><span class="lineNoCov">          0 : void   ObjectManager::deleteEqTexture( const void* key )</span>
+<span class="lineNum">     775 </span>            : {
+<span class="lineNum">     776 </span><span class="lineNoCov">          0 :     TextureHash::iterator i = _impl-&gt;eqTextures.find( key );</span>
+<span class="lineNum">     777 </span><span class="lineNoCov">          0 :     if( i == _impl-&gt;eqTextures.end( ))</span>
+<span class="lineNum">     778 </span><span class="lineNoCov">          0 :         return;</span>
+<span class="lineNum">     779 </span>            : 
+<span class="lineNum">     780 </span><span class="lineNoCov">          0 :     Texture* texture = i-&gt;second;</span>
+<span class="lineNum">     781 </span><span class="lineNoCov">          0 :     _impl-&gt;eqTextures.erase( i );</span>
+<span class="lineNum">     782 </span>            : 
+<span class="lineNum">     783 </span><span class="lineNoCov">          0 :     texture-&gt;flush();</span>
+<span class="lineNum">     784 </span><span class="lineNoCov">          0 :     delete texture;</span>
+<span class="lineNum">     785 </span>            : }
+<a name="786"><span class="lineNum">     786 </span>            : </a>
+<span class="lineNum">     787 </span>            : // eq::util::BitmapFont object functions
+<span class="lineNum">     788 </span><span class="lineNoCov">          0 : util::BitmapFont* ObjectManager::getEqBitmapFont( const void* key ) const</span>
+<span class="lineNum">     789 </span>            : {
+<span class="lineNum">     790 </span><span class="lineNoCov">          0 :     FontHash::const_iterator i = _impl-&gt;eqFonts.find( key );</span>
+<span class="lineNum">     791 </span><span class="lineNoCov">          0 :     if( i == _impl-&gt;eqFonts.end( ))</span>
+<span class="lineNum">     792 </span><span class="lineNoCov">          0 :         return 0;</span>
+<span class="lineNum">     793 </span>            : 
+<span class="lineNum">     794 </span><span class="lineNoCov">          0 :     return i-&gt;second;</span>
+<a name="795"><span class="lineNum">     795 </span>            : }</a>
+<span class="lineNum">     796 </span>            : 
+<span class="lineNum">     797 </span><span class="lineNoCov">          0 : util::BitmapFont* ObjectManager::newEqBitmapFont( const void* key )</span>
+<span class="lineNum">     798 </span>            : {
+<span class="lineNum">     799 </span><span class="lineNoCov">          0 :     if( _impl-&gt;eqFonts.find( key ) != _impl-&gt;eqFonts.end( ))</span>
+<span class="lineNum">     800 </span>            :     {
+<span class="lineNum">     801 </span><span class="lineNoCov">          0 :         LBWARN &lt;&lt; &quot;Requested new eqFont for existing key&quot; &lt;&lt; std::endl;</span>
+<span class="lineNum">     802 </span><span class="lineNoCov">          0 :         return 0;</span>
+<span class="lineNum">     803 </span>            :     }
+<span class="lineNum">     804 </span>            : 
+<span class="lineNum">     805 </span><span class="lineNoCov">          0 :     util::BitmapFont* font = new util::BitmapFont( *this, key );</span>
+<span class="lineNum">     806 </span><span class="lineNoCov">          0 :     _impl-&gt;eqFonts[ key ] = font;</span>
+<span class="lineNum">     807 </span><span class="lineNoCov">          0 :     return font;</span>
+<a name="808"><span class="lineNum">     808 </span>            : }</a>
+<span class="lineNum">     809 </span>            : 
+<span class="lineNum">     810 </span><span class="lineNoCov">          0 : util::BitmapFont* ObjectManager::obtainEqBitmapFont( const void* key )</span>
+<span class="lineNum">     811 </span>            : {
+<span class="lineNum">     812 </span><span class="lineNoCov">          0 :     util::BitmapFont* font = getEqBitmapFont( key );</span>
+<span class="lineNum">     813 </span><span class="lineNoCov">          0 :     if( font )</span>
+<span class="lineNum">     814 </span><span class="lineNoCov">          0 :         return font;</span>
+<span class="lineNum">     815 </span><span class="lineNoCov">          0 :     return newEqBitmapFont( key );</span>
+<a name="816"><span class="lineNum">     816 </span>            : }</a>
+<span class="lineNum">     817 </span>            : 
+<span class="lineNum">     818 </span><span class="lineNoCov">          0 : void ObjectManager::deleteEqBitmapFont( const void* key )</span>
+<span class="lineNum">     819 </span>            : {
+<span class="lineNum">     820 </span><span class="lineNoCov">          0 :     FontHash::iterator i = _impl-&gt;eqFonts.find( key );</span>
+<span class="lineNum">     821 </span><span class="lineNoCov">          0 :     if( i == _impl-&gt;eqFonts.end( ))</span>
+<span class="lineNum">     822 </span><span class="lineNoCov">          0 :         return;</span>
+<span class="lineNum">     823 </span>            : 
+<span class="lineNum">     824 </span><span class="lineNoCov">          0 :     util::BitmapFont* font = i-&gt;second;</span>
+<span class="lineNum">     825 </span><span class="lineNoCov">          0 :     _impl-&gt;eqFonts.erase( i );</span>
+<span class="lineNum">     826 </span>            : 
+<span class="lineNum">     827 </span><span class="lineNoCov">          0 :     font-&gt;exit();</span>
+<span class="lineNum">     828 </span><span class="lineNoCov">          0 :     delete font;</span>
+<span class="lineNum">     829 </span>            : }
+<a name="830"><span class="lineNum">     830 </span>            : </a>
+<span class="lineNum">     831 </span>            : // eq::FrameBufferObject object functions
+<span class="lineNum">     832 </span><span class="lineNoCov">          0 : bool ObjectManager::supportsEqFrameBufferObject() const</span>
+<span class="lineNum">     833 </span>            : {
+<span class="lineNum">     834 </span><span class="lineNoCov">          0 :     return (GLEW_EXT_framebuffer_object);</span>
+<a name="835"><span class="lineNum">     835 </span>            : }</a>
+<span class="lineNum">     836 </span>            : 
+<span class="lineNum">     837 </span><span class="lineNoCov">          0 : FrameBufferObject* ObjectManager::getEqFrameBufferObject( const void* key )</span>
+<span class="lineNum">     838 </span>            :     const
+<span class="lineNum">     839 </span>            : {
+<span class="lineNum">     840 </span><span class="lineNoCov">          0 :     FBOHash::const_iterator i = _impl-&gt;eqFrameBufferObjects.find(key);</span>
+<span class="lineNum">     841 </span><span class="lineNoCov">          0 :     if( i == _impl-&gt;eqFrameBufferObjects.end( ))</span>
+<span class="lineNum">     842 </span><span class="lineNoCov">          0 :         return 0;</span>
+<span class="lineNum">     843 </span>            : 
+<span class="lineNum">     844 </span><span class="lineNoCov">          0 :     return i-&gt;second;</span>
+<a name="845"><span class="lineNum">     845 </span>            : }</a>
+<span class="lineNum">     846 </span>            : 
+<span class="lineNum">     847 </span><span class="lineNoCov">          0 : FrameBufferObject* ObjectManager::newEqFrameBufferObject( const void* key )</span>
+<span class="lineNum">     848 </span>            : {
+<span class="lineNum">     849 </span><span class="lineNoCov">          0 :     if( _impl-&gt;eqFrameBufferObjects.find( key ) !=</span>
+<span class="lineNum">     850 </span><span class="lineNoCov">          0 :         _impl-&gt;eqFrameBufferObjects.end( ))</span>
+<span class="lineNum">     851 </span>            :     {
+<span class="lineNum">     852 </span><span class="lineNoCov">          0 :         LBWARN &lt;&lt; &quot;Requested new eqFrameBufferObject for existing key&quot;</span>
+<span class="lineNum">     853 </span><span class="lineNoCov">          0 :                &lt;&lt; std::endl;</span>
+<span class="lineNum">     854 </span><span class="lineNoCov">          0 :         return 0;</span>
+<span class="lineNum">     855 </span>            :     }
+<span class="lineNum">     856 </span>            : 
+<span class="lineNum">     857 </span>            :     FrameBufferObject* frameBufferObject =
+<span class="lineNum">     858 </span><span class="lineNoCov">          0 :                                     new FrameBufferObject( &amp;_impl-&gt;glewContext );</span>
+<span class="lineNum">     859 </span><span class="lineNoCov">          0 :     _impl-&gt;eqFrameBufferObjects[ key ] = frameBufferObject;</span>
+<span class="lineNum">     860 </span><span class="lineNoCov">          0 :     return frameBufferObject;</span>
+<a name="861"><span class="lineNum">     861 </span>            : }</a>
+<span class="lineNum">     862 </span>            : 
+<span class="lineNum">     863 </span><span class="lineNoCov">          0 : FrameBufferObject* ObjectManager::obtainEqFrameBufferObject( const void* key )</span>
+<span class="lineNum">     864 </span>            : {
+<span class="lineNum">     865 </span><span class="lineNoCov">          0 :     FrameBufferObject* frameBufferObject = getEqFrameBufferObject( key );</span>
+<span class="lineNum">     866 </span><span class="lineNoCov">          0 :     if( frameBufferObject )</span>
+<span class="lineNum">     867 </span><span class="lineNoCov">          0 :         return frameBufferObject;</span>
+<span class="lineNum">     868 </span><span class="lineNoCov">          0 :     return newEqFrameBufferObject( key );</span>
+<a name="869"><span class="lineNum">     869 </span>            : }</a>
+<span class="lineNum">     870 </span>            : 
+<span class="lineNum">     871 </span><span class="lineNoCov">          0 : void ObjectManager::deleteEqFrameBufferObject( const void* key )</span>
+<span class="lineNum">     872 </span>            : {
+<span class="lineNum">     873 </span><span class="lineNoCov">          0 :     FBOHash::iterator i = _impl-&gt;eqFrameBufferObjects.find(key);</span>
+<span class="lineNum">     874 </span><span class="lineNoCov">          0 :     if( i == _impl-&gt;eqFrameBufferObjects.end( ))</span>
+<span class="lineNum">     875 </span><span class="lineNoCov">          0 :         return;</span>
+<span class="lineNum">     876 </span>            : 
+<span class="lineNum">     877 </span><span class="lineNoCov">          0 :     FrameBufferObject* frameBufferObject = i-&gt;second;</span>
+<span class="lineNum">     878 </span><span class="lineNoCov">          0 :     _impl-&gt;eqFrameBufferObjects.erase( i );</span>
+<span class="lineNum">     879 </span>            : 
+<span class="lineNum">     880 </span><span class="lineNoCov">          0 :     frameBufferObject-&gt;exit();</span>
+<span class="lineNum">     881 </span><span class="lineNoCov">          0 :     delete frameBufferObject;</span>
+<span class="lineNum">     882 </span>            : }
+<a name="883"><span class="lineNum">     883 </span>            : </a>
+<span class="lineNum">     884 </span>            : // eq::PixelBufferObject object functions
+<span class="lineNum">     885 </span><span class="lineNoCov">          0 : bool ObjectManager::supportsEqPixelBufferObject() const</span>
+<span class="lineNum">     886 </span>            : {
+<span class="lineNum">     887 </span><span class="lineNoCov">          0 :     return (GLEW_ARB_pixel_buffer_object);</span>
+<a name="888"><span class="lineNum">     888 </span>            : }</a>
+<span class="lineNum">     889 </span>            : 
+<span class="lineNum">     890 </span><span class="lineNoCov">          0 : PixelBufferObject* ObjectManager::getEqPixelBufferObject( const void* key )</span>
+<span class="lineNum">     891 </span>            :     const
+<span class="lineNum">     892 </span>            : {
+<span class="lineNum">     893 </span><span class="lineNoCov">          0 :     PBOHash::const_iterator i = _impl-&gt;eqPixelBufferObjects.find(key);</span>
+<span class="lineNum">     894 </span><span class="lineNoCov">          0 :     if( i == _impl-&gt;eqPixelBufferObjects.end( ))</span>
+<span class="lineNum">     895 </span><span class="lineNoCov">          0 :         return 0;</span>
+<span class="lineNum">     896 </span>            : 
+<span class="lineNum">     897 </span><span class="lineNoCov">          0 :     return i-&gt;second;</span>
+<a name="898"><span class="lineNum">     898 </span>            : }</a>
+<span class="lineNum">     899 </span>            : 
+<span class="lineNum">     900 </span><span class="lineNoCov">          0 : PixelBufferObject* ObjectManager::newEqPixelBufferObject( const void* key,</span>
+<span class="lineNum">     901 </span>            :                                                          const bool threadSafe )
+<span class="lineNum">     902 </span>            : {
+<span class="lineNum">     903 </span><span class="lineNoCov">          0 :     if( _impl-&gt;eqPixelBufferObjects.find( key ) !=</span>
+<span class="lineNum">     904 </span><span class="lineNoCov">          0 :         _impl-&gt;eqPixelBufferObjects.end( ))</span>
+<span class="lineNum">     905 </span>            :     {
+<span class="lineNum">     906 </span><span class="lineNoCov">          0 :         LBWARN &lt;&lt; &quot;Requested new eqPixelBufferObject for existing key&quot;</span>
+<span class="lineNum">     907 </span><span class="lineNoCov">          0 :                &lt;&lt; std::endl;</span>
+<span class="lineNum">     908 </span><span class="lineNoCov">          0 :         return 0;</span>
+<span class="lineNum">     909 </span>            :     }
+<span class="lineNum">     910 </span>            : 
+<span class="lineNum">     911 </span>            :     PixelBufferObject* pixelBufferObject =
+<span class="lineNum">     912 </span><span class="lineNoCov">          0 :         new PixelBufferObject( &amp;_impl-&gt;glewContext, threadSafe );</span>
+<span class="lineNum">     913 </span><span class="lineNoCov">          0 :     _impl-&gt;eqPixelBufferObjects[ key ] = pixelBufferObject;</span>
+<span class="lineNum">     914 </span><span class="lineNoCov">          0 :     return pixelBufferObject;</span>
+<a name="915"><span class="lineNum">     915 </span>            : }</a>
+<span class="lineNum">     916 </span>            : 
+<span class="lineNum">     917 </span><span class="lineNoCov">          0 : PixelBufferObject* ObjectManager::obtainEqPixelBufferObject( const void* key,</span>
+<span class="lineNum">     918 </span>            :                                                          const bool threadSafe )
+<span class="lineNum">     919 </span>            : {
+<span class="lineNum">     920 </span><span class="lineNoCov">          0 :     PixelBufferObject* pixelBufferObject = getEqPixelBufferObject( key );</span>
+<span class="lineNum">     921 </span><span class="lineNoCov">          0 :     if( pixelBufferObject )</span>
+<span class="lineNum">     922 </span>            :     {
+<span class="lineNum">     923 </span><span class="lineNoCov">          0 :         if( pixelBufferObject-&gt;isThreadSafe() != threadSafe )</span>
+<span class="lineNum">     924 </span>            :         {
+<span class="lineNum">     925 </span><span class="lineNoCov">          0 :             LBERROR &lt;&lt; &quot;Wrong sharing option requested!&quot; &lt;&lt; std::endl;</span>
+<span class="lineNum">     926 </span><span class="lineNoCov">          0 :             return 0;</span>
+<span class="lineNum">     927 </span>            :         }
+<span class="lineNum">     928 </span><span class="lineNoCov">          0 :         return pixelBufferObject;</span>
+<span class="lineNum">     929 </span>            :     }
+<span class="lineNum">     930 </span><span class="lineNoCov">          0 :     return newEqPixelBufferObject( key, threadSafe );</span>
+<a name="931"><span class="lineNum">     931 </span>            : }</a>
+<span class="lineNum">     932 </span>            : 
+<span class="lineNum">     933 </span><span class="lineNoCov">          0 : void ObjectManager::deleteEqPixelBufferObject( const void* key )</span>
+<span class="lineNum">     934 </span>            : {
+<span class="lineNum">     935 </span><span class="lineNoCov">          0 :     PBOHash::iterator i = _impl-&gt;eqPixelBufferObjects.find(key);</span>
+<span class="lineNum">     936 </span><span class="lineNoCov">          0 :     if( i == _impl-&gt;eqPixelBufferObjects.end( ))</span>
+<span class="lineNum">     937 </span><span class="lineNoCov">          0 :         return;</span>
+<span class="lineNum">     938 </span>            : 
+<span class="lineNum">     939 </span><span class="lineNoCov">          0 :     PixelBufferObject* pixelBufferObject = i-&gt;second;</span>
+<span class="lineNum">     940 </span><span class="lineNoCov">          0 :     _impl-&gt;eqPixelBufferObjects.erase( i );</span>
+<span class="lineNum">     941 </span>            : 
+<span class="lineNum">     942 </span><span class="lineNoCov">          0 :     pixelBufferObject-&gt;destroy();</span>
+<span class="lineNum">     943 </span><span class="lineNoCov">          0 :     delete pixelBufferObject;</span>
+<span class="lineNum">     944 </span>            : }
+<a name="945"><span class="lineNum">     945 </span>            : </a>
+<span class="lineNum">     946 </span>            : }
+<span class="lineNum">     947 </span><span class="lineCov">         60 : }</span>
+</pre>
+      </td>
+    </tr>
+  </table>
+  <br>
+
+  <table width="100%" border=0 cellspacing=0 cellpadding=0>
+    <tr><td class="ruler"><img src="../../../glass.png" width=3 height=3 alt=""></td></tr>
+    <tr><td class="versionInfo">Generated by: <a href="http://ltp.sourceforge.net/coverage/lcov.php" target="_parent">LCOV version 1.11</a></td></tr>
+  </table>
+  <br>
+
+</body>
+</html>

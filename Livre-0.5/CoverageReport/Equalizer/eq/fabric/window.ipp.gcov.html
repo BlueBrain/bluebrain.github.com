@@ -1,0 +1,644 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+
+<html lang="en">
+
+<head>
+  <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+  <title>LCOV - Livre - Equalizer/eq/fabric/window.ipp</title>
+  <link rel="stylesheet" type="text/css" href="../../../gcov.css">
+</head>
+
+<body>
+
+  <table width="100%" border=0 cellspacing=0 cellpadding=0>
+    <tr><td class="title">LCOV - code coverage report</td></tr>
+    <tr><td class="ruler"><img src="../../../glass.png" width=3 height=3 alt=""></td></tr>
+
+    <tr>
+      <td width="100%">
+        <table cellpadding=1 border=0 width="100%">
+          <tr>
+            <td width="10%" class="headerItem">Current view:</td>
+            <td width="35%" class="headerValue"><a href="../../../index.html">top level</a> - <a href="index.html">Equalizer/eq/fabric</a> - window.ipp<span style="font-size: 80%;"> (source / <a href="window.ipp.func-sort-c.html">functions</a>)</span></td>
+            <td width="5%"></td>
+            <td width="15%"></td>
+            <td width="10%" class="headerCovTableHead">Hit</td>
+            <td width="10%" class="headerCovTableHead">Total</td>
+            <td width="15%" class="headerCovTableHead">Coverage</td>
+          </tr>
+          <tr>
+            <td class="headerItem">Test:</td>
+            <td class="headerValue">Livre</td>
+            <td></td>
+            <td class="headerItem">Lines:</td>
+            <td class="headerCovTableEntry">2</td>
+            <td class="headerCovTableEntry">270</td>
+            <td class="headerCovTableEntryLo">0.7 %</td>
+          </tr>
+          <tr>
+            <td class="headerItem">Date:</td>
+            <td class="headerValue">2016-03-10 14:06:39</td>
+            <td></td>
+            <td class="headerItem">Functions:</td>
+            <td class="headerCovTableEntry">1</td>
+            <td class="headerCovTableEntry">75</td>
+            <td class="headerCovTableEntryLo">1.3 %</td>
+          </tr>
+          <tr><td><img src="../../../glass.png" width=3 height=3 alt=""></td></tr>
+        </table>
+      </td>
+    </tr>
+
+    <tr><td class="ruler"><img src="../../../glass.png" width=3 height=3 alt=""></td></tr>
+  </table>
+
+  <table cellpadding=0 cellspacing=0 border=0>
+    <tr>
+      <td><br></td>
+    </tr>
+    <tr>
+      <td>
+<pre class="sourceHeading">          Line data    Source code</pre>
+<pre class="source">
+<a name="1"><span class="lineNum">       1 </span>            : </a>
+<span class="lineNum">       2 </span>            : /* Copyright (c) 2010-2016, Stefan Eilemann &lt;eile@equalizergraphics.com&gt;
+<span class="lineNum">       3 </span>            :  *                          Cedric Stalder &lt;cedric.stalder@gmail.com&gt;
+<span class="lineNum">       4 </span>            :  *                          Daniel Nachbaur &lt;danielnachbaur@gmail.com&gt;
+<span class="lineNum">       5 </span>            :  *
+<span class="lineNum">       6 </span>            :  * This library is free software; you can redistribute it and/or modify it under
+<span class="lineNum">       7 </span>            :  * the terms of the GNU Lesser General Public License version 2.1 as published
+<span class="lineNum">       8 </span>            :  * by the Free Software Foundation.
+<span class="lineNum">       9 </span>            :  *
+<span class="lineNum">      10 </span>            :  * This library is distributed in the hope that it will be useful, but WITHOUT
+<span class="lineNum">      11 </span>            :  * ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS
+<span class="lineNum">      12 </span>            :  * FOR A PARTICULAR PURPOSE.  See the GNU Lesser General Public License for more
+<span class="lineNum">      13 </span>            :  * details.
+<span class="lineNum">      14 </span>            :  *
+<span class="lineNum">      15 </span>            :  * You should have received a copy of the GNU Lesser General Public License
+<span class="lineNum">      16 </span>            :  * along with this library; if not, write to the Free Software Foundation, Inc.,
+<span class="lineNum">      17 </span>            :  * 51 Franklin Street, Fifth Floor, Boston, MA 02110-1301 USA.
+<span class="lineNum">      18 </span>            :  */
+<span class="lineNum">      19 </span>            : 
+<span class="lineNum">      20 </span>            : #include &quot;window.h&quot;
+<span class="lineNum">      21 </span>            : 
+<span class="lineNum">      22 </span>            : #include &quot;channel.h&quot;
+<span class="lineNum">      23 </span>            : #include &quot;commands.h&quot;
+<span class="lineNum">      24 </span>            : #include &quot;elementVisitor.h&quot;
+<span class="lineNum">      25 </span>            : #include &quot;leafVisitor.h&quot;
+<span class="lineNum">      26 </span>            : #include &quot;log.h&quot;
+<span class="lineNum">      27 </span>            : #include &quot;task.h&quot;
+<span class="lineNum">      28 </span>            : 
+<span class="lineNum">      29 </span>            : #include &lt;co/dataIStream.h&gt;
+<span class="lineNum">      30 </span>            : #include &lt;co/dataOStream.h&gt;
+<span class="lineNum">      31 </span>            : #include &lt;co/objectICommand.h&gt;
+<span class="lineNum">      32 </span>            : 
+<span class="lineNum">      33 </span>            : namespace eq
+<span class="lineNum">      34 </span>            : {
+<span class="lineNum">      35 </span>            : namespace fabric
+<span class="lineNum">      36 </span>            : {
+<span class="lineNum">      37 </span>            : 
+<span class="lineNum">      38 </span>            : namespace
+<a name="39"><span class="lineNum">      39 </span>            : {</a>
+<span class="lineNum">      40 </span>            : #define MAKE_WINDOW_ATTR_STRING( attr ) ( std::string(&quot;EQ_WINDOW_&quot;) + #attr )
+<span class="lineNum">      41 </span><span class="lineCov">         80 : std::string _iAttributeStrings[] = {</span>
+<span class="lineNum">      42 </span>            :     MAKE_WINDOW_ATTR_STRING( IATTR_HINT_CORE_PROFILE ),
+<span class="lineNum">      43 </span>            :     MAKE_WINDOW_ATTR_STRING( IATTR_HINT_OPENGL_MAJOR ),
+<span class="lineNum">      44 </span>            :     MAKE_WINDOW_ATTR_STRING( IATTR_HINT_OPENGL_MINOR ),
+<span class="lineNum">      45 </span>            :     MAKE_WINDOW_ATTR_STRING( IATTR_HINT_STEREO ),
+<span class="lineNum">      46 </span>            :     MAKE_WINDOW_ATTR_STRING( IATTR_HINT_DOUBLEBUFFER ),
+<span class="lineNum">      47 </span>            :     MAKE_WINDOW_ATTR_STRING( IATTR_HINT_FULLSCREEN ),
+<span class="lineNum">      48 </span>            :     MAKE_WINDOW_ATTR_STRING( IATTR_HINT_DECORATION ),
+<span class="lineNum">      49 </span>            :     MAKE_WINDOW_ATTR_STRING( IATTR_HINT_SWAPSYNC ),
+<span class="lineNum">      50 </span>            :     MAKE_WINDOW_ATTR_STRING( IATTR_HINT_DRAWABLE ),
+<span class="lineNum">      51 </span>            :     MAKE_WINDOW_ATTR_STRING( IATTR_HINT_STATISTICS ),
+<span class="lineNum">      52 </span>            :     MAKE_WINDOW_ATTR_STRING( IATTR_HINT_SCREENSAVER ),
+<span class="lineNum">      53 </span>            :     MAKE_WINDOW_ATTR_STRING( IATTR_HINT_GRAB_POINTER ),
+<span class="lineNum">      54 </span>            :     MAKE_WINDOW_ATTR_STRING( IATTR_HINT_WIDTH ),
+<span class="lineNum">      55 </span>            :     MAKE_WINDOW_ATTR_STRING( IATTR_HINT_HEIGHT ),
+<span class="lineNum">      56 </span>            :     MAKE_WINDOW_ATTR_STRING( IATTR_PLANES_COLOR ),
+<span class="lineNum">      57 </span>            :     MAKE_WINDOW_ATTR_STRING( IATTR_PLANES_ALPHA ),
+<span class="lineNum">      58 </span>            :     MAKE_WINDOW_ATTR_STRING( IATTR_PLANES_DEPTH ),
+<span class="lineNum">      59 </span>            :     MAKE_WINDOW_ATTR_STRING( IATTR_PLANES_STENCIL ),
+<span class="lineNum">      60 </span>            :     MAKE_WINDOW_ATTR_STRING( IATTR_PLANES_ACCUM ),
+<span class="lineNum">      61 </span>            :     MAKE_WINDOW_ATTR_STRING( IATTR_PLANES_ACCUM_ALPHA ),
+<span class="lineNum">      62 </span>            :     MAKE_WINDOW_ATTR_STRING( IATTR_PLANES_SAMPLES )
+<span class="lineNum">      63 </span><span class="lineCov">         40 : };</span>
+<span class="lineNum">      64 </span>            : }
+<a name="65"><span class="lineNum">      65 </span>            : </a>
+<span class="lineNum">      66 </span>            : template&lt; class P, class W, class C, class Settings &gt;
+<span class="lineNum">      67 </span><span class="lineNoCov">          0 : Window&lt; P, W, C, Settings &gt;::Window( P* parent )</span>
+<span class="lineNum">      68 </span><span class="lineNoCov">          0 :     : _pipe( parent )</span>
+<span class="lineNum">      69 </span>            : {
+<span class="lineNum">      70 </span><span class="lineNoCov">          0 :     LBASSERT( parent );</span>
+<span class="lineNum">      71 </span><span class="lineNoCov">          0 :     parent-&gt;_addWindow( static_cast&lt; W* &gt;( this ) );</span>
+<span class="lineNum">      72 </span><span class="lineNoCov">          0 :     LBLOG( LOG_INIT ) &lt;&lt; &quot;New &quot; &lt;&lt; lunchbox::className( this ) &lt;&lt; std::endl;</span>
+<span class="lineNum">      73 </span><span class="lineNoCov">          0 : }</span>
+<a name="74"><span class="lineNum">      74 </span>            : </a>
+<span class="lineNum">      75 </span>            : template&lt; class P, class W, class C, class Settings &gt;
+<span class="lineNum">      76 </span><span class="lineNoCov">          0 : Window&lt; P, W, C, Settings &gt;::BackupData::BackupData()</span>
+<span class="lineNum">      77 </span><span class="lineNoCov">          0 :     : fixedVP( true )</span>
+<span class="lineNum">      78 </span>            : {
+<span class="lineNum">      79 </span><span class="lineNoCov">          0 : }</span>
+<a name="80"><span class="lineNum">      80 </span>            : </a>
+<span class="lineNum">      81 </span>            : template&lt; class P, class W, class C, class Settings &gt;
+<span class="lineNum">      82 </span><span class="lineNoCov">          0 : Window&lt; P, W, C, Settings &gt;::~Window( )</span>
+<span class="lineNum">      83 </span>            : {
+<span class="lineNum">      84 </span><span class="lineNoCov">          0 :     LBLOG( LOG_INIT ) &lt;&lt; &quot;Delete &quot; &lt;&lt; lunchbox::className( this ) &lt;&lt; std::endl;</span>
+<span class="lineNum">      85 </span><span class="lineNoCov">          0 :     while( !_channels.empty( ))</span>
+<span class="lineNum">      86 </span>            :     {
+<span class="lineNum">      87 </span><span class="lineNoCov">          0 :         C* channel = _channels.back();</span>
+<span class="lineNum">      88 </span>            : 
+<span class="lineNum">      89 </span><span class="lineNoCov">          0 :         LBASSERT( channel-&gt;getWindow() == this );</span>
+<span class="lineNum">      90 </span><span class="lineNoCov">          0 :         _removeChannel( channel );</span>
+<span class="lineNum">      91 </span><span class="lineNoCov">          0 :         delete channel;</span>
+<span class="lineNum">      92 </span>            :     }
+<span class="lineNum">      93 </span><span class="lineNoCov">          0 :     _pipe-&gt;_removeWindow( static_cast&lt; W* &gt;( this ) );</span>
+<span class="lineNum">      94 </span><span class="lineNoCov">          0 : }</span>
+<a name="95"><span class="lineNum">      95 </span>            : </a>
+<span class="lineNum">      96 </span>            : template&lt; class P, class W, class C, class Settings &gt;
+<span class="lineNum">      97 </span><span class="lineNoCov">          0 : void Window&lt; P, W, C, Settings &gt;::init()</span>
+<span class="lineNum">      98 </span>            : {
+<span class="lineNum">      99 </span><span class="lineNoCov">          0 :     notifyViewportChanged();</span>
+<span class="lineNum">     100 </span><span class="lineNoCov">          0 :     unsetDirty( DIRTY_VIEWPORT );</span>
+<span class="lineNum">     101 </span><span class="lineNoCov">          0 : }</span>
+<a name="102"><span class="lineNum">     102 </span>            : </a>
+<span class="lineNum">     103 </span>            : template&lt; class P, class W, class C, class Settings &gt;
+<span class="lineNum">     104 </span><span class="lineNoCov">          0 : void Window&lt; P, W, C, Settings &gt;::attach( const uint128_t&amp; id,</span>
+<span class="lineNum">     105 </span>            :                                 const uint32_t instanceID )
+<span class="lineNum">     106 </span>            : {
+<span class="lineNum">     107 </span><span class="lineNoCov">          0 :     Object::attach( id, instanceID );</span>
+<span class="lineNum">     108 </span><span class="lineNoCov">          0 :     co::CommandQueue* queue = _pipe-&gt;getMainThreadQueue();</span>
+<span class="lineNum">     109 </span><span class="lineNoCov">          0 :     LBASSERT( queue );</span>
+<span class="lineNum">     110 </span>            : 
+<span class="lineNum">     111 </span><span class="lineNoCov">          0 :     registerCommand( CMD_WINDOW_NEW_CHANNEL,</span>
+<span class="lineNum">     112 </span>            :                      CmdFunc( this, &amp;Window&lt; P, W, C, Settings &gt;::_cmdNewChannel ),
+<span class="lineNum">     113 </span>            :                      queue );
+<span class="lineNum">     114 </span><span class="lineNoCov">          0 :     registerCommand( CMD_WINDOW_NEW_CHANNEL_REPLY,</span>
+<span class="lineNum">     115 </span>            :                      CmdFunc( this, &amp;Window&lt; P, W, C, Settings &gt;::_cmdNewChannelReply ),
+<span class="lineNum">     116 </span>            :                      0 );
+<span class="lineNum">     117 </span><span class="lineNoCov">          0 : }</span>
+<a name="118"><span class="lineNum">     118 </span>            : </a>
+<span class="lineNum">     119 </span>            : template&lt; class P, class W, class C, class Settings &gt;
+<span class="lineNum">     120 </span><span class="lineNoCov">          0 : void Window&lt; P, W, C, Settings &gt;::backup()</span>
+<span class="lineNum">     121 </span>            : {
+<span class="lineNum">     122 </span><span class="lineNoCov">          0 :     Object::backup();</span>
+<span class="lineNum">     123 </span><span class="lineNoCov">          0 :     _backup = _data;</span>
+<span class="lineNum">     124 </span><span class="lineNoCov">          0 : }</span>
+<a name="125"><span class="lineNum">     125 </span>            : </a>
+<span class="lineNum">     126 </span>            : template&lt; class P, class W, class C, class Settings &gt;
+<span class="lineNum">     127 </span><span class="lineNoCov">          0 : void Window&lt; P, W, C, Settings &gt;::restore()</span>
+<span class="lineNum">     128 </span>            : {
+<span class="lineNum">     129 </span><span class="lineNoCov">          0 :     _data = _backup;</span>
+<span class="lineNum">     130 </span><span class="lineNoCov">          0 :     _data.drawableConfig = DrawableConfig();</span>
+<span class="lineNum">     131 </span>            : 
+<span class="lineNum">     132 </span><span class="lineNoCov">          0 :     Object::restore();</span>
+<span class="lineNum">     133 </span><span class="lineNoCov">          0 :     notifyViewportChanged();</span>
+<span class="lineNum">     134 </span><span class="lineNoCov">          0 :     setDirty( DIRTY_VIEWPORT );</span>
+<span class="lineNum">     135 </span><span class="lineNoCov">          0 : }</span>
+<a name="136"><span class="lineNum">     136 </span>            : </a>
+<span class="lineNum">     137 </span>            : template&lt; class P, class W, class C, class Settings &gt;
+<span class="lineNum">     138 </span><span class="lineNoCov">          0 : uint128_t Window&lt; P, W, C, Settings &gt;::commit( const uint32_t incarnation )</span>
+<span class="lineNum">     139 </span>            : {
+<span class="lineNum">     140 </span><span class="lineNoCov">          0 :     if( Serializable::isDirty( DIRTY_CHANNELS ))</span>
+<span class="lineNum">     141 </span><span class="lineNoCov">          0 :         commitChildren&lt; C &gt;( _channels, CMD_WINDOW_NEW_CHANNEL, incarnation );</span>
+<span class="lineNum">     142 </span><span class="lineNoCov">          0 :     return Object::commit( incarnation );</span>
+<span class="lineNum">     143 </span>            : }
+<a name="144"><span class="lineNum">     144 </span>            : </a>
+<span class="lineNum">     145 </span>            : template&lt; class P, class W, class C, class Settings &gt;
+<span class="lineNum">     146 </span><span class="lineNoCov">          0 : void Window&lt; P, W, C, Settings &gt;::serialize( co::DataOStream&amp; os,</span>
+<span class="lineNum">     147 </span>            :                                    const uint64_t dirtyBits )
+<span class="lineNum">     148 </span>            : {
+<span class="lineNum">     149 </span><span class="lineNoCov">          0 :     Object::serialize( os, dirtyBits );</span>
+<span class="lineNum">     150 </span><span class="lineNoCov">          0 :     if( dirtyBits &amp; DIRTY_SETTINGS )</span>
+<span class="lineNum">     151 </span><span class="lineNoCov">          0 :         _data.windowSettings.serialize( os );</span>
+<span class="lineNum">     152 </span><span class="lineNoCov">          0 :     if( dirtyBits &amp; DIRTY_CHANNELS &amp;&amp; isMaster( ))</span>
+<span class="lineNum">     153 </span>            :     {
+<span class="lineNum">     154 </span><span class="lineNoCov">          0 :         os &lt;&lt; _mapNodeObjects();</span>
+<span class="lineNum">     155 </span><span class="lineNoCov">          0 :         os.serializeChildren( _channels );</span>
+<span class="lineNum">     156 </span>            :     }
+<span class="lineNum">     157 </span><span class="lineNoCov">          0 :     if( dirtyBits &amp; DIRTY_VIEWPORT )</span>
+<span class="lineNum">     158 </span><span class="lineNoCov">          0 :         os &lt;&lt; _data.vp &lt;&lt; _data.pvp &lt;&lt; _data.fixedVP;</span>
+<span class="lineNum">     159 </span><span class="lineNoCov">          0 :     if( dirtyBits &amp; DIRTY_DRAWABLECONFIG )</span>
+<span class="lineNum">     160 </span><span class="lineNoCov">          0 :         os &lt;&lt; _data.drawableConfig;</span>
+<span class="lineNum">     161 </span><span class="lineNoCov">          0 : }</span>
+<a name="162"><span class="lineNum">     162 </span>            : </a>
+<span class="lineNum">     163 </span>            : template&lt; class P, class W, class C, class Settings &gt;
+<span class="lineNum">     164 </span><span class="lineNoCov">          0 : void Window&lt; P, W, C, Settings &gt;::deserialize( co::DataIStream&amp; is,</span>
+<span class="lineNum">     165 </span>            :                                      const uint64_t dirtyBits )
+<span class="lineNum">     166 </span>            : {
+<span class="lineNum">     167 </span><span class="lineNoCov">          0 :     Object::deserialize( is, dirtyBits );</span>
+<span class="lineNum">     168 </span><span class="lineNoCov">          0 :     if( dirtyBits &amp; DIRTY_SETTINGS )</span>
+<span class="lineNum">     169 </span><span class="lineNoCov">          0 :         _data.windowSettings.deserialize( is );</span>
+<span class="lineNum">     170 </span><span class="lineNoCov">          0 :     if( dirtyBits &amp; DIRTY_CHANNELS )</span>
+<span class="lineNum">     171 </span>            :     {
+<span class="lineNum">     172 </span><span class="lineNoCov">          0 :         if( isMaster( ))</span>
+<span class="lineNum">     173 </span><span class="lineNoCov">          0 :             syncChildren( _channels );</span>
+<span class="lineNum">     174 </span>            :         else
+<span class="lineNum">     175 </span>            :         {
+<span class="lineNum">     176 </span><span class="lineNoCov">          0 :             const bool useChildren = is.read&lt; bool &gt;();</span>
+<span class="lineNum">     177 </span><span class="lineNoCov">          0 :             if( useChildren &amp;&amp; _mapNodeObjects( ))</span>
+<span class="lineNum">     178 </span>            :             {
+<span class="lineNum">     179 </span><span class="lineNoCov">          0 :                 Channels result;</span>
+<span class="lineNum">     180 </span><span class="lineNoCov">          0 :                 is.deserializeChildren( this, _channels, result );</span>
+<span class="lineNum">     181 </span><span class="lineNoCov">          0 :                 _channels.swap( result );</span>
+<span class="lineNum">     182 </span><span class="lineNoCov">          0 :                 LBASSERT( _channels.size() == result.size( ));</span>
+<span class="lineNum">     183 </span>            :             }
+<span class="lineNum">     184 </span>            :             else // consume unused ObjectVersions
+<span class="lineNum">     185 </span><span class="lineNoCov">          0 :                 is.read&lt; co::ObjectVersions &gt;();</span>
+<span class="lineNum">     186 </span>            :         }
+<span class="lineNum">     187 </span>            :     }
+<span class="lineNum">     188 </span><span class="lineNoCov">          0 :     if( dirtyBits &amp; DIRTY_VIEWPORT )</span>
+<span class="lineNum">     189 </span>            :     {
+<span class="lineNum">     190 </span>            :         // Ignore data from master (server) if we have local changes
+<span class="lineNum">     191 </span><span class="lineNoCov">          0 :         if( !Serializable::isDirty( DIRTY_VIEWPORT ) || isMaster( ))</span>
+<span class="lineNum">     192 </span>            :         {
+<span class="lineNum">     193 </span><span class="lineNoCov">          0 :             is &gt;&gt; _data.vp &gt;&gt; _data.pvp &gt;&gt; _data.fixedVP;</span>
+<span class="lineNum">     194 </span><span class="lineNoCov">          0 :             notifyViewportChanged();</span>
+<span class="lineNum">     195 </span>            :         }
+<span class="lineNum">     196 </span>            :         else // consume unused data
+<span class="lineNum">     197 </span><span class="lineNoCov">          0 :             is.getRemainingBuffer( sizeof( _data.vp ) + sizeof( _data.pvp ) +</span>
+<span class="lineNum">     198 </span><span class="lineNoCov">          0 :                                    sizeof( _data.fixedVP ));</span>
+<span class="lineNum">     199 </span>            :     }
+<span class="lineNum">     200 </span>            : 
+<span class="lineNum">     201 </span><span class="lineNoCov">          0 :     if( dirtyBits &amp; DIRTY_DRAWABLECONFIG )</span>
+<span class="lineNum">     202 </span><span class="lineNoCov">          0 :         is &gt;&gt; _data.drawableConfig;</span>
+<span class="lineNum">     203 </span><span class="lineNoCov">          0 : }</span>
+<a name="204"><span class="lineNum">     204 </span>            : </a>
+<span class="lineNum">     205 </span>            : template&lt; class P, class W, class C, class Settings &gt;
+<span class="lineNum">     206 </span><span class="lineNoCov">          0 : void Window&lt; P, W, C, Settings &gt;::setDirty( const uint64_t dirtyBits )</span>
+<span class="lineNum">     207 </span>            : {
+<span class="lineNum">     208 </span><span class="lineNoCov">          0 :     Object::setDirty( dirtyBits );</span>
+<span class="lineNum">     209 </span><span class="lineNoCov">          0 :     _pipe-&gt;setDirty( P::DIRTY_WINDOWS );</span>
+<span class="lineNum">     210 </span><span class="lineNoCov">          0 : }</span>
+<a name="211"><span class="lineNum">     211 </span>            : </a>
+<span class="lineNum">     212 </span>            : template&lt; class P, class W, class C, class Settings &gt;
+<span class="lineNum">     213 </span><span class="lineNoCov">          0 : void Window&lt; P, W, C, Settings &gt;::notifyDetach()</span>
+<span class="lineNum">     214 </span>            : {
+<span class="lineNum">     215 </span><span class="lineNoCov">          0 :     Object::notifyDetach();</span>
+<span class="lineNum">     216 </span><span class="lineNoCov">          0 :     co::LocalNodePtr node = getLocalNode();</span>
+<span class="lineNum">     217 </span>            : 
+<span class="lineNum">     218 </span><span class="lineNoCov">          0 :     if( isMaster( ))</span>
+<span class="lineNum">     219 </span>            :     {
+<span class="lineNum">     220 </span><span class="lineNoCov">          0 :         for( typename Channels::const_iterator i = _channels.begin();</span>
+<span class="lineNum">     221 </span><span class="lineNoCov">          0 :              i != _channels.end(); ++i )</span>
+<span class="lineNum">     222 </span>            :         {
+<span class="lineNum">     223 </span><span class="lineNoCov">          0 :             node-&gt;releaseObject( *i );</span>
+<span class="lineNum">     224 </span>            :         }
+<span class="lineNum">     225 </span>            :     }
+<span class="lineNum">     226 </span>            :     else
+<span class="lineNum">     227 </span>            :     {
+<span class="lineNum">     228 </span><span class="lineNoCov">          0 :         while( !_channels.empty( ))</span>
+<span class="lineNum">     229 </span>            :         {
+<span class="lineNum">     230 </span><span class="lineNoCov">          0 :             C* channel = _channels.back();</span>
+<span class="lineNum">     231 </span><span class="lineNoCov">          0 :             LBASSERT( channel-&gt;isAttached( ));</span>
+<span class="lineNum">     232 </span>            : 
+<span class="lineNum">     233 </span><span class="lineNoCov">          0 :             node-&gt;releaseObject( channel );</span>
+<span class="lineNum">     234 </span><span class="lineNoCov">          0 :             _removeChannel( channel );</span>
+<span class="lineNum">     235 </span><span class="lineNoCov">          0 :             _pipe-&gt;getServer()-&gt;getNodeFactory()-&gt;releaseChannel( channel );</span>
+<span class="lineNum">     236 </span>            :         }
+<span class="lineNum">     237 </span><span class="lineNoCov">          0 :     }</span>
+<span class="lineNum">     238 </span><span class="lineNoCov">          0 : }</span>
+<a name="239"><span class="lineNum">     239 </span>            : </a>
+<span class="lineNum">     240 </span>            : template&lt; class P, class W, class C, class Settings &gt;
+<span class="lineNum">     241 </span><span class="lineNoCov">          0 : void Window&lt; P, W, C, Settings &gt;::create( C** channel )</span>
+<span class="lineNum">     242 </span>            : {
+<span class="lineNum">     243 </span><span class="lineNoCov">          0 :     *channel = _pipe-&gt;getServer()-&gt;getNodeFactory()-&gt;createChannel(</span>
+<span class="lineNum">     244 </span>            :         static_cast&lt; W* &gt;( this ));
+<span class="lineNum">     245 </span><span class="lineNoCov">          0 :     (*channel)-&gt;init(); // not in ctor, virtual method</span>
+<span class="lineNum">     246 </span><span class="lineNoCov">          0 : }</span>
+<a name="247"><span class="lineNum">     247 </span>            : </a>
+<span class="lineNum">     248 </span>            : template&lt; class P, class W, class C, class Settings &gt;
+<span class="lineNum">     249 </span><span class="lineNoCov">          0 : void Window&lt; P, W, C, Settings &gt;::release( C* channel )</span>
+<span class="lineNum">     250 </span>            : {
+<span class="lineNum">     251 </span><span class="lineNoCov">          0 :     _pipe-&gt;getServer()-&gt;getNodeFactory()-&gt;releaseChannel( channel );</span>
+<span class="lineNum">     252 </span><span class="lineNoCov">          0 : }</span>
+<a name="253"><span class="lineNum">     253 </span>            : </a>
+<span class="lineNum">     254 </span>            : template&lt; class P, class W, class C, class Settings &gt;
+<span class="lineNum">     255 </span><span class="lineNoCov">          0 : void Window&lt; P, W, C, Settings &gt;::_addChannel( C* channel )</span>
+<span class="lineNum">     256 </span>            : {
+<span class="lineNum">     257 </span><span class="lineNoCov">          0 :     LBASSERT( channel-&gt;getWindow() == this );</span>
+<span class="lineNum">     258 </span><span class="lineNoCov">          0 :     _channels.push_back( channel );</span>
+<span class="lineNum">     259 </span><span class="lineNoCov">          0 :     setDirty( DIRTY_CHANNELS );</span>
+<span class="lineNum">     260 </span><span class="lineNoCov">          0 : }</span>
+<a name="261"><span class="lineNum">     261 </span>            : </a>
+<span class="lineNum">     262 </span>            : template&lt; class P, class W, class C, class Settings &gt;
+<span class="lineNum">     263 </span><span class="lineNoCov">          0 : bool Window&lt; P, W, C, Settings &gt;::_removeChannel( C* channel )</span>
+<span class="lineNum">     264 </span>            : {
+<span class="lineNum">     265 </span><span class="lineNoCov">          0 :     typename Channels::iterator i = lunchbox::find( _channels, channel );</span>
+<span class="lineNum">     266 </span><span class="lineNoCov">          0 :     if( i == _channels.end( ))</span>
+<span class="lineNum">     267 </span><span class="lineNoCov">          0 :         return false;</span>
+<span class="lineNum">     268 </span>            : 
+<span class="lineNum">     269 </span><span class="lineNoCov">          0 :     _channels.erase( i );</span>
+<span class="lineNum">     270 </span><span class="lineNoCov">          0 :     setDirty( DIRTY_CHANNELS );</span>
+<span class="lineNum">     271 </span><span class="lineNoCov">          0 :     if( !isMaster( ))</span>
+<span class="lineNum">     272 </span><span class="lineNoCov">          0 :         postRemove( channel );</span>
+<span class="lineNum">     273 </span><span class="lineNoCov">          0 :     return true;</span>
+<span class="lineNum">     274 </span>            : }
+<a name="275"><span class="lineNum">     275 </span>            : </a>
+<span class="lineNum">     276 </span>            : template&lt; class P, class W, class C, class Settings &gt;
+<span class="lineNum">     277 </span><span class="lineNoCov">          0 : C* Window&lt; P, W, C, Settings &gt;::_findChannel( const uint128_t&amp; id )</span>
+<span class="lineNum">     278 </span>            : {
+<span class="lineNum">     279 </span><span class="lineNoCov">          0 :     for( typename Channels::const_iterator i = _channels.begin();</span>
+<span class="lineNum">     280 </span><span class="lineNoCov">          0 :          i != _channels.end(); ++i )</span>
+<span class="lineNum">     281 </span>            :     {
+<span class="lineNum">     282 </span><span class="lineNoCov">          0 :         C* channel = *i;</span>
+<span class="lineNum">     283 </span><span class="lineNoCov">          0 :         if( channel-&gt;getID() == id )</span>
+<span class="lineNum">     284 </span><span class="lineNoCov">          0 :             return channel;</span>
+<span class="lineNum">     285 </span>            :     }
+<span class="lineNum">     286 </span><span class="lineNoCov">          0 :     return 0;</span>
+<span class="lineNum">     287 </span>            : }
+<a name="288"><span class="lineNum">     288 </span>            : </a>
+<span class="lineNum">     289 </span>            : template&lt; class P, class W, class C, class Settings &gt;
+<span class="lineNum">     290 </span><span class="lineNoCov">          0 : void Window&lt; P, W, C, Settings &gt;::setIAttribute( const WindowSettings::IAttribute attr,</span>
+<span class="lineNum">     291 </span>            :                                        const int32_t value )
+<span class="lineNum">     292 </span>            : {
+<span class="lineNum">     293 </span><span class="lineNoCov">          0 :     if( _data.windowSettings.setIAttribute( attr, value ))</span>
+<span class="lineNum">     294 </span><span class="lineNoCov">          0 :         setDirty( DIRTY_SETTINGS );</span>
+<span class="lineNum">     295 </span><span class="lineNoCov">          0 : }</span>
+<a name="296"><span class="lineNum">     296 </span>            : </a>
+<span class="lineNum">     297 </span>            : template&lt; class P, class W, class C, class Settings &gt; int32_t
+<span class="lineNum">     298 </span><span class="lineNoCov">          0 : Window&lt; P, W, C, Settings &gt;::getIAttribute( const WindowSettings::IAttribute attr ) const</span>
+<span class="lineNum">     299 </span>            : {
+<span class="lineNum">     300 </span><span class="lineNoCov">          0 :     return _data.windowSettings.getIAttribute( attr );</span>
+<span class="lineNum">     301 </span>            : }
+<a name="302"><span class="lineNum">     302 </span>            : </a>
+<span class="lineNum">     303 </span>            : template&lt; class P, class W, class C, class Settings &gt; const std::string&amp;
+<span class="lineNum">     304 </span><span class="lineNoCov">          0 : Window&lt; P, W, C, Settings &gt;::getIAttributeString( const WindowSettings::IAttribute attr )</span>
+<span class="lineNum">     305 </span>            : {
+<span class="lineNum">     306 </span><span class="lineNoCov">          0 :     return _iAttributeStrings[attr];</span>
+<span class="lineNum">     307 </span>            : }
+<a name="308"><span class="lineNum">     308 </span>            : </a>
+<span class="lineNum">     309 </span>            : template&lt; class P, class W, class C, class Settings &gt;
+<span class="lineNum">     310 </span><span class="lineNoCov">          0 : void Window&lt; P, W, C, Settings &gt;::setSettings( const Settings&amp; settings )</span>
+<span class="lineNum">     311 </span>            : {
+<span class="lineNum">     312 </span><span class="lineNoCov">          0 :     _data.windowSettings = settings;</span>
+<span class="lineNum">     313 </span><span class="lineNoCov">          0 :     setDirty( DIRTY_SETTINGS );</span>
+<span class="lineNum">     314 </span><span class="lineNoCov">          0 : }</span>
+<a name="315"><span class="lineNum">     315 </span>            : </a>
+<span class="lineNum">     316 </span>            : template&lt; class P, class W, class C, class Settings &gt;
+<span class="lineNum">     317 </span><span class="lineNoCov">          0 : const Settings&amp; Window&lt; P, W, C, Settings &gt;::getSettings() const</span>
+<span class="lineNum">     318 </span>            : {
+<span class="lineNum">     319 </span><span class="lineNoCov">          0 :     return _data.windowSettings;</span>
+<span class="lineNum">     320 </span>            : }
+<a name="321"><span class="lineNum">     321 </span>            : </a>
+<span class="lineNum">     322 </span>            : template&lt; class P, class W, class C, class Settings &gt;
+<span class="lineNum">     323 </span><span class="lineNoCov">          0 : WindowPath Window&lt; P, W, C, Settings &gt;::getPath() const</span>
+<span class="lineNum">     324 </span>            : {
+<span class="lineNum">     325 </span><span class="lineNoCov">          0 :     const P* pipe = getPipe();</span>
+<span class="lineNum">     326 </span><span class="lineNoCov">          0 :     LBASSERT( pipe );</span>
+<span class="lineNum">     327 </span><span class="lineNoCov">          0 :     WindowPath path( pipe-&gt;getPath( ));</span>
+<span class="lineNum">     328 </span>            : 
+<span class="lineNum">     329 </span><span class="lineNoCov">          0 :     const typename std::vector&lt; W* &gt;&amp; windows = pipe-&gt;getWindows();</span>
+<span class="lineNum">     330 </span>            :     typename std::vector&lt; W* &gt;::const_iterator i = std::find( windows.begin(),
+<span class="lineNum">     331 </span>            :                                                               windows.end(),
+<span class="lineNum">     332 </span><span class="lineNoCov">          0 :                                                               this );</span>
+<span class="lineNum">     333 </span><span class="lineNoCov">          0 :     LBASSERT( i != windows.end( ));</span>
+<span class="lineNum">     334 </span><span class="lineNoCov">          0 :     path.windowIndex = std::distance( windows.begin(), i );</span>
+<span class="lineNum">     335 </span><span class="lineNoCov">          0 :     return path;</span>
+<span class="lineNum">     336 </span>            : }
+<span class="lineNum">     337 </span>            : 
+<span class="lineNum">     338 </span>            : namespace
+<a name="339"><span class="lineNum">     339 </span>            : {</a>
+<span class="lineNum">     340 </span>            : template&lt; class W, class V &gt;
+<span class="lineNum">     341 </span><span class="lineNoCov">          0 : VisitorResult _accept( W* window, V&amp; visitor )</span>
+<span class="lineNum">     342 </span>            : {
+<span class="lineNum">     343 </span><span class="lineNoCov">          0 :     VisitorResult result = visitor.visitPre( window );</span>
+<span class="lineNum">     344 </span><span class="lineNoCov">          0 :     if( result != TRAVERSE_CONTINUE )</span>
+<span class="lineNum">     345 </span><span class="lineNoCov">          0 :         return result;</span>
+<span class="lineNum">     346 </span>            : 
+<span class="lineNum">     347 </span><span class="lineNoCov">          0 :     const typename W::Channels&amp; channels = window-&gt;getChannels();</span>
+<span class="lineNum">     348 </span><span class="lineNoCov">          0 :     for( typename W::Channels::const_iterator i = channels.begin();</span>
+<span class="lineNum">     349 </span><span class="lineNoCov">          0 :          i != channels.end(); ++i )</span>
+<span class="lineNum">     350 </span>            :     {
+<span class="lineNum">     351 </span><span class="lineNoCov">          0 :         switch( (*i)-&gt;accept( visitor ))</span>
+<span class="lineNum">     352 </span>            :         {
+<span class="lineNum">     353 </span>            :             case TRAVERSE_TERMINATE:
+<span class="lineNum">     354 </span><span class="lineNoCov">          0 :                 return TRAVERSE_TERMINATE;</span>
+<span class="lineNum">     355 </span>            : 
+<span class="lineNum">     356 </span>            :             case TRAVERSE_PRUNE:
+<span class="lineNum">     357 </span><span class="lineNoCov">          0 :                 result = TRAVERSE_PRUNE;</span>
+<span class="lineNum">     358 </span><span class="lineNoCov">          0 :                 break;</span>
+<span class="lineNum">     359 </span>            : 
+<span class="lineNum">     360 </span>            :             case TRAVERSE_CONTINUE:
+<span class="lineNum">     361 </span>            :             default:
+<span class="lineNum">     362 </span><span class="lineNoCov">          0 :                 break;</span>
+<span class="lineNum">     363 </span>            :         }
+<span class="lineNum">     364 </span>            :     }
+<span class="lineNum">     365 </span>            : 
+<span class="lineNum">     366 </span><span class="lineNoCov">          0 :     switch( visitor.visitPost( window ))</span>
+<span class="lineNum">     367 </span>            :     {
+<span class="lineNum">     368 </span>            :         case TRAVERSE_TERMINATE:
+<span class="lineNum">     369 </span><span class="lineNoCov">          0 :             return TRAVERSE_TERMINATE;</span>
+<span class="lineNum">     370 </span>            : 
+<span class="lineNum">     371 </span>            :         case TRAVERSE_PRUNE:
+<span class="lineNum">     372 </span><span class="lineNoCov">          0 :             return TRAVERSE_PRUNE;</span>
+<span class="lineNum">     373 </span>            : 
+<span class="lineNum">     374 </span>            :         case TRAVERSE_CONTINUE:
+<span class="lineNum">     375 </span>            :         default:
+<span class="lineNum">     376 </span><span class="lineNoCov">          0 :             break;</span>
+<span class="lineNum">     377 </span>            :     }
+<span class="lineNum">     378 </span>            : 
+<span class="lineNum">     379 </span><span class="lineNoCov">          0 :     return result;</span>
+<span class="lineNum">     380 </span>            : }
+<span class="lineNum">     381 </span>            : }
+<a name="382"><span class="lineNum">     382 </span>            : </a>
+<span class="lineNum">     383 </span>            : template&lt; class P, class W, class C, class Settings &gt;
+<span class="lineNum">     384 </span><span class="lineNoCov">          0 : VisitorResult Window&lt; P, W, C, Settings &gt;::accept( Visitor&amp; visitor )</span>
+<span class="lineNum">     385 </span>            : {
+<span class="lineNum">     386 </span><span class="lineNoCov">          0 :     return _accept( static_cast&lt; W* &gt;( this ), visitor );</span>
+<span class="lineNum">     387 </span>            : }
+<a name="388"><span class="lineNum">     388 </span>            : </a>
+<span class="lineNum">     389 </span>            : template&lt; class P, class W, class C, class Settings &gt;
+<span class="lineNum">     390 </span><span class="lineNoCov">          0 : VisitorResult Window&lt; P, W, C, Settings &gt;::accept( Visitor&amp; visitor  ) const</span>
+<span class="lineNum">     391 </span>            : {
+<span class="lineNum">     392 </span><span class="lineNoCov">          0 :     return _accept( static_cast&lt; const W* &gt;( this ), visitor );</span>
+<span class="lineNum">     393 </span>            : }
+<a name="394"><span class="lineNum">     394 </span>            : </a>
+<span class="lineNum">     395 </span>            : template&lt; class P, class W, class C, class Settings &gt;
+<span class="lineNum">     396 </span><span class="lineNoCov">          0 : const PixelViewport&amp; Window&lt; P, W, C, Settings &gt;::getPixelViewport() const</span>
+<span class="lineNum">     397 </span>            : {
+<span class="lineNum">     398 </span><span class="lineNoCov">          0 :     return _data.windowSettings.getPixelViewport();</span>
+<span class="lineNum">     399 </span>            : }
+<a name="400"><span class="lineNum">     400 </span>            : </a>
+<span class="lineNum">     401 </span>            : template&lt; class P, class W, class C, class Settings &gt;
+<span class="lineNum">     402 </span><span class="lineNoCov">          0 : void Window&lt; P, W, C, Settings &gt;::setName( const std::string&amp; name )</span>
+<span class="lineNum">     403 </span>            : {
+<span class="lineNum">     404 </span><span class="lineNoCov">          0 :     Object::setName( name );</span>
+<span class="lineNum">     405 </span><span class="lineNoCov">          0 :     if( _data.windowSettings.getName() == name )</span>
+<span class="lineNum">     406 </span><span class="lineNoCov">          0 :         return;</span>
+<span class="lineNum">     407 </span><span class="lineNoCov">          0 :     _data.windowSettings.setName( name );</span>
+<span class="lineNum">     408 </span><span class="lineNoCov">          0 :     setDirty( DIRTY_SETTINGS );</span>
+<span class="lineNum">     409 </span>            : }
+<a name="410"><span class="lineNum">     410 </span>            : </a>
+<span class="lineNum">     411 </span>            : template&lt; class P, class W, class C, class Settings &gt;
+<span class="lineNum">     412 </span><span class="lineNoCov">          0 : void Window&lt; P, W, C, Settings &gt;::setPixelViewport( const PixelViewport&amp; pvp )</span>
+<span class="lineNum">     413 </span>            : {
+<span class="lineNum">     414 </span><span class="lineNoCov">          0 :     LBASSERTINFO( pvp.isValid(), pvp );</span>
+<span class="lineNum">     415 </span><span class="lineNoCov">          0 :     if( !pvp.isValid( ))</span>
+<span class="lineNum">     416 </span><span class="lineNoCov">          0 :         return;</span>
+<span class="lineNum">     417 </span>            : 
+<span class="lineNum">     418 </span><span class="lineNoCov">          0 :     _data.fixedVP = false;</span>
+<span class="lineNum">     419 </span>            : 
+<span class="lineNum">     420 </span><span class="lineNoCov">          0 :     if( pvp == _data.pvp &amp;&amp; _data.vp.hasArea( ))</span>
+<span class="lineNum">     421 </span><span class="lineNoCov">          0 :         return;</span>
+<span class="lineNum">     422 </span>            : 
+<span class="lineNum">     423 </span><span class="lineNoCov">          0 :     _data.pvp = pvp;</span>
+<span class="lineNum">     424 </span><span class="lineNoCov">          0 :     _data.vp.invalidate();</span>
+<span class="lineNum">     425 </span><span class="lineNoCov">          0 :     _data.windowSettings.setPixelViewport( pvp );</span>
+<span class="lineNum">     426 </span>            : 
+<span class="lineNum">     427 </span><span class="lineNoCov">          0 :     notifyViewportChanged();</span>
+<span class="lineNum">     428 </span><span class="lineNoCov">          0 :     setDirty( DIRTY_VIEWPORT );</span>
+<span class="lineNum">     429 </span><span class="lineNoCov">          0 :     setDirty( DIRTY_SETTINGS );</span>
+<span class="lineNum">     430 </span>            : }
+<a name="431"><span class="lineNum">     431 </span>            : </a>
+<span class="lineNum">     432 </span>            : template&lt; class P, class W, class C, class Settings &gt;
+<span class="lineNum">     433 </span><span class="lineNoCov">          0 : void Window&lt; P, W, C, Settings &gt;::setViewport( const Viewport&amp; vp )</span>
+<span class="lineNum">     434 </span>            : {
+<span class="lineNum">     435 </span><span class="lineNoCov">          0 :     if( !vp.hasArea())</span>
+<span class="lineNum">     436 </span><span class="lineNoCov">          0 :         return;</span>
+<span class="lineNum">     437 </span>            : 
+<span class="lineNum">     438 </span><span class="lineNoCov">          0 :     _data.fixedVP = true;</span>
+<span class="lineNum">     439 </span>            : 
+<span class="lineNum">     440 </span><span class="lineNoCov">          0 :     if( vp == _data.vp &amp;&amp; _data.pvp.hasArea( ))</span>
+<span class="lineNum">     441 </span><span class="lineNoCov">          0 :         return;</span>
+<span class="lineNum">     442 </span><span class="lineNoCov">          0 :     _data.vp = vp;</span>
+<span class="lineNum">     443 </span><span class="lineNoCov">          0 :     _data.pvp.invalidate();</span>
+<span class="lineNum">     444 </span><span class="lineNoCov">          0 :     _data.windowSettings.setPixelViewport( PixelViewport( ));</span>
+<span class="lineNum">     445 </span>            : 
+<span class="lineNum">     446 </span><span class="lineNoCov">          0 :     setDirty( DIRTY_VIEWPORT );</span>
+<span class="lineNum">     447 </span><span class="lineNoCov">          0 :     setDirty( DIRTY_SETTINGS );</span>
+<span class="lineNum">     448 </span><span class="lineNoCov">          0 :     notifyViewportChanged();</span>
+<span class="lineNum">     449 </span>            : }
+<a name="450"><span class="lineNum">     450 </span>            : </a>
+<span class="lineNum">     451 </span>            : template&lt; class P, class W, class C, class Settings &gt;
+<span class="lineNum">     452 </span><span class="lineNoCov">          0 : void Window&lt; P, W, C, Settings &gt;::notifyViewportChanged()</span>
+<span class="lineNum">     453 </span>            : {
+<span class="lineNum">     454 </span><span class="lineNoCov">          0 :     const PixelViewport pipePVP = _pipe-&gt;getPixelViewport();</span>
+<span class="lineNum">     455 </span>            : 
+<span class="lineNum">     456 </span><span class="lineNoCov">          0 :     if( _data.fixedVP ) // update pixel viewport</span>
+<span class="lineNum">     457 </span>            :     {
+<span class="lineNum">     458 </span><span class="lineNoCov">          0 :         const PixelViewport oldPVP = _data.pvp;</span>
+<span class="lineNum">     459 </span><span class="lineNoCov">          0 :         _data.pvp = pipePVP;</span>
+<span class="lineNum">     460 </span><span class="lineNoCov">          0 :         _data.pvp.apply( _data.vp );</span>
+<span class="lineNum">     461 </span><span class="lineNoCov">          0 :         if( oldPVP != _data.pvp )</span>
+<span class="lineNum">     462 </span>            :         {
+<span class="lineNum">     463 </span><span class="lineNoCov">          0 :             _data.windowSettings.setPixelViewport( _data.pvp );</span>
+<span class="lineNum">     464 </span><span class="lineNoCov">          0 :             setDirty( DIRTY_VIEWPORT );</span>
+<span class="lineNum">     465 </span><span class="lineNoCov">          0 :             setDirty( DIRTY_SETTINGS );</span>
+<span class="lineNum">     466 </span>            :         }
+<span class="lineNum">     467 </span>            :     }
+<span class="lineNum">     468 </span>            :     else           // update viewport
+<span class="lineNum">     469 </span>            :     {
+<span class="lineNum">     470 </span><span class="lineNoCov">          0 :         const Viewport oldVP = _data.vp;</span>
+<span class="lineNum">     471 </span><span class="lineNoCov">          0 :         _data.vp = _data.pvp / pipePVP;</span>
+<span class="lineNum">     472 </span><span class="lineNoCov">          0 :         if( oldVP != _data.vp )</span>
+<span class="lineNum">     473 </span><span class="lineNoCov">          0 :             setDirty( DIRTY_VIEWPORT );</span>
+<span class="lineNum">     474 </span>            :     }
+<span class="lineNum">     475 </span>            : 
+<span class="lineNum">     476 </span><span class="lineNoCov">          0 :     for( typename Channels::const_iterator i = _channels.begin();</span>
+<span class="lineNum">     477 </span><span class="lineNoCov">          0 :          i != _channels.end(); ++i )</span>
+<span class="lineNum">     478 </span>            :     {
+<span class="lineNum">     479 </span><span class="lineNoCov">          0 :         (*i)-&gt;notifyViewportChanged();</span>
+<span class="lineNum">     480 </span>            :     }
+<span class="lineNum">     481 </span><span class="lineNoCov">          0 :     LBVERB &lt;&lt; getName() &lt;&lt; &quot; viewport update: &quot; &lt;&lt; _data.vp &lt;&lt; &quot;:&quot; &lt;&lt; _data.pvp</span>
+<span class="lineNum">     482 </span><span class="lineNoCov">          0 :            &lt;&lt; std::endl;</span>
+<span class="lineNum">     483 </span><span class="lineNoCov">          0 : }</span>
+<a name="484"><span class="lineNum">     484 </span>            : </a>
+<span class="lineNum">     485 </span>            : template&lt; class P, class W, class C, class Settings &gt;
+<span class="lineNum">     486 </span><span class="lineNoCov">          0 : void Window&lt; P, W, C, Settings &gt;::_setDrawableConfig(const DrawableConfig&amp; drawableConfig)</span>
+<span class="lineNum">     487 </span>            : {
+<span class="lineNum">     488 </span><span class="lineNoCov">          0 :     _data.drawableConfig = drawableConfig;</span>
+<span class="lineNum">     489 </span><span class="lineNoCov">          0 :     setDirty( DIRTY_DRAWABLECONFIG );</span>
+<span class="lineNum">     490 </span><span class="lineNoCov">          0 : }</span>
+<span class="lineNum">     491 </span>            : 
+<span class="lineNum">     492 </span>            : //----------------------------------------------------------------------
+<span class="lineNum">     493 </span>            : // ICommand handlers
+<a name="494"><span class="lineNum">     494 </span>            : //----------------------------------------------------------------------</a>
+<span class="lineNum">     495 </span>            : template&lt; class P, class W, class C, class Settings &gt;
+<span class="lineNum">     496 </span><span class="lineNoCov">          0 : bool Window&lt; P, W, C, Settings &gt;::_cmdNewChannel( co::ICommand&amp; cmd )</span>
+<span class="lineNum">     497 </span>            : {
+<span class="lineNum">     498 </span><span class="lineNoCov">          0 :     co::ObjectICommand command( cmd );</span>
+<span class="lineNum">     499 </span>            : 
+<span class="lineNum">     500 </span><span class="lineNoCov">          0 :     C* channel = 0;</span>
+<span class="lineNum">     501 </span><span class="lineNoCov">          0 :     create( &amp;channel );</span>
+<span class="lineNum">     502 </span><span class="lineNoCov">          0 :     LBASSERT( channel );</span>
+<span class="lineNum">     503 </span>            : 
+<span class="lineNum">     504 </span><span class="lineNoCov">          0 :     getLocalNode()-&gt;registerObject( channel );</span>
+<span class="lineNum">     505 </span><span class="lineNoCov">          0 :     LBASSERT( channel-&gt;isAttached() );</span>
+<span class="lineNum">     506 </span>            : 
+<span class="lineNum">     507 </span><span class="lineNoCov">          0 :     send( command.getRemoteNode(), CMD_WINDOW_NEW_CHANNEL_REPLY )</span>
+<span class="lineNum">     508 </span><span class="lineNoCov">          0 :             &lt;&lt; command.read&lt; uint32_t &gt;() &lt;&lt; channel-&gt;getID();</span>
+<span class="lineNum">     509 </span><span class="lineNoCov">          0 :     LBASSERT( channel-&gt;isAttached( ));</span>
+<span class="lineNum">     510 </span>            : 
+<span class="lineNum">     511 </span><span class="lineNoCov">          0 :     return true;</span>
+<span class="lineNum">     512 </span>            : }
+<a name="513"><span class="lineNum">     513 </span>            : </a>
+<span class="lineNum">     514 </span>            : template&lt; class P, class W, class C, class Settings &gt;
+<span class="lineNum">     515 </span><span class="lineNoCov">          0 : bool Window&lt; P, W, C, Settings &gt;::_cmdNewChannelReply( co::ICommand&amp; cmd )</span>
+<span class="lineNum">     516 </span>            : {
+<span class="lineNum">     517 </span><span class="lineNoCov">          0 :     co::ObjectICommand command( cmd );</span>
+<span class="lineNum">     518 </span>            : 
+<span class="lineNum">     519 </span><span class="lineNoCov">          0 :     const uint32_t requestID = command.read&lt; uint32_t &gt;();</span>
+<span class="lineNum">     520 </span><span class="lineNoCov">          0 :     const uint128_t&amp; result = command.read&lt; uint128_t &gt;();</span>
+<span class="lineNum">     521 </span>            : 
+<span class="lineNum">     522 </span><span class="lineNoCov">          0 :     getLocalNode()-&gt;serveRequest( requestID, result );</span>
+<span class="lineNum">     523 </span>            : 
+<span class="lineNum">     524 </span><span class="lineNoCov">          0 :     return true;</span>
+<span class="lineNum">     525 </span>            : }
+<a name="526"><span class="lineNum">     526 </span>            : </a>
+<span class="lineNum">     527 </span>            : template&lt; class P, class W, class C, class Settings &gt;
+<span class="lineNum">     528 </span><span class="lineNoCov">          0 : std::ostream&amp; operator &lt;&lt; ( std::ostream&amp; os, const Window&lt; P, W, C, Settings &gt;&amp; window )</span>
+<span class="lineNum">     529 </span>            : {
+<span class="lineNum">     530 </span><span class="lineNoCov">          0 :     os &lt;&lt; lunchbox::disableFlush &lt;&lt; lunchbox::disableHeader</span>
+<span class="lineNum">     531 </span><span class="lineNoCov">          0 :        &lt;&lt; &quot;window&quot; &lt;&lt; std::endl;</span>
+<span class="lineNum">     532 </span><span class="lineNoCov">          0 :     os &lt;&lt; &quot;{&quot; &lt;&lt; std::endl &lt;&lt; lunchbox::indent;</span>
+<span class="lineNum">     533 </span>            : 
+<span class="lineNum">     534 </span><span class="lineNoCov">          0 :     const std::string&amp; name = window.getName();</span>
+<span class="lineNum">     535 </span><span class="lineNoCov">          0 :     if( !name.empty( ))</span>
+<span class="lineNum">     536 </span><span class="lineNoCov">          0 :         os &lt;&lt; &quot;name     \&quot;&quot; &lt;&lt; name &lt;&lt; &quot;\&quot;&quot; &lt;&lt; std::endl;</span>
+<span class="lineNum">     537 </span>            : 
+<span class="lineNum">     538 </span><span class="lineNoCov">          0 :     const Viewport&amp; vp = window.getViewport();</span>
+<span class="lineNum">     539 </span><span class="lineNoCov">          0 :     const PixelViewport&amp; pvp = window.getPixelViewport();</span>
+<span class="lineNum">     540 </span><span class="lineNoCov">          0 :     if( vp.hasArea() &amp;&amp; window.hasFixedViewport( ))</span>
+<span class="lineNum">     541 </span>            :     {
+<span class="lineNum">     542 </span><span class="lineNoCov">          0 :         if( pvp.hasArea( ))</span>
+<span class="lineNum">     543 </span><span class="lineNoCov">          0 :             os &lt;&lt; &quot;viewport &quot; &lt;&lt; pvp &lt;&lt; std::endl;</span>
+<span class="lineNum">     544 </span><span class="lineNoCov">          0 :         os &lt;&lt; &quot;viewport &quot; &lt;&lt; vp &lt;&lt; std::endl;</span>
+<span class="lineNum">     545 </span>            :     }
+<span class="lineNum">     546 </span><span class="lineNoCov">          0 :     else if( pvp.hasArea() &amp;&amp; !window.hasFixedViewport( ))</span>
+<span class="lineNum">     547 </span>            :     {
+<span class="lineNum">     548 </span><span class="lineNoCov">          0 :         if( vp.hasArea( ))</span>
+<span class="lineNum">     549 </span><span class="lineNoCov">          0 :             os &lt;&lt; &quot;viewport &quot; &lt;&lt; vp &lt;&lt; std::endl;</span>
+<span class="lineNum">     550 </span><span class="lineNoCov">          0 :         os &lt;&lt; &quot;viewport &quot; &lt;&lt; pvp &lt;&lt; std::endl;</span>
+<span class="lineNum">     551 </span>            :     }
+<span class="lineNum">     552 </span>            : 
+<span class="lineNum">     553 </span><span class="lineNoCov">          0 :     window.output( os );</span>
+<span class="lineNum">     554 </span>            : 
+<span class="lineNum">     555 </span><span class="lineNoCov">          0 :     const typename W::Channels&amp; channels = window.getChannels();</span>
+<span class="lineNum">     556 </span><span class="lineNoCov">          0 :     for( typename W::Channels::const_iterator i = channels.begin();</span>
+<span class="lineNum">     557 </span><span class="lineNoCov">          0 :          i != channels.end(); ++i )</span>
+<span class="lineNum">     558 </span>            :     {
+<span class="lineNum">     559 </span><span class="lineNoCov">          0 :         os &lt;&lt; **i;</span>
+<span class="lineNum">     560 </span>            :     }
+<span class="lineNum">     561 </span>            : 
+<span class="lineNum">     562 </span><span class="lineNoCov">          0 :     os &lt;&lt; lunchbox::exdent &lt;&lt; &quot;}&quot; &lt;&lt; std::endl &lt;&lt; lunchbox::enableHeader</span>
+<span class="lineNum">     563 </span>            :        &lt;&lt; lunchbox::enableFlush;
+<span class="lineNum">     564 </span><span class="lineNoCov">          0 :     return os;</span>
+<span class="lineNum">     565 </span>            : }
+<span class="lineNum">     566 </span>            : 
+<span class="lineNum">     567 </span>            : }
+<span class="lineNum">     568 </span>            : }
+</pre>
+      </td>
+    </tr>
+  </table>
+  <br>
+
+  <table width="100%" border=0 cellspacing=0 cellpadding=0>
+    <tr><td class="ruler"><img src="../../../glass.png" width=3 height=3 alt=""></td></tr>
+    <tr><td class="versionInfo">Generated by: <a href="http://ltp.sourceforge.net/coverage/lcov.php" target="_parent">LCOV version 1.11</a></td></tr>
+  </table>
+  <br>
+
+</body>
+</html>

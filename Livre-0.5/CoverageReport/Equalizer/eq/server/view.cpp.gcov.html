@@ -1,0 +1,572 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+
+<html lang="en">
+
+<head>
+  <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+  <title>LCOV - Livre - Equalizer/eq/server/view.cpp</title>
+  <link rel="stylesheet" type="text/css" href="../../../gcov.css">
+</head>
+
+<body>
+
+  <table width="100%" border=0 cellspacing=0 cellpadding=0>
+    <tr><td class="title">LCOV - code coverage report</td></tr>
+    <tr><td class="ruler"><img src="../../../glass.png" width=3 height=3 alt=""></td></tr>
+
+    <tr>
+      <td width="100%">
+        <table cellpadding=1 border=0 width="100%">
+          <tr>
+            <td width="10%" class="headerItem">Current view:</td>
+            <td width="35%" class="headerValue"><a href="../../../index.html">top level</a> - <a href="index.html">Equalizer/eq/server</a> - view.cpp<span style="font-size: 80%;"> (source / <a href="view.cpp.func-sort-c.html">functions</a>)</span></td>
+            <td width="5%"></td>
+            <td width="15%"></td>
+            <td width="10%" class="headerCovTableHead">Hit</td>
+            <td width="10%" class="headerCovTableHead">Total</td>
+            <td width="15%" class="headerCovTableHead">Coverage</td>
+          </tr>
+          <tr>
+            <td class="headerItem">Test:</td>
+            <td class="headerValue">Livre</td>
+            <td></td>
+            <td class="headerItem">Lines:</td>
+            <td class="headerCovTableEntry">1</td>
+            <td class="headerCovTableEntry">243</td>
+            <td class="headerCovTableEntryLo">0.4 %</td>
+          </tr>
+          <tr>
+            <td class="headerItem">Date:</td>
+            <td class="headerValue">2016-03-10 14:06:39</td>
+            <td></td>
+            <td class="headerItem">Functions:</td>
+            <td class="headerCovTableEntry">2</td>
+            <td class="headerCovTableEntry">38</td>
+            <td class="headerCovTableEntryLo">5.3 %</td>
+          </tr>
+          <tr><td><img src="../../../glass.png" width=3 height=3 alt=""></td></tr>
+        </table>
+      </td>
+    </tr>
+
+    <tr><td class="ruler"><img src="../../../glass.png" width=3 height=3 alt=""></td></tr>
+  </table>
+
+  <table cellpadding=0 cellspacing=0 border=0>
+    <tr>
+      <td><br></td>
+    </tr>
+    <tr>
+      <td>
+<pre class="sourceHeading">          Line data    Source code</pre>
+<pre class="source">
+<a name="1"><span class="lineNum">       1 </span>            : </a>
+<span class="lineNum">       2 </span>            : /* Copyright (c) 2009-2013, Stefan Eilemann &lt;eile@equalizergraphics.com&gt;
+<span class="lineNum">       3 </span>            :  *               2011-2012, Daniel Nachbaur &lt;danielnachbaur@gmail.com&gt;
+<span class="lineNum">       4 </span>            :  *                    2010, Cedric Stalder &lt;cedric.stalder@gmail.com
+<span class="lineNum">       5 </span>            :  *
+<span class="lineNum">       6 </span>            :  * This library is free software; you can redistribute it and/or modify it under
+<span class="lineNum">       7 </span>            :  * the terms of the GNU Lesser General Public License version 2.1 as published
+<span class="lineNum">       8 </span>            :  * by the Free Software Foundation.
+<span class="lineNum">       9 </span>            :  *
+<span class="lineNum">      10 </span>            :  * This library is distributed in the hope that it will be useful, but WITHOUT
+<span class="lineNum">      11 </span>            :  * ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS
+<span class="lineNum">      12 </span>            :  * FOR A PARTICULAR PURPOSE.  See the GNU Lesser General Public License for more
+<span class="lineNum">      13 </span>            :  * details.
+<span class="lineNum">      14 </span>            :  *
+<span class="lineNum">      15 </span>            :  * You should have received a copy of the GNU Lesser General Public License
+<span class="lineNum">      16 </span>            :  * along with this library; if not, write to the Free Software Foundation, Inc.,
+<span class="lineNum">      17 </span>            :  * 51 Franklin Street, Fifth Floor, Boston, MA 02110-1301 USA.
+<span class="lineNum">      18 </span>            :  */
+<span class="lineNum">      19 </span>            : 
+<span class="lineNum">      20 </span>            : #include &quot;view.h&quot;
+<span class="lineNum">      21 </span>            : 
+<span class="lineNum">      22 </span>            : #include &quot;canvas.h&quot;
+<span class="lineNum">      23 </span>            : #include &quot;channel.h&quot;
+<span class="lineNum">      24 </span>            : #include &quot;compound.h&quot;
+<span class="lineNum">      25 </span>            : #include &quot;config.h&quot;
+<span class="lineNum">      26 </span>            : #include &quot;configDestCompoundVisitor.h&quot;
+<span class="lineNum">      27 </span>            : #include &quot;global.h&quot;
+<span class="lineNum">      28 </span>            : #include &quot;layout.h&quot;
+<span class="lineNum">      29 </span>            : #include &quot;log.h&quot;
+<span class="lineNum">      30 </span>            : #include &quot;observer.h&quot;
+<span class="lineNum">      31 </span>            : #include &quot;segment.h&quot;
+<span class="lineNum">      32 </span>            : #include &quot;equalizers/equalizer.h&quot;
+<span class="lineNum">      33 </span>            : #include &quot;equalizers/tileEqualizer.h&quot;
+<span class="lineNum">      34 </span>            : #include &quot;tileQueue.h&quot;
+<span class="lineNum">      35 </span>            : 
+<span class="lineNum">      36 </span>            : #include &lt;eq/fabric/commands.h&gt;
+<span class="lineNum">      37 </span>            : #include &lt;eq/fabric/paths.h&gt;
+<span class="lineNum">      38 </span>            : 
+<span class="lineNum">      39 </span>            : #include &lt;co/dataIStream.h&gt;
+<span class="lineNum">      40 </span>            : #include &lt;co/dataOStream.h&gt;
+<span class="lineNum">      41 </span>            : #include &lt;co/iCommand.h&gt;
+<span class="lineNum">      42 </span>            : 
+<span class="lineNum">      43 </span>            : namespace eq
+<span class="lineNum">      44 </span>            : {
+<span class="lineNum">      45 </span>            : namespace server
+<span class="lineNum">      46 </span>            : {
+<span class="lineNum">      47 </span>            : typedef fabric::View&lt; Layout, View, Observer &gt; Super;
+<a name="48"><span class="lineNum">      48 </span>            : typedef co::CommandFunc&lt;View&gt; ViewFunc;</a>
+<span class="lineNum">      49 </span>            : 
+<span class="lineNum">      50 </span><span class="lineNoCov">          0 : View::View( Layout* parent )</span>
+<span class="lineNum">      51 </span>            :         : Super( parent )
+<span class="lineNum">      52 </span><span class="lineNoCov">          0 :         , _private( 0 )</span>
+<span class="lineNum">      53 </span>            : {
+<span class="lineNum">      54 </span><span class="lineNoCov">          0 :     const Global* global = Global::instance();</span>
+<span class="lineNum">      55 </span><span class="lineNoCov">          0 :     for( unsigned i = 0; i &lt; SATTR_ALL; ++i )</span>
+<span class="lineNum">      56 </span>            :     {
+<span class="lineNum">      57 </span><span class="lineNoCov">          0 :         const SAttribute attr = static_cast&lt; SAttribute &gt;( i );</span>
+<span class="lineNum">      58 </span><span class="lineNoCov">          0 :         setSAttribute( attr, global-&gt;getViewSAttribute( attr ));</span>
+<span class="lineNum">      59 </span>            :     }
+<span class="lineNum">      60 </span>            : 
+<span class="lineNum">      61 </span>            :     // All processes must share a common, unique pixelstream name
+<span class="lineNum">      62 </span><span class="lineNoCov">          0 :     if( getSAttribute( View::SATTR_PIXELSTREAM_NAME ).empty( ))</span>
+<span class="lineNum">      63 </span>            :     {
+<span class="lineNum">      64 </span>            :         const std::string name = &quot;Equalizer_&quot; +
+<span class="lineNum">      65 </span><span class="lineNoCov">          0 :                                  lunchbox::make_UUID().getShortString();</span>
+<span class="lineNum">      66 </span><span class="lineNoCov">          0 :         setSAttribute( View::SATTR_PIXELSTREAM_NAME, name);</span>
+<span class="lineNum">      67 </span>            :     }
+<a name="68"><span class="lineNum">      68 </span><span class="lineNoCov">          0 : }</span></a>
+<span class="lineNum">      69 </span>            : 
+<span class="lineNum">      70 </span><span class="lineNoCov">          0 : View::~View()</span>
+<span class="lineNum">      71 </span>            : {
+<span class="lineNum">      72 </span>            :     // Use copy - Channel::unsetOutput modifies vector
+<span class="lineNum">      73 </span><span class="lineNoCov">          0 :     Channels channels = _channels;</span>
+<span class="lineNum">      74 </span><span class="lineNoCov">          0 :     for( Channels::const_iterator i = channels.begin();</span>
+<span class="lineNum">      75 </span><span class="lineNoCov">          0 :          i != channels.end(); ++i )</span>
+<span class="lineNum">      76 </span>            :     {
+<span class="lineNum">      77 </span><span class="lineNoCov">          0 :         Channel* channel = *i;</span>
+<span class="lineNum">      78 </span><span class="lineNoCov">          0 :         channel-&gt;unsetOutput();</span>
+<span class="lineNum">      79 </span>            :     }
+<span class="lineNum">      80 </span>            : 
+<span class="lineNum">      81 </span><span class="lineNoCov">          0 :     LBASSERT( _channels.empty( ));</span>
+<span class="lineNum">      82 </span><span class="lineNoCov">          0 :     _channels.clear();</span>
+<span class="lineNum">      83 </span><span class="lineNoCov">          0 : }</span>
+<span class="lineNum">      84 </span>            : 
+<span class="lineNum">      85 </span>            : namespace
+<span class="lineNum">      86 </span>            : {
+<span class="lineNum">      87 </span>            : class FrustumUpdater : public ConfigVisitor
+<a name="88"><span class="lineNum">      88 </span>            : {</a>
+<span class="lineNum">      89 </span>            : public:
+<span class="lineNum">      90 </span><span class="lineNoCov">          0 :     FrustumUpdater( const Channels&amp; channels, const Vector3f&amp; eye,</span>
+<span class="lineNum">      91 </span>            :                     const float ratio )
+<span class="lineNum">      92 </span>            :             : _channels( channels )
+<span class="lineNum">      93 </span>            :             , _eye( eye )
+<a name="94"><span class="lineNum">      94 </span><span class="lineNoCov">          0 :             , _ratio( ratio )</span></a>
+<span class="lineNum">      95 </span><span class="lineNoCov">          0 :         {}</span>
+<a name="96"><span class="lineNum">      96 </span><span class="lineNoCov">          0 :     virtual ~FrustumUpdater() {}</span></a>
+<span class="lineNum">      97 </span>            : 
+<span class="lineNum">      98 </span><span class="lineNoCov">          0 :     virtual VisitorResult visit( Compound* compound )</span>
+<span class="lineNum">      99 </span>            :         {
+<span class="lineNum">     100 </span><span class="lineNoCov">          0 :             const Channel* channel = compound-&gt;getChannel();</span>
+<span class="lineNum">     101 </span><span class="lineNoCov">          0 :             if( !channel )</span>
+<span class="lineNum">     102 </span><span class="lineNoCov">          0 :                 return TRAVERSE_CONTINUE;</span>
+<span class="lineNum">     103 </span>            : 
+<span class="lineNum">     104 </span><span class="lineNoCov">          0 :             if( !compound-&gt;isDestination( ))</span>
+<span class="lineNum">     105 </span><span class="lineNoCov">          0 :                 return TRAVERSE_PRUNE; // only change destination compounds</span>
+<span class="lineNum">     106 </span>            : 
+<span class="lineNum">     107 </span><span class="lineNoCov">          0 :             if( std::find( _channels.begin(), _channels.end(), channel ) !=</span>
+<span class="lineNum">     108 </span><span class="lineNoCov">          0 :                 _channels.end( )) // our destination channel</span>
+<span class="lineNum">     109 </span>            :             {
+<span class="lineNum">     110 </span><span class="lineNoCov">          0 :                 compound-&gt;updateFrustum( _eye, _ratio );</span>
+<span class="lineNum">     111 </span>            :             }
+<span class="lineNum">     112 </span>            : 
+<span class="lineNum">     113 </span><span class="lineNoCov">          0 :             return TRAVERSE_PRUNE;</span>
+<span class="lineNum">     114 </span>            :         }
+<span class="lineNum">     115 </span>            : private:
+<span class="lineNum">     116 </span>            :     const Channels&amp; _channels;
+<span class="lineNum">     117 </span>            :     const Vector3f&amp; _eye;
+<span class="lineNum">     118 </span>            :     const float _ratio;
+<span class="lineNum">     119 </span>            : };
+<span class="lineNum">     120 </span>            : 
+<span class="lineNum">     121 </span>            : class CapabilitiesUpdater : public ConfigVisitor
+<a name="122"><span class="lineNum">     122 </span>            : {</a>
+<span class="lineNum">     123 </span>            : public:
+<span class="lineNum">     124 </span><span class="lineNoCov">          0 :     explicit CapabilitiesUpdater( View* view )</span>
+<span class="lineNum">     125 </span>            :         : _view( view )
+<span class="lineNum">     126 </span><span class="lineNoCov">          0 :         , _capabilities( _view-&gt;getMaximumCapabilities( ))</span>
+<a name="127"><span class="lineNum">     127 </span><span class="lineNoCov">          0 :     {}</span></a>
+<span class="lineNum">     128 </span>            : 
+<a name="129"><span class="lineNum">     129 </span><span class="lineNoCov">          0 :     virtual ~CapabilitiesUpdater(){}</span></a>
+<span class="lineNum">     130 </span>            : 
+<span class="lineNum">     131 </span><span class="lineNoCov">          0 :     virtual VisitorResult visit( Compound* compound )</span>
+<span class="lineNum">     132 </span>            :     {
+<span class="lineNum">     133 </span><span class="lineNoCov">          0 :         const Channel* dest = compound-&gt;getInheritChannel();</span>
+<span class="lineNum">     134 </span><span class="lineNoCov">          0 :         if( !dest || dest-&gt;getView() != _view )</span>
+<span class="lineNum">     135 </span><span class="lineNoCov">          0 :             return TRAVERSE_CONTINUE;</span>
+<span class="lineNum">     136 </span>            : 
+<span class="lineNum">     137 </span><span class="lineNoCov">          0 :         const Channel* src = compound-&gt;getChannel();</span>
+<span class="lineNum">     138 </span><span class="lineNoCov">          0 :         if( !src-&gt;supportsView( _view ))</span>
+<span class="lineNum">     139 </span><span class="lineNoCov">          0 :             return TRAVERSE_CONTINUE;</span>
+<span class="lineNum">     140 </span>            : 
+<span class="lineNum">     141 </span><span class="lineNoCov">          0 :         const uint64_t supported = src-&gt;getCapabilities();</span>
+<span class="lineNum">     142 </span><span class="lineNoCov">          0 :         _capabilities &amp;= supported;</span>
+<span class="lineNum">     143 </span><span class="lineNoCov">          0 :         return TRAVERSE_CONTINUE;</span>
+<a name="144"><span class="lineNum">     144 </span>            :     }</a>
+<span class="lineNum">     145 </span>            : 
+<span class="lineNum">     146 </span><span class="lineNoCov">          0 :     uint64_t getCapabilities() const { return _capabilities; }</span>
+<span class="lineNum">     147 </span>            : 
+<span class="lineNum">     148 </span>            : private:
+<span class="lineNum">     149 </span>            :     View* const _view;
+<span class="lineNum">     150 </span>            :     uint64_t _capabilities;
+<a name="151"><span class="lineNum">     151 </span>            : };</a>
+<span class="lineNum">     152 </span>            : 
+<span class="lineNum">     153 </span><span class="lineNoCov">          0 : class UseEqualizerVisitor : public ConfigVisitor</span>
+<a name="154"><span class="lineNum">     154 </span>            : {</a>
+<span class="lineNum">     155 </span>            : public:
+<span class="lineNum">     156 </span><span class="lineNoCov">          0 :     explicit UseEqualizerVisitor( const View* view ) : _view( view ) {}</span>
+<a name="157"><span class="lineNum">     157 </span>            : </a>
+<span class="lineNum">     158 </span>            :     // No need to go down on nodes.
+<a name="159"><span class="lineNum">     159 </span><span class="lineNoCov">          0 :     VisitorResult visitPre( Node* ) override { return TRAVERSE_PRUNE; }</span></a>
+<span class="lineNum">     160 </span>            : 
+<span class="lineNum">     161 </span><span class="lineNoCov">          0 :     VisitorResult visit( Compound* compound ) override</span>
+<span class="lineNum">     162 </span>            :     {
+<span class="lineNum">     163 </span><span class="lineNoCov">          0 :         const Channel* dest = compound-&gt;getInheritChannel();</span>
+<span class="lineNum">     164 </span><span class="lineNoCov">          0 :         if( !dest )</span>
+<span class="lineNum">     165 </span><span class="lineNoCov">          0 :             return TRAVERSE_CONTINUE;</span>
+<span class="lineNum">     166 </span>            : 
+<span class="lineNum">     167 </span><span class="lineNoCov">          0 :         if( dest-&gt;getView() != _view )</span>
+<span class="lineNum">     168 </span><span class="lineNoCov">          0 :             return TRAVERSE_PRUNE;</span>
+<span class="lineNum">     169 </span>            : 
+<span class="lineNum">     170 </span><span class="lineNoCov">          0 :         Equalizers equalizers = compound-&gt;getEqualizers();</span>
+<span class="lineNum">     171 </span><span class="lineNoCov">          0 :         for( EqualizersCIter i = equalizers.begin(); i != equalizers.end(); ++i)</span>
+<span class="lineNum">     172 </span>            :         {
+<span class="lineNum">     173 </span><span class="lineNoCov">          0 :             Equalizer* equalizer = *i;</span>
+<span class="lineNum">     174 </span><span class="lineNoCov">          0 :             const uint32_t bitmask = _view-&gt;getEqualizers();</span>
+<span class="lineNum">     175 </span><span class="lineNoCov">          0 :             equalizer-&gt;setActive( ( equalizer-&gt;getType() &amp; bitmask ) != 0 );</span>
+<span class="lineNum">     176 </span>            :         }
+<span class="lineNum">     177 </span><span class="lineNoCov">          0 :         return TRAVERSE_CONTINUE;</span>
+<span class="lineNum">     178 </span>            :     }
+<span class="lineNum">     179 </span>            : 
+<span class="lineNum">     180 </span>            : 
+<span class="lineNum">     181 </span>            : private:
+<span class="lineNum">     182 </span>            :     const View* const _view;
+<a name="183"><span class="lineNum">     183 </span>            : };</a>
+<span class="lineNum">     184 </span>            : 
+<span class="lineNum">     185 </span><span class="lineNoCov">          0 : class UpdateEqualizersVisitor : public ConfigVisitor</span>
+<a name="186"><span class="lineNum">     186 </span>            : {</a>
+<span class="lineNum">     187 </span>            : public:
+<span class="lineNum">     188 </span><span class="lineNoCov">          0 :     explicit UpdateEqualizersVisitor( const View* view ) : _view( view ) {}</span>
+<a name="189"><span class="lineNum">     189 </span>            : </a>
+<span class="lineNum">     190 </span>            :     // No need to go down on nodes.
+<a name="191"><span class="lineNum">     191 </span><span class="lineNoCov">          0 :     VisitorResult visitPre( Node* ) override { return TRAVERSE_PRUNE; }</span></a>
+<span class="lineNum">     192 </span>            : 
+<span class="lineNum">     193 </span><span class="lineNoCov">          0 :     VisitorResult visit( Compound* compound ) override</span>
+<span class="lineNum">     194 </span>            :     {
+<span class="lineNum">     195 </span><span class="lineNoCov">          0 :         const Channel* dest = compound-&gt;getInheritChannel();</span>
+<span class="lineNum">     196 </span><span class="lineNoCov">          0 :         if( !dest )</span>
+<span class="lineNum">     197 </span><span class="lineNoCov">          0 :             return TRAVERSE_CONTINUE;</span>
+<span class="lineNum">     198 </span>            : 
+<span class="lineNum">     199 </span><span class="lineNoCov">          0 :         if( dest-&gt;getView() != _view )</span>
+<span class="lineNum">     200 </span><span class="lineNoCov">          0 :             return TRAVERSE_PRUNE;</span>
+<span class="lineNum">     201 </span>            : 
+<span class="lineNum">     202 </span><span class="lineNoCov">          0 :         const TileQueues&amp; queues = compound-&gt;getOutputTileQueues();</span>
+<span class="lineNum">     203 </span><span class="lineNoCov">          0 :         for( TileQueuesCIter i = queues.begin(); i != queues.end(); ++i )</span>
+<span class="lineNum">     204 </span>            :         {
+<span class="lineNum">     205 </span><span class="lineNoCov">          0 :             TileQueue* queue = *i;</span>
+<span class="lineNum">     206 </span><span class="lineNoCov">          0 :             queue-&gt;setTileSize( _view-&gt;getEqualizer().getTileSize( ));</span>
+<span class="lineNum">     207 </span>            :         }
+<span class="lineNum">     208 </span>            : 
+<span class="lineNum">     209 </span><span class="lineNoCov">          0 :         Equalizers equalizers = compound-&gt;getEqualizers();</span>
+<span class="lineNum">     210 </span><span class="lineNoCov">          0 :         for( EqualizersIter i = equalizers.begin(); i != equalizers.end(); ++i)</span>
+<span class="lineNum">     211 </span><span class="lineNoCov">          0 :             *(*i) = _view-&gt;getEqualizer();</span>
+<span class="lineNum">     212 </span>            : 
+<span class="lineNum">     213 </span><span class="lineNoCov">          0 :         return TRAVERSE_CONTINUE;</span>
+<span class="lineNum">     214 </span>            :     }
+<span class="lineNum">     215 </span>            : 
+<span class="lineNum">     216 </span>            : private:
+<span class="lineNum">     217 </span>            :     const View* const _view;
+<span class="lineNum">     218 </span>            : };
+<span class="lineNum">     219 </span>            : 
+<a name="220"><span class="lineNum">     220 </span>            : }</a>
+<span class="lineNum">     221 </span>            : 
+<span class="lineNum">     222 </span><span class="lineNoCov">          0 : void View::setDirty( const uint64_t bits )</span>
+<span class="lineNum">     223 </span>            : {
+<span class="lineNum">     224 </span><span class="lineNoCov">          0 :     if( bits == 0 || !isAttached( ))</span>
+<span class="lineNum">     225 </span><span class="lineNoCov">          0 :         return;</span>
+<span class="lineNum">     226 </span>            : 
+<span class="lineNum">     227 </span><span class="lineNoCov">          0 :     Super::setDirty( bits );</span>
+<span class="lineNum">     228 </span><span class="lineNoCov">          0 :     _updateChannels();</span>
+<a name="229"><span class="lineNum">     229 </span>            : }</a>
+<span class="lineNum">     230 </span>            : 
+<span class="lineNum">     231 </span><span class="lineNoCov">          0 : void View::_updateChannels() const</span>
+<span class="lineNum">     232 </span>            : {
+<span class="lineNum">     233 </span><span class="lineNoCov">          0 :     LBASSERT( isMaster( ));</span>
+<span class="lineNum">     234 </span><span class="lineNoCov">          0 :     co::ObjectVersion version( this );</span>
+<span class="lineNum">     235 </span><span class="lineNoCov">          0 :     if( isDirty( ))</span>
+<span class="lineNum">     236 </span><span class="lineNoCov">          0 :         ++version.version;</span>
+<span class="lineNum">     237 </span>            : 
+<span class="lineNum">     238 </span><span class="lineNoCov">          0 :     for( Channels::const_iterator i = _channels.begin();</span>
+<span class="lineNum">     239 </span><span class="lineNoCov">          0 :          i != _channels.end(); ++i )</span>
+<span class="lineNum">     240 </span>            :     {
+<span class="lineNum">     241 </span><span class="lineNoCov">          0 :         Channel* channel = *i;</span>
+<span class="lineNum">     242 </span><span class="lineNoCov">          0 :         channel-&gt;setViewVersion( version );</span>
+<span class="lineNum">     243 </span>            :     }
+<a name="244"><span class="lineNum">     244 </span><span class="lineNoCov">          0 : }</span></a>
+<span class="lineNum">     245 </span>            : 
+<span class="lineNum">     246 </span><span class="lineNoCov">          0 : void View::deserialize( co::DataIStream&amp; is, const uint64_t dirtyBits )</span>
+<span class="lineNum">     247 </span>            : {
+<span class="lineNum">     248 </span><span class="lineNoCov">          0 :     LBASSERT( isMaster( ));</span>
+<span class="lineNum">     249 </span><span class="lineNoCov">          0 :     Super::deserialize( is, dirtyBits );</span>
+<span class="lineNum">     250 </span>            : 
+<span class="lineNum">     251 </span><span class="lineNoCov">          0 :     if( dirtyBits &amp; ( DIRTY_FRUSTUM | DIRTY_OVERDRAW | DIRTY_MODELUNIT ))</span>
+<span class="lineNum">     252 </span><span class="lineNoCov">          0 :         updateFrusta();</span>
+<span class="lineNum">     253 </span><span class="lineNoCov">          0 :     if( dirtyBits &amp; DIRTY_EQUALIZER )</span>
+<span class="lineNum">     254 </span>            :     {
+<span class="lineNum">     255 </span><span class="lineNoCov">          0 :         UpdateEqualizersVisitor visitor ( this );</span>
+<span class="lineNum">     256 </span><span class="lineNoCov">          0 :         getConfig()-&gt;accept( visitor );</span>
+<span class="lineNum">     257 </span>            :     }
+<span class="lineNum">     258 </span><span class="lineNoCov">          0 :     if( dirtyBits &amp; DIRTY_EQUALIZERS )</span>
+<span class="lineNum">     259 </span>            :     {
+<span class="lineNum">     260 </span><span class="lineNoCov">          0 :         UseEqualizerVisitor visitor ( this );</span>
+<span class="lineNum">     261 </span><span class="lineNoCov">          0 :         getConfig()-&gt;accept( visitor );</span>
+<span class="lineNum">     262 </span><span class="lineNoCov">          0 :         getConfig()-&gt;postNeedsFinish(); // @bug? Why?</span>
+<span class="lineNum">     263 </span>            :     }
+<a name="264"><span class="lineNum">     264 </span><span class="lineNoCov">          0 : }</span></a>
+<span class="lineNum">     265 </span>            : 
+<span class="lineNum">     266 </span><span class="lineNoCov">          0 : Config* View::getConfig()</span>
+<span class="lineNum">     267 </span>            : {
+<span class="lineNum">     268 </span><span class="lineNoCov">          0 :     Layout* layout = getLayout();</span>
+<span class="lineNum">     269 </span><span class="lineNoCov">          0 :     LBASSERT( layout );</span>
+<span class="lineNum">     270 </span><span class="lineNoCov">          0 :     return layout ? layout-&gt;getConfig() : 0;</span>
+<a name="271"><span class="lineNum">     271 </span>            : }</a>
+<span class="lineNum">     272 </span>            : 
+<span class="lineNum">     273 </span><span class="lineNoCov">          0 : const Config* View::getConfig() const</span>
+<span class="lineNum">     274 </span>            : {
+<span class="lineNum">     275 </span><span class="lineNoCov">          0 :     const Layout* layout = getLayout();</span>
+<span class="lineNum">     276 </span><span class="lineNoCov">          0 :     LBASSERT( layout );</span>
+<span class="lineNum">     277 </span><span class="lineNoCov">          0 :     return layout ? layout-&gt;getConfig() : 0;</span>
+<a name="278"><span class="lineNum">     278 </span>            : }</a>
+<span class="lineNum">     279 </span>            : 
+<span class="lineNum">     280 </span><span class="lineNoCov">          0 : ServerPtr View::getServer()</span>
+<span class="lineNum">     281 </span>            : {
+<span class="lineNum">     282 </span><span class="lineNoCov">          0 :     Config* config = getConfig();</span>
+<span class="lineNum">     283 </span><span class="lineNoCov">          0 :     LBASSERT( config );</span>
+<span class="lineNum">     284 </span><span class="lineNoCov">          0 :     return config ? config-&gt;getServer() : 0;</span>
+<a name="285"><span class="lineNum">     285 </span>            : }</a>
+<span class="lineNum">     286 </span>            : 
+<span class="lineNum">     287 </span><span class="lineNoCov">          0 : void View::addChannel( Channel* channel )</span>
+<span class="lineNum">     288 </span>            : {
+<span class="lineNum">     289 </span><span class="lineNoCov">          0 :     _channels.push_back( channel );</span>
+<a name="290"><span class="lineNum">     290 </span><span class="lineNoCov">          0 : }</span></a>
+<span class="lineNum">     291 </span>            : 
+<span class="lineNum">     292 </span><span class="lineNoCov">          0 : bool View::removeChannel( Channel* channel )</span>
+<span class="lineNum">     293 </span>            : {
+<span class="lineNum">     294 </span><span class="lineNoCov">          0 :     Channels::iterator i = lunchbox::find( _channels, channel );</span>
+<span class="lineNum">     295 </span>            : 
+<span class="lineNum">     296 </span><span class="lineNoCov">          0 :     LBASSERT( i != _channels.end( ));</span>
+<span class="lineNum">     297 </span><span class="lineNoCov">          0 :     if( i == _channels.end( ))</span>
+<span class="lineNum">     298 </span><span class="lineNoCov">          0 :         return false;</span>
+<span class="lineNum">     299 </span>            : 
+<span class="lineNum">     300 </span><span class="lineNoCov">          0 :     _channels.erase( i );</span>
+<span class="lineNum">     301 </span><span class="lineNoCov">          0 :     return true;</span>
+<a name="302"><span class="lineNum">     302 </span>            : }</a>
+<span class="lineNum">     303 </span>            : 
+<span class="lineNum">     304 </span><span class="lineNoCov">          0 : ViewPath View::getPath() const</span>
+<span class="lineNum">     305 </span>            : {
+<span class="lineNum">     306 </span><span class="lineNoCov">          0 :     const Layout* layout = getLayout();</span>
+<span class="lineNum">     307 </span><span class="lineNoCov">          0 :     LBASSERT( layout );</span>
+<span class="lineNum">     308 </span><span class="lineNoCov">          0 :     ViewPath path( layout-&gt;getPath( ));</span>
+<span class="lineNum">     309 </span>            : 
+<span class="lineNum">     310 </span><span class="lineNoCov">          0 :     const Views&amp; views = layout-&gt;getViews();</span>
+<span class="lineNum">     311 </span><span class="lineNoCov">          0 :     Views::const_iterator i = std::find( views.begin(), views.end(), this );</span>
+<span class="lineNum">     312 </span><span class="lineNoCov">          0 :     LBASSERT( i != views.end( ));</span>
+<span class="lineNum">     313 </span><span class="lineNoCov">          0 :     path.viewIndex = std::distance( views.begin(), i );</span>
+<span class="lineNum">     314 </span><span class="lineNoCov">          0 :     return path;</span>
+<a name="315"><span class="lineNum">     315 </span>            : }</a>
+<span class="lineNum">     316 </span>            : 
+<span class="lineNum">     317 </span><span class="lineNoCov">          0 : void View::trigger( const Canvas* canvas, const bool active )</span>
+<span class="lineNum">     318 </span>            : {
+<span class="lineNum">     319 </span><span class="lineNoCov">          0 :     const Mode mode = getMode();</span>
+<span class="lineNum">     320 </span><span class="lineNoCov">          0 :     Config* config = getConfig();</span>
+<span class="lineNum">     321 </span>            : 
+<span class="lineNum">     322 </span>            :     // (De)activate destination compounds for canvas/eye(s)
+<span class="lineNum">     323 </span><span class="lineNoCov">          0 :     for( Channels::const_iterator i = _channels.begin();</span>
+<span class="lineNum">     324 </span><span class="lineNoCov">          0 :          i != _channels.end(); ++i )</span>
+<span class="lineNum">     325 </span>            :     {
+<span class="lineNum">     326 </span><span class="lineNoCov">          0 :         Channel* channel = *i;</span>
+<span class="lineNum">     327 </span><span class="lineNoCov">          0 :         const Canvas* channelCanvas = channel-&gt;getCanvas();</span>
+<span class="lineNum">     328 </span><span class="lineNoCov">          0 :         const Layout* canvasLayout = channelCanvas-&gt;getActiveLayout();</span>
+<span class="lineNum">     329 </span>            : 
+<span class="lineNum">     330 </span><span class="lineNoCov">          0 :         if((  canvas &amp;&amp; channelCanvas != canvas ) ||</span>
+<span class="lineNum">     331 </span><span class="lineNoCov">          0 :            ( !canvas &amp;&amp; canvasLayout  != getLayout( )))</span>
+<span class="lineNum">     332 </span>            :         {
+<span class="lineNum">     333 </span><span class="lineNoCov">          0 :             continue;</span>
+<span class="lineNum">     334 </span>            :         }
+<span class="lineNum">     335 </span>            : 
+<span class="lineNum">     336 </span><span class="lineNoCov">          0 :         const Segment* segment = channel-&gt;getSegment();</span>
+<span class="lineNum">     337 </span><span class="lineNoCov">          0 :         const uint32_t segmentEyes = segment-&gt;getEyes();</span>
+<span class="lineNum">     338 </span>            :         const uint32_t eyes = ( mode == MODE_MONO ) ?
+<span class="lineNum">     339 </span><span class="lineNoCov">          0 :                            EYE_CYCLOP &amp; segmentEyes : EYES_STEREO &amp; segmentEyes;</span>
+<span class="lineNum">     340 </span><span class="lineNoCov">          0 :         if( eyes == 0 )</span>
+<span class="lineNum">     341 </span><span class="lineNoCov">          0 :             continue;</span>
+<span class="lineNum">     342 </span>            : 
+<span class="lineNum">     343 </span><span class="lineNoCov">          0 :         ConfigDestCompoundVisitor visitor( channel, true /*activeOnly*/ );</span>
+<span class="lineNum">     344 </span><span class="lineNoCov">          0 :         config-&gt;accept( visitor );</span>
+<span class="lineNum">     345 </span>            : 
+<span class="lineNum">     346 </span><span class="lineNoCov">          0 :         const Compounds&amp; compounds = visitor.getResult();</span>
+<span class="lineNum">     347 </span><span class="lineNoCov">          0 :         for( Compounds::const_iterator j = compounds.begin();</span>
+<span class="lineNum">     348 </span><span class="lineNoCov">          0 :              j != compounds.end(); ++j )</span>
+<span class="lineNum">     349 </span>            :         {
+<span class="lineNum">     350 </span><span class="lineNoCov">          0 :             Compound* compound = *j;</span>
+<span class="lineNum">     351 </span><span class="lineNoCov">          0 :             if( active )</span>
+<span class="lineNum">     352 </span>            :             {
+<span class="lineNum">     353 </span><span class="lineNoCov">          0 :                 compound-&gt;activate( eyes );</span>
+<span class="lineNum">     354 </span><span class="lineNoCov">          0 :                 LBLOG( LOG_VIEW ) &lt;&lt; &quot;Activate &quot; &lt;&lt; compound-&gt;getName()</span>
+<span class="lineNum">     355 </span><span class="lineNoCov">          0 :                                   &lt;&lt; std::endl;</span>
+<span class="lineNum">     356 </span>            :             }
+<span class="lineNum">     357 </span>            :             else
+<span class="lineNum">     358 </span>            :             {
+<span class="lineNum">     359 </span><span class="lineNoCov">          0 :                 compound-&gt;deactivate( eyes );</span>
+<span class="lineNum">     360 </span><span class="lineNoCov">          0 :                 LBLOG( LOG_VIEW ) &lt;&lt; &quot;Deactivate &quot; &lt;&lt; compound-&gt;getName()</span>
+<span class="lineNum">     361 </span><span class="lineNoCov">          0 :                                   &lt;&lt; std::endl;</span>
+<span class="lineNum">     362 </span>            :             }
+<span class="lineNum">     363 </span>            :         }
+<span class="lineNum">     364 </span><span class="lineNoCov">          0 :     }</span>
+<a name="365"><span class="lineNum">     365 </span><span class="lineNoCov">          0 : }</span></a>
+<span class="lineNum">     366 </span>            : 
+<span class="lineNum">     367 </span><span class="lineNoCov">          0 : void View::activateMode( const Mode mode )</span>
+<span class="lineNum">     368 </span>            : {
+<span class="lineNum">     369 </span><span class="lineNoCov">          0 :     if( getMode() == mode )</span>
+<span class="lineNum">     370 </span><span class="lineNoCov">          0 :         return;</span>
+<span class="lineNum">     371 </span>            : 
+<span class="lineNum">     372 </span><span class="lineNoCov">          0 :     Config* config = getConfig();</span>
+<span class="lineNum">     373 </span><span class="lineNoCov">          0 :     if( config-&gt;isRunning( ))</span>
+<span class="lineNum">     374 </span>            :     {
+<span class="lineNum">     375 </span><span class="lineNoCov">          0 :         config-&gt;postNeedsFinish();</span>
+<span class="lineNum">     376 </span><span class="lineNoCov">          0 :         trigger( 0, false );</span>
+<span class="lineNum">     377 </span>            :     }
+<span class="lineNum">     378 </span>            : 
+<span class="lineNum">     379 </span><span class="lineNoCov">          0 :     Super::activateMode( mode );</span>
+<span class="lineNum">     380 </span>            : 
+<span class="lineNum">     381 </span><span class="lineNoCov">          0 :     if( config-&gt;isRunning( ))</span>
+<span class="lineNum">     382 </span><span class="lineNoCov">          0 :         trigger( 0, true );</span>
+<a name="383"><span class="lineNum">     383 </span>            : }</a>
+<span class="lineNum">     384 </span>            : 
+<span class="lineNum">     385 </span><span class="lineNoCov">          0 : void View::updateCapabilities()</span>
+<span class="lineNum">     386 </span>            : {
+<span class="lineNum">     387 </span><span class="lineNoCov">          0 :     CapabilitiesUpdater visitor( this );</span>
+<span class="lineNum">     388 </span><span class="lineNoCov">          0 :     getConfig()-&gt;accept( visitor );</span>
+<span class="lineNum">     389 </span><span class="lineNoCov">          0 :     setCapabilities( visitor.getCapabilities( ));</span>
+<a name="390"><span class="lineNum">     390 </span><span class="lineNoCov">          0 : }</span></a>
+<span class="lineNum">     391 </span>            : 
+<span class="lineNum">     392 </span><span class="lineNoCov">          0 : void View::updateFrusta()</span>
+<span class="lineNum">     393 </span>            : {
+<span class="lineNum">     394 </span><span class="lineNoCov">          0 :     const Channels&amp; channels = getChannels();</span>
+<span class="lineNum">     395 </span><span class="lineNoCov">          0 :     Vector3f eye;</span>
+<span class="lineNum">     396 </span><span class="lineNoCov">          0 :     const float ratio = _computeFocusRatio( eye );</span>
+<span class="lineNum">     397 </span>            : 
+<span class="lineNum">     398 </span><span class="lineNoCov">          0 :     Config* config = getConfig();</span>
+<span class="lineNum">     399 </span><span class="lineNoCov">          0 :     FrustumUpdater updater( channels, eye, ratio );</span>
+<span class="lineNum">     400 </span>            : 
+<span class="lineNum">     401 </span><span class="lineNoCov">          0 :     config-&gt;accept( updater );</span>
+<a name="402"><span class="lineNum">     402 </span><span class="lineNoCov">          0 : }</span></a>
+<span class="lineNum">     403 </span>            : 
+<span class="lineNum">     404 </span><span class="lineNoCov">          0 : float View::_computeFocusRatio( Vector3f&amp; eye )</span>
+<span class="lineNum">     405 </span>            : {
+<span class="lineNum">     406 </span><span class="lineNoCov">          0 :     eye = Vector3f::ZERO;</span>
+<span class="lineNum">     407 </span><span class="lineNoCov">          0 :     const Observer* observer = getObserver();</span>
+<span class="lineNum">     408 </span><span class="lineNoCov">          0 :     const FocusMode mode = observer ? observer-&gt;getFocusMode() :FOCUSMODE_FIXED;</span>
+<span class="lineNum">     409 </span><span class="lineNoCov">          0 :     if( mode == FOCUSMODE_FIXED )</span>
+<span class="lineNum">     410 </span><span class="lineNoCov">          0 :         return 1.f;</span>
+<span class="lineNum">     411 </span>            : 
+<span class="lineNum">     412 </span><span class="lineNoCov">          0 :     const Channels&amp; channels = getChannels();</span>
+<span class="lineNum">     413 </span><span class="lineNoCov">          0 :     if( channels.empty( ))</span>
+<span class="lineNum">     414 </span><span class="lineNoCov">          0 :         return 1.f;</span>
+<span class="lineNum">     415 </span>            : 
+<span class="lineNum">     416 </span><span class="lineNoCov">          0 :     Vector4f view4( Vector3f::FORWARD );</span>
+<span class="lineNum">     417 </span><span class="lineNoCov">          0 :     if( mode == FOCUSMODE_RELATIVE_TO_OBSERVER )</span>
+<span class="lineNum">     418 </span>            :     {
+<span class="lineNum">     419 </span><span class="lineNoCov">          0 :         view4 = observer-&gt;getHeadMatrix() * view4;</span>
+<span class="lineNum">     420 </span><span class="lineNoCov">          0 :         eye = observer-&gt;getEyeWorld( EYE_CYCLOP );</span>
+<span class="lineNum">     421 </span>            :     }
+<span class="lineNum">     422 </span><span class="lineNoCov">          0 :     Vector3f view = view4;</span>
+<span class="lineNum">     423 </span><span class="lineNoCov">          0 :     view.normalize();</span>
+<span class="lineNum">     424 </span>            : 
+<span class="lineNum">     425 </span><span class="lineNoCov">          0 :     float distance = std::numeric_limits&lt; float &gt;::max();</span>
+<span class="lineNum">     426 </span><span class="lineNoCov">          0 :     if( getCurrentType() != Frustum::TYPE_NONE ) // frustum from view</span>
+<span class="lineNum">     427 </span>            :     {
+<span class="lineNum">     428 </span><span class="lineNoCov">          0 :         const Wall&amp; wall = getWall();</span>
+<span class="lineNum">     429 </span><span class="lineNoCov">          0 :         const Vector3f w = wall.getW();</span>
+<span class="lineNum">     430 </span><span class="lineNoCov">          0 :         const float denom = view.dot( w );</span>
+<span class="lineNum">     431 </span><span class="lineNoCov">          0 :         if( denom != 0.f ) // view parallel to wall</span>
+<span class="lineNum">     432 </span>            :         {
+<span class="lineNum">     433 </span><span class="lineNoCov">          0 :             const float d = (wall.bottomLeft - eye).dot( w ) / denom;</span>
+<span class="lineNum">     434 </span><span class="lineNoCov">          0 :             if( d &gt; 0.f )</span>
+<span class="lineNum">     435 </span><span class="lineNoCov">          0 :                 distance = d;</span>
+<span class="lineNum">     436 </span>            :         }
+<span class="lineNum">     437 </span>            :     }
+<span class="lineNum">     438 </span>            :     else
+<span class="lineNum">     439 </span>            :     {
+<span class="lineNum">     440 </span>            :         // Find closest segment and its distance from cyclop eye
+<span class="lineNum">     441 </span><span class="lineNoCov">          0 :         for( ChannelsCIter i = channels.begin(); i != channels.end(); ++i )</span>
+<span class="lineNum">     442 </span>            :         {
+<span class="lineNum">     443 </span><span class="lineNoCov">          0 :             Segment* segment = (*i)-&gt;getSegment();</span>
+<span class="lineNum">     444 </span><span class="lineNoCov">          0 :             segment-&gt;inheritFrustum();</span>
+<span class="lineNum">     445 </span><span class="lineNoCov">          0 :             if( segment-&gt;getCurrentType() == Frustum::TYPE_NONE )</span>
+<span class="lineNum">     446 </span><span class="lineNoCov">          0 :                 continue;</span>
+<span class="lineNum">     447 </span>            : 
+<span class="lineNum">     448 </span>            :             // http://en.wikipedia.org/wiki/Line-plane_intersection
+<span class="lineNum">     449 </span><span class="lineNoCov">          0 :             const Wall&amp; wall = segment-&gt;getWall();</span>
+<span class="lineNum">     450 </span><span class="lineNoCov">          0 :             const Vector3f w = wall.getW();</span>
+<span class="lineNum">     451 </span><span class="lineNoCov">          0 :             const float denom = view.dot( w );</span>
+<span class="lineNum">     452 </span><span class="lineNoCov">          0 :             if( denom == 0.f ) // view parallel to wall</span>
+<span class="lineNum">     453 </span><span class="lineNoCov">          0 :                 continue;</span>
+<span class="lineNum">     454 </span>            : 
+<span class="lineNum">     455 </span><span class="lineNoCov">          0 :             const float d = (wall.bottomLeft - eye).dot( w ) / denom;</span>
+<span class="lineNum">     456 </span><span class="lineNoCov">          0 :             if( d &gt; distance || d &lt;= 0.f ) // further away or behind</span>
+<span class="lineNum">     457 </span><span class="lineNoCov">          0 :                 continue;</span>
+<span class="lineNum">     458 </span>            : 
+<span class="lineNum">     459 </span><span class="lineNoCov">          0 :             distance = d;</span>
+<span class="lineNum">     460 </span>            :             //LBINFO &lt;&lt; &quot;Eye &quot; &lt;&lt; eye &lt;&lt; &quot; is &quot; &lt;&lt; d &lt;&lt; &quot; from &quot; &lt;&lt; wall
+<span class="lineNum">     461 </span>            :             // &lt;&lt; std::endl;
+<span class="lineNum">     462 </span>            :         }
+<span class="lineNum">     463 </span>            :     }
+<span class="lineNum">     464 </span>            : 
+<span class="lineNum">     465 </span><span class="lineNoCov">          0 :     float focusDistance = observer-&gt;getFocusDistance();</span>
+<span class="lineNum">     466 </span><span class="lineNoCov">          0 :     if( mode == FOCUSMODE_RELATIVE_TO_ORIGIN )</span>
+<span class="lineNum">     467 </span>            :     {
+<span class="lineNum">     468 </span><span class="lineNoCov">          0 :         eye = observer-&gt;getEyeWorld( EYE_CYCLOP );</span>
+<span class="lineNum">     469 </span>            : 
+<span class="lineNum">     470 </span><span class="lineNoCov">          0 :         if( distance != std::numeric_limits&lt; float &gt;::max( ))</span>
+<span class="lineNum">     471 </span>            :         {
+<span class="lineNum">     472 </span><span class="lineNoCov">          0 :             distance += eye.z();</span>
+<span class="lineNum">     473 </span><span class="lineNoCov">          0 :             focusDistance += eye.z();</span>
+<span class="lineNum">     474 </span><span class="lineNoCov">          0 :             if( fabsf( distance ) &lt;= std::numeric_limits&lt; float &gt;::epsilon( ))</span>
+<span class="lineNum">     475 </span><span class="lineNoCov">          0 :                 distance = 2.f * std::numeric_limits&lt; float &gt;::epsilon();</span>
+<span class="lineNum">     476 </span>            :         }
+<span class="lineNum">     477 </span>            :     }
+<span class="lineNum">     478 </span>            : 
+<span class="lineNum">     479 </span><span class="lineNoCov">          0 :     if( distance == std::numeric_limits&lt; float &gt;::max( ))</span>
+<span class="lineNum">     480 </span><span class="lineNoCov">          0 :         return 1.f;</span>
+<span class="lineNum">     481 </span><span class="lineNoCov">          0 :     return focusDistance / distance;</span>
+<span class="lineNum">     482 </span>            : }
+<span class="lineNum">     483 </span>            : 
+<span class="lineNum">     484 </span>            : }
+<span class="lineNum">     485 </span>            : }
+<span class="lineNum">     486 </span>            : 
+<span class="lineNum">     487 </span>            : #include &quot;../fabric/view.ipp&quot;
+<span class="lineNum">     488 </span>            : 
+<span class="lineNum">     489 </span>            : template class eq::fabric::View&lt; eq::server::Layout, eq::server::View,
+<span class="lineNum">     490 </span>            :                                  eq::server::Observer &gt;;
+<span class="lineNum">     491 </span>            : /** @cond IGNORE */
+<span class="lineNum">     492 </span>            : template std::ostream&amp; eq::fabric::operator &lt;&lt; ( std::ostream&amp;,
+<a name="493"><span class="lineNum">     493 </span>            :                          const eq::fabric::View&lt; eq::server::Layout,</a>
+<span class="lineNum">     494 </span>            :                                                  eq::server::View,
+<span class="lineNum">     495 </span><span class="lineCov">         60 :                                                  eq::server::Observer &gt;&amp; );</span>
+<span class="lineNum">     496 </span>            : /** @endcond */
+</pre>
+      </td>
+    </tr>
+  </table>
+  <br>
+
+  <table width="100%" border=0 cellspacing=0 cellpadding=0>
+    <tr><td class="ruler"><img src="../../../glass.png" width=3 height=3 alt=""></td></tr>
+    <tr><td class="versionInfo">Generated by: <a href="http://ltp.sourceforge.net/coverage/lcov.php" target="_parent">LCOV version 1.11</a></td></tr>
+  </table>
+  <br>
+
+</body>
+</html>

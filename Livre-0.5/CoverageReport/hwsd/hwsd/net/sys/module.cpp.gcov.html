@@ -1,0 +1,444 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+
+<html lang="en">
+
+<head>
+  <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+  <title>LCOV - Livre - hwsd/hwsd/net/sys/module.cpp</title>
+  <link rel="stylesheet" type="text/css" href="../../../../gcov.css">
+</head>
+
+<body>
+
+  <table width="100%" border=0 cellspacing=0 cellpadding=0>
+    <tr><td class="title">LCOV - code coverage report</td></tr>
+    <tr><td class="ruler"><img src="../../../../glass.png" width=3 height=3 alt=""></td></tr>
+
+    <tr>
+      <td width="100%">
+        <table cellpadding=1 border=0 width="100%">
+          <tr>
+            <td width="10%" class="headerItem">Current view:</td>
+            <td width="35%" class="headerValue"><a href="../../../../index.html">top level</a> - <a href="index.html">hwsd/hwsd/net/sys</a> - module.cpp<span style="font-size: 80%;"> (source / <a href="module.cpp.func-sort-c.html">functions</a>)</span></td>
+            <td width="5%"></td>
+            <td width="15%"></td>
+            <td width="10%" class="headerCovTableHead">Hit</td>
+            <td width="10%" class="headerCovTableHead">Total</td>
+            <td width="15%" class="headerCovTableHead">Coverage</td>
+          </tr>
+          <tr>
+            <td class="headerItem">Test:</td>
+            <td class="headerValue">Livre</td>
+            <td></td>
+            <td class="headerItem">Lines:</td>
+            <td class="headerCovTableEntry">1</td>
+            <td class="headerCovTableEntry">56</td>
+            <td class="headerCovTableEntryLo">1.8 %</td>
+          </tr>
+          <tr>
+            <td class="headerItem">Date:</td>
+            <td class="headerValue">2016-03-10 14:06:39</td>
+            <td></td>
+            <td class="headerItem">Functions:</td>
+            <td class="headerCovTableEntry">2</td>
+            <td class="headerCovTableEntry">5</td>
+            <td class="headerCovTableEntryMed">40.0 %</td>
+          </tr>
+          <tr><td><img src="../../../../glass.png" width=3 height=3 alt=""></td></tr>
+        </table>
+      </td>
+    </tr>
+
+    <tr><td class="ruler"><img src="../../../../glass.png" width=3 height=3 alt=""></td></tr>
+  </table>
+
+  <table cellpadding=0 cellspacing=0 border=0>
+    <tr>
+      <td><br></td>
+    </tr>
+    <tr>
+      <td>
+<pre class="sourceHeading">          Line data    Source code</pre>
+<pre class="source">
+<a name="1"><span class="lineNum">       1 </span>            : </a>
+<span class="lineNum">       2 </span>            : /* Copyright (c) 2012, Daniel Nachbaur &lt;danielnachbaur@gmail.com&gt;
+<span class="lineNum">       3 </span>            :  *               2013, Stefan.Eilemann@epfl.ch
+<span class="lineNum">       4 </span>            :  *
+<span class="lineNum">       5 </span>            :  * This library is free software; you can redistribute it and/or modify it under
+<span class="lineNum">       6 </span>            :  * the terms of the GNU Lesser General Public License version 2.1 as published
+<span class="lineNum">       7 </span>            :  * by the Free Software Foundation.
+<span class="lineNum">       8 </span>            :  *
+<span class="lineNum">       9 </span>            :  * This library is distributed in the hope that it will be useful, but WITHOUT
+<span class="lineNum">      10 </span>            :  * ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS
+<span class="lineNum">      11 </span>            :  * FOR A PARTICULAR PURPOSE.  See the GNU Lesser General Public License for more
+<span class="lineNum">      12 </span>            :  * details.
+<span class="lineNum">      13 </span>            :  *
+<span class="lineNum">      14 </span>            :  * You should have received a copy of the GNU Lesser General Public License
+<span class="lineNum">      15 </span>            :  * along with this library; if not, write to the Free Software Foundation, Inc.,
+<span class="lineNum">      16 </span>            :  * 51 Franklin Street, Fifth Floor, Boston, MA 02110-1301 USA.
+<span class="lineNum">      17 </span>            :  */
+<span class="lineNum">      18 </span>            : 
+<span class="lineNum">      19 </span>            : #include &quot;module.h&quot;
+<span class="lineNum">      20 </span>            : 
+<span class="lineNum">      21 </span>            : #include &lt;hwsd/netInfo.h&gt;
+<span class="lineNum">      22 </span>            : 
+<span class="lineNum">      23 </span>            : #include &lt;lunchbox/log.h&gt;
+<span class="lineNum">      24 </span>            : 
+<span class="lineNum">      25 </span>            : //#define USE_IOCTL
+<span class="lineNum">      26 </span>            : 
+<span class="lineNum">      27 </span>            : #ifdef _WIN32
+<span class="lineNum">      28 </span>            : #  include &lt;winsock2.h&gt;
+<span class="lineNum">      29 </span>            : #  include &lt;Ws2tcpip.h&gt;
+<span class="lineNum">      30 </span>            : #  include &lt;iphlpapi.h&gt;
+<span class="lineNum">      31 </span>            : #elif defined USE_IOCTL
+<span class="lineNum">      32 </span>            : #  include &lt;arpa/inet.h&gt;
+<span class="lineNum">      33 </span>            : #  include &lt;netdb.h&gt;
+<span class="lineNum">      34 </span>            : #  include &lt;string.h&gt;
+<span class="lineNum">      35 </span>            : #  include &lt;sys/ioctl.h&gt;
+<span class="lineNum">      36 </span>            : #  include &lt;unistd.h&gt;
+<span class="lineNum">      37 </span>            : #  include &lt;linux/ethtool.h&gt;
+<span class="lineNum">      38 </span>            : #  include &lt;linux/sockios.h&gt;
+<span class="lineNum">      39 </span>            : #else
+<span class="lineNum">      40 </span>            : #  include &lt;arpa/inet.h&gt;
+<span class="lineNum">      41 </span>            : #  include &lt;netdb.h&gt;
+<span class="lineNum">      42 </span>            : #  include &lt;ifaddrs.h&gt;
+<span class="lineNum">      43 </span>            : #  include &lt;sys/types.h&gt;
+<span class="lineNum">      44 </span>            : #  include &lt;sys/socket.h&gt;
+<span class="lineNum">      45 </span>            : #  include &lt;map&gt;
+<span class="lineNum">      46 </span>            : #  ifdef __linux__
+<span class="lineNum">      47 </span>            : #    include &lt;linux/if_arp.h&gt;
+<span class="lineNum">      48 </span>            : #  endif
+<span class="lineNum">      49 </span>            : #  ifdef __APPLE__
+<span class="lineNum">      50 </span>            : #    include &lt;net/if.h&gt;
+<span class="lineNum">      51 </span>            : #    include &lt;net/if_dl.h&gt;
+<span class="lineNum">      52 </span>            : #    include &lt;net/if_types.h&gt;
+<span class="lineNum">      53 </span>            : #    define AF_PACKET AF_LINK
+<span class="lineNum">      54 </span>            : #  endif
+<span class="lineNum">      55 </span>            : #endif
+<span class="lineNum">      56 </span>            : 
+<span class="lineNum">      57 </span>            : 
+<span class="lineNum">      58 </span>            : namespace hwsd
+<span class="lineNum">      59 </span>            : {
+<span class="lineNum">      60 </span>            : namespace net
+<span class="lineNum">      61 </span>            : {
+<span class="lineNum">      62 </span>            : namespace sys
+<span class="lineNum">      63 </span>            : {
+<span class="lineNum">      64 </span>            : namespace
+<span class="lineNum">      65 </span>            : {
+<span class="lineNum">      66 </span>            : static Module* instance = 0;
+<a name="67"><span class="lineNum">      67 </span>            : }</a>
+<span class="lineNum">      68 </span>            : 
+<span class="lineNum">      69 </span><span class="lineNoCov">          0 : void Module::use()</span>
+<span class="lineNum">      70 </span>            : {
+<span class="lineNum">      71 </span><span class="lineNoCov">          0 :     if( !instance )</span>
+<span class="lineNum">      72 </span><span class="lineNoCov">          0 :         instance = new Module;</span>
+<a name="73"><span class="lineNum">      73 </span><span class="lineNoCov">          0 : }</span></a>
+<span class="lineNum">      74 </span>            : 
+<span class="lineNum">      75 </span><span class="lineNoCov">          0 : void Module::dispose()</span>
+<span class="lineNum">      76 </span>            : {
+<span class="lineNum">      77 </span><span class="lineNoCov">          0 :     delete instance;</span>
+<span class="lineNum">      78 </span><span class="lineNoCov">          0 :     instance = 0;</span>
+<a name="79"><span class="lineNum">      79 </span><span class="lineNoCov">          0 : }</span></a>
+<span class="lineNum">      80 </span>            : 
+<span class="lineNum">      81 </span><span class="lineNoCov">          0 : NetInfos Module::discover() const</span>
+<span class="lineNum">      82 </span>            : {
+<span class="lineNum">      83 </span><span class="lineNoCov">          0 :     NetInfos result;</span>
+<span class="lineNum">      84 </span>            : #ifdef _WIN32
+<span class="lineNum">      85 </span>            :     WSAData d;
+<span class="lineNum">      86 </span>            :     if( WSAStartup( MAKEWORD(2, 0), &amp;d ) != 0 )
+<span class="lineNum">      87 </span>            :         return result;
+<span class="lineNum">      88 </span>            : 
+<span class="lineNum">      89 </span>            :     DWORD datasize = 0;
+<span class="lineNum">      90 </span>            :     if( GetAdaptersAddresses( AF_INET, GAA_FLAG_INCLUDE_PREFIX, 0,
+<span class="lineNum">      91 </span>            :                               0, &amp;datasize ) != ERROR_BUFFER_OVERFLOW )
+<span class="lineNum">      92 </span>            :     {
+<span class="lineNum">      93 </span>            :         return result;
+<span class="lineNum">      94 </span>            :     }
+<span class="lineNum">      95 </span>            : 
+<span class="lineNum">      96 </span>            :     PIP_ADAPTER_ADDRESSES addresses = (PIP_ADAPTER_ADDRESSES)malloc( datasize );
+<span class="lineNum">      97 </span>            :     if( GetAdaptersAddresses( AF_INET, GAA_FLAG_INCLUDE_PREFIX, 0,
+<span class="lineNum">      98 </span>            :                               addresses, &amp;datasize ) != ERROR_SUCCESS )
+<span class="lineNum">      99 </span>            :     {
+<span class="lineNum">     100 </span>            :         free( addresses );
+<span class="lineNum">     101 </span>            :         return result;
+<span class="lineNum">     102 </span>            :     }
+<span class="lineNum">     103 </span>            : 
+<span class="lineNum">     104 </span>            :     char buf[BUFSIZ];
+<span class="lineNum">     105 </span>            :     for( PIP_ADAPTER_ADDRESSES current = addresses; current;
+<span class="lineNum">     106 </span>            :          current = current-&gt;Next )
+<span class="lineNum">     107 </span>            :     {
+<span class="lineNum">     108 </span>            :         NetInfo info;
+<span class="lineNum">     109 </span>            : 
+<span class="lineNum">     110 </span>            :         switch( current-&gt;IfType )
+<span class="lineNum">     111 </span>            :         {
+<span class="lineNum">     112 </span>            :         case IF_TYPE_ETHERNET_CSMACD:
+<span class="lineNum">     113 </span>            :             info.type = NetInfo::TYPE_ETHERNET;
+<span class="lineNum">     114 </span>            :             break;
+<span class="lineNum">     115 </span>            :         case IF_TYPE_SOFTWARE_LOOPBACK:
+<span class="lineNum">     116 </span>            :             info.type = NetInfo::TYPE_LOOPBACK;
+<span class="lineNum">     117 </span>            :             break;
+<span class="lineNum">     118 </span>            :         }
+<span class="lineNum">     119 </span>            : 
+<span class="lineNum">     120 </span>            :         info.up = current-&gt;OperStatus == IfOperStatusUp;
+<span class="lineNum">     121 </span>            :         info.linkspeed = current-&gt;TransmitLinkSpeed / 1000000;
+<span class="lineNum">     122 </span>            : 
+<span class="lineNum">     123 </span>            :         memset( buf, 0, BUFSIZ );
+<span class="lineNum">     124 </span>            :         WideCharToMultiByte( CP_ACP, 0, current-&gt;FriendlyName,
+<span class="lineNum">     125 </span>            :                              int( wcslen( current-&gt;FriendlyName )), buf, BUFSIZ,
+<span class="lineNum">     126 </span>            :                              0, 0 );
+<span class="lineNum">     127 </span>            :         info.name = buf;
+<span class="lineNum">     128 </span>            : 
+<span class="lineNum">     129 </span>            :         for( PIP_ADAPTER_UNICAST_ADDRESS addr = current-&gt;FirstUnicastAddress;
+<span class="lineNum">     130 </span>            :              addr; addr = addr-&gt;Next )
+<span class="lineNum">     131 </span>            :         {
+<span class="lineNum">     132 </span>            :             memset( buf, 0, BUFSIZ );
+<span class="lineNum">     133 </span>            :             getnameinfo( addr-&gt;Address.lpSockaddr,
+<span class="lineNum">     134 </span>            :                          addr-&gt;Address.iSockaddrLength, buf, sizeof(buf), 0, 0,
+<span class="lineNum">     135 </span>            :                          NI_NUMERICHOST );
+<span class="lineNum">     136 </span>            :             if( addr-&gt;Address.lpSockaddr-&gt;sa_family == AF_INET )
+<span class="lineNum">     137 </span>            :                 info.inetAddress = buf;
+<span class="lineNum">     138 </span>            :             else
+<span class="lineNum">     139 </span>            :                 info.inet6Address = buf;
+<span class="lineNum">     140 </span>            :         }
+<span class="lineNum">     141 </span>            : 
+<span class="lineNum">     142 </span>            :         if( current-&gt;PhysicalAddressLength != 0 )
+<span class="lineNum">     143 </span>            :         {
+<span class="lineNum">     144 </span>            :             std::ostringstream mac;
+<span class="lineNum">     145 </span>            :             mac &lt;&lt; std::setfill( '0' ) &lt;&lt; std::hex;
+<span class="lineNum">     146 </span>            :             size_t i = 0;
+<span class="lineNum">     147 </span>            :             for( ; i &lt; current-&gt;PhysicalAddressLength-1; ++i )
+<span class="lineNum">     148 </span>            :                 mac &lt;&lt; std::setw( 2 ) &lt;&lt; int(current-&gt;PhysicalAddress[i]) &lt;&lt;&quot;:&quot;;
+<span class="lineNum">     149 </span>            :             mac &lt;&lt; std::setw( 2 ) &lt;&lt; int(current-&gt;PhysicalAddress[i]);
+<span class="lineNum">     150 </span>            :             info.hwAddress = mac.str();
+<span class="lineNum">     151 </span>            :         }
+<span class="lineNum">     152 </span>            : 
+<span class="lineNum">     153 </span>            :         result.push_back( info );
+<span class="lineNum">     154 </span>            :     }
+<span class="lineNum">     155 </span>            : 
+<span class="lineNum">     156 </span>            :     free( addresses );
+<span class="lineNum">     157 </span>            :     WSACleanup();
+<span class="lineNum">     158 </span>            : 
+<span class="lineNum">     159 </span>            : #else // _WIN32
+<span class="lineNum">     160 </span>            : 
+<span class="lineNum">     161 </span>            : #  ifdef USE_IOCTL
+<span class="lineNum">     162 </span>            :     int socketfd = socket( PF_INET, SOCK_DGRAM, 0 );
+<span class="lineNum">     163 </span>            :     if( socketfd &lt; 0 )
+<span class="lineNum">     164 </span>            :         return result;
+<span class="lineNum">     165 </span>            : 
+<span class="lineNum">     166 </span>            :     char data[8192];
+<span class="lineNum">     167 </span>            :     ifconf ifc;
+<span class="lineNum">     168 </span>            :     ifc.ifc_len = sizeof(data);
+<span class="lineNum">     169 </span>            :     ifc.ifc_buf = data;
+<span class="lineNum">     170 </span>            :     if( ioctl( socketfd, SIOCGIFCONF, &amp;ifc ) &lt; 0 )
+<span class="lineNum">     171 </span>            :     {
+<span class="lineNum">     172 </span>            :         close( socketfd );
+<span class="lineNum">     173 </span>            :         return result;
+<span class="lineNum">     174 </span>            :     }
+<span class="lineNum">     175 </span>            : 
+<span class="lineNum">     176 </span>            :     char address[INET6_ADDRSTRLEN];
+<span class="lineNum">     177 </span>            :     char hostname[NI_MAXHOST];
+<span class="lineNum">     178 </span>            : 
+<span class="lineNum">     179 </span>            :     ifreq* ifr = ifc.ifc_req;
+<span class="lineNum">     180 </span>            :     const size_t nInterfaces = ifc.ifc_len / sizeof(ifreq);
+<span class="lineNum">     181 </span>            :     for( size_t i = 0; i &lt; nInterfaces; ++i )
+<span class="lineNum">     182 </span>            :     {
+<span class="lineNum">     183 </span>            :         ifreq* item = &amp;ifr[i];
+<span class="lineNum">     184 </span>            : 
+<span class="lineNum">     185 </span>            :         NetInfo info;
+<span class="lineNum">     186 </span>            :         info.type = NetInfo::TYPE_ETHERNET;
+<span class="lineNum">     187 </span>            :         info.name = item-&gt;ifr_name;
+<span class="lineNum">     188 </span>            : 
+<span class="lineNum">     189 </span>            :         switch( item-&gt;ifr_addr.sa_family )
+<span class="lineNum">     190 </span>            :         {
+<span class="lineNum">     191 </span>            :         case AF_INET:
+<span class="lineNum">     192 </span>            :             info.inetAddress = inet_ntop( item-&gt;ifr_addr.sa_family,
+<span class="lineNum">     193 </span>            :                                      &amp;((sockaddr_in*)&amp;item-&gt;ifr_addr)-&gt;sin_addr,
+<span class="lineNum">     194 </span>            :                                                       address, sizeof(address));
+<span class="lineNum">     195 </span>            :             if( getnameinfo( &amp;item-&gt;ifr_addr, sizeof(sockaddr_in), hostname,
+<span class="lineNum">     196 </span>            :                              sizeof(hostname), 0, 0, NI_NAMEREQD ) == 0 )
+<span class="lineNum">     197 </span>            :             {
+<span class="lineNum">     198 </span>            :                 info.hostname = hostname;
+<span class="lineNum">     199 </span>            :             }
+<span class="lineNum">     200 </span>            :             break;
+<span class="lineNum">     201 </span>            : 
+<span class="lineNum">     202 </span>            :         case AF_INET6:
+<span class="lineNum">     203 </span>            :             info.inet6Address = inet_ntop( item-&gt;ifr_addr.sa_family,
+<span class="lineNum">     204 </span>            :                                    &amp;((sockaddr_in6*)&amp;item-&gt;ifr_addr)-&gt;sin6_addr,
+<span class="lineNum">     205 </span>            :                                                       address, sizeof(address));
+<span class="lineNum">     206 </span>            :             if( getnameinfo( &amp;item-&gt;ifr_addr, sizeof(sockaddr_in6), hostname,
+<span class="lineNum">     207 </span>            :                              sizeof(hostname), 0, 0, NI_NAMEREQD ) == 0 )
+<span class="lineNum">     208 </span>            :             {
+<span class="lineNum">     209 </span>            :                 info.hostname = hostname;
+<span class="lineNum">     210 </span>            :             }
+<span class="lineNum">     211 </span>            :             break;
+<span class="lineNum">     212 </span>            :         }
+<span class="lineNum">     213 </span>            : 
+<span class="lineNum">     214 </span>            :         if( ioctl( socketfd, SIOCGIFHWADDR, item ) &gt;= 0 )
+<span class="lineNum">     215 </span>            :         {
+<span class="lineNum">     216 </span>            :             std::ostringstream mac;
+<span class="lineNum">     217 </span>            :             mac &lt;&lt; std::setfill( '0' ) &lt;&lt; std::hex;
+<span class="lineNum">     218 </span>            :             for( size_t j = 0; j &lt; 5; ++j )
+<span class="lineNum">     219 </span>            :                 mac &lt;&lt; std::setw( 2 ) &lt;&lt; int(item-&gt;ifr_hwaddr.sa_data[j]) &lt;&lt; &quot;:&quot;;
+<span class="lineNum">     220 </span>            :             mac &lt;&lt; std::setw( 2 ) &lt;&lt; int(item-&gt;ifr_hwaddr.sa_data[5]);
+<span class="lineNum">     221 </span>            :             info.hwAddress = mac.str();
+<span class="lineNum">     222 </span>            :         }
+<span class="lineNum">     223 </span>            : 
+<span class="lineNum">     224 </span>            :         if( ioctl( socketfd, SIOCGIFFLAGS, item ) &gt;= 0 )
+<span class="lineNum">     225 </span>            :         {
+<span class="lineNum">     226 </span>            :             info.up = item-&gt;ifr_flags &amp; IFF_UP;
+<span class="lineNum">     227 </span>            :             if( item-&gt;ifr_flags &amp; IFF_LOOPBACK )
+<span class="lineNum">     228 </span>            :                 info.type = NetInfo::TYPE_LOOPBACK;
+<span class="lineNum">     229 </span>            :         }
+<span class="lineNum">     230 </span>            : 
+<span class="lineNum">     231 </span>            :         ethtool_cmd edata;
+<span class="lineNum">     232 </span>            :         item-&gt;ifr_data = (caddr_t)&amp;edata;
+<span class="lineNum">     233 </span>            :         edata.cmd = ETHTOOL_GSET;
+<span class="lineNum">     234 </span>            :         if( ioctl( socketfd, SIOCETHTOOL, item ) &gt;= 0 )
+<span class="lineNum">     235 </span>            :             info.linkspeed = edata.speed;
+<span class="lineNum">     236 </span>            : 
+<span class="lineNum">     237 </span>            :         result.push_back( info );
+<span class="lineNum">     238 </span>            :     }
+<span class="lineNum">     239 </span>            : 
+<span class="lineNum">     240 </span>            :     close( socketfd );
+<span class="lineNum">     241 </span>            : 
+<span class="lineNum">     242 </span>            : #  else // USE_IOCTL
+<span class="lineNum">     243 </span>            : 
+<span class="lineNum">     244 </span>            :     ifaddrs* ifaddr;
+<span class="lineNum">     245 </span><span class="lineNoCov">          0 :     if( getifaddrs( &amp;ifaddr ) == -1 )</span>
+<span class="lineNum">     246 </span><span class="lineNoCov">          0 :         return result;</span>
+<span class="lineNum">     247 </span>            : 
+<span class="lineNum">     248 </span>            :     typedef std::map&lt; std::string, NetInfo &gt; Name2Info;
+<span class="lineNum">     249 </span><span class="lineNoCov">          0 :     Name2Info infos;</span>
+<span class="lineNum">     250 </span>            : 
+<span class="lineNum">     251 </span>            :     char host[NI_MAXHOST];
+<span class="lineNum">     252 </span><span class="lineNoCov">          0 :     for( ifaddrs* ifa = ifaddr; ifa; ifa = ifa-&gt;ifa_next )</span>
+<span class="lineNum">     253 </span>            :     {
+<span class="lineNum">     254 </span><span class="lineNoCov">          0 :         if( !ifa-&gt;ifa_addr )</span>
+<span class="lineNum">     255 </span><span class="lineNoCov">          0 :            continue;</span>
+<span class="lineNum">     256 </span>            : 
+<span class="lineNum">     257 </span><span class="lineNoCov">          0 :         NetInfo&amp; info = infos[ifa-&gt;ifa_name];</span>
+<span class="lineNum">     258 </span><span class="lineNoCov">          0 :         info.name = ifa-&gt;ifa_name;</span>
+<span class="lineNum">     259 </span><span class="lineNoCov">          0 :         info.up = ifa-&gt;ifa_flags &amp; IFF_UP;</span>
+<span class="lineNum">     260 </span>            : 
+<span class="lineNum">     261 </span><span class="lineNoCov">          0 :         const int family = ifa-&gt;ifa_addr-&gt;sa_family;</span>
+<span class="lineNum">     262 </span>            : 
+<span class="lineNum">     263 </span><span class="lineNoCov">          0 :         switch( family )</span>
+<span class="lineNum">     264 </span>            :         {
+<span class="lineNum">     265 </span>            :           case AF_INET:
+<span class="lineNum">     266 </span><span class="lineNoCov">          0 :               if( getnameinfo( ifa-&gt;ifa_addr, sizeof(sockaddr_in), host,</span>
+<span class="lineNum">     267 </span><span class="lineNoCov">          0 :                                NI_MAXHOST, 0, 0, NI_NUMERICHOST ) == 0 )</span>
+<span class="lineNum">     268 </span>            :               {
+<span class="lineNum">     269 </span><span class="lineNoCov">          0 :                   info.inetAddress = host;</span>
+<span class="lineNum">     270 </span>            :               }
+<span class="lineNum">     271 </span><span class="lineNoCov">          0 :               if( getnameinfo( ifa-&gt;ifa_addr, sizeof(sockaddr_in), host,</span>
+<span class="lineNum">     272 </span><span class="lineNoCov">          0 :                                NI_MAXHOST, 0, 0, NI_NAMEREQD ) == 0 )</span>
+<span class="lineNum">     273 </span>            :               {
+<span class="lineNum">     274 </span><span class="lineNoCov">          0 :                   info.hostname = host;</span>
+<span class="lineNum">     275 </span>            :               }
+<span class="lineNum">     276 </span><span class="lineNoCov">          0 :               break;</span>
+<span class="lineNum">     277 </span>            : 
+<span class="lineNum">     278 </span>            :           case AF_INET6:
+<span class="lineNum">     279 </span><span class="lineNoCov">          0 :               if( getnameinfo( ifa-&gt;ifa_addr, sizeof(sockaddr_in6), host,</span>
+<span class="lineNum">     280 </span><span class="lineNoCov">          0 :                                NI_MAXHOST, 0, 0, NI_NUMERICHOST ) == 0 )</span>
+<span class="lineNum">     281 </span>            :               {
+<span class="lineNum">     282 </span><span class="lineNoCov">          0 :                   info.inet6Address = host;</span>
+<span class="lineNum">     283 </span>            :               }
+<span class="lineNum">     284 </span><span class="lineNoCov">          0 :               break;</span>
+<span class="lineNum">     285 </span>            : 
+<span class="lineNum">     286 </span>            :           case AF_PACKET:
+<span class="lineNum">     287 </span>            :           {
+<span class="lineNum">     288 </span><span class="lineNoCov">          0 :               std::ostringstream mac;</span>
+<span class="lineNum">     289 </span><span class="lineNoCov">          0 :               mac &lt;&lt; std::setfill( '0' ) &lt;&lt; std::hex;</span>
+<span class="lineNum">     290 </span>            : #ifdef __APPLE__
+<span class="lineNum">     291 </span>            :               const sockaddr_dl* link = (sockaddr_dl*)ifa-&gt;ifa_addr;
+<span class="lineNum">     292 </span>            :               const uint8_t* macaddr = (uint8_t*)LLADDR(link);
+<span class="lineNum">     293 </span>            : 
+<span class="lineNum">     294 </span>            :               for( size_t i = 0; i &lt; 6; ++i )
+<span class="lineNum">     295 </span>            :               {
+<span class="lineNum">     296 </span>            :                   mac &lt;&lt; std::setw( 2 ) &lt;&lt; int( macaddr[i] )
+<span class="lineNum">     297 </span>            :                       &lt;&lt; (i &lt; 5 ? &quot;:&quot; : &quot;&quot;);
+<span class="lineNum">     298 </span>            :               }
+<span class="lineNum">     299 </span>            : 
+<span class="lineNum">     300 </span>            :               switch( link-&gt;sdl_type )
+<span class="lineNum">     301 </span>            :               {
+<span class="lineNum">     302 </span>            :                 case IFT_ETHER:
+<span class="lineNum">     303 </span>            :                     info.type = NetInfo::TYPE_ETHERNET;
+<span class="lineNum">     304 </span>            :                     break;
+<span class="lineNum">     305 </span>            :                 case IFT_LOOP:
+<span class="lineNum">     306 </span>            :                     info.type = NetInfo::TYPE_LOOPBACK;
+<span class="lineNum">     307 </span>            :                     break;
+<span class="lineNum">     308 </span>            :                 case IFT_GIF:
+<span class="lineNum">     309 </span>            :                     info.type = NetInfo::TYPE_TUNNEL_ETHERNET;
+<span class="lineNum">     310 </span>            :                     break;
+<span class="lineNum">     311 </span>            :                 case IFT_STF:
+<span class="lineNum">     312 </span>            :                     info.type = NetInfo::TYPE_TUNNEL_6TO4;
+<span class="lineNum">     313 </span>            :                     break;
+<span class="lineNum">     314 </span>            : 
+<span class="lineNum">     315 </span>            :                 default:
+<span class="lineNum">     316 </span>            :                     LBWARN &lt;&lt; &quot;Unhandled interface type: 0x&quot; &lt;&lt; std::hex
+<span class="lineNum">     317 </span>            :                            &lt;&lt; unsigned( link-&gt;sdl_type ) &lt;&lt; std::dec
+<span class="lineNum">     318 </span>            :                            &lt;&lt; std::endl;
+<span class="lineNum">     319 </span>            :                     info.type = NetInfo::TYPE_UNKNOWN;
+<span class="lineNum">     320 </span>            :                     break;
+<span class="lineNum">     321 </span>            :               }
+<span class="lineNum">     322 </span>            : #else // __APPLE__
+<span class="lineNum">     323 </span><span class="lineNoCov">          0 :               sockaddr_ll* s = (sockaddr_ll*)ifa-&gt;ifa_addr;</span>
+<span class="lineNum">     324 </span><span class="lineNoCov">          0 :               for( size_t i = 0; i &lt; 6; ++i )</span>
+<span class="lineNum">     325 </span>            :               {
+<span class="lineNum">     326 </span><span class="lineNoCov">          0 :                   mac &lt;&lt; std::setw( 2 ) &lt;&lt; int(s-&gt;sll_addr[i])</span>
+<span class="lineNum">     327 </span><span class="lineNoCov">          0 :                       &lt;&lt; (i &lt; 5 ? &quot;:&quot; : &quot;&quot;);</span>
+<span class="lineNum">     328 </span>            :               }
+<span class="lineNum">     329 </span>            : 
+<span class="lineNum">     330 </span><span class="lineNoCov">          0 :               switch( s-&gt;sll_hatype )</span>
+<span class="lineNum">     331 </span>            :               {
+<span class="lineNum">     332 </span>            :                 case ARPHRD_ETHER:
+<span class="lineNum">     333 </span><span class="lineNoCov">          0 :                     info.type = NetInfo::TYPE_ETHERNET;</span>
+<span class="lineNum">     334 </span><span class="lineNoCov">          0 :                     break;</span>
+<span class="lineNum">     335 </span>            :                 case ARPHRD_LOOPBACK:
+<span class="lineNum">     336 </span><span class="lineNoCov">          0 :                     info.type = NetInfo::TYPE_LOOPBACK;</span>
+<span class="lineNum">     337 </span><span class="lineNoCov">          0 :                     break;</span>
+<span class="lineNum">     338 </span>            :                 case ARPHRD_INFINIBAND:
+<span class="lineNum">     339 </span><span class="lineNoCov">          0 :                     info.type = NetInfo::TYPE_INFINIBAND;</span>
+<span class="lineNum">     340 </span><span class="lineNoCov">          0 :                     break;</span>
+<span class="lineNum">     341 </span>            : 
+<span class="lineNum">     342 </span>            :                 default:
+<span class="lineNum">     343 </span><span class="lineNoCov">          0 :                     LBWARN &lt;&lt; &quot;Unhandled interface type: &quot; &lt;&lt; s-&gt;sll_hatype</span>
+<span class="lineNum">     344 </span><span class="lineNoCov">          0 :                            &lt;&lt; std::endl;</span>
+<span class="lineNum">     345 </span><span class="lineNoCov">          0 :                     info.type = NetInfo::TYPE_UNKNOWN;</span>
+<span class="lineNum">     346 </span>            :               }
+<span class="lineNum">     347 </span>            : #endif // !__APPLE__
+<span class="lineNum">     348 </span><span class="lineNoCov">          0 :               info.hwAddress = mac.str();</span>
+<span class="lineNum">     349 </span><span class="lineNoCov">          0 :               break;</span>
+<span class="lineNum">     350 </span>            :           }
+<span class="lineNum">     351 </span>            : 
+<span class="lineNum">     352 </span>            :           default:
+<span class="lineNum">     353 </span><span class="lineNoCov">          0 :               LBWARN &lt;&lt; &quot;Unhandled protocol type: &quot; &lt;&lt; family &lt;&lt; std::endl;</span>
+<span class="lineNum">     354 </span>            :         }
+<span class="lineNum">     355 </span>            :     }
+<span class="lineNum">     356 </span>            : 
+<span class="lineNum">     357 </span><span class="lineNoCov">          0 :     freeifaddrs( ifaddr );</span>
+<span class="lineNum">     358 </span>            : 
+<span class="lineNum">     359 </span><span class="lineNoCov">          0 :     for( Name2Info::const_iterator it = infos.begin(); it != infos.end(); ++it )</span>
+<span class="lineNum">     360 </span><span class="lineNoCov">          0 :         result.push_back( it-&gt;second );</span>
+<span class="lineNum">     361 </span>            : #  endif // !USE_IOCTL
+<span class="lineNum">     362 </span>            : #endif // !_WIN32
+<span class="lineNum">     363 </span><span class="lineNoCov">          0 :     return result;</span>
+<span class="lineNum">     364 </span>            : }
+<span class="lineNum">     365 </span>            : 
+<a name="366"><span class="lineNum">     366 </span>            : }</a>
+<span class="lineNum">     367 </span>            : }
+<span class="lineNum">     368 </span><span class="lineCov">         60 : }</span>
+</pre>
+      </td>
+    </tr>
+  </table>
+  <br>
+
+  <table width="100%" border=0 cellspacing=0 cellpadding=0>
+    <tr><td class="ruler"><img src="../../../../glass.png" width=3 height=3 alt=""></td></tr>
+    <tr><td class="versionInfo">Generated by: <a href="http://ltp.sourceforge.net/coverage/lcov.php" target="_parent">LCOV version 1.11</a></td></tr>
+  </table>
+  <br>
+
+</body>
+</html>

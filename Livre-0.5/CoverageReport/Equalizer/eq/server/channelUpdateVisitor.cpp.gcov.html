@@ -1,0 +1,549 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+
+<html lang="en">
+
+<head>
+  <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+  <title>LCOV - Livre - Equalizer/eq/server/channelUpdateVisitor.cpp</title>
+  <link rel="stylesheet" type="text/css" href="../../../gcov.css">
+</head>
+
+<body>
+
+  <table width="100%" border=0 cellspacing=0 cellpadding=0>
+    <tr><td class="title">LCOV - code coverage report</td></tr>
+    <tr><td class="ruler"><img src="../../../glass.png" width=3 height=3 alt=""></td></tr>
+
+    <tr>
+      <td width="100%">
+        <table cellpadding=1 border=0 width="100%">
+          <tr>
+            <td width="10%" class="headerItem">Current view:</td>
+            <td width="35%" class="headerValue"><a href="../../../index.html">top level</a> - <a href="index.html">Equalizer/eq/server</a> - channelUpdateVisitor.cpp<span style="font-size: 80%;"> (source / <a href="channelUpdateVisitor.cpp.func-sort-c.html">functions</a>)</span></td>
+            <td width="5%"></td>
+            <td width="15%"></td>
+            <td width="10%" class="headerCovTableHead">Hit</td>
+            <td width="10%" class="headerCovTableHead">Total</td>
+            <td width="15%" class="headerCovTableHead">Coverage</td>
+          </tr>
+          <tr>
+            <td class="headerItem">Test:</td>
+            <td class="headerValue">Livre</td>
+            <td></td>
+            <td class="headerItem">Lines:</td>
+            <td class="headerCovTableEntry">19</td>
+            <td class="headerCovTableEntry">243</td>
+            <td class="headerCovTableEntryLo">7.8 %</td>
+          </tr>
+          <tr>
+            <td class="headerItem">Date:</td>
+            <td class="headerValue">2016-03-10 14:06:39</td>
+            <td></td>
+            <td class="headerItem">Functions:</td>
+            <td class="headerCovTableEntry">3</td>
+            <td class="headerCovTableEntry">21</td>
+            <td class="headerCovTableEntryLo">14.3 %</td>
+          </tr>
+          <tr><td><img src="../../../glass.png" width=3 height=3 alt=""></td></tr>
+        </table>
+      </td>
+    </tr>
+
+    <tr><td class="ruler"><img src="../../../glass.png" width=3 height=3 alt=""></td></tr>
+  </table>
+
+  <table cellpadding=0 cellspacing=0 border=0>
+    <tr>
+      <td><br></td>
+    </tr>
+    <tr>
+      <td>
+<pre class="sourceHeading">          Line data    Source code</pre>
+<pre class="source">
+<a name="1"><span class="lineNum">       1 </span>            : </a>
+<span class="lineNum">       2 </span>            : /* Copyright (c) 2007-2013, Stefan Eilemann &lt;eile@equalizergraphics.com&gt;
+<span class="lineNum">       3 </span>            :  *               2011-2012, Daniel Nachbaur &lt;danielnachbaur@gmail.com&gt;
+<span class="lineNum">       4 </span>            :  *                    2010, Cedric Stalder &lt;cedric.stalder@gmail.com&gt;
+<span class="lineNum">       5 </span>            :  *
+<span class="lineNum">       6 </span>            :  * This library is free software; you can redistribute it and/or modify it under
+<span class="lineNum">       7 </span>            :  * the terms of the GNU Lesser General Public License version 2.1 as published
+<span class="lineNum">       8 </span>            :  * by the Free Software Foundation.
+<span class="lineNum">       9 </span>            :  *
+<span class="lineNum">      10 </span>            :  * This library is distributed in the hope that it will be useful, but WITHOUT
+<span class="lineNum">      11 </span>            :  * ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS
+<span class="lineNum">      12 </span>            :  * FOR A PARTICULAR PURPOSE.  See the GNU Lesser General Public License for more
+<span class="lineNum">      13 </span>            :  * details.
+<span class="lineNum">      14 </span>            :  *
+<span class="lineNum">      15 </span>            :  * You should have received a copy of the GNU Lesser General Public License
+<span class="lineNum">      16 </span>            :  * along with this library; if not, write to the Free Software Foundation, Inc.,
+<span class="lineNum">      17 </span>            :  * 51 Franklin Street, Fifth Floor, Boston, MA 02110-1301 USA.
+<span class="lineNum">      18 </span>            :  */
+<span class="lineNum">      19 </span>            : 
+<span class="lineNum">      20 </span>            : #include &quot;channelUpdateVisitor.h&quot;
+<span class="lineNum">      21 </span>            : 
+<span class="lineNum">      22 </span>            : #include &quot;colorMask.h&quot;
+<span class="lineNum">      23 </span>            : #include &quot;compound.h&quot;
+<span class="lineNum">      24 </span>            : #include &quot;frame.h&quot;
+<span class="lineNum">      25 </span>            : #include &quot;log.h&quot;
+<span class="lineNum">      26 </span>            : #include &quot;node.h&quot;
+<span class="lineNum">      27 </span>            : #include &quot;observer.h&quot;
+<span class="lineNum">      28 </span>            : #include &quot;pipe.h&quot;
+<span class="lineNum">      29 </span>            : #include &quot;segment.h&quot;
+<span class="lineNum">      30 </span>            : #include &quot;view.h&quot;
+<span class="lineNum">      31 </span>            : #include &quot;window.h&quot;
+<span class="lineNum">      32 </span>            : #include &quot;tileQueue.h&quot;
+<span class="lineNum">      33 </span>            : 
+<span class="lineNum">      34 </span>            : #include &lt;eq/fabric/commands.h&gt;
+<span class="lineNum">      35 </span>            : #include &lt;eq/fabric/paths.h&gt;
+<span class="lineNum">      36 </span>            : 
+<span class="lineNum">      37 </span>            : #include &lt;set&gt;
+<span class="lineNum">      38 </span>            : 
+<span class="lineNum">      39 </span>            : #ifndef GL_BACK_LEFT
+<span class="lineNum">      40 </span>            : #  define GL_FRONT_LEFT 0x0400
+<span class="lineNum">      41 </span>            : #  define GL_FRONT_RIGHT 0x0401
+<span class="lineNum">      42 </span>            : #  define GL_BACK_LEFT 0x0402
+<span class="lineNum">      43 </span>            : #  define GL_BACK_RIGHT 0x0403
+<span class="lineNum">      44 </span>            : #  define GL_FRONT 0x0404
+<span class="lineNum">      45 </span>            : #  define GL_BACK 0x0405
+<span class="lineNum">      46 </span>            : #endif
+<span class="lineNum">      47 </span>            : 
+<span class="lineNum">      48 </span>            : namespace eq
+<span class="lineNum">      49 </span>            : {
+<span class="lineNum">      50 </span>            : namespace server
+<span class="lineNum">      51 </span>            : {
+<span class="lineNum">      52 </span>            : 
+<span class="lineNum">      53 </span>            : using fabric::QUAD;
+<span class="lineNum">      54 </span>            : 
+<span class="lineNum">      55 </span>            : namespace
+<span class="lineNum">      56 </span>            : {
+<a name="57"><span class="lineNum">      57 </span>            : static bool _setDrawBuffers();</a>
+<a name="58"><span class="lineNum">      58 </span>            : static uint32_t _drawBuffer[2][2][NUM_EYES];</a>
+<span class="lineNum">      59 </span><span class="lineCov">         20 : static bool _drawBufferInit = _setDrawBuffers();</span>
+<span class="lineNum">      60 </span><span class="lineCov">         20 : bool _setDrawBuffers()</span>
+<span class="lineNum">      61 </span>            : {
+<span class="lineNum">      62 </span><span class="lineCov">         20 :     const int32_t cyclop = lunchbox::getIndexOfLastBit( EYE_CYCLOP );</span>
+<span class="lineNum">      63 </span><span class="lineCov">         20 :     const int32_t left = lunchbox::getIndexOfLastBit( EYE_LEFT );</span>
+<span class="lineNum">      64 </span><span class="lineCov">         20 :     const int32_t right = lunchbox::getIndexOfLastBit( EYE_RIGHT );</span>
+<span class="lineNum">      65 </span>            : 
+<span class="lineNum">      66 </span>            :     // [stereo][doublebuffered][eye]
+<span class="lineNum">      67 </span><span class="lineCov">         20 :     _drawBuffer[0][0][ cyclop ] = GL_FRONT;</span>
+<span class="lineNum">      68 </span><span class="lineCov">         20 :     _drawBuffer[0][0][ left ] = GL_FRONT;</span>
+<span class="lineNum">      69 </span><span class="lineCov">         20 :     _drawBuffer[0][0][ right ] = GL_FRONT;</span>
+<span class="lineNum">      70 </span>            : 
+<span class="lineNum">      71 </span><span class="lineCov">         20 :     _drawBuffer[0][1][ cyclop ] = GL_BACK;</span>
+<span class="lineNum">      72 </span><span class="lineCov">         20 :     _drawBuffer[0][1][ left ] = GL_BACK;</span>
+<span class="lineNum">      73 </span><span class="lineCov">         20 :     _drawBuffer[0][1][ right ] = GL_BACK;</span>
+<span class="lineNum">      74 </span>            : 
+<span class="lineNum">      75 </span><span class="lineCov">         20 :     _drawBuffer[1][0][ cyclop ] = GL_FRONT;</span>
+<span class="lineNum">      76 </span><span class="lineCov">         20 :     _drawBuffer[1][0][ left ] = GL_FRONT_LEFT;</span>
+<span class="lineNum">      77 </span><span class="lineCov">         20 :     _drawBuffer[1][0][ right ] = GL_FRONT_RIGHT;</span>
+<span class="lineNum">      78 </span>            : 
+<span class="lineNum">      79 </span><span class="lineCov">         20 :     _drawBuffer[1][1][ cyclop ] = GL_BACK;</span>
+<span class="lineNum">      80 </span><span class="lineCov">         20 :     _drawBuffer[1][1][ left ] = GL_BACK_LEFT;</span>
+<span class="lineNum">      81 </span><span class="lineCov">         20 :     _drawBuffer[1][1][ right ] = GL_BACK_RIGHT;</span>
+<span class="lineNum">      82 </span>            : 
+<span class="lineNum">      83 </span><span class="lineCov">         20 :     return true;</span>
+<span class="lineNum">      84 </span>            : }
+<a name="85"><span class="lineNum">      85 </span>            : }</a>
+<span class="lineNum">      86 </span>            : 
+<span class="lineNum">      87 </span><span class="lineNoCov">          0 : ChannelUpdateVisitor::ChannelUpdateVisitor( Channel* channel,</span>
+<span class="lineNum">      88 </span>            :                                             const uint128_t frameID,
+<span class="lineNum">      89 </span>            :                                             const uint32_t frameNumber )
+<span class="lineNum">      90 </span>            :         : _channel( channel )
+<span class="lineNum">      91 </span>            :         , _eye( EYE_CYCLOP )
+<span class="lineNum">      92 </span>            :         , _frameID( frameID )
+<span class="lineNum">      93 </span>            :         , _frameNumber( frameNumber )
+<span class="lineNum">      94 </span><span class="lineNoCov">          0 :         , _updated( false )</span>
+<a name="95"><span class="lineNum">      95 </span><span class="lineNoCov">          0 : {}</span></a>
+<span class="lineNum">      96 </span>            : 
+<span class="lineNum">      97 </span><span class="lineNoCov">          0 : bool ChannelUpdateVisitor::_skipCompound( const Compound* compound )</span>
+<span class="lineNum">      98 </span>            : {
+<span class="lineNum">      99 </span><span class="lineNoCov">          0 :     return ( compound-&gt;getChannel() != _channel ||</span>
+<span class="lineNum">     100 </span><span class="lineNoCov">          0 :              !compound-&gt;isInheritActive( _eye ) ||</span>
+<span class="lineNum">     101 </span><span class="lineNoCov">          0 :              compound-&gt;getInheritTasks() == fabric::TASK_NONE );</span>
+<a name="102"><span class="lineNum">     102 </span>            : }</a>
+<span class="lineNum">     103 </span>            : 
+<span class="lineNum">     104 </span><span class="lineNoCov">          0 : VisitorResult ChannelUpdateVisitor::visitPre( const Compound* compound )</span>
+<span class="lineNum">     105 </span>            : {
+<span class="lineNum">     106 </span><span class="lineNoCov">          0 :     if( !compound-&gt;isInheritActive( _eye ))</span>
+<span class="lineNum">     107 </span><span class="lineNoCov">          0 :         return TRAVERSE_PRUNE;</span>
+<span class="lineNum">     108 </span>            : 
+<span class="lineNum">     109 </span><span class="lineNoCov">          0 :     _updateDrawFinish( compound );</span>
+<span class="lineNum">     110 </span>            : 
+<span class="lineNum">     111 </span><span class="lineNoCov">          0 :     if( _skipCompound( compound ))</span>
+<span class="lineNum">     112 </span><span class="lineNoCov">          0 :         return TRAVERSE_CONTINUE;</span>
+<span class="lineNum">     113 </span>            : 
+<span class="lineNum">     114 </span><span class="lineNoCov">          0 :     const RenderContext&amp; context = _setupRenderContext( compound );</span>
+<span class="lineNum">     115 </span><span class="lineNoCov">          0 :     _updateFrameRate( compound );</span>
+<span class="lineNum">     116 </span><span class="lineNoCov">          0 :     _updateViewStart( compound, context );</span>
+<span class="lineNum">     117 </span>            : 
+<span class="lineNum">     118 </span><span class="lineNoCov">          0 :     if( compound-&gt;testInheritTask( fabric::TASK_CLEAR ))</span>
+<span class="lineNum">     119 </span><span class="lineNoCov">          0 :         _sendClear( context );</span>
+<span class="lineNum">     120 </span><span class="lineNoCov">          0 :     return TRAVERSE_CONTINUE;</span>
+<a name="121"><span class="lineNum">     121 </span>            : }</a>
+<span class="lineNum">     122 </span>            : 
+<span class="lineNum">     123 </span><span class="lineNoCov">          0 : VisitorResult ChannelUpdateVisitor::visitLeaf( const Compound* compound )</span>
+<span class="lineNum">     124 </span>            : {
+<span class="lineNum">     125 </span><span class="lineNoCov">          0 :     if( !compound-&gt;isInheritActive( _eye ))</span>
+<span class="lineNum">     126 </span><span class="lineNoCov">          0 :         return TRAVERSE_CONTINUE;</span>
+<span class="lineNum">     127 </span>            : 
+<span class="lineNum">     128 </span><span class="lineNoCov">          0 :     if( _skipCompound( compound ))</span>
+<span class="lineNum">     129 </span>            :     {
+<span class="lineNum">     130 </span><span class="lineNoCov">          0 :         _updateDrawFinish( compound );</span>
+<span class="lineNum">     131 </span><span class="lineNoCov">          0 :         return TRAVERSE_CONTINUE;</span>
+<span class="lineNum">     132 </span>            :     }
+<span class="lineNum">     133 </span>            : 
+<span class="lineNum">     134 </span><span class="lineNoCov">          0 :     const RenderContext&amp; context = _setupRenderContext( compound );</span>
+<span class="lineNum">     135 </span><span class="lineNoCov">          0 :     _updateFrameRate( compound );</span>
+<span class="lineNum">     136 </span><span class="lineNoCov">          0 :     _updateViewStart( compound, context );</span>
+<span class="lineNum">     137 </span><span class="lineNoCov">          0 :     _updateDraw( compound, context );</span>
+<span class="lineNum">     138 </span><span class="lineNoCov">          0 :     _updateDrawFinish( compound );</span>
+<span class="lineNum">     139 </span><span class="lineNoCov">          0 :     _updatePostDraw( compound, context );</span>
+<span class="lineNum">     140 </span><span class="lineNoCov">          0 :     return TRAVERSE_CONTINUE;</span>
+<a name="141"><span class="lineNum">     141 </span>            : }</a>
+<span class="lineNum">     142 </span>            : 
+<span class="lineNum">     143 </span><span class="lineNoCov">          0 : VisitorResult ChannelUpdateVisitor::visitPost( const Compound* compound )</span>
+<span class="lineNum">     144 </span>            : {
+<span class="lineNum">     145 </span><span class="lineNoCov">          0 :     if( _skipCompound( compound ))</span>
+<span class="lineNum">     146 </span><span class="lineNoCov">          0 :         return TRAVERSE_CONTINUE;</span>
+<span class="lineNum">     147 </span>            : 
+<span class="lineNum">     148 </span><span class="lineNoCov">          0 :     const RenderContext&amp; context = _setupRenderContext( compound );</span>
+<span class="lineNum">     149 </span><span class="lineNoCov">          0 :     _updatePostDraw( compound, context );</span>
+<span class="lineNum">     150 </span>            : 
+<span class="lineNum">     151 </span><span class="lineNoCov">          0 :     return TRAVERSE_CONTINUE;</span>
+<a name="152"><span class="lineNum">     152 </span>            : }</a>
+<span class="lineNum">     153 </span>            : 
+<span class="lineNum">     154 </span><span class="lineNoCov">          0 : RenderContext ChannelUpdateVisitor::_setupRenderContext(</span>
+<span class="lineNum">     155 </span>            :     const Compound* compound )
+<span class="lineNum">     156 </span>            : {
+<span class="lineNum">     157 </span><span class="lineNoCov">          0 :     const Channel* destChannel = compound-&gt;getInheritChannel();</span>
+<span class="lineNum">     158 </span><span class="lineNoCov">          0 :     LBASSERT( destChannel );</span>
+<span class="lineNum">     159 </span>            : 
+<span class="lineNum">     160 </span><span class="lineNoCov">          0 :     RenderContext context = compound-&gt;setupRenderContext( _eye );</span>
+<span class="lineNum">     161 </span><span class="lineNoCov">          0 :     context.frameID       = _frameID;</span>
+<span class="lineNum">     162 </span><span class="lineNoCov">          0 :     context.buffer        = _getDrawBuffer( compound );</span>
+<span class="lineNum">     163 </span><span class="lineNoCov">          0 :     context.bufferMask    = _getDrawBufferMask( compound );</span>
+<span class="lineNum">     164 </span><span class="lineNoCov">          0 :     context.view          = destChannel-&gt;getViewVersion();</span>
+<span class="lineNum">     165 </span>            : 
+<span class="lineNum">     166 </span><span class="lineNoCov">          0 :     const View* view = destChannel-&gt;getView();</span>
+<span class="lineNum">     167 </span><span class="lineNoCov">          0 :     LBASSERT( context.view == co::ObjectVersion( view ));</span>
+<span class="lineNum">     168 </span>            : 
+<span class="lineNum">     169 </span><span class="lineNoCov">          0 :     if( view )</span>
+<span class="lineNum">     170 </span>            :     {
+<span class="lineNum">     171 </span>            :         // compute inherit vp (part of view covered by segment/view channel)
+<span class="lineNum">     172 </span><span class="lineNoCov">          0 :         const Segment* segment = destChannel-&gt;getSegment();</span>
+<span class="lineNum">     173 </span><span class="lineNoCov">          0 :         LBASSERT( segment );</span>
+<span class="lineNum">     174 </span>            : 
+<span class="lineNum">     175 </span><span class="lineNoCov">          0 :         const PixelViewport&amp; pvp = destChannel-&gt;getPixelViewport();</span>
+<span class="lineNum">     176 </span><span class="lineNoCov">          0 :         if( pvp.hasArea( ))</span>
+<span class="lineNum">     177 </span><span class="lineNoCov">          0 :             context.vp.applyView( segment-&gt;getViewport(), view-&gt;getViewport(),</span>
+<span class="lineNum">     178 </span><span class="lineNoCov">          0 :                                   pvp, destChannel-&gt;getOverdraw( ));</span>
+<span class="lineNum">     179 </span>            :     }
+<span class="lineNum">     180 </span>            : 
+<span class="lineNum">     181 </span><span class="lineNoCov">          0 :     if( _channel != destChannel )</span>
+<span class="lineNum">     182 </span>            :     {
+<span class="lineNum">     183 </span><span class="lineNoCov">          0 :         const PixelViewport&amp; nativePVP = _channel-&gt;getPixelViewport();</span>
+<span class="lineNum">     184 </span><span class="lineNoCov">          0 :         context.pvp.x = nativePVP.x;</span>
+<span class="lineNum">     185 </span><span class="lineNoCov">          0 :         context.pvp.y = nativePVP.y;</span>
+<span class="lineNum">     186 </span>            :     }
+<span class="lineNum">     187 </span>            :     // TODO: pvp size overcommit check?
+<span class="lineNum">     188 </span>            : 
+<span class="lineNum">     189 </span><span class="lineNoCov">          0 :     return context;</span>
+<a name="190"><span class="lineNum">     190 </span>            : }</a>
+<span class="lineNum">     191 </span>            : 
+<span class="lineNum">     192 </span><span class="lineNoCov">          0 : void ChannelUpdateVisitor::_updateDraw( const Compound* compound,</span>
+<span class="lineNum">     193 </span>            :                                         const RenderContext&amp; context )
+<span class="lineNum">     194 </span>            : {
+<span class="lineNum">     195 </span><span class="lineNoCov">          0 :     if( compound-&gt;hasTiles( ))</span>
+<span class="lineNum">     196 </span>            :     {
+<span class="lineNum">     197 </span><span class="lineNoCov">          0 :         _updateDrawTiles( compound, context );</span>
+<span class="lineNum">     198 </span><span class="lineNoCov">          0 :         return;</span>
+<span class="lineNum">     199 </span>            :     }
+<span class="lineNum">     200 </span>            : 
+<span class="lineNum">     201 </span><span class="lineNoCov">          0 :     if( compound-&gt;testInheritTask( fabric::TASK_CLEAR ))</span>
+<span class="lineNum">     202 </span><span class="lineNoCov">          0 :         _sendClear( context );</span>
+<span class="lineNum">     203 </span>            : 
+<span class="lineNum">     204 </span><span class="lineNoCov">          0 :     if( compound-&gt;testInheritTask( fabric::TASK_DRAW ))</span>
+<span class="lineNum">     205 </span>            :     {
+<span class="lineNum">     206 </span><span class="lineNoCov">          0 :         const bool finish = _channel-&gt;hasListeners(); // finish for eq stats</span>
+<span class="lineNum">     207 </span><span class="lineNoCov">          0 :         _channel-&gt;send( fabric::CMD_CHANNEL_FRAME_DRAW ) &lt;&lt; context &lt;&lt; finish;</span>
+<span class="lineNum">     208 </span><span class="lineNoCov">          0 :         _updated = true;</span>
+<span class="lineNum">     209 </span><span class="lineNoCov">          0 :         LBLOG( LOG_TASKS ) &lt;&lt; &quot;TASK draw &quot; &lt;&lt; _channel-&gt;getName() &lt;&lt;  &quot; &quot;</span>
+<span class="lineNum">     210 </span><span class="lineNoCov">          0 :                            &lt;&lt; finish &lt;&lt; std::endl;</span>
+<span class="lineNum">     211 </span>            :     }
+<a name="212"><span class="lineNum">     212 </span>            : }</a>
+<span class="lineNum">     213 </span>            : 
+<span class="lineNum">     214 </span><span class="lineNoCov">          0 : void ChannelUpdateVisitor::_updateDrawTiles( const Compound* compound,</span>
+<span class="lineNum">     215 </span>            :                                              const RenderContext&amp; context )
+<span class="lineNum">     216 </span>            : {
+<span class="lineNum">     217 </span><span class="lineNoCov">          0 :     Frames frames;</span>
+<span class="lineNum">     218 </span><span class="lineNoCov">          0 :     co::ObjectVersions frameIDs;</span>
+<span class="lineNum">     219 </span><span class="lineNoCov">          0 :     const Frames&amp; outputFrames = compound-&gt;getOutputFrames();</span>
+<span class="lineNum">     220 </span><span class="lineNoCov">          0 :     for( FramesCIter i = outputFrames.begin(); i != outputFrames.end(); ++i)</span>
+<span class="lineNum">     221 </span>            :     {
+<span class="lineNum">     222 </span><span class="lineNoCov">          0 :         Frame* frame = *i;</span>
+<span class="lineNum">     223 </span>            : 
+<span class="lineNum">     224 </span><span class="lineNoCov">          0 :         if( !frame-&gt;hasData( _eye )) // TODO: filter: buffers, vp, eye</span>
+<span class="lineNum">     225 </span><span class="lineNoCov">          0 :             continue;</span>
+<span class="lineNum">     226 </span>            : 
+<span class="lineNum">     227 </span><span class="lineNoCov">          0 :         frames.push_back( frame );</span>
+<span class="lineNum">     228 </span><span class="lineNoCov">          0 :         frameIDs.push_back( co::ObjectVersion( frame ));</span>
+<span class="lineNum">     229 </span>            :     }
+<span class="lineNum">     230 </span>            : 
+<span class="lineNum">     231 </span><span class="lineNoCov">          0 :     const Channel* destChannel = compound-&gt;getInheritChannel();</span>
+<span class="lineNum">     232 </span><span class="lineNoCov">          0 :     const TileQueues&amp; inputQueues = compound-&gt;getInputTileQueues();</span>
+<span class="lineNum">     233 </span><span class="lineNoCov">          0 :     for( TileQueuesCIter i = inputQueues.begin(); i != inputQueues.end(); ++i )</span>
+<span class="lineNum">     234 </span>            :     {
+<span class="lineNum">     235 </span><span class="lineNoCov">          0 :         const TileQueue* inputQueue = *i;</span>
+<span class="lineNum">     236 </span><span class="lineNoCov">          0 :         const TileQueue* outputQueue = inputQueue-&gt;getOutputQueue( context.eye);</span>
+<span class="lineNum">     237 </span><span class="lineNoCov">          0 :         const uint128_t&amp; id = outputQueue-&gt;getQueueMasterID( context.eye );</span>
+<span class="lineNum">     238 </span><span class="lineNoCov">          0 :         LBASSERT( id != 0 );</span>
+<span class="lineNum">     239 </span>            : 
+<span class="lineNum">     240 </span><span class="lineNoCov">          0 :         const bool isLocal = (_channel == destChannel);</span>
+<span class="lineNum">     241 </span><span class="lineNoCov">          0 :         const uint32_t tasks = compound-&gt;getInheritTasks() &amp;</span>
+<span class="lineNum">     242 </span>            :                             ( eq::fabric::TASK_CLEAR | eq::fabric::TASK_DRAW |
+<span class="lineNum">     243 </span><span class="lineNoCov">          0 :                               eq::fabric::TASK_READBACK );</span>
+<span class="lineNum">     244 </span>            : 
+<span class="lineNum">     245 </span>            :         _channel-&gt;send( fabric::CMD_CHANNEL_FRAME_TILES )
+<span class="lineNum">     246 </span><span class="lineNoCov">          0 :                 &lt;&lt; context &lt;&lt; isLocal &lt;&lt; id &lt;&lt; tasks &lt;&lt; frameIDs;</span>
+<span class="lineNum">     247 </span><span class="lineNoCov">          0 :         _updated = true;</span>
+<span class="lineNum">     248 </span><span class="lineNoCov">          0 :         LBLOG( LOG_TASKS ) &lt;&lt; &quot;TASK tiles &quot; &lt;&lt; _channel-&gt;getName() &lt;&lt;  &quot; &quot;</span>
+<span class="lineNum">     249 </span><span class="lineNoCov">          0 :                            &lt;&lt; std::endl;</span>
+<span class="lineNum">     250 </span><span class="lineNoCov">          0 :     }</span>
+<a name="251"><span class="lineNum">     251 </span><span class="lineNoCov">          0 : }</span></a>
+<span class="lineNum">     252 </span>            : 
+<span class="lineNum">     253 </span><span class="lineNoCov">          0 : void ChannelUpdateVisitor::_updateDrawFinish( const Compound* compound ) const</span>
+<span class="lineNum">     254 </span>            : {
+<span class="lineNum">     255 </span><span class="lineNoCov">          0 :     const Compound* lastDrawCompound = _channel-&gt;getLastDrawCompound();</span>
+<span class="lineNum">     256 </span><span class="lineNoCov">          0 :     if( lastDrawCompound &amp;&amp; lastDrawCompound != compound )</span>
+<span class="lineNum">     257 </span><span class="lineNoCov">          0 :         return;</span>
+<span class="lineNum">     258 </span>            : 
+<span class="lineNum">     259 </span>            :     // Only pass if this is the last eye pass of this compound
+<span class="lineNum">     260 </span><span class="lineNoCov">          0 :     if( !compound-&gt;isLastInheritEye( _eye ))</span>
+<span class="lineNum">     261 </span><span class="lineNoCov">          0 :         return;</span>
+<span class="lineNum">     262 </span>            : 
+<span class="lineNum">     263 </span><span class="lineNoCov">          0 :     if( !lastDrawCompound )</span>
+<span class="lineNum">     264 </span><span class="lineNoCov">          0 :         _channel-&gt;setLastDrawCompound( compound );</span>
+<span class="lineNum">     265 </span>            : 
+<span class="lineNum">     266 </span>            :     // Channel::frameDrawFinish
+<span class="lineNum">     267 </span><span class="lineNoCov">          0 :     Node* node = _channel-&gt;getNode();</span>
+<span class="lineNum">     268 </span>            : 
+<span class="lineNum">     269 </span><span class="lineNoCov">          0 :     node-&gt;send( fabric::CMD_CHANNEL_FRAME_DRAW_FINISH, _channel-&gt;getID( ))</span>
+<span class="lineNum">     270 </span><span class="lineNoCov">          0 :             &lt;&lt; _frameID &lt;&lt; _frameNumber;</span>
+<span class="lineNum">     271 </span><span class="lineNoCov">          0 :     LBLOG( LOG_TASKS ) &lt;&lt; &quot;TASK channel draw finish &quot; &lt;&lt; _channel-&gt;getName()</span>
+<span class="lineNum">     272 </span><span class="lineNoCov">          0 :                        &lt;&lt; &quot; frame &quot; &lt;&lt; _frameNumber</span>
+<span class="lineNum">     273 </span><span class="lineNoCov">          0 :                        &lt;&lt; &quot; id &quot; &lt;&lt; _frameID &lt;&lt; std::endl;</span>
+<span class="lineNum">     274 </span>            : 
+<span class="lineNum">     275 </span>            :     // Window::frameDrawFinish
+<span class="lineNum">     276 </span><span class="lineNoCov">          0 :     Window* window = _channel-&gt;getWindow();</span>
+<span class="lineNum">     277 </span><span class="lineNoCov">          0 :     const Channel* lastDrawChannel = window-&gt;getLastDrawChannel();</span>
+<span class="lineNum">     278 </span>            : 
+<span class="lineNum">     279 </span><span class="lineNoCov">          0 :     if( lastDrawChannel &amp;&amp; lastDrawChannel != _channel )</span>
+<span class="lineNum">     280 </span><span class="lineNoCov">          0 :         return;</span>
+<span class="lineNum">     281 </span>            : 
+<span class="lineNum">     282 </span><span class="lineNoCov">          0 :     window-&gt;setLastDrawChannel( _channel ); // in case not set</span>
+<span class="lineNum">     283 </span>            : 
+<span class="lineNum">     284 </span><span class="lineNoCov">          0 :     node-&gt;send( fabric::CMD_WINDOW_FRAME_DRAW_FINISH, window-&gt;getID( ))</span>
+<span class="lineNum">     285 </span><span class="lineNoCov">          0 :             &lt;&lt; _frameID &lt;&lt; _frameNumber;</span>
+<span class="lineNum">     286 </span><span class="lineNoCov">          0 :     LBLOG( LOG_TASKS ) &lt;&lt; &quot;TASK window draw finish &quot;  &lt;&lt; window-&gt;getName()</span>
+<span class="lineNum">     287 </span><span class="lineNoCov">          0 :                            &lt;&lt;  &quot; frame &quot; &lt;&lt; _frameNumber</span>
+<span class="lineNum">     288 </span><span class="lineNoCov">          0 :                            &lt;&lt; &quot; id &quot; &lt;&lt; _frameID &lt;&lt; std::endl;</span>
+<span class="lineNum">     289 </span>            : 
+<span class="lineNum">     290 </span>            :     // Pipe::frameDrawFinish
+<span class="lineNum">     291 </span><span class="lineNoCov">          0 :     Pipe* pipe = _channel-&gt;getPipe();</span>
+<span class="lineNum">     292 </span><span class="lineNoCov">          0 :     const Window* lastDrawWindow = pipe-&gt;getLastDrawWindow();</span>
+<span class="lineNum">     293 </span><span class="lineNoCov">          0 :     if( lastDrawWindow &amp;&amp; lastDrawWindow != window )</span>
+<span class="lineNum">     294 </span><span class="lineNoCov">          0 :         return;</span>
+<span class="lineNum">     295 </span>            : 
+<span class="lineNum">     296 </span><span class="lineNoCov">          0 :     pipe-&gt;setLastDrawWindow( window ); // in case not set</span>
+<span class="lineNum">     297 </span>            : 
+<span class="lineNum">     298 </span><span class="lineNoCov">          0 :     node-&gt;send( fabric::CMD_PIPE_FRAME_DRAW_FINISH, pipe-&gt;getID( ))</span>
+<span class="lineNum">     299 </span><span class="lineNoCov">          0 :             &lt;&lt; _frameID &lt;&lt; _frameNumber;</span>
+<span class="lineNum">     300 </span><span class="lineNoCov">          0 :     LBLOG( LOG_TASKS ) &lt;&lt; &quot;TASK pipe draw finish &quot; &lt;&lt; pipe-&gt;getName()</span>
+<span class="lineNum">     301 </span><span class="lineNoCov">          0 :                        &lt;&lt; &quot; frame &quot; &lt;&lt; _frameNumber</span>
+<span class="lineNum">     302 </span><span class="lineNoCov">          0 :                        &lt;&lt; &quot; id &quot; &lt;&lt; _frameID &lt;&lt; std::endl;</span>
+<span class="lineNum">     303 </span>            : 
+<span class="lineNum">     304 </span>            :     // Node::frameDrawFinish
+<span class="lineNum">     305 </span><span class="lineNoCov">          0 :     const Pipe* lastDrawPipe = node-&gt;getLastDrawPipe();</span>
+<span class="lineNum">     306 </span><span class="lineNoCov">          0 :     if( lastDrawPipe &amp;&amp; lastDrawPipe != pipe )</span>
+<span class="lineNum">     307 </span><span class="lineNoCov">          0 :         return;</span>
+<span class="lineNum">     308 </span>            : 
+<span class="lineNum">     309 </span><span class="lineNoCov">          0 :     node-&gt;setLastDrawPipe( pipe ); // in case not set</span>
+<span class="lineNum">     310 </span>            : 
+<span class="lineNum">     311 </span><span class="lineNoCov">          0 :     node-&gt;send( fabric::CMD_NODE_FRAME_DRAW_FINISH, node-&gt;getID( ))</span>
+<span class="lineNum">     312 </span><span class="lineNoCov">          0 :             &lt;&lt; _frameID &lt;&lt; _frameNumber;</span>
+<span class="lineNum">     313 </span><span class="lineNoCov">          0 :     LBLOG( LOG_TASKS ) &lt;&lt; &quot;TASK node draw finish &quot; &lt;&lt; node-&gt;getName() &lt;&lt;  &quot; &quot;</span>
+<span class="lineNum">     314 </span><span class="lineNoCov">          0 :                        &lt;&lt; std::endl;</span>
+<a name="315"><span class="lineNum">     315 </span>            : }</a>
+<span class="lineNum">     316 </span>            : 
+<span class="lineNum">     317 </span><span class="lineNoCov">          0 : void ChannelUpdateVisitor::_sendClear( const RenderContext&amp; context )</span>
+<span class="lineNum">     318 </span>            : {
+<span class="lineNum">     319 </span><span class="lineNoCov">          0 :     _channel-&gt;send( fabric::CMD_CHANNEL_FRAME_CLEAR ) &lt;&lt; context;</span>
+<span class="lineNum">     320 </span><span class="lineNoCov">          0 :     _updated = true;</span>
+<span class="lineNum">     321 </span><span class="lineNoCov">          0 :     LBLOG( LOG_TASKS ) &lt;&lt; &quot;TASK clear &quot; &lt;&lt; _channel-&gt;getName() &lt;&lt;  &quot; &quot;</span>
+<span class="lineNum">     322 </span><span class="lineNoCov">          0 :                        &lt;&lt; std::endl;</span>
+<a name="323"><span class="lineNum">     323 </span><span class="lineNoCov">          0 : }</span></a>
+<span class="lineNum">     324 </span>            : 
+<span class="lineNum">     325 </span><span class="lineNoCov">          0 : void ChannelUpdateVisitor::_updateFrameRate( const Compound* compound ) const</span>
+<span class="lineNum">     326 </span>            : {
+<span class="lineNum">     327 </span><span class="lineNoCov">          0 :     const float maxFPS = compound-&gt;getInheritMaxFPS();</span>
+<span class="lineNum">     328 </span><span class="lineNoCov">          0 :     Window*     window = _channel-&gt;getWindow();</span>
+<span class="lineNum">     329 </span>            : 
+<span class="lineNum">     330 </span><span class="lineNoCov">          0 :     if( maxFPS &lt; window-&gt;getMaxFPS())</span>
+<span class="lineNum">     331 </span><span class="lineNoCov">          0 :         window-&gt;setMaxFPS( maxFPS );</span>
+<a name="332"><span class="lineNum">     332 </span><span class="lineNoCov">          0 : }</span></a>
+<span class="lineNum">     333 </span>            : 
+<span class="lineNum">     334 </span><span class="lineNoCov">          0 : uint32_t ChannelUpdateVisitor::_getDrawBuffer( const Compound* compound ) const</span>
+<span class="lineNum">     335 </span>            : {
+<span class="lineNum">     336 </span><span class="lineNoCov">          0 :     const DrawableConfig&amp; dc = _channel-&gt;getWindow()-&gt;getDrawableConfig();</span>
+<span class="lineNum">     337 </span><span class="lineNoCov">          0 :     const int32_t eye = lunchbox::getIndexOfLastBit( _eye );</span>
+<span class="lineNum">     338 </span>            : 
+<span class="lineNum">     339 </span><span class="lineNoCov">          0 :     if( compound-&gt;getInheritIAttribute(Compound::IATTR_STEREO_MODE) == QUAD )</span>
+<span class="lineNum">     340 </span><span class="lineNoCov">          0 :         return _drawBuffer[ dc.stereo ][ dc.doublebuffered ][ eye ];</span>
+<span class="lineNum">     341 </span><span class="lineNoCov">          0 :     return _drawBuffer[ 0 ][ dc.doublebuffered ][ eye ];</span>
+<span class="lineNum">     342 </span>            : }
+<a name="343"><span class="lineNum">     343 </span>            : </a>
+<span class="lineNum">     344 </span>            : fabric::ColorMask
+<span class="lineNum">     345 </span><span class="lineNoCov">          0 : ChannelUpdateVisitor::_getDrawBufferMask(const Compound* compound) const</span>
+<span class="lineNum">     346 </span>            : {
+<span class="lineNum">     347 </span><span class="lineNoCov">          0 :     if( compound-&gt;getInheritIAttribute( Compound::IATTR_STEREO_MODE ) !=</span>
+<span class="lineNum">     348 </span>            :         fabric::ANAGLYPH )
+<span class="lineNum">     349 </span>            :     {
+<span class="lineNum">     350 </span><span class="lineNoCov">          0 :         return ColorMask::ALL;</span>
+<span class="lineNum">     351 </span>            :     }
+<span class="lineNum">     352 </span>            : 
+<span class="lineNum">     353 </span><span class="lineNoCov">          0 :     switch( _eye )</span>
+<span class="lineNum">     354 </span>            :     {
+<span class="lineNum">     355 </span>            :         case EYE_LEFT:
+<span class="lineNum">     356 </span>            :             return ColorMask(
+<span class="lineNum">     357 </span>            :                 compound-&gt;getInheritIAttribute(
+<span class="lineNum">     358 </span><span class="lineNoCov">          0 :                     Compound::IATTR_STEREO_ANAGLYPH_LEFT_MASK ));</span>
+<span class="lineNum">     359 </span>            :         case EYE_RIGHT:
+<span class="lineNum">     360 </span>            :             return ColorMask(
+<span class="lineNum">     361 </span>            :                 compound-&gt;getInheritIAttribute(
+<span class="lineNum">     362 </span><span class="lineNoCov">          0 :                     Compound::IATTR_STEREO_ANAGLYPH_RIGHT_MASK ));</span>
+<span class="lineNum">     363 </span>            :         default:
+<span class="lineNum">     364 </span><span class="lineNoCov">          0 :             return ColorMask::ALL;</span>
+<span class="lineNum">     365 </span>            :     }
+<a name="366"><span class="lineNum">     366 </span>            : }</a>
+<span class="lineNum">     367 </span>            : 
+<span class="lineNum">     368 </span><span class="lineNoCov">          0 : void ChannelUpdateVisitor::_updatePostDraw( const Compound* compound,</span>
+<span class="lineNum">     369 </span>            :                                             const RenderContext&amp; context )
+<span class="lineNum">     370 </span>            : {
+<span class="lineNum">     371 </span><span class="lineNoCov">          0 :     _updateAssemble( compound, context );</span>
+<span class="lineNum">     372 </span><span class="lineNoCov">          0 :     _updateReadback( compound, context );</span>
+<span class="lineNum">     373 </span><span class="lineNoCov">          0 :     _updateViewFinish( compound, context );</span>
+<a name="374"><span class="lineNum">     374 </span><span class="lineNoCov">          0 : }</span></a>
+<span class="lineNum">     375 </span>            : 
+<span class="lineNum">     376 </span><span class="lineNoCov">          0 : void ChannelUpdateVisitor::_updateAssemble( const Compound* compound,</span>
+<span class="lineNum">     377 </span>            :                                             const RenderContext&amp; context )
+<span class="lineNum">     378 </span>            : {
+<span class="lineNum">     379 </span><span class="lineNoCov">          0 :     if( !compound-&gt;testInheritTask( fabric::TASK_ASSEMBLE ))</span>
+<span class="lineNum">     380 </span><span class="lineNoCov">          0 :         return;</span>
+<span class="lineNum">     381 </span>            : 
+<span class="lineNum">     382 </span><span class="lineNoCov">          0 :     const Frames&amp; inputFrames = compound-&gt;getInputFrames();</span>
+<span class="lineNum">     383 </span><span class="lineNoCov">          0 :     LBASSERT( !inputFrames.empty( ));</span>
+<span class="lineNum">     384 </span>            : 
+<span class="lineNum">     385 </span><span class="lineNoCov">          0 :     co::ObjectVersions frames;</span>
+<span class="lineNum">     386 </span><span class="lineNoCov">          0 :     for( Frames::const_iterator iter = inputFrames.begin();</span>
+<span class="lineNum">     387 </span><span class="lineNoCov">          0 :          iter != inputFrames.end(); ++iter )</span>
+<span class="lineNum">     388 </span>            :     {
+<span class="lineNum">     389 </span><span class="lineNoCov">          0 :         Frame* frame = *iter;</span>
+<span class="lineNum">     390 </span>            : 
+<span class="lineNum">     391 </span><span class="lineNoCov">          0 :         if( !frame-&gt;hasData( _eye )) // TODO: filter: buffers, vp, eye</span>
+<span class="lineNum">     392 </span><span class="lineNoCov">          0 :             continue;</span>
+<span class="lineNum">     393 </span>            : 
+<span class="lineNum">     394 </span><span class="lineNoCov">          0 :         LBLOG( LOG_ASSEMBLY ) &lt;&lt; *frame &lt;&lt; std::endl;</span>
+<span class="lineNum">     395 </span><span class="lineNoCov">          0 :         frames.push_back( co::ObjectVersion( frame ));</span>
+<span class="lineNum">     396 </span>            :     }
+<span class="lineNum">     397 </span>            : 
+<span class="lineNum">     398 </span><span class="lineNoCov">          0 :     if( frames.empty( ))</span>
+<span class="lineNum">     399 </span><span class="lineNoCov">          0 :         return;</span>
+<span class="lineNum">     400 </span>            : 
+<span class="lineNum">     401 </span>            :     // assemble task
+<span class="lineNum">     402 </span><span class="lineNoCov">          0 :     LBLOG( LOG_ASSEMBLY | LOG_TASKS )</span>
+<span class="lineNum">     403 </span><span class="lineNoCov">          0 :         &lt;&lt; &quot;TASK assemble &quot; &lt;&lt; _channel-&gt;getName()</span>
+<span class="lineNum">     404 </span><span class="lineNoCov">          0 :         &lt;&lt; &quot; nFrames &quot; &lt;&lt; frames.size() &lt;&lt; std::endl;</span>
+<span class="lineNum">     405 </span>            :     _channel-&gt;send( fabric::CMD_CHANNEL_FRAME_ASSEMBLE )
+<span class="lineNum">     406 </span><span class="lineNoCov">          0 :             &lt;&lt; context &lt;&lt; frames;</span>
+<span class="lineNum">     407 </span><span class="lineNoCov">          0 :     _updated = true;</span>
+<a name="408"><span class="lineNum">     408 </span>            : }</a>
+<span class="lineNum">     409 </span>            : 
+<span class="lineNum">     410 </span><span class="lineNoCov">          0 : void ChannelUpdateVisitor::_updateReadback( const Compound* compound,</span>
+<span class="lineNum">     411 </span>            :                                             const RenderContext&amp; context )
+<span class="lineNum">     412 </span>            : {
+<span class="lineNum">     413 </span><span class="lineNoCov">          0 :     if( !compound-&gt;testInheritTask( fabric::TASK_READBACK ) ||</span>
+<span class="lineNum">     414 </span><span class="lineNoCov">          0 :         ( compound-&gt;hasTiles() &amp;&amp; compound-&gt;isLeaf( )))</span>
+<span class="lineNum">     415 </span>            :     {
+<span class="lineNum">     416 </span><span class="lineNoCov">          0 :         return;</span>
+<span class="lineNum">     417 </span>            :     }
+<span class="lineNum">     418 </span>            : 
+<span class="lineNum">     419 </span><span class="lineNoCov">          0 :     const std::vector&lt; Frame* &gt;&amp; outputFrames = compound-&gt;getOutputFrames();</span>
+<span class="lineNum">     420 </span><span class="lineNoCov">          0 :     LBASSERT( !outputFrames.empty( ));</span>
+<span class="lineNum">     421 </span>            : 
+<span class="lineNum">     422 </span><span class="lineNoCov">          0 :     co::ObjectVersions frames;</span>
+<span class="lineNum">     423 </span><span class="lineNoCov">          0 :     for( FramesCIter i = outputFrames.begin(); i != outputFrames.end(); ++i )</span>
+<span class="lineNum">     424 </span>            :     {
+<span class="lineNum">     425 </span><span class="lineNoCov">          0 :         Frame* frame = *i;</span>
+<span class="lineNum">     426 </span>            : 
+<span class="lineNum">     427 </span><span class="lineNoCov">          0 :         if( !frame-&gt;hasData( _eye )) // TODO: filter: buffers, vp, eye</span>
+<span class="lineNum">     428 </span><span class="lineNoCov">          0 :             continue;</span>
+<span class="lineNum">     429 </span>            : 
+<span class="lineNum">     430 </span><span class="lineNoCov">          0 :         frames.push_back( co::ObjectVersion( frame ));</span>
+<span class="lineNum">     431 </span><span class="lineNoCov">          0 :         LBLOG( LOG_ASSEMBLY ) &lt;&lt; *frame &lt;&lt; std::endl;</span>
+<span class="lineNum">     432 </span>            :     }
+<span class="lineNum">     433 </span>            : 
+<span class="lineNum">     434 </span><span class="lineNoCov">          0 :     if( frames.empty() )</span>
+<span class="lineNum">     435 </span><span class="lineNoCov">          0 :         return;</span>
+<span class="lineNum">     436 </span>            : 
+<span class="lineNum">     437 </span>            :     // readback task
+<span class="lineNum">     438 </span>            :     _channel-&gt;send( fabric::CMD_CHANNEL_FRAME_READBACK )
+<span class="lineNum">     439 </span><span class="lineNoCov">          0 :             &lt;&lt; context &lt;&lt; frames;</span>
+<span class="lineNum">     440 </span><span class="lineNoCov">          0 :     _updated = true;</span>
+<span class="lineNum">     441 </span><span class="lineNoCov">          0 :     LBLOG( LOG_ASSEMBLY | LOG_TASKS )</span>
+<span class="lineNum">     442 </span><span class="lineNoCov">          0 :         &lt;&lt; &quot;TASK readback &quot; &lt;&lt; _channel-&gt;getName()</span>
+<span class="lineNum">     443 </span><span class="lineNoCov">          0 :         &lt;&lt; &quot; nFrames &quot; &lt;&lt; frames.size() &lt;&lt; std::endl;</span>
+<a name="444"><span class="lineNum">     444 </span>            : }</a>
+<span class="lineNum">     445 </span>            : 
+<span class="lineNum">     446 </span><span class="lineNoCov">          0 : void ChannelUpdateVisitor::_updateViewStart( const Compound* compound,</span>
+<span class="lineNum">     447 </span>            :                                              const RenderContext&amp; context )
+<span class="lineNum">     448 </span>            : {
+<span class="lineNum">     449 </span><span class="lineNoCov">          0 :     LBASSERT( !_skipCompound( compound ));</span>
+<span class="lineNum">     450 </span><span class="lineNoCov">          0 :     if( !compound-&gt;testInheritTask( fabric::TASK_VIEW ))</span>
+<span class="lineNum">     451 </span><span class="lineNoCov">          0 :         return;</span>
+<span class="lineNum">     452 </span>            : 
+<span class="lineNum">     453 </span>            :     // view start task
+<span class="lineNum">     454 </span><span class="lineNoCov">          0 :     LBLOG( LOG_TASKS ) &lt;&lt; &quot;TASK view start &quot; &lt;&lt; _channel-&gt;getName()</span>
+<span class="lineNum">     455 </span><span class="lineNoCov">          0 :                        &lt;&lt; std::endl;</span>
+<span class="lineNum">     456 </span><span class="lineNoCov">          0 :     _channel-&gt;send( fabric::CMD_CHANNEL_FRAME_VIEW_START ) &lt;&lt; context;</span>
+<a name="457"><span class="lineNum">     457 </span>            : }</a>
+<span class="lineNum">     458 </span>            : 
+<span class="lineNum">     459 </span><span class="lineNoCov">          0 : void ChannelUpdateVisitor::_updateViewFinish( const Compound* compound,</span>
+<span class="lineNum">     460 </span>            :                                               const RenderContext&amp; context )
+<span class="lineNum">     461 </span>            : {
+<span class="lineNum">     462 </span><span class="lineNoCov">          0 :     LBASSERT( !_skipCompound( compound ));</span>
+<span class="lineNum">     463 </span><span class="lineNoCov">          0 :     if( !compound-&gt;testInheritTask( fabric::TASK_VIEW ))</span>
+<span class="lineNum">     464 </span><span class="lineNoCov">          0 :         return;</span>
+<span class="lineNum">     465 </span>            : 
+<span class="lineNum">     466 </span>            :     // view finish task
+<span class="lineNum">     467 </span><span class="lineNoCov">          0 :     LBLOG( LOG_TASKS ) &lt;&lt; &quot;TASK view finish &quot; &lt;&lt; _channel-&gt;getName() &lt;&lt;  &quot; &quot;</span>
+<span class="lineNum">     468 </span><span class="lineNoCov">          0 :                        &lt;&lt; std::endl;</span>
+<span class="lineNum">     469 </span><span class="lineNoCov">          0 :     _channel-&gt;send( fabric::CMD_CHANNEL_FRAME_VIEW_FINISH ) &lt;&lt; context;</span>
+<span class="lineNum">     470 </span>            : }
+<a name="471"><span class="lineNum">     471 </span>            : </a>
+<span class="lineNum">     472 </span>            : }
+<span class="lineNum">     473 </span><span class="lineCov">         60 : }</span>
+</pre>
+      </td>
+    </tr>
+  </table>
+  <br>
+
+  <table width="100%" border=0 cellspacing=0 cellpadding=0>
+    <tr><td class="ruler"><img src="../../../glass.png" width=3 height=3 alt=""></td></tr>
+    <tr><td class="versionInfo">Generated by: <a href="http://ltp.sourceforge.net/coverage/lcov.php" target="_parent">LCOV version 1.11</a></td></tr>
+  </table>
+  <br>
+
+</body>
+</html>

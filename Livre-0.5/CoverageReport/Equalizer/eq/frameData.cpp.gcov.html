@@ -1,0 +1,565 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+
+<html lang="en">
+
+<head>
+  <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+  <title>LCOV - Livre - Equalizer/eq/frameData.cpp</title>
+  <link rel="stylesheet" type="text/css" href="../../gcov.css">
+</head>
+
+<body>
+
+  <table width="100%" border=0 cellspacing=0 cellpadding=0>
+    <tr><td class="title">LCOV - code coverage report</td></tr>
+    <tr><td class="ruler"><img src="../../glass.png" width=3 height=3 alt=""></td></tr>
+
+    <tr>
+      <td width="100%">
+        <table cellpadding=1 border=0 width="100%">
+          <tr>
+            <td width="10%" class="headerItem">Current view:</td>
+            <td width="35%" class="headerValue"><a href="../../index.html">top level</a> - <a href="index.html">Equalizer/eq</a> - frameData.cpp<span style="font-size: 80%;"> (source / <a href="frameData.cpp.func-sort-c.html">functions</a>)</span></td>
+            <td width="5%"></td>
+            <td width="15%"></td>
+            <td width="10%" class="headerCovTableHead">Hit</td>
+            <td width="10%" class="headerCovTableHead">Total</td>
+            <td width="15%" class="headerCovTableHead">Coverage</td>
+          </tr>
+          <tr>
+            <td class="headerItem">Test:</td>
+            <td class="headerValue">Livre</td>
+            <td></td>
+            <td class="headerItem">Lines:</td>
+            <td class="headerCovTableEntry">1</td>
+            <td class="headerCovTableEntry">230</td>
+            <td class="headerCovTableEntryLo">0.4 %</td>
+          </tr>
+          <tr>
+            <td class="headerItem">Date:</td>
+            <td class="headerValue">2016-03-10 14:06:39</td>
+            <td></td>
+            <td class="headerItem">Functions:</td>
+            <td class="headerCovTableEntry">2</td>
+            <td class="headerCovTableEntry">30</td>
+            <td class="headerCovTableEntryLo">6.7 %</td>
+          </tr>
+          <tr><td><img src="../../glass.png" width=3 height=3 alt=""></td></tr>
+        </table>
+      </td>
+    </tr>
+
+    <tr><td class="ruler"><img src="../../glass.png" width=3 height=3 alt=""></td></tr>
+  </table>
+
+  <table cellpadding=0 cellspacing=0 border=0>
+    <tr>
+      <td><br></td>
+    </tr>
+    <tr>
+      <td>
+<pre class="sourceHeading">          Line data    Source code</pre>
+<pre class="source">
+<a name="1"><span class="lineNum">       1 </span>            : </a>
+<span class="lineNum">       2 </span>            : /* Copyright (c) 2006-2016, Stefan Eilemann &lt;eile@equalizergraphics.com&gt;
+<span class="lineNum">       3 </span>            :  *                          Daniel Nachbaur &lt;danielnachbaur@gmail.com&gt;
+<span class="lineNum">       4 </span>            :  *                          Cedric Stalder &lt;cedric.stalder@gmail.com&gt;
+<span class="lineNum">       5 </span>            :  *                          Enrique &lt;egparedes@ifi.uzh.ch&gt;
+<span class="lineNum">       6 </span>            :  *
+<span class="lineNum">       7 </span>            :  * This library is free software; you can redistribute it and/or modify it under
+<span class="lineNum">       8 </span>            :  * the terms of the GNU Lesser General Public License version 2.1 as published
+<span class="lineNum">       9 </span>            :  * by the Free Software Foundation.
+<span class="lineNum">      10 </span>            :  *
+<span class="lineNum">      11 </span>            :  * This library is distributed in the hope that it will be useful, but WITHOUT
+<span class="lineNum">      12 </span>            :  * ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS
+<span class="lineNum">      13 </span>            :  * FOR A PARTICULAR PURPOSE.  See the GNU Lesser General Public License for more
+<span class="lineNum">      14 </span>            :  * details.
+<span class="lineNum">      15 </span>            :  *
+<span class="lineNum">      16 </span>            :  * You should have received a copy of the GNU Lesser General Public License
+<span class="lineNum">      17 </span>            :  * along with this library; if not, write to the Free Software Foundation, Inc.,
+<span class="lineNum">      18 </span>            :  * 51 Franklin Street, Fifth Floor, Boston, MA 02110-1301 USA.
+<span class="lineNum">      19 </span>            :  */
+<span class="lineNum">      20 </span>            : 
+<span class="lineNum">      21 </span>            : #include &quot;frameData.h&quot;
+<span class="lineNum">      22 </span>            : 
+<span class="lineNum">      23 </span>            : #include &quot;nodeStatistics.h&quot;
+<span class="lineNum">      24 </span>            : #include &quot;channelStatistics.h&quot;
+<span class="lineNum">      25 </span>            : #include &quot;exception.h&quot;
+<span class="lineNum">      26 </span>            : #include &quot;image.h&quot;
+<span class="lineNum">      27 </span>            : #include &quot;log.h&quot;
+<span class="lineNum">      28 </span>            : #include &quot;pixelData.h&quot;
+<span class="lineNum">      29 </span>            : #include &quot;roiFinder.h&quot;
+<span class="lineNum">      30 </span>            : 
+<span class="lineNum">      31 </span>            : #include &lt;eq/fabric/drawableConfig.h&gt;
+<span class="lineNum">      32 </span>            : #include &lt;eq/fabric/frameData.h&gt;
+<span class="lineNum">      33 </span>            : #include &lt;eq/util/objectManager.h&gt;
+<span class="lineNum">      34 </span>            : #include &lt;co/commandFunc.h&gt;
+<span class="lineNum">      35 </span>            : #include &lt;co/connectionDescription.h&gt;
+<span class="lineNum">      36 </span>            : #include &lt;co/dataIStream.h&gt;
+<span class="lineNum">      37 </span>            : #include &lt;co/dataOStream.h&gt;
+<span class="lineNum">      38 </span>            : #include &lt;lunchbox/monitor.h&gt;
+<span class="lineNum">      39 </span>            : #include &lt;lunchbox/scopedMutex.h&gt;
+<span class="lineNum">      40 </span>            : #include &lt;pression/plugins/compressor.h&gt;
+<span class="lineNum">      41 </span>            : 
+<span class="lineNum">      42 </span>            : #include &lt;boost/foreach.hpp&gt;
+<span class="lineNum">      43 </span>            : 
+<span class="lineNum">      44 </span>            : #include &lt;algorithm&gt;
+<span class="lineNum">      45 </span>            : 
+<span class="lineNum">      46 </span>            : namespace eq
+<span class="lineNum">      47 </span>            : {
+<span class="lineNum">      48 </span>            : typedef lunchbox::Monitor&lt; uint64_t &gt; Monitor;
+<span class="lineNum">      49 </span>            : typedef std::vector&lt; FrameData::Listener* &gt; Listeners;
+<span class="lineNum">      50 </span>            : 
+<a name="51"><span class="lineNum">      51 </span>            : namespace detail</a>
+<span class="lineNum">      52 </span>            : {
+<span class="lineNum">      53 </span><span class="lineNoCov">          0 : class FrameData</span>
+<a name="54"><span class="lineNum">      54 </span>            : {</a>
+<span class="lineNum">      55 </span>            : public:
+<span class="lineNum">      56 </span><span class="lineNoCov">          0 :     FrameData()</span>
+<span class="lineNum">      57 </span><span class="lineNoCov">          0 :         : version( co::VERSION_NONE.low( ))</span>
+<span class="lineNum">      58 </span>            :         , useAlpha( true )
+<span class="lineNum">      59 </span>            :         , colorQuality( 1.f )
+<span class="lineNum">      60 </span>            :         , depthQuality( 1.f )
+<span class="lineNum">      61 </span>            :         , colorCompressor( EQ_COMPRESSOR_AUTO )
+<span class="lineNum">      62 </span><span class="lineNoCov">          0 :         , depthCompressor( EQ_COMPRESSOR_AUTO )</span>
+<span class="lineNum">      63 </span><span class="lineNoCov">          0 :     {}</span>
+<span class="lineNum">      64 </span>            : 
+<span class="lineNum">      65 </span>            :     Images images;
+<span class="lineNum">      66 </span>            :     Images imageCache;
+<span class="lineNum">      67 </span>            :     lunchbox::Lock imageCacheLock;
+<span class="lineNum">      68 </span>            : 
+<span class="lineNum">      69 </span>            :     ROIFinder roiFinder;
+<span class="lineNum">      70 </span>            : 
+<span class="lineNum">      71 </span>            :     Images pendingImages;
+<span class="lineNum">      72 </span>            : 
+<span class="lineNum">      73 </span>            :     uint64_t version; //!&lt; The current version
+<span class="lineNum">      74 </span>            : 
+<span class="lineNum">      75 </span>            :     /** Data ready monitor for output-&gt;input synchronization. */
+<span class="lineNum">      76 </span>            :     Monitor readyVersion;
+<span class="lineNum">      77 </span>            : 
+<span class="lineNum">      78 </span>            :     /** External monitors for readiness synchronization. */
+<span class="lineNum">      79 </span>            :     lunchbox::Lockable&lt; Listeners, lunchbox::SpinLock &gt; listeners;
+<span class="lineNum">      80 </span>            : 
+<span class="lineNum">      81 </span>            :     bool useAlpha;
+<span class="lineNum">      82 </span>            :     float colorQuality;
+<span class="lineNum">      83 </span>            :     float depthQuality;
+<span class="lineNum">      84 </span>            : 
+<span class="lineNum">      85 </span>            :     uint32_t colorCompressor;
+<span class="lineNum">      86 </span>            :     uint32_t depthCompressor;
+<span class="lineNum">      87 </span>            : };
+<span class="lineNum">      88 </span>            : }
+<span class="lineNum">      89 </span>            : 
+<a name="90"><span class="lineNum">      90 </span>            : typedef co::CommandFunc&lt; FrameData &gt; CmdFunc;</a>
+<span class="lineNum">      91 </span>            : 
+<span class="lineNum">      92 </span><span class="lineNoCov">          0 : FrameData::FrameData()</span>
+<span class="lineNum">      93 </span><span class="lineNoCov">          0 :     : _impl( new detail::FrameData )</span>
+<a name="94"><span class="lineNum">      94 </span><span class="lineNoCov">          0 : {}</span></a>
+<span class="lineNum">      95 </span>            : 
+<span class="lineNum">      96 </span><span class="lineNoCov">          0 : FrameData::~FrameData()</span>
+<span class="lineNum">      97 </span>            : {
+<span class="lineNum">      98 </span><span class="lineNoCov">          0 :     clear();</span>
+<span class="lineNum">      99 </span>            : 
+<span class="lineNum">     100 </span><span class="lineNoCov">          0 :     for( Image* image : _impl-&gt;imageCache )</span>
+<span class="lineNum">     101 </span>            :     {
+<span class="lineNum">     102 </span><span class="lineNoCov">          0 :         LBLOG( LOG_BUG ) &lt;&lt; &quot;Unflushed image in FrameData destructor&quot;</span>
+<span class="lineNum">     103 </span><span class="lineNoCov">          0 :                           &lt;&lt; std::endl;</span>
+<span class="lineNum">     104 </span><span class="lineNoCov">          0 :         delete image;</span>
+<span class="lineNum">     105 </span>            :     }
+<span class="lineNum">     106 </span><span class="lineNoCov">          0 :     _impl-&gt;imageCache.clear();</span>
+<span class="lineNum">     107 </span>            : 
+<span class="lineNum">     108 </span><span class="lineNoCov">          0 :     delete _impl;</span>
+<a name="109"><span class="lineNum">     109 </span><span class="lineNoCov">          0 : }</span></a>
+<span class="lineNum">     110 </span>            : 
+<span class="lineNum">     111 </span><span class="lineNoCov">          0 : const Images&amp; FrameData::getImages() const</span>
+<span class="lineNum">     112 </span>            : {
+<span class="lineNum">     113 </span><span class="lineNoCov">          0 :     return _impl-&gt;images;</span>
+<a name="114"><span class="lineNum">     114 </span>            : }</a>
+<span class="lineNum">     115 </span>            : 
+<span class="lineNum">     116 </span><span class="lineNoCov">          0 : void FrameData::setAlphaUsage( const bool useAlpha )</span>
+<span class="lineNum">     117 </span>            : {
+<span class="lineNum">     118 </span><span class="lineNoCov">          0 :     _impl-&gt;useAlpha = useAlpha;</span>
+<a name="119"><span class="lineNum">     119 </span><span class="lineNoCov">          0 : }</span></a>
+<span class="lineNum">     120 </span>            : 
+<span class="lineNum">     121 </span><span class="lineNoCov">          0 : bool FrameData::isReady() const</span>
+<span class="lineNum">     122 </span>            : {
+<span class="lineNum">     123 </span><span class="lineNoCov">          0 :     return _impl-&gt;readyVersion.get() &gt;= _impl-&gt;version;</span>
+<a name="124"><span class="lineNum">     124 </span>            : }</a>
+<span class="lineNum">     125 </span>            : 
+<span class="lineNum">     126 </span><span class="lineNoCov">          0 : void FrameData::setQuality( Frame::Buffer buffer, float quality )</span>
+<span class="lineNum">     127 </span>            : {
+<span class="lineNum">     128 </span><span class="lineNoCov">          0 :     if( buffer != Frame::BUFFER_COLOR )</span>
+<span class="lineNum">     129 </span>            :     {
+<span class="lineNum">     130 </span><span class="lineNoCov">          0 :         LBASSERT( buffer == Frame::BUFFER_DEPTH );</span>
+<span class="lineNum">     131 </span><span class="lineNoCov">          0 :         _impl-&gt;depthQuality = quality;</span>
+<span class="lineNum">     132 </span><span class="lineNoCov">          0 :         return;</span>
+<span class="lineNum">     133 </span>            :     }
+<span class="lineNum">     134 </span>            : 
+<span class="lineNum">     135 </span><span class="lineNoCov">          0 :     _impl-&gt;colorQuality = quality;</span>
+<a name="136"><span class="lineNum">     136 </span>            : }</a>
+<span class="lineNum">     137 </span>            : 
+<span class="lineNum">     138 </span><span class="lineNoCov">          0 : void FrameData::useCompressor( const Frame::Buffer buffer, const uint32_t name )</span>
+<span class="lineNum">     139 </span>            : {
+<span class="lineNum">     140 </span><span class="lineNoCov">          0 :     if( buffer != Frame::BUFFER_COLOR )</span>
+<span class="lineNum">     141 </span>            :     {
+<span class="lineNum">     142 </span><span class="lineNoCov">          0 :         LBASSERT( buffer == Frame::BUFFER_DEPTH );</span>
+<span class="lineNum">     143 </span><span class="lineNoCov">          0 :         _impl-&gt;depthCompressor = name;</span>
+<span class="lineNum">     144 </span><span class="lineNoCov">          0 :         return;</span>
+<span class="lineNum">     145 </span>            :     }
+<span class="lineNum">     146 </span>            : 
+<span class="lineNum">     147 </span><span class="lineNoCov">          0 :     _impl-&gt;colorCompressor = name;</span>
+<a name="148"><span class="lineNum">     148 </span>            : }</a>
+<span class="lineNum">     149 </span>            : 
+<span class="lineNum">     150 </span><span class="lineNoCov">          0 : void FrameData::getInstanceData( co::DataOStream&amp; os )</span>
+<span class="lineNum">     151 </span>            : {
+<span class="lineNum">     152 </span><span class="lineNoCov">          0 :     LBUNREACHABLE;</span>
+<span class="lineNum">     153 </span><span class="lineNoCov">          0 :     serialize( os );</span>
+<a name="154"><span class="lineNum">     154 </span><span class="lineNoCov">          0 : }</span></a>
+<span class="lineNum">     155 </span>            : 
+<span class="lineNum">     156 </span><span class="lineNoCov">          0 : void FrameData::applyInstanceData( co::DataIStream&amp; is )</span>
+<span class="lineNum">     157 </span>            : {
+<span class="lineNum">     158 </span><span class="lineNoCov">          0 :     clear();</span>
+<span class="lineNum">     159 </span><span class="lineNoCov">          0 :     deserialize( is );</span>
+<span class="lineNum">     160 </span><span class="lineNoCov">          0 :     LBLOG( LOG_ASSEMBLY ) &lt;&lt; &quot;applied &quot; &lt;&lt; this &lt;&lt; std::endl;</span>
+<a name="161"><span class="lineNum">     161 </span><span class="lineNoCov">          0 : }</span></a>
+<span class="lineNum">     162 </span>            : 
+<span class="lineNum">     163 </span><span class="lineNoCov">          0 : void FrameData::clear()</span>
+<span class="lineNum">     164 </span>            : {
+<span class="lineNum">     165 </span><span class="lineNoCov">          0 :     _impl-&gt;imageCacheLock.set();</span>
+<span class="lineNum">     166 </span>            :     _impl-&gt;imageCache.insert( _impl-&gt;imageCache.end(), _impl-&gt;images.begin(),
+<span class="lineNum">     167 </span><span class="lineNoCov">          0 :                               _impl-&gt;images.end( ));</span>
+<span class="lineNum">     168 </span><span class="lineNoCov">          0 :     _impl-&gt;imageCacheLock.unset();</span>
+<span class="lineNum">     169 </span><span class="lineNoCov">          0 :     _impl-&gt;images.clear();</span>
+<a name="170"><span class="lineNum">     170 </span><span class="lineNoCov">          0 : }</span></a>
+<span class="lineNum">     171 </span>            : 
+<span class="lineNum">     172 </span><span class="lineNoCov">          0 : void FrameData::flush()</span>
+<span class="lineNum">     173 </span>            : {
+<span class="lineNum">     174 </span><span class="lineNoCov">          0 :     clear();</span>
+<span class="lineNum">     175 </span>            : 
+<span class="lineNum">     176 </span><span class="lineNoCov">          0 :     for( ImagesCIter i = _impl-&gt;imageCache.begin();</span>
+<span class="lineNum">     177 </span><span class="lineNoCov">          0 :          i != _impl-&gt;imageCache.end(); ++i )</span>
+<span class="lineNum">     178 </span>            :     {
+<span class="lineNum">     179 </span><span class="lineNoCov">          0 :         Image* image = *i;</span>
+<span class="lineNum">     180 </span><span class="lineNoCov">          0 :         image-&gt;flush();</span>
+<span class="lineNum">     181 </span><span class="lineNoCov">          0 :         delete image;</span>
+<span class="lineNum">     182 </span>            :     }
+<span class="lineNum">     183 </span>            : 
+<span class="lineNum">     184 </span><span class="lineNoCov">          0 :     _impl-&gt;imageCache.clear();</span>
+<a name="185"><span class="lineNum">     185 </span><span class="lineNoCov">          0 : }</span></a>
+<span class="lineNum">     186 </span>            : 
+<span class="lineNum">     187 </span><span class="lineNoCov">          0 : void FrameData::deleteGLObjects( util::ObjectManager&amp; om )</span>
+<span class="lineNum">     188 </span>            : {
+<span class="lineNum">     189 </span><span class="lineNoCov">          0 :     for( Image* image : _impl-&gt;images )</span>
+<span class="lineNum">     190 </span><span class="lineNoCov">          0 :         image-&gt;deleteGLObjects( om );</span>
+<span class="lineNum">     191 </span><span class="lineNoCov">          0 :     for( Image* image : _impl-&gt;imageCache )</span>
+<span class="lineNum">     192 </span><span class="lineNoCov">          0 :         image-&gt;deleteGLObjects( om );</span>
+<a name="193"><span class="lineNum">     193 </span><span class="lineNoCov">          0 : }</span></a>
+<span class="lineNum">     194 </span>            : 
+<span class="lineNum">     195 </span><span class="lineNoCov">          0 : void FrameData::resetPlugins()</span>
+<span class="lineNum">     196 </span>            : {
+<span class="lineNum">     197 </span><span class="lineNoCov">          0 :     BOOST_FOREACH( Image* image, _impl-&gt;images )</span>
+<span class="lineNum">     198 </span><span class="lineNoCov">          0 :         image-&gt;resetPlugins();</span>
+<span class="lineNum">     199 </span><span class="lineNoCov">          0 :     BOOST_FOREACH( Image* image, _impl-&gt;imageCache )</span>
+<span class="lineNum">     200 </span><span class="lineNoCov">          0 :         image-&gt;resetPlugins();</span>
+<a name="201"><span class="lineNum">     201 </span><span class="lineNoCov">          0 : }</span></a>
+<span class="lineNum">     202 </span>            : 
+<span class="lineNum">     203 </span><span class="lineNoCov">          0 : Image* FrameData::newImage( const eq::Frame::Type type,</span>
+<span class="lineNum">     204 </span>            :                             const DrawableConfig&amp; config )
+<span class="lineNum">     205 </span>            : {
+<span class="lineNum">     206 </span><span class="lineNoCov">          0 :     Image* image = _allocImage( type, config, true /* set quality */ );</span>
+<span class="lineNum">     207 </span><span class="lineNoCov">          0 :     _impl-&gt;images.push_back( image );</span>
+<span class="lineNum">     208 </span><span class="lineNoCov">          0 :     return image;</span>
+<a name="209"><span class="lineNum">     209 </span>            : }</a>
+<span class="lineNum">     210 </span>            : 
+<span class="lineNum">     211 </span><span class="lineNoCov">          0 : Image* FrameData::_allocImage( const eq::Frame::Type type,</span>
+<span class="lineNum">     212 </span>            :                                const DrawableConfig&amp; config,
+<span class="lineNum">     213 </span>            :                                const bool setQuality_ )
+<span class="lineNum">     214 </span>            : {
+<span class="lineNum">     215 </span>            :     Image* image;
+<span class="lineNum">     216 </span><span class="lineNoCov">          0 :     _impl-&gt;imageCacheLock.set();</span>
+<span class="lineNum">     217 </span>            : 
+<span class="lineNum">     218 </span><span class="lineNoCov">          0 :     if( _impl-&gt;imageCache.empty( ))</span>
+<span class="lineNum">     219 </span>            :     {
+<span class="lineNum">     220 </span><span class="lineNoCov">          0 :         _impl-&gt;imageCacheLock.unset();</span>
+<span class="lineNum">     221 </span><span class="lineNoCov">          0 :         image = new Image;</span>
+<span class="lineNum">     222 </span>            :     }
+<span class="lineNum">     223 </span>            :     else
+<span class="lineNum">     224 </span>            :     {
+<span class="lineNum">     225 </span><span class="lineNoCov">          0 :         image = _impl-&gt;imageCache.back();</span>
+<span class="lineNum">     226 </span><span class="lineNoCov">          0 :         _impl-&gt;imageCache.pop_back();</span>
+<span class="lineNum">     227 </span><span class="lineNoCov">          0 :         _impl-&gt;imageCacheLock.unset();</span>
+<span class="lineNum">     228 </span>            : 
+<span class="lineNum">     229 </span><span class="lineNoCov">          0 :         image-&gt;reset();</span>
+<span class="lineNum">     230 </span>            :     }
+<span class="lineNum">     231 </span>            : 
+<span class="lineNum">     232 </span><span class="lineNoCov">          0 :     image-&gt;setAlphaUsage( _impl-&gt;useAlpha );</span>
+<span class="lineNum">     233 </span><span class="lineNoCov">          0 :     image-&gt;setStorageType( type );</span>
+<span class="lineNum">     234 </span><span class="lineNoCov">          0 :     if( setQuality_ )</span>
+<span class="lineNum">     235 </span>            :     {
+<span class="lineNum">     236 </span><span class="lineNoCov">          0 :         image-&gt;setQuality( Frame::BUFFER_COLOR, _impl-&gt;colorQuality );</span>
+<span class="lineNum">     237 </span><span class="lineNoCov">          0 :         image-&gt;setQuality( Frame::BUFFER_DEPTH, _impl-&gt;depthQuality );</span>
+<span class="lineNum">     238 </span>            :     }
+<span class="lineNum">     239 </span>            : 
+<span class="lineNum">     240 </span><span class="lineNoCov">          0 :     image-&gt;useCompressor( Frame::BUFFER_COLOR, _impl-&gt;colorCompressor );</span>
+<span class="lineNum">     241 </span><span class="lineNoCov">          0 :     image-&gt;useCompressor( Frame::BUFFER_DEPTH, _impl-&gt;depthCompressor );</span>
+<span class="lineNum">     242 </span>            : 
+<span class="lineNum">     243 </span>            :     image-&gt;setInternalFormat( Frame::BUFFER_DEPTH,
+<span class="lineNum">     244 </span><span class="lineNoCov">          0 :                               EQ_COMPRESSOR_DATATYPE_DEPTH );</span>
+<span class="lineNum">     245 </span><span class="lineNoCov">          0 :     switch( config.colorBits )</span>
+<span class="lineNum">     246 </span>            :     {
+<span class="lineNum">     247 </span>            :         case 16:
+<span class="lineNum">     248 </span>            :             image-&gt;setInternalFormat( Frame::BUFFER_COLOR,
+<span class="lineNum">     249 </span><span class="lineNoCov">          0 :                                       EQ_COMPRESSOR_DATATYPE_RGBA16F );</span>
+<span class="lineNum">     250 </span><span class="lineNoCov">          0 :             break;</span>
+<span class="lineNum">     251 </span>            :         case 32:
+<span class="lineNum">     252 </span>            :             image-&gt;setInternalFormat( Frame::BUFFER_COLOR,
+<span class="lineNum">     253 </span><span class="lineNoCov">          0 :                                       EQ_COMPRESSOR_DATATYPE_RGBA32F );</span>
+<span class="lineNum">     254 </span><span class="lineNoCov">          0 :             break;</span>
+<span class="lineNum">     255 </span>            :         case 10:
+<span class="lineNum">     256 </span>            :             image-&gt;setInternalFormat( Frame::BUFFER_COLOR,
+<span class="lineNum">     257 </span><span class="lineNoCov">          0 :                                       EQ_COMPRESSOR_DATATYPE_RGB10_A2 );</span>
+<span class="lineNum">     258 </span><span class="lineNoCov">          0 :             break;</span>
+<span class="lineNum">     259 </span>            :         default:
+<span class="lineNum">     260 </span>            :             image-&gt;setInternalFormat( Frame::BUFFER_COLOR,
+<span class="lineNum">     261 </span><span class="lineNoCov">          0 :                                       EQ_COMPRESSOR_DATATYPE_RGBA );</span>
+<span class="lineNum">     262 </span>            :     }
+<span class="lineNum">     263 </span>            : 
+<span class="lineNum">     264 </span><span class="lineNoCov">          0 :     return image;</span>
+<a name="265"><span class="lineNum">     265 </span>            : }</a>
+<span class="lineNum">     266 </span>            : 
+<span class="lineNum">     267 </span><span class="lineNoCov">          0 : Images FrameData::startReadback( const Frame&amp; frame,</span>
+<span class="lineNum">     268 </span>            :                                  util::ObjectManager&amp; glObjects,
+<span class="lineNum">     269 </span>            :                                  const DrawableConfig&amp; config,
+<span class="lineNum">     270 </span>            :                                  const PixelViewports&amp; regions,
+<span class="lineNum">     271 </span>            :                                  const RenderContext&amp; context )
+<span class="lineNum">     272 </span>            : {
+<span class="lineNum">     273 </span><span class="lineNoCov">          0 :     if( _buffers == Frame::BUFFER_NONE )</span>
+<span class="lineNum">     274 </span><span class="lineNoCov">          0 :         return Images();</span>
+<span class="lineNum">     275 </span>            : 
+<span class="lineNum">     276 </span><span class="lineNoCov">          0 :     const Zoom&amp; frameZoom = frame.getZoom();</span>
+<span class="lineNum">     277 </span><span class="lineNoCov">          0 :     if( !frameZoom.isValid( ))</span>
+<span class="lineNum">     278 </span>            :     {
+<span class="lineNum">     279 </span><span class="lineNoCov">          0 :         LBWARN &lt;&lt; &quot;Invalid zoom factor, skipping frame&quot; &lt;&lt; std::endl;</span>
+<span class="lineNum">     280 </span><span class="lineNoCov">          0 :         return Images();</span>
+<span class="lineNum">     281 </span>            :     }
+<span class="lineNum">     282 </span>            : 
+<span class="lineNum">     283 </span><span class="lineNoCov">          0 :     const eq::PixelViewport&amp; framePVP = getPixelViewport();</span>
+<span class="lineNum">     284 </span><span class="lineNoCov">          0 :     const PixelViewport      absPVP   = framePVP + frame.getOffset();</span>
+<span class="lineNum">     285 </span><span class="lineNoCov">          0 :     if( !absPVP.isValid( ))</span>
+<span class="lineNum">     286 </span><span class="lineNoCov">          0 :         return Images();</span>
+<span class="lineNum">     287 </span>            : 
+<span class="lineNum">     288 </span><span class="lineNoCov">          0 :     Images images;</span>
+<span class="lineNum">     289 </span>            : 
+<span class="lineNum">     290 </span>            :     // readback the whole screen when using textures
+<span class="lineNum">     291 </span><span class="lineNoCov">          0 :     if( getType() == eq::Frame::TYPE_TEXTURE )</span>
+<span class="lineNum">     292 </span>            :     {
+<span class="lineNum">     293 </span><span class="lineNoCov">          0 :         Image* image = newImage( getType(), config );</span>
+<span class="lineNum">     294 </span><span class="lineNoCov">          0 :         if( image-&gt;startReadback( getBuffers(), absPVP, context,</span>
+<span class="lineNum">     295 </span><span class="lineNoCov">          0 :             frameZoom, glObjects ))</span>
+<span class="lineNum">     296 </span>            :         {
+<span class="lineNum">     297 </span><span class="lineNoCov">          0 :             images.push_back( image );</span>
+<span class="lineNum">     298 </span>            :         }
+<span class="lineNum">     299 </span><span class="lineNoCov">          0 :         image-&gt;setOffset( 0, 0 );</span>
+<span class="lineNum">     300 </span><span class="lineNoCov">          0 :         return images;</span>
+<span class="lineNum">     301 </span>            :     }
+<span class="lineNum">     302 </span>            :     //else read only required regions
+<span class="lineNum">     303 </span>            : 
+<span class="lineNum">     304 </span>            : #if 0
+<span class="lineNum">     305 </span>            :     // TODO: issue #85: move automatic ROI detection to eq::Channel
+<span class="lineNum">     306 </span>            :     PixelViewports regions;
+<span class="lineNum">     307 </span>            :     if( buffers &amp; Frame::BUFFER_DEPTH &amp;&amp; frameZoom == Zoom::NONE )
+<span class="lineNum">     308 </span>            :         regions = _impl-&gt;roiFinder-&gt;findRegions( buffers, absPVP, frameZoom,
+<span class="lineNum">     309 </span>            :                                                  frame.getAssemblyStage(),
+<span class="lineNum">     310 </span>            :                                                  frame.getFrameID(), glObjects);
+<span class="lineNum">     311 </span>            :     else
+<span class="lineNum">     312 </span>            :         regions.push_back( absPVP );
+<span class="lineNum">     313 </span>            : #endif
+<span class="lineNum">     314 </span>            : 
+<span class="lineNum">     315 </span><span class="lineNoCov">          0 :     LBASSERT( getType() == eq::Frame::TYPE_MEMORY );</span>
+<span class="lineNum">     316 </span>            : 
+<span class="lineNum">     317 </span><span class="lineNoCov">          0 :     for( uint32_t i = 0; i &lt; regions.size(); ++i )</span>
+<span class="lineNum">     318 </span>            :     {
+<span class="lineNum">     319 </span><span class="lineNoCov">          0 :         PixelViewport pvp = regions[ i ] + frame.getOffset();</span>
+<span class="lineNum">     320 </span><span class="lineNoCov">          0 :         pvp.intersect( absPVP );</span>
+<span class="lineNum">     321 </span><span class="lineNoCov">          0 :         if( !pvp.hasArea( ))</span>
+<span class="lineNum">     322 </span><span class="lineNoCov">          0 :             continue;</span>
+<span class="lineNum">     323 </span>            : 
+<span class="lineNum">     324 </span><span class="lineNoCov">          0 :         Image* image = newImage( getType(), config );</span>
+<span class="lineNum">     325 </span><span class="lineNoCov">          0 :         if( image-&gt;startReadback( getBuffers(), pvp, context, frameZoom, glObjects ))</span>
+<span class="lineNum">     326 </span><span class="lineNoCov">          0 :             images.push_back( image );</span>
+<span class="lineNum">     327 </span>            : 
+<span class="lineNum">     328 </span><span class="lineNoCov">          0 :         pvp -= frame.getOffset();</span>
+<span class="lineNum">     329 </span><span class="lineNoCov">          0 :         pvp.apply( frameZoom );</span>
+<span class="lineNum">     330 </span><span class="lineNoCov">          0 :         image-&gt;setOffset( (pvp.x - framePVP.x) * context.pixel.w,</span>
+<span class="lineNum">     331 </span><span class="lineNoCov">          0 :                           (pvp.y - framePVP.y) * context.pixel.h );</span>
+<span class="lineNum">     332 </span>            :     }
+<span class="lineNum">     333 </span><span class="lineNoCov">          0 :     return images;</span>
+<a name="334"><span class="lineNum">     334 </span>            : }</a>
+<span class="lineNum">     335 </span>            : 
+<span class="lineNum">     336 </span><span class="lineNoCov">          0 : void FrameData::setVersion( const uint64_t version )</span>
+<span class="lineNum">     337 </span>            : {
+<span class="lineNum">     338 </span><span class="lineNoCov">          0 :     LBASSERTINFO( _impl-&gt;version &lt;= version, _impl-&gt;version &lt;&lt; &quot; &gt; &quot;</span>
+<span class="lineNum">     339 </span>            :                                                             &lt;&lt; version );
+<span class="lineNum">     340 </span><span class="lineNoCov">          0 :     _impl-&gt;version = version;</span>
+<span class="lineNum">     341 </span><span class="lineNoCov">          0 :     LBLOG( LOG_ASSEMBLY ) &lt;&lt; &quot;New v&quot; &lt;&lt; version &lt;&lt; std::endl;</span>
+<a name="342"><span class="lineNum">     342 </span><span class="lineNoCov">          0 : }</span></a>
+<span class="lineNum">     343 </span>            : 
+<span class="lineNum">     344 </span><span class="lineNoCov">          0 : void FrameData::waitReady( const uint32_t timeout ) const</span>
+<span class="lineNum">     345 </span>            : {
+<span class="lineNum">     346 </span><span class="lineNoCov">          0 :     if( !_impl-&gt;readyVersion.timedWaitGE( _impl-&gt;version, timeout ))</span>
+<span class="lineNum">     347 </span><span class="lineNoCov">          0 :         throw Exception( Exception::TIMEOUT_INPUTFRAME );</span>
+<a name="348"><span class="lineNum">     348 </span><span class="lineNoCov">          0 : }</span></a>
+<span class="lineNum">     349 </span>            : 
+<span class="lineNum">     350 </span><span class="lineNoCov">          0 : void FrameData::setReady()</span>
+<span class="lineNum">     351 </span>            : {
+<span class="lineNum">     352 </span><span class="lineNoCov">          0 :     _setReady( _impl-&gt;version );</span>
+<a name="353"><span class="lineNum">     353 </span><span class="lineNoCov">          0 : }</span></a>
+<span class="lineNum">     354 </span>            : 
+<span class="lineNum">     355 </span><span class="lineNoCov">          0 : void FrameData::setReady( const co::ObjectVersion&amp; frameData,</span>
+<span class="lineNum">     356 </span>            :                           const fabric::FrameData&amp; data )
+<span class="lineNum">     357 </span>            : {
+<span class="lineNum">     358 </span><span class="lineNoCov">          0 :     clear();</span>
+<span class="lineNum">     359 </span><span class="lineNoCov">          0 :     LBASSERT(  frameData.version.high() == 0 );</span>
+<span class="lineNum">     360 </span><span class="lineNoCov">          0 :     LBASSERT( _impl-&gt;readyVersion &lt; frameData.version.low( ));</span>
+<span class="lineNum">     361 </span><span class="lineNoCov">          0 :     LBASSERT( _impl-&gt;readyVersion == 0 ||</span>
+<span class="lineNum">     362 </span>            :               _impl-&gt;readyVersion + 1 == frameData.version.low( ));
+<span class="lineNum">     363 </span><span class="lineNoCov">          0 :     LBASSERT( _impl-&gt;version == frameData.version.low( ));</span>
+<span class="lineNum">     364 </span>            : 
+<span class="lineNum">     365 </span><span class="lineNoCov">          0 :     _impl-&gt;images.swap( _impl-&gt;pendingImages );</span>
+<span class="lineNum">     366 </span><span class="lineNoCov">          0 :     fabric::FrameData::operator = ( data );</span>
+<span class="lineNum">     367 </span><span class="lineNoCov">          0 :     _setReady( frameData.version.low());</span>
+<span class="lineNum">     368 </span>            : 
+<span class="lineNum">     369 </span><span class="lineNoCov">          0 :     LBLOG( LOG_ASSEMBLY ) &lt;&lt; this &lt;&lt; &quot; applied v&quot;</span>
+<span class="lineNum">     370 </span><span class="lineNoCov">          0 :                           &lt;&lt; frameData.version.low() &lt;&lt; std::endl;</span>
+<a name="371"><span class="lineNum">     371 </span><span class="lineNoCov">          0 : }</span></a>
+<span class="lineNum">     372 </span>            : 
+<span class="lineNum">     373 </span><span class="lineNoCov">          0 : void FrameData::_setReady( const uint64_t version )</span>
+<span class="lineNum">     374 </span>            : {
+<span class="lineNum">     375 </span><span class="lineNoCov">          0 :     LBASSERTINFO( _impl-&gt;readyVersion &lt;= version,</span>
+<span class="lineNum">     376 </span>            :                   &quot;v&quot; &lt;&lt; _impl-&gt;version &lt;&lt; &quot; ready &quot; &lt;&lt; _impl-&gt;readyVersion
+<span class="lineNum">     377 </span>            :                       &lt;&lt; &quot; new &quot; &lt;&lt; version );
+<span class="lineNum">     378 </span>            : 
+<span class="lineNum">     379 </span><span class="lineNoCov">          0 :     lunchbox::ScopedMutex&lt; lunchbox::SpinLock &gt; mutex( _impl-&gt;listeners );</span>
+<span class="lineNum">     380 </span><span class="lineNoCov">          0 :     if( _impl-&gt;readyVersion &gt;= version )</span>
+<span class="lineNum">     381 </span><span class="lineNoCov">          0 :         return;</span>
+<span class="lineNum">     382 </span>            : 
+<span class="lineNum">     383 </span><span class="lineNoCov">          0 :     _impl-&gt;readyVersion = version;</span>
+<span class="lineNum">     384 </span><span class="lineNoCov">          0 :     LBLOG( LOG_ASSEMBLY ) &lt;&lt; &quot;set ready &quot; &lt;&lt; this &lt;&lt; &quot;, &quot;</span>
+<span class="lineNum">     385 </span><span class="lineNoCov">          0 :                           &lt;&lt; _impl-&gt;listeners-&gt;size() &lt;&lt; &quot; monitoring&quot;</span>
+<span class="lineNum">     386 </span><span class="lineNoCov">          0 :                           &lt;&lt; std::endl;</span>
+<span class="lineNum">     387 </span>            : 
+<span class="lineNum">     388 </span><span class="lineNoCov">          0 :     BOOST_FOREACH( Listener* listener, _impl-&gt;listeners.data )</span>
+<span class="lineNum">     389 </span><span class="lineNoCov">          0 :         ++(*listener);</span>
+<a name="390"><span class="lineNum">     390 </span>            : }</a>
+<span class="lineNum">     391 </span>            : 
+<span class="lineNum">     392 </span><span class="lineNoCov">          0 : void FrameData::addListener( Listener&amp; listener )</span>
+<span class="lineNum">     393 </span>            : {
+<span class="lineNum">     394 </span><span class="lineNoCov">          0 :     lunchbox::ScopedFastWrite mutex( _impl-&gt;listeners );</span>
+<span class="lineNum">     395 </span>            : 
+<span class="lineNum">     396 </span><span class="lineNoCov">          0 :     _impl-&gt;listeners-&gt;push_back( &amp;listener );</span>
+<span class="lineNum">     397 </span><span class="lineNoCov">          0 :     if( _impl-&gt;readyVersion &gt;= _impl-&gt;version )</span>
+<span class="lineNum">     398 </span><span class="lineNoCov">          0 :         ++listener;</span>
+<a name="399"><span class="lineNum">     399 </span><span class="lineNoCov">          0 : }</span></a>
+<span class="lineNum">     400 </span>            : 
+<span class="lineNum">     401 </span><span class="lineNoCov">          0 : void FrameData::removeListener( Listener&amp; listener )</span>
+<span class="lineNum">     402 </span>            : {
+<span class="lineNum">     403 </span><span class="lineNoCov">          0 :     lunchbox::ScopedFastWrite mutex( _impl-&gt;listeners );</span>
+<span class="lineNum">     404 </span>            : 
+<span class="lineNum">     405 </span><span class="lineNoCov">          0 :     Listeners::iterator i = lunchbox::find( _impl-&gt;listeners.data, &amp;listener );</span>
+<span class="lineNum">     406 </span><span class="lineNoCov">          0 :     LBASSERT( i != _impl-&gt;listeners-&gt;end( ));</span>
+<span class="lineNum">     407 </span><span class="lineNoCov">          0 :     _impl-&gt;listeners-&gt;erase( i );</span>
+<a name="408"><span class="lineNum">     408 </span><span class="lineNoCov">          0 : }</span></a>
+<span class="lineNum">     409 </span>            : 
+<span class="lineNum">     410 </span><span class="lineNoCov">          0 : bool FrameData::addImage( const co::ObjectVersion&amp; frameDataVersion,</span>
+<span class="lineNum">     411 </span>            :                           const PixelViewport&amp; pvp, const Zoom&amp; zoom,
+<span class="lineNum">     412 </span>            :                           const RenderContext&amp; context, const uint32_t buffers_,
+<span class="lineNum">     413 </span>            :                           const bool useAlpha, uint8_t* data )
+<span class="lineNum">     414 </span>            : {
+<span class="lineNum">     415 </span><span class="lineNoCov">          0 :     LBASSERT( _impl-&gt;readyVersion &lt; frameDataVersion.version.low( ));</span>
+<span class="lineNum">     416 </span><span class="lineNoCov">          0 :     if( _impl-&gt;readyVersion &gt;= frameDataVersion.version.low( ))</span>
+<span class="lineNum">     417 </span><span class="lineNoCov">          0 :         return false;</span>
+<span class="lineNum">     418 </span>            : 
+<span class="lineNum">     419 </span>            :     Image* image = _allocImage( Frame::TYPE_MEMORY, DrawableConfig(),
+<span class="lineNum">     420 </span><span class="lineNoCov">          0 :                                 false /* set quality */ );</span>
+<span class="lineNum">     421 </span>            : 
+<span class="lineNum">     422 </span><span class="lineNoCov">          0 :     image-&gt;setPixelViewport( pvp );</span>
+<span class="lineNum">     423 </span><span class="lineNoCov">          0 :     image-&gt;setAlphaUsage( useAlpha );</span>
+<span class="lineNum">     424 </span>            : 
+<span class="lineNum">     425 </span><span class="lineNoCov">          0 :     Frame::Buffer buffers[] = { Frame::BUFFER_COLOR, Frame::BUFFER_DEPTH };</span>
+<span class="lineNum">     426 </span><span class="lineNoCov">          0 :     for( unsigned i = 0; i &lt; 2; ++i )</span>
+<span class="lineNum">     427 </span>            :     {
+<span class="lineNum">     428 </span><span class="lineNoCov">          0 :         const Frame::Buffer buffer = buffers[i];</span>
+<span class="lineNum">     429 </span>            : 
+<span class="lineNum">     430 </span><span class="lineNoCov">          0 :         if( buffers_ &amp; buffer )</span>
+<span class="lineNum">     431 </span>            :         {
+<span class="lineNum">     432 </span><span class="lineNoCov">          0 :             PixelData pixelData;</span>
+<span class="lineNum">     433 </span><span class="lineNoCov">          0 :             const ImageHeader* header = reinterpret_cast&lt;ImageHeader*&gt;( data );</span>
+<span class="lineNum">     434 </span><span class="lineNoCov">          0 :             data += sizeof( ImageHeader );</span>
+<span class="lineNum">     435 </span>            : 
+<span class="lineNum">     436 </span><span class="lineNoCov">          0 :             pixelData.internalFormat  = header-&gt;internalFormat;</span>
+<span class="lineNum">     437 </span><span class="lineNoCov">          0 :             pixelData.externalFormat  = header-&gt;externalFormat;</span>
+<span class="lineNum">     438 </span><span class="lineNoCov">          0 :             pixelData.pixelSize       = header-&gt;pixelSize;</span>
+<span class="lineNum">     439 </span><span class="lineNoCov">          0 :             pixelData.pvp             = header-&gt;pvp;</span>
+<span class="lineNum">     440 </span><span class="lineNoCov">          0 :             pixelData.compressorFlags = header-&gt;compressorFlags;</span>
+<span class="lineNum">     441 </span>            : 
+<span class="lineNum">     442 </span><span class="lineNoCov">          0 :             const uint32_t compressor = header-&gt;compressorName;</span>
+<span class="lineNum">     443 </span><span class="lineNoCov">          0 :             if( compressor &gt; EQ_COMPRESSOR_NONE )</span>
+<span class="lineNum">     444 </span>            :             {
+<span class="lineNum">     445 </span><span class="lineNoCov">          0 :                 pression::CompressorChunks chunks;</span>
+<span class="lineNum">     446 </span><span class="lineNoCov">          0 :                 const uint32_t nChunks = header-&gt;nChunks;</span>
+<span class="lineNum">     447 </span><span class="lineNoCov">          0 :                 chunks.reserve( nChunks );</span>
+<span class="lineNum">     448 </span>            : 
+<span class="lineNum">     449 </span><span class="lineNoCov">          0 :                 for( uint32_t j = 0; j &lt; nChunks; ++j )</span>
+<span class="lineNum">     450 </span>            :                 {
+<span class="lineNum">     451 </span><span class="lineNoCov">          0 :                     const uint64_t size = *reinterpret_cast&lt; uint64_t*&gt;( data );</span>
+<span class="lineNum">     452 </span><span class="lineNoCov">          0 :                     data += sizeof( uint64_t );</span>
+<span class="lineNum">     453 </span>            : 
+<span class="lineNum">     454 </span><span class="lineNoCov">          0 :                     chunks.push_back( pression::CompressorChunk( data, size ));</span>
+<span class="lineNum">     455 </span><span class="lineNoCov">          0 :                     data += size;</span>
+<span class="lineNum">     456 </span>            :                 }
+<span class="lineNum">     457 </span><span class="lineNoCov">          0 :                 pixelData.compressedData =</span>
+<span class="lineNum">     458 </span><span class="lineNoCov">          0 :                     pression::CompressorResult( compressor, chunks );</span>
+<span class="lineNum">     459 </span>            :             }
+<span class="lineNum">     460 </span>            :             else
+<span class="lineNum">     461 </span>            :             {
+<span class="lineNum">     462 </span><span class="lineNoCov">          0 :                 const uint64_t size = *reinterpret_cast&lt; uint64_t*&gt;( data );</span>
+<span class="lineNum">     463 </span><span class="lineNoCov">          0 :                 data += sizeof( uint64_t );</span>
+<span class="lineNum">     464 </span>            : 
+<span class="lineNum">     465 </span><span class="lineNoCov">          0 :                 pixelData.pixels = data;</span>
+<span class="lineNum">     466 </span><span class="lineNoCov">          0 :                 data += size;</span>
+<span class="lineNum">     467 </span><span class="lineNoCov">          0 :                 LBASSERT( size == pixelData.pvp.getArea()*pixelData.pixelSize );</span>
+<span class="lineNum">     468 </span>            :             }
+<span class="lineNum">     469 </span>            : 
+<span class="lineNum">     470 </span><span class="lineNoCov">          0 :             image-&gt;setZoom( zoom );</span>
+<span class="lineNum">     471 </span><span class="lineNoCov">          0 :             image-&gt;setContext( context );</span>
+<span class="lineNum">     472 </span><span class="lineNoCov">          0 :             image-&gt;setQuality( buffer, header-&gt;quality );</span>
+<span class="lineNum">     473 </span><span class="lineNoCov">          0 :             image-&gt;setPixelData( buffer, pixelData );</span>
+<span class="lineNum">     474 </span>            :         }
+<span class="lineNum">     475 </span>            :     }
+<span class="lineNum">     476 </span>            : 
+<span class="lineNum">     477 </span><span class="lineNoCov">          0 :     _impl-&gt;pendingImages.push_back( image );</span>
+<span class="lineNum">     478 </span><span class="lineNoCov">          0 :     return true;</span>
+<a name="479"><span class="lineNum">     479 </span>            : }</a>
+<span class="lineNum">     480 </span>            : 
+<span class="lineNum">     481 </span><span class="lineNoCov">          0 : std::ostream&amp; operator &lt;&lt; ( std::ostream&amp; os, const FrameData&amp; data )</span>
+<span class="lineNum">     482 </span>            : {
+<span class="lineNum">     483 </span><span class="lineNoCov">          0 :     return os &lt;&lt; &quot;frame data id &quot; &lt;&lt; data.getID() &lt;&lt; &quot;.&quot; &lt;&lt; data.getInstanceID()</span>
+<span class="lineNum">     484 </span><span class="lineNoCov">          0 :               &lt;&lt; &quot; v&quot; &lt;&lt; data.getVersion() &lt;&lt; ' ' &lt;&lt; data.getImages().size()</span>
+<span class="lineNum">     485 </span><span class="lineNoCov">          0 :               &lt;&lt; &quot; images, ready &quot; &lt;&lt; ( data.isReady() ? 'y' :'n' ) &lt;&lt; &quot; &quot;</span>
+<span class="lineNum">     486 </span><span class="lineNoCov">          0 :               &lt;&lt; data.getZoom();</span>
+<a name="487"><span class="lineNum">     487 </span>            : }</a>
+<span class="lineNum">     488 </span>            : 
+<span class="lineNum">     489 </span><span class="lineCov">         60 : }</span>
+</pre>
+      </td>
+    </tr>
+  </table>
+  <br>
+
+  <table width="100%" border=0 cellspacing=0 cellpadding=0>
+    <tr><td class="ruler"><img src="../../glass.png" width=3 height=3 alt=""></td></tr>
+    <tr><td class="versionInfo">Generated by: <a href="http://ltp.sourceforge.net/coverage/lcov.php" target="_parent">LCOV version 1.11</a></td></tr>
+  </table>
+  <br>
+
+</body>
+</html>

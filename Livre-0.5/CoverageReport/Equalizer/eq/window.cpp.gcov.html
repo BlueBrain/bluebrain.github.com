@@ -1,0 +1,1143 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+
+<html lang="en">
+
+<head>
+  <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+  <title>LCOV - Livre - Equalizer/eq/window.cpp</title>
+  <link rel="stylesheet" type="text/css" href="../../gcov.css">
+</head>
+
+<body>
+
+  <table width="100%" border=0 cellspacing=0 cellpadding=0>
+    <tr><td class="title">LCOV - code coverage report</td></tr>
+    <tr><td class="ruler"><img src="../../glass.png" width=3 height=3 alt=""></td></tr>
+
+    <tr>
+      <td width="100%">
+        <table cellpadding=1 border=0 width="100%">
+          <tr>
+            <td width="10%" class="headerItem">Current view:</td>
+            <td width="35%" class="headerValue"><a href="../../index.html">top level</a> - <a href="index.html">Equalizer/eq</a> - window.cpp<span style="font-size: 80%;"> (source / <a href="window.cpp.func-sort-c.html">functions</a>)</span></td>
+            <td width="5%"></td>
+            <td width="15%"></td>
+            <td width="10%" class="headerCovTableHead">Hit</td>
+            <td width="10%" class="headerCovTableHead">Total</td>
+            <td width="15%" class="headerCovTableHead">Coverage</td>
+          </tr>
+          <tr>
+            <td class="headerItem">Test:</td>
+            <td class="headerValue">Livre</td>
+            <td></td>
+            <td class="headerItem">Lines:</td>
+            <td class="headerCovTableEntry">1</td>
+            <td class="headerCovTableEntry">540</td>
+            <td class="headerCovTableEntryLo">0.2 %</td>
+          </tr>
+          <tr>
+            <td class="headerItem">Date:</td>
+            <td class="headerValue">2016-03-10 14:06:39</td>
+            <td></td>
+            <td class="headerItem">Functions:</td>
+            <td class="headerCovTableEntry">2</td>
+            <td class="headerCovTableEntry">73</td>
+            <td class="headerCovTableEntryLo">2.7 %</td>
+          </tr>
+          <tr><td><img src="../../glass.png" width=3 height=3 alt=""></td></tr>
+        </table>
+      </td>
+    </tr>
+
+    <tr><td class="ruler"><img src="../../glass.png" width=3 height=3 alt=""></td></tr>
+  </table>
+
+  <table cellpadding=0 cellspacing=0 border=0>
+    <tr>
+      <td><br></td>
+    </tr>
+    <tr>
+      <td>
+<pre class="sourceHeading">          Line data    Source code</pre>
+<pre class="source">
+<a name="1"><span class="lineNum">       1 </span>            : </a>
+<span class="lineNum">       2 </span>            : /* Copyright (c) 2005-2015, Stefan Eilemann &lt;eile@equalizergraphics.com&gt;
+<span class="lineNum">       3 </span>            :  *                          Cedric Stalder &lt;cedric.stalder@gmail.com&gt;
+<span class="lineNum">       4 </span>            :  *                          Daniel Nachbaur &lt;danielnachbaur@gmail.com&gt;
+<span class="lineNum">       5 </span>            :  *
+<span class="lineNum">       6 </span>            :  * This library is free software; you can redistribute it and/or modify it under
+<span class="lineNum">       7 </span>            :  * the terms of the GNU Lesser General Public License version 2.1 as published
+<span class="lineNum">       8 </span>            :  * by the Free Software Foundation.
+<span class="lineNum">       9 </span>            :  *
+<span class="lineNum">      10 </span>            :  * This library is distributed in the hope that it will be useful, but WITHOUT
+<span class="lineNum">      11 </span>            :  * ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS
+<span class="lineNum">      12 </span>            :  * FOR A PARTICULAR PURPOSE.  See the GNU Lesser General Public License for more
+<span class="lineNum">      13 </span>            :  * details.
+<span class="lineNum">      14 </span>            :  *
+<span class="lineNum">      15 </span>            :  * You should have received a copy of the GNU Lesser General Public License
+<span class="lineNum">      16 </span>            :  * along with this library; if not, write to the Free Software Foundation, Inc.,
+<span class="lineNum">      17 </span>            :  * 51 Franklin Street, Fifth Floor, Boston, MA 02110-1301 USA.
+<span class="lineNum">      18 </span>            :  */
+<span class="lineNum">      19 </span>            : 
+<span class="lineNum">      20 </span>            : #include &quot;window.h&quot;
+<span class="lineNum">      21 </span>            : 
+<span class="lineNum">      22 </span>            : #include &quot;channel.h&quot;
+<span class="lineNum">      23 </span>            : #include &quot;client.h&quot;
+<span class="lineNum">      24 </span>            : #include &quot;config.h&quot;
+<span class="lineNum">      25 </span>            : #include &quot;error.h&quot;
+<span class="lineNum">      26 </span>            : #include &quot;gl.h&quot;
+<span class="lineNum">      27 </span>            : #include &quot;global.h&quot;
+<span class="lineNum">      28 </span>            : #include &quot;log.h&quot;
+<span class="lineNum">      29 </span>            : #include &quot;node.h&quot;
+<span class="lineNum">      30 </span>            : #include &quot;nodeFactory.h&quot;
+<span class="lineNum">      31 </span>            : #include &quot;pipe.h&quot;
+<span class="lineNum">      32 </span>            : #include &quot;server.h&quot;
+<span class="lineNum">      33 </span>            : #include &quot;systemPipe.h&quot;
+<span class="lineNum">      34 </span>            : #include &quot;systemWindow.h&quot;
+<span class="lineNum">      35 </span>            : #include &quot;windowStatistics.h&quot;
+<span class="lineNum">      36 </span>            : 
+<span class="lineNum">      37 </span>            : #include &lt;eq/util/objectManager.h&gt;
+<span class="lineNum">      38 </span>            : #include &lt;eq/fabric/commands.h&gt;
+<span class="lineNum">      39 </span>            : #include &lt;eq/fabric/elementVisitor.h&gt;
+<span class="lineNum">      40 </span>            : #include &lt;eq/fabric/event.h&gt;
+<span class="lineNum">      41 </span>            : #include &lt;eq/fabric/leafVisitor.h&gt;
+<span class="lineNum">      42 </span>            : #include &lt;eq/fabric/task.h&gt;
+<span class="lineNum">      43 </span>            : 
+<span class="lineNum">      44 </span>            : #include &lt;co/barrier.h&gt;
+<span class="lineNum">      45 </span>            : #include &lt;co/exception.h&gt;
+<span class="lineNum">      46 </span>            : #include &lt;co/objectICommand.h&gt;
+<span class="lineNum">      47 </span>            : #include &lt;lunchbox/sleep.h&gt;
+<span class="lineNum">      48 </span>            : 
+<span class="lineNum">      49 </span>            : namespace eq
+<span class="lineNum">      50 </span>            : {
+<span class="lineNum">      51 </span>            : 
+<span class="lineNum">      52 </span>            : typedef fabric::Window&lt; Pipe, Window, Channel, WindowSettings &gt; Super;
+<span class="lineNum">      53 </span>            : 
+<span class="lineNum">      54 </span>            : /** @cond IGNORE */
+<span class="lineNum">      55 </span>            : typedef co::CommandFunc&lt;Window&gt; WindowFunc;
+<span class="lineNum">      56 </span>            : /** @endcond */
+<span class="lineNum">      57 </span>            : 
+<span class="lineNum">      58 </span>            : namespace
+<span class="lineNum">      59 </span>            : {
+<span class="lineNum">      60 </span>            : const char* _smallFontKey  = &quot;eq_small_font&quot;;
+<span class="lineNum">      61 </span>            : const char* _mediumFontKey = &quot;eq_medium_font&quot;;
+<a name="62"><span class="lineNum">      62 </span>            : }</a>
+<span class="lineNum">      63 </span>            : 
+<span class="lineNum">      64 </span><span class="lineNoCov">          0 : Window::Window( Pipe* parent )</span>
+<span class="lineNum">      65 </span>            :         : Super( parent )
+<span class="lineNum">      66 </span>            :         , _sharedContextWindow( 0 ) // default set below
+<span class="lineNum">      67 </span>            :         , _transferWindow( 0 )
+<span class="lineNum">      68 </span>            :         , _systemWindow( 0 )
+<span class="lineNum">      69 </span>            :         , _state( STATE_STOPPED )
+<span class="lineNum">      70 </span>            :         , _objectManager( 0 )
+<span class="lineNum">      71 </span>            :         , _lastTime ( 0.0f )
+<span class="lineNum">      72 </span>            :         , _avgFPS ( 0.0f )
+<span class="lineNum">      73 </span><span class="lineNoCov">          0 :         , _lastSwapTime( 0 )</span>
+<span class="lineNum">      74 </span>            : {
+<span class="lineNum">      75 </span><span class="lineNoCov">          0 :     const Windows&amp; windows = parent-&gt;getWindows();</span>
+<span class="lineNum">      76 </span><span class="lineNoCov">          0 :     if( windows.empty( ))</span>
+<span class="lineNum">      77 </span><span class="lineNoCov">          0 :         setSharedContextWindow( this );</span>
+<span class="lineNum">      78 </span>            :     else
+<span class="lineNum">      79 </span><span class="lineNoCov">          0 :         setSharedContextWindow( windows.front( ));</span>
+<a name="80"><span class="lineNum">      80 </span><span class="lineNoCov">          0 : }</span></a>
+<span class="lineNum">      81 </span>            : 
+<span class="lineNum">      82 </span><span class="lineNoCov">          0 : Window::~Window()</span>
+<span class="lineNum">      83 </span>            : {
+<span class="lineNum">      84 </span><span class="lineNoCov">          0 :     LBASSERT( getChannels().empty( ));</span>
+<a name="85"><span class="lineNum">      85 </span><span class="lineNoCov">          0 : }</span></a>
+<span class="lineNum">      86 </span>            : 
+<span class="lineNum">      87 </span><span class="lineNoCov">          0 : void Window::attach( const uint128_t&amp; id, const uint32_t instanceID )</span>
+<span class="lineNum">      88 </span>            : {
+<span class="lineNum">      89 </span><span class="lineNoCov">          0 :     Super::attach( id, instanceID );</span>
+<span class="lineNum">      90 </span>            : 
+<span class="lineNum">      91 </span><span class="lineNoCov">          0 :     co::CommandQueue* queue = getPipeThreadQueue();</span>
+<span class="lineNum">      92 </span>            : 
+<span class="lineNum">      93 </span>            :     registerCommand( fabric::CMD_WINDOW_CREATE_CHANNEL,
+<span class="lineNum">      94 </span><span class="lineNoCov">          0 :                      WindowFunc( this, &amp;Window::_cmdCreateChannel ), queue );</span>
+<span class="lineNum">      95 </span>            :     registerCommand( fabric::CMD_WINDOW_DESTROY_CHANNEL,
+<span class="lineNum">      96 </span><span class="lineNoCov">          0 :                      WindowFunc( this, &amp;Window::_cmdDestroyChannel ), queue );</span>
+<span class="lineNum">      97 </span>            :     registerCommand( fabric::CMD_WINDOW_CONFIG_INIT,
+<span class="lineNum">      98 </span><span class="lineNoCov">          0 :                      WindowFunc( this, &amp;Window::_cmdConfigInit ), queue );</span>
+<span class="lineNum">      99 </span>            :     registerCommand( fabric::CMD_WINDOW_CONFIG_EXIT,
+<span class="lineNum">     100 </span><span class="lineNoCov">          0 :                      WindowFunc( this, &amp;Window::_cmdConfigExit ), queue );</span>
+<span class="lineNum">     101 </span>            :     registerCommand( fabric::CMD_WINDOW_FRAME_START,
+<span class="lineNum">     102 </span><span class="lineNoCov">          0 :                      WindowFunc( this, &amp;Window::_cmdFrameStart ), queue );</span>
+<span class="lineNum">     103 </span>            :     registerCommand( fabric::CMD_WINDOW_FRAME_FINISH,
+<span class="lineNum">     104 </span><span class="lineNoCov">          0 :                      WindowFunc( this, &amp;Window::_cmdFrameFinish ), queue );</span>
+<span class="lineNum">     105 </span>            :     registerCommand( fabric::CMD_WINDOW_FLUSH,
+<span class="lineNum">     106 </span><span class="lineNoCov">          0 :                      WindowFunc( this, &amp;Window::_cmdFlush), queue );</span>
+<span class="lineNum">     107 </span>            :     registerCommand( fabric::CMD_WINDOW_FINISH,
+<span class="lineNum">     108 </span><span class="lineNoCov">          0 :                      WindowFunc( this, &amp;Window::_cmdFinish), queue );</span>
+<span class="lineNum">     109 </span>            :     registerCommand( fabric::CMD_WINDOW_THROTTLE_FRAMERATE,
+<span class="lineNum">     110 </span>            :                      WindowFunc( this, &amp;Window::_cmdThrottleFramerate ),
+<span class="lineNum">     111 </span><span class="lineNoCov">          0 :                      queue );</span>
+<span class="lineNum">     112 </span>            :     registerCommand( fabric::CMD_WINDOW_BARRIER,
+<span class="lineNum">     113 </span><span class="lineNoCov">          0 :                      WindowFunc( this, &amp;Window::_cmdBarrier ), queue );</span>
+<span class="lineNum">     114 </span>            :     registerCommand( fabric::CMD_WINDOW_NV_BARRIER,
+<span class="lineNum">     115 </span><span class="lineNoCov">          0 :                      WindowFunc( this, &amp;Window::_cmdNVBarrier ), queue );</span>
+<span class="lineNum">     116 </span>            :     registerCommand( fabric::CMD_WINDOW_SWAP,
+<span class="lineNum">     117 </span><span class="lineNoCov">          0 :                      WindowFunc( this, &amp;Window::_cmdSwap), queue );</span>
+<span class="lineNum">     118 </span>            :     registerCommand( fabric::CMD_WINDOW_FRAME_DRAW_FINISH,
+<span class="lineNum">     119 </span><span class="lineNoCov">          0 :                      WindowFunc( this, &amp;Window::_cmdFrameDrawFinish ), queue );</span>
+<a name="120"><span class="lineNum">     120 </span><span class="lineNoCov">          0 : }</span></a>
+<span class="lineNum">     121 </span>            : 
+<span class="lineNum">     122 </span><span class="lineNoCov">          0 : void Window::notifyViewportChanged()</span>
+<span class="lineNum">     123 </span>            : {
+<span class="lineNum">     124 </span><span class="lineNoCov">          0 :     Super::notifyViewportChanged();</span>
+<span class="lineNum">     125 </span><span class="lineNoCov">          0 :     if( !isRunning( ))</span>
+<span class="lineNum">     126 </span><span class="lineNoCov">          0 :         return;</span>
+<span class="lineNum">     127 </span>            : 
+<span class="lineNum">     128 </span>            :     // Commit immediately so that the server has the new data before the app
+<span class="lineNum">     129 </span>            :     // does send the startFrame() after a resize event.
+<span class="lineNum">     130 </span><span class="lineNoCov">          0 :     const uint128_t version = commit();</span>
+<span class="lineNum">     131 </span><span class="lineNoCov">          0 :     if( version != co::VERSION_NONE )</span>
+<span class="lineNum">     132 </span><span class="lineNoCov">          0 :         send( getServer(), fabric::CMD_OBJECT_SYNC );</span>
+<a name="133"><span class="lineNum">     133 </span>            : }</a>
+<span class="lineNum">     134 </span>            : 
+<span class="lineNum">     135 </span><span class="lineNoCov">          0 : void Window::_updateFPS()</span>
+<span class="lineNum">     136 </span>            : {
+<span class="lineNum">     137 </span><span class="lineNoCov">          0 :     const float curTime = float( getConfig()-&gt;getTime( ));</span>
+<span class="lineNum">     138 </span><span class="lineNoCov">          0 :     const float curInterval = curTime - _lastTime;</span>
+<span class="lineNum">     139 </span><span class="lineNoCov">          0 :     const bool isFirstFrame = _lastTime == 0.0f;</span>
+<span class="lineNum">     140 </span><span class="lineNoCov">          0 :     _lastTime = curTime;</span>
+<span class="lineNum">     141 </span>            : 
+<span class="lineNum">     142 </span><span class="lineNoCov">          0 :     if( isFirstFrame || curInterval &lt; 1e-3f )</span>
+<span class="lineNum">     143 </span><span class="lineNoCov">          0 :         return;</span>
+<span class="lineNum">     144 </span>            : 
+<span class="lineNum">     145 </span><span class="lineNoCov">          0 :     const float curFPS = 1000.0f / curInterval;</span>
+<span class="lineNum">     146 </span>            : 
+<span class="lineNum">     147 </span><span class="lineNoCov">          0 :     if( curFPS &lt; 1.0f || // don't average FPS if rendering is too slow</span>
+<span class="lineNum">     148 </span>            :         // or if current frame rate differs a lot from average (rendering loop
+<span class="lineNum">     149 </span>            :         // was paused)
+<span class="lineNum">     150 </span><span class="lineNoCov">          0 :         ( _avgFPS &gt; 10.f * curFPS || 10.f * _avgFPS &lt; curFPS ))</span>
+<span class="lineNum">     151 </span>            :     {
+<span class="lineNum">     152 </span><span class="lineNoCov">          0 :         _avgFPS = curFPS;</span>
+<span class="lineNum">     153 </span><span class="lineNoCov">          0 :         return;</span>
+<span class="lineNum">     154 </span>            :     }
+<span class="lineNum">     155 </span>            :     else // average FPS over time
+<span class="lineNum">     156 </span>            :     {
+<span class="lineNum">     157 </span>            :         // We calculate weighted sum of average frame rate with current frame
+<span class="lineNum">     158 </span>            :         // rate to prevent FPS count flickering.
+<span class="lineNum">     159 </span>            :         //
+<span class="lineNum">     160 </span>            :         // Weighted sum calculation here is the following:
+<span class="lineNum">     161 </span><span class="lineNoCov">          0 :         _avgFPS = curFPS * ( _avgFPS + 1.f ) / ( curFPS + 1.f );</span>
+<span class="lineNum">     162 </span>            : 
+<span class="lineNum">     163 </span>            :         // The higher current frame rate, the less it affects averaged FR. This
+<span class="lineNum">     164 </span>            :         // is equivalent of averaging over many frames, i.e. when rendering is
+<span class="lineNum">     165 </span>            :         // fast, we suppress FPS counter flickering stronger.
+<span class="lineNum">     166 </span>            :     }
+<span class="lineNum">     167 </span>            : 
+<span class="lineNum">     168 </span><span class="lineNoCov">          0 :     WindowStatistics stat( Statistic::WINDOW_FPS, this );</span>
+<span class="lineNum">     169 </span><span class="lineNoCov">          0 :     stat.event.data.statistic.currentFPS = curFPS;</span>
+<span class="lineNum">     170 </span><span class="lineNoCov">          0 :     stat.event.data.statistic.averageFPS = _avgFPS;</span>
+<span class="lineNum">     171 </span>            : }
+<a name="172"><span class="lineNum">     172 </span>            : </a>
+<span class="lineNum">     173 </span>            : 
+<span class="lineNum">     174 </span><span class="lineNoCov">          0 : void Window::drawFPS()</span>
+<span class="lineNum">     175 </span>            : {
+<span class="lineNum">     176 </span><span class="lineNoCov">          0 :     std::ostringstream fpsText;</span>
+<span class="lineNum">     177 </span><span class="lineNoCov">          0 :     fpsText &lt;&lt; std::setprecision(3) &lt;&lt; getFPS() &lt;&lt; &quot; FPS&quot;;</span>
+<span class="lineNum">     178 </span>            : 
+<span class="lineNum">     179 </span><span class="lineNoCov">          0 :     const util::BitmapFont* font = getSmallFont();</span>
+<span class="lineNum">     180 </span><span class="lineNoCov">          0 :     const PixelViewport&amp; pvp = getPixelViewport();</span>
+<span class="lineNum">     181 </span>            : 
+<span class="lineNum">     182 </span><span class="lineNoCov">          0 :     glRasterPos3f( pvp.w - 60.f, pvp.h - 16.f , 0.99f );</span>
+<span class="lineNum">     183 </span><span class="lineNoCov">          0 :     glColor3f( .8f, .8f, .8f );</span>
+<span class="lineNum">     184 </span>            : 
+<span class="lineNum">     185 </span><span class="lineNoCov">          0 :     font-&gt;draw( fpsText.str( ));</span>
+<a name="186"><span class="lineNum">     186 </span><span class="lineNoCov">          0 : }</span></a>
+<span class="lineNum">     187 </span>            : 
+<span class="lineNum">     188 </span><span class="lineNoCov">          0 : co::CommandQueue* Window::getPipeThreadQueue()</span>
+<span class="lineNum">     189 </span>            : {
+<span class="lineNum">     190 </span><span class="lineNoCov">          0 :     return getPipe()-&gt;getPipeThreadQueue();</span>
+<a name="191"><span class="lineNum">     191 </span>            : }</a>
+<span class="lineNum">     192 </span>            : 
+<span class="lineNum">     193 </span><span class="lineNoCov">          0 : co::CommandQueue* Window::getCommandThreadQueue()</span>
+<span class="lineNum">     194 </span>            : {
+<span class="lineNum">     195 </span><span class="lineNoCov">          0 :     return getPipe()-&gt;getCommandThreadQueue();</span>
+<a name="196"><span class="lineNum">     196 </span>            : }</a>
+<span class="lineNum">     197 </span>            : 
+<span class="lineNum">     198 </span><span class="lineNoCov">          0 : uint32_t Window::getCurrentFrame() const</span>
+<span class="lineNum">     199 </span>            : {
+<span class="lineNum">     200 </span><span class="lineNoCov">          0 :     return getPipe()-&gt;getCurrentFrame();</span>
+<a name="201"><span class="lineNum">     201 </span>            : }</a>
+<span class="lineNum">     202 </span>            : 
+<span class="lineNum">     203 </span><span class="lineNoCov">          0 : const Node* Window::getNode() const</span>
+<span class="lineNum">     204 </span>            : {
+<span class="lineNum">     205 </span><span class="lineNoCov">          0 :     const Pipe* pipe = getPipe();</span>
+<span class="lineNum">     206 </span><span class="lineNoCov">          0 :     LBASSERT( pipe );</span>
+<a name="207"><span class="lineNum">     207 </span><span class="lineNoCov">          0 :     return ( pipe ? pipe-&gt;getNode() : 0 );</span></a>
+<span class="lineNum">     208 </span>            : }
+<span class="lineNum">     209 </span><span class="lineNoCov">          0 : Node* Window::getNode()</span>
+<span class="lineNum">     210 </span>            : {
+<span class="lineNum">     211 </span><span class="lineNoCov">          0 :     Pipe* pipe = getPipe();</span>
+<span class="lineNum">     212 </span><span class="lineNoCov">          0 :     LBASSERT( pipe );</span>
+<span class="lineNum">     213 </span><span class="lineNoCov">          0 :     return ( pipe ? pipe-&gt;getNode() : 0 );</span>
+<a name="214"><span class="lineNum">     214 </span>            : }</a>
+<span class="lineNum">     215 </span>            : 
+<span class="lineNum">     216 </span><span class="lineNoCov">          0 : const Config* Window::getConfig() const</span>
+<span class="lineNum">     217 </span>            : {
+<span class="lineNum">     218 </span><span class="lineNoCov">          0 :     const Pipe* pipe = getPipe();</span>
+<span class="lineNum">     219 </span><span class="lineNoCov">          0 :     LBASSERT( pipe );</span>
+<a name="220"><span class="lineNum">     220 </span><span class="lineNoCov">          0 :     return ( pipe ? pipe-&gt;getConfig() : 0 );</span></a>
+<span class="lineNum">     221 </span>            : }
+<span class="lineNum">     222 </span><span class="lineNoCov">          0 : Config* Window::getConfig()</span>
+<span class="lineNum">     223 </span>            : {
+<span class="lineNum">     224 </span><span class="lineNoCov">          0 :     Pipe* pipe = getPipe();</span>
+<span class="lineNum">     225 </span><span class="lineNoCov">          0 :     LBASSERT( pipe );</span>
+<span class="lineNum">     226 </span><span class="lineNoCov">          0 :     return ( pipe ? pipe-&gt;getConfig() : 0 );</span>
+<a name="227"><span class="lineNum">     227 </span>            : }</a>
+<span class="lineNum">     228 </span>            : 
+<span class="lineNum">     229 </span><span class="lineNoCov">          0 : ClientPtr Window::getClient()</span>
+<span class="lineNum">     230 </span>            : {
+<span class="lineNum">     231 </span><span class="lineNoCov">          0 :     Pipe* pipe = getPipe();</span>
+<span class="lineNum">     232 </span><span class="lineNoCov">          0 :     LBASSERT( pipe );</span>
+<span class="lineNum">     233 </span><span class="lineNoCov">          0 :     return ( pipe ? pipe-&gt;getClient() : 0 );</span>
+<a name="234"><span class="lineNum">     234 </span>            : }</a>
+<span class="lineNum">     235 </span>            : 
+<span class="lineNum">     236 </span><span class="lineNoCov">          0 : ServerPtr Window::getServer()</span>
+<span class="lineNum">     237 </span>            : {
+<span class="lineNum">     238 </span><span class="lineNoCov">          0 :     Pipe* pipe = getPipe();</span>
+<span class="lineNum">     239 </span><span class="lineNoCov">          0 :     LBASSERT( pipe );</span>
+<span class="lineNum">     240 </span><span class="lineNoCov">          0 :     return ( pipe ? pipe-&gt;getServer() : 0 );</span>
+<span class="lineNum">     241 </span>            : }
+<span class="lineNum">     242 </span>            : 
+<span class="lineNum">     243 </span>            : //======================================================================
+<span class="lineNum">     244 </span>            : // pipe-thread methods
+<span class="lineNum">     245 </span>            : //======================================================================
+<span class="lineNum">     246 </span>            : 
+<span class="lineNum">     247 </span>            : //----------------------------------------------------------------------
+<a name="248"><span class="lineNum">     248 </span>            : // render context</a>
+<span class="lineNum">     249 </span>            : //----------------------------------------------------------------------
+<span class="lineNum">     250 </span><span class="lineNoCov">          0 : void Window::_addRenderContext( const RenderContext&amp; context )</span>
+<span class="lineNum">     251 </span>            : {
+<span class="lineNum">     252 </span><span class="lineNoCov">          0 :     LB_TS_THREAD( _pipeThread );</span>
+<span class="lineNum">     253 </span><span class="lineNoCov">          0 :     _renderContexts[BACK].push_back( context );</span>
+<a name="254"><span class="lineNum">     254 </span><span class="lineNoCov">          0 : }</span></a>
+<span class="lineNum">     255 </span>            : 
+<span class="lineNum">     256 </span><span class="lineNoCov">          0 : bool Window::getRenderContext( const int32_t x, const int32_t y,</span>
+<span class="lineNum">     257 </span>            :                                RenderContext&amp; context ) const
+<span class="lineNum">     258 </span>            : {
+<span class="lineNum">     259 </span><span class="lineNoCov">          0 :     LB_TS_THREAD( _pipeThread );</span>
+<span class="lineNum">     260 </span><span class="lineNoCov">          0 :     if( !_systemWindow )</span>
+<span class="lineNum">     261 </span><span class="lineNoCov">          0 :         return false;</span>
+<span class="lineNum">     262 </span>            : 
+<span class="lineNum">     263 </span><span class="lineNoCov">          0 :     const DrawableConfig&amp; drawableConfig = getDrawableConfig();</span>
+<span class="lineNum">     264 </span><span class="lineNoCov">          0 :     const unsigned which = drawableConfig.doublebuffered ? FRONT : BACK;</span>
+<span class="lineNum">     265 </span>            : 
+<span class="lineNum">     266 </span>            :     std::vector&lt; RenderContext &gt;::const_reverse_iterator i   =
+<span class="lineNum">     267 </span><span class="lineNoCov">          0 :         _renderContexts[which].rbegin();</span>
+<span class="lineNum">     268 </span>            :     std::vector&lt; RenderContext &gt;::const_reverse_iterator end =
+<span class="lineNum">     269 </span><span class="lineNoCov">          0 :         _renderContexts[which].rend();</span>
+<span class="lineNum">     270 </span>            : 
+<span class="lineNum">     271 </span>            :     // invert y to follow GL convention
+<span class="lineNum">     272 </span><span class="lineNoCov">          0 :     const int32_t glY = getPixelViewport().h - y;</span>
+<span class="lineNum">     273 </span>            : 
+<span class="lineNum">     274 </span><span class="lineNoCov">          0 :     for( ; i != end; ++i )</span>
+<span class="lineNum">     275 </span>            :     {
+<span class="lineNum">     276 </span><span class="lineNoCov">          0 :         const RenderContext&amp; candidate = *i;</span>
+<span class="lineNum">     277 </span><span class="lineNoCov">          0 :         if( candidate.pvp.isInside( x, glY ))</span>
+<span class="lineNum">     278 </span>            :         {
+<span class="lineNum">     279 </span><span class="lineNoCov">          0 :             context = candidate;</span>
+<span class="lineNum">     280 </span><span class="lineNoCov">          0 :             return true;</span>
+<span class="lineNum">     281 </span>            :         }
+<span class="lineNum">     282 </span>            :     }
+<span class="lineNum">     283 </span><span class="lineNoCov">          0 :     return false;</span>
+<a name="284"><span class="lineNum">     284 </span>            : }</a>
+<span class="lineNum">     285 </span>            : 
+<span class="lineNum">     286 </span><span class="lineNoCov">          0 : void Window::setSharedContextWindow( const Window* sharedContextWindow )</span>
+<span class="lineNum">     287 </span>            : {
+<span class="lineNum">     288 </span><span class="lineNoCov">          0 :     _sharedContextWindow = sharedContextWindow;</span>
+<a name="289"><span class="lineNum">     289 </span><span class="lineNoCov">          0 : }</span></a>
+<span class="lineNum">     290 </span>            : 
+<span class="lineNum">     291 </span><span class="lineNoCov">          0 : const Window* Window::getSharedContextWindow() const</span>
+<span class="lineNum">     292 </span>            : {
+<span class="lineNum">     293 </span><span class="lineNoCov">          0 :     return _sharedContextWindow;</span>
+<a name="294"><span class="lineNum">     294 </span>            : }</a>
+<span class="lineNum">     295 </span>            : 
+<span class="lineNum">     296 </span><span class="lineNoCov">          0 : uint32_t Window::getColorFormat() const</span>
+<span class="lineNum">     297 </span>            : {
+<span class="lineNum">     298 </span><span class="lineNoCov">          0 :     return getSettings().getColorFormat();</span>
+<a name="299"><span class="lineNum">     299 </span>            : }</a>
+<span class="lineNum">     300 </span>            : 
+<span class="lineNum">     301 </span><span class="lineNoCov">          0 : void Window::flush() const</span>
+<span class="lineNum">     302 </span>            : {
+<span class="lineNum">     303 </span><span class="lineNoCov">          0 :     LBASSERT( _systemWindow );</span>
+<span class="lineNum">     304 </span><span class="lineNoCov">          0 :     if( _systemWindow )</span>
+<span class="lineNum">     305 </span><span class="lineNoCov">          0 :         _systemWindow-&gt;flush();</span>
+<a name="306"><span class="lineNum">     306 </span><span class="lineNoCov">          0 : }</span></a>
+<span class="lineNum">     307 </span>            : 
+<span class="lineNum">     308 </span><span class="lineNoCov">          0 : void Window::finish() const</span>
+<span class="lineNum">     309 </span>            : {
+<span class="lineNum">     310 </span><span class="lineNoCov">          0 :     LBASSERT( _systemWindow );</span>
+<span class="lineNum">     311 </span><span class="lineNoCov">          0 :     if( _systemWindow )</span>
+<span class="lineNum">     312 </span><span class="lineNoCov">          0 :         _systemWindow-&gt;finish();</span>
+<a name="313"><span class="lineNum">     313 </span><span class="lineNoCov">          0 : }</span></a>
+<span class="lineNum">     314 </span>            : 
+<span class="lineNum">     315 </span><span class="lineNoCov">          0 : void Window::setSystemWindow( SystemWindow* window )</span>
+<span class="lineNum">     316 </span>            : {
+<span class="lineNum">     317 </span><span class="lineNoCov">          0 :     _systemWindow = window;</span>
+<span class="lineNum">     318 </span>            : 
+<span class="lineNum">     319 </span><span class="lineNoCov">          0 :     if( !window )</span>
+<span class="lineNum">     320 </span><span class="lineNoCov">          0 :         return;</span>
+<span class="lineNum">     321 </span>            : 
+<span class="lineNum">     322 </span>            :     // Initialize context-specific data
+<span class="lineNum">     323 </span><span class="lineNoCov">          0 :     makeCurrent();</span>
+<span class="lineNum">     324 </span><span class="lineNoCov">          0 :     DrawableConfig config;</span>
+<span class="lineNum">     325 </span><span class="lineNoCov">          0 :     _systemWindow-&gt;queryDrawableConfig( config );</span>
+<span class="lineNum">     326 </span><span class="lineNoCov">          0 :     _setDrawableConfig( config );</span>
+<span class="lineNum">     327 </span><span class="lineNoCov">          0 :     _setupObjectManager();</span>
+<a name="328"><span class="lineNum">     328 </span>            : }</a>
+<span class="lineNum">     329 </span>            : 
+<span class="lineNum">     330 </span><span class="lineNoCov">          0 : const SystemPipe* Window::getSystemPipe() const</span>
+<span class="lineNum">     331 </span>            : {
+<span class="lineNum">     332 </span><span class="lineNoCov">          0 :     const Pipe* pipe = getPipe();</span>
+<span class="lineNum">     333 </span><span class="lineNoCov">          0 :     LBASSERT( pipe );</span>
+<span class="lineNum">     334 </span><span class="lineNoCov">          0 :     return pipe-&gt;getSystemPipe();</span>
+<a name="335"><span class="lineNum">     335 </span>            : }</a>
+<span class="lineNum">     336 </span>            : 
+<span class="lineNum">     337 </span><span class="lineNoCov">          0 : SystemPipe* Window::getSystemPipe()</span>
+<span class="lineNum">     338 </span>            : {
+<span class="lineNum">     339 </span><span class="lineNoCov">          0 :     Pipe* pipe = getPipe();</span>
+<span class="lineNum">     340 </span><span class="lineNoCov">          0 :     LBASSERT( pipe );</span>
+<span class="lineNum">     341 </span><span class="lineNoCov">          0 :     return pipe-&gt;getSystemPipe();</span>
+<a name="342"><span class="lineNum">     342 </span>            : }</a>
+<span class="lineNum">     343 </span>            : 
+<span class="lineNum">     344 </span><span class="lineNoCov">          0 : void Window::frameStart( const uint128_t&amp;, const uint32_t frameNumber )</span>
+<span class="lineNum">     345 </span>            : {
+<span class="lineNum">     346 </span><span class="lineNoCov">          0 :     startFrame( frameNumber );</span>
+<a name="347"><span class="lineNum">     347 </span><span class="lineNoCov">          0 : }</span></a>
+<span class="lineNum">     348 </span>            : 
+<span class="lineNum">     349 </span><span class="lineNoCov">          0 : void Window::frameDrawFinish( const uint128_t&amp;, const uint32_t frameNumber )</span>
+<span class="lineNum">     350 </span>            : {
+<span class="lineNum">     351 </span><span class="lineNoCov">          0 :     releaseFrameLocal( frameNumber );</span>
+<span class="lineNum">     352 </span>            : 
+<span class="lineNum">     353 </span>            :     // https://github.com/Eyescale/Equalizer/issues/95
+<span class="lineNum">     354 </span><span class="lineNoCov">          0 :     if( getNode()-&gt;getPipes().size() &gt; 1 )</span>
+<span class="lineNum">     355 </span><span class="lineNoCov">          0 :         finish();</span>
+<a name="356"><span class="lineNum">     356 </span><span class="lineNoCov">          0 : }</span></a>
+<span class="lineNum">     357 </span>            : 
+<span class="lineNum">     358 </span><span class="lineNoCov">          0 : void Window::frameFinish( const uint128_t&amp;, const uint32_t frameNumber )</span>
+<span class="lineNum">     359 </span>            : {
+<span class="lineNum">     360 </span><span class="lineNoCov">          0 :     releaseFrame( frameNumber );</span>
+<span class="lineNum">     361 </span><span class="lineNoCov">          0 :     flush();</span>
+<span class="lineNum">     362 </span><span class="lineNoCov">          0 :     _updateFPS();</span>
+<a name="363"><span class="lineNum">     363 </span><span class="lineNoCov">          0 : }</span></a>
+<a name="364"><span class="lineNum">     364 </span>            : </a>
+<a name="365"><span class="lineNum">     365 </span><span class="lineNoCov">          0 : void Window::startFrame( const uint32_t ) { /* currently nop */ }</span></a>
+<span class="lineNum">     366 </span><span class="lineNoCov">          0 : void Window::releaseFrame( const uint32_t ) { /* currently nop */ }</span>
+<span class="lineNum">     367 </span><span class="lineNoCov">          0 : void Window::releaseFrameLocal( const uint32_t ) { /* nop */ }</span>
+<span class="lineNum">     368 </span>            : 
+<span class="lineNum">     369 </span>            : //----------------------------------------------------------------------
+<a name="370"><span class="lineNum">     370 </span>            : // configInit</a>
+<span class="lineNum">     371 </span>            : //----------------------------------------------------------------------
+<span class="lineNum">     372 </span><span class="lineNoCov">          0 : bool Window::configInit( const uint128_t&amp; initID )</span>
+<span class="lineNum">     373 </span>            : {
+<span class="lineNum">     374 </span><span class="lineNoCov">          0 :     if( !getPixelViewport().isValid( ))</span>
+<span class="lineNum">     375 </span>            :     {
+<span class="lineNum">     376 </span><span class="lineNoCov">          0 :         sendError( ERROR_WINDOW_PVP_INVALID );</span>
+<span class="lineNum">     377 </span><span class="lineNoCov">          0 :         return false;</span>
+<span class="lineNum">     378 </span>            :     }
+<span class="lineNum">     379 </span>            : 
+<span class="lineNum">     380 </span><span class="lineNoCov">          0 :     LBASSERT( !_systemWindow );</span>
+<span class="lineNum">     381 </span>            : 
+<span class="lineNum">     382 </span><span class="lineNoCov">          0 :     int glMajorVersion = 1;</span>
+<span class="lineNum">     383 </span><span class="lineNoCov">          0 :     int glMinorVersion = 1;</span>
+<span class="lineNum">     384 </span><span class="lineNoCov">          0 :     if( getPipe()-&gt;getSystemPipe()-&gt;getMaxOpenGLVersion() != AUTO )</span>
+<span class="lineNum">     385 </span>            :     {
+<span class="lineNum">     386 </span>            :         float maj, min;
+<span class="lineNum">     387 </span><span class="lineNoCov">          0 :         min = modff( getPipe()-&gt;getSystemPipe()-&gt;getMaxOpenGLVersion(), &amp;maj );</span>
+<span class="lineNum">     388 </span><span class="lineNoCov">          0 :         glMajorVersion = static_cast&lt; int &gt;( maj );</span>
+<span class="lineNum">     389 </span><span class="lineNoCov">          0 :         glMinorVersion = static_cast&lt; int &gt;( min*10.f );</span>
+<span class="lineNum">     390 </span>            :     }
+<span class="lineNum">     391 </span>            : 
+<span class="lineNum">     392 </span><span class="lineNoCov">          0 :     if( getIAttribute( WindowSettings::IATTR_HINT_OPENGL_MAJOR ) == AUTO )</span>
+<span class="lineNum">     393 </span><span class="lineNoCov">          0 :         setIAttribute( WindowSettings::IATTR_HINT_OPENGL_MAJOR, glMajorVersion);</span>
+<span class="lineNum">     394 </span><span class="lineNoCov">          0 :     if( getIAttribute( WindowSettings::IATTR_HINT_OPENGL_MINOR ) == AUTO )</span>
+<span class="lineNum">     395 </span><span class="lineNoCov">          0 :         setIAttribute( WindowSettings::IATTR_HINT_OPENGL_MINOR, glMinorVersion);</span>
+<span class="lineNum">     396 </span>            : 
+<span class="lineNum">     397 </span><span class="lineNoCov">          0 :     return configInitSystemWindow( initID ) &amp;&amp; configInitGL( initID );</span>
+<a name="398"><span class="lineNum">     398 </span>            : }</a>
+<span class="lineNum">     399 </span>            : 
+<span class="lineNum">     400 </span><span class="lineNoCov">          0 : bool Window::configInitSystemWindow( const uint128_t&amp; )</span>
+<span class="lineNum">     401 </span>            : {
+<span class="lineNum">     402 </span><span class="lineNoCov">          0 :     const Pipe* pipe = getPipe();</span>
+<span class="lineNum">     403 </span><span class="lineNoCov">          0 :     WindowSettings settings = getSettings();</span>
+<span class="lineNum">     404 </span>            :     const SystemWindow* sysWindow = _sharedContextWindow ?
+<span class="lineNum">     405 </span><span class="lineNoCov">          0 :                                     _sharedContextWindow-&gt;getSystemWindow() : 0;</span>
+<span class="lineNum">     406 </span><span class="lineNoCov">          0 :     settings.setSharedContextWindow( sysWindow );</span>
+<span class="lineNum">     407 </span>            :     SystemWindow* systemWindow =
+<span class="lineNum">     408 </span><span class="lineNoCov">          0 :         pipe-&gt;getWindowSystem().createWindow( this, settings );</span>
+<span class="lineNum">     409 </span>            : 
+<span class="lineNum">     410 </span><span class="lineNoCov">          0 :     LBASSERT( systemWindow );</span>
+<span class="lineNum">     411 </span><span class="lineNoCov">          0 :     if( !systemWindow-&gt;configInit( ))</span>
+<span class="lineNum">     412 </span>            :     {
+<span class="lineNum">     413 </span><span class="lineNoCov">          0 :         LBWARN &lt;&lt; &quot;System window initialization failed&quot; &lt;&lt; std::endl;</span>
+<span class="lineNum">     414 </span><span class="lineNoCov">          0 :         systemWindow-&gt;configExit();</span>
+<span class="lineNum">     415 </span><span class="lineNoCov">          0 :         delete systemWindow;</span>
+<span class="lineNum">     416 </span><span class="lineNoCov">          0 :         return false;</span>
+<span class="lineNum">     417 </span>            :     }
+<span class="lineNum">     418 </span>            : 
+<span class="lineNum">     419 </span><span class="lineNoCov">          0 :     setPixelViewport( systemWindow-&gt;getPixelViewport( ));</span>
+<span class="lineNum">     420 </span><span class="lineNoCov">          0 :     setSystemWindow( systemWindow );</span>
+<span class="lineNum">     421 </span><span class="lineNoCov">          0 :     return true;</span>
+<a name="422"><span class="lineNum">     422 </span>            : }</a>
+<span class="lineNum">     423 </span>            : 
+<span class="lineNum">     424 </span><span class="lineNoCov">          0 : void Window::_setupObjectManager()</span>
+<span class="lineNum">     425 </span>            : {
+<span class="lineNum">     426 </span><span class="lineNoCov">          0 :     if( !glewGetContext( ))</span>
+<span class="lineNum">     427 </span><span class="lineNoCov">          0 :         return;</span>
+<span class="lineNum">     428 </span>            : 
+<span class="lineNum">     429 </span><span class="lineNoCov">          0 :     _releaseObjectManager();</span>
+<span class="lineNum">     430 </span>            : 
+<span class="lineNum">     431 </span><span class="lineNoCov">          0 :     const Window* sharedWindow = getSharedContextWindow();</span>
+<span class="lineNum">     432 </span><span class="lineNoCov">          0 :     if( sharedWindow &amp;&amp; sharedWindow != this )</span>
+<span class="lineNum">     433 </span><span class="lineNoCov">          0 :         _objectManager = sharedWindow-&gt;_objectManager;</span>
+<span class="lineNum">     434 </span>            :     else
+<span class="lineNum">     435 </span>            :     {
+<span class="lineNum">     436 </span><span class="lineNoCov">          0 :         util::ObjectManager om( glewGetContext( ));</span>
+<span class="lineNum">     437 </span><span class="lineNoCov">          0 :         _objectManager = om;</span>
+<span class="lineNum">     438 </span>            :     }
+<a name="439"><span class="lineNum">     439 </span>            : }</a>
+<span class="lineNum">     440 </span>            : 
+<span class="lineNum">     441 </span><span class="lineNoCov">          0 : void Window::_releaseObjectManager()</span>
+<span class="lineNum">     442 </span>            : {
+<span class="lineNum">     443 </span><span class="lineNoCov">          0 :     _objectManager.deleteEqBitmapFont( _smallFontKey );</span>
+<span class="lineNum">     444 </span><span class="lineNoCov">          0 :     _objectManager.deleteEqBitmapFont( _mediumFontKey );</span>
+<span class="lineNum">     445 </span><span class="lineNoCov">          0 :     if( !_objectManager.isShared( ))</span>
+<span class="lineNum">     446 </span><span class="lineNoCov">          0 :         _objectManager.deleteAll();</span>
+<span class="lineNum">     447 </span><span class="lineNoCov">          0 :     _objectManager.clear();</span>
+<a name="448"><span class="lineNum">     448 </span><span class="lineNoCov">          0 : }</span></a>
+<span class="lineNum">     449 </span>            : 
+<span class="lineNum">     450 </span><span class="lineNoCov">          0 : const util::BitmapFont* Window::getSmallFont()</span>
+<span class="lineNum">     451 </span>            : {
+<span class="lineNum">     452 </span><span class="lineNoCov">          0 :     util::BitmapFont* font = _objectManager.getEqBitmapFont( _smallFontKey );</span>
+<span class="lineNum">     453 </span><span class="lineNoCov">          0 :     if( !font )</span>
+<span class="lineNum">     454 </span>            :     {
+<span class="lineNum">     455 </span><span class="lineNoCov">          0 :         font = _objectManager.newEqBitmapFont( _smallFontKey );</span>
+<span class="lineNum">     456 </span><span class="lineNoCov">          0 :         font-&gt;init( getPipe()-&gt;getWindowSystem(), &quot;&quot; );</span>
+<span class="lineNum">     457 </span>            :     }
+<span class="lineNum">     458 </span><span class="lineNoCov">          0 :     return font;</span>
+<a name="459"><span class="lineNum">     459 </span>            : }</a>
+<span class="lineNum">     460 </span>            : 
+<span class="lineNum">     461 </span><span class="lineNoCov">          0 : const util::BitmapFont* Window::getMediumFont()</span>
+<span class="lineNum">     462 </span>            : {
+<span class="lineNum">     463 </span><span class="lineNoCov">          0 :     util::BitmapFont* font = _objectManager.getEqBitmapFont( _mediumFontKey );</span>
+<span class="lineNum">     464 </span><span class="lineNoCov">          0 :     if( !font )</span>
+<span class="lineNum">     465 </span>            :     {
+<span class="lineNum">     466 </span><span class="lineNoCov">          0 :         font = _objectManager.newEqBitmapFont( _mediumFontKey );</span>
+<span class="lineNum">     467 </span><span class="lineNoCov">          0 :         font-&gt;init( getPipe()-&gt;getWindowSystem(), &quot;&quot;, 20 );</span>
+<span class="lineNum">     468 </span>            :     }
+<span class="lineNum">     469 </span><span class="lineNoCov">          0 :     return font;</span>
+<a name="470"><span class="lineNum">     470 </span>            : }</a>
+<span class="lineNum">     471 </span>            : 
+<span class="lineNum">     472 </span><span class="lineNoCov">          0 : bool Window::configInitGL( const uint128_t&amp; )</span>
+<span class="lineNum">     473 </span>            : {
+<span class="lineNum">     474 </span>            :     const bool coreProfile = getIAttribute(
+<span class="lineNum">     475 </span><span class="lineNoCov">          0 :                 WindowSettings::IATTR_HINT_CORE_PROFILE ) == ON;</span>
+<span class="lineNum">     476 </span><span class="lineNoCov">          0 :     if( !coreProfile )</span>
+<span class="lineNum">     477 </span>            :     {
+<span class="lineNum">     478 </span><span class="lineNoCov">          0 :         EQ_GL_CALL( glEnable( GL_LIGHTING ));</span>
+<span class="lineNum">     479 </span><span class="lineNoCov">          0 :         EQ_GL_CALL( glEnable( GL_LIGHT0 ));</span>
+<span class="lineNum">     480 </span>            : 
+<span class="lineNum">     481 </span><span class="lineNoCov">          0 :         EQ_GL_CALL( glColorMaterial( GL_FRONT_AND_BACK,</span>
+<span class="lineNum">     482 </span>            :                                      GL_AMBIENT_AND_DIFFUSE ));
+<span class="lineNum">     483 </span><span class="lineNoCov">          0 :         EQ_GL_CALL( glEnable( GL_COLOR_MATERIAL ));</span>
+<span class="lineNum">     484 </span>            :     }
+<span class="lineNum">     485 </span>            : 
+<span class="lineNum">     486 </span><span class="lineNoCov">          0 :     EQ_GL_CALL( glEnable( GL_SCISSOR_TEST )); // to constrain channel viewport</span>
+<span class="lineNum">     487 </span><span class="lineNoCov">          0 :     EQ_GL_CALL( glEnable( GL_DEPTH_TEST ));</span>
+<span class="lineNum">     488 </span><span class="lineNoCov">          0 :     EQ_GL_CALL( glDepthFunc( GL_LESS ));</span>
+<span class="lineNum">     489 </span><span class="lineNoCov">          0 :     EQ_GL_CALL( glClearDepth( 1.f ));</span>
+<span class="lineNum">     490 </span>            : 
+<span class="lineNum">     491 </span><span class="lineNoCov">          0 :     EQ_GL_CALL( glClear( GL_COLOR_BUFFER_BIT ));</span>
+<span class="lineNum">     492 </span><span class="lineNoCov">          0 :     swapBuffers();</span>
+<span class="lineNum">     493 </span><span class="lineNoCov">          0 :     EQ_GL_CALL( glClear( GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT ));</span>
+<span class="lineNum">     494 </span>            : 
+<span class="lineNum">     495 </span><span class="lineNoCov">          0 :     return true;</span>
+<a name="496"><span class="lineNum">     496 </span>            : }</a>
+<span class="lineNum">     497 </span>            : 
+<span class="lineNum">     498 </span><span class="lineNoCov">          0 : bool Window::createTransferWindow()</span>
+<span class="lineNum">     499 </span>            : {
+<span class="lineNum">     500 </span><span class="lineNoCov">          0 :     LB_TS_THREAD( _pipeThread );</span>
+<span class="lineNum">     501 </span><span class="lineNoCov">          0 :     LBASSERT( _systemWindow );</span>
+<span class="lineNum">     502 </span>            : 
+<span class="lineNum">     503 </span><span class="lineNoCov">          0 :     if( _transferWindow )</span>
+<span class="lineNum">     504 </span><span class="lineNoCov">          0 :         return true;</span>
+<span class="lineNum">     505 </span>            : 
+<span class="lineNum">     506 </span>            :     // create another (shared) osWindow with no drawable
+<span class="lineNum">     507 </span><span class="lineNoCov">          0 :     WindowSettings settings = getSettings();</span>
+<span class="lineNum">     508 </span><span class="lineNoCov">          0 :     settings.setIAttribute( WindowSettings::IATTR_HINT_DRAWABLE, OFF );</span>
+<span class="lineNum">     509 </span>            :     const SystemWindow* sysWindow = _sharedContextWindow ?
+<span class="lineNum">     510 </span><span class="lineNoCov">          0 :                                     _sharedContextWindow-&gt;getSystemWindow() : 0;</span>
+<span class="lineNum">     511 </span><span class="lineNoCov">          0 :     settings.setSharedContextWindow( sysWindow );</span>
+<span class="lineNum">     512 </span><span class="lineNoCov">          0 :     const Pipe* pipe = getPipe();</span>
+<span class="lineNum">     513 </span><span class="lineNoCov">          0 :     _transferWindow = pipe-&gt;getWindowSystem().createWindow( this, settings );</span>
+<span class="lineNum">     514 </span>            : 
+<span class="lineNum">     515 </span><span class="lineNoCov">          0 :     if( _transferWindow )</span>
+<span class="lineNum">     516 </span>            :     {
+<span class="lineNum">     517 </span><span class="lineNoCov">          0 :         if( !_transferWindow-&gt;configInit( ))</span>
+<span class="lineNum">     518 </span>            :         {
+<span class="lineNum">     519 </span><span class="lineNoCov">          0 :             LBWARN &lt;&lt; &quot;Transfer window initialization failed&quot; &lt;&lt; std::endl;</span>
+<span class="lineNum">     520 </span><span class="lineNoCov">          0 :             delete _transferWindow;</span>
+<span class="lineNum">     521 </span><span class="lineNoCov">          0 :             _transferWindow = 0;</span>
+<span class="lineNum">     522 </span>            :         }
+<span class="lineNum">     523 </span>            :         else
+<span class="lineNum">     524 </span>            :         {
+<span class="lineNum">     525 </span>            :             // #177: It looks like the driver realizes the context on the first
+<span class="lineNum">     526 </span>            :             // makeCurrent
+<span class="lineNum">     527 </span><span class="lineNoCov">          0 :             _transferWindow-&gt;makeCurrent();</span>
+<span class="lineNum">     528 </span><span class="lineNoCov">          0 :             _transferWindow-&gt;doneCurrent();</span>
+<span class="lineNum">     529 </span>            :         }
+<span class="lineNum">     530 </span>            :     }
+<span class="lineNum">     531 </span>            :     else
+<span class="lineNum">     532 </span><span class="lineNoCov">          0 :         LBERROR &lt;&lt; &quot;Window system &quot; &lt;&lt; pipe-&gt;getWindowSystem()</span>
+<span class="lineNum">     533 </span><span class="lineNoCov">          0 :                 &lt;&lt; &quot; not implemented or supported&quot; &lt;&lt; std::endl;</span>
+<span class="lineNum">     534 </span>            : 
+<span class="lineNum">     535 </span><span class="lineNoCov">          0 :     makeCurrent();</span>
+<span class="lineNum">     536 </span>            : 
+<span class="lineNum">     537 </span><span class="lineNoCov">          0 :     LBVERB &lt;&lt; &quot;Transfer window initialization finished&quot; &lt;&lt; std::endl;</span>
+<span class="lineNum">     538 </span><span class="lineNoCov">          0 :     return _transferWindow != 0;</span>
+<a name="539"><span class="lineNum">     539 </span>            : }</a>
+<span class="lineNum">     540 </span>            : 
+<span class="lineNum">     541 </span><span class="lineNoCov">          0 : const GLEWContext* Window::getTransferGlewContext() const</span>
+<span class="lineNum">     542 </span>            : {
+<span class="lineNum">     543 </span><span class="lineNoCov">          0 :     LBASSERT( _transferWindow );</span>
+<span class="lineNum">     544 </span><span class="lineNoCov">          0 :     if( _transferWindow )</span>
+<span class="lineNum">     545 </span><span class="lineNoCov">          0 :         return _transferWindow-&gt;glewGetContext();</span>
+<span class="lineNum">     546 </span><span class="lineNoCov">          0 :     return 0;</span>
+<a name="547"><span class="lineNum">     547 </span>            : }</a>
+<span class="lineNum">     548 </span>            : 
+<span class="lineNum">     549 </span><span class="lineNoCov">          0 : void Window::deleteTransferWindow()</span>
+<span class="lineNum">     550 </span>            : {
+<span class="lineNum">     551 </span><span class="lineNoCov">          0 :     if( !_transferWindow )</span>
+<span class="lineNum">     552 </span><span class="lineNoCov">          0 :         return;</span>
+<span class="lineNum">     553 </span>            : 
+<span class="lineNum">     554 </span><span class="lineNoCov">          0 :     _transferWindow-&gt;configExit();</span>
+<span class="lineNum">     555 </span><span class="lineNoCov">          0 :     delete _transferWindow;</span>
+<span class="lineNum">     556 </span><span class="lineNoCov">          0 :     _transferWindow = 0;</span>
+<a name="557"><span class="lineNum">     557 </span>            : }</a>
+<span class="lineNum">     558 </span>            : 
+<span class="lineNum">     559 </span><span class="lineNoCov">          0 : SystemWindow* Window::getTransferWindow()</span>
+<span class="lineNum">     560 </span>            : {
+<span class="lineNum">     561 </span><span class="lineNoCov">          0 :     return _transferWindow;</span>
+<a name="562"><span class="lineNum">     562 </span>            : }</a>
+<span class="lineNum">     563 </span>            : 
+<span class="lineNum">     564 </span><span class="lineNoCov">          0 : const SystemWindow* Window::getTransferWindow() const</span>
+<span class="lineNum">     565 </span>            : {
+<span class="lineNum">     566 </span><span class="lineNoCov">          0 :     return _transferWindow;</span>
+<span class="lineNum">     567 </span>            : }
+<span class="lineNum">     568 </span>            : 
+<span class="lineNum">     569 </span>            : //----------------------------------------------------------------------
+<a name="570"><span class="lineNum">     570 </span>            : // configExit</a>
+<span class="lineNum">     571 </span>            : //----------------------------------------------------------------------
+<span class="lineNum">     572 </span><span class="lineNoCov">          0 : bool Window::configExit()</span>
+<span class="lineNum">     573 </span>            : {
+<span class="lineNum">     574 </span><span class="lineNoCov">          0 :     if( !_systemWindow )</span>
+<span class="lineNum">     575 </span><span class="lineNoCov">          0 :         return true;</span>
+<span class="lineNum">     576 </span>            : 
+<span class="lineNum">     577 </span><span class="lineNoCov">          0 :     const bool ret = configExitGL();</span>
+<span class="lineNum">     578 </span><span class="lineNoCov">          0 :     return configExitSystemWindow() &amp;&amp; ret;</span>
+<a name="579"><span class="lineNum">     579 </span>            : }</a>
+<span class="lineNum">     580 </span>            : 
+<span class="lineNum">     581 </span><span class="lineNoCov">          0 : bool Window::configExitSystemWindow()</span>
+<span class="lineNum">     582 </span>            : {
+<span class="lineNum">     583 </span>            :     // _transferWindow has to be deleted from the same thread it was
+<span class="lineNum">     584 </span>            :     // initialized
+<span class="lineNum">     585 </span><span class="lineNoCov">          0 :     LBASSERT( !_transferWindow );</span>
+<span class="lineNum">     586 </span>            : 
+<span class="lineNum">     587 </span><span class="lineNoCov">          0 :     _releaseObjectManager();</span>
+<span class="lineNum">     588 </span>            : 
+<span class="lineNum">     589 </span><span class="lineNoCov">          0 :     if( _systemWindow )</span>
+<span class="lineNum">     590 </span>            :     {
+<span class="lineNum">     591 </span><span class="lineNoCov">          0 :         _systemWindow-&gt;configExit();</span>
+<span class="lineNum">     592 </span>            : 
+<span class="lineNum">     593 </span><span class="lineNoCov">          0 :         delete _systemWindow;</span>
+<span class="lineNum">     594 </span><span class="lineNoCov">          0 :         _systemWindow = 0;</span>
+<span class="lineNum">     595 </span>            :     }
+<span class="lineNum">     596 </span><span class="lineNoCov">          0 :     return true;</span>
+<a name="597"><span class="lineNum">     597 </span>            : }</a>
+<span class="lineNum">     598 </span>            : 
+<span class="lineNum">     599 </span><span class="lineNoCov">          0 : void Window::makeCurrent( const bool useCache ) const</span>
+<span class="lineNum">     600 </span>            : {
+<span class="lineNum">     601 </span><span class="lineNoCov">          0 :     LBASSERT( _systemWindow );</span>
+<span class="lineNum">     602 </span><span class="lineNoCov">          0 :     if( _systemWindow )</span>
+<span class="lineNum">     603 </span><span class="lineNoCov">          0 :         _systemWindow-&gt;makeCurrent( useCache );</span>
+<a name="604"><span class="lineNum">     604 </span><span class="lineNoCov">          0 : }</span></a>
+<span class="lineNum">     605 </span>            : 
+<span class="lineNum">     606 </span><span class="lineNoCov">          0 : void Window::doneCurrent() const</span>
+<span class="lineNum">     607 </span>            : {
+<span class="lineNum">     608 </span><span class="lineNoCov">          0 :     LBASSERT( _systemWindow );</span>
+<span class="lineNum">     609 </span><span class="lineNoCov">          0 :     if( _systemWindow )</span>
+<span class="lineNum">     610 </span><span class="lineNoCov">          0 :         _systemWindow-&gt;doneCurrent();</span>
+<a name="611"><span class="lineNum">     611 </span><span class="lineNoCov">          0 : }</span></a>
+<span class="lineNum">     612 </span>            : 
+<span class="lineNum">     613 </span><span class="lineNoCov">          0 : void Window::bindFrameBuffer() const</span>
+<span class="lineNum">     614 </span>            : {
+<span class="lineNum">     615 </span><span class="lineNoCov">          0 :     LBASSERT( _systemWindow );</span>
+<span class="lineNum">     616 </span><span class="lineNoCov">          0 :     if( _systemWindow )</span>
+<span class="lineNum">     617 </span><span class="lineNoCov">          0 :         _systemWindow-&gt;bindFrameBuffer();</span>
+<a name="618"><span class="lineNum">     618 </span><span class="lineNoCov">          0 : }</span></a>
+<span class="lineNum">     619 </span>            : 
+<span class="lineNum">     620 </span><span class="lineNoCov">          0 : void Window::bindDrawFrameBuffer() const</span>
+<span class="lineNum">     621 </span>            : {
+<span class="lineNum">     622 </span><span class="lineNoCov">          0 :     LBASSERT( _systemWindow );</span>
+<span class="lineNum">     623 </span><span class="lineNoCov">          0 :     if( _systemWindow )</span>
+<span class="lineNum">     624 </span><span class="lineNoCov">          0 :         _systemWindow-&gt;bindDrawFrameBuffer();</span>
+<a name="625"><span class="lineNum">     625 </span><span class="lineNoCov">          0 : }</span></a>
+<span class="lineNum">     626 </span>            : 
+<span class="lineNum">     627 </span><span class="lineNoCov">          0 : void Window::updateFrameBuffer() const</span>
+<span class="lineNum">     628 </span>            : {
+<span class="lineNum">     629 </span><span class="lineNoCov">          0 :     LBASSERT( _systemWindow );</span>
+<span class="lineNum">     630 </span><span class="lineNoCov">          0 :     if( _systemWindow )</span>
+<span class="lineNum">     631 </span><span class="lineNoCov">          0 :         _systemWindow-&gt;updateFrameBuffer();</span>
+<a name="632"><span class="lineNum">     632 </span><span class="lineNoCov">          0 : }</span></a>
+<span class="lineNum">     633 </span>            : 
+<span class="lineNum">     634 </span><span class="lineNoCov">          0 : void Window::swapBuffers()</span>
+<span class="lineNum">     635 </span>            : {
+<span class="lineNum">     636 </span><span class="lineNoCov">          0 :     _systemWindow-&gt;swapBuffers();</span>
+<span class="lineNum">     637 </span><span class="lineNoCov">          0 :     LBLOG( co::LOG_BARRIER ) &lt;&lt; &quot;Swap buffers done&quot; &lt;&lt; getName() &lt;&lt; std::endl;</span>
+<a name="638"><span class="lineNum">     638 </span><span class="lineNoCov">          0 : }</span></a>
+<span class="lineNum">     639 </span>            : 
+<span class="lineNum">     640 </span><span class="lineNoCov">          0 : const GLEWContext* Window::glewGetContext() const</span>
+<span class="lineNum">     641 </span>            : {
+<span class="lineNum">     642 </span><span class="lineNoCov">          0 :     return _systemWindow ? _systemWindow-&gt;glewGetContext() : 0;</span>
+<a name="643"><span class="lineNum">     643 </span>            : }</a>
+<span class="lineNum">     644 </span>            : 
+<span class="lineNum">     645 </span><span class="lineNoCov">          0 : void Window::_enterBarrier( co::ObjectVersion barrier )</span>
+<span class="lineNum">     646 </span>            : {
+<span class="lineNum">     647 </span><span class="lineNoCov">          0 :     LBLOG( co::LOG_BARRIER ) &lt;&lt; &quot;swap barrier &quot; &lt;&lt; barrier &lt;&lt; &quot; &quot; &lt;&lt; getName()</span>
+<span class="lineNum">     648 </span><span class="lineNoCov">          0 :                              &lt;&lt; std::endl;</span>
+<span class="lineNum">     649 </span><span class="lineNoCov">          0 :     Node* node = getNode();</span>
+<span class="lineNum">     650 </span><span class="lineNoCov">          0 :     co::Barrier* netBarrier = node-&gt;getBarrier( barrier );</span>
+<span class="lineNum">     651 </span><span class="lineNoCov">          0 :     if( !netBarrier )</span>
+<span class="lineNum">     652 </span><span class="lineNoCov">          0 :         return;</span>
+<span class="lineNum">     653 </span>            : 
+<span class="lineNum">     654 </span><span class="lineNoCov">          0 :     WindowStatistics stat( Statistic::WINDOW_SWAP_BARRIER, this );</span>
+<span class="lineNum">     655 </span><span class="lineNoCov">          0 :     Config* config = getConfig();</span>
+<span class="lineNum">     656 </span><span class="lineNoCov">          0 :     const uint32_t timeout = config-&gt;getTimeout()/2;</span>
+<span class="lineNum">     657 </span><span class="lineNoCov">          0 :     LBCHECK( netBarrier-&gt;enter( timeout ));</span>
+<a name="658"><span class="lineNum">     658 </span>            : }</a>
+<span class="lineNum">     659 </span>            : 
+<span class="lineNum">     660 </span><span class="lineNoCov">          0 : void Window::_updateEvent( Event&amp; event )</span>
+<span class="lineNum">     661 </span>            : {
+<span class="lineNum">     662 </span>            :     // TODO 2.0 event interface will stream these and remove them from Event
+<span class="lineNum">     663 </span><span class="lineNoCov">          0 :     event.time = getConfig()-&gt;getTime();</span>
+<span class="lineNum">     664 </span><span class="lineNoCov">          0 :     event.originator = getID();</span>
+<span class="lineNum">     665 </span><span class="lineNoCov">          0 :     event.serial = getSerial();</span>
+<span class="lineNum">     666 </span>            : 
+<span class="lineNum">     667 </span><span class="lineNoCov">          0 :     switch( event.type )</span>
+<span class="lineNum">     668 </span>            :     {
+<span class="lineNum">     669 </span>            :         case Event::WINDOW_POINTER_MOTION:
+<span class="lineNum">     670 </span>            :         case Event::WINDOW_POINTER_BUTTON_PRESS:
+<span class="lineNum">     671 </span>            :         case Event::WINDOW_POINTER_BUTTON_RELEASE:
+<span class="lineNum">     672 </span>            :         case Event::WINDOW_POINTER_WHEEL:
+<span class="lineNum">     673 </span>            :         {
+<span class="lineNum">     674 </span><span class="lineNoCov">          0 :             const int32_t xPos = event.pointer.x;</span>
+<span class="lineNum">     675 </span><span class="lineNoCov">          0 :             const int32_t yPos = event.pointer.y;</span>
+<span class="lineNum">     676 </span>            : 
+<span class="lineNum">     677 </span><span class="lineNoCov">          0 :             if( !getRenderContext( xPos, yPos, event.context ))</span>
+<span class="lineNum">     678 </span><span class="lineNoCov">          0 :                 LBVERB &lt;&lt; &quot;No rendering context for pointer event at &quot;</span>
+<span class="lineNum">     679 </span><span class="lineNoCov">          0 :                        &lt;&lt; xPos &lt;&lt; &quot;, &quot; &lt;&lt; yPos &lt;&lt; std::endl;</span>
+<span class="lineNum">     680 </span>            :         }
+<span class="lineNum">     681 </span>            :     }
+<span class="lineNum">     682 </span><span class="lineNoCov">          0 : }</span>
+<span class="lineNum">     683 </span>            : 
+<span class="lineNum">     684 </span>            : 
+<span class="lineNum">     685 </span>            : //======================================================================
+<span class="lineNum">     686 </span>            : // event methods
+<a name="687"><span class="lineNum">     687 </span>            : //======================================================================</a>
+<span class="lineNum">     688 </span>            : 
+<span class="lineNum">     689 </span><span class="lineNoCov">          0 : EventOCommand Window::sendError( const uint32_t error )</span>
+<span class="lineNum">     690 </span>            : {
+<span class="lineNum">     691 </span><span class="lineNoCov">          0 :     return getConfig()-&gt;sendError( Event::WINDOW_ERROR, Error( error, getID()));</span>
+<a name="692"><span class="lineNum">     692 </span>            : }</a>
+<span class="lineNum">     693 </span>            : 
+<span class="lineNum">     694 </span><span class="lineNoCov">          0 : bool Window::processEvent( const Event&amp; event )</span>
+<span class="lineNum">     695 </span>            : {
+<span class="lineNum">     696 </span>            :     // see comment in _updateEvent
+<span class="lineNum">     697 </span><span class="lineNoCov">          0 :     _updateEvent( const_cast&lt; Event&amp; &gt;( event ));</span>
+<span class="lineNum">     698 </span>            : 
+<span class="lineNum">     699 </span><span class="lineNoCov">          0 :     switch( event.type )</span>
+<span class="lineNum">     700 </span>            :     {
+<span class="lineNum">     701 </span>            :         case Event::WINDOW_HIDE:
+<span class="lineNum">     702 </span><span class="lineNoCov">          0 :             setPixelViewport( PixelViewport( 0, 0, 0, 0 ));</span>
+<span class="lineNum">     703 </span><span class="lineNoCov">          0 :             break;</span>
+<span class="lineNum">     704 </span>            : 
+<span class="lineNum">     705 </span>            :         case Event::WINDOW_SHOW:
+<span class="lineNum">     706 </span>            :         case Event::WINDOW_RESIZE:
+<span class="lineNum">     707 </span>            :             setPixelViewport( PixelViewport( event.resize.x, event.resize.y,
+<span class="lineNum">     708 </span><span class="lineNoCov">          0 :                                              event.resize.w, event.resize.h ));</span>
+<span class="lineNum">     709 </span><span class="lineNoCov">          0 :             break;</span>
+<span class="lineNum">     710 </span>            : 
+<span class="lineNum">     711 </span>            :         case Event::KEY_PRESS:
+<span class="lineNum">     712 </span>            :         case Event::KEY_RELEASE:
+<span class="lineNum">     713 </span><span class="lineNoCov">          0 :             if( event.key.key == KC_VOID )</span>
+<span class="lineNum">     714 </span><span class="lineNoCov">          0 :                 return true; // ignore</span>
+<span class="lineNum">     715 </span>            :             // else fall through
+<span class="lineNum">     716 </span>            :         case Event::WINDOW_EXPOSE:
+<span class="lineNum">     717 </span>            :         case Event::WINDOW_CLOSE:
+<span class="lineNum">     718 </span>            :         case Event::STATISTIC:
+<span class="lineNum">     719 </span>            :         case Event::MAGELLAN_AXIS:
+<span class="lineNum">     720 </span>            :         case Event::MAGELLAN_BUTTON:
+<span class="lineNum">     721 </span><span class="lineNoCov">          0 :             break;</span>
+<span class="lineNum">     722 </span>            : 
+<span class="lineNum">     723 </span>            :         case Event::WINDOW_POINTER_GRAB:
+<span class="lineNum">     724 </span><span class="lineNoCov">          0 :             _grabbedChannels = _getEventChannels( event.pointer );</span>
+<span class="lineNum">     725 </span><span class="lineNoCov">          0 :             break;</span>
+<span class="lineNum">     726 </span>            :         case Event::WINDOW_POINTER_UNGRAB:
+<span class="lineNum">     727 </span><span class="lineNoCov">          0 :             _grabbedChannels.clear();</span>
+<span class="lineNum">     728 </span><span class="lineNoCov">          0 :             break;</span>
+<span class="lineNum">     729 </span>            : 
+<span class="lineNum">     730 </span>            :         case Event::WINDOW_POINTER_MOTION:
+<span class="lineNum">     731 </span>            :         case Event::WINDOW_POINTER_BUTTON_PRESS:
+<span class="lineNum">     732 </span>            :         case Event::WINDOW_POINTER_BUTTON_RELEASE:
+<span class="lineNum">     733 </span>            :         case Event::WINDOW_POINTER_WHEEL:
+<span class="lineNum">     734 </span>            :         {
+<span class="lineNum">     735 </span><span class="lineNoCov">          0 :             const Channels&amp; channels = _getEventChannels( event.pointer );</span>
+<span class="lineNum">     736 </span><span class="lineNoCov">          0 :             for( Channels::const_iterator i = channels.begin();</span>
+<span class="lineNum">     737 </span><span class="lineNoCov">          0 :                  i != channels.end(); ++i )</span>
+<span class="lineNum">     738 </span>            :             {
+<span class="lineNum">     739 </span><span class="lineNoCov">          0 :                 Channel* channel = *i;</span>
+<span class="lineNum">     740 </span><span class="lineNoCov">          0 :                 Event channelEvent = event;</span>
+<span class="lineNum">     741 </span><span class="lineNoCov">          0 :                 switch( event.type )</span>
+<span class="lineNum">     742 </span>            :                 {
+<span class="lineNum">     743 </span>            :                   case Event::WINDOW_POINTER_MOTION:
+<span class="lineNum">     744 </span><span class="lineNoCov">          0 :                     channelEvent.type = Event::CHANNEL_POINTER_MOTION;</span>
+<span class="lineNum">     745 </span><span class="lineNoCov">          0 :                     break;</span>
+<span class="lineNum">     746 </span>            :                   case Event::WINDOW_POINTER_BUTTON_PRESS:
+<span class="lineNum">     747 </span><span class="lineNoCov">          0 :                     channelEvent.type = Event::CHANNEL_POINTER_BUTTON_PRESS;</span>
+<span class="lineNum">     748 </span><span class="lineNoCov">          0 :                     break;</span>
+<span class="lineNum">     749 </span>            :                   case Event::WINDOW_POINTER_BUTTON_RELEASE:
+<span class="lineNum">     750 </span><span class="lineNoCov">          0 :                     channelEvent.type = Event::CHANNEL_POINTER_BUTTON_RELEASE;</span>
+<span class="lineNum">     751 </span><span class="lineNoCov">          0 :                     break;</span>
+<span class="lineNum">     752 </span>            :                   case Event::WINDOW_POINTER_WHEEL:
+<span class="lineNum">     753 </span><span class="lineNoCov">          0 :                     channelEvent.type = Event::CHANNEL_POINTER_WHEEL;</span>
+<span class="lineNum">     754 </span><span class="lineNoCov">          0 :                     break;</span>
+<span class="lineNum">     755 </span>            :                   default:
+<span class="lineNum">     756 </span><span class="lineNoCov">          0 :                     LBWARN &lt;&lt; &quot;Unhandled window event of type &quot; &lt;&lt; event.type</span>
+<span class="lineNum">     757 </span><span class="lineNoCov">          0 :                            &lt;&lt; std::endl;</span>
+<span class="lineNum">     758 </span><span class="lineNoCov">          0 :                     LBUNIMPLEMENTED;</span>
+<span class="lineNum">     759 </span>            :                 }
+<span class="lineNum">     760 </span>            : 
+<span class="lineNum">     761 </span>            :                 // convert y to GL notation (Channel PVP uses GL coordinates)
+<span class="lineNum">     762 </span><span class="lineNoCov">          0 :                 const PixelViewport&amp; pvp = getPixelViewport();</span>
+<span class="lineNum">     763 </span><span class="lineNoCov">          0 :                 const int32_t y = pvp.h - event.pointer.y;</span>
+<span class="lineNum">     764 </span>            :                 const PixelViewport&amp; channelPVP =
+<span class="lineNum">     765 </span><span class="lineNoCov">          0 :                     channel-&gt;getNativePixelViewport();</span>
+<span class="lineNum">     766 </span>            : 
+<span class="lineNum">     767 </span><span class="lineNoCov">          0 :                 channelEvent.originator = channel-&gt;getID();</span>
+<span class="lineNum">     768 </span><span class="lineNoCov">          0 :                 channelEvent.serial = channel-&gt;getSerial();</span>
+<span class="lineNum">     769 </span><span class="lineNoCov">          0 :                 channelEvent.pointer.x -= channelPVP.x;</span>
+<span class="lineNum">     770 </span><span class="lineNoCov">          0 :                 channelEvent.pointer.y = channelPVP.h - y + channelPVP.y;</span>
+<span class="lineNum">     771 </span><span class="lineNoCov">          0 :                 channel-&gt;processEvent( channelEvent );</span>
+<span class="lineNum">     772 </span><span class="lineNoCov">          0 :             }</span>
+<span class="lineNum">     773 </span><span class="lineNoCov">          0 :             break;</span>
+<span class="lineNum">     774 </span>            :         }
+<span class="lineNum">     775 </span>            : 
+<span class="lineNum">     776 </span>            :         case Event::WINDOW_SCREENSAVER:
+<span class="lineNum">     777 </span><span class="lineNoCov">          0 :             switch( getIAttribute( WindowSettings::IATTR_HINT_SCREENSAVER ))</span>
+<span class="lineNum">     778 </span>            :             {
+<span class="lineNum">     779 </span>            :                 case OFF:
+<span class="lineNum">     780 </span><span class="lineNoCov">          0 :                     return true; // screen saver stays inactive</span>
+<span class="lineNum">     781 </span>            :                 case ON:
+<span class="lineNum">     782 </span><span class="lineNoCov">          0 :                     return false; // screen saver becomes active</span>
+<span class="lineNum">     783 </span>            :                 default: // AUTO
+<span class="lineNum">     784 </span><span class="lineNoCov">          0 :                     if( getDrawableConfig().doublebuffered &amp;&amp;</span>
+<span class="lineNum">     785 </span><span class="lineNoCov">          0 :                         getIAttribute( WindowSettings::IATTR_HINT_DRAWABLE ) == WINDOW )</span>
+<span class="lineNum">     786 </span>            :                     {
+<span class="lineNum">     787 </span><span class="lineNoCov">          0 :                         return true; // screen saver stays inactive</span>
+<span class="lineNum">     788 </span>            :                     }
+<span class="lineNum">     789 </span><span class="lineNoCov">          0 :                     return false;</span>
+<span class="lineNum">     790 </span>            :             }
+<span class="lineNum">     791 </span>            : 
+<span class="lineNum">     792 </span>            :         case Event::UNKNOWN:
+<span class="lineNum">     793 </span>            :             // unknown window-system native event, which was not handled
+<span class="lineNum">     794 </span><span class="lineNoCov">          0 :             return false;</span>
+<span class="lineNum">     795 </span>            : 
+<span class="lineNum">     796 </span>            :         default:
+<span class="lineNum">     797 </span><span class="lineNoCov">          0 :             LBWARN &lt;&lt; &quot;Unhandled window event of type &quot; &lt;&lt; event.type</span>
+<span class="lineNum">     798 </span><span class="lineNoCov">          0 :                    &lt;&lt; std::endl;</span>
+<span class="lineNum">     799 </span><span class="lineNoCov">          0 :             LBUNIMPLEMENTED;</span>
+<span class="lineNum">     800 </span>            :     }
+<span class="lineNum">     801 </span>            : 
+<span class="lineNum">     802 </span><span class="lineNoCov">          0 :     Config* config = getConfig();</span>
+<span class="lineNum">     803 </span><span class="lineNoCov">          0 :     ConfigEvent configEvent;</span>
+<span class="lineNum">     804 </span><span class="lineNoCov">          0 :     configEvent.data = event;</span>
+<span class="lineNum">     805 </span><span class="lineNoCov">          0 :     config-&gt;sendEvent( configEvent );</span>
+<span class="lineNum">     806 </span><span class="lineNoCov">          0 :     return true;</span>
+<a name="807"><span class="lineNum">     807 </span>            : }</a>
+<span class="lineNum">     808 </span>            : 
+<span class="lineNum">     809 </span><span class="lineNoCov">          0 : Channels Window::_getEventChannels( const PointerEvent&amp; event )</span>
+<span class="lineNum">     810 </span>            : {
+<span class="lineNum">     811 </span><span class="lineNoCov">          0 :     if( !_grabbedChannels.empty( ))</span>
+<span class="lineNum">     812 </span><span class="lineNoCov">          0 :         return _grabbedChannels;</span>
+<span class="lineNum">     813 </span>            : 
+<span class="lineNum">     814 </span><span class="lineNoCov">          0 :     Channels result;</span>
+<span class="lineNum">     815 </span><span class="lineNoCov">          0 :     const Channels&amp; channels = getChannels();</span>
+<span class="lineNum">     816 </span><span class="lineNoCov">          0 :     for( ChannelsCIter i = channels.begin(); i != channels.end(); ++i )</span>
+<span class="lineNum">     817 </span>            :     {
+<span class="lineNum">     818 </span><span class="lineNoCov">          0 :         Channel* channel = *i;</span>
+<span class="lineNum">     819 </span><span class="lineNoCov">          0 :         if( !channel-&gt;isDestination( ))</span>
+<span class="lineNum">     820 </span><span class="lineNoCov">          0 :             continue;</span>
+<span class="lineNum">     821 </span>            : 
+<span class="lineNum">     822 </span><span class="lineNoCov">          0 :         const PixelViewport&amp; pvp = getPixelViewport();</span>
+<span class="lineNum">     823 </span><span class="lineNoCov">          0 :         const PixelViewport&amp; channelPVP = channel-&gt;getNativePixelViewport();</span>
+<span class="lineNum">     824 </span>            : 
+<span class="lineNum">     825 </span>            :         // convert y to GL notation (Channel PVP uses GL coordinates)
+<span class="lineNum">     826 </span><span class="lineNoCov">          0 :         const int32_t y = pvp.h - event.y;</span>
+<span class="lineNum">     827 </span>            : 
+<span class="lineNum">     828 </span><span class="lineNoCov">          0 :         if( channelPVP.isInside( event.x, y ))</span>
+<span class="lineNum">     829 </span><span class="lineNoCov">          0 :             result.push_back( channel );</span>
+<span class="lineNum">     830 </span>            :     }
+<span class="lineNum">     831 </span><span class="lineNoCov">          0 :     return result;</span>
+<span class="lineNum">     832 </span>            : }
+<span class="lineNum">     833 </span>            : 
+<span class="lineNum">     834 </span>            : //---------------------------------------------------------------------------
+<a name="835"><span class="lineNum">     835 </span>            : // command handlers</a>
+<span class="lineNum">     836 </span>            : //---------------------------------------------------------------------------
+<span class="lineNum">     837 </span><span class="lineNoCov">          0 : bool Window::_cmdCreateChannel( co::ICommand&amp; cmd )</span>
+<span class="lineNum">     838 </span>            : {
+<span class="lineNum">     839 </span><span class="lineNoCov">          0 :     co::ObjectICommand command( cmd );</span>
+<span class="lineNum">     840 </span><span class="lineNoCov">          0 :     const uint128_t&amp; channelID = command.read&lt; uint128_t &gt;();</span>
+<span class="lineNum">     841 </span>            : 
+<span class="lineNum">     842 </span><span class="lineNoCov">          0 :     LBLOG( LOG_INIT ) &lt;&lt; &quot;Create channel &quot; &lt;&lt; command  &lt;&lt; &quot; id &quot; &lt;&lt; channelID</span>
+<span class="lineNum">     843 </span><span class="lineNoCov">          0 :                       &lt;&lt; std::endl;</span>
+<span class="lineNum">     844 </span>            : 
+<span class="lineNum">     845 </span><span class="lineNoCov">          0 :     Channel* channel = Global::getNodeFactory()-&gt;createChannel( this );</span>
+<span class="lineNum">     846 </span><span class="lineNoCov">          0 :     channel-&gt;init(); // not in ctor, virtual method</span>
+<span class="lineNum">     847 </span>            : 
+<span class="lineNum">     848 </span><span class="lineNoCov">          0 :     Config* config = getConfig();</span>
+<span class="lineNum">     849 </span><span class="lineNoCov">          0 :     LBCHECK( config-&gt;mapObject( channel, channelID ));</span>
+<span class="lineNum">     850 </span><span class="lineNoCov">          0 :     LBASSERT( channel-&gt;getSerial() != CO_INSTANCE_INVALID );</span>
+<span class="lineNum">     851 </span>            : 
+<span class="lineNum">     852 </span><span class="lineNoCov">          0 :     return true;</span>
+<a name="853"><span class="lineNum">     853 </span>            : }</a>
+<span class="lineNum">     854 </span>            : 
+<span class="lineNum">     855 </span><span class="lineNoCov">          0 : bool Window::_cmdDestroyChannel( co::ICommand&amp; cmd )</span>
+<span class="lineNum">     856 </span>            : {
+<span class="lineNum">     857 </span><span class="lineNoCov">          0 :     co::ObjectICommand command( cmd );</span>
+<span class="lineNum">     858 </span><span class="lineNoCov">          0 :     LBLOG( LOG_INIT ) &lt;&lt; &quot;Destroy channel &quot; &lt;&lt; command &lt;&lt; std::endl;</span>
+<span class="lineNum">     859 </span>            : 
+<span class="lineNum">     860 </span><span class="lineNoCov">          0 :     Channel* channel = _findChannel( command.read&lt; uint128_t &gt;( ));</span>
+<span class="lineNum">     861 </span><span class="lineNoCov">          0 :     LBASSERT( channel );</span>
+<span class="lineNum">     862 </span>            : 
+<span class="lineNum">     863 </span><span class="lineNoCov">          0 :     const bool stopped = channel-&gt;isStopped();</span>
+<span class="lineNum">     864 </span><span class="lineNoCov">          0 :     Config* config = getConfig();</span>
+<span class="lineNum">     865 </span><span class="lineNoCov">          0 :     config-&gt;unmapObject( channel );</span>
+<span class="lineNum">     866 </span>            :     channel-&gt;send( getServer(), fabric::CMD_CHANNEL_CONFIG_EXIT_REPLY )
+<span class="lineNum">     867 </span><span class="lineNoCov">          0 :         &lt;&lt; stopped;</span>
+<span class="lineNum">     868 </span><span class="lineNoCov">          0 :     Global::getNodeFactory()-&gt;releaseChannel( channel );</span>
+<span class="lineNum">     869 </span>            : 
+<span class="lineNum">     870 </span><span class="lineNoCov">          0 :     return true;</span>
+<a name="871"><span class="lineNum">     871 </span>            : }</a>
+<span class="lineNum">     872 </span>            : 
+<span class="lineNum">     873 </span><span class="lineNoCov">          0 : bool Window::_cmdConfigInit( co::ICommand&amp; cmd )</span>
+<span class="lineNum">     874 </span>            : {
+<span class="lineNum">     875 </span><span class="lineNoCov">          0 :     co::ObjectICommand command( cmd );</span>
+<span class="lineNum">     876 </span>            : 
+<span class="lineNum">     877 </span><span class="lineNoCov">          0 :     LBLOG( LOG_INIT ) &lt;&lt; &quot;TASK window config init &quot; &lt;&lt; command &lt;&lt; std::endl;</span>
+<span class="lineNum">     878 </span>            : 
+<span class="lineNum">     879 </span><span class="lineNoCov">          0 :     bool result = false;</span>
+<span class="lineNum">     880 </span><span class="lineNoCov">          0 :     if( getPipe()-&gt;isRunning( ))</span>
+<span class="lineNum">     881 </span>            :     {
+<span class="lineNum">     882 </span><span class="lineNoCov">          0 :         _state = STATE_INITIALIZING;</span>
+<span class="lineNum">     883 </span><span class="lineNoCov">          0 :         result = configInit( command.read&lt; uint128_t &gt;( ));</span>
+<span class="lineNum">     884 </span><span class="lineNoCov">          0 :         if( result )</span>
+<span class="lineNum">     885 </span><span class="lineNoCov">          0 :             _state = STATE_RUNNING;</span>
+<span class="lineNum">     886 </span>            :     }
+<span class="lineNum">     887 </span>            :     else
+<span class="lineNum">     888 </span><span class="lineNoCov">          0 :         sendError( ERROR_WINDOW_PIPE_NOTRUNNING );</span>
+<span class="lineNum">     889 </span>            : 
+<span class="lineNum">     890 </span><span class="lineNoCov">          0 :     LBLOG( LOG_INIT ) &lt;&lt; &quot;TASK window config init reply &quot; &lt;&lt; std::endl;</span>
+<span class="lineNum">     891 </span>            : 
+<span class="lineNum">     892 </span><span class="lineNoCov">          0 :     commit();</span>
+<span class="lineNum">     893 </span><span class="lineNoCov">          0 :     send( command.getRemoteNode(), fabric::CMD_WINDOW_CONFIG_INIT_REPLY ) &lt;&lt; result;</span>
+<span class="lineNum">     894 </span><span class="lineNoCov">          0 :     return true;</span>
+<a name="895"><span class="lineNum">     895 </span>            : }</a>
+<span class="lineNum">     896 </span>            : 
+<span class="lineNum">     897 </span><span class="lineNoCov">          0 : bool Window::_cmdConfigExit( co::ICommand&amp; cmd )</span>
+<span class="lineNum">     898 </span>            : {
+<span class="lineNum">     899 </span><span class="lineNoCov">          0 :     co::ObjectICommand command( cmd );</span>
+<span class="lineNum">     900 </span>            : 
+<span class="lineNum">     901 </span><span class="lineNoCov">          0 :     LBLOG( LOG_INIT ) &lt;&lt; &quot;TASK window config exit &quot; &lt;&lt; command &lt;&lt; std::endl;</span>
+<span class="lineNum">     902 </span>            : 
+<span class="lineNum">     903 </span><span class="lineNoCov">          0 :     if( _state != STATE_STOPPED )</span>
+<span class="lineNum">     904 </span>            :     {
+<span class="lineNum">     905 </span><span class="lineNoCov">          0 :         if( getPipe()-&gt;isRunning( ) &amp;&amp; _systemWindow )</span>
+<span class="lineNum">     906 </span>            :         {
+<span class="lineNum">     907 </span><span class="lineNoCov">          0 :             makeCurrent();</span>
+<span class="lineNum">     908 </span><span class="lineNoCov">          0 :             getPipe()-&gt;flushFrames( _objectManager );</span>
+<span class="lineNum">     909 </span>            :         }
+<span class="lineNum">     910 </span>            :         // else emergency exit, no context available.
+<span class="lineNum">     911 </span>            : 
+<span class="lineNum">     912 </span><span class="lineNoCov">          0 :         _state = configExit() ? STATE_STOPPED : STATE_FAILED;</span>
+<span class="lineNum">     913 </span>            :     }
+<span class="lineNum">     914 </span>            : 
+<span class="lineNum">     915 </span><span class="lineNoCov">          0 :     getPipe()-&gt;send( getLocalNode(),</span>
+<span class="lineNum">     916 </span><span class="lineNoCov">          0 :                      fabric::CMD_PIPE_DESTROY_WINDOW ) &lt;&lt; getID();</span>
+<span class="lineNum">     917 </span><span class="lineNoCov">          0 :     return true;</span>
+<a name="918"><span class="lineNum">     918 </span>            : }</a>
+<span class="lineNum">     919 </span>            : 
+<span class="lineNum">     920 </span><span class="lineNoCov">          0 : bool Window::_cmdFrameStart( co::ICommand&amp; cmd )</span>
+<span class="lineNum">     921 </span>            : {
+<span class="lineNum">     922 </span><span class="lineNoCov">          0 :     co::ObjectICommand command( cmd );</span>
+<span class="lineNum">     923 </span>            : 
+<span class="lineNum">     924 </span><span class="lineNoCov">          0 :     LB_TS_THREAD( _pipeThread );</span>
+<span class="lineNum">     925 </span>            : 
+<span class="lineNum">     926 </span><span class="lineNoCov">          0 :     const uint128_t&amp; version = command.read&lt; uint128_t &gt;();</span>
+<span class="lineNum">     927 </span><span class="lineNoCov">          0 :     const uint128_t&amp; frameID = command.read&lt; uint128_t &gt;();</span>
+<span class="lineNum">     928 </span><span class="lineNoCov">          0 :     const uint32_t frameNumber = command.read&lt; uint32_t &gt;();</span>
+<span class="lineNum">     929 </span>            : 
+<span class="lineNum">     930 </span><span class="lineNoCov">          0 :     LBLOG( LOG_TASKS ) &lt;&lt; &quot;TASK frame start &quot; &lt;&lt; getName()</span>
+<span class="lineNum">     931 </span><span class="lineNoCov">          0 :                        &lt;&lt; &quot; &quot; &lt;&lt; command &lt;&lt; &quot; frame &quot; &lt;&lt; frameNumber</span>
+<span class="lineNum">     932 </span><span class="lineNoCov">          0 :                        &lt;&lt; &quot; id &quot; &lt;&lt; frameID &lt;&lt; std::endl;</span>
+<span class="lineNum">     933 </span>            : 
+<span class="lineNum">     934 </span>            :     //_grabFrame( frameNumber ); single-threaded
+<span class="lineNum">     935 </span><span class="lineNoCov">          0 :     sync( version );</span>
+<span class="lineNum">     936 </span>            : 
+<span class="lineNum">     937 </span><span class="lineNoCov">          0 :     const DrawableConfig&amp; drawableConfig = getDrawableConfig();</span>
+<span class="lineNum">     938 </span><span class="lineNoCov">          0 :     if( drawableConfig.doublebuffered )</span>
+<span class="lineNum">     939 </span><span class="lineNoCov">          0 :         _renderContexts[FRONT].swap( _renderContexts[BACK] );</span>
+<span class="lineNum">     940 </span><span class="lineNoCov">          0 :     _renderContexts[BACK].clear();</span>
+<span class="lineNum">     941 </span>            : 
+<span class="lineNum">     942 </span><span class="lineNoCov">          0 :     makeCurrent();</span>
+<span class="lineNum">     943 </span><span class="lineNoCov">          0 :     frameStart( frameID, frameNumber );</span>
+<span class="lineNum">     944 </span><span class="lineNoCov">          0 :     return true;</span>
+<a name="945"><span class="lineNum">     945 </span>            : }</a>
+<span class="lineNum">     946 </span>            : 
+<span class="lineNum">     947 </span><span class="lineNoCov">          0 : bool Window::_cmdFrameFinish( co::ICommand&amp; cmd )</span>
+<span class="lineNum">     948 </span>            : {
+<span class="lineNum">     949 </span><span class="lineNoCov">          0 :     co::ObjectICommand command( cmd );</span>
+<span class="lineNum">     950 </span>            : 
+<span class="lineNum">     951 </span><span class="lineNoCov">          0 :     LBVERB &lt;&lt; &quot;handle window frame sync &quot; &lt;&lt; command &lt;&lt; std::endl;</span>
+<span class="lineNum">     952 </span>            : 
+<span class="lineNum">     953 </span><span class="lineNoCov">          0 :     const uint128_t&amp; frameID = command.read&lt; uint128_t &gt;();</span>
+<span class="lineNum">     954 </span><span class="lineNoCov">          0 :     const uint32_t frameNumber = command.read&lt; uint32_t &gt;();</span>
+<span class="lineNum">     955 </span>            : 
+<span class="lineNum">     956 </span><span class="lineNoCov">          0 :     makeCurrent();</span>
+<span class="lineNum">     957 </span><span class="lineNoCov">          0 :     frameFinish( frameID, frameNumber );</span>
+<span class="lineNum">     958 </span><span class="lineNoCov">          0 :     return true;</span>
+<a name="959"><span class="lineNum">     959 </span>            : }</a>
+<span class="lineNum">     960 </span>            : 
+<span class="lineNum">     961 </span><span class="lineNoCov">          0 : bool Window::_cmdFlush( co::ICommand&amp; )</span>
+<span class="lineNum">     962 </span>            : {
+<span class="lineNum">     963 </span><span class="lineNoCov">          0 :     flush();</span>
+<span class="lineNum">     964 </span><span class="lineNoCov">          0 :     return true;</span>
+<a name="965"><span class="lineNum">     965 </span>            : }</a>
+<span class="lineNum">     966 </span>            : 
+<span class="lineNum">     967 </span><span class="lineNoCov">          0 : bool Window::_cmdFinish( co::ICommand&amp; )</span>
+<span class="lineNum">     968 </span>            : {
+<span class="lineNum">     969 </span><span class="lineNoCov">          0 :     WindowStatistics stat( Statistic::WINDOW_FINISH, this );</span>
+<span class="lineNum">     970 </span><span class="lineNoCov">          0 :     makeCurrent();</span>
+<span class="lineNum">     971 </span><span class="lineNoCov">          0 :     finish();</span>
+<span class="lineNum">     972 </span><span class="lineNoCov">          0 :     return true;</span>
+<a name="973"><span class="lineNum">     973 </span>            : }</a>
+<span class="lineNum">     974 </span>            : 
+<span class="lineNum">     975 </span><span class="lineNoCov">          0 : bool  Window::_cmdThrottleFramerate( co::ICommand&amp; cmd )</span>
+<span class="lineNum">     976 </span>            : {
+<span class="lineNum">     977 </span><span class="lineNoCov">          0 :     co::ObjectICommand command( cmd );</span>
+<span class="lineNum">     978 </span>            : 
+<span class="lineNum">     979 </span><span class="lineNoCov">          0 :     LBLOG( LOG_TASKS ) &lt;&lt; &quot;TASK throttle framerate &quot; &lt;&lt; getName() &lt;&lt; &quot; &quot;</span>
+<span class="lineNum">     980 </span><span class="lineNoCov">          0 :                        &lt;&lt; command &lt;&lt; std::endl;</span>
+<span class="lineNum">     981 </span>            : 
+<span class="lineNum">     982 </span>            :     // throttle to given framerate
+<span class="lineNum">     983 </span><span class="lineNoCov">          0 :     const int64_t elapsed  = getConfig()-&gt;getTime() - _lastSwapTime;</span>
+<span class="lineNum">     984 </span><span class="lineNoCov">          0 :     const float minFrameTime = command.read&lt; float &gt;();</span>
+<span class="lineNum">     985 </span><span class="lineNoCov">          0 :     const float timeLeft = minFrameTime - static_cast&lt;float&gt;( elapsed );</span>
+<span class="lineNum">     986 </span>            : 
+<span class="lineNum">     987 </span><span class="lineNoCov">          0 :     if( timeLeft &gt;= 1.f )</span>
+<span class="lineNum">     988 </span>            :     {
+<span class="lineNum">     989 </span><span class="lineNoCov">          0 :         WindowStatistics stat( Statistic::WINDOW_THROTTLE_FRAMERATE, this );</span>
+<span class="lineNum">     990 </span><span class="lineNoCov">          0 :         lunchbox::sleep( static_cast&lt; uint32_t &gt;( timeLeft ));</span>
+<span class="lineNum">     991 </span>            :     }
+<span class="lineNum">     992 </span>            : 
+<span class="lineNum">     993 </span><span class="lineNoCov">          0 :     _lastSwapTime = getConfig()-&gt;getTime();</span>
+<span class="lineNum">     994 </span><span class="lineNoCov">          0 :     return true;</span>
+<a name="995"><span class="lineNum">     995 </span>            : }</a>
+<span class="lineNum">     996 </span>            : 
+<span class="lineNum">     997 </span><span class="lineNoCov">          0 : bool Window::_cmdBarrier( co::ICommand&amp; cmd )</span>
+<span class="lineNum">     998 </span>            : {
+<span class="lineNum">     999 </span><span class="lineNoCov">          0 :     co::ObjectICommand command( cmd );</span>
+<span class="lineNum">    1000 </span><span class="lineNoCov">          0 :     const co::ObjectVersion&amp; barrier = command.read&lt; co::ObjectVersion &gt;();</span>
+<span class="lineNum">    1001 </span>            : 
+<span class="lineNum">    1002 </span><span class="lineNoCov">          0 :     LBVERB &lt;&lt; &quot;handle barrier &quot; &lt;&lt; command &lt;&lt; &quot; barrier &quot; &lt;&lt; barrier</span>
+<span class="lineNum">    1003 </span><span class="lineNoCov">          0 :            &lt;&lt; std::endl;</span>
+<span class="lineNum">    1004 </span><span class="lineNoCov">          0 :     LBLOG( LOG_TASKS ) &lt;&lt; &quot;TASK swap barrier  &quot; &lt;&lt; getName() &lt;&lt; std::endl;</span>
+<span class="lineNum">    1005 </span>            : 
+<span class="lineNum">    1006 </span><span class="lineNoCov">          0 :     _enterBarrier( barrier );</span>
+<span class="lineNum">    1007 </span><span class="lineNoCov">          0 :     return true;</span>
+<a name="1008"><span class="lineNum">    1008 </span>            : }</a>
+<span class="lineNum">    1009 </span>            : 
+<span class="lineNum">    1010 </span><span class="lineNoCov">          0 : bool Window::_cmdNVBarrier( co::ICommand&amp; cmd )</span>
+<span class="lineNum">    1011 </span>            : {
+<span class="lineNum">    1012 </span><span class="lineNoCov">          0 :     co::ObjectICommand command( cmd );</span>
+<span class="lineNum">    1013 </span>            : 
+<span class="lineNum">    1014 </span><span class="lineNoCov">          0 :     LBLOG( LOG_TASKS ) &lt;&lt; &quot;TASK join NV_swap_group&quot; &lt;&lt; std::endl;</span>
+<span class="lineNum">    1015 </span><span class="lineNoCov">          0 :     LBASSERT( _systemWindow );</span>
+<span class="lineNum">    1016 </span>            : 
+<span class="lineNum">    1017 </span><span class="lineNoCov">          0 :     const co::ObjectVersion&amp; netBarrier = command.read&lt; co::ObjectVersion &gt;();</span>
+<span class="lineNum">    1018 </span><span class="lineNoCov">          0 :     const uint32_t group = command.read&lt; uint32_t &gt;();</span>
+<span class="lineNum">    1019 </span><span class="lineNoCov">          0 :     const uint32_t barrier = command.read&lt; uint32_t &gt;();</span>
+<span class="lineNum">    1020 </span>            : 
+<span class="lineNum">    1021 </span><span class="lineNoCov">          0 :     makeCurrent();</span>
+<span class="lineNum">    1022 </span><span class="lineNoCov">          0 :     _systemWindow-&gt;joinNVSwapBarrier( group, barrier );</span>
+<span class="lineNum">    1023 </span><span class="lineNoCov">          0 :     _enterBarrier( netBarrier );</span>
+<span class="lineNum">    1024 </span><span class="lineNoCov">          0 :     return true;</span>
+<a name="1025"><span class="lineNum">    1025 </span>            : }</a>
+<span class="lineNum">    1026 </span>            : 
+<span class="lineNum">    1027 </span><span class="lineNoCov">          0 : bool Window::_cmdSwap( co::ICommand&amp; cmd )</span>
+<span class="lineNum">    1028 </span>            : {
+<span class="lineNum">    1029 </span><span class="lineNoCov">          0 :     co::ObjectICommand command( cmd );</span>
+<span class="lineNum">    1030 </span>            : 
+<span class="lineNum">    1031 </span><span class="lineNoCov">          0 :     LBLOG( LOG_TASKS ) &lt;&lt; &quot;TASK swap buffers &quot; &lt;&lt; getName() &lt;&lt; &quot; &quot; &lt;&lt; command</span>
+<span class="lineNum">    1032 </span><span class="lineNoCov">          0 :                        &lt;&lt; std::endl;</span>
+<span class="lineNum">    1033 </span>            : 
+<span class="lineNum">    1034 </span><span class="lineNoCov">          0 :     if( getDrawableConfig().doublebuffered )</span>
+<span class="lineNum">    1035 </span>            :     {
+<span class="lineNum">    1036 </span>            :         // swap
+<span class="lineNum">    1037 </span><span class="lineNoCov">          0 :         WindowStatistics stat( Statistic::WINDOW_SWAP, this );</span>
+<span class="lineNum">    1038 </span><span class="lineNoCov">          0 :         makeCurrent();</span>
+<span class="lineNum">    1039 </span><span class="lineNoCov">          0 :         swapBuffers();</span>
+<span class="lineNum">    1040 </span>            :     }
+<span class="lineNum">    1041 </span><span class="lineNoCov">          0 :     return true;</span>
+<a name="1042"><span class="lineNum">    1042 </span>            : }</a>
+<span class="lineNum">    1043 </span>            : 
+<span class="lineNum">    1044 </span><span class="lineNoCov">          0 : bool Window::_cmdFrameDrawFinish( co::ICommand&amp; cmd )</span>
+<span class="lineNum">    1045 </span>            : {
+<span class="lineNum">    1046 </span><span class="lineNoCov">          0 :     co::ObjectICommand command( cmd );</span>
+<span class="lineNum">    1047 </span><span class="lineNoCov">          0 :     const uint128_t&amp; frameID = command.read&lt; uint128_t &gt;();</span>
+<span class="lineNum">    1048 </span><span class="lineNoCov">          0 :     const uint32_t frameNumber = command.read&lt; uint32_t &gt;();</span>
+<span class="lineNum">    1049 </span>            : 
+<span class="lineNum">    1050 </span><span class="lineNoCov">          0 :     LBLOG( LOG_TASKS ) &lt;&lt; &quot;TASK draw finish &quot; &lt;&lt; getName() &lt;&lt;  &quot; &quot; &lt;&lt; command</span>
+<span class="lineNum">    1051 </span><span class="lineNoCov">          0 :                        &lt;&lt; &quot; frame &quot; &lt;&lt; frameNumber &lt;&lt; &quot; id &quot; &lt;&lt; frameID</span>
+<span class="lineNum">    1052 </span><span class="lineNoCov">          0 :                        &lt;&lt; std::endl;</span>
+<span class="lineNum">    1053 </span>            : 
+<span class="lineNum">    1054 </span><span class="lineNoCov">          0 :     frameDrawFinish( frameID, frameNumber );</span>
+<span class="lineNum">    1055 </span><span class="lineNoCov">          0 :     return true;</span>
+<span class="lineNum">    1056 </span>            : }
+<span class="lineNum">    1057 </span>            : 
+<span class="lineNum">    1058 </span>            : }
+<span class="lineNum">    1059 </span>            : 
+<span class="lineNum">    1060 </span>            : #include &lt;eq/fabric/window.ipp&gt;
+<span class="lineNum">    1061 </span>            : template class eq::fabric::Window&lt; eq::Pipe, eq::Window, eq::Channel,
+<span class="lineNum">    1062 </span>            :                                    eq::WindowSettings &gt;;
+<span class="lineNum">    1063 </span>            : 
+<a name="1064"><span class="lineNum">    1064 </span>            : /** @cond IGNORE */</a>
+<span class="lineNum">    1065 </span>            : template EQFABRIC_API std::ostream&amp; eq::fabric::operator &lt;&lt; ( std::ostream&amp;,
+<span class="lineNum">    1066 </span><span class="lineCov">         60 :                                                  const eq::Super&amp; );</span>
+<span class="lineNum">    1067 </span>            : /** @endcond */
+</pre>
+      </td>
+    </tr>
+  </table>
+  <br>
+
+  <table width="100%" border=0 cellspacing=0 cellpadding=0>
+    <tr><td class="ruler"><img src="../../glass.png" width=3 height=3 alt=""></td></tr>
+    <tr><td class="versionInfo">Generated by: <a href="http://ltp.sourceforge.net/coverage/lcov.php" target="_parent">LCOV version 1.11</a></td></tr>
+  </table>
+  <br>
+
+</body>
+</html>

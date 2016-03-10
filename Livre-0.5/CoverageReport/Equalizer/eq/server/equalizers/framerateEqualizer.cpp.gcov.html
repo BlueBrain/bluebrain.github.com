@@ -1,0 +1,376 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+
+<html lang="en">
+
+<head>
+  <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+  <title>LCOV - Livre - Equalizer/eq/server/equalizers/framerateEqualizer.cpp</title>
+  <link rel="stylesheet" type="text/css" href="../../../../gcov.css">
+</head>
+
+<body>
+
+  <table width="100%" border=0 cellspacing=0 cellpadding=0>
+    <tr><td class="title">LCOV - code coverage report</td></tr>
+    <tr><td class="ruler"><img src="../../../../glass.png" width=3 height=3 alt=""></td></tr>
+
+    <tr>
+      <td width="100%">
+        <table cellpadding=1 border=0 width="100%">
+          <tr>
+            <td width="10%" class="headerItem">Current view:</td>
+            <td width="35%" class="headerValue"><a href="../../../../index.html">top level</a> - <a href="index.html">Equalizer/eq/server/equalizers</a> - framerateEqualizer.cpp<span style="font-size: 80%;"> (source / <a href="framerateEqualizer.cpp.func-sort-c.html">functions</a>)</span></td>
+            <td width="5%"></td>
+            <td width="15%"></td>
+            <td width="10%" class="headerCovTableHead">Hit</td>
+            <td width="10%" class="headerCovTableHead">Total</td>
+            <td width="15%" class="headerCovTableHead">Coverage</td>
+          </tr>
+          <tr>
+            <td class="headerItem">Test:</td>
+            <td class="headerValue">Livre</td>
+            <td></td>
+            <td class="headerItem">Lines:</td>
+            <td class="headerCovTableEntry">1</td>
+            <td class="headerCovTableEntry">131</td>
+            <td class="headerCovTableEntryLo">0.8 %</td>
+          </tr>
+          <tr>
+            <td class="headerItem">Date:</td>
+            <td class="headerValue">2016-03-10 14:06:39</td>
+            <td></td>
+            <td class="headerItem">Functions:</td>
+            <td class="headerCovTableEntry">2</td>
+            <td class="headerCovTableEntry">20</td>
+            <td class="headerCovTableEntryLo">10.0 %</td>
+          </tr>
+          <tr><td><img src="../../../../glass.png" width=3 height=3 alt=""></td></tr>
+        </table>
+      </td>
+    </tr>
+
+    <tr><td class="ruler"><img src="../../../../glass.png" width=3 height=3 alt=""></td></tr>
+  </table>
+
+  <table cellpadding=0 cellspacing=0 border=0>
+    <tr>
+      <td><br></td>
+    </tr>
+    <tr>
+      <td>
+<pre class="sourceHeading">          Line data    Source code</pre>
+<pre class="source">
+<a name="1"><span class="lineNum">       1 </span>            : </a>
+<span class="lineNum">       2 </span>            : /* Copyright (c) 2008-2013, Stefan Eilemann &lt;eile@equalizergraphics.com&gt;
+<span class="lineNum">       3 </span>            :  *
+<span class="lineNum">       4 </span>            :  * This library is free software; you can redistribute it and/or modify it under
+<span class="lineNum">       5 </span>            :  * the terms of the GNU Lesser General Public License version 2.1 as published
+<span class="lineNum">       6 </span>            :  * by the Free Software Foundation.
+<span class="lineNum">       7 </span>            :  *
+<span class="lineNum">       8 </span>            :  * This library is distributed in the hope that it will be useful, but WITHOUT
+<span class="lineNum">       9 </span>            :  * ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS
+<span class="lineNum">      10 </span>            :  * FOR A PARTICULAR PURPOSE.  See the GNU Lesser General Public License for more
+<span class="lineNum">      11 </span>            :  * details.
+<span class="lineNum">      12 </span>            :  *
+<span class="lineNum">      13 </span>            :  * You should have received a copy of the GNU Lesser General Public License
+<span class="lineNum">      14 </span>            :  * along with this library; if not, write to the Free Software Foundation, Inc.,
+<span class="lineNum">      15 </span>            :  * 51 Franklin Street, Fifth Floor, Boston, MA 02110-1301 USA.
+<span class="lineNum">      16 </span>            :  */
+<span class="lineNum">      17 </span>            : 
+<span class="lineNum">      18 </span>            : #include &quot;framerateEqualizer.h&quot;
+<span class="lineNum">      19 </span>            : 
+<span class="lineNum">      20 </span>            : #include &quot;../compound.h&quot;
+<span class="lineNum">      21 </span>            : #include &quot;../compoundVisitor.h&quot;
+<span class="lineNum">      22 </span>            : #include &quot;../config.h&quot;
+<span class="lineNum">      23 </span>            : #include &quot;../log.h&quot;
+<span class="lineNum">      24 </span>            : 
+<span class="lineNum">      25 </span>            : #include &lt;eq/fabric/statistic.h&gt;
+<span class="lineNum">      26 </span>            : #include &lt;lunchbox/debug.h&gt;
+<span class="lineNum">      27 </span>            : 
+<span class="lineNum">      28 </span>            : #define USE_AVERAGE
+<span class="lineNum">      29 </span>            : #define VSYNC_CAP 60.f
+<span class="lineNum">      30 </span>            : #define SLOWDOWN  1.05f
+<span class="lineNum">      31 </span>            : 
+<span class="lineNum">      32 </span>            : namespace eq
+<span class="lineNum">      33 </span>            : {
+<span class="lineNum">      34 </span>            : namespace server
+<span class="lineNum">      35 </span>            : {
+<span class="lineNum">      36 </span>            : 
+<a name="37"><span class="lineNum">      37 </span>            : namespace</a>
+<span class="lineNum">      38 </span>            : {
+<span class="lineNum">      39 </span><span class="lineNoCov">          0 : class LoadSubscriber : public CompoundVisitor</span>
+<a name="40"><span class="lineNum">      40 </span>            : {</a>
+<span class="lineNum">      41 </span>            : public:
+<span class="lineNum">      42 </span><span class="lineNoCov">          0 :     explicit LoadSubscriber( ChannelListener* listener )</span>
+<a name="43"><span class="lineNum">      43 </span><span class="lineNoCov">          0 :         : _listener( listener ) {}</span></a>
+<span class="lineNum">      44 </span>            : 
+<span class="lineNum">      45 </span><span class="lineNoCov">          0 :     virtual VisitorResult visit( Compound* compound )</span>
+<span class="lineNum">      46 </span>            :     {
+<span class="lineNum">      47 </span><span class="lineNoCov">          0 :         Channel* channel = compound-&gt;getChannel();</span>
+<span class="lineNum">      48 </span><span class="lineNoCov">          0 :         LBASSERT( channel );</span>
+<span class="lineNum">      49 </span><span class="lineNoCov">          0 :         channel-&gt;addListener( _listener );</span>
+<span class="lineNum">      50 </span>            : 
+<span class="lineNum">      51 </span><span class="lineNoCov">          0 :         return TRAVERSE_CONTINUE;</span>
+<span class="lineNum">      52 </span>            :     }
+<span class="lineNum">      53 </span>            : 
+<span class="lineNum">      54 </span>            : private:
+<span class="lineNum">      55 </span>            :     ChannelListener* const _listener;
+<a name="56"><span class="lineNum">      56 </span>            : };</a>
+<span class="lineNum">      57 </span>            : 
+<span class="lineNum">      58 </span><span class="lineNoCov">          0 : class LoadUnsubscriber : public CompoundVisitor</span>
+<a name="59"><span class="lineNum">      59 </span>            : {</a>
+<span class="lineNum">      60 </span>            : public:
+<span class="lineNum">      61 </span><span class="lineNoCov">          0 :     explicit LoadUnsubscriber( ChannelListener* listener )</span>
+<a name="62"><span class="lineNum">      62 </span><span class="lineNoCov">          0 :         : _listener( listener ) {}</span></a>
+<span class="lineNum">      63 </span>            : 
+<span class="lineNum">      64 </span><span class="lineNoCov">          0 :     virtual VisitorResult visit( Compound* compound )</span>
+<span class="lineNum">      65 </span>            :     {
+<span class="lineNum">      66 </span><span class="lineNoCov">          0 :         Channel*  channel = compound-&gt;getChannel();</span>
+<span class="lineNum">      67 </span><span class="lineNoCov">          0 :         LBASSERT( channel );</span>
+<span class="lineNum">      68 </span><span class="lineNoCov">          0 :         channel-&gt;removeListener( _listener );</span>
+<span class="lineNum">      69 </span>            : 
+<span class="lineNum">      70 </span><span class="lineNoCov">          0 :         return TRAVERSE_CONTINUE;</span>
+<span class="lineNum">      71 </span>            :     }
+<span class="lineNum">      72 </span>            : 
+<span class="lineNum">      73 </span>            : private:
+<span class="lineNum">      74 </span>            :     ChannelListener* const _listener;
+<span class="lineNum">      75 </span>            : };
+<span class="lineNum">      76 </span>            : 
+<span class="lineNum">      77 </span>            : }
+<span class="lineNum">      78 </span>            : 
+<span class="lineNum">      79 </span>            : // The smooth load balancer adapts the framerate of the compound to be the
+<a name="80"><span class="lineNum">      80 </span>            : // average frame rate of all children, taking the DPlex period into account.</a>
+<span class="lineNum">      81 </span>            : 
+<span class="lineNum">      82 </span><span class="lineNoCov">          0 : FramerateEqualizer::FramerateEqualizer()</span>
+<span class="lineNum">      83 </span><span class="lineNoCov">          0 :         : _nSamples( 0 )</span>
+<span class="lineNum">      84 </span>            : {
+<span class="lineNum">      85 </span><span class="lineNoCov">          0 :     LBINFO &lt;&lt; &quot;New FramerateEqualizer @&quot; &lt;&lt; (void*)this &lt;&lt; std::endl;</span>
+<a name="86"><span class="lineNum">      86 </span><span class="lineNoCov">          0 : }</span></a>
+<span class="lineNum">      87 </span>            : 
+<span class="lineNum">      88 </span><span class="lineNoCov">          0 : FramerateEqualizer::FramerateEqualizer( const FramerateEqualizer&amp; from )</span>
+<span class="lineNum">      89 </span>            :         : Equalizer( from )
+<span class="lineNum">      90 </span><span class="lineNoCov">          0 :         , _nSamples( 0 )</span>
+<span class="lineNum">      91 </span>            : {
+<a name="92"><span class="lineNum">      92 </span><span class="lineNoCov">          0 : }</span></a>
+<span class="lineNum">      93 </span>            : 
+<span class="lineNum">      94 </span><span class="lineNoCov">          0 : FramerateEqualizer::~FramerateEqualizer()</span>
+<span class="lineNum">      95 </span>            : {
+<span class="lineNum">      96 </span><span class="lineNoCov">          0 :     attach( 0 );</span>
+<a name="97"><span class="lineNum">      97 </span><span class="lineNoCov">          0 : }</span></a>
+<span class="lineNum">      98 </span>            : 
+<span class="lineNum">      99 </span><span class="lineNoCov">          0 : void FramerateEqualizer::attach( Compound* compound )</span>
+<span class="lineNum">     100 </span>            : {
+<span class="lineNum">     101 </span><span class="lineNoCov">          0 :     _exit();</span>
+<span class="lineNum">     102 </span><span class="lineNoCov">          0 :     Equalizer::attach( compound );</span>
+<span class="lineNum">     103 </span><span class="lineNoCov">          0 : }</span>
+<a name="104"><span class="lineNum">     104 </span>            : </a>
+<span class="lineNum">     105 </span>            : 
+<span class="lineNum">     106 </span><span class="lineNoCov">          0 : void FramerateEqualizer::_init()</span>
+<span class="lineNum">     107 </span>            : {
+<span class="lineNum">     108 </span><span class="lineNoCov">          0 :     const Compound* compound = getCompound();</span>
+<span class="lineNum">     109 </span>            : 
+<span class="lineNum">     110 </span><span class="lineNoCov">          0 :     if( _nSamples &gt; 0 || !compound )</span>
+<span class="lineNum">     111 </span><span class="lineNoCov">          0 :         return;</span>
+<span class="lineNum">     112 </span>            : 
+<span class="lineNum">     113 </span><span class="lineNoCov">          0 :     _nSamples = 1;</span>
+<span class="lineNum">     114 </span>            : 
+<span class="lineNum">     115 </span>            :     // Subscribe to child channel load events
+<span class="lineNum">     116 </span><span class="lineNoCov">          0 :     const Compounds&amp; children = compound-&gt;getChildren();</span>
+<span class="lineNum">     117 </span>            : 
+<span class="lineNum">     118 </span><span class="lineNoCov">          0 :     LBASSERT( _loadListeners.empty( ));</span>
+<span class="lineNum">     119 </span><span class="lineNoCov">          0 :     _loadListeners.resize( children.size( ));</span>
+<span class="lineNum">     120 </span>            : 
+<span class="lineNum">     121 </span><span class="lineNoCov">          0 :     for( size_t i = 0; i &lt; children.size(); ++i )</span>
+<span class="lineNum">     122 </span>            :     {
+<span class="lineNum">     123 </span><span class="lineNoCov">          0 :         Compound*      child        = children[i];</span>
+<span class="lineNum">     124 </span><span class="lineNoCov">          0 :         const uint32_t period       = child-&gt;getInheritPeriod();</span>
+<span class="lineNum">     125 </span><span class="lineNoCov">          0 :         LoadListener&amp;  loadListener = _loadListeners[i];</span>
+<span class="lineNum">     126 </span>            : 
+<span class="lineNum">     127 </span><span class="lineNoCov">          0 :         loadListener.parent = this;</span>
+<span class="lineNum">     128 </span><span class="lineNoCov">          0 :         loadListener.period = period;</span>
+<span class="lineNum">     129 </span>            : 
+<span class="lineNum">     130 </span><span class="lineNoCov">          0 :         LoadSubscriber subscriber( &amp;loadListener );</span>
+<span class="lineNum">     131 </span><span class="lineNoCov">          0 :         child-&gt;accept( subscriber );</span>
+<span class="lineNum">     132 </span>            : 
+<span class="lineNum">     133 </span><span class="lineNoCov">          0 :         _nSamples = LB_MAX( _nSamples, period );</span>
+<span class="lineNum">     134 </span><span class="lineNoCov">          0 :     }</span>
+<span class="lineNum">     135 </span>            : 
+<span class="lineNum">     136 </span><span class="lineNoCov">          0 :     _nSamples = LB_MIN( _nSamples, 100 );</span>
+<a name="137"><span class="lineNum">     137 </span>            : }</a>
+<span class="lineNum">     138 </span>            : 
+<span class="lineNum">     139 </span><span class="lineNoCov">          0 : void FramerateEqualizer::_exit()</span>
+<span class="lineNum">     140 </span>            : {
+<span class="lineNum">     141 </span><span class="lineNoCov">          0 :     const Compound* compound = getCompound();</span>
+<span class="lineNum">     142 </span><span class="lineNoCov">          0 :     if( !compound || _nSamples == 0 )</span>
+<span class="lineNum">     143 </span><span class="lineNoCov">          0 :         return;</span>
+<span class="lineNum">     144 </span>            : 
+<span class="lineNum">     145 </span><span class="lineNoCov">          0 :     const Compounds&amp; children = compound-&gt;getChildren();</span>
+<span class="lineNum">     146 </span>            : 
+<span class="lineNum">     147 </span><span class="lineNoCov">          0 :     LBASSERT( _loadListeners.size() == children.size( ));</span>
+<span class="lineNum">     148 </span><span class="lineNoCov">          0 :     for( size_t i = 0; i &lt; children.size(); ++i )</span>
+<span class="lineNum">     149 </span>            :     {
+<span class="lineNum">     150 </span><span class="lineNoCov">          0 :         Compound*      child        = children[i];</span>
+<span class="lineNum">     151 </span><span class="lineNoCov">          0 :         LoadListener&amp;  loadListener = _loadListeners[i];</span>
+<span class="lineNum">     152 </span>            : 
+<span class="lineNum">     153 </span><span class="lineNoCov">          0 :         LoadUnsubscriber unsubscriber( &amp;loadListener );</span>
+<span class="lineNum">     154 </span><span class="lineNoCov">          0 :         child-&gt;accept( unsubscriber );</span>
+<span class="lineNum">     155 </span><span class="lineNoCov">          0 :     }</span>
+<span class="lineNum">     156 </span>            : 
+<span class="lineNum">     157 </span><span class="lineNoCov">          0 :     _loadListeners.clear();</span>
+<span class="lineNum">     158 </span><span class="lineNoCov">          0 :     _times.clear();</span>
+<span class="lineNum">     159 </span><span class="lineNoCov">          0 :     _nSamples = 0;</span>
+<span class="lineNum">     160 </span>            : }
+<a name="161"><span class="lineNum">     161 </span>            : </a>
+<span class="lineNum">     162 </span>            : 
+<span class="lineNum">     163 </span><span class="lineNoCov">          0 : void FramerateEqualizer::notifyUpdatePre( Compound* compound,</span>
+<span class="lineNum">     164 </span>            :                                           const uint32_t frameNumber )
+<span class="lineNum">     165 </span>            : {
+<span class="lineNum">     166 </span><span class="lineNoCov">          0 :     _init();</span>
+<span class="lineNum">     167 </span>            : 
+<span class="lineNum">     168 </span>            :     // find starting point of contiguous block
+<span class="lineNum">     169 </span><span class="lineNoCov">          0 :     const ssize_t size = ssize_t( _times.size( ));</span>
+<span class="lineNum">     170 </span><span class="lineNoCov">          0 :     ssize_t       from = 0;</span>
+<span class="lineNum">     171 </span><span class="lineNoCov">          0 :     if( size &gt; 0 )</span>
+<span class="lineNum">     172 </span>            :     {
+<span class="lineNum">     173 </span><span class="lineNoCov">          0 :         for( ssize_t i = size-1; i &gt;= 0; --i )</span>
+<span class="lineNum">     174 </span>            :         {
+<span class="lineNum">     175 </span><span class="lineNoCov">          0 :             if( _times[i].second == 0.f )</span>
+<span class="lineNum">     176 </span>            :             {
+<span class="lineNum">     177 </span><span class="lineNoCov">          0 :                 from = i;</span>
+<span class="lineNum">     178 </span><span class="lineNoCov">          0 :                 break;</span>
+<span class="lineNum">     179 </span>            :             }
+<span class="lineNum">     180 </span>            :         }
+<span class="lineNum">     181 </span>            :     }
+<span class="lineNum">     182 </span>            : 
+<span class="lineNum">     183 </span>            :     // find max / avg time in block
+<span class="lineNum">     184 </span><span class="lineNoCov">          0 :     size_t nSamples = 0;</span>
+<span class="lineNum">     185 </span>            : #ifdef USE_AVERAGE
+<span class="lineNum">     186 </span><span class="lineNoCov">          0 :     float sumTime = 0.f;</span>
+<span class="lineNum">     187 </span>            : #else
+<span class="lineNum">     188 </span>            :     float maxTime  = 0.f;
+<span class="lineNum">     189 </span>            : #endif
+<span class="lineNum">     190 </span>            : 
+<span class="lineNum">     191 </span><span class="lineNoCov">          0 :     LBLOG( LOG_LB2 ) &lt;&lt; &quot;Searching &quot; &lt;&lt; from+1 &lt;&lt; &quot;..&quot; &lt;&lt; size &lt;&lt; std::endl;</span>
+<span class="lineNum">     192 </span><span class="lineNoCov">          0 :     for( ++from; from &lt; size &amp;&amp; nSamples &lt; _nSamples; ++from )</span>
+<span class="lineNum">     193 </span>            :     {
+<span class="lineNum">     194 </span><span class="lineNoCov">          0 :         const FrameTime&amp; time = _times[from];</span>
+<span class="lineNum">     195 </span><span class="lineNoCov">          0 :         LBASSERT( time.first &gt; 0 );</span>
+<span class="lineNum">     196 </span><span class="lineNoCov">          0 :         LBASSERT( time.second != 0.f );</span>
+<span class="lineNum">     197 </span>            : 
+<span class="lineNum">     198 </span><span class="lineNoCov">          0 :         ++nSamples;</span>
+<span class="lineNum">     199 </span>            : #ifdef USE_AVERAGE
+<span class="lineNum">     200 </span><span class="lineNoCov">          0 :         sumTime += time.second;</span>
+<span class="lineNum">     201 </span>            : #else
+<span class="lineNum">     202 </span>            :         maxTime = LB_MAX( maxTime, time.second );
+<span class="lineNum">     203 </span>            : #endif
+<span class="lineNum">     204 </span><span class="lineNoCov">          0 :         LBLOG( LOG_LB2 ) &lt;&lt; &quot;Using &quot; &lt;&lt; time.first &lt;&lt; &quot;, &quot; &lt;&lt; time.second</span>
+<span class="lineNum">     205 </span><span class="lineNoCov">          0 :                          &lt;&lt; &quot;ms&quot; &lt;&lt; std::endl;</span>
+<span class="lineNum">     206 </span>            :     }
+<span class="lineNum">     207 </span>            : 
+<span class="lineNum">     208 </span><span class="lineNoCov">          0 :     if( nSamples == _nSamples )       // If we have a full set</span>
+<span class="lineNum">     209 </span><span class="lineNoCov">          0 :         while( from &lt; ssize_t( _times.size( )))</span>
+<span class="lineNum">     210 </span><span class="lineNoCov">          0 :             _times.pop_back();            //  delete all older samples</span>
+<span class="lineNum">     211 </span>            :     // always execute code above to not leak memory
+<span class="lineNum">     212 </span>            : 
+<span class="lineNum">     213 </span><span class="lineNoCov">          0 :     if( isFrozen() || !compound-&gt;isActive() || !isActive( ))</span>
+<span class="lineNum">     214 </span>            :     {
+<span class="lineNum">     215 </span><span class="lineNoCov">          0 :         compound-&gt;setMaxFPS( std::numeric_limits&lt; float &gt;::max( ));</span>
+<span class="lineNum">     216 </span><span class="lineNoCov">          0 :         return;</span>
+<span class="lineNum">     217 </span>            :     }
+<span class="lineNum">     218 </span>            : 
+<span class="lineNum">     219 </span><span class="lineNoCov">          0 :     if( nSamples &gt; 0 )</span>
+<span class="lineNum">     220 </span>            :     {
+<span class="lineNum">     221 </span>            :         //TODO: totalTime *= 1.f - damping;
+<span class="lineNum">     222 </span>            : #ifdef USE_AVERAGE
+<span class="lineNum">     223 </span><span class="lineNoCov">          0 :         const float time = (sumTime / nSamples) * SLOWDOWN;</span>
+<span class="lineNum">     224 </span>            : #else
+<span class="lineNum">     225 </span>            :         const float time = maxTime * SLOWDOWN;
+<span class="lineNum">     226 </span>            : #endif
+<span class="lineNum">     227 </span>            : 
+<span class="lineNum">     228 </span><span class="lineNoCov">          0 :         const float fps = 1000.f / time;</span>
+<span class="lineNum">     229 </span>            : #ifdef VSYNC_CAP
+<span class="lineNum">     230 </span><span class="lineNoCov">          0 :         if( fps &gt; VSYNC_CAP )</span>
+<span class="lineNum">     231 </span><span class="lineNoCov">          0 :             compound-&gt;setMaxFPS( std::numeric_limits&lt; float &gt;::max( ));</span>
+<span class="lineNum">     232 </span>            :         else
+<span class="lineNum">     233 </span>            : #endif
+<span class="lineNum">     234 </span><span class="lineNoCov">          0 :             compound-&gt;setMaxFPS( fps );</span>
+<span class="lineNum">     235 </span>            : 
+<span class="lineNum">     236 </span><span class="lineNoCov">          0 :         LBLOG( LOG_LB2 ) &lt;&lt; fps &lt;&lt; &quot; Hz from &quot; &lt;&lt; nSamples &lt;&lt; &quot;/&quot;</span>
+<span class="lineNum">     237 </span><span class="lineNoCov">          0 :                          &lt;&lt; _times.size() &lt;&lt; &quot; samples, &quot; &lt;&lt; time &lt;&lt; &quot;ms&quot;</span>
+<span class="lineNum">     238 </span><span class="lineNoCov">          0 :                          &lt;&lt; std::endl;</span>
+<span class="lineNum">     239 </span>            :     }
+<span class="lineNum">     240 </span>            : 
+<span class="lineNum">     241 </span><span class="lineNoCov">          0 :     if( frameNumber &gt; 0 )</span>
+<span class="lineNum">     242 </span><span class="lineNoCov">          0 :         _times.push_front( FrameTime( frameNumber, 0.f ));</span>
+<span class="lineNum">     243 </span><span class="lineNoCov">          0 :     LBASSERT( _times.size() &lt; 10 );</span>
+<a name="244"><span class="lineNum">     244 </span>            : }</a>
+<span class="lineNum">     245 </span>            : 
+<span class="lineNum">     246 </span><span class="lineNoCov">          0 : void FramerateEqualizer::LoadListener::notifyLoadData(</span>
+<span class="lineNum">     247 </span>            :     Channel* channel, const uint32_t frameNumber, const Statistics&amp; statistics,
+<span class="lineNum">     248 </span>            :     const Viewport&amp; /*region*/  )
+<span class="lineNum">     249 </span>            : {
+<span class="lineNum">     250 </span>            :     // gather required load data
+<span class="lineNum">     251 </span><span class="lineNoCov">          0 :     int64_t startTime = std::numeric_limits&lt; int64_t &gt;::max();</span>
+<span class="lineNum">     252 </span><span class="lineNoCov">          0 :     int64_t endTime   = 0;</span>
+<span class="lineNum">     253 </span><span class="lineNoCov">          0 :     for( size_t i = 0; i &lt; statistics.size(); ++i )</span>
+<span class="lineNum">     254 </span>            :     {
+<span class="lineNum">     255 </span><span class="lineNoCov">          0 :         const Statistic&amp; data = statistics[i];</span>
+<span class="lineNum">     256 </span><span class="lineNoCov">          0 :         switch( data.type )</span>
+<span class="lineNum">     257 </span>            :         {
+<span class="lineNum">     258 </span>            :             case Statistic::CHANNEL_CLEAR:
+<span class="lineNum">     259 </span>            :             case Statistic::CHANNEL_DRAW:
+<span class="lineNum">     260 </span>            :             case Statistic::CHANNEL_ASSEMBLE:
+<span class="lineNum">     261 </span>            :             case Statistic::CHANNEL_READBACK:
+<span class="lineNum">     262 </span><span class="lineNoCov">          0 :                 startTime = LB_MIN( startTime, data.startTime );</span>
+<span class="lineNum">     263 </span><span class="lineNoCov">          0 :                 endTime   = LB_MAX( endTime, data.endTime );</span>
+<span class="lineNum">     264 </span><span class="lineNoCov">          0 :                 break;</span>
+<span class="lineNum">     265 </span>            : 
+<span class="lineNum">     266 </span>            :             default:
+<span class="lineNum">     267 </span><span class="lineNoCov">          0 :                 break;</span>
+<span class="lineNum">     268 </span>            :         }
+<span class="lineNum">     269 </span>            :     }
+<span class="lineNum">     270 </span>            : 
+<span class="lineNum">     271 </span><span class="lineNoCov">          0 :     if( startTime == std::numeric_limits&lt; int64_t &gt;::max( ))</span>
+<span class="lineNum">     272 </span><span class="lineNoCov">          0 :         return;</span>
+<span class="lineNum">     273 </span>            : 
+<span class="lineNum">     274 </span><span class="lineNoCov">          0 :     if( startTime == endTime ) // very fast draws might report 0 times</span>
+<span class="lineNum">     275 </span><span class="lineNoCov">          0 :         ++endTime;</span>
+<span class="lineNum">     276 </span>            : 
+<span class="lineNum">     277 </span><span class="lineNoCov">          0 :     for( std::deque&lt; FrameTime &gt;::iterator i = parent-&gt;_times.begin();</span>
+<span class="lineNum">     278 </span><span class="lineNoCov">          0 :          i != parent-&gt;_times.end(); ++i )</span>
+<span class="lineNum">     279 </span>            :     {
+<span class="lineNum">     280 </span><span class="lineNoCov">          0 :         FrameTime&amp; frameTime = *i;</span>
+<span class="lineNum">     281 </span><span class="lineNoCov">          0 :         if( frameTime.first != frameNumber )</span>
+<span class="lineNum">     282 </span><span class="lineNoCov">          0 :             continue;</span>
+<span class="lineNum">     283 </span>            : 
+<span class="lineNum">     284 </span><span class="lineNoCov">          0 :         const float time = static_cast&lt; float &gt;( endTime - startTime ) / period;</span>
+<span class="lineNum">     285 </span><span class="lineNoCov">          0 :         frameTime.second = LB_MAX( frameTime.second, time );</span>
+<span class="lineNum">     286 </span><span class="lineNoCov">          0 :         LBLOG( LOG_LB2 ) &lt;&lt; &quot;Frame &quot; &lt;&lt; frameNumber &lt;&lt; &quot; channel &quot;</span>
+<span class="lineNum">     287 </span><span class="lineNoCov">          0 :                         &lt;&lt; channel-&gt;getName() &lt;&lt; &quot; time &quot; &lt;&lt; time</span>
+<span class="lineNum">     288 </span><span class="lineNoCov">          0 :                         &lt;&lt; &quot; period &quot; &lt;&lt; period &lt;&lt; std::endl;</span>
+<span class="lineNum">     289 </span>            :     }
+<a name="290"><span class="lineNum">     290 </span>            : }</a>
+<span class="lineNum">     291 </span>            : 
+<span class="lineNum">     292 </span><span class="lineNoCov">          0 : std::ostream&amp; operator &lt;&lt; ( std::ostream&amp; os, const FramerateEqualizer* lb )</span>
+<span class="lineNum">     293 </span>            : {
+<span class="lineNum">     294 </span><span class="lineNoCov">          0 :     if( lb )</span>
+<span class="lineNum">     295 </span><span class="lineNoCov">          0 :         os &lt;&lt; &quot;framerate_equalizer {}&quot; &lt;&lt; std::endl;</span>
+<span class="lineNum">     296 </span><span class="lineNoCov">          0 :     return os;</span>
+<span class="lineNum">     297 </span>            : }
+<a name="298"><span class="lineNum">     298 </span>            : </a>
+<span class="lineNum">     299 </span>            : }
+<span class="lineNum">     300 </span><span class="lineCov">         60 : }</span>
+</pre>
+      </td>
+    </tr>
+  </table>
+  <br>
+
+  <table width="100%" border=0 cellspacing=0 cellpadding=0>
+    <tr><td class="ruler"><img src="../../../../glass.png" width=3 height=3 alt=""></td></tr>
+    <tr><td class="versionInfo">Generated by: <a href="http://ltp.sourceforge.net/coverage/lcov.php" target="_parent">LCOV version 1.11</a></td></tr>
+  </table>
+  <br>
+
+</body>
+</html>

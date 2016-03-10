@@ -1,0 +1,1833 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+
+<html lang="en">
+
+<head>
+  <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+  <title>LCOV - Livre - Collage/co/rspConnection.cpp</title>
+  <link rel="stylesheet" type="text/css" href="../../gcov.css">
+</head>
+
+<body>
+
+  <table width="100%" border=0 cellspacing=0 cellpadding=0>
+    <tr><td class="title">LCOV - code coverage report</td></tr>
+    <tr><td class="ruler"><img src="../../glass.png" width=3 height=3 alt=""></td></tr>
+
+    <tr>
+      <td width="100%">
+        <table cellpadding=1 border=0 width="100%">
+          <tr>
+            <td width="10%" class="headerItem">Current view:</td>
+            <td width="35%" class="headerValue"><a href="../../index.html">top level</a> - <a href="index.html">Collage/co</a> - rspConnection.cpp<span style="font-size: 80%;"> (source / <a href="rspConnection.cpp.func-sort-c.html">functions</a>)</span></td>
+            <td width="5%"></td>
+            <td width="15%"></td>
+            <td width="10%" class="headerCovTableHead">Hit</td>
+            <td width="10%" class="headerCovTableHead">Total</td>
+            <td width="15%" class="headerCovTableHead">Coverage</td>
+          </tr>
+          <tr>
+            <td class="headerItem">Test:</td>
+            <td class="headerValue">Livre</td>
+            <td></td>
+            <td class="headerItem">Lines:</td>
+            <td class="headerCovTableEntry">1</td>
+            <td class="headerCovTableEntry">900</td>
+            <td class="headerCovTableEntryLo">0.1 %</td>
+          </tr>
+          <tr>
+            <td class="headerItem">Date:</td>
+            <td class="headerValue">2016-03-10 14:06:39</td>
+            <td></td>
+            <td class="headerItem">Functions:</td>
+            <td class="headerCovTableEntry">2</td>
+            <td class="headerCovTableEntry">50</td>
+            <td class="headerCovTableEntryLo">4.0 %</td>
+          </tr>
+          <tr><td><img src="../../glass.png" width=3 height=3 alt=""></td></tr>
+        </table>
+      </td>
+    </tr>
+
+    <tr><td class="ruler"><img src="../../glass.png" width=3 height=3 alt=""></td></tr>
+  </table>
+
+  <table cellpadding=0 cellspacing=0 border=0>
+    <tr>
+      <td><br></td>
+    </tr>
+    <tr>
+      <td>
+<pre class="sourceHeading">          Line data    Source code</pre>
+<pre class="source">
+<a name="1"><span class="lineNum">       1 </span>            : </a>
+<span class="lineNum">       2 </span>            : /* Copyright (c)      2009, Cedric Stalder &lt;cedric.stalder@gmail.com&gt;
+<span class="lineNum">       3 </span>            :  *               2009-2014, Stefan Eilemann &lt;eile@equalizergraphics.com&gt;
+<span class="lineNum">       4 </span>            :  *                    2012, Daniel Nachbaur &lt;danielnachbaur@gmail.com&gt;
+<span class="lineNum">       5 </span>            :  *
+<span class="lineNum">       6 </span>            :  * This file is part of Collage &lt;https://github.com/Eyescale/Collage&gt;
+<span class="lineNum">       7 </span>            :  *
+<span class="lineNum">       8 </span>            :  * This library is free software; you can redistribute it and/or modify it under
+<span class="lineNum">       9 </span>            :  * the terms of the GNU Lesser General Public License version 2.1 as published
+<span class="lineNum">      10 </span>            :  * by the Free Software Foundation.
+<span class="lineNum">      11 </span>            :  *
+<span class="lineNum">      12 </span>            :  * This library is distributed in the hope that it will be useful, but WITHOUT
+<span class="lineNum">      13 </span>            :  * ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS
+<span class="lineNum">      14 </span>            :  * FOR A PARTICULAR PURPOSE.  See the GNU Lesser General Public License for more
+<span class="lineNum">      15 </span>            :  * details.
+<span class="lineNum">      16 </span>            :  *
+<span class="lineNum">      17 </span>            :  * You should have received a copy of the GNU Lesser General Public License
+<span class="lineNum">      18 </span>            :  * along with this library; if not, write to the Free Software Foundation, Inc.,
+<span class="lineNum">      19 </span>            :  * 51 Franklin Street, Fifth Floor, Boston, MA 02110-1301 USA.
+<span class="lineNum">      20 </span>            :  */
+<span class="lineNum">      21 </span>            : 
+<span class="lineNum">      22 </span>            : #include &quot;rspConnection.h&quot;
+<span class="lineNum">      23 </span>            : 
+<span class="lineNum">      24 </span>            : #include &quot;connection.h&quot;
+<span class="lineNum">      25 </span>            : #include &quot;connectionDescription.h&quot;
+<span class="lineNum">      26 </span>            : #include &quot;global.h&quot;
+<span class="lineNum">      27 </span>            : #include &quot;log.h&quot;
+<span class="lineNum">      28 </span>            : 
+<span class="lineNum">      29 </span>            : #include &lt;lunchbox/rng.h&gt;
+<span class="lineNum">      30 </span>            : #include &lt;lunchbox/scopedMutex.h&gt;
+<span class="lineNum">      31 </span>            : #include &lt;lunchbox/sleep.h&gt;
+<span class="lineNum">      32 </span>            : 
+<span class="lineNum">      33 </span>            : #include &lt;boost/bind.hpp&gt;
+<span class="lineNum">      34 </span>            : 
+<span class="lineNum">      35 </span>            : //#define CO_INSTRUMENT_RSP
+<span class="lineNum">      36 </span>            : #define CO_RSP_MERGE_WRITES
+<span class="lineNum">      37 </span>            : #define CO_RSP_MAX_TIMEOUTS 1000
+<span class="lineNum">      38 </span>            : #ifdef _WIN32
+<span class="lineNum">      39 </span>            : #  define CO_RSP_DEFAULT_PORT (4242)
+<span class="lineNum">      40 </span>            : #else
+<span class="lineNum">      41 </span>            : #  define CO_RSP_DEFAULT_PORT ( (getuid() % 64511) + 1024 )
+<span class="lineNum">      42 </span>            : #endif
+<span class="lineNum">      43 </span>            : 
+<span class="lineNum">      44 </span>            : 
+<span class="lineNum">      45 </span>            : // Note: Do not use version &gt; 255, endianness detection magic relies on this.
+<span class="lineNum">      46 </span>            : const uint16_t CO_RSP_PROTOCOL_VERSION = 0;
+<span class="lineNum">      47 </span>            : 
+<span class="lineNum">      48 </span>            : namespace bp = boost::posix_time;
+<span class="lineNum">      49 </span>            : namespace ip = boost::asio::ip;
+<span class="lineNum">      50 </span>            : 
+<span class="lineNum">      51 </span>            : namespace co
+<span class="lineNum">      52 </span>            : {
+<span class="lineNum">      53 </span>            : 
+<span class="lineNum">      54 </span>            : namespace
+<span class="lineNum">      55 </span>            : {
+<span class="lineNum">      56 </span>            : #ifdef CO_INSTRUMENT_RSP
+<span class="lineNum">      57 </span>            : lunchbox::a_int32_t nReadData;
+<span class="lineNum">      58 </span>            : lunchbox::a_int32_t nBytesRead;
+<span class="lineNum">      59 </span>            : lunchbox::a_int32_t nBytesWritten;
+<span class="lineNum">      60 </span>            : lunchbox::a_int32_t nDatagrams;
+<span class="lineNum">      61 </span>            : lunchbox::a_int32_t nRepeated;
+<span class="lineNum">      62 </span>            : lunchbox::a_int32_t nMergedDatagrams;
+<span class="lineNum">      63 </span>            : lunchbox::a_int32_t nAckRequests;
+<span class="lineNum">      64 </span>            : lunchbox::a_int32_t nAcksSend;
+<span class="lineNum">      65 </span>            : lunchbox::a_int32_t nAcksSendTotal;
+<span class="lineNum">      66 </span>            : lunchbox::a_int32_t nAcksRead;
+<span class="lineNum">      67 </span>            : lunchbox::a_int32_t nAcksAccepted;
+<span class="lineNum">      68 </span>            : lunchbox::a_int32_t nNAcksSend;
+<span class="lineNum">      69 </span>            : lunchbox::a_int32_t nNAcksRead;
+<span class="lineNum">      70 </span>            : lunchbox::a_int32_t nNAcksResend;
+<span class="lineNum">      71 </span>            : 
+<span class="lineNum">      72 </span>            : float writeWaitTime = 0.f;
+<span class="lineNum">      73 </span>            : lunchbox::Clock instrumentClock;
+<span class="lineNum">      74 </span>            : #endif
+<span class="lineNum">      75 </span>            : 
+<span class="lineNum">      76 </span>            : static uint16_t _numBuffers = 0;
+<a name="77"><span class="lineNum">      77 </span>            : }</a>
+<span class="lineNum">      78 </span>            : 
+<span class="lineNum">      79 </span><span class="lineNoCov">          0 : RSPConnection::RSPConnection()</span>
+<span class="lineNum">      80 </span>            :     : _id( 0 )
+<span class="lineNum">      81 </span>            :     , _idAccepted( false )
+<span class="lineNum">      82 </span><span class="lineNoCov">          0 :     , _mtu( Global::getIAttribute( Global::IATTR_UDP_MTU ))</span>
+<span class="lineNum">      83 </span><span class="lineNoCov">          0 :     , _ackFreq( Global::getIAttribute( Global::IATTR_RSP_ACK_FREQUENCY ))</span>
+<span class="lineNum">      84 </span>            :     , _payloadSize( _mtu - sizeof( DatagramData ))
+<span class="lineNum">      85 </span>            :     , _timeouts( 0 )
+<span class="lineNum">      86 </span><span class="lineNoCov">          0 :     , _event( new EventConnection )</span>
+<span class="lineNum">      87 </span>            :     , _read( 0 )
+<span class="lineNum">      88 </span>            :     , _write( 0 )
+<span class="lineNum">      89 </span>            :     , _timeout( _ioService )
+<span class="lineNum">      90 </span>            :     , _wakeup( _ioService )
+<span class="lineNum">      91 </span><span class="lineNoCov">          0 :     , _maxBucketSize( ( _mtu * _ackFreq) &gt;&gt; 1 )</span>
+<span class="lineNum">      92 </span>            :     , _bucketSize( 0 )
+<span class="lineNum">      93 </span>            :     , _sendRate( 0 )
+<span class="lineNum">      94 </span>            :     , _thread( 0 )
+<span class="lineNum">      95 </span><span class="lineNoCov">          0 :     , _acked( std::numeric_limits&lt; uint16_t &gt;::max( ))</span>
+<span class="lineNum">      96 </span>            :     , _threadBuffers( Global::getIAttribute( Global::IATTR_RSP_NUM_BUFFERS))
+<span class="lineNum">      97 </span>            :     , _recvBuffer( _mtu )
+<span class="lineNum">      98 </span>            :     , _readBuffer( 0 )
+<span class="lineNum">      99 </span>            :     , _readBufferPos( 0 )
+<span class="lineNum">     100 </span>            :     , _sequence( 0 )
+<span class="lineNum">     101 </span>            :     // ensure we have a handleConnectedTimeout before the write pop
+<span class="lineNum">     102 </span><span class="lineNoCov">          0 :     , _writeTimeOut( Global::IATTR_RSP_ACK_TIMEOUT * CO_RSP_MAX_TIMEOUTS * 2 )</span>
+<span class="lineNum">     103 </span>            : {
+<span class="lineNum">     104 </span><span class="lineNoCov">          0 :     _buildNewID();</span>
+<span class="lineNum">     105 </span><span class="lineNoCov">          0 :     ConnectionDescriptionPtr description = _getDescription();</span>
+<span class="lineNum">     106 </span><span class="lineNoCov">          0 :     description-&gt;type = CONNECTIONTYPE_RSP;</span>
+<span class="lineNum">     107 </span><span class="lineNoCov">          0 :     description-&gt;bandwidth = 102400;</span>
+<span class="lineNum">     108 </span>            : 
+<span class="lineNum">     109 </span><span class="lineNoCov">          0 :     LBCHECK( _event-&gt;connect( ));</span>
+<span class="lineNum">     110 </span>            : 
+<span class="lineNum">     111 </span><span class="lineNoCov">          0 :     _buffers.reserve( Global::getIAttribute( Global::IATTR_RSP_NUM_BUFFERS ));</span>
+<span class="lineNum">     112 </span><span class="lineNoCov">          0 :     while( static_cast&lt; int32_t &gt;( _buffers.size( )) &lt;</span>
+<span class="lineNum">     113 </span><span class="lineNoCov">          0 :            Global::getIAttribute( Global::IATTR_RSP_NUM_BUFFERS ))</span>
+<span class="lineNum">     114 </span>            :     {
+<span class="lineNum">     115 </span><span class="lineNoCov">          0 :         _buffers.push_back( new Buffer( _mtu ));</span>
+<span class="lineNum">     116 </span>            :     }
+<span class="lineNum">     117 </span>            : 
+<span class="lineNum">     118 </span><span class="lineNoCov">          0 :     LBASSERT( sizeof( DatagramNack ) &lt;= size_t( _mtu ));</span>
+<span class="lineNum">     119 </span><span class="lineNoCov">          0 :     LBLOG( LOG_RSP ) &lt;&lt; &quot;New RSP connection, &quot; &lt;&lt; _buffers.size()</span>
+<span class="lineNum">     120 </span><span class="lineNoCov">          0 :                      &lt;&lt; &quot; buffers of &quot; &lt;&lt; _mtu &lt;&lt; &quot; bytes&quot; &lt;&lt; std::endl;</span>
+<span class="lineNum">     121 </span>            : 
+<a name="122"><span class="lineNum">     122 </span><span class="lineNoCov">          0 : }</span></a>
+<span class="lineNum">     123 </span>            : 
+<span class="lineNum">     124 </span><span class="lineNoCov">          0 : RSPConnection::~RSPConnection()</span>
+<span class="lineNum">     125 </span>            : {
+<span class="lineNum">     126 </span><span class="lineNoCov">          0 :     _close();</span>
+<span class="lineNum">     127 </span><span class="lineNoCov">          0 :     while( !_buffers.empty( ))</span>
+<span class="lineNum">     128 </span>            :     {
+<span class="lineNum">     129 </span><span class="lineNoCov">          0 :         delete _buffers.back();</span>
+<span class="lineNum">     130 </span><span class="lineNoCov">          0 :         _buffers.pop_back();</span>
+<span class="lineNum">     131 </span>            :     }
+<a name="132"><span class="lineNum">     132 </span><span class="lineNoCov">          0 : }</span></a>
+<span class="lineNum">     133 </span>            : 
+<span class="lineNum">     134 </span><span class="lineNoCov">          0 : void RSPConnection::_close()</span>
+<span class="lineNum">     135 </span>            : {
+<span class="lineNum">     136 </span><span class="lineNoCov">          0 :     if( _parent.isValid() &amp;&amp; _parent-&gt;_id == _id )</span>
+<span class="lineNum">     137 </span><span class="lineNoCov">          0 :         _parent-&gt;close();</span>
+<span class="lineNum">     138 </span>            : 
+<span class="lineNum">     139 </span><span class="lineNoCov">          0 :     while( !_parent &amp;&amp; _isWriting( ))</span>
+<span class="lineNum">     140 </span><span class="lineNoCov">          0 :         lunchbox::sleep( 10 /*ms*/ );</span>
+<span class="lineNum">     141 </span>            : 
+<span class="lineNum">     142 </span><span class="lineNoCov">          0 :     if( isClosed( ))</span>
+<span class="lineNum">     143 </span><span class="lineNoCov">          0 :         return;</span>
+<span class="lineNum">     144 </span>            : 
+<span class="lineNum">     145 </span><span class="lineNoCov">          0 :     lunchbox::ScopedWrite mutex( _mutexEvent );</span>
+<span class="lineNum">     146 </span><span class="lineNoCov">          0 :     if( _thread )</span>
+<span class="lineNum">     147 </span>            :     {
+<span class="lineNum">     148 </span><span class="lineNoCov">          0 :         LBASSERT( !_thread-&gt;isCurrent( ));</span>
+<span class="lineNum">     149 </span><span class="lineNoCov">          0 :         _sendSimpleDatagram( ID_EXIT, _id );</span>
+<span class="lineNum">     150 </span><span class="lineNoCov">          0 :         _ioService.stop();</span>
+<span class="lineNum">     151 </span><span class="lineNoCov">          0 :         _thread-&gt;join();</span>
+<span class="lineNum">     152 </span><span class="lineNoCov">          0 :         delete _thread;</span>
+<span class="lineNum">     153 </span>            :     }
+<span class="lineNum">     154 </span>            : 
+<span class="lineNum">     155 </span><span class="lineNoCov">          0 :     _setState( STATE_CLOSING );</span>
+<span class="lineNum">     156 </span><span class="lineNoCov">          0 :     if( _thread )</span>
+<span class="lineNum">     157 </span>            :     {
+<span class="lineNum">     158 </span><span class="lineNoCov">          0 :          _thread = 0;</span>
+<span class="lineNum">     159 </span>            : 
+<span class="lineNum">     160 </span>            :         // notify children to close
+<span class="lineNum">     161 </span><span class="lineNoCov">          0 :         for( RSPConnectionsCIter i=_children.begin(); i !=_children.end(); ++i )</span>
+<span class="lineNum">     162 </span>            :         {
+<span class="lineNum">     163 </span><span class="lineNoCov">          0 :             RSPConnectionPtr child = *i;</span>
+<span class="lineNum">     164 </span><span class="lineNoCov">          0 :             lunchbox::ScopedWrite mutexChild( child-&gt;_mutexEvent );</span>
+<span class="lineNum">     165 </span><span class="lineNoCov">          0 :             child-&gt;_appBuffers.push( 0 );</span>
+<span class="lineNum">     166 </span><span class="lineNoCov">          0 :             child-&gt;_event-&gt;set();</span>
+<span class="lineNum">     167 </span><span class="lineNoCov">          0 :         }</span>
+<span class="lineNum">     168 </span>            : 
+<span class="lineNum">     169 </span><span class="lineNoCov">          0 :         _children.clear();</span>
+<span class="lineNum">     170 </span><span class="lineNoCov">          0 :         _newChildren.clear();</span>
+<span class="lineNum">     171 </span>            :     }
+<span class="lineNum">     172 </span>            : 
+<span class="lineNum">     173 </span><span class="lineNoCov">          0 :     _parent = 0;</span>
+<span class="lineNum">     174 </span>            : 
+<span class="lineNum">     175 </span><span class="lineNoCov">          0 :     if( _read )</span>
+<span class="lineNum">     176 </span><span class="lineNoCov">          0 :         _read-&gt;close();</span>
+<span class="lineNum">     177 </span><span class="lineNoCov">          0 :     delete _read;</span>
+<span class="lineNum">     178 </span><span class="lineNoCov">          0 :     _read = 0;</span>
+<span class="lineNum">     179 </span>            : 
+<span class="lineNum">     180 </span><span class="lineNoCov">          0 :     if( _write )</span>
+<span class="lineNum">     181 </span><span class="lineNoCov">          0 :         _write-&gt;close();</span>
+<span class="lineNum">     182 </span><span class="lineNoCov">          0 :     delete _write;</span>
+<span class="lineNum">     183 </span><span class="lineNoCov">          0 :     _write = 0;</span>
+<span class="lineNum">     184 </span>            : 
+<span class="lineNum">     185 </span><span class="lineNoCov">          0 :     _threadBuffers.clear();</span>
+<span class="lineNum">     186 </span><span class="lineNoCov">          0 :     _appBuffers.push( 0 ); // unlock any other read/write threads</span>
+<span class="lineNum">     187 </span>            : 
+<span class="lineNum">     188 </span><span class="lineNoCov">          0 :     _setState( STATE_CLOSED );</span>
+<span class="lineNum">     189 </span>            : 
+<span class="lineNum">     190 </span><span class="lineNoCov">          0 :     mutex.leave();</span>
+<span class="lineNum">     191 </span><span class="lineNoCov">          0 :     _event-&gt;close();</span>
+<span class="lineNum">     192 </span>            : }
+<span class="lineNum">     193 </span>            : 
+<span class="lineNum">     194 </span>            : //----------------------------------------------------------------------
+<a name="195"><span class="lineNum">     195 </span>            : // Async IO handles</a>
+<span class="lineNum">     196 </span>            : //----------------------------------------------------------------------
+<span class="lineNum">     197 </span><span class="lineNoCov">          0 : uint16_t RSPConnection::_buildNewID()</span>
+<span class="lineNum">     198 </span>            : {
+<span class="lineNum">     199 </span><span class="lineNoCov">          0 :     lunchbox::RNG rng;</span>
+<span class="lineNum">     200 </span><span class="lineNoCov">          0 :     _id = rng.get&lt; uint16_t &gt;();</span>
+<span class="lineNum">     201 </span><span class="lineNoCov">          0 :     return _id;</span>
+<a name="202"><span class="lineNum">     202 </span>            : }</a>
+<span class="lineNum">     203 </span>            : 
+<span class="lineNum">     204 </span><span class="lineNoCov">          0 : bool RSPConnection::listen()</span>
+<span class="lineNum">     205 </span>            : {
+<span class="lineNum">     206 </span><span class="lineNoCov">          0 :     ConnectionDescriptionPtr description = _getDescription();</span>
+<span class="lineNum">     207 </span><span class="lineNoCov">          0 :     LBASSERT( description-&gt;type == CONNECTIONTYPE_RSP );</span>
+<span class="lineNum">     208 </span>            : 
+<span class="lineNum">     209 </span><span class="lineNoCov">          0 :     if( !isClosed( ))</span>
+<span class="lineNum">     210 </span><span class="lineNoCov">          0 :         return false;</span>
+<span class="lineNum">     211 </span>            : 
+<span class="lineNum">     212 </span><span class="lineNoCov">          0 :     _setState( STATE_CONNECTING );</span>
+<span class="lineNum">     213 </span><span class="lineNoCov">          0 :     _numBuffers =  Global::getIAttribute( Global::IATTR_RSP_NUM_BUFFERS );</span>
+<span class="lineNum">     214 </span>            : 
+<span class="lineNum">     215 </span>            :     // init udp connection
+<span class="lineNum">     216 </span><span class="lineNoCov">          0 :     if( description-&gt;port == ConnectionDescription::RANDOM_MULTICAST_PORT )</span>
+<span class="lineNum">     217 </span><span class="lineNoCov">          0 :         description-&gt;port = 0; // Let OS choose</span>
+<span class="lineNum">     218 </span><span class="lineNoCov">          0 :     else if( description-&gt;port == 0 )</span>
+<span class="lineNum">     219 </span><span class="lineNoCov">          0 :         description-&gt;port = CO_RSP_DEFAULT_PORT;</span>
+<span class="lineNum">     220 </span><span class="lineNoCov">          0 :     if( description-&gt;getHostname().empty( ))</span>
+<span class="lineNum">     221 </span><span class="lineNoCov">          0 :         description-&gt;setHostname( &quot;239.255.42.43&quot; );</span>
+<span class="lineNum">     222 </span><span class="lineNoCov">          0 :     if( description-&gt;getInterface().empty( ))</span>
+<span class="lineNum">     223 </span><span class="lineNoCov">          0 :         description-&gt;setInterface( &quot;0.0.0.0&quot; );</span>
+<span class="lineNum">     224 </span>            : 
+<span class="lineNum">     225 </span>            :     try
+<span class="lineNum">     226 </span>            :     {
+<span class="lineNum">     227 </span><span class="lineNoCov">          0 :         const ip::address readAddress( ip::address::from_string( &quot;0.0.0.0&quot; ));</span>
+<span class="lineNum">     228 </span>            :         const ip::udp::endpoint readEndpoint( readAddress,
+<span class="lineNum">     229 </span><span class="lineNoCov">          0 :                                               description-&gt;port );</span>
+<span class="lineNum">     230 </span><span class="lineNoCov">          0 :         const std::string&amp; port = std::to_string( unsigned( description-&gt;port));</span>
+<span class="lineNum">     231 </span><span class="lineNoCov">          0 :         ip::udp::resolver resolver( _ioService );</span>
+<span class="lineNum">     232 </span>            :         const ip::udp::resolver::query queryHN( ip::udp::v4(),
+<span class="lineNum">     233 </span><span class="lineNoCov">          0 :                                                 description-&gt;getHostname(),</span>
+<span class="lineNum">     234 </span><span class="lineNoCov">          0 :                                                 port );</span>
+<span class="lineNum">     235 </span><span class="lineNoCov">          0 :         const ip::udp::resolver::iterator hostname = resolver.resolve( queryHN);</span>
+<span class="lineNum">     236 </span>            : 
+<span class="lineNum">     237 </span><span class="lineNoCov">          0 :         if( hostname == ip::udp::resolver::iterator( ))</span>
+<span class="lineNum">     238 </span><span class="lineNoCov">          0 :             return false;</span>
+<span class="lineNum">     239 </span>            : 
+<span class="lineNum">     240 </span><span class="lineNoCov">          0 :         const ip::udp::endpoint writeEndpoint = *hostname;</span>
+<span class="lineNum">     241 </span><span class="lineNoCov">          0 :         const ip::address mcAddr( writeEndpoint.address( ));</span>
+<span class="lineNum">     242 </span>            : 
+<span class="lineNum">     243 </span><span class="lineNoCov">          0 :         _read = new ip::udp::socket( _ioService );</span>
+<span class="lineNum">     244 </span><span class="lineNoCov">          0 :         _write = new ip::udp::socket( _ioService );</span>
+<span class="lineNum">     245 </span><span class="lineNoCov">          0 :         _read-&gt;open( readEndpoint.protocol( ));</span>
+<span class="lineNum">     246 </span><span class="lineNoCov">          0 :         _write-&gt;open( writeEndpoint.protocol( ));</span>
+<span class="lineNum">     247 </span>            : 
+<span class="lineNum">     248 </span><span class="lineNoCov">          0 :         _read-&gt;set_option( ip::udp::socket::reuse_address( true ));</span>
+<span class="lineNum">     249 </span><span class="lineNoCov">          0 :         _write-&gt;set_option( ip::udp::socket::reuse_address( true ));</span>
+<span class="lineNum">     250 </span>            :         _read-&gt;set_option( ip::udp::socket::receive_buffer_size(
+<span class="lineNum">     251 </span><span class="lineNoCov">          0 :                        Global::getIAttribute( Global::IATTR_UDP_BUFFER_SIZE )));</span>
+<span class="lineNum">     252 </span>            :         _write-&gt;set_option( ip::udp::socket::send_buffer_size(
+<span class="lineNum">     253 </span><span class="lineNoCov">          0 :                        Global::getIAttribute( Global::IATTR_UDP_BUFFER_SIZE )));</span>
+<span class="lineNum">     254 </span>            : 
+<span class="lineNum">     255 </span><span class="lineNoCov">          0 :         _read-&gt;bind( readEndpoint );</span>
+<span class="lineNum">     256 </span><span class="lineNoCov">          0 :         description-&gt;port = _read-&gt;local_endpoint().port();</span>
+<span class="lineNum">     257 </span>            : 
+<span class="lineNum">     258 </span>            :         const ip::udp::resolver::query queryIF( ip::udp::v4(),
+<span class="lineNum">     259 </span><span class="lineNoCov">          0 :                                                 description-&gt;getInterface(),</span>
+<span class="lineNum">     260 </span><span class="lineNoCov">          0 :                                                 &quot;0&quot; );</span>
+<span class="lineNum">     261 </span>            :         const ip::udp::resolver::iterator interfaceIP =
+<span class="lineNum">     262 </span><span class="lineNoCov">          0 :             resolver.resolve( queryIF );</span>
+<span class="lineNum">     263 </span>            : 
+<span class="lineNum">     264 </span><span class="lineNoCov">          0 :         if( interfaceIP == ip::udp::resolver::iterator( ))</span>
+<span class="lineNum">     265 </span><span class="lineNoCov">          0 :             return false;</span>
+<span class="lineNum">     266 </span>            : 
+<span class="lineNum">     267 </span><span class="lineNoCov">          0 :         const ip::address ifAddr( ip::udp::endpoint( *interfaceIP ).address( ));</span>
+<span class="lineNum">     268 </span><span class="lineNoCov">          0 :         LBINFO &lt;&lt; &quot;Joining &quot; &lt;&lt; mcAddr &lt;&lt; &quot; on &quot; &lt;&lt; ifAddr &lt;&lt; std::endl;</span>
+<span class="lineNum">     269 </span>            : 
+<span class="lineNum">     270 </span>            :         _read-&gt;set_option( ip::multicast::join_group( mcAddr.to_v4(),
+<span class="lineNum">     271 </span><span class="lineNoCov">          0 :                                                       ifAddr.to_v4( )));</span>
+<span class="lineNum">     272 </span><span class="lineNoCov">          0 :         _write-&gt;set_option( ip::multicast::outbound_interface( ifAddr.to_v4()));</span>
+<span class="lineNum">     273 </span>            : #ifdef SO_BINDTODEVICE // https://github.com/Eyescale/Collage/issues/16
+<span class="lineNum">     274 </span><span class="lineNoCov">          0 :         const std::string&amp; ifIP = ifAddr.to_string();</span>
+<span class="lineNum">     275 </span>            :         ::setsockopt( _write-&gt;native(), SOL_SOCKET, SO_BINDTODEVICE,
+<span class="lineNum">     276 </span><span class="lineNoCov">          0 :                       ifIP.c_str(), ifIP.size() + 1 );</span>
+<span class="lineNum">     277 </span>            :         ::setsockopt( _read-&gt;native(), SOL_SOCKET, SO_BINDTODEVICE,
+<span class="lineNum">     278 </span><span class="lineNoCov">          0 :                       ifIP.c_str(), ifIP.size() + 1 );</span>
+<span class="lineNum">     279 </span>            : #endif
+<span class="lineNum">     280 </span>            : 
+<span class="lineNum">     281 </span><span class="lineNoCov">          0 :         _write-&gt;connect( writeEndpoint );</span>
+<span class="lineNum">     282 </span>            : 
+<span class="lineNum">     283 </span><span class="lineNoCov">          0 :         _read-&gt;set_option( ip::multicast::enable_loopback( false ));</span>
+<span class="lineNum">     284 </span><span class="lineNoCov">          0 :         _write-&gt;set_option( ip::multicast::enable_loopback( false ));</span>
+<span class="lineNum">     285 </span>            :     }
+<span class="lineNum">     286 </span><span class="lineNoCov">          0 :     catch( const boost::system::system_error&amp; e )</span>
+<span class="lineNum">     287 </span>            :     {
+<span class="lineNum">     288 </span><span class="lineNoCov">          0 :         LBWARN &lt;&lt; &quot;can't setup underlying UDP connection: &quot; &lt;&lt; e.what()</span>
+<span class="lineNum">     289 </span><span class="lineNoCov">          0 :                &lt;&lt; std::endl;</span>
+<span class="lineNum">     290 </span><span class="lineNoCov">          0 :         delete _read;</span>
+<span class="lineNum">     291 </span><span class="lineNoCov">          0 :         delete _write;</span>
+<span class="lineNum">     292 </span><span class="lineNoCov">          0 :         _read = 0;</span>
+<span class="lineNum">     293 </span><span class="lineNoCov">          0 :         _write = 0;</span>
+<span class="lineNum">     294 </span><span class="lineNoCov">          0 :         return false;</span>
+<span class="lineNum">     295 </span>            :     }
+<span class="lineNum">     296 </span>            : 
+<span class="lineNum">     297 </span>            :     // init communication protocol thread
+<span class="lineNum">     298 </span><span class="lineNoCov">          0 :     _thread = new Thread( this );</span>
+<span class="lineNum">     299 </span><span class="lineNoCov">          0 :     _bucketSize = 0;</span>
+<span class="lineNum">     300 </span><span class="lineNoCov">          0 :     _sendRate = description-&gt;bandwidth;</span>
+<span class="lineNum">     301 </span>            : 
+<span class="lineNum">     302 </span>            :     // waits until RSP protocol establishes connection to the multicast network
+<span class="lineNum">     303 </span><span class="lineNoCov">          0 :     if( !_thread-&gt;start( ) )</span>
+<span class="lineNum">     304 </span>            :     {
+<span class="lineNum">     305 </span><span class="lineNoCov">          0 :         close();</span>
+<span class="lineNum">     306 </span><span class="lineNoCov">          0 :         return false;</span>
+<span class="lineNum">     307 </span>            :     }
+<span class="lineNum">     308 </span>            : 
+<span class="lineNum">     309 </span>            :     // Make all buffers available for writing
+<span class="lineNum">     310 </span><span class="lineNoCov">          0 :     LBASSERT( _appBuffers.isEmpty( ));</span>
+<span class="lineNum">     311 </span><span class="lineNoCov">          0 :     _appBuffers.push( _buffers );</span>
+<span class="lineNum">     312 </span>            : 
+<span class="lineNum">     313 </span><span class="lineNoCov">          0 :     LBDEBUG &lt;&lt; &quot;Listening on &quot; &lt;&lt; description-&gt;getHostname() &lt;&lt; &quot;:&quot;</span>
+<span class="lineNum">     314 </span><span class="lineNoCov">          0 :             &lt;&lt; description-&gt;port &lt;&lt; &quot; (&quot; &lt;&lt; description-&gt;toString() &lt;&lt; &quot; @&quot;</span>
+<span class="lineNum">     315 </span><span class="lineNoCov">          0 :             &lt;&lt; (void*)this &lt;&lt; &quot;)&quot; &lt;&lt; std::endl;</span>
+<span class="lineNum">     316 </span><span class="lineNoCov">          0 :     return true;</span>
+<a name="317"><span class="lineNum">     317 </span>            : }</a>
+<span class="lineNum">     318 </span>            : 
+<span class="lineNum">     319 </span><span class="lineNoCov">          0 : ConnectionPtr RSPConnection::acceptSync()</span>
+<span class="lineNum">     320 </span>            : {
+<span class="lineNum">     321 </span><span class="lineNoCov">          0 :     if( !isListening( ))</span>
+<span class="lineNum">     322 </span><span class="lineNoCov">          0 :         return 0;</span>
+<span class="lineNum">     323 </span>            : 
+<span class="lineNum">     324 </span><span class="lineNoCov">          0 :     lunchbox::ScopedWrite mutex( _mutexConnection );</span>
+<span class="lineNum">     325 </span><span class="lineNoCov">          0 :     LBASSERT( !_newChildren.empty( ));</span>
+<span class="lineNum">     326 </span><span class="lineNoCov">          0 :     if( _newChildren.empty( ))</span>
+<span class="lineNum">     327 </span><span class="lineNoCov">          0 :         return 0;</span>
+<span class="lineNum">     328 </span>            : 
+<span class="lineNum">     329 </span><span class="lineNoCov">          0 :     RSPConnectionPtr newConnection = _newChildren.back();</span>
+<span class="lineNum">     330 </span><span class="lineNoCov">          0 :     _newChildren.pop_back();</span>
+<span class="lineNum">     331 </span>            : 
+<span class="lineNum">     332 </span><span class="lineNoCov">          0 :     LBINFO &lt;&lt; _id &lt;&lt; &quot; accepted RSP connection &quot; &lt;&lt; newConnection-&gt;_id</span>
+<span class="lineNum">     333 </span><span class="lineNoCov">          0 :            &lt;&lt; std::endl;</span>
+<span class="lineNum">     334 </span>            : 
+<span class="lineNum">     335 </span><span class="lineNoCov">          0 :     lunchbox::ScopedWrite mutex2( _mutexEvent );</span>
+<span class="lineNum">     336 </span><span class="lineNoCov">          0 :     if( _newChildren.empty() )</span>
+<span class="lineNum">     337 </span><span class="lineNoCov">          0 :         _event-&gt;reset();</span>
+<span class="lineNum">     338 </span>            :     else
+<span class="lineNum">     339 </span><span class="lineNoCov">          0 :         _event-&gt;set();</span>
+<span class="lineNum">     340 </span>            : 
+<span class="lineNum">     341 </span><span class="lineNoCov">          0 :     return newConnection;</span>
+<a name="342"><span class="lineNum">     342 </span>            : }</a>
+<span class="lineNum">     343 </span>            : 
+<span class="lineNum">     344 </span><span class="lineNoCov">          0 : int64_t RSPConnection::readSync( void* buffer, const uint64_t bytes, const bool)</span>
+<span class="lineNum">     345 </span>            : {
+<span class="lineNum">     346 </span><span class="lineNoCov">          0 :     LBASSERT( bytes &gt; 0 );</span>
+<span class="lineNum">     347 </span><span class="lineNoCov">          0 :     if( !isConnected ( ))</span>
+<span class="lineNum">     348 </span><span class="lineNoCov">          0 :         return -1;</span>
+<span class="lineNum">     349 </span>            : 
+<span class="lineNum">     350 </span><span class="lineNoCov">          0 :     uint64_t bytesLeft = bytes;</span>
+<span class="lineNum">     351 </span><span class="lineNoCov">          0 :     uint8_t* ptr = reinterpret_cast&lt; uint8_t* &gt;( buffer );</span>
+<span class="lineNum">     352 </span>            : 
+<span class="lineNum">     353 </span>            :     // redundant (done by the caller already), but saves some lock ops
+<span class="lineNum">     354 </span><span class="lineNoCov">          0 :     while( bytesLeft )</span>
+<span class="lineNum">     355 </span>            :     {
+<span class="lineNum">     356 </span><span class="lineNoCov">          0 :         if( !_readBuffer )</span>
+<span class="lineNum">     357 </span>            :         {
+<span class="lineNum">     358 </span><span class="lineNoCov">          0 :             LBASSERT( _readBufferPos == 0 );</span>
+<span class="lineNum">     359 </span><span class="lineNoCov">          0 :             _readBuffer = _appBuffers.pop();</span>
+<span class="lineNum">     360 </span><span class="lineNoCov">          0 :             if( !_readBuffer )</span>
+<span class="lineNum">     361 </span>            :             {
+<span class="lineNum">     362 </span><span class="lineNoCov">          0 :                 close();</span>
+<span class="lineNum">     363 </span>            :                 return (bytes == bytesLeft) ?
+<span class="lineNum">     364 </span><span class="lineNoCov">          0 :                     -1 : static_cast&lt; int64_t &gt;( bytes - bytesLeft );</span>
+<span class="lineNum">     365 </span>            :             }
+<span class="lineNum">     366 </span>            :         }
+<span class="lineNum">     367 </span>            : 
+<span class="lineNum">     368 </span>            :         const DatagramData* header = reinterpret_cast&lt; const DatagramData* &gt;(
+<span class="lineNum">     369 </span><span class="lineNoCov">          0 :             _readBuffer-&gt;getData( ));</span>
+<span class="lineNum">     370 </span><span class="lineNoCov">          0 :         const uint8_t* payload = reinterpret_cast&lt; const uint8_t* &gt;( header+1 );</span>
+<span class="lineNum">     371 </span><span class="lineNoCov">          0 :         const size_t dataLeft = header-&gt;size - _readBufferPos;</span>
+<span class="lineNum">     372 </span><span class="lineNoCov">          0 :         const size_t size = LB_MIN( static_cast&lt; size_t &gt;( bytesLeft ),</span>
+<span class="lineNum">     373 </span>            :                                     dataLeft );
+<span class="lineNum">     374 </span>            : 
+<span class="lineNum">     375 </span><span class="lineNoCov">          0 :         memcpy( ptr, payload + _readBufferPos, size );</span>
+<span class="lineNum">     376 </span><span class="lineNoCov">          0 :         _readBufferPos += size;</span>
+<span class="lineNum">     377 </span><span class="lineNoCov">          0 :         ptr += size;</span>
+<span class="lineNum">     378 </span><span class="lineNoCov">          0 :         bytesLeft -= size;</span>
+<span class="lineNum">     379 </span>            : 
+<span class="lineNum">     380 </span>            :         // if all data in the buffer has been taken
+<span class="lineNum">     381 </span><span class="lineNoCov">          0 :         if( _readBufferPos &gt;= header-&gt;size )</span>
+<span class="lineNum">     382 </span>            :         {
+<span class="lineNum">     383 </span><span class="lineNoCov">          0 :             LBASSERT( _readBufferPos == header-&gt;size );</span>
+<span class="lineNum">     384 </span>            :             //LBLOG( LOG_RSP ) &lt;&lt; &quot;reset read buffer  &quot; &lt;&lt; header-&gt;sequence
+<span class="lineNum">     385 </span>            :             //                 &lt;&lt; std::endl;
+<span class="lineNum">     386 </span>            : 
+<span class="lineNum">     387 </span><span class="lineNoCov">          0 :             LBCHECK( _threadBuffers.push( _readBuffer ));</span>
+<span class="lineNum">     388 </span><span class="lineNoCov">          0 :             _readBuffer = 0;</span>
+<span class="lineNum">     389 </span><span class="lineNoCov">          0 :             _readBufferPos = 0;</span>
+<span class="lineNum">     390 </span>            :         }
+<span class="lineNum">     391 </span>            :         else
+<span class="lineNum">     392 </span>            :         {
+<span class="lineNum">     393 </span><span class="lineNoCov">          0 :             LBASSERT( _readBufferPos &lt; header-&gt;size );</span>
+<span class="lineNum">     394 </span>            :         }
+<span class="lineNum">     395 </span>            :     }
+<span class="lineNum">     396 </span>            : 
+<span class="lineNum">     397 </span><span class="lineNoCov">          0 :     if( _readBuffer || !_appBuffers.isEmpty( ))</span>
+<span class="lineNum">     398 </span><span class="lineNoCov">          0 :         _event-&gt;set();</span>
+<span class="lineNum">     399 </span>            :     else
+<span class="lineNum">     400 </span>            :     {
+<span class="lineNum">     401 </span><span class="lineNoCov">          0 :         lunchbox::ScopedWrite mutex( _mutexEvent );</span>
+<span class="lineNum">     402 </span><span class="lineNoCov">          0 :         if( _appBuffers.isEmpty( ))</span>
+<span class="lineNum">     403 </span><span class="lineNoCov">          0 :             _event-&gt;reset();</span>
+<span class="lineNum">     404 </span>            :     }
+<span class="lineNum">     405 </span>            : 
+<span class="lineNum">     406 </span>            : #ifdef CO_INSTRUMENT_RSP
+<span class="lineNum">     407 </span>            :     nBytesRead += bytes;
+<span class="lineNum">     408 </span>            : #endif
+<span class="lineNum">     409 </span><span class="lineNoCov">          0 :     return bytes;</span>
+<a name="410"><span class="lineNum">     410 </span>            : }</a>
+<span class="lineNum">     411 </span>            : 
+<span class="lineNum">     412 </span><span class="lineNoCov">          0 : void RSPConnection::Thread::run()</span>
+<span class="lineNum">     413 </span>            : {
+<span class="lineNum">     414 </span><span class="lineNoCov">          0 :     _connection-&gt;_runThread();</span>
+<span class="lineNum">     415 </span><span class="lineNoCov">          0 :     _connection = 0;</span>
+<span class="lineNum">     416 </span><span class="lineNoCov">          0 :     LBINFO &lt;&lt; &quot;Left RSP protocol thread&quot; &lt;&lt; std::endl;</span>
+<a name="417"><span class="lineNum">     417 </span><span class="lineNoCov">          0 : }</span></a>
+<span class="lineNum">     418 </span>            : 
+<span class="lineNum">     419 </span><span class="lineNoCov">          0 : void RSPConnection::_handleTimeout( const boost::system::error_code&amp; error )</span>
+<span class="lineNum">     420 </span>            : {
+<span class="lineNum">     421 </span><span class="lineNoCov">          0 :     if( error == boost::asio::error::operation_aborted )</span>
+<span class="lineNum">     422 </span><span class="lineNoCov">          0 :         return;</span>
+<span class="lineNum">     423 </span>            : 
+<span class="lineNum">     424 </span><span class="lineNoCov">          0 :     if( isListening( ))</span>
+<span class="lineNum">     425 </span><span class="lineNoCov">          0 :         _handleConnectedTimeout();</span>
+<span class="lineNum">     426 </span><span class="lineNoCov">          0 :     else if( _idAccepted )</span>
+<span class="lineNum">     427 </span><span class="lineNoCov">          0 :         _handleInitTimeout();</span>
+<span class="lineNum">     428 </span>            :     else
+<span class="lineNum">     429 </span><span class="lineNoCov">          0 :         _handleAcceptIDTimeout();</span>
+<a name="430"><span class="lineNum">     430 </span>            : }</a>
+<span class="lineNum">     431 </span>            : 
+<span class="lineNum">     432 </span><span class="lineNoCov">          0 : void RSPConnection::_handleAcceptIDTimeout()</span>
+<span class="lineNum">     433 </span>            : {
+<span class="lineNum">     434 </span><span class="lineNoCov">          0 :     ++_timeouts;</span>
+<span class="lineNum">     435 </span><span class="lineNoCov">          0 :     if( _timeouts &lt; 20 )</span>
+<span class="lineNum">     436 </span>            :     {
+<span class="lineNum">     437 </span><span class="lineNoCov">          0 :         LBLOG( LOG_RSP ) &lt;&lt; &quot;Announce &quot; &lt;&lt; _id &lt;&lt; std::endl;</span>
+<span class="lineNum">     438 </span><span class="lineNoCov">          0 :         _sendSimpleDatagram( ID_HELLO, _id );</span>
+<span class="lineNum">     439 </span>            :     }
+<span class="lineNum">     440 </span>            :     else
+<span class="lineNum">     441 </span>            :     {
+<span class="lineNum">     442 </span><span class="lineNoCov">          0 :         LBLOG( LOG_RSP ) &lt;&lt; &quot;Confirm &quot; &lt;&lt; _id &lt;&lt; std::endl;</span>
+<span class="lineNum">     443 </span><span class="lineNoCov">          0 :         _sendSimpleDatagram( ID_CONFIRM, _id );</span>
+<span class="lineNum">     444 </span><span class="lineNoCov">          0 :         _addConnection( _id, _sequence );</span>
+<span class="lineNum">     445 </span><span class="lineNoCov">          0 :         _idAccepted = true;</span>
+<span class="lineNum">     446 </span><span class="lineNoCov">          0 :         _timeouts = 0;</span>
+<span class="lineNum">     447 </span>            :         // send a first datagram to announce me and discover all other
+<span class="lineNum">     448 </span>            :         // connections
+<span class="lineNum">     449 </span><span class="lineNoCov">          0 :         _sendCountNode();</span>
+<span class="lineNum">     450 </span>            :     }
+<span class="lineNum">     451 </span><span class="lineNoCov">          0 :     _setTimeout( 10 );</span>
+<a name="452"><span class="lineNum">     452 </span><span class="lineNoCov">          0 : }</span></a>
+<span class="lineNum">     453 </span>            : 
+<span class="lineNum">     454 </span><span class="lineNoCov">          0 : void RSPConnection::_handleInitTimeout( )</span>
+<span class="lineNum">     455 </span>            : {
+<span class="lineNum">     456 </span><span class="lineNoCov">          0 :     LBASSERT( !isListening( ))</span>
+<span class="lineNum">     457 </span><span class="lineNoCov">          0 :     ++_timeouts;</span>
+<span class="lineNum">     458 </span><span class="lineNoCov">          0 :     if( _timeouts &lt; 20 )</span>
+<span class="lineNum">     459 </span><span class="lineNoCov">          0 :         _sendCountNode();</span>
+<span class="lineNum">     460 </span>            :     else
+<span class="lineNum">     461 </span>            :     {
+<span class="lineNum">     462 </span><span class="lineNoCov">          0 :         _setState( STATE_LISTENING );</span>
+<span class="lineNum">     463 </span><span class="lineNoCov">          0 :         LBINFO &lt;&lt; &quot;RSP connection &quot; &lt;&lt; _id &lt;&lt; &quot; listening&quot; &lt;&lt; std::endl;</span>
+<span class="lineNum">     464 </span><span class="lineNoCov">          0 :         _timeouts = 0;</span>
+<span class="lineNum">     465 </span><span class="lineNoCov">          0 :         _ioService.stop(); // thread initialized, run restarts</span>
+<span class="lineNum">     466 </span>            :     }
+<span class="lineNum">     467 </span><span class="lineNoCov">          0 :     _setTimeout( 10 );</span>
+<a name="468"><span class="lineNum">     468 </span><span class="lineNoCov">          0 : }</span></a>
+<span class="lineNum">     469 </span>            : 
+<span class="lineNum">     470 </span><span class="lineNoCov">          0 : void RSPConnection::_clearWriteQueues()</span>
+<span class="lineNum">     471 </span>            : {
+<span class="lineNum">     472 </span><span class="lineNoCov">          0 :     while( !_threadBuffers.isEmpty() )</span>
+<span class="lineNum">     473 </span>            :     {
+<span class="lineNum">     474 </span><span class="lineNoCov">          0 :         Buffer* buffer = 0;</span>
+<span class="lineNum">     475 </span><span class="lineNoCov">          0 :         _threadBuffers.pop( buffer );</span>
+<span class="lineNum">     476 </span><span class="lineNoCov">          0 :         _writeBuffers.push_back( buffer );</span>
+<span class="lineNum">     477 </span>            :     }
+<span class="lineNum">     478 </span>            : 
+<span class="lineNum">     479 </span><span class="lineNoCov">          0 :     _finishWriteQueue( _sequence - 1 );</span>
+<span class="lineNum">     480 </span><span class="lineNoCov">          0 :     LBASSERT( _threadBuffers.isEmpty() &amp;&amp; _writeBuffers.empty() );</span>
+<a name="481"><span class="lineNum">     481 </span><span class="lineNoCov">          0 : }</span></a>
+<span class="lineNum">     482 </span>            : 
+<span class="lineNum">     483 </span><span class="lineNoCov">          0 : void RSPConnection::_handleConnectedTimeout()</span>
+<span class="lineNum">     484 </span>            : {
+<span class="lineNum">     485 </span><span class="lineNoCov">          0 :     if( !isListening( ))</span>
+<span class="lineNum">     486 </span>            :     {
+<span class="lineNum">     487 </span><span class="lineNoCov">          0 :         _clearWriteQueues();</span>
+<span class="lineNum">     488 </span><span class="lineNoCov">          0 :         _ioService.stop();</span>
+<span class="lineNum">     489 </span><span class="lineNoCov">          0 :         return;</span>
+<span class="lineNum">     490 </span>            :     }
+<span class="lineNum">     491 </span>            : 
+<span class="lineNum">     492 </span><span class="lineNoCov">          0 :     _processOutgoing();</span>
+<span class="lineNum">     493 </span>            : 
+<span class="lineNum">     494 </span><span class="lineNoCov">          0 :     if( _timeouts &gt;= CO_RSP_MAX_TIMEOUTS )</span>
+<span class="lineNum">     495 </span>            :     {
+<span class="lineNum">     496 </span><span class="lineNoCov">          0 :         LBERROR &lt;&lt; &quot;Too many timeouts during send: &quot; &lt;&lt; _timeouts &lt;&lt; std::endl;</span>
+<span class="lineNum">     497 </span><span class="lineNoCov">          0 :         bool all = true;</span>
+<span class="lineNum">     498 </span><span class="lineNoCov">          0 :         for( RSPConnectionsCIter i =_children.begin(); i !=_children.end(); ++i)</span>
+<span class="lineNum">     499 </span>            :         {
+<span class="lineNum">     500 </span><span class="lineNoCov">          0 :             RSPConnectionPtr child = *i;</span>
+<span class="lineNum">     501 </span><span class="lineNoCov">          0 :             if ( child-&gt;_acked &gt;= _sequence - _numBuffers &amp;&amp; child-&gt;_id != _id )</span>
+<span class="lineNum">     502 </span>            :             {
+<span class="lineNum">     503 </span><span class="lineNoCov">          0 :                 all = false;</span>
+<span class="lineNum">     504 </span><span class="lineNoCov">          0 :                 break;</span>
+<span class="lineNum">     505 </span>            :             }
+<span class="lineNum">     506 </span><span class="lineNoCov">          0 :         }</span>
+<span class="lineNum">     507 </span>            : 
+<span class="lineNum">     508 </span>            :         // if all connections failed we probably got disconnected -&gt; close and
+<span class="lineNum">     509 </span>            :         // exit else close all failed child connections
+<span class="lineNum">     510 </span><span class="lineNoCov">          0 :         if ( all )</span>
+<span class="lineNum">     511 </span>            :         {
+<span class="lineNum">     512 </span><span class="lineNoCov">          0 :             _sendSimpleDatagram( ID_EXIT, _id );</span>
+<span class="lineNum">     513 </span><span class="lineNoCov">          0 :             _appBuffers.pushFront( 0 ); // unlock write function</span>
+<span class="lineNum">     514 </span>            : 
+<span class="lineNum">     515 </span><span class="lineNoCov">          0 :             for( RSPConnectionsCIter i =_children.begin();</span>
+<span class="lineNum">     516 </span><span class="lineNoCov">          0 :                  i !=_children.end(); ++i)</span>
+<span class="lineNum">     517 </span>            :             {
+<span class="lineNum">     518 </span><span class="lineNoCov">          0 :                 RSPConnectionPtr child = *i;</span>
+<span class="lineNum">     519 </span><span class="lineNoCov">          0 :                 child-&gt;_setState( STATE_CLOSING );</span>
+<span class="lineNum">     520 </span><span class="lineNoCov">          0 :                 child-&gt;_appBuffers.push( 0 ); // unlock read func</span>
+<span class="lineNum">     521 </span><span class="lineNoCov">          0 :             }</span>
+<span class="lineNum">     522 </span>            : 
+<span class="lineNum">     523 </span><span class="lineNoCov">          0 :             _clearWriteQueues();</span>
+<span class="lineNum">     524 </span><span class="lineNoCov">          0 :             _ioService.stop();</span>
+<span class="lineNum">     525 </span><span class="lineNoCov">          0 :             return;</span>
+<span class="lineNum">     526 </span>            :         }
+<span class="lineNum">     527 </span>            : 
+<span class="lineNum">     528 </span><span class="lineNoCov">          0 :         RSPConnectionsCIter i =_children.begin();</span>
+<span class="lineNum">     529 </span><span class="lineNoCov">          0 :         while ( i !=_children.end() )</span>
+<span class="lineNum">     530 </span>            :         {
+<span class="lineNum">     531 </span><span class="lineNoCov">          0 :             RSPConnectionPtr child = *i;</span>
+<span class="lineNum">     532 </span><span class="lineNoCov">          0 :             if ( child-&gt;_acked &lt; _sequence - 1 &amp;&amp; _id != child-&gt;_id )</span>
+<span class="lineNum">     533 </span>            :             {
+<span class="lineNum">     534 </span><span class="lineNoCov">          0 :                 _sendSimpleDatagram( ID_EXIT, child-&gt;_id );</span>
+<span class="lineNum">     535 </span><span class="lineNoCov">          0 :                 _removeConnection( child-&gt;_id );</span>
+<span class="lineNum">     536 </span>            :             }
+<span class="lineNum">     537 </span>            :             else
+<span class="lineNum">     538 </span>            :             {
+<span class="lineNum">     539 </span><span class="lineNoCov">          0 :                 uint16_t wb = static_cast&lt;uint16_t&gt;( _writeBuffers.size( ));</span>
+<span class="lineNum">     540 </span><span class="lineNoCov">          0 :                 child-&gt;_acked = _sequence - wb;</span>
+<span class="lineNum">     541 </span><span class="lineNoCov">          0 :                 ++i;</span>
+<span class="lineNum">     542 </span>            :             }
+<span class="lineNum">     543 </span><span class="lineNoCov">          0 :         }</span>
+<span class="lineNum">     544 </span>            : 
+<span class="lineNum">     545 </span><span class="lineNoCov">          0 :         _timeouts = 0;</span>
+<span class="lineNum">     546 </span>            :     }
+<span class="lineNum">     547 </span>            : }
+<a name="548"><span class="lineNum">     548 </span>            : </a>
+<span class="lineNum">     549 </span>            : RSPConnection::DatagramNode*
+<span class="lineNum">     550 </span><span class="lineNoCov">          0 : RSPConnection::_getDatagramNode( const size_t bytes )</span>
+<span class="lineNum">     551 </span>            : {
+<span class="lineNum">     552 </span><span class="lineNoCov">          0 :     if( bytes &lt; sizeof( DatagramNode ))</span>
+<span class="lineNum">     553 </span>            :     {
+<span class="lineNum">     554 </span><span class="lineNoCov">          0 :         LBERROR &lt;&lt; &quot;DatagramNode size mismatch, got &quot; &lt;&lt; bytes &lt;&lt; &quot; instead of &quot;</span>
+<span class="lineNum">     555 </span><span class="lineNoCov">          0 :                 &lt;&lt; sizeof( DatagramNode ) &lt;&lt; &quot; bytes&quot; &lt;&lt; std::endl;</span>
+<span class="lineNum">     556 </span>            :         //close();
+<span class="lineNum">     557 </span><span class="lineNoCov">          0 :         return 0;</span>
+<span class="lineNum">     558 </span>            :     }
+<span class="lineNum">     559 </span>            :     DatagramNode&amp; node =
+<span class="lineNum">     560 </span><span class="lineNoCov">          0 :                     *reinterpret_cast&lt; DatagramNode* &gt;( _recvBuffer.getData( ));</span>
+<span class="lineNum">     561 </span><span class="lineNoCov">          0 :     node.byteswap();</span>
+<span class="lineNum">     562 </span><span class="lineNoCov">          0 :     if( node.protocolVersion != CO_RSP_PROTOCOL_VERSION )</span>
+<span class="lineNum">     563 </span>            :     {
+<span class="lineNum">     564 </span><span class="lineNoCov">          0 :         LBERROR &lt;&lt; &quot;Protocol version mismatch, got &quot; &lt;&lt; node.protocolVersion</span>
+<span class="lineNum">     565 </span><span class="lineNoCov">          0 :                 &lt;&lt; &quot; instead of &quot; &lt;&lt; CO_RSP_PROTOCOL_VERSION &lt;&lt; std::endl;</span>
+<span class="lineNum">     566 </span>            :         //close();
+<span class="lineNum">     567 </span><span class="lineNoCov">          0 :         return 0;</span>
+<span class="lineNum">     568 </span>            :     }
+<span class="lineNum">     569 </span><span class="lineNoCov">          0 :     return &amp;node;</span>
+<a name="570"><span class="lineNum">     570 </span>            : }</a>
+<span class="lineNum">     571 </span>            : 
+<span class="lineNum">     572 </span><span class="lineNoCov">          0 : bool RSPConnection::_initThread()</span>
+<span class="lineNum">     573 </span>            : {
+<span class="lineNum">     574 </span><span class="lineNoCov">          0 :     LBLOG( LOG_RSP ) &lt;&lt; &quot;Started RSP protocol thread&quot; &lt;&lt; std::endl;</span>
+<span class="lineNum">     575 </span><span class="lineNoCov">          0 :     _timeouts = 0;</span>
+<span class="lineNum">     576 </span>            : 
+<span class="lineNum">     577 </span>            :    // send a first datagram to announce me and discover other connections
+<span class="lineNum">     578 </span><span class="lineNoCov">          0 :     LBLOG( LOG_RSP ) &lt;&lt; &quot;Announce &quot; &lt;&lt; _id &lt;&lt; std::endl;</span>
+<span class="lineNum">     579 </span><span class="lineNoCov">          0 :     _sendSimpleDatagram( ID_HELLO, _id );</span>
+<span class="lineNum">     580 </span><span class="lineNoCov">          0 :     _setTimeout( 10 );</span>
+<span class="lineNum">     581 </span><span class="lineNoCov">          0 :     _asyncReceiveFrom();</span>
+<span class="lineNum">     582 </span><span class="lineNoCov">          0 :     _ioService.run();</span>
+<span class="lineNum">     583 </span><span class="lineNoCov">          0 :     return isListening();</span>
+<a name="584"><span class="lineNum">     584 </span>            : }</a>
+<span class="lineNum">     585 </span>            : 
+<span class="lineNum">     586 </span><span class="lineNoCov">          0 : void RSPConnection::_runThread()</span>
+<span class="lineNum">     587 </span>            : {
+<span class="lineNum">     588 </span>            :     //__debugbreak();
+<span class="lineNum">     589 </span><span class="lineNoCov">          0 :     _ioService.reset();</span>
+<span class="lineNum">     590 </span><span class="lineNoCov">          0 :     _ioService.run();</span>
+<a name="591"><span class="lineNum">     591 </span><span class="lineNoCov">          0 : }</span></a>
+<span class="lineNum">     592 </span>            : 
+<span class="lineNum">     593 </span><span class="lineNoCov">          0 : void RSPConnection::_setTimeout( const int32_t timeOut )</span>
+<span class="lineNum">     594 </span>            : {
+<span class="lineNum">     595 </span><span class="lineNoCov">          0 :     LBASSERT( timeOut &gt;= 0 );</span>
+<span class="lineNum">     596 </span><span class="lineNoCov">          0 :     _timeout.expires_from_now( boost::posix_time::milliseconds( timeOut ));</span>
+<span class="lineNum">     597 </span>            :     _timeout.async_wait( boost::bind( &amp;RSPConnection::_handleTimeout, this,
+<span class="lineNum">     598 </span><span class="lineNoCov">          0 :                                       boost::asio::placeholders::error ));</span>
+<a name="599"><span class="lineNum">     599 </span><span class="lineNoCov">          0 : }</span></a>
+<span class="lineNum">     600 </span>            : 
+<span class="lineNum">     601 </span><span class="lineNoCov">          0 : void RSPConnection::_postWakeup()</span>
+<span class="lineNum">     602 </span>            : {
+<span class="lineNum">     603 </span><span class="lineNoCov">          0 :     _wakeup.expires_from_now( boost::posix_time::milliseconds( 0 ));</span>
+<span class="lineNum">     604 </span>            :     _wakeup.async_wait( boost::bind( &amp;RSPConnection::_handleTimeout, this,
+<span class="lineNum">     605 </span><span class="lineNoCov">          0 :                                      boost::asio::placeholders::error ));</span>
+<a name="606"><span class="lineNum">     606 </span><span class="lineNoCov">          0 : }</span></a>
+<span class="lineNum">     607 </span>            : 
+<span class="lineNum">     608 </span><span class="lineNoCov">          0 : void RSPConnection::_processOutgoing()</span>
+<span class="lineNum">     609 </span>            : {
+<span class="lineNum">     610 </span>            : #ifdef CO_INSTRUMENT_RSP
+<span class="lineNum">     611 </span>            :     if( instrumentClock.getTime64() &gt; 1000 )
+<span class="lineNum">     612 </span>            :     {
+<span class="lineNum">     613 </span>            :         LBWARN &lt;&lt; *this &lt;&lt; std::endl;
+<span class="lineNum">     614 </span>            :         instrumentClock.reset();
+<span class="lineNum">     615 </span>            :     }
+<span class="lineNum">     616 </span>            : #endif
+<span class="lineNum">     617 </span>            : 
+<span class="lineNum">     618 </span><span class="lineNoCov">          0 :     if( !_repeatQueue.empty( ))</span>
+<span class="lineNum">     619 </span><span class="lineNoCov">          0 :         _repeatData();</span>
+<span class="lineNum">     620 </span>            :     else
+<span class="lineNum">     621 </span><span class="lineNoCov">          0 :         _writeData();</span>
+<span class="lineNum">     622 </span>            : 
+<span class="lineNum">     623 </span><span class="lineNoCov">          0 :     if( !_threadBuffers.isEmpty() || !_repeatQueue.empty( ))</span>
+<span class="lineNum">     624 </span>            :     {
+<span class="lineNum">     625 </span><span class="lineNoCov">          0 :         _setTimeout( 0 ); // call again to send remaining</span>
+<span class="lineNum">     626 </span><span class="lineNoCov">          0 :         return;</span>
+<span class="lineNum">     627 </span>            :     }
+<span class="lineNum">     628 </span>            :     // no more data to write, check/send ack request, reset timeout
+<span class="lineNum">     629 </span>            : 
+<span class="lineNum">     630 </span><span class="lineNoCov">          0 :     if( _writeBuffers.empty( )) // got all acks</span>
+<span class="lineNum">     631 </span>            :     {
+<span class="lineNum">     632 </span><span class="lineNoCov">          0 :         _timeouts = 0;</span>
+<span class="lineNum">     633 </span><span class="lineNoCov">          0 :         _timeout.cancel();</span>
+<span class="lineNum">     634 </span><span class="lineNoCov">          0 :         return;</span>
+<span class="lineNum">     635 </span>            :     }
+<span class="lineNum">     636 </span>            : 
+<span class="lineNum">     637 </span>            :     const int64_t timeout =
+<span class="lineNum">     638 </span><span class="lineNoCov">          0 :         Global::getIAttribute( Global::IATTR_RSP_ACK_TIMEOUT );</span>
+<span class="lineNum">     639 </span><span class="lineNoCov">          0 :     const int64_t left = timeout - _clock.getTime64();</span>
+<span class="lineNum">     640 </span>            : 
+<span class="lineNum">     641 </span><span class="lineNoCov">          0 :     if( left &gt; 0 )</span>
+<span class="lineNum">     642 </span>            :     {
+<span class="lineNum">     643 </span><span class="lineNoCov">          0 :         _setTimeout( left );</span>
+<span class="lineNum">     644 </span><span class="lineNoCov">          0 :         return;</span>
+<span class="lineNum">     645 </span>            :     }
+<span class="lineNum">     646 </span>            : 
+<span class="lineNum">     647 </span>            :     // (repeat) ack request
+<span class="lineNum">     648 </span><span class="lineNoCov">          0 :     _clock.reset();</span>
+<span class="lineNum">     649 </span><span class="lineNoCov">          0 :     ++_timeouts;</span>
+<span class="lineNum">     650 </span><span class="lineNoCov">          0 :     if ( _timeouts &lt; CO_RSP_MAX_TIMEOUTS )</span>
+<span class="lineNum">     651 </span><span class="lineNoCov">          0 :         _sendAckRequest();</span>
+<span class="lineNum">     652 </span><span class="lineNoCov">          0 :     _setTimeout( timeout );</span>
+<a name="653"><span class="lineNum">     653 </span>            : }</a>
+<span class="lineNum">     654 </span>            : 
+<span class="lineNum">     655 </span><span class="lineNoCov">          0 : void RSPConnection::_writeData()</span>
+<span class="lineNum">     656 </span>            : {
+<span class="lineNum">     657 </span><span class="lineNoCov">          0 :     Buffer* buffer = 0;</span>
+<span class="lineNum">     658 </span><span class="lineNoCov">          0 :     if( !_threadBuffers.pop( buffer )) // nothing to write</span>
+<span class="lineNum">     659 </span><span class="lineNoCov">          0 :         return;</span>
+<span class="lineNum">     660 </span>            : 
+<span class="lineNum">     661 </span><span class="lineNoCov">          0 :     _timeouts = 0;</span>
+<span class="lineNum">     662 </span><span class="lineNoCov">          0 :     LBASSERT( buffer );</span>
+<span class="lineNum">     663 </span>            : 
+<span class="lineNum">     664 </span>            :     // write buffer
+<span class="lineNum">     665 </span><span class="lineNoCov">          0 :     DatagramData* header = reinterpret_cast&lt;DatagramData*&gt;( buffer-&gt;getData( ));</span>
+<span class="lineNum">     666 </span><span class="lineNoCov">          0 :     header-&gt;sequence = _sequence++;</span>
+<span class="lineNum">     667 </span>            : 
+<span class="lineNum">     668 </span>            : #ifdef CO_RSP_MERGE_WRITES
+<span class="lineNum">     669 </span><span class="lineNoCov">          0 :     if( header-&gt;size &lt; _payloadSize &amp;&amp; !_threadBuffers.isEmpty( ))</span>
+<span class="lineNum">     670 </span>            :     {
+<span class="lineNum">     671 </span><span class="lineNoCov">          0 :         std::vector&lt; Buffer* &gt; appBuffers;</span>
+<span class="lineNum">     672 </span><span class="lineNoCov">          0 :         while( header-&gt;size &lt; _payloadSize &amp;&amp; !_threadBuffers.isEmpty( ))</span>
+<span class="lineNum">     673 </span>            :         {
+<span class="lineNum">     674 </span><span class="lineNoCov">          0 :             Buffer* buffer2 = 0;</span>
+<span class="lineNum">     675 </span><span class="lineNoCov">          0 :             LBCHECK( _threadBuffers.getFront( buffer2 ));</span>
+<span class="lineNum">     676 </span><span class="lineNoCov">          0 :             LBASSERT( buffer2 );</span>
+<span class="lineNum">     677 </span>            :             DatagramData* header2 =
+<span class="lineNum">     678 </span><span class="lineNoCov">          0 :                 reinterpret_cast&lt;DatagramData*&gt;( buffer2-&gt;getData( ));</span>
+<span class="lineNum">     679 </span>            : 
+<span class="lineNum">     680 </span><span class="lineNoCov">          0 :             if( uint32_t( header-&gt;size + header2-&gt;size ) &gt; _payloadSize )</span>
+<span class="lineNum">     681 </span><span class="lineNoCov">          0 :                 break;</span>
+<span class="lineNum">     682 </span>            : 
+<span class="lineNum">     683 </span><span class="lineNoCov">          0 :             memcpy( reinterpret_cast&lt;uint8_t*&gt;( header + 1 ) + header-&gt;size,</span>
+<span class="lineNum">     684 </span><span class="lineNoCov">          0 :                     header2 + 1, header2-&gt;size );</span>
+<span class="lineNum">     685 </span><span class="lineNoCov">          0 :             header-&gt;size += header2-&gt;size;</span>
+<span class="lineNum">     686 </span><span class="lineNoCov">          0 :             LBCHECK( _threadBuffers.pop( buffer2 ));</span>
+<span class="lineNum">     687 </span><span class="lineNoCov">          0 :             appBuffers.push_back( buffer2 );</span>
+<span class="lineNum">     688 </span>            : #ifdef CO_INSTRUMENT_RSP
+<span class="lineNum">     689 </span>            :             ++nMergedDatagrams;
+<span class="lineNum">     690 </span>            : #endif
+<span class="lineNum">     691 </span>            :         }
+<span class="lineNum">     692 </span>            : 
+<span class="lineNum">     693 </span><span class="lineNoCov">          0 :         if( !appBuffers.empty( ))</span>
+<span class="lineNum">     694 </span><span class="lineNoCov">          0 :             _appBuffers.push( appBuffers );</span>
+<span class="lineNum">     695 </span>            :     }
+<span class="lineNum">     696 </span>            : #endif
+<span class="lineNum">     697 </span>            : 
+<span class="lineNum">     698 </span>            :     // send data
+<span class="lineNum">     699 </span>            :     //  Note 1: We could optimize the send away if we're all alone, but this is
+<span class="lineNum">     700 </span>            :     //          not a use case for RSP, so we don't care.
+<span class="lineNum">     701 </span>            :     //  Note 2: Data to myself will be 'written' in _finishWriteQueue once we
+<span class="lineNum">     702 </span>            :     //          got all acks for the packet
+<span class="lineNum">     703 </span><span class="lineNoCov">          0 :     const uint32_t size = header-&gt;size + sizeof( DatagramData );</span>
+<span class="lineNum">     704 </span>            : 
+<span class="lineNum">     705 </span><span class="lineNoCov">          0 :     _waitWritable( size ); // OPT: process incoming in between</span>
+<span class="lineNum">     706 </span><span class="lineNoCov">          0 :     header-&gt;byteswap();</span>
+<span class="lineNum">     707 </span><span class="lineNoCov">          0 :     _write-&gt;send( boost::asio::buffer( header, size ));</span>
+<span class="lineNum">     708 </span>            : 
+<span class="lineNum">     709 </span>            : #ifdef CO_INSTRUMENT_RSP
+<span class="lineNum">     710 </span>            :     ++nDatagrams;
+<span class="lineNum">     711 </span>            :     nBytesWritten += header-&gt;size;
+<span class="lineNum">     712 </span>            : #endif
+<span class="lineNum">     713 </span>            : 
+<span class="lineNum">     714 </span>            :     // save datagram for repeats (and self)
+<span class="lineNum">     715 </span><span class="lineNoCov">          0 :     _writeBuffers.push_back( buffer );</span>
+<span class="lineNum">     716 </span>            : 
+<span class="lineNum">     717 </span><span class="lineNoCov">          0 :     if( _children.size() == 1 ) // We're all alone</span>
+<span class="lineNum">     718 </span>            :     {
+<span class="lineNum">     719 </span><span class="lineNoCov">          0 :         LBASSERT( _children.front()-&gt;_id == _id );</span>
+<span class="lineNum">     720 </span><span class="lineNoCov">          0 :         _finishWriteQueue( _sequence - 1 );</span>
+<span class="lineNum">     721 </span>            :     }
+<a name="722"><span class="lineNum">     722 </span>            : }</a>
+<span class="lineNum">     723 </span>            : 
+<span class="lineNum">     724 </span><span class="lineNoCov">          0 : void RSPConnection::_waitWritable( const uint64_t bytes )</span>
+<span class="lineNum">     725 </span>            : {
+<span class="lineNum">     726 </span>            : #ifdef CO_INSTRUMENT_RSP
+<span class="lineNum">     727 </span>            :     lunchbox::Clock clock;
+<span class="lineNum">     728 </span>            : #endif
+<span class="lineNum">     729 </span>            : 
+<span class="lineNum">     730 </span><span class="lineNoCov">          0 :     _bucketSize += static_cast&lt; uint64_t &gt;( _clock.resetTimef() * _sendRate );</span>
+<span class="lineNum">     731 </span>            :                                                      // opt omit: * 1024 / 1000;
+<span class="lineNum">     732 </span><span class="lineNoCov">          0 :     _bucketSize = LB_MIN( _bucketSize, _maxBucketSize );</span>
+<span class="lineNum">     733 </span>            : 
+<span class="lineNum">     734 </span><span class="lineNoCov">          0 :     const uint64_t size = LB_MIN( bytes, static_cast&lt; uint64_t &gt;( _mtu ));</span>
+<span class="lineNum">     735 </span><span class="lineNoCov">          0 :     while( _bucketSize &lt; size )</span>
+<span class="lineNum">     736 </span>            :     {
+<span class="lineNum">     737 </span><span class="lineNoCov">          0 :         lunchbox::Thread::yield();</span>
+<span class="lineNum">     738 </span><span class="lineNoCov">          0 :         float time = _clock.resetTimef();</span>
+<span class="lineNum">     739 </span>            : 
+<span class="lineNum">     740 </span><span class="lineNoCov">          0 :         while( time == 0.f )</span>
+<span class="lineNum">     741 </span>            :         {
+<span class="lineNum">     742 </span><span class="lineNoCov">          0 :             lunchbox::Thread::yield();</span>
+<span class="lineNum">     743 </span><span class="lineNoCov">          0 :             time = _clock.resetTimef();</span>
+<span class="lineNum">     744 </span>            :         }
+<span class="lineNum">     745 </span>            : 
+<span class="lineNum">     746 </span><span class="lineNoCov">          0 :         _bucketSize += static_cast&lt; int64_t &gt;( time * _sendRate );</span>
+<span class="lineNum">     747 </span><span class="lineNoCov">          0 :         _bucketSize = LB_MIN( _bucketSize, _maxBucketSize );</span>
+<span class="lineNum">     748 </span>            :     }
+<span class="lineNum">     749 </span><span class="lineNoCov">          0 :     _bucketSize -= size;</span>
+<span class="lineNum">     750 </span>            : 
+<span class="lineNum">     751 </span>            : #ifdef CO_INSTRUMENT_RSP
+<span class="lineNum">     752 </span>            :     writeWaitTime += clock.getTimef();
+<span class="lineNum">     753 </span>            : #endif
+<span class="lineNum">     754 </span>            : 
+<span class="lineNum">     755 </span><span class="lineNoCov">          0 :     ConstConnectionDescriptionPtr description = getDescription();</span>
+<span class="lineNum">     756 </span><span class="lineNoCov">          0 :     if( _sendRate &lt; description-&gt;bandwidth )</span>
+<span class="lineNum">     757 </span>            :     {
+<span class="lineNum">     758 </span>            :         _sendRate += int64_t(
+<span class="lineNum">     759 </span><span class="lineNoCov">          0 :             float( Global::getIAttribute( Global::IATTR_RSP_ERROR_UPSCALE )) *</span>
+<span class="lineNum">     760 </span><span class="lineNoCov">          0 :             float( description-&gt;bandwidth ) * .001f );</span>
+<span class="lineNum">     761 </span><span class="lineNoCov">          0 :         LBLOG( LOG_RSP ) &lt;&lt; &quot;speeding up to &quot; &lt;&lt; _sendRate &lt;&lt; &quot; KB/s&quot;</span>
+<span class="lineNum">     762 </span><span class="lineNoCov">          0 :                          &lt;&lt; std::endl;</span>
+<span class="lineNum">     763 </span><span class="lineNoCov">          0 :     }</span>
+<a name="764"><span class="lineNum">     764 </span><span class="lineNoCov">          0 : }</span></a>
+<span class="lineNum">     765 </span>            : 
+<span class="lineNum">     766 </span><span class="lineNoCov">          0 : void RSPConnection::_repeatData()</span>
+<span class="lineNum">     767 </span>            : {
+<span class="lineNum">     768 </span><span class="lineNoCov">          0 :     _timeouts = 0;</span>
+<span class="lineNum">     769 </span>            : 
+<span class="lineNum">     770 </span><span class="lineNoCov">          0 :     while( !_repeatQueue.empty( ))</span>
+<span class="lineNum">     771 </span>            :     {
+<span class="lineNum">     772 </span><span class="lineNoCov">          0 :         Nack&amp; request = _repeatQueue.front();</span>
+<span class="lineNum">     773 </span><span class="lineNoCov">          0 :         const uint16_t distance = _sequence - request.start;</span>
+<span class="lineNum">     774 </span>            : 
+<span class="lineNum">     775 </span><span class="lineNoCov">          0 :         if ( distance == 0 )</span>
+<span class="lineNum">     776 </span>            :         {
+<span class="lineNum">     777 </span><span class="lineNoCov">          0 :             LBWARN &lt;&lt; &quot;ignoring invalid nack (&quot; &lt;&lt; request.start</span>
+<span class="lineNum">     778 </span><span class="lineNoCov">          0 :                    &lt;&lt; &quot;..&quot; &lt;&lt; request.end &lt;&lt; &quot;)&quot; &lt;&lt; std::endl;</span>
+<span class="lineNum">     779 </span><span class="lineNoCov">          0 :             _repeatQueue.pop_front();</span>
+<span class="lineNum">     780 </span><span class="lineNoCov">          0 :             continue;</span>
+<span class="lineNum">     781 </span>            :         }
+<span class="lineNum">     782 </span>            : 
+<span class="lineNum">     783 </span><span class="lineNoCov">          0 :         if( distance &lt;= _writeBuffers.size( )) // not already acked</span>
+<span class="lineNum">     784 </span>            :         {
+<span class="lineNum">     785 </span>            : //          LBLOG( LOG_RSP ) &lt;&lt; &quot;Repeat &quot; &lt;&lt; request.start &lt;&lt; &quot;, &quot; &lt;&lt; _sendRate
+<span class="lineNum">     786 </span>            : //                           &lt;&lt; &quot;KB/s&quot;&lt;&lt; std::endl;
+<span class="lineNum">     787 </span>            : 
+<span class="lineNum">     788 </span><span class="lineNoCov">          0 :             const size_t i = _writeBuffers.size() - distance;</span>
+<span class="lineNum">     789 </span><span class="lineNoCov">          0 :             Buffer* buffer = _writeBuffers[i];</span>
+<span class="lineNum">     790 </span><span class="lineNoCov">          0 :             LBASSERT( buffer );</span>
+<span class="lineNum">     791 </span>            : 
+<span class="lineNum">     792 </span>            :             DatagramData* header =
+<span class="lineNum">     793 </span><span class="lineNoCov">          0 :                 reinterpret_cast&lt;DatagramData*&gt;( buffer-&gt;getData( ));</span>
+<span class="lineNum">     794 </span><span class="lineNoCov">          0 :             const uint32_t size = header-&gt;size + sizeof( DatagramData );</span>
+<span class="lineNum">     795 </span><span class="lineNoCov">          0 :             LBASSERT( header-&gt;sequence == request.start );</span>
+<span class="lineNum">     796 </span>            : 
+<span class="lineNum">     797 </span>            :             // send data
+<span class="lineNum">     798 </span><span class="lineNoCov">          0 :             _waitWritable( size ); // OPT: process incoming in between</span>
+<span class="lineNum">     799 </span>            :             // already done by _writeData: header-&gt;byteswap();
+<span class="lineNum">     800 </span><span class="lineNoCov">          0 :             _write-&gt;send( boost::asio::buffer( header, size ) );</span>
+<span class="lineNum">     801 </span>            : #ifdef CO_INSTRUMENT_RSP
+<span class="lineNum">     802 </span>            :             ++nRepeated;
+<span class="lineNum">     803 </span>            : #endif
+<span class="lineNum">     804 </span>            :         }
+<span class="lineNum">     805 </span>            : 
+<span class="lineNum">     806 </span><span class="lineNoCov">          0 :         if( request.start == request.end )</span>
+<span class="lineNum">     807 </span><span class="lineNoCov">          0 :             _repeatQueue.pop_front();    // done with request</span>
+<span class="lineNum">     808 </span>            :         else
+<span class="lineNum">     809 </span><span class="lineNoCov">          0 :             ++request.start;</span>
+<span class="lineNum">     810 </span>            : 
+<span class="lineNum">     811 </span><span class="lineNoCov">          0 :         if( distance &lt;= _writeBuffers.size( )) // send something</span>
+<span class="lineNum">     812 </span><span class="lineNoCov">          0 :             return;</span>
+<span class="lineNum">     813 </span>            :     }
+<a name="814"><span class="lineNum">     814 </span>            : }</a>
+<span class="lineNum">     815 </span>            : 
+<span class="lineNum">     816 </span><span class="lineNoCov">          0 : void RSPConnection::_finishWriteQueue( const uint16_t sequence )</span>
+<span class="lineNum">     817 </span>            : {
+<span class="lineNum">     818 </span><span class="lineNoCov">          0 :     LBASSERT( !_writeBuffers.empty( ));</span>
+<span class="lineNum">     819 </span>            : 
+<span class="lineNum">     820 </span><span class="lineNoCov">          0 :     RSPConnectionPtr connection = _findConnection( _id );</span>
+<span class="lineNum">     821 </span><span class="lineNoCov">          0 :     LBASSERT( connection.isValid( ));</span>
+<span class="lineNum">     822 </span><span class="lineNoCov">          0 :     LBASSERT( connection-&gt;_recvBuffers.empty( ));</span>
+<span class="lineNum">     823 </span>            : 
+<span class="lineNum">     824 </span>            :     // Bundle pushing the buffers to the app to avoid excessive lock ops
+<span class="lineNum">     825 </span><span class="lineNoCov">          0 :     Buffers readBuffers;</span>
+<span class="lineNum">     826 </span><span class="lineNoCov">          0 :     Buffers freeBuffers;</span>
+<span class="lineNum">     827 </span>            : 
+<span class="lineNum">     828 </span><span class="lineNoCov">          0 :     const uint16_t size = _sequence - sequence - 1;</span>
+<span class="lineNum">     829 </span><span class="lineNoCov">          0 :     LBASSERTINFO( size &lt;= uint16_t( _writeBuffers.size( )),</span>
+<span class="lineNum">     830 </span>            :                   size &lt;&lt; &quot; &gt; &quot; &lt;&lt; _writeBuffers.size( ));
+<span class="lineNum">     831 </span><span class="lineNoCov">          0 :     LBLOG( LOG_RSP ) &lt;&lt; &quot;Got all remote acks for &quot; &lt;&lt; sequence &lt;&lt; &quot; current &quot;</span>
+<span class="lineNum">     832 </span><span class="lineNoCov">          0 :                      &lt;&lt; _sequence &lt;&lt; &quot; advance &quot; &lt;&lt; _writeBuffers.size() - size</span>
+<span class="lineNum">     833 </span><span class="lineNoCov">          0 :                      &lt;&lt; &quot; buffers&quot; &lt;&lt; std::endl;</span>
+<span class="lineNum">     834 </span>            : 
+<span class="lineNum">     835 </span><span class="lineNoCov">          0 :     while( _writeBuffers.size() &gt; size_t( size ))</span>
+<span class="lineNum">     836 </span>            :     {
+<span class="lineNum">     837 </span><span class="lineNoCov">          0 :         Buffer* buffer = _writeBuffers.front();</span>
+<span class="lineNum">     838 </span><span class="lineNoCov">          0 :         _writeBuffers.pop_front();</span>
+<span class="lineNum">     839 </span>            : 
+<span class="lineNum">     840 </span>            : #ifndef NDEBUG
+<span class="lineNum">     841 </span>            :         DatagramData* datagram =
+<span class="lineNum">     842 </span><span class="lineNoCov">          0 :                          reinterpret_cast&lt; DatagramData* &gt;( buffer-&gt;getData( ));</span>
+<span class="lineNum">     843 </span><span class="lineNoCov">          0 :         datagram-&gt;byteswap();</span>
+<span class="lineNum">     844 </span><span class="lineNoCov">          0 :         LBASSERT( datagram-&gt;writerID == _id );</span>
+<span class="lineNum">     845 </span><span class="lineNoCov">          0 :         LBASSERTINFO( datagram-&gt;sequence ==</span>
+<span class="lineNum">     846 </span>            :                       uint16_t( connection-&gt;_sequence + readBuffers.size( )),
+<span class="lineNum">     847 </span>            :                       datagram-&gt;sequence &lt;&lt; &quot;, &quot; &lt;&lt; connection-&gt;_sequence &lt;&lt;
+<span class="lineNum">     848 </span>            :                       &quot;, &quot; &lt;&lt; readBuffers.size( ));
+<span class="lineNum">     849 </span>            :       //LBLOG( LOG_RSP ) &lt;&lt; &quot;self receive &quot; &lt;&lt; datagram-&gt;sequence &lt;&lt; std::endl;
+<span class="lineNum">     850 </span>            : #endif
+<span class="lineNum">     851 </span>            : 
+<span class="lineNum">     852 </span><span class="lineNoCov">          0 :         Buffer* newBuffer = connection-&gt;_newDataBuffer( *buffer );</span>
+<span class="lineNum">     853 </span><span class="lineNoCov">          0 :         if( !newBuffer &amp;&amp; !readBuffers.empty( )) // push prepared app buffers</span>
+<span class="lineNum">     854 </span>            :         {
+<span class="lineNum">     855 </span><span class="lineNoCov">          0 :             lunchbox::ScopedWrite mutex( connection-&gt;_mutexEvent );</span>
+<span class="lineNum">     856 </span><span class="lineNoCov">          0 :             LBLOG( LOG_RSP ) &lt;&lt; &quot;post &quot; &lt;&lt; readBuffers.size()</span>
+<span class="lineNum">     857 </span><span class="lineNoCov">          0 :                              &lt;&lt; &quot; buffers starting with sequence &quot;</span>
+<span class="lineNum">     858 </span><span class="lineNoCov">          0 :                              &lt;&lt; connection-&gt;_sequence &lt;&lt; std::endl;</span>
+<span class="lineNum">     859 </span>            : 
+<span class="lineNum">     860 </span><span class="lineNoCov">          0 :             connection-&gt;_appBuffers.push( readBuffers );</span>
+<span class="lineNum">     861 </span><span class="lineNoCov">          0 :             connection-&gt;_sequence += uint16_t( readBuffers.size( ));</span>
+<span class="lineNum">     862 </span><span class="lineNoCov">          0 :             readBuffers.clear();</span>
+<span class="lineNum">     863 </span><span class="lineNoCov">          0 :             connection-&gt;_event-&gt;set();</span>
+<span class="lineNum">     864 </span>            :         }
+<span class="lineNum">     865 </span>            : 
+<span class="lineNum">     866 </span><span class="lineNoCov">          0 :         while( !newBuffer ) // no more data buffers, wait for app to drain</span>
+<span class="lineNum">     867 </span>            :         {
+<span class="lineNum">     868 </span><span class="lineNoCov">          0 :             newBuffer = connection-&gt;_newDataBuffer( *buffer );</span>
+<span class="lineNum">     869 </span><span class="lineNoCov">          0 :             lunchbox::Thread::yield();</span>
+<span class="lineNum">     870 </span>            :         }
+<span class="lineNum">     871 </span>            : 
+<span class="lineNum">     872 </span><span class="lineNoCov">          0 :         freeBuffers.push_back( buffer );</span>
+<span class="lineNum">     873 </span><span class="lineNoCov">          0 :         readBuffers.push_back( newBuffer );</span>
+<span class="lineNum">     874 </span>            :     }
+<span class="lineNum">     875 </span>            : 
+<span class="lineNum">     876 </span><span class="lineNoCov">          0 :     _appBuffers.push( freeBuffers );</span>
+<span class="lineNum">     877 </span><span class="lineNoCov">          0 :     if( !readBuffers.empty( ))</span>
+<span class="lineNum">     878 </span>            :     {
+<span class="lineNum">     879 </span><span class="lineNoCov">          0 :         lunchbox::ScopedWrite mutex( connection-&gt;_mutexEvent );</span>
+<span class="lineNum">     880 </span>            : #if 0
+<span class="lineNum">     881 </span>            :         LBLOG( LOG_RSP )
+<span class="lineNum">     882 </span>            :             &lt;&lt; &quot;post &quot; &lt;&lt; readBuffers.size() &lt;&lt; &quot; buffers starting at &quot;
+<span class="lineNum">     883 </span>            :             &lt;&lt; connection-&gt;_sequence &lt;&lt; std::endl;
+<span class="lineNum">     884 </span>            : #endif
+<span class="lineNum">     885 </span>            : 
+<span class="lineNum">     886 </span><span class="lineNoCov">          0 :         connection-&gt;_appBuffers.push( readBuffers );</span>
+<span class="lineNum">     887 </span><span class="lineNoCov">          0 :         connection-&gt;_sequence += uint16_t( readBuffers.size( ));</span>
+<span class="lineNum">     888 </span><span class="lineNoCov">          0 :         connection-&gt;_event-&gt;set();</span>
+<span class="lineNum">     889 </span>            :     }
+<span class="lineNum">     890 </span>            : 
+<span class="lineNum">     891 </span><span class="lineNoCov">          0 :     connection-&gt;_acked = uint16_t( connection-&gt;_sequence - 1 );</span>
+<span class="lineNum">     892 </span><span class="lineNoCov">          0 :     LBASSERT( connection-&gt;_acked == sequence );</span>
+<span class="lineNum">     893 </span>            : 
+<span class="lineNum">     894 </span><span class="lineNoCov">          0 :     _timeouts = 0;</span>
+<a name="895"><span class="lineNum">     895 </span><span class="lineNoCov">          0 : }</span></a>
+<span class="lineNum">     896 </span>            : 
+<span class="lineNum">     897 </span><span class="lineNoCov">          0 : void RSPConnection::_handlePacket( const boost::system::error_code&amp; /* error */,</span>
+<span class="lineNum">     898 </span>            :                                    const size_t bytes )
+<span class="lineNum">     899 </span>            : {
+<span class="lineNum">     900 </span><span class="lineNoCov">          0 :     if( isListening( ))</span>
+<span class="lineNum">     901 </span>            :     {
+<span class="lineNum">     902 </span><span class="lineNoCov">          0 :         _handleConnectedData( bytes );</span>
+<span class="lineNum">     903 </span>            : 
+<span class="lineNum">     904 </span><span class="lineNoCov">          0 :         if( isListening( ))</span>
+<span class="lineNum">     905 </span><span class="lineNoCov">          0 :             _processOutgoing();</span>
+<span class="lineNum">     906 </span>            :         else
+<span class="lineNum">     907 </span>            :         {
+<span class="lineNum">     908 </span><span class="lineNoCov">          0 :             _ioService.stop();</span>
+<span class="lineNum">     909 </span><span class="lineNoCov">          0 :             return;</span>
+<span class="lineNum">     910 </span>            :         }
+<span class="lineNum">     911 </span>            :     }
+<span class="lineNum">     912 </span><span class="lineNoCov">          0 :     else if( bytes &gt;= sizeof( DatagramNode ))</span>
+<span class="lineNum">     913 </span>            :     {
+<span class="lineNum">     914 </span><span class="lineNoCov">          0 :         if( _idAccepted )</span>
+<span class="lineNum">     915 </span><span class="lineNoCov">          0 :             _handleInitData( bytes, false );</span>
+<span class="lineNum">     916 </span>            :         else
+<span class="lineNum">     917 </span><span class="lineNoCov">          0 :             _handleAcceptIDData( bytes );</span>
+<span class="lineNum">     918 </span>            :     }
+<span class="lineNum">     919 </span>            : 
+<span class="lineNum">     920 </span>            :     //LBLOG( LOG_RSP ) &lt;&lt; &quot;_handlePacket timeout &quot; &lt;&lt; timeout &lt;&lt; std::endl;
+<span class="lineNum">     921 </span><span class="lineNoCov">          0 :     _asyncReceiveFrom();</span>
+<a name="922"><span class="lineNum">     922 </span>            : }</a>
+<span class="lineNum">     923 </span>            : 
+<span class="lineNum">     924 </span><span class="lineNoCov">          0 : void RSPConnection::_handleAcceptIDData( const size_t bytes )</span>
+<span class="lineNum">     925 </span>            : {
+<span class="lineNum">     926 </span><span class="lineNoCov">          0 :     DatagramNode* pNode = _getDatagramNode( bytes );</span>
+<span class="lineNum">     927 </span><span class="lineNoCov">          0 :     if( !pNode )</span>
+<span class="lineNum">     928 </span><span class="lineNoCov">          0 :         return;</span>
+<span class="lineNum">     929 </span>            : 
+<span class="lineNum">     930 </span><span class="lineNoCov">          0 :     DatagramNode&amp; node = *pNode;</span>
+<span class="lineNum">     931 </span>            : 
+<span class="lineNum">     932 </span><span class="lineNoCov">          0 :     switch( node.type )</span>
+<span class="lineNum">     933 </span>            :     {
+<span class="lineNum">     934 </span>            :         case ID_HELLO:
+<span class="lineNum">     935 </span><span class="lineNoCov">          0 :             _checkNewID( node.connectionID );</span>
+<span class="lineNum">     936 </span><span class="lineNoCov">          0 :             break;</span>
+<span class="lineNum">     937 </span>            : 
+<span class="lineNum">     938 </span>            :         case ID_HELLO_REPLY:
+<span class="lineNum">     939 </span><span class="lineNoCov">          0 :             _addConnection( node.connectionID, node.data );</span>
+<span class="lineNum">     940 </span><span class="lineNoCov">          0 :             break;</span>
+<span class="lineNum">     941 </span>            : 
+<span class="lineNum">     942 </span>            :         case ID_DENY:
+<span class="lineNum">     943 </span>            :             // a connection refused my ID, try another ID
+<span class="lineNum">     944 </span><span class="lineNoCov">          0 :             if( node.connectionID == _id )</span>
+<span class="lineNum">     945 </span>            :             {
+<span class="lineNum">     946 </span><span class="lineNoCov">          0 :                 _timeouts = 0;</span>
+<span class="lineNum">     947 </span><span class="lineNoCov">          0 :                 _sendSimpleDatagram( ID_HELLO, _buildNewID( ));</span>
+<span class="lineNum">     948 </span><span class="lineNoCov">          0 :                 LBLOG( LOG_RSP ) &lt;&lt; &quot;Announce &quot; &lt;&lt; _id &lt;&lt; std::endl;</span>
+<span class="lineNum">     949 </span>            :             }
+<span class="lineNum">     950 </span><span class="lineNoCov">          0 :             break;</span>
+<span class="lineNum">     951 </span>            : 
+<span class="lineNum">     952 </span>            :         case ID_EXIT:
+<span class="lineNum">     953 </span><span class="lineNoCov">          0 :             _removeConnection( node.connectionID );</span>
+<span class="lineNum">     954 </span><span class="lineNoCov">          0 :             break;</span>
+<span class="lineNum">     955 </span>            : 
+<span class="lineNum">     956 </span>            :         default:
+<span class="lineNum">     957 </span><span class="lineNoCov">          0 :             LBUNIMPLEMENTED;</span>
+<span class="lineNum">     958 </span><span class="lineNoCov">          0 :             break;</span>
+<span class="lineNum">     959 </span>            :     }
+<a name="960"><span class="lineNum">     960 </span>            : }</a>
+<span class="lineNum">     961 </span>            : 
+<span class="lineNum">     962 </span><span class="lineNoCov">          0 : void RSPConnection::_handleInitData( const size_t bytes, const bool connected )</span>
+<span class="lineNum">     963 </span>            : {
+<span class="lineNum">     964 </span><span class="lineNoCov">          0 :     DatagramNode* pNode = _getDatagramNode( bytes );</span>
+<span class="lineNum">     965 </span><span class="lineNoCov">          0 :     if( !pNode )</span>
+<span class="lineNum">     966 </span><span class="lineNoCov">          0 :         return;</span>
+<span class="lineNum">     967 </span>            : 
+<span class="lineNum">     968 </span><span class="lineNoCov">          0 :     DatagramNode&amp; node = *pNode;</span>
+<span class="lineNum">     969 </span>            : 
+<span class="lineNum">     970 </span><span class="lineNoCov">          0 :     switch( node.type )</span>
+<span class="lineNum">     971 </span>            :     {
+<span class="lineNum">     972 </span>            :         case ID_HELLO:
+<span class="lineNum">     973 </span><span class="lineNoCov">          0 :             if( !connected )</span>
+<span class="lineNum">     974 </span><span class="lineNoCov">          0 :                 _timeouts = 0;</span>
+<span class="lineNum">     975 </span><span class="lineNoCov">          0 :             _checkNewID( node.connectionID ) ;</span>
+<span class="lineNum">     976 </span><span class="lineNoCov">          0 :             return;</span>
+<span class="lineNum">     977 </span>            : 
+<span class="lineNum">     978 </span>            :         case ID_CONFIRM:
+<span class="lineNum">     979 </span><span class="lineNoCov">          0 :             if( !connected )</span>
+<span class="lineNum">     980 </span><span class="lineNoCov">          0 :                 _timeouts = 0;</span>
+<span class="lineNum">     981 </span><span class="lineNoCov">          0 :             _addConnection( node.connectionID, node.data );</span>
+<span class="lineNum">     982 </span><span class="lineNoCov">          0 :             return;</span>
+<span class="lineNum">     983 </span>            : 
+<span class="lineNum">     984 </span>            :         case COUNTNODE:
+<span class="lineNum">     985 </span><span class="lineNoCov">          0 :             LBLOG( LOG_RSP ) &lt;&lt; &quot;Got &quot; &lt;&lt; node.data &lt;&lt; &quot; nodes from &quot;</span>
+<span class="lineNum">     986 </span><span class="lineNoCov">          0 :                              &lt;&lt; node.connectionID &lt;&lt; std::endl;</span>
+<span class="lineNum">     987 </span><span class="lineNoCov">          0 :             return;</span>
+<span class="lineNum">     988 </span>            : 
+<span class="lineNum">     989 </span>            :         case ID_HELLO_REPLY:
+<span class="lineNum">     990 </span><span class="lineNoCov">          0 :             _addConnection( node.connectionID, node.data );</span>
+<span class="lineNum">     991 </span><span class="lineNoCov">          0 :             return;</span>
+<span class="lineNum">     992 </span>            : 
+<span class="lineNum">     993 </span>            :         case ID_EXIT:
+<span class="lineNum">     994 </span><span class="lineNoCov">          0 :             _removeConnection( node.connectionID );</span>
+<span class="lineNum">     995 </span><span class="lineNoCov">          0 :             return;</span>
+<span class="lineNum">     996 </span>            : 
+<span class="lineNum">     997 </span>            :         default:
+<span class="lineNum">     998 </span><span class="lineNoCov">          0 :             LBUNIMPLEMENTED;</span>
+<span class="lineNum">     999 </span><span class="lineNoCov">          0 :             break;</span>
+<span class="lineNum">    1000 </span>            :     }
+<a name="1001"><span class="lineNum">    1001 </span>            : }</a>
+<span class="lineNum">    1002 </span>            : 
+<span class="lineNum">    1003 </span><span class="lineNoCov">          0 : void RSPConnection::_handleConnectedData( const size_t bytes )</span>
+<span class="lineNum">    1004 </span>            : {
+<span class="lineNum">    1005 </span><span class="lineNoCov">          0 :     if( bytes &lt; sizeof( uint16_t ))</span>
+<span class="lineNum">    1006 </span><span class="lineNoCov">          0 :         return;</span>
+<span class="lineNum">    1007 </span>            : 
+<span class="lineNum">    1008 </span><span class="lineNoCov">          0 :     void* data = _recvBuffer.getData();</span>
+<span class="lineNum">    1009 </span><span class="lineNoCov">          0 :     uint16_t type = *reinterpret_cast&lt; uint16_t* &gt;( data );</span>
+<span class="lineNum">    1010 </span>            : #ifdef COMMON_BIGENDIAN
+<span class="lineNum">    1011 </span>            :     lunchbox::byteswap( type );
+<span class="lineNum">    1012 </span>            : #endif
+<span class="lineNum">    1013 </span><span class="lineNoCov">          0 :     switch( type )</span>
+<span class="lineNum">    1014 </span>            :     {
+<span class="lineNum">    1015 </span>            :         case DATA:
+<span class="lineNum">    1016 </span><span class="lineNoCov">          0 :             LBCHECK( _handleData( bytes ));</span>
+<span class="lineNum">    1017 </span><span class="lineNoCov">          0 :             break;</span>
+<span class="lineNum">    1018 </span>            : 
+<span class="lineNum">    1019 </span>            :         case ACK:
+<span class="lineNum">    1020 </span><span class="lineNoCov">          0 :             LBCHECK( _handleAck( bytes ));</span>
+<span class="lineNum">    1021 </span><span class="lineNoCov">          0 :             break;</span>
+<span class="lineNum">    1022 </span>            : 
+<span class="lineNum">    1023 </span>            :         case NACK:
+<span class="lineNum">    1024 </span><span class="lineNoCov">          0 :             LBCHECK( _handleNack( ));</span>
+<span class="lineNum">    1025 </span><span class="lineNoCov">          0 :             break;</span>
+<span class="lineNum">    1026 </span>            : 
+<span class="lineNum">    1027 </span>            :         case ACKREQ: // The writer asks for an ack/nack
+<span class="lineNum">    1028 </span><span class="lineNoCov">          0 :             LBCHECK( _handleAckRequest( bytes ));</span>
+<span class="lineNum">    1029 </span><span class="lineNoCov">          0 :             break;</span>
+<span class="lineNum">    1030 </span>            : 
+<span class="lineNum">    1031 </span>            :         case ID_HELLO:
+<span class="lineNum">    1032 </span>            :         case ID_HELLO_REPLY:
+<span class="lineNum">    1033 </span>            :         case ID_CONFIRM:
+<span class="lineNum">    1034 </span>            :         case ID_EXIT:
+<span class="lineNum">    1035 </span>            :         case ID_DENY:
+<span class="lineNum">    1036 </span>            :         case COUNTNODE:
+<span class="lineNum">    1037 </span><span class="lineNoCov">          0 :             _handleInitData( bytes, true );</span>
+<span class="lineNum">    1038 </span><span class="lineNoCov">          0 :             break;</span>
+<span class="lineNum">    1039 </span>            : 
+<span class="lineNum">    1040 </span>            :         default:
+<span class="lineNum">    1041 </span><span class="lineNoCov">          0 :             LBASSERTINFO( false,</span>
+<span class="lineNum">    1042 </span>            :                           &quot;Don't know how to handle packet of type &quot; &lt;&lt; type );
+<span class="lineNum">    1043 </span>            :     }
+<span class="lineNum">    1044 </span>            : 
+<a name="1045"><span class="lineNum">    1045 </span>            : }</a>
+<span class="lineNum">    1046 </span>            : 
+<span class="lineNum">    1047 </span><span class="lineNoCov">          0 : void RSPConnection::_asyncReceiveFrom()</span>
+<span class="lineNum">    1048 </span>            : {
+<span class="lineNum">    1049 </span>            :     _read-&gt;async_receive_from(
+<span class="lineNum">    1050 </span><span class="lineNoCov">          0 :         boost::asio::buffer( _recvBuffer.getData(), _mtu ), _readAddr,</span>
+<span class="lineNum">    1051 </span>            :         boost::bind( &amp;RSPConnection::_handlePacket, this,
+<span class="lineNum">    1052 </span>            :                      boost::asio::placeholders::error,
+<span class="lineNum">    1053 </span><span class="lineNoCov">          0 :                      boost::asio::placeholders::bytes_transferred ));</span>
+<a name="1054"><span class="lineNum">    1054 </span><span class="lineNoCov">          0 : }</span></a>
+<span class="lineNum">    1055 </span>            : 
+<span class="lineNum">    1056 </span><span class="lineNoCov">          0 : bool RSPConnection::_handleData( const size_t bytes )</span>
+<span class="lineNum">    1057 </span>            : {
+<span class="lineNum">    1058 </span><span class="lineNoCov">          0 :     if( bytes &lt; sizeof( DatagramData ))</span>
+<span class="lineNum">    1059 </span><span class="lineNoCov">          0 :         return false;</span>
+<span class="lineNum">    1060 </span>            :     DatagramData&amp; datagram =
+<span class="lineNum">    1061 </span><span class="lineNoCov">          0 :                     *reinterpret_cast&lt; DatagramData* &gt;( _recvBuffer.getData( ));</span>
+<span class="lineNum">    1062 </span><span class="lineNoCov">          0 :     datagram.byteswap();</span>
+<span class="lineNum">    1063 </span>            : 
+<span class="lineNum">    1064 </span>            : #ifdef CO_INSTRUMENT_RSP
+<span class="lineNum">    1065 </span>            :     ++nReadData;
+<span class="lineNum">    1066 </span>            : #endif
+<span class="lineNum">    1067 </span><span class="lineNoCov">          0 :     const uint16_t writerID = datagram.writerID;</span>
+<span class="lineNum">    1068 </span>            : #ifdef Darwin
+<span class="lineNum">    1069 </span>            :     // There is occasionally a packet from ourselves, even though multicast loop
+<span class="lineNum">    1070 </span>            :     // is not set?!
+<span class="lineNum">    1071 </span>            :     if( writerID == _id )
+<span class="lineNum">    1072 </span>            :         return true;
+<span class="lineNum">    1073 </span>            : #else
+<span class="lineNum">    1074 </span><span class="lineNoCov">          0 :     LBASSERT( writerID != _id );</span>
+<span class="lineNum">    1075 </span>            : #endif
+<span class="lineNum">    1076 </span>            : 
+<span class="lineNum">    1077 </span><span class="lineNoCov">          0 :     RSPConnectionPtr connection = _findConnection( writerID );</span>
+<span class="lineNum">    1078 </span>            : 
+<span class="lineNum">    1079 </span><span class="lineNoCov">          0 :     if( !connection )  // unknown connection ?</span>
+<span class="lineNum">    1080 </span>            :     {
+<span class="lineNum">    1081 </span><span class="lineNoCov">          0 :         LBASSERTINFO( false, &quot;Can't find connection with id &quot; &lt;&lt; writerID );</span>
+<span class="lineNum">    1082 </span><span class="lineNoCov">          0 :         return false;</span>
+<span class="lineNum">    1083 </span>            :     }
+<span class="lineNum">    1084 </span><span class="lineNoCov">          0 :     LBASSERT( connection-&gt;_id == writerID );</span>
+<span class="lineNum">    1085 </span>            : 
+<span class="lineNum">    1086 </span><span class="lineNoCov">          0 :     const uint16_t sequence = datagram.sequence;</span>
+<span class="lineNum">    1087 </span>            : //  LBLOG( LOG_RSP ) &lt;&lt; &quot;rcvd &quot; &lt;&lt; sequence &lt;&lt; &quot; from &quot; &lt;&lt; writerID &lt;&lt;std::endl;
+<span class="lineNum">    1088 </span>            : 
+<span class="lineNum">    1089 </span><span class="lineNoCov">          0 :     if( connection-&gt;_sequence == sequence ) // in-order packet</span>
+<span class="lineNum">    1090 </span>            :     {
+<span class="lineNum">    1091 </span><span class="lineNoCov">          0 :         Buffer* newBuffer = connection-&gt;_newDataBuffer( _recvBuffer );</span>
+<span class="lineNum">    1092 </span><span class="lineNoCov">          0 :         if( !newBuffer ) // no more data buffers, drop packet</span>
+<span class="lineNum">    1093 </span><span class="lineNoCov">          0 :             return true;</span>
+<span class="lineNum">    1094 </span>            : 
+<span class="lineNum">    1095 </span><span class="lineNoCov">          0 :         lunchbox::ScopedWrite mutex( connection-&gt;_mutexEvent );</span>
+<span class="lineNum">    1096 </span><span class="lineNoCov">          0 :         connection-&gt;_pushDataBuffer( newBuffer );</span>
+<span class="lineNum">    1097 </span>            : 
+<span class="lineNum">    1098 </span><span class="lineNoCov">          0 :         while( !connection-&gt;_recvBuffers.empty( )) // enqueue ready pending data</span>
+<span class="lineNum">    1099 </span>            :         {
+<span class="lineNum">    1100 </span><span class="lineNoCov">          0 :             newBuffer = connection-&gt;_recvBuffers.front();</span>
+<span class="lineNum">    1101 </span><span class="lineNoCov">          0 :             if( !newBuffer )</span>
+<span class="lineNum">    1102 </span><span class="lineNoCov">          0 :                 break;</span>
+<span class="lineNum">    1103 </span>            : 
+<span class="lineNum">    1104 </span><span class="lineNoCov">          0 :             connection-&gt;_recvBuffers.pop_front();</span>
+<span class="lineNum">    1105 </span><span class="lineNoCov">          0 :             connection-&gt;_pushDataBuffer( newBuffer );</span>
+<span class="lineNum">    1106 </span>            :         }
+<span class="lineNum">    1107 </span>            : 
+<span class="lineNum">    1108 </span><span class="lineNoCov">          0 :         if( !connection-&gt;_recvBuffers.empty() &amp;&amp;</span>
+<span class="lineNum">    1109 </span><span class="lineNoCov">          0 :             !connection-&gt;_recvBuffers.front( )) // update for new _sequence</span>
+<span class="lineNum">    1110 </span>            :         {
+<span class="lineNum">    1111 </span><span class="lineNoCov">          0 :             connection-&gt;_recvBuffers.pop_front();</span>
+<span class="lineNum">    1112 </span>            :         }
+<span class="lineNum">    1113 </span>            : 
+<span class="lineNum">    1114 </span><span class="lineNoCov">          0 :         connection-&gt;_event-&gt;set();</span>
+<span class="lineNum">    1115 </span><span class="lineNoCov">          0 :         return true;</span>
+<span class="lineNum">    1116 </span>            :     }
+<span class="lineNum">    1117 </span>            : 
+<span class="lineNum">    1118 </span><span class="lineNoCov">          0 :     const uint16_t max = std::numeric_limits&lt; uint16_t &gt;::max();</span>
+<span class="lineNum">    1119 </span><span class="lineNoCov">          0 :     if(( connection-&gt;_sequence &gt; sequence &amp;&amp;</span>
+<span class="lineNum">    1120 </span><span class="lineNoCov">          0 :          max - connection-&gt;_sequence + sequence &gt; _numBuffers ) ||</span>
+<span class="lineNum">    1121 </span><span class="lineNoCov">          0 :        ( connection-&gt;_sequence &lt; sequence &amp;&amp;</span>
+<span class="lineNum">    1122 </span><span class="lineNoCov">          0 :          sequence - connection-&gt;_sequence &gt; _numBuffers ))</span>
+<span class="lineNum">    1123 </span>            :     {
+<span class="lineNum">    1124 </span>            :         // ignore it if it's a repetition for another reader
+<span class="lineNum">    1125 </span><span class="lineNoCov">          0 :         return true;</span>
+<span class="lineNum">    1126 </span>            :     }
+<span class="lineNum">    1127 </span>            : 
+<span class="lineNum">    1128 </span>            :     // else out of order
+<span class="lineNum">    1129 </span>            : 
+<span class="lineNum">    1130 </span><span class="lineNoCov">          0 :     const uint16_t size = sequence - connection-&gt;_sequence;</span>
+<span class="lineNum">    1131 </span><span class="lineNoCov">          0 :     LBASSERT( size != 0 );</span>
+<span class="lineNum">    1132 </span><span class="lineNoCov">          0 :     LBASSERTINFO( size &lt;= _numBuffers, size &lt;&lt; &quot; &gt; &quot; &lt;&lt; _numBuffers );</span>
+<span class="lineNum">    1133 </span>            : 
+<span class="lineNum">    1134 </span><span class="lineNoCov">          0 :     ssize_t i = ssize_t( size ) - 1;</span>
+<span class="lineNum">    1135 </span><span class="lineNoCov">          0 :     const bool gotPacket = ( connection-&gt;_recvBuffers.size() &gt;= size &amp;&amp;</span>
+<span class="lineNum">    1136 </span><span class="lineNoCov">          0 :                              connection-&gt;_recvBuffers[ i ] );</span>
+<span class="lineNum">    1137 </span><span class="lineNoCov">          0 :     if( gotPacket )</span>
+<span class="lineNum">    1138 </span><span class="lineNoCov">          0 :         return true;</span>
+<span class="lineNum">    1139 </span>            : 
+<span class="lineNum">    1140 </span><span class="lineNoCov">          0 :     Buffer* newBuffer = connection-&gt;_newDataBuffer( _recvBuffer );</span>
+<span class="lineNum">    1141 </span><span class="lineNoCov">          0 :     if( !newBuffer ) // no more data buffers, drop packet</span>
+<span class="lineNum">    1142 </span><span class="lineNoCov">          0 :         return true;</span>
+<span class="lineNum">    1143 </span>            : 
+<span class="lineNum">    1144 </span><span class="lineNoCov">          0 :     if( connection-&gt;_recvBuffers.size() &lt; size )</span>
+<span class="lineNum">    1145 </span><span class="lineNoCov">          0 :         connection-&gt;_recvBuffers.resize( size, 0 );</span>
+<span class="lineNum">    1146 </span>            : 
+<span class="lineNum">    1147 </span><span class="lineNoCov">          0 :     LBASSERT( !connection-&gt;_recvBuffers[ i ] );</span>
+<span class="lineNum">    1148 </span><span class="lineNoCov">          0 :     connection-&gt;_recvBuffers[ i ] = newBuffer;</span>
+<span class="lineNum">    1149 </span>            : 
+<span class="lineNum">    1150 </span>            :     // early nack: request missing packets before current
+<span class="lineNum">    1151 </span><span class="lineNoCov">          0 :     --i;</span>
+<span class="lineNum">    1152 </span><span class="lineNoCov">          0 :     Nack nack = { connection-&gt;_sequence, uint16_t( sequence - 1 ) };</span>
+<span class="lineNum">    1153 </span><span class="lineNoCov">          0 :     if( i &gt; 0 )</span>
+<span class="lineNum">    1154 </span>            :     {
+<span class="lineNum">    1155 </span><span class="lineNoCov">          0 :         if( connection-&gt;_recvBuffers[i] ) // got previous packet</span>
+<span class="lineNum">    1156 </span><span class="lineNoCov">          0 :             return true;</span>
+<span class="lineNum">    1157 </span>            : 
+<span class="lineNum">    1158 </span><span class="lineNoCov">          0 :         while( i &gt;= 0 &amp;&amp; !connection-&gt;_recvBuffers[i] )</span>
+<span class="lineNum">    1159 </span><span class="lineNoCov">          0 :             --i;</span>
+<span class="lineNum">    1160 </span>            : 
+<span class="lineNum">    1161 </span><span class="lineNoCov">          0 :         const Buffer* lastBuffer = i&gt;=0 ? connection-&gt;_recvBuffers[i] : 0;</span>
+<span class="lineNum">    1162 </span><span class="lineNoCov">          0 :         if( lastBuffer )</span>
+<span class="lineNum">    1163 </span>            :         {
+<span class="lineNum">    1164 </span><span class="lineNoCov">          0 :             nack.start = connection-&gt;_sequence + i;</span>
+<span class="lineNum">    1165 </span>            :         }
+<span class="lineNum">    1166 </span>            :     }
+<span class="lineNum">    1167 </span>            : 
+<span class="lineNum">    1168 </span><span class="lineNoCov">          0 :     LBLOG( LOG_RSP ) &lt;&lt; &quot;send early nack &quot; &lt;&lt; nack.start &lt;&lt; &quot;..&quot; &lt;&lt; nack.end</span>
+<span class="lineNum">    1169 </span><span class="lineNoCov">          0 :                      &lt;&lt; &quot; current &quot; &lt;&lt; connection-&gt;_sequence &lt;&lt; &quot; ooo &quot;</span>
+<span class="lineNum">    1170 </span><span class="lineNoCov">          0 :                      &lt;&lt; connection-&gt;_recvBuffers.size() &lt;&lt; std::endl;</span>
+<span class="lineNum">    1171 </span>            : 
+<span class="lineNum">    1172 </span><span class="lineNoCov">          0 :     if( nack.end &lt; nack.start )</span>
+<span class="lineNum">    1173 </span>            :         // OPT: don't drop nack 0..nack.end, but it doesn't happen often
+<span class="lineNum">    1174 </span><span class="lineNoCov">          0 :         nack.end = std::numeric_limits&lt; uint16_t &gt;::max();</span>
+<span class="lineNum">    1175 </span>            : 
+<span class="lineNum">    1176 </span><span class="lineNoCov">          0 :     _sendNack( writerID, &amp;nack, 1 );</span>
+<span class="lineNum">    1177 </span><span class="lineNoCov">          0 :     return true;</span>
+<a name="1178"><span class="lineNum">    1178 </span>            : }</a>
+<span class="lineNum">    1179 </span>            : 
+<span class="lineNum">    1180 </span><span class="lineNoCov">          0 : RSPConnection::Buffer* RSPConnection::_newDataBuffer( Buffer&amp; inBuffer )</span>
+<span class="lineNum">    1181 </span>            : {
+<span class="lineNum">    1182 </span><span class="lineNoCov">          0 :     LBASSERT( static_cast&lt; int32_t &gt;( inBuffer.getMaxSize( )) == _mtu );</span>
+<span class="lineNum">    1183 </span>            : 
+<span class="lineNum">    1184 </span><span class="lineNoCov">          0 :     Buffer* buffer = 0;</span>
+<span class="lineNum">    1185 </span><span class="lineNoCov">          0 :     if( _threadBuffers.pop( buffer ))</span>
+<span class="lineNum">    1186 </span>            :     {
+<span class="lineNum">    1187 </span><span class="lineNoCov">          0 :         buffer-&gt;swap( inBuffer );</span>
+<span class="lineNum">    1188 </span><span class="lineNoCov">          0 :         return buffer;</span>
+<span class="lineNum">    1189 </span>            :     }
+<span class="lineNum">    1190 </span>            : 
+<span class="lineNum">    1191 </span>            :     // we do not have a free buffer, which means that the receiver is slower
+<span class="lineNum">    1192 </span>            :     // then our read thread. This is bad, because now we'll drop the data and
+<span class="lineNum">    1193 </span>            :     // will send a NAck packet upon the ack request, causing retransmission even
+<span class="lineNum">    1194 </span>            :     // though we'll probably drop it again
+<span class="lineNum">    1195 </span><span class="lineNoCov">          0 :     LBLOG( LOG_RSP ) &lt;&lt; &quot;Reader too slow, dropping data&quot; &lt;&lt; std::endl;</span>
+<span class="lineNum">    1196 </span>            : 
+<span class="lineNum">    1197 </span>            :     // Set the event if there is data to read. This shouldn't be needed since
+<span class="lineNum">    1198 </span>            :     // the event should be set in this case, but it'll increase the robustness
+<span class="lineNum">    1199 </span><span class="lineNoCov">          0 :     lunchbox::ScopedWrite mutex( _mutexEvent );</span>
+<span class="lineNum">    1200 </span><span class="lineNoCov">          0 :     if( !_appBuffers.isEmpty( ))</span>
+<span class="lineNum">    1201 </span><span class="lineNoCov">          0 :         _event-&gt;set();</span>
+<span class="lineNum">    1202 </span><span class="lineNoCov">          0 :     return 0;</span>
+<a name="1203"><span class="lineNum">    1203 </span>            : }</a>
+<span class="lineNum">    1204 </span>            : 
+<span class="lineNum">    1205 </span><span class="lineNoCov">          0 : void RSPConnection::_pushDataBuffer( Buffer* buffer )</span>
+<span class="lineNum">    1206 </span>            : {
+<span class="lineNum">    1207 </span><span class="lineNoCov">          0 :     LBASSERT( _parent );</span>
+<span class="lineNum">    1208 </span>            : #ifndef NDEBUG
+<span class="lineNum">    1209 </span><span class="lineNoCov">          0 :     DatagramData* dgram = reinterpret_cast&lt; DatagramData* &gt;(buffer-&gt;getData( ));</span>
+<span class="lineNum">    1210 </span><span class="lineNoCov">          0 :     LBASSERTINFO( dgram-&gt;sequence == _sequence,</span>
+<span class="lineNum">    1211 </span>            :                   dgram-&gt;sequence &lt;&lt; &quot; != &quot; &lt;&lt; _sequence );
+<span class="lineNum">    1212 </span>            : #endif
+<span class="lineNum">    1213 </span>            : 
+<span class="lineNum">    1214 </span><span class="lineNoCov">          0 :     if( (( _sequence + _parent-&gt;_id ) % _ackFreq ) == 0 )</span>
+<span class="lineNum">    1215 </span><span class="lineNoCov">          0 :         _parent-&gt;_sendAck( _id, _sequence );</span>
+<span class="lineNum">    1216 </span>            : 
+<span class="lineNum">    1217 </span><span class="lineNoCov">          0 :     LBLOG( LOG_RSP ) &lt;&lt; &quot;post buffer &quot; &lt;&lt; _sequence &lt;&lt; std::endl;</span>
+<span class="lineNum">    1218 </span><span class="lineNoCov">          0 :     ++_sequence;</span>
+<span class="lineNum">    1219 </span><span class="lineNoCov">          0 :     _appBuffers.push( buffer );</span>
+<a name="1220"><span class="lineNum">    1220 </span><span class="lineNoCov">          0 : }</span></a>
+<span class="lineNum">    1221 </span>            : 
+<span class="lineNum">    1222 </span><span class="lineNoCov">          0 : bool RSPConnection::_handleAck( const size_t bytes )</span>
+<span class="lineNum">    1223 </span>            : {
+<span class="lineNum">    1224 </span><span class="lineNoCov">          0 :     if( bytes &lt; sizeof( DatagramAck ))</span>
+<span class="lineNum">    1225 </span><span class="lineNoCov">          0 :         return false;</span>
+<span class="lineNum">    1226 </span>            :     DatagramAck&amp; ack =
+<span class="lineNum">    1227 </span><span class="lineNoCov">          0 :                      *reinterpret_cast&lt; DatagramAck* &gt;( _recvBuffer.getData( ));</span>
+<span class="lineNum">    1228 </span><span class="lineNoCov">          0 :     ack.byteswap();</span>
+<span class="lineNum">    1229 </span>            : 
+<span class="lineNum">    1230 </span>            : #ifdef CO_INSTRUMENT_RSP
+<span class="lineNum">    1231 </span>            :     ++nAcksRead;
+<span class="lineNum">    1232 </span>            : #endif
+<span class="lineNum">    1233 </span>            : 
+<span class="lineNum">    1234 </span><span class="lineNoCov">          0 :     if( ack.writerID != _id )</span>
+<span class="lineNum">    1235 </span><span class="lineNoCov">          0 :         return true;</span>
+<span class="lineNum">    1236 </span>            : 
+<span class="lineNum">    1237 </span><span class="lineNoCov">          0 :     LBLOG( LOG_RSP ) &lt;&lt; &quot;got ack from &quot; &lt;&lt; ack.readerID &lt;&lt; &quot; for &quot;</span>
+<span class="lineNum">    1238 </span><span class="lineNoCov">          0 :                      &lt;&lt; ack.writerID &lt;&lt; &quot; sequence &quot; &lt;&lt; ack.sequence</span>
+<span class="lineNum">    1239 </span><span class="lineNoCov">          0 :                      &lt;&lt; &quot; current &quot; &lt;&lt; _sequence &lt;&lt; std::endl;</span>
+<span class="lineNum">    1240 </span>            : 
+<span class="lineNum">    1241 </span>            :     // find destination connection, update ack data if needed
+<span class="lineNum">    1242 </span><span class="lineNoCov">          0 :     RSPConnectionPtr connection = _findConnection( ack.readerID );</span>
+<span class="lineNum">    1243 </span><span class="lineNoCov">          0 :     if( !connection )</span>
+<span class="lineNum">    1244 </span>            :     {
+<span class="lineNum">    1245 </span><span class="lineNoCov">          0 :         LBUNREACHABLE;</span>
+<span class="lineNum">    1246 </span><span class="lineNoCov">          0 :         return false;</span>
+<span class="lineNum">    1247 </span>            :     }
+<span class="lineNum">    1248 </span>            : 
+<span class="lineNum">    1249 </span><span class="lineNoCov">          0 :     if( connection-&gt;_acked &gt;= ack.sequence &amp;&amp;</span>
+<span class="lineNum">    1250 </span><span class="lineNoCov">          0 :         connection-&gt;_acked - ack.sequence &lt;= _numBuffers )</span>
+<span class="lineNum">    1251 </span>            :     {
+<span class="lineNum">    1252 </span>            :         // I have received a later ack previously from the reader
+<span class="lineNum">    1253 </span><span class="lineNoCov">          0 :         LBLOG( LOG_RSP ) &lt;&lt; &quot;Late ack&quot; &lt;&lt; std::endl;</span>
+<span class="lineNum">    1254 </span><span class="lineNoCov">          0 :         return true;</span>
+<span class="lineNum">    1255 </span>            :     }
+<span class="lineNum">    1256 </span>            : 
+<span class="lineNum">    1257 </span>            : #ifdef CO_INSTRUMENT_RSP
+<span class="lineNum">    1258 </span>            :     ++nAcksAccepted;
+<span class="lineNum">    1259 </span>            : #endif
+<span class="lineNum">    1260 </span><span class="lineNoCov">          0 :     connection-&gt;_acked = ack.sequence;</span>
+<span class="lineNum">    1261 </span><span class="lineNoCov">          0 :     _timeouts = 0; // reset timeout counter</span>
+<span class="lineNum">    1262 </span>            : 
+<span class="lineNum">    1263 </span>            :     // Check if we can advance _acked
+<span class="lineNum">    1264 </span><span class="lineNoCov">          0 :     uint16_t acked = ack.sequence;</span>
+<span class="lineNum">    1265 </span>            : 
+<span class="lineNum">    1266 </span><span class="lineNoCov">          0 :     for( RSPConnectionsCIter i = _children.begin(); i != _children.end(); ++i )</span>
+<span class="lineNum">    1267 </span>            :     {
+<span class="lineNum">    1268 </span><span class="lineNoCov">          0 :         RSPConnectionPtr child = *i;</span>
+<span class="lineNum">    1269 </span><span class="lineNoCov">          0 :         if( child-&gt;_id == _id )</span>
+<span class="lineNum">    1270 </span><span class="lineNoCov">          0 :             continue;</span>
+<span class="lineNum">    1271 </span>            : 
+<span class="lineNum">    1272 </span><span class="lineNoCov">          0 :         const uint16_t distance = child-&gt;_acked - acked;</span>
+<span class="lineNum">    1273 </span><span class="lineNoCov">          0 :         if( distance &gt; _numBuffers )</span>
+<span class="lineNum">    1274 </span><span class="lineNoCov">          0 :             acked = child-&gt;_acked;</span>
+<span class="lineNum">    1275 </span><span class="lineNoCov">          0 :     }</span>
+<span class="lineNum">    1276 </span>            : 
+<span class="lineNum">    1277 </span><span class="lineNoCov">          0 :     RSPConnectionPtr selfChild = _findConnection( _id );</span>
+<span class="lineNum">    1278 </span><span class="lineNoCov">          0 :     const uint16_t distance = acked - selfChild-&gt;_acked;</span>
+<span class="lineNum">    1279 </span><span class="lineNoCov">          0 :     if( distance &lt;= _numBuffers )</span>
+<span class="lineNum">    1280 </span><span class="lineNoCov">          0 :         _finishWriteQueue( acked );</span>
+<span class="lineNum">    1281 </span><span class="lineNoCov">          0 :     return true;</span>
+<a name="1282"><span class="lineNum">    1282 </span>            : }</a>
+<span class="lineNum">    1283 </span>            : 
+<span class="lineNum">    1284 </span><span class="lineNoCov">          0 : bool RSPConnection::_handleNack()</span>
+<span class="lineNum">    1285 </span>            : {
+<span class="lineNum">    1286 </span>            :     DatagramNack&amp; nack =
+<span class="lineNum">    1287 </span><span class="lineNoCov">          0 :                     *reinterpret_cast&lt; DatagramNack* &gt;( _recvBuffer.getData( ));</span>
+<span class="lineNum">    1288 </span><span class="lineNoCov">          0 :     nack.byteswap();</span>
+<span class="lineNum">    1289 </span>            : 
+<span class="lineNum">    1290 </span>            : #ifdef CO_INSTRUMENT_RSP
+<span class="lineNum">    1291 </span>            :     ++nNAcksRead;
+<span class="lineNum">    1292 </span>            : #endif
+<span class="lineNum">    1293 </span>            : 
+<span class="lineNum">    1294 </span><span class="lineNoCov">          0 :     if( _id != nack.writerID )</span>
+<span class="lineNum">    1295 </span>            :     {
+<span class="lineNum">    1296 </span><span class="lineNoCov">          0 :         LBLOG( LOG_RSP )</span>
+<span class="lineNum">    1297 </span><span class="lineNoCov">          0 :             &lt;&lt; &quot;ignore &quot; &lt;&lt; nack.count &lt;&lt; &quot; nacks from &quot; &lt;&lt; nack.readerID</span>
+<span class="lineNum">    1298 </span><span class="lineNoCov">          0 :             &lt;&lt; &quot; for &quot; &lt;&lt; nack.writerID &lt;&lt; &quot; (not me)&quot;&lt;&lt; std::endl;</span>
+<span class="lineNum">    1299 </span><span class="lineNoCov">          0 :         return true;</span>
+<span class="lineNum">    1300 </span>            :     }
+<span class="lineNum">    1301 </span>            : 
+<span class="lineNum">    1302 </span><span class="lineNoCov">          0 :     LBLOG( LOG_RSP )</span>
+<span class="lineNum">    1303 </span><span class="lineNoCov">          0 :         &lt;&lt; &quot;handle &quot; &lt;&lt; nack.count &lt;&lt; &quot; nacks from &quot; &lt;&lt; nack.readerID</span>
+<span class="lineNum">    1304 </span><span class="lineNoCov">          0 :         &lt;&lt; &quot; for &quot; &lt;&lt; nack.writerID &lt;&lt; std::endl;</span>
+<span class="lineNum">    1305 </span>            : 
+<span class="lineNum">    1306 </span><span class="lineNoCov">          0 :     RSPConnectionPtr connection = _findConnection( nack.readerID );</span>
+<span class="lineNum">    1307 </span><span class="lineNoCov">          0 :     if( !connection )</span>
+<span class="lineNum">    1308 </span>            :     {
+<span class="lineNum">    1309 </span><span class="lineNoCov">          0 :         LBUNREACHABLE;</span>
+<span class="lineNum">    1310 </span><span class="lineNoCov">          0 :         return false;</span>
+<span class="lineNum">    1311 </span>            :         // it's an unknown connection, TODO add this connection?
+<span class="lineNum">    1312 </span>            :     }
+<span class="lineNum">    1313 </span>            : 
+<span class="lineNum">    1314 </span><span class="lineNoCov">          0 :     _timeouts = 0;</span>
+<span class="lineNum">    1315 </span><span class="lineNoCov">          0 :     _addRepeat( nack.nacks, nack.count );</span>
+<span class="lineNum">    1316 </span><span class="lineNoCov">          0 :     return true;</span>
+<a name="1317"><span class="lineNum">    1317 </span>            : }</a>
+<span class="lineNum">    1318 </span>            : 
+<span class="lineNum">    1319 </span><span class="lineNoCov">          0 : void RSPConnection::_addRepeat( const Nack* nacks, uint16_t num )</span>
+<span class="lineNum">    1320 </span>            : {
+<span class="lineNum">    1321 </span><span class="lineNoCov">          0 :     LBLOG( LOG_RSP ) &lt;&lt; lunchbox::disableFlush &lt;&lt; &quot;Queue repeat requests &quot;;</span>
+<span class="lineNum">    1322 </span><span class="lineNoCov">          0 :     size_t lost = 0;</span>
+<span class="lineNum">    1323 </span>            : 
+<span class="lineNum">    1324 </span><span class="lineNoCov">          0 :     for( size_t i = 0; i &lt; num; ++i )</span>
+<span class="lineNum">    1325 </span>            :     {
+<span class="lineNum">    1326 </span><span class="lineNoCov">          0 :         const Nack&amp; nack = nacks[ i ];</span>
+<span class="lineNum">    1327 </span><span class="lineNoCov">          0 :         LBASSERT( nack.start &lt;= nack.end );</span>
+<span class="lineNum">    1328 </span>            : 
+<span class="lineNum">    1329 </span><span class="lineNoCov">          0 :         LBLOG( LOG_RSP ) &lt;&lt; nack.start &lt;&lt; &quot;..&quot; &lt;&lt; nack.end &lt;&lt; &quot; &quot;;</span>
+<span class="lineNum">    1330 </span>            : 
+<span class="lineNum">    1331 </span><span class="lineNoCov">          0 :         bool merged = false;</span>
+<span class="lineNum">    1332 </span><span class="lineNoCov">          0 :         for( RepeatQueue::iterator j = _repeatQueue.begin();</span>
+<span class="lineNum">    1333 </span><span class="lineNoCov">          0 :              j != _repeatQueue.end() &amp;&amp; !merged; ++j )</span>
+<span class="lineNum">    1334 </span>            :         {
+<span class="lineNum">    1335 </span><span class="lineNoCov">          0 :             Nack&amp; old = *j;</span>
+<span class="lineNum">    1336 </span><span class="lineNoCov">          0 :             if( old.start &lt;= nack.end &amp;&amp; old.end &gt;= nack.start )</span>
+<span class="lineNum">    1337 </span>            :             {
+<span class="lineNum">    1338 </span><span class="lineNoCov">          0 :                 if( old.start &gt; nack.start )</span>
+<span class="lineNum">    1339 </span>            :                 {
+<span class="lineNum">    1340 </span><span class="lineNoCov">          0 :                     lost += old.start - nack.start;</span>
+<span class="lineNum">    1341 </span><span class="lineNoCov">          0 :                     old.start = nack.start;</span>
+<span class="lineNum">    1342 </span><span class="lineNoCov">          0 :                     merged = true;</span>
+<span class="lineNum">    1343 </span>            :                 }
+<span class="lineNum">    1344 </span><span class="lineNoCov">          0 :                 if( old.end &lt; nack.end )</span>
+<span class="lineNum">    1345 </span>            :                 {
+<span class="lineNum">    1346 </span><span class="lineNoCov">          0 :                     lost += nack.end - old.end;</span>
+<span class="lineNum">    1347 </span><span class="lineNoCov">          0 :                     old.end = nack.end;</span>
+<span class="lineNum">    1348 </span><span class="lineNoCov">          0 :                     merged = true;</span>
+<span class="lineNum">    1349 </span>            :                 }
+<span class="lineNum">    1350 </span><span class="lineNoCov">          0 :                 LBASSERT( lost &lt; _numBuffers );</span>
+<span class="lineNum">    1351 </span>            :             }
+<span class="lineNum">    1352 </span>            :         }
+<span class="lineNum">    1353 </span>            : 
+<span class="lineNum">    1354 </span><span class="lineNoCov">          0 :         if( !merged )</span>
+<span class="lineNum">    1355 </span>            :         {
+<span class="lineNum">    1356 </span><span class="lineNoCov">          0 :             lost += uint16_t( nack.end - nack.start ) + 1;</span>
+<span class="lineNum">    1357 </span><span class="lineNoCov">          0 :             LBASSERT( lost &lt;= _numBuffers );</span>
+<span class="lineNum">    1358 </span><span class="lineNoCov">          0 :             _repeatQueue.push_back( nack );</span>
+<span class="lineNum">    1359 </span>            :         }
+<span class="lineNum">    1360 </span>            :     }
+<span class="lineNum">    1361 </span>            : 
+<span class="lineNum">    1362 </span><span class="lineNoCov">          0 :     ConstConnectionDescriptionPtr description = getDescription();</span>
+<span class="lineNum">    1363 </span><span class="lineNoCov">          0 :     if( _sendRate &gt;</span>
+<span class="lineNum">    1364 </span><span class="lineNoCov">          0 :         ( description-&gt;bandwidth &gt;&gt;</span>
+<span class="lineNum">    1365 </span><span class="lineNoCov">          0 :           Global::getIAttribute( Global::IATTR_RSP_MIN_SENDRATE_SHIFT )))</span>
+<span class="lineNum">    1366 </span>            :     {
+<span class="lineNum">    1367 </span><span class="lineNoCov">          0 :         const float delta = float( lost ) * .001f *</span>
+<span class="lineNum">    1368 </span><span class="lineNoCov">          0 :                      Global::getIAttribute( Global::IATTR_RSP_ERROR_DOWNSCALE );</span>
+<span class="lineNum">    1369 </span><span class="lineNoCov">          0 :         const float maxDelta = .01f *</span>
+<span class="lineNum">    1370 </span><span class="lineNoCov">          0 :             float( Global::getIAttribute( Global::IATTR_RSP_ERROR_MAXSCALE ));</span>
+<span class="lineNum">    1371 </span><span class="lineNoCov">          0 :         const float downScale = LB_MIN( delta, maxDelta );</span>
+<span class="lineNum">    1372 </span><span class="lineNoCov">          0 :         _sendRate -= 1 + int64_t( _sendRate * downScale );</span>
+<span class="lineNum">    1373 </span><span class="lineNoCov">          0 :         LBLOG( LOG_RSP )</span>
+<span class="lineNum">    1374 </span><span class="lineNoCov">          0 :             &lt;&lt; &quot;, lost &quot; &lt;&lt; lost &lt;&lt; &quot; slowing down &quot; &lt;&lt; downScale * 100.f</span>
+<span class="lineNum">    1375 </span><span class="lineNoCov">          0 :             &lt;&lt; &quot;% to &quot; &lt;&lt; _sendRate &lt;&lt; &quot; KB/s&quot; &lt;&lt; std::endl</span>
+<span class="lineNum">    1376 </span><span class="lineNoCov">          0 :             &lt;&lt; lunchbox::enableFlush;</span>
+<span class="lineNum">    1377 </span>            :     }
+<span class="lineNum">    1378 </span>            :     else
+<span class="lineNum">    1379 </span><span class="lineNoCov">          0 :         LBLOG( LOG_RSP ) &lt;&lt; std::endl &lt;&lt; lunchbox::enableFlush;</span>
+<a name="1380"><span class="lineNum">    1380 </span><span class="lineNoCov">          0 : }</span></a>
+<span class="lineNum">    1381 </span>            : 
+<span class="lineNum">    1382 </span><span class="lineNoCov">          0 : bool RSPConnection::_handleAckRequest( const size_t bytes )</span>
+<span class="lineNum">    1383 </span>            : {
+<span class="lineNum">    1384 </span><span class="lineNoCov">          0 :     if( bytes &lt; sizeof( DatagramAckRequest ))</span>
+<span class="lineNum">    1385 </span><span class="lineNoCov">          0 :         return false;</span>
+<span class="lineNum">    1386 </span>            :     DatagramAckRequest&amp; ackRequest =
+<span class="lineNum">    1387 </span><span class="lineNoCov">          0 :               *reinterpret_cast&lt; DatagramAckRequest* &gt;( _recvBuffer.getData( ));</span>
+<span class="lineNum">    1388 </span><span class="lineNoCov">          0 :     ackRequest.byteswap();</span>
+<span class="lineNum">    1389 </span>            : 
+<span class="lineNum">    1390 </span><span class="lineNoCov">          0 :     const uint16_t writerID = ackRequest.writerID;</span>
+<span class="lineNum">    1391 </span>            : #ifdef Darwin
+<span class="lineNum">    1392 </span>            :     // There is occasionally a packet from ourselves, even though multicast loop
+<span class="lineNum">    1393 </span>            :     // is not set?!
+<span class="lineNum">    1394 </span>            :     if( writerID == _id )
+<span class="lineNum">    1395 </span>            :         return true;
+<span class="lineNum">    1396 </span>            : #else
+<span class="lineNum">    1397 </span><span class="lineNoCov">          0 :     LBASSERT( writerID != _id );</span>
+<span class="lineNum">    1398 </span>            : #endif
+<span class="lineNum">    1399 </span><span class="lineNoCov">          0 :     RSPConnectionPtr connection = _findConnection( writerID );</span>
+<span class="lineNum">    1400 </span><span class="lineNoCov">          0 :     if( !connection )</span>
+<span class="lineNum">    1401 </span>            :     {
+<span class="lineNum">    1402 </span><span class="lineNoCov">          0 :         LBUNREACHABLE;</span>
+<span class="lineNum">    1403 </span><span class="lineNoCov">          0 :         return false;</span>
+<span class="lineNum">    1404 </span>            :     }
+<span class="lineNum">    1405 </span>            : 
+<span class="lineNum">    1406 </span><span class="lineNoCov">          0 :     const uint16_t reqID = ackRequest.sequence;</span>
+<span class="lineNum">    1407 </span><span class="lineNoCov">          0 :     const uint16_t gotID = connection-&gt;_sequence - 1;</span>
+<span class="lineNum">    1408 </span><span class="lineNoCov">          0 :     const uint16_t distance = reqID - gotID;</span>
+<span class="lineNum">    1409 </span>            : 
+<span class="lineNum">    1410 </span><span class="lineNoCov">          0 :     LBLOG( LOG_RSP ) &lt;&lt; &quot;ack request &quot;  &lt;&lt; reqID &lt;&lt; &quot; from &quot; &lt;&lt; writerID</span>
+<span class="lineNum">    1411 </span><span class="lineNoCov">          0 :                      &lt;&lt; &quot; got &quot; &lt;&lt; gotID &lt;&lt; &quot; missing &quot; &lt;&lt; distance</span>
+<span class="lineNum">    1412 </span><span class="lineNoCov">          0 :                      &lt;&lt; std::endl;</span>
+<span class="lineNum">    1413 </span>            : 
+<span class="lineNum">    1414 </span><span class="lineNoCov">          0 :     if( (reqID == gotID) ||</span>
+<span class="lineNum">    1415 </span><span class="lineNoCov">          0 :         (gotID &gt; reqID &amp;&amp; gotID - reqID &lt;= _numBuffers) ||</span>
+<span class="lineNum">    1416 </span><span class="lineNoCov">          0 :         (gotID &lt; reqID &amp;&amp; distance &gt; _numBuffers) )</span>
+<span class="lineNum">    1417 </span>            :     {
+<span class="lineNum">    1418 </span><span class="lineNoCov">          0 :         _sendAck( connection-&gt;_id, gotID );</span>
+<span class="lineNum">    1419 </span><span class="lineNoCov">          0 :         return true;</span>
+<span class="lineNum">    1420 </span>            :     }
+<span class="lineNum">    1421 </span>            :     // else find all missing datagrams
+<span class="lineNum">    1422 </span>            : 
+<span class="lineNum">    1423 </span><span class="lineNoCov">          0 :     const uint16_t max = CO_RSP_MAX_NACKS - 2;</span>
+<span class="lineNum">    1424 </span>            :     Nack nacks[ CO_RSP_MAX_NACKS ];
+<span class="lineNum">    1425 </span><span class="lineNoCov">          0 :     uint16_t i = 0;</span>
+<span class="lineNum">    1426 </span>            : 
+<span class="lineNum">    1427 </span><span class="lineNoCov">          0 :     nacks[ i ].start = connection-&gt;_sequence;</span>
+<span class="lineNum">    1428 </span><span class="lineNoCov">          0 :     LBLOG( LOG_RSP ) &lt;&lt; lunchbox::disableFlush &lt;&lt; &quot;nacks: &quot;</span>
+<span class="lineNum">    1429 </span><span class="lineNoCov">          0 :                      &lt;&lt; nacks[i].start &lt;&lt; &quot;..&quot;;</span>
+<span class="lineNum">    1430 </span>            : 
+<span class="lineNum">    1431 </span><span class="lineNoCov">          0 :     std::deque&lt;Buffer*&gt;::const_iterator j = connection-&gt;_recvBuffers.begin();</span>
+<span class="lineNum">    1432 </span><span class="lineNoCov">          0 :     std::deque&lt;Buffer*&gt;::const_iterator first = j;</span>
+<span class="lineNum">    1433 </span><span class="lineNoCov">          0 :     for( ; j != connection-&gt;_recvBuffers.end() &amp;&amp; i &lt; max; ++j )</span>
+<span class="lineNum">    1434 </span>            :     {
+<span class="lineNum">    1435 </span><span class="lineNoCov">          0 :         if( *j ) // got buffer</span>
+<span class="lineNum">    1436 </span>            :         {
+<span class="lineNum">    1437 </span><span class="lineNoCov">          0 :             nacks[ i ].end = connection-&gt;_sequence + std::distance( first, j);</span>
+<span class="lineNum">    1438 </span><span class="lineNoCov">          0 :             LBLOG( LOG_RSP ) &lt;&lt; nacks[i].end &lt;&lt; &quot;, &quot;;</span>
+<span class="lineNum">    1439 </span><span class="lineNoCov">          0 :             if( nacks[ i ].end &lt; nacks[ i ].start )</span>
+<span class="lineNum">    1440 </span>            :             {
+<span class="lineNum">    1441 </span><span class="lineNoCov">          0 :                 LBASSERT( nacks[ i ].end &lt; _numBuffers );</span>
+<span class="lineNum">    1442 </span><span class="lineNoCov">          0 :                 nacks[ i + 1 ].start = 0;</span>
+<span class="lineNum">    1443 </span><span class="lineNoCov">          0 :                 nacks[ i + 1 ].end = nacks[ i ].end;</span>
+<span class="lineNum">    1444 </span><span class="lineNoCov">          0 :                 nacks[ i ].end = std::numeric_limits&lt; uint16_t &gt;::max();</span>
+<span class="lineNum">    1445 </span><span class="lineNoCov">          0 :                 ++i;</span>
+<span class="lineNum">    1446 </span>            :             }
+<span class="lineNum">    1447 </span><span class="lineNoCov">          0 :             ++i;</span>
+<span class="lineNum">    1448 </span>            : 
+<span class="lineNum">    1449 </span>            :             // find next hole
+<span class="lineNum">    1450 </span><span class="lineNoCov">          0 :             for( ++j; j != connection-&gt;_recvBuffers.end() &amp;&amp; (*j); ++j )</span>
+<span class="lineNum">    1451 </span>            :                 /* nop */;
+<span class="lineNum">    1452 </span>            : 
+<span class="lineNum">    1453 </span><span class="lineNoCov">          0 :             if( j == connection-&gt;_recvBuffers.end( ))</span>
+<span class="lineNum">    1454 </span><span class="lineNoCov">          0 :                 break;</span>
+<span class="lineNum">    1455 </span>            : 
+<span class="lineNum">    1456 </span><span class="lineNoCov">          0 :             nacks[i].start = connection-&gt;_sequence + std::distance(first, j) +1;</span>
+<span class="lineNum">    1457 </span><span class="lineNoCov">          0 :             LBLOG( LOG_RSP ) &lt;&lt; nacks[i].start &lt;&lt; &quot;..&quot;;</span>
+<span class="lineNum">    1458 </span>            :         }
+<span class="lineNum">    1459 </span>            :     }
+<span class="lineNum">    1460 </span>            : 
+<span class="lineNum">    1461 </span><span class="lineNoCov">          0 :     if( j != connection-&gt;_recvBuffers.end() || i == 0 )</span>
+<span class="lineNum">    1462 </span>            :     {
+<span class="lineNum">    1463 </span><span class="lineNoCov">          0 :         nacks[ i ].end = reqID;</span>
+<span class="lineNum">    1464 </span><span class="lineNoCov">          0 :         LBLOG( LOG_RSP ) &lt;&lt; nacks[i].end;</span>
+<span class="lineNum">    1465 </span><span class="lineNoCov">          0 :         ++i;</span>
+<span class="lineNum">    1466 </span>            :     }
+<span class="lineNum">    1467 </span><span class="lineNoCov">          0 :     else if( uint16_t( reqID - nacks[i-1].end ) &lt; _numBuffers )</span>
+<span class="lineNum">    1468 </span>            :     {
+<span class="lineNum">    1469 </span><span class="lineNoCov">          0 :         nacks[i].start = nacks[i-1].end + 1;</span>
+<span class="lineNum">    1470 </span><span class="lineNoCov">          0 :         nacks[i].end = reqID;</span>
+<span class="lineNum">    1471 </span><span class="lineNoCov">          0 :         LBLOG( LOG_RSP ) &lt;&lt; nacks[i].start &lt;&lt; &quot;..&quot; &lt;&lt; nacks[i].end;</span>
+<span class="lineNum">    1472 </span><span class="lineNoCov">          0 :         ++i;</span>
+<span class="lineNum">    1473 </span>            :     }
+<span class="lineNum">    1474 </span><span class="lineNoCov">          0 :     if( nacks[ i -1 ].end &lt; nacks[ i - 1 ].start )</span>
+<span class="lineNum">    1475 </span>            :     {
+<span class="lineNum">    1476 </span><span class="lineNoCov">          0 :         LBASSERT( nacks[ i - 1 ].end &lt; _numBuffers );</span>
+<span class="lineNum">    1477 </span><span class="lineNoCov">          0 :         nacks[ i ].start = 0;</span>
+<span class="lineNum">    1478 </span><span class="lineNoCov">          0 :         nacks[ i ].end = nacks[ i - 1 ].end;</span>
+<span class="lineNum">    1479 </span><span class="lineNoCov">          0 :         nacks[ i - 1 ].end = std::numeric_limits&lt; uint16_t &gt;::max();</span>
+<span class="lineNum">    1480 </span><span class="lineNoCov">          0 :         ++i;</span>
+<span class="lineNum">    1481 </span>            :     }
+<span class="lineNum">    1482 </span>            : 
+<span class="lineNum">    1483 </span><span class="lineNoCov">          0 :     LBLOG( LOG_RSP ) &lt;&lt; std::endl &lt;&lt; lunchbox::enableFlush &lt;&lt; &quot;send &quot; &lt;&lt; i</span>
+<span class="lineNum">    1484 </span><span class="lineNoCov">          0 :                      &lt;&lt; &quot; nacks to &quot; &lt;&lt; connection-&gt;_id &lt;&lt; std::endl;</span>
+<span class="lineNum">    1485 </span>            : 
+<span class="lineNum">    1486 </span><span class="lineNoCov">          0 :     LBASSERT( i &gt; 0 );</span>
+<span class="lineNum">    1487 </span><span class="lineNoCov">          0 :     _sendNack( connection-&gt;_id, nacks, i );</span>
+<span class="lineNum">    1488 </span><span class="lineNoCov">          0 :     return true;</span>
+<a name="1489"><span class="lineNum">    1489 </span>            : }</a>
+<span class="lineNum">    1490 </span>            : 
+<span class="lineNum">    1491 </span><span class="lineNoCov">          0 : void RSPConnection::_checkNewID( uint16_t id )</span>
+<span class="lineNum">    1492 </span>            : {
+<span class="lineNum">    1493 </span>            :     // look if the new ID exist in another connection
+<span class="lineNum">    1494 </span><span class="lineNoCov">          0 :     if( id == _id || _findConnection( id ))</span>
+<span class="lineNum">    1495 </span>            :     {
+<span class="lineNum">    1496 </span><span class="lineNoCov">          0 :         LBLOG( LOG_RSP ) &lt;&lt; &quot;Deny &quot; &lt;&lt; id &lt;&lt; std::endl;</span>
+<span class="lineNum">    1497 </span><span class="lineNoCov">          0 :         _sendSimpleDatagram( ID_DENY, _id );</span>
+<span class="lineNum">    1498 </span>            :     }
+<span class="lineNum">    1499 </span>            :     else
+<span class="lineNum">    1500 </span><span class="lineNoCov">          0 :         _sendSimpleDatagram( ID_HELLO_REPLY, _id );</span>
+<a name="1501"><span class="lineNum">    1501 </span><span class="lineNoCov">          0 : }</span></a>
+<span class="lineNum">    1502 </span>            : 
+<span class="lineNum">    1503 </span><span class="lineNoCov">          0 : RSPConnectionPtr RSPConnection::_findConnection( const uint16_t id )</span>
+<span class="lineNum">    1504 </span>            : {
+<span class="lineNum">    1505 </span><span class="lineNoCov">          0 :     for( RSPConnectionsCIter i = _children.begin(); i != _children.end(); ++i )</span>
+<span class="lineNum">    1506 </span>            :     {
+<span class="lineNum">    1507 </span><span class="lineNoCov">          0 :         if( (*i)-&gt;_id == id )</span>
+<span class="lineNum">    1508 </span><span class="lineNoCov">          0 :             return *i;</span>
+<span class="lineNum">    1509 </span>            :     }
+<span class="lineNum">    1510 </span><span class="lineNoCov">          0 :     return 0;</span>
+<a name="1511"><span class="lineNum">    1511 </span>            : }</a>
+<span class="lineNum">    1512 </span>            : 
+<span class="lineNum">    1513 </span><span class="lineNoCov">          0 : bool RSPConnection::_addConnection( const uint16_t id, const uint16_t sequence )</span>
+<span class="lineNum">    1514 </span>            : {
+<span class="lineNum">    1515 </span><span class="lineNoCov">          0 :     if( _findConnection( id ))</span>
+<span class="lineNum">    1516 </span><span class="lineNoCov">          0 :         return false;</span>
+<span class="lineNum">    1517 </span>            : 
+<span class="lineNum">    1518 </span><span class="lineNoCov">          0 :     LBINFO &lt;&lt; &quot;add connection &quot; &lt;&lt; id &lt;&lt; std::endl;</span>
+<span class="lineNum">    1519 </span><span class="lineNoCov">          0 :     RSPConnectionPtr connection = new RSPConnection();</span>
+<span class="lineNum">    1520 </span><span class="lineNoCov">          0 :     connection-&gt;_id = id;</span>
+<span class="lineNum">    1521 </span><span class="lineNoCov">          0 :     connection-&gt;_parent = this;</span>
+<span class="lineNum">    1522 </span><span class="lineNoCov">          0 :     connection-&gt;_setState( STATE_CONNECTED );</span>
+<span class="lineNum">    1523 </span><span class="lineNoCov">          0 :     connection-&gt;_setDescription( _getDescription( ));</span>
+<span class="lineNum">    1524 </span><span class="lineNoCov">          0 :     connection-&gt;_sequence = sequence;</span>
+<span class="lineNum">    1525 </span><span class="lineNoCov">          0 :     LBASSERT( connection-&gt;_appBuffers.isEmpty( ));</span>
+<span class="lineNum">    1526 </span>            : 
+<span class="lineNum">    1527 </span>            :     // Make all buffers available for reading
+<span class="lineNum">    1528 </span><span class="lineNoCov">          0 :     for( BuffersCIter i = connection-&gt;_buffers.begin();</span>
+<span class="lineNum">    1529 </span><span class="lineNoCov">          0 :          i != connection-&gt;_buffers.end(); ++i )</span>
+<span class="lineNum">    1530 </span>            :     {
+<span class="lineNum">    1531 </span><span class="lineNoCov">          0 :         Buffer* buffer = *i;</span>
+<span class="lineNum">    1532 </span><span class="lineNoCov">          0 :         LBCHECK( connection-&gt;_threadBuffers.push( buffer ));</span>
+<span class="lineNum">    1533 </span>            :     }
+<span class="lineNum">    1534 </span>            : 
+<span class="lineNum">    1535 </span><span class="lineNoCov">          0 :     _children.push_back( connection );</span>
+<span class="lineNum">    1536 </span><span class="lineNoCov">          0 :     _sendCountNode();</span>
+<span class="lineNum">    1537 </span>            : 
+<span class="lineNum">    1538 </span><span class="lineNoCov">          0 :     lunchbox::ScopedWrite mutex( _mutexConnection );</span>
+<span class="lineNum">    1539 </span><span class="lineNoCov">          0 :     _newChildren.push_back( connection );</span>
+<span class="lineNum">    1540 </span>            : 
+<span class="lineNum">    1541 </span><span class="lineNoCov">          0 :     lunchbox::ScopedWrite mutex2( _mutexEvent );</span>
+<span class="lineNum">    1542 </span><span class="lineNoCov">          0 :     _event-&gt;set();</span>
+<span class="lineNum">    1543 </span><span class="lineNoCov">          0 :     return true;</span>
+<a name="1544"><span class="lineNum">    1544 </span>            : }</a>
+<span class="lineNum">    1545 </span>            : 
+<span class="lineNum">    1546 </span><span class="lineNoCov">          0 : void RSPConnection::_removeConnection( const uint16_t id )</span>
+<span class="lineNum">    1547 </span>            : {
+<span class="lineNum">    1548 </span><span class="lineNoCov">          0 :     LBINFO &lt;&lt; &quot;remove connection &quot; &lt;&lt; id &lt;&lt; std::endl;</span>
+<span class="lineNum">    1549 </span><span class="lineNoCov">          0 :     if( id == _id )</span>
+<span class="lineNum">    1550 </span><span class="lineNoCov">          0 :         return;</span>
+<span class="lineNum">    1551 </span>            : 
+<span class="lineNum">    1552 </span><span class="lineNoCov">          0 :     for( RSPConnectionsIter i = _children.begin(); i != _children.end(); ++i )</span>
+<span class="lineNum">    1553 </span>            :     {
+<span class="lineNum">    1554 </span><span class="lineNoCov">          0 :         RSPConnectionPtr child = *i;</span>
+<span class="lineNum">    1555 </span><span class="lineNoCov">          0 :         if( child-&gt;_id == id )</span>
+<span class="lineNum">    1556 </span>            :         {
+<span class="lineNum">    1557 </span><span class="lineNoCov">          0 :             _children.erase( i );</span>
+<span class="lineNum">    1558 </span>            : 
+<span class="lineNum">    1559 </span><span class="lineNoCov">          0 :             lunchbox::ScopedWrite mutex( child-&gt;_mutexEvent );</span>
+<span class="lineNum">    1560 </span><span class="lineNoCov">          0 :             child-&gt;_appBuffers.push( 0 );</span>
+<span class="lineNum">    1561 </span><span class="lineNoCov">          0 :             child-&gt;_event-&gt;set();</span>
+<span class="lineNum">    1562 </span><span class="lineNoCov">          0 :             break;</span>
+<span class="lineNum">    1563 </span>            :         }
+<span class="lineNum">    1564 </span><span class="lineNoCov">          0 :     }</span>
+<span class="lineNum">    1565 </span>            : 
+<span class="lineNum">    1566 </span><span class="lineNoCov">          0 :     _sendCountNode();</span>
+<a name="1567"><span class="lineNum">    1567 </span>            : }</a>
+<span class="lineNum">    1568 </span>            : 
+<span class="lineNum">    1569 </span><span class="lineNoCov">          0 : int64_t RSPConnection::write( const void* inData, const uint64_t bytes )</span>
+<span class="lineNum">    1570 </span>            : {
+<span class="lineNum">    1571 </span><span class="lineNoCov">          0 :     if( _parent )</span>
+<span class="lineNum">    1572 </span><span class="lineNoCov">          0 :         return _parent-&gt;write( inData, bytes );</span>
+<span class="lineNum">    1573 </span>            : 
+<span class="lineNum">    1574 </span><span class="lineNoCov">          0 :     LBASSERT( isListening( ));</span>
+<span class="lineNum">    1575 </span><span class="lineNoCov">          0 :     if( !_write )</span>
+<span class="lineNum">    1576 </span><span class="lineNoCov">          0 :         return -1;</span>
+<span class="lineNum">    1577 </span>            : 
+<span class="lineNum">    1578 </span>            :     // compute number of datagrams
+<span class="lineNum">    1579 </span><span class="lineNoCov">          0 :     uint64_t nDatagrams = bytes  / _payloadSize;</span>
+<span class="lineNum">    1580 </span><span class="lineNoCov">          0 :     if( nDatagrams * _payloadSize != bytes )</span>
+<span class="lineNum">    1581 </span><span class="lineNoCov">          0 :         ++nDatagrams;</span>
+<span class="lineNum">    1582 </span>            : 
+<span class="lineNum">    1583 </span>            :     // queue each datagram (might block if buffers are exhausted)
+<span class="lineNum">    1584 </span><span class="lineNoCov">          0 :     const uint8_t* data = reinterpret_cast&lt; const uint8_t* &gt;( inData );</span>
+<span class="lineNum">    1585 </span><span class="lineNoCov">          0 :     const uint8_t* end = data + bytes;</span>
+<span class="lineNum">    1586 </span><span class="lineNoCov">          0 :     for( uint64_t i = 0; i &lt; nDatagrams; ++i )</span>
+<span class="lineNum">    1587 </span>            :     {
+<span class="lineNum">    1588 </span><span class="lineNoCov">          0 :         size_t packetSize = end - data;</span>
+<span class="lineNum">    1589 </span><span class="lineNoCov">          0 :         packetSize = LB_MIN( packetSize, _payloadSize );</span>
+<span class="lineNum">    1590 </span>            : 
+<span class="lineNum">    1591 </span><span class="lineNoCov">          0 :         if( _appBuffers.isEmpty( ))</span>
+<span class="lineNum">    1592 </span>            :             // trigger processing
+<span class="lineNum">    1593 </span><span class="lineNoCov">          0 :             _postWakeup();</span>
+<span class="lineNum">    1594 </span>            : 
+<span class="lineNum">    1595 </span>            :         Buffer* buffer;
+<span class="lineNum">    1596 </span><span class="lineNoCov">          0 :         if ( !_appBuffers.timedPop( _writeTimeOut, buffer ) )</span>
+<span class="lineNum">    1597 </span>            :         {
+<span class="lineNum">    1598 </span><span class="lineNoCov">          0 :             LBERROR &lt;&lt; &quot;Timeout while writing&quot; &lt;&lt; std::endl;</span>
+<span class="lineNum">    1599 </span><span class="lineNoCov">          0 :             buffer = 0;</span>
+<span class="lineNum">    1600 </span>            :         }
+<span class="lineNum">    1601 </span>            : 
+<span class="lineNum">    1602 </span><span class="lineNoCov">          0 :         if( !buffer )</span>
+<span class="lineNum">    1603 </span>            :         {
+<span class="lineNum">    1604 </span><span class="lineNoCov">          0 :             close();</span>
+<span class="lineNum">    1605 </span><span class="lineNoCov">          0 :             return -1;</span>
+<span class="lineNum">    1606 </span>            :         }
+<span class="lineNum">    1607 </span>            : 
+<span class="lineNum">    1608 </span>            :         // prepare packet header (sequence is done by thread)
+<span class="lineNum">    1609 </span>            :         DatagramData* header =
+<span class="lineNum">    1610 </span><span class="lineNoCov">          0 :             reinterpret_cast&lt; DatagramData* &gt;( buffer-&gt;getData( ));</span>
+<span class="lineNum">    1611 </span><span class="lineNoCov">          0 :         header-&gt;type = DATA;</span>
+<span class="lineNum">    1612 </span><span class="lineNoCov">          0 :         header-&gt;size = uint16_t( packetSize );</span>
+<span class="lineNum">    1613 </span><span class="lineNoCov">          0 :         header-&gt;writerID = _id;</span>
+<span class="lineNum">    1614 </span>            : 
+<span class="lineNum">    1615 </span><span class="lineNoCov">          0 :         memcpy( header + 1, data, packetSize );</span>
+<span class="lineNum">    1616 </span><span class="lineNoCov">          0 :         data += packetSize;</span>
+<span class="lineNum">    1617 </span>            : 
+<span class="lineNum">    1618 </span><span class="lineNoCov">          0 :         LBCHECK( _threadBuffers.push( buffer ));</span>
+<span class="lineNum">    1619 </span>            :     }
+<span class="lineNum">    1620 </span><span class="lineNoCov">          0 :     _postWakeup();</span>
+<span class="lineNum">    1621 </span><span class="lineNoCov">          0 :     LBLOG( LOG_RSP ) &lt;&lt; &quot;queued &quot; &lt;&lt; nDatagrams &lt;&lt; &quot; datagrams, &quot;</span>
+<span class="lineNum">    1622 </span><span class="lineNoCov">          0 :                      &lt;&lt; bytes &lt;&lt; &quot; bytes&quot; &lt;&lt; std::endl;</span>
+<span class="lineNum">    1623 </span><span class="lineNoCov">          0 :     return bytes;</span>
+<a name="1624"><span class="lineNum">    1624 </span>            : }</a>
+<span class="lineNum">    1625 </span>            : 
+<span class="lineNum">    1626 </span><span class="lineNoCov">          0 : void RSPConnection::finish()</span>
+<span class="lineNum">    1627 </span>            : {
+<span class="lineNum">    1628 </span><span class="lineNoCov">          0 :     if( _parent.isValid( ))</span>
+<span class="lineNum">    1629 </span>            :     {
+<span class="lineNum">    1630 </span><span class="lineNoCov">          0 :         LBASSERTINFO( !_parent, &quot;Writes are only allowed on RSP listeners&quot; );</span>
+<span class="lineNum">    1631 </span><span class="lineNoCov">          0 :         return;</span>
+<span class="lineNum">    1632 </span>            :     }
+<span class="lineNum">    1633 </span><span class="lineNoCov">          0 :     LBASSERT( isListening( ));</span>
+<span class="lineNum">    1634 </span><span class="lineNoCov">          0 :     _appBuffers.waitSize( _buffers.size( ));</span>
+<a name="1635"><span class="lineNum">    1635 </span>            : }</a>
+<span class="lineNum">    1636 </span>            : 
+<span class="lineNum">    1637 </span><span class="lineNoCov">          0 : void RSPConnection::_sendCountNode()</span>
+<span class="lineNum">    1638 </span>            : {
+<span class="lineNum">    1639 </span><span class="lineNoCov">          0 :     if( !_findConnection( _id ))</span>
+<span class="lineNum">    1640 </span><span class="lineNoCov">          0 :         return;</span>
+<span class="lineNum">    1641 </span>            : 
+<span class="lineNum">    1642 </span><span class="lineNoCov">          0 :     LBLOG( LOG_RSP ) &lt;&lt; _children.size() &lt;&lt; &quot; nodes&quot; &lt;&lt; std::endl;</span>
+<span class="lineNum">    1643 </span>            :     DatagramNode count = { COUNTNODE, CO_RSP_PROTOCOL_VERSION, _id,
+<span class="lineNum">    1644 </span><span class="lineNoCov">          0 :                            uint16_t( _children.size( )) };</span>
+<span class="lineNum">    1645 </span><span class="lineNoCov">          0 :     count.byteswap();</span>
+<span class="lineNum">    1646 </span><span class="lineNoCov">          0 :     _write-&gt;send( boost::asio::buffer( &amp;count, sizeof( count )) );</span>
+<a name="1647"><span class="lineNum">    1647 </span>            : }</a>
+<span class="lineNum">    1648 </span>            : 
+<span class="lineNum">    1649 </span><span class="lineNoCov">          0 : void RSPConnection::_sendSimpleDatagram( const DatagramType type,</span>
+<span class="lineNum">    1650 </span>            :                                          const uint16_t id )
+<span class="lineNum">    1651 </span>            : {
+<span class="lineNum">    1652 </span>            :     DatagramNode simple = { uint16_t( type ), CO_RSP_PROTOCOL_VERSION, id,
+<span class="lineNum">    1653 </span><span class="lineNoCov">          0 :                             _sequence };</span>
+<span class="lineNum">    1654 </span><span class="lineNoCov">          0 :     simple.byteswap();</span>
+<span class="lineNum">    1655 </span><span class="lineNoCov">          0 :     _write-&gt;send( boost::asio::buffer( &amp;simple, sizeof( simple )) );</span>
+<a name="1656"><span class="lineNum">    1656 </span><span class="lineNoCov">          0 : }</span></a>
+<span class="lineNum">    1657 </span>            : 
+<span class="lineNum">    1658 </span><span class="lineNoCov">          0 : void RSPConnection::_sendAck( const uint16_t writerID,</span>
+<span class="lineNum">    1659 </span>            :                               const uint16_t sequence )
+<span class="lineNum">    1660 </span>            : {
+<span class="lineNum">    1661 </span><span class="lineNoCov">          0 :     LBASSERT( _id != writerID );</span>
+<span class="lineNum">    1662 </span>            : #ifdef CO_INSTRUMENT_RSP
+<span class="lineNum">    1663 </span>            :     ++nAcksSend;
+<span class="lineNum">    1664 </span>            : #endif
+<span class="lineNum">    1665 </span>            : 
+<span class="lineNum">    1666 </span><span class="lineNoCov">          0 :     LBLOG( LOG_RSP ) &lt;&lt; &quot;send ack &quot; &lt;&lt; sequence &lt;&lt; std::endl;</span>
+<span class="lineNum">    1667 </span><span class="lineNoCov">          0 :     DatagramAck ack = { ACK, _id, writerID, sequence };</span>
+<span class="lineNum">    1668 </span><span class="lineNoCov">          0 :     ack.byteswap();</span>
+<span class="lineNum">    1669 </span><span class="lineNoCov">          0 :     _write-&gt;send( boost::asio::buffer( &amp;ack, sizeof( ack )) );</span>
+<a name="1670"><span class="lineNum">    1670 </span><span class="lineNoCov">          0 : }</span></a>
+<span class="lineNum">    1671 </span>            : 
+<span class="lineNum">    1672 </span><span class="lineNoCov">          0 : void RSPConnection::_sendNack( const uint16_t writerID, const Nack* nacks,</span>
+<span class="lineNum">    1673 </span>            :                                const uint16_t count )
+<span class="lineNum">    1674 </span>            : {
+<span class="lineNum">    1675 </span><span class="lineNoCov">          0 :     LBASSERT( count &gt; 0 );</span>
+<span class="lineNum">    1676 </span><span class="lineNoCov">          0 :     LBASSERT( count &lt;= CO_RSP_MAX_NACKS );</span>
+<span class="lineNum">    1677 </span>            : #ifdef CO_INSTRUMENT_RSP
+<span class="lineNum">    1678 </span>            :     ++nNAcksSend;
+<span class="lineNum">    1679 </span>            : #endif
+<span class="lineNum">    1680 </span>            :     /* optimization: use the direct access to the reader. */
+<span class="lineNum">    1681 </span><span class="lineNoCov">          0 :     if( writerID == _id )</span>
+<span class="lineNum">    1682 </span>            :     {
+<span class="lineNum">    1683 </span><span class="lineNoCov">          0 :          _addRepeat( nacks, count );</span>
+<span class="lineNum">    1684 </span><span class="lineNoCov">          0 :          return;</span>
+<span class="lineNum">    1685 </span>            :     }
+<span class="lineNum">    1686 </span>            : 
+<span class="lineNum">    1687 </span>            :     const size_t size = sizeof( DatagramNack ) -
+<span class="lineNum">    1688 </span><span class="lineNoCov">          0 :                         (CO_RSP_MAX_NACKS - count) * sizeof( Nack );</span>
+<span class="lineNum">    1689 </span>            : 
+<span class="lineNum">    1690 </span>            :     // set the header
+<span class="lineNum">    1691 </span>            :     DatagramNack packet;
+<span class="lineNum">    1692 </span><span class="lineNoCov">          0 :     packet.set( _id, writerID, count );</span>
+<span class="lineNum">    1693 </span><span class="lineNoCov">          0 :     memcpy( packet.nacks, nacks, count * sizeof( Nack ));</span>
+<span class="lineNum">    1694 </span><span class="lineNoCov">          0 :     packet.byteswap();</span>
+<span class="lineNum">    1695 </span><span class="lineNoCov">          0 :     _write-&gt;send( boost::asio::buffer( &amp;packet, size ));</span>
+<a name="1696"><span class="lineNum">    1696 </span>            : }</a>
+<span class="lineNum">    1697 </span>            : 
+<span class="lineNum">    1698 </span><span class="lineNoCov">          0 : void RSPConnection::_sendAckRequest()</span>
+<span class="lineNum">    1699 </span>            : {
+<span class="lineNum">    1700 </span>            : #ifdef CO_INSTRUMENT_RSP
+<span class="lineNum">    1701 </span>            :     ++nAckRequests;
+<span class="lineNum">    1702 </span>            : #endif
+<span class="lineNum">    1703 </span><span class="lineNoCov">          0 :     LBLOG( LOG_RSP ) &lt;&lt; &quot;send ack request for &quot; &lt;&lt; uint16_t( _sequence -1 )</span>
+<span class="lineNum">    1704 </span><span class="lineNoCov">          0 :                      &lt;&lt; std::endl;</span>
+<span class="lineNum">    1705 </span><span class="lineNoCov">          0 :     DatagramAckRequest ackRequest = { ACKREQ, _id, uint16_t( _sequence - 1 ) };</span>
+<span class="lineNum">    1706 </span><span class="lineNoCov">          0 :     ackRequest.byteswap();</span>
+<span class="lineNum">    1707 </span><span class="lineNoCov">          0 :     _write-&gt;send( boost::asio::buffer( &amp;ackRequest, sizeof( DatagramAckRequest )) );</span>
+<a name="1708"><span class="lineNum">    1708 </span><span class="lineNoCov">          0 : }</span></a>
+<span class="lineNum">    1709 </span>            : 
+<span class="lineNum">    1710 </span><span class="lineNoCov">          0 : std::ostream&amp; operator &lt;&lt; ( std::ostream&amp; os,</span>
+<span class="lineNum">    1711 </span>            :                             const RSPConnection&amp; connection )
+<span class="lineNum">    1712 </span>            : {
+<span class="lineNum">    1713 </span><span class="lineNoCov">          0 :     os &lt;&lt; lunchbox::disableFlush &lt;&lt; lunchbox::disableHeader</span>
+<span class="lineNum">    1714 </span><span class="lineNoCov">          0 :        &lt;&lt; &quot;RSPConnection id &quot; &lt;&lt; connection.getID() &lt;&lt; &quot; send rate &quot;</span>
+<span class="lineNum">    1715 </span><span class="lineNoCov">          0 :        &lt;&lt; connection.getSendRate();</span>
+<span class="lineNum">    1716 </span>            : 
+<span class="lineNum">    1717 </span>            : #ifdef CO_INSTRUMENT_RSP
+<span class="lineNum">    1718 </span>            :     const int prec = os.precision();
+<span class="lineNum">    1719 </span>            :     os.precision( 3 );
+<span class="lineNum">    1720 </span>            : 
+<span class="lineNum">    1721 </span>            :     const float time = instrumentClock.getTimef();
+<span class="lineNum">    1722 </span>            :     const float mbps = 1048.576f * time;
+<span class="lineNum">    1723 </span>            :     os &lt;&lt; &quot;: &quot; &lt;&lt; lunchbox::indent &lt;&lt; std::endl
+<span class="lineNum">    1724 </span>            :        &lt;&lt; float( nBytesRead ) / mbps &lt;&lt; &quot; / &quot; &lt;&lt; float( nBytesWritten ) / mbps
+<span class="lineNum">    1725 </span>            :        &lt;&lt;  &quot; MB/s r/w using &quot; &lt;&lt; nDatagrams &lt;&lt; &quot; dgrams &quot; &lt;&lt; nRepeated
+<span class="lineNum">    1726 </span>            :        &lt;&lt; &quot; repeats &quot; &lt;&lt; nMergedDatagrams
+<span class="lineNum">    1727 </span>            :        &lt;&lt; &quot; merged&quot;
+<span class="lineNum">    1728 </span>            :        &lt;&lt; std::endl;
+<span class="lineNum">    1729 </span>            : 
+<span class="lineNum">    1730 </span>            :     os.precision( prec );
+<span class="lineNum">    1731 </span>            :     os &lt;&lt; &quot;sender: &quot; &lt;&lt; nAckRequests &lt;&lt; &quot; ack requests &quot; &lt;&lt; nAcksAccepted &lt;&lt; &quot;/&quot;
+<span class="lineNum">    1732 </span>            :        &lt;&lt; nAcksRead &lt;&lt; &quot; acks &quot; &lt;&lt; nNAcksRead &lt;&lt; &quot; nacks, throttle &quot;
+<span class="lineNum">    1733 </span>            :        &lt;&lt; writeWaitTime &lt;&lt; &quot; ms&quot;
+<span class="lineNum">    1734 </span>            :        &lt;&lt; std::endl
+<span class="lineNum">    1735 </span>            :        &lt;&lt; &quot;receiver: &quot; &lt;&lt; nAcksSend &lt;&lt; &quot; acks &quot; &lt;&lt; nNAcksSend &lt;&lt; &quot; nacks&quot;
+<span class="lineNum">    1736 </span>            :        &lt;&lt; lunchbox::exdent;
+<span class="lineNum">    1737 </span>            : 
+<span class="lineNum">    1738 </span>            :     nReadData = 0;
+<span class="lineNum">    1739 </span>            :     nBytesRead = 0;
+<span class="lineNum">    1740 </span>            :     nBytesWritten = 0;
+<span class="lineNum">    1741 </span>            :     nDatagrams = 0;
+<span class="lineNum">    1742 </span>            :     nRepeated = 0;
+<span class="lineNum">    1743 </span>            :     nMergedDatagrams = 0;
+<span class="lineNum">    1744 </span>            :     nAckRequests = 0;
+<span class="lineNum">    1745 </span>            :     nAcksSend = 0;
+<span class="lineNum">    1746 </span>            :     nAcksRead = 0;
+<span class="lineNum">    1747 </span>            :     nAcksAccepted = 0;
+<span class="lineNum">    1748 </span>            :     nNAcksSend = 0;
+<span class="lineNum">    1749 </span>            :     nNAcksRead = 0;
+<span class="lineNum">    1750 </span>            :     writeWaitTime = 0.f;
+<span class="lineNum">    1751 </span>            : #endif
+<span class="lineNum">    1752 </span><span class="lineNoCov">          0 :     os &lt;&lt; std::endl &lt;&lt; lunchbox::enableHeader &lt;&lt; lunchbox::enableFlush;</span>
+<span class="lineNum">    1753 </span>            : 
+<span class="lineNum">    1754 </span><span class="lineNoCov">          0 :     return os;</span>
+<a name="1755"><span class="lineNum">    1755 </span>            : }</a>
+<span class="lineNum">    1756 </span>            : 
+<span class="lineNum">    1757 </span><span class="lineCov">         60 : }</span>
+</pre>
+      </td>
+    </tr>
+  </table>
+  <br>
+
+  <table width="100%" border=0 cellspacing=0 cellpadding=0>
+    <tr><td class="ruler"><img src="../../glass.png" width=3 height=3 alt=""></td></tr>
+    <tr><td class="versionInfo">Generated by: <a href="http://ltp.sourceforge.net/coverage/lcov.php" target="_parent">LCOV version 1.11</a></td></tr>
+  </table>
+  <br>
+
+</body>
+</html>

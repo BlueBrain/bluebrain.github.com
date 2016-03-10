@@ -1,0 +1,568 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+
+<html lang="en">
+
+<head>
+  <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+  <title>LCOV - Livre - zeq/zeq/subscriber.cpp</title>
+  <link rel="stylesheet" type="text/css" href="../../gcov.css">
+</head>
+
+<body>
+
+  <table width="100%" border=0 cellspacing=0 cellpadding=0>
+    <tr><td class="title">LCOV - code coverage report</td></tr>
+    <tr><td class="ruler"><img src="../../glass.png" width=3 height=3 alt=""></td></tr>
+
+    <tr>
+      <td width="100%">
+        <table cellpadding=1 border=0 width="100%">
+          <tr>
+            <td width="10%" class="headerItem">Current view:</td>
+            <td width="35%" class="headerValue"><a href="../../index.html">top level</a> - <a href="index.html">zeq/zeq</a> - subscriber.cpp<span style="font-size: 80%;"> (source / <a href="subscriber.cpp.func-sort-c.html">functions</a>)</span></td>
+            <td width="5%"></td>
+            <td width="15%"></td>
+            <td width="10%" class="headerCovTableHead">Hit</td>
+            <td width="10%" class="headerCovTableHead">Total</td>
+            <td width="15%" class="headerCovTableHead">Coverage</td>
+          </tr>
+          <tr>
+            <td class="headerItem">Test:</td>
+            <td class="headerValue">Livre</td>
+            <td></td>
+            <td class="headerItem">Lines:</td>
+            <td class="headerCovTableEntry">88</td>
+            <td class="headerCovTableEntry">229</td>
+            <td class="headerCovTableEntryLo">38.4 %</td>
+          </tr>
+          <tr>
+            <td class="headerItem">Date:</td>
+            <td class="headerValue">2016-03-10 14:06:39</td>
+            <td></td>
+            <td class="headerItem">Functions:</td>
+            <td class="headerCovTableEntry">15</td>
+            <td class="headerCovTableEntry">41</td>
+            <td class="headerCovTableEntryLo">36.6 %</td>
+          </tr>
+          <tr><td><img src="../../glass.png" width=3 height=3 alt=""></td></tr>
+        </table>
+      </td>
+    </tr>
+
+    <tr><td class="ruler"><img src="../../glass.png" width=3 height=3 alt=""></td></tr>
+  </table>
+
+  <table cellpadding=0 cellspacing=0 border=0>
+    <tr>
+      <td><br></td>
+    </tr>
+    <tr>
+      <td>
+<pre class="sourceHeading">          Line data    Source code</pre>
+<pre class="source">
+<a name="1"><span class="lineNum">       1 </span>            : </a>
+<span class="lineNum">       2 </span>            : /* Copyright (c) 2014-2016, Human Brain Project
+<span class="lineNum">       3 </span>            :  *                          Daniel Nachbaur &lt;daniel.nachbaur@epfl.ch&gt;
+<span class="lineNum">       4 </span>            :  *                          Stefan.Eilemann@epfl.ch
+<span class="lineNum">       5 </span>            :  */
+<span class="lineNum">       6 </span>            : 
+<span class="lineNum">       7 </span>            : #include &quot;subscriber.h&quot;
+<span class="lineNum">       8 </span>            : 
+<span class="lineNum">       9 </span>            : #include &quot;event.h&quot;
+<span class="lineNum">      10 </span>            : #include &quot;log.h&quot;
+<span class="lineNum">      11 </span>            : #include &quot;detail/broker.h&quot;
+<span class="lineNum">      12 </span>            : #include &quot;detail/constants.h&quot;
+<span class="lineNum">      13 </span>            : #include &quot;detail/sender.h&quot;
+<span class="lineNum">      14 </span>            : #include &quot;detail/socket.h&quot;
+<span class="lineNum">      15 </span>            : #include &quot;detail/byteswap.h&quot;
+<span class="lineNum">      16 </span>            : 
+<span class="lineNum">      17 </span>            : #include &lt;servus/serializable.h&gt;
+<span class="lineNum">      18 </span>            : #include &lt;servus/servus.h&gt;
+<span class="lineNum">      19 </span>            : 
+<span class="lineNum">      20 </span>            : #include &lt;cassert&gt;
+<span class="lineNum">      21 </span>            : #include &lt;cstring&gt;
+<span class="lineNum">      22 </span>            : #include &lt;map&gt;
+<span class="lineNum">      23 </span>            : #include &lt;stdexcept&gt;
+<span class="lineNum">      24 </span>            : 
+<span class="lineNum">      25 </span>            : namespace zeq
+<span class="lineNum">      26 </span>            : {
+<span class="lineNum">      27 </span>            : class Subscriber::Impl
+<a name="28"><span class="lineNum">      28 </span>            : {</a>
+<span class="lineNum">      29 </span>            : public:
+<span class="lineNum">      30 </span><span class="lineNoCov">          0 :     Impl( const std::string&amp; session, void* context )</span>
+<span class="lineNum">      31 </span>            :         : _browser( PUBLISHER_SERVICE )
+<span class="lineNum">      32 </span><span class="lineNoCov">          0 :         , _selfInstance( detail::Sender::getUUID( ))</span>
+<span class="lineNum">      33 </span><span class="lineNoCov">          0 :         , _session( session == DEFAULT_SESSION ? getDefaultSession() : session )</span>
+<span class="lineNum">      34 </span>            :     {
+<span class="lineNum">      35 </span><span class="lineNoCov">          0 :         if( _session == zeq::NULL_SESSION || session.empty( ))</span>
+<span class="lineNum">      36 </span><span class="lineNoCov">          0 :             ZEQTHROW( std::runtime_error( std::string(</span>
+<span class="lineNum">      37 </span>            :                     &quot;Invalid session name for subscriber&quot; )));
+<span class="lineNum">      38 </span>            : 
+<span class="lineNum">      39 </span><span class="lineNoCov">          0 :         if( !servus::Servus::isAvailable( ))</span>
+<span class="lineNum">      40 </span><span class="lineNoCov">          0 :             ZEQTHROW( std::runtime_error(</span>
+<span class="lineNum">      41 </span>            :                           std::string( &quot;Empty servus implementation&quot; )));
+<span class="lineNum">      42 </span>            : 
+<span class="lineNum">      43 </span><span class="lineNoCov">          0 :         _browser.beginBrowsing( servus::Servus::IF_ALL );</span>
+<span class="lineNum">      44 </span><span class="lineNoCov">          0 :         update( context );</span>
+<a name="45"><span class="lineNum">      45 </span><span class="lineNoCov">          0 :     }</span></a>
+<span class="lineNum">      46 </span>            : 
+<span class="lineNum">      47 </span><span class="lineNoCov">          0 :     Impl( const URI&amp; uri, void* context )</span>
+<span class="lineNum">      48 </span>            :         : _browser( PUBLISHER_SERVICE )
+<span class="lineNum">      49 </span><span class="lineNoCov">          0 :         , _selfInstance( detail::Sender::getUUID( ))</span>
+<span class="lineNum">      50 </span>            :     {
+<span class="lineNum">      51 </span><span class="lineNoCov">          0 :         if( uri.getHost().empty() || uri.getPort() == 0 )</span>
+<span class="lineNum">      52 </span><span class="lineNoCov">          0 :                 ZEQTHROW( std::runtime_error( std::string(</span>
+<span class="lineNum">      53 </span>            :                               &quot;Non-fully qualified URI used for subscriber&quot; )));
+<span class="lineNum">      54 </span>            : 
+<span class="lineNum">      55 </span><span class="lineNoCov">          0 :         const std::string&amp; zmqURI = buildZmqURI( uri );</span>
+<span class="lineNum">      56 </span><span class="lineNoCov">          0 :         if( !addConnection( context, zmqURI, uint128_t( )))</span>
+<span class="lineNum">      57 </span>            :         {
+<span class="lineNum">      58 </span><span class="lineNoCov">          0 :             ZEQTHROW( std::runtime_error(</span>
+<span class="lineNum">      59 </span>            :                           &quot;Cannot connect subscriber to &quot; + zmqURI + &quot;: &quot; +
+<span class="lineNum">      60 </span>            :                            zmq_strerror( zmq_errno( ))));
+<span class="lineNum">      61 </span><span class="lineNoCov">          0 :         }</span>
+<a name="62"><span class="lineNum">      62 </span><span class="lineNoCov">          0 :     }</span></a>
+<span class="lineNum">      63 </span>            : 
+<span class="lineNum">      64 </span><span class="lineCov">          4 :     Impl( const URI&amp; uri, const std::string&amp; session, void* context )</span>
+<span class="lineNum">      65 </span>            :         : _browser( PUBLISHER_SERVICE )
+<span class="lineNum">      66 </span><span class="lineCov">          4 :         , _selfInstance( detail::Sender::getUUID( ))</span>
+<span class="lineNum">      67 </span><span class="lineCov">          8 :         , _session( session == DEFAULT_SESSION ? getDefaultSession() : session )</span>
+<span class="lineNum">      68 </span>            :     {
+<span class="lineNum">      69 </span><span class="lineCov">          4 :         if( _session == zeq::NULL_SESSION || session.empty( ))</span>
+<span class="lineNum">      70 </span><span class="lineNoCov">          0 :             ZEQTHROW( std::runtime_error( std::string(</span>
+<span class="lineNum">      71 </span>            :                     &quot;Invalid session name for subscriber&quot; )));
+<span class="lineNum">      72 </span>            : 
+<span class="lineNum">      73 </span><span class="lineCov">          4 :         if( uri.getHost().empty() || uri.getPort() == 0 )</span>
+<span class="lineNum">      74 </span>            :         {
+<span class="lineNum">      75 </span><span class="lineNoCov">          0 :             if( !servus::Servus::isAvailable( ))</span>
+<span class="lineNum">      76 </span><span class="lineNoCov">          0 :                 ZEQTHROW( std::runtime_error(</span>
+<span class="lineNum">      77 </span>            :                               std::string( &quot;Empty servus implementation&quot; )));
+<span class="lineNum">      78 </span>            : 
+<span class="lineNum">      79 </span><span class="lineNoCov">          0 :             _browser.beginBrowsing( servus::Servus::IF_ALL );</span>
+<span class="lineNum">      80 </span><span class="lineNoCov">          0 :             update( context );</span>
+<span class="lineNum">      81 </span>            :         }
+<span class="lineNum">      82 </span>            :         else
+<span class="lineNum">      83 </span>            :         {
+<span class="lineNum">      84 </span><span class="lineCov">          4 :             const std::string&amp; zmqURI = buildZmqURI( uri );</span>
+<span class="lineNum">      85 </span><span class="lineCov">          4 :             if( !addConnection( context, zmqURI, uint128_t( )))</span>
+<span class="lineNum">      86 </span>            :             {
+<span class="lineNum">      87 </span><span class="lineNoCov">          0 :                 ZEQTHROW( std::runtime_error(</span>
+<span class="lineNum">      88 </span>            :                               &quot;Cannot connect subscriber to &quot; + zmqURI + &quot;: &quot; +
+<span class="lineNum">      89 </span>            :                                zmq_strerror( zmq_errno( ))));
+<span class="lineNum">      90 </span><span class="lineCov">          4 :             }</span>
+<span class="lineNum">      91 </span>            :         }
+<a name="92"><span class="lineNum">      92 </span><span class="lineCov">          4 :     }</span></a>
+<span class="lineNum">      93 </span>            : 
+<span class="lineNum">      94 </span><span class="lineCov">          4 :     ~Impl()</span>
+<span class="lineNum">      95 </span><span class="lineCov">          4 :     {</span>
+<span class="lineNum">      96 </span><span class="lineCov">          8 :         for( const auto&amp; socket : _subscribers )</span>
+<span class="lineNum">      97 </span>            :         {
+<span class="lineNum">      98 </span><span class="lineCov">          4 :             if( socket.second )</span>
+<span class="lineNum">      99 </span><span class="lineCov">          4 :                 zmq_close( socket.second );</span>
+<span class="lineNum">     100 </span>            :         }
+<span class="lineNum">     101 </span><span class="lineCov">          4 :         if( _browser.isBrowsing( ))</span>
+<span class="lineNum">     102 </span><span class="lineNoCov">          0 :             _browser.endBrowsing();</span>
+<a name="103"><span class="lineNum">     103 </span><span class="lineCov">          4 :     }</span></a>
+<span class="lineNum">     104 </span>            : 
+<span class="lineNum">     105 </span><span class="lineCov">          4 :     bool registerHandler( const uint128_t&amp; event, const EventFunc&amp; func )</span>
+<span class="lineNum">     106 </span>            :     {
+<span class="lineNum">     107 </span><span class="lineCov">          4 :         if( _eventFuncs.count( event ) != 0 )</span>
+<span class="lineNum">     108 </span><span class="lineNoCov">          0 :             return false;</span>
+<span class="lineNum">     109 </span>            : 
+<span class="lineNum">     110 </span>            :         // Add subscription to existing sockets
+<span class="lineNum">     111 </span><span class="lineCov">          8 :         for( const auto&amp; socket : _subscribers )</span>
+<span class="lineNum">     112 </span>            :         {
+<span class="lineNum">     113 </span><span class="lineCov">          8 :             if( socket.second &amp;&amp;</span>
+<span class="lineNum">     114 </span>            :                 zmq_setsockopt( socket.second, ZMQ_SUBSCRIBE,
+<span class="lineNum">     115 </span><span class="lineCov">          4 :                                 &amp;event, sizeof( event )) == -1 )</span>
+<span class="lineNum">     116 </span>            :             {
+<span class="lineNum">     117 </span><span class="lineNoCov">          0 :                 ZEQTHROW( std::runtime_error(</span>
+<span class="lineNum">     118 </span>            :                     std::string( &quot;Cannot update topic filter: &quot; ) +
+<span class="lineNum">     119 </span>            :                     zmq_strerror( zmq_errno( ))));
+<span class="lineNum">     120 </span>            :             }
+<span class="lineNum">     121 </span>            :         }
+<span class="lineNum">     122 </span>            : 
+<span class="lineNum">     123 </span><span class="lineCov">          4 :         _eventFuncs[event] = func;</span>
+<span class="lineNum">     124 </span><span class="lineCov">          4 :         return true;</span>
+<a name="125"><span class="lineNum">     125 </span>            :     }</a>
+<span class="lineNum">     126 </span>            : 
+<span class="lineNum">     127 </span><span class="lineNoCov">          0 :     bool deregisterHandler( const uint128_t&amp; event )</span>
+<span class="lineNum">     128 </span>            :     {
+<span class="lineNum">     129 </span><span class="lineNoCov">          0 :         if( _eventFuncs.erase( event ) == 0 )</span>
+<span class="lineNum">     130 </span><span class="lineNoCov">          0 :             return false;</span>
+<span class="lineNum">     131 </span>            : 
+<span class="lineNum">     132 </span><span class="lineNoCov">          0 :         for( const auto&amp; socket : _subscribers )</span>
+<span class="lineNum">     133 </span>            :         {
+<span class="lineNum">     134 </span><span class="lineNoCov">          0 :             if( socket.second &amp;&amp;</span>
+<span class="lineNum">     135 </span>            :                 zmq_setsockopt( socket.second, ZMQ_UNSUBSCRIBE,
+<span class="lineNum">     136 </span><span class="lineNoCov">          0 :                                 &amp;event, sizeof( event )) == -1 )</span>
+<span class="lineNum">     137 </span>            :             {
+<span class="lineNum">     138 </span><span class="lineNoCov">          0 :                 ZEQTHROW( std::runtime_error(</span>
+<span class="lineNum">     139 </span>            :                     std::string( &quot;Cannot update topic filter: &quot; ) +
+<span class="lineNum">     140 </span>            :                     zmq_strerror( zmq_errno( ))));
+<span class="lineNum">     141 </span>            :             }
+<span class="lineNum">     142 </span>            :         }
+<span class="lineNum">     143 </span>            : 
+<span class="lineNum">     144 </span><span class="lineNoCov">          0 :         return true;</span>
+<a name="145"><span class="lineNum">     145 </span>            :     }</a>
+<span class="lineNum">     146 </span>            : 
+<span class="lineNum">     147 </span><span class="lineNoCov">          0 :     bool hasHandler( const uint128_t&amp; event ) const</span>
+<span class="lineNum">     148 </span>            :     {
+<span class="lineNum">     149 </span><span class="lineNoCov">          0 :         return _eventFuncs.count( event ) &gt; 0;</span>
+<a name="150"><span class="lineNum">     150 </span>            :     }</a>
+<span class="lineNum">     151 </span>            : 
+<span class="lineNum">     152 </span><span class="lineNoCov">          0 :     bool subscribe( servus::Serializable&amp; serializable )</span>
+<span class="lineNum">     153 </span>            :     {
+<span class="lineNum">     154 </span><span class="lineNoCov">          0 :         const uint128_t&amp; type = serializable.getTypeIdentifier();</span>
+<span class="lineNum">     155 </span><span class="lineNoCov">          0 :         if( _serializables.count( type ) != 0 )</span>
+<span class="lineNum">     156 </span><span class="lineNoCov">          0 :             return false;</span>
+<span class="lineNum">     157 </span>            : 
+<span class="lineNum">     158 </span><span class="lineNoCov">          0 :         _subscribe( type );</span>
+<span class="lineNum">     159 </span><span class="lineNoCov">          0 :         _serializables[ type ] = &amp;serializable;</span>
+<span class="lineNum">     160 </span><span class="lineNoCov">          0 :         return true;</span>
+<a name="161"><span class="lineNum">     161 </span>            :     }</a>
+<span class="lineNum">     162 </span>            : 
+<span class="lineNum">     163 </span><span class="lineNoCov">          0 :     bool unsubscribe( const servus::Serializable&amp; serializable )</span>
+<span class="lineNum">     164 </span>            :     {
+<span class="lineNum">     165 </span><span class="lineNoCov">          0 :         const uint128_t&amp; type = serializable.getTypeIdentifier();</span>
+<span class="lineNum">     166 </span><span class="lineNoCov">          0 :         if( _serializables.erase( type ) == 0 )</span>
+<span class="lineNum">     167 </span><span class="lineNoCov">          0 :             return false;</span>
+<span class="lineNum">     168 </span>            : 
+<span class="lineNum">     169 </span><span class="lineNoCov">          0 :         _unsubscribe( type );</span>
+<span class="lineNum">     170 </span><span class="lineNoCov">          0 :         return true;</span>
+<a name="171"><span class="lineNum">     171 </span>            :     }</a>
+<span class="lineNum">     172 </span>            : 
+<span class="lineNum">     173 </span><span class="lineCov">          4 :     void addSockets( std::vector&lt; detail::Socket &gt;&amp; entries )</span>
+<span class="lineNum">     174 </span>            :     {
+<span class="lineNum">     175 </span><span class="lineCov">          4 :         entries.insert( entries.end(), _entries.begin(), _entries.end( ));</span>
+<a name="176"><span class="lineNum">     176 </span><span class="lineCov">          4 :     }</span></a>
+<span class="lineNum">     177 </span>            : 
+<span class="lineNum">     178 </span><span class="lineCov">          4 :     void process( detail::Socket&amp; socket )</span>
+<span class="lineNum">     179 </span>            :     {
+<span class="lineNum">     180 </span>            :         zmq_msg_t msg;
+<span class="lineNum">     181 </span><span class="lineCov">          4 :         zmq_msg_init( &amp;msg );</span>
+<span class="lineNum">     182 </span><span class="lineCov">          4 :         zmq_msg_recv( &amp;msg, socket.socket, 0 );</span>
+<span class="lineNum">     183 </span>            : 
+<span class="lineNum">     184 </span><span class="lineCov">          4 :         uint128_t type;</span>
+<span class="lineNum">     185 </span><span class="lineCov">          4 :         memcpy( &amp;type, zmq_msg_data( &amp;msg ), sizeof(type) );</span>
+<span class="lineNum">     186 </span>            : #ifndef COMMON_LITTLEENDIAN
+<span class="lineNum">     187 </span>            :         detail::byteswap( type ); // convert from little endian wire
+<span class="lineNum">     188 </span>            : #endif
+<span class="lineNum">     189 </span><span class="lineCov">          4 :         const bool payload = zmq_msg_more( &amp;msg );</span>
+<span class="lineNum">     190 </span><span class="lineCov">          4 :         zmq_msg_close( &amp;msg );</span>
+<span class="lineNum">     191 </span>            : 
+<span class="lineNum">     192 </span><span class="lineCov">          4 :         SerializableMap::const_iterator i = _serializables.find( type );</span>
+<span class="lineNum">     193 </span><span class="lineCov">          4 :         if( i == _serializables.end( )) // FlatBuffer</span>
+<span class="lineNum">     194 </span>            :         {
+<span class="lineNum">     195 </span><span class="lineCov">          4 :             zeq::Event event( type );</span>
+<span class="lineNum">     196 </span><span class="lineCov">          4 :             if( payload )</span>
+<span class="lineNum">     197 </span>            :             {
+<span class="lineNum">     198 </span><span class="lineCov">          4 :                 zmq_msg_init( &amp;msg );</span>
+<span class="lineNum">     199 </span><span class="lineCov">          4 :                 zmq_msg_recv( &amp;msg, socket.socket, 0 );</span>
+<span class="lineNum">     200 </span><span class="lineCov">          4 :                 const size_t size = zmq_msg_size( &amp;msg );</span>
+<span class="lineNum">     201 </span><span class="lineCov">          4 :                 ConstByteArray data( new uint8_t[size],</span>
+<span class="lineNum">     202 </span><span class="lineCov">          4 :                                      std::default_delete&lt; uint8_t[] &gt;( ));</span>
+<span class="lineNum">     203 </span><span class="lineCov">          4 :                 memcpy( (void*)data.get(), zmq_msg_data( &amp;msg ), size );</span>
+<span class="lineNum">     204 </span><span class="lineCov">          4 :                 event.setData( data, size );</span>
+<span class="lineNum">     205 </span><span class="lineCov">          4 :                 assert( event.getSize() == size );</span>
+<span class="lineNum">     206 </span><span class="lineCov">          4 :                 zmq_msg_close( &amp;msg );</span>
+<span class="lineNum">     207 </span>            :             }
+<span class="lineNum">     208 </span>            : 
+<span class="lineNum">     209 </span><span class="lineCov">          4 :             if( _eventFuncs.count( type ) != 0 )</span>
+<span class="lineNum">     210 </span><span class="lineCov">          4 :                 _eventFuncs[type]( event );</span>
+<span class="lineNum">     211 </span>            : #ifndef NDEBUG
+<span class="lineNum">     212 </span>            :             else
+<span class="lineNum">     213 </span>            :             {
+<span class="lineNum">     214 </span>            :                 // Note eile: The topic filtering in the handler registration
+<span class="lineNum">     215 </span>            :                 // should ensure that we don't get messages we haven't
+<span class="lineNum">     216 </span>            :                 // handlers. If this throws, something does not work.
+<span class="lineNum">     217 </span><span class="lineNoCov">          0 :                 ZEQTHROW( std::runtime_error( &quot;Got unsubscribed event&quot; ));</span>
+<span class="lineNum">     218 </span><span class="lineCov">          4 :             }</span>
+<span class="lineNum">     219 </span>            : #endif
+<span class="lineNum">     220 </span>            :         }
+<span class="lineNum">     221 </span>            :         else // serializable
+<span class="lineNum">     222 </span>            :         {
+<span class="lineNum">     223 </span><span class="lineNoCov">          0 :             servus::Serializable* serializable = i-&gt;second;</span>
+<span class="lineNum">     224 </span><span class="lineNoCov">          0 :             if( payload )</span>
+<span class="lineNum">     225 </span>            :             {
+<span class="lineNum">     226 </span><span class="lineNoCov">          0 :                 zmq_msg_init( &amp;msg );</span>
+<span class="lineNum">     227 </span><span class="lineNoCov">          0 :                 zmq_msg_recv( &amp;msg, socket.socket, 0 );</span>
+<span class="lineNum">     228 </span><span class="lineNoCov">          0 :                 serializable-&gt;fromBinary( zmq_msg_data( &amp;msg ),</span>
+<span class="lineNum">     229 </span><span class="lineNoCov">          0 :                                           zmq_msg_size( &amp;msg ));</span>
+<span class="lineNum">     230 </span><span class="lineNoCov">          0 :                 zmq_msg_close( &amp;msg );</span>
+<span class="lineNum">     231 </span>            :             }
+<span class="lineNum">     232 </span><span class="lineNoCov">          0 :             serializable-&gt;notifyUpdated();</span>
+<span class="lineNum">     233 </span>            :         }
+<a name="234"><span class="lineNum">     234 </span><span class="lineCov">          4 :     }</span></a>
+<span class="lineNum">     235 </span>            : 
+<span class="lineNum">     236 </span><span class="lineCov">          4 :     void update( void* context )</span>
+<span class="lineNum">     237 </span>            :     {
+<span class="lineNum">     238 </span><span class="lineCov">          4 :         if( _browser.isBrowsing( ))</span>
+<span class="lineNum">     239 </span><span class="lineNoCov">          0 :             _browser.browse( 0 );</span>
+<span class="lineNum">     240 </span><span class="lineCov">          4 :         const servus::Strings&amp; instances = _browser.getInstances();</span>
+<span class="lineNum">     241 </span><span class="lineCov">          4 :         for( const std::string&amp; instance : instances )</span>
+<span class="lineNum">     242 </span>            :         {
+<span class="lineNum">     243 </span><span class="lineNoCov">          0 :             const std::string&amp; zmqURI = _getZmqURI( instance );</span>
+<span class="lineNum">     244 </span>            : 
+<span class="lineNum">     245 </span>            :             // New subscription
+<span class="lineNum">     246 </span><span class="lineNoCov">          0 :             if( _subscribers.count( zmqURI ) == 0 )</span>
+<span class="lineNum">     247 </span>            :             {
+<span class="lineNum">     248 </span>            :                 const std::string&amp; session = _browser.get( instance,
+<span class="lineNum">     249 </span><span class="lineNoCov">          0 :                                                            KEY_SESSION );</span>
+<span class="lineNum">     250 </span><span class="lineNoCov">          0 :                 if( _browser.containsKey( instance, KEY_SESSION ) &amp;&amp;</span>
+<span class="lineNum">     251 </span><span class="lineNoCov">          0 :                     !_session.empty() &amp;&amp; session != _session )</span>
+<span class="lineNum">     252 </span>            :                 {
+<span class="lineNum">     253 </span><span class="lineNoCov">          0 :                     continue;</span>
+<span class="lineNum">     254 </span>            :                 }
+<span class="lineNum">     255 </span>            : 
+<span class="lineNum">     256 </span>            :                 const uint128_t identifier( _browser.get( instance,
+<span class="lineNum">     257 </span><span class="lineNoCov">          0 :                                                           KEY_INSTANCE ));</span>
+<span class="lineNum">     258 </span><span class="lineNoCov">          0 :                 if( !addConnection( context, zmqURI, identifier ))</span>
+<span class="lineNum">     259 </span>            :                 {
+<span class="lineNum">     260 </span><span class="lineNoCov">          0 :                     ZEQINFO &lt;&lt; &quot;Cannot connect subscriber to &quot; &lt;&lt; zmqURI &lt;&lt; &quot;: &quot;</span>
+<span class="lineNum">     261 </span><span class="lineNoCov">          0 :                             &lt;&lt; zmq_strerror( zmq_errno( )) &lt;&lt; std::endl;</span>
+<span class="lineNum">     262 </span>            :                 }
+<span class="lineNum">     263 </span>            :             }
+<span class="lineNum">     264 </span><span class="lineCov">          4 :         }</span>
+<a name="265"><span class="lineNum">     265 </span><span class="lineCov">          4 :     }</span></a>
+<span class="lineNum">     266 </span>            : 
+<span class="lineNum">     267 </span><span class="lineCov">          4 :     bool addConnection( void* context, const std::string&amp; zmqURI,</span>
+<span class="lineNum">     268 </span>            :                         const uint128_t&amp; instance )
+<span class="lineNum">     269 </span>            :     {
+<span class="lineNum">     270 </span><span class="lineCov">          4 :         if( instance == _selfInstance )</span>
+<span class="lineNum">     271 </span><span class="lineNoCov">          0 :             return true;</span>
+<span class="lineNum">     272 </span>            : 
+<span class="lineNum">     273 </span><span class="lineCov">          4 :         _subscribers[zmqURI] = zmq_socket( context, ZMQ_SUB );</span>
+<span class="lineNum">     274 </span>            : 
+<span class="lineNum">     275 </span><span class="lineCov">          4 :         if( zmq_connect( _subscribers[zmqURI], zmqURI.c_str( )) == -1 )</span>
+<span class="lineNum">     276 </span>            :         {
+<span class="lineNum">     277 </span><span class="lineNoCov">          0 :             zmq_close( _subscribers[zmqURI] );</span>
+<span class="lineNum">     278 </span><span class="lineNoCov">          0 :             _subscribers[zmqURI] = 0; // keep empty entry, unconnectable peer</span>
+<span class="lineNum">     279 </span><span class="lineNoCov">          0 :             return false;</span>
+<span class="lineNum">     280 </span>            :         }
+<span class="lineNum">     281 </span>            : 
+<span class="lineNum">     282 </span>            :         // Add existing subscriptions to socket
+<span class="lineNum">     283 </span><span class="lineCov">          4 :         for( const auto&amp; i : _eventFuncs )</span>
+<span class="lineNum">     284 </span>            :         {
+<span class="lineNum">     285 </span><span class="lineNoCov">          0 :             if( zmq_setsockopt( _subscribers[zmqURI], ZMQ_SUBSCRIBE,</span>
+<span class="lineNum">     286 </span><span class="lineNoCov">          0 :                                 &amp;i.first, sizeof( uint128_t )) == -1 )</span>
+<span class="lineNum">     287 </span>            :             {
+<span class="lineNum">     288 </span><span class="lineNoCov">          0 :                 ZEQTHROW( std::runtime_error(</span>
+<span class="lineNum">     289 </span>            :                     std::string( &quot;Cannot update topic filter: &quot; ) +
+<span class="lineNum">     290 </span>            :                     zmq_strerror( zmq_errno( ))));
+<span class="lineNum">     291 </span>            :             }
+<span class="lineNum">     292 </span>            :         }
+<span class="lineNum">     293 </span><span class="lineCov">          4 :         for( const auto&amp; i : _serializables )</span>
+<span class="lineNum">     294 </span>            :         {
+<span class="lineNum">     295 </span><span class="lineNoCov">          0 :             if( zmq_setsockopt( _subscribers[zmqURI], ZMQ_SUBSCRIBE,</span>
+<span class="lineNum">     296 </span><span class="lineNoCov">          0 :                                 &amp;i.first, sizeof( uint128_t )) == -1 )</span>
+<span class="lineNum">     297 </span>            :             {
+<span class="lineNum">     298 </span><span class="lineNoCov">          0 :                 ZEQTHROW( std::runtime_error(</span>
+<span class="lineNum">     299 </span>            :                     std::string( &quot;Cannot update topic filter: &quot; ) +
+<span class="lineNum">     300 </span>            :                     zmq_strerror( zmq_errno( ))));
+<span class="lineNum">     301 </span>            :             }
+<span class="lineNum">     302 </span>            :         }
+<span class="lineNum">     303 </span>            : 
+<span class="lineNum">     304 </span><span class="lineCov">          4 :         assert( _subscribers.find( zmqURI ) != _subscribers.end( ));</span>
+<span class="lineNum">     305 </span><span class="lineCov">          4 :         if( _subscribers.find( zmqURI ) == _subscribers.end( ))</span>
+<span class="lineNum">     306 </span><span class="lineNoCov">          0 :             return false;</span>
+<span class="lineNum">     307 </span>            : 
+<span class="lineNum">     308 </span>            :         detail::Socket entry;
+<span class="lineNum">     309 </span><span class="lineCov">          4 :         entry.socket = _subscribers[zmqURI];</span>
+<span class="lineNum">     310 </span><span class="lineCov">          4 :         entry.events = ZMQ_POLLIN;</span>
+<span class="lineNum">     311 </span><span class="lineCov">          4 :         _entries.push_back( entry );</span>
+<span class="lineNum">     312 </span><span class="lineCov">          4 :         ZEQINFO &lt;&lt; &quot;Subscribed to &quot; &lt;&lt; zmqURI &lt;&lt; std::endl;</span>
+<span class="lineNum">     313 </span><span class="lineCov">          4 :         return true;</span>
+<a name="314"><span class="lineNum">     314 </span>            :     }</a>
+<span class="lineNum">     315 </span>            : 
+<span class="lineNum">     316 </span><span class="lineNoCov">          0 :     const std::string&amp; getSession() const { return _session; }</span>
+<span class="lineNum">     317 </span>            : 
+<span class="lineNum">     318 </span>            : private:
+<span class="lineNum">     319 </span>            :     typedef std::map&lt; uint128_t, EventFunc &gt; EventFuncs;
+<span class="lineNum">     320 </span>            :     typedef std::map&lt; std::string, void* &gt; SocketMap;
+<span class="lineNum">     321 </span>            : 
+<span class="lineNum">     322 </span>            :     SocketMap _subscribers;
+<span class="lineNum">     323 </span>            :     EventFuncs _eventFuncs;
+<span class="lineNum">     324 </span>            : 
+<span class="lineNum">     325 </span>            :     typedef std::map&lt; uint128_t, servus::Serializable* &gt; SerializableMap;
+<span class="lineNum">     326 </span>            :     SerializableMap _serializables;
+<span class="lineNum">     327 </span>            : 
+<span class="lineNum">     328 </span>            :     servus::Servus _browser;
+<span class="lineNum">     329 </span>            :     std::vector&lt; detail::Socket &gt; _entries;
+<span class="lineNum">     330 </span>            : 
+<span class="lineNum">     331 </span>            :     const uint128_t _selfInstance;
+<a name="332"><span class="lineNum">     332 </span>            :     const std::string _session;</a>
+<span class="lineNum">     333 </span>            : 
+<span class="lineNum">     334 </span><span class="lineNoCov">          0 :     std::string _getZmqURI( const std::string&amp; instance )</span>
+<span class="lineNum">     335 </span>            :     {
+<span class="lineNum">     336 </span><span class="lineNoCov">          0 :         const size_t pos = instance.find( &quot;:&quot; );</span>
+<span class="lineNum">     337 </span><span class="lineNoCov">          0 :         const std::string&amp; host = instance.substr( 0, pos );</span>
+<span class="lineNum">     338 </span><span class="lineNoCov">          0 :         const std::string&amp; port = instance.substr( pos + 1 );</span>
+<span class="lineNum">     339 </span>            : 
+<span class="lineNum">     340 </span><span class="lineNoCov">          0 :         return buildZmqURI( DEFAULT_SCHEMA, host, std::stoi( port ));</span>
+<a name="341"><span class="lineNum">     341 </span>            :     }</a>
+<span class="lineNum">     342 </span>            : 
+<span class="lineNum">     343 </span><span class="lineNoCov">          0 :     void _subscribe( const uint128_t&amp; event )</span>
+<span class="lineNum">     344 </span>            :     {
+<span class="lineNum">     345 </span><span class="lineNoCov">          0 :         for( const auto&amp; socket : _subscribers )</span>
+<span class="lineNum">     346 </span>            :         {
+<span class="lineNum">     347 </span><span class="lineNoCov">          0 :             if( zmq_setsockopt( socket.second, ZMQ_SUBSCRIBE,</span>
+<span class="lineNum">     348 </span><span class="lineNoCov">          0 :                                 &amp;event, sizeof( event )) == -1 )</span>
+<span class="lineNum">     349 </span>            :             {
+<span class="lineNum">     350 </span><span class="lineNoCov">          0 :                 ZEQTHROW( std::runtime_error(</span>
+<span class="lineNum">     351 </span>            :                     std::string( &quot;Cannot update topic filter: &quot; ) +
+<span class="lineNum">     352 </span>            :                     zmq_strerror( zmq_errno( ))));
+<span class="lineNum">     353 </span>            :             }
+<span class="lineNum">     354 </span>            :         }
+<a name="355"><span class="lineNum">     355 </span><span class="lineNoCov">          0 :     }</span></a>
+<span class="lineNum">     356 </span>            : 
+<span class="lineNum">     357 </span><span class="lineNoCov">          0 :     void _unsubscribe( const uint128_t&amp; event )</span>
+<span class="lineNum">     358 </span>            :     {
+<span class="lineNum">     359 </span><span class="lineNoCov">          0 :         for( const auto&amp; socket : _subscribers )</span>
+<span class="lineNum">     360 </span>            :         {
+<span class="lineNum">     361 </span><span class="lineNoCov">          0 :             if( zmq_setsockopt( socket.second, ZMQ_UNSUBSCRIBE,</span>
+<span class="lineNum">     362 </span><span class="lineNoCov">          0 :                                 &amp;event, sizeof( event )) == -1 )</span>
+<span class="lineNum">     363 </span>            :             {
+<span class="lineNum">     364 </span><span class="lineNoCov">          0 :                 ZEQTHROW( std::runtime_error(</span>
+<span class="lineNum">     365 </span>            :                     std::string( &quot;Cannot update topic filter: &quot; ) +
+<span class="lineNum">     366 </span>            :                     zmq_strerror( zmq_errno( ))));
+<span class="lineNum">     367 </span>            :             }
+<span class="lineNum">     368 </span>            :         }
+<span class="lineNum">     369 </span><span class="lineNoCov">          0 :     }</span>
+<a name="370"><span class="lineNum">     370 </span>            : };</a>
+<span class="lineNum">     371 </span>            : 
+<span class="lineNum">     372 </span><span class="lineNoCov">          0 : Subscriber::Subscriber()</span>
+<span class="lineNum">     373 </span>            :     : Receiver()
+<span class="lineNum">     374 </span><span class="lineNoCov">          0 :     , _impl( new Impl( DEFAULT_SESSION, getZMQContext( )))</span>
+<span class="lineNum">     375 </span>            : {
+<a name="376"><span class="lineNum">     376 </span><span class="lineNoCov">          0 : }</span></a>
+<span class="lineNum">     377 </span>            : 
+<span class="lineNum">     378 </span><span class="lineNoCov">          0 : Subscriber::Subscriber( const std::string&amp; session )</span>
+<span class="lineNum">     379 </span>            :     : Receiver()
+<span class="lineNum">     380 </span><span class="lineNoCov">          0 :     , _impl( new Impl( session, getZMQContext( )))</span>
+<span class="lineNum">     381 </span>            : {
+<a name="382"><span class="lineNum">     382 </span><span class="lineNoCov">          0 : }</span></a>
+<span class="lineNum">     383 </span>            : 
+<span class="lineNum">     384 </span><span class="lineNoCov">          0 : Subscriber::Subscriber( const URI&amp; uri )</span>
+<span class="lineNum">     385 </span>            :     : Receiver()
+<span class="lineNum">     386 </span><span class="lineNoCov">          0 :     , _impl( new Impl( uri, getZMQContext( )))</span>
+<span class="lineNum">     387 </span>            : {
+<a name="388"><span class="lineNum">     388 </span><span class="lineNoCov">          0 : }</span></a>
+<span class="lineNum">     389 </span>            : 
+<span class="lineNum">     390 </span><span class="lineNoCov">          0 : Subscriber::Subscriber( const URI&amp; uri, const std::string&amp; session )</span>
+<span class="lineNum">     391 </span>            :     : Receiver()
+<span class="lineNum">     392 </span><span class="lineNoCov">          0 :     , _impl( new Impl( uri, session, getZMQContext( )))</span>
+<span class="lineNum">     393 </span>            : {
+<a name="394"><span class="lineNum">     394 </span><span class="lineNoCov">          0 : }</span></a>
+<span class="lineNum">     395 </span>            : 
+<span class="lineNum">     396 </span><span class="lineNoCov">          0 : Subscriber::Subscriber( Receiver&amp; shared )</span>
+<span class="lineNum">     397 </span>            :     : Receiver( shared )
+<span class="lineNum">     398 </span><span class="lineNoCov">          0 :     , _impl( new Impl( DEFAULT_SESSION, getZMQContext( )))</span>
+<span class="lineNum">     399 </span>            : {
+<a name="400"><span class="lineNum">     400 </span><span class="lineNoCov">          0 : }</span></a>
+<span class="lineNum">     401 </span>            : 
+<span class="lineNum">     402 </span><span class="lineNoCov">          0 : Subscriber::Subscriber( const std::string&amp; session, Receiver&amp; shared )</span>
+<span class="lineNum">     403 </span>            :     : Receiver( shared )
+<span class="lineNum">     404 </span><span class="lineNoCov">          0 :     , _impl( new Impl( session, getZMQContext( )))</span>
+<span class="lineNum">     405 </span>            : {
+<a name="406"><span class="lineNum">     406 </span><span class="lineNoCov">          0 : }</span></a>
+<span class="lineNum">     407 </span>            : 
+<span class="lineNum">     408 </span><span class="lineNoCov">          0 : Subscriber::Subscriber( const URI&amp; uri, Receiver&amp; shared  )</span>
+<span class="lineNum">     409 </span>            :     : Receiver( shared )
+<span class="lineNum">     410 </span><span class="lineNoCov">          0 :     , _impl( new Impl( uri, getZMQContext( )))</span>
+<span class="lineNum">     411 </span>            : {
+<a name="412"><span class="lineNum">     412 </span><span class="lineNoCov">          0 : }</span></a>
+<span class="lineNum">     413 </span>            : 
+<span class="lineNum">     414 </span><span class="lineNoCov">          0 : Subscriber::Subscriber( const URI&amp; uri, const std::string&amp; session, Receiver&amp; shared  )</span>
+<span class="lineNum">     415 </span>            :     : Receiver( shared )
+<span class="lineNum">     416 </span><span class="lineNoCov">          0 :     , _impl( new Impl( uri, session, getZMQContext( )))</span>
+<span class="lineNum">     417 </span>            : {
+<a name="418"><span class="lineNum">     418 </span><span class="lineNoCov">          0 : }</span></a>
+<span class="lineNum">     419 </span>            : 
+<span class="lineNum">     420 </span><span class="lineCov">          4 : Subscriber::Subscriber( const servus::URI&amp; uri )</span>
+<span class="lineNum">     421 </span>            :     : Receiver()
+<span class="lineNum">     422 </span>            :     , _impl( new Impl( URI( uri ), DEFAULT_SESSION,
+<span class="lineNum">     423 </span><span class="lineCov">          4 :                                      getZMQContext( )))</span>
+<span class="lineNum">     424 </span>            : {
+<span class="lineNum">     425 </span><span class="lineCov">          4 :     ZEQWARN &lt;&lt; &quot;zeq::Subscriber( const servus::URI&amp; ) is deprecated&quot;</span>
+<span class="lineNum">     426 </span><span class="lineCov">          4 :             &lt;&lt; std::endl;</span>
+<a name="427"><span class="lineNum">     427 </span><span class="lineCov">          4 : }</span></a>
+<span class="lineNum">     428 </span>            : 
+<span class="lineNum">     429 </span><span class="lineNoCov">          0 : Subscriber::Subscriber( const servus::URI&amp; uri, Receiver&amp; shared )</span>
+<span class="lineNum">     430 </span>            :     : Receiver( shared )
+<span class="lineNum">     431 </span>            :     , _impl( new Impl( URI( uri ), DEFAULT_SESSION,
+<span class="lineNum">     432 </span><span class="lineNoCov">          0 :                                      getZMQContext( )))</span>
+<span class="lineNum">     433 </span>            : {
+<span class="lineNum">     434 </span>            :     ZEQWARN &lt;&lt; &quot;zeq::Subscriber( const servus::URI&amp;, Receiver&amp; shared ) is &quot;
+<span class="lineNum">     435 </span><span class="lineNoCov">          0 :                &quot;deprecated&quot; &lt;&lt; std::endl;</span>
+<a name="436"><span class="lineNum">     436 </span><span class="lineNoCov">          0 : }</span></a>
+<span class="lineNum">     437 </span>            : 
+<span class="lineNum">     438 </span><span class="lineCov">          4 : Subscriber::~Subscriber()</span>
+<span class="lineNum">     439 </span>            : {
+<a name="440"><span class="lineNum">     440 </span><span class="lineCov">          4 : }</span></a>
+<span class="lineNum">     441 </span>            : 
+<span class="lineNum">     442 </span><span class="lineCov">          4 : bool Subscriber::registerHandler( const uint128_t&amp; event, const EventFunc&amp; func)</span>
+<span class="lineNum">     443 </span>            : {
+<span class="lineNum">     444 </span><span class="lineCov">          4 :     return _impl-&gt;registerHandler( event, func );</span>
+<a name="445"><span class="lineNum">     445 </span>            : }</a>
+<span class="lineNum">     446 </span>            : 
+<span class="lineNum">     447 </span><span class="lineNoCov">          0 : bool Subscriber::deregisterHandler( const uint128_t&amp; event )</span>
+<span class="lineNum">     448 </span>            : {
+<span class="lineNum">     449 </span><span class="lineNoCov">          0 :     return _impl-&gt;deregisterHandler( event );</span>
+<a name="450"><span class="lineNum">     450 </span>            : }</a>
+<span class="lineNum">     451 </span>            : 
+<span class="lineNum">     452 </span><span class="lineNoCov">          0 : bool Subscriber::hasHandler( const uint128_t&amp; event ) const</span>
+<span class="lineNum">     453 </span>            : {
+<span class="lineNum">     454 </span><span class="lineNoCov">          0 :     return _impl-&gt;hasHandler( event );</span>
+<a name="455"><span class="lineNum">     455 </span>            : }</a>
+<span class="lineNum">     456 </span>            : 
+<span class="lineNum">     457 </span><span class="lineNoCov">          0 : bool Subscriber::subscribe( servus::Serializable&amp; serializable )</span>
+<span class="lineNum">     458 </span>            : {
+<span class="lineNum">     459 </span><span class="lineNoCov">          0 :     return _impl-&gt;subscribe( serializable );</span>
+<a name="460"><span class="lineNum">     460 </span>            : }</a>
+<span class="lineNum">     461 </span>            : 
+<span class="lineNum">     462 </span><span class="lineNoCov">          0 : bool Subscriber::unsubscribe( const servus::Serializable&amp; serializable )</span>
+<span class="lineNum">     463 </span>            : {
+<span class="lineNum">     464 </span><span class="lineNoCov">          0 :     return _impl-&gt;unsubscribe( serializable );</span>
+<a name="465"><span class="lineNum">     465 </span>            : }</a>
+<span class="lineNum">     466 </span>            : 
+<span class="lineNum">     467 </span><span class="lineNoCov">          0 : const std::string&amp; Subscriber::getSession() const</span>
+<span class="lineNum">     468 </span>            : {
+<span class="lineNum">     469 </span><span class="lineNoCov">          0 :     return _impl-&gt;getSession();</span>
+<a name="470"><span class="lineNum">     470 </span>            : }</a>
+<span class="lineNum">     471 </span>            : 
+<span class="lineNum">     472 </span><span class="lineCov">          4 : void Subscriber::addSockets( std::vector&lt; detail::Socket &gt;&amp; entries )</span>
+<span class="lineNum">     473 </span>            : {
+<span class="lineNum">     474 </span><span class="lineCov">          4 :     _impl-&gt;addSockets( entries );</span>
+<a name="475"><span class="lineNum">     475 </span><span class="lineCov">          4 : }</span></a>
+<span class="lineNum">     476 </span>            : 
+<span class="lineNum">     477 </span><span class="lineCov">          4 : void Subscriber::process( detail::Socket&amp; socket )</span>
+<span class="lineNum">     478 </span>            : {
+<span class="lineNum">     479 </span><span class="lineCov">          4 :     _impl-&gt;process( socket );</span>
+<a name="480"><span class="lineNum">     480 </span><span class="lineCov">          4 : }</span></a>
+<span class="lineNum">     481 </span>            : 
+<span class="lineNum">     482 </span><span class="lineCov">          4 : void Subscriber::update()</span>
+<span class="lineNum">     483 </span>            : {
+<span class="lineNum">     484 </span><span class="lineCov">          4 :     _impl-&gt;update( getZMQContext( ));</span>
+<a name="485"><span class="lineNum">     485 </span><span class="lineCov">          4 : }</span></a>
+<span class="lineNum">     486 </span>            : 
+<span class="lineNum">     487 </span><span class="lineNoCov">          0 : void Subscriber::addConnection( const std::string&amp; uri )</span>
+<span class="lineNum">     488 </span>            : {
+<span class="lineNum">     489 </span><span class="lineNoCov">          0 :     _impl-&gt;addConnection( getZMQContext(), uri, uint128_t( ));</span>
+<a name="490"><span class="lineNum">     490 </span><span class="lineNoCov">          0 : }</span></a>
+<span class="lineNum">     491 </span>            : 
+<span class="lineNum">     492 </span><span class="lineCov">         60 : }</span>
+</pre>
+      </td>
+    </tr>
+  </table>
+  <br>
+
+  <table width="100%" border=0 cellspacing=0 cellpadding=0>
+    <tr><td class="ruler"><img src="../../glass.png" width=3 height=3 alt=""></td></tr>
+    <tr><td class="versionInfo">Generated by: <a href="http://ltp.sourceforge.net/coverage/lcov.php" target="_parent">LCOV version 1.11</a></td></tr>
+  </table>
+  <br>
+
+</body>
+</html>

@@ -1,0 +1,472 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+
+<html lang="en">
+
+<head>
+  <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+  <title>LCOV - Livre - livre/eq/zeq/communicator.cpp</title>
+  <link rel="stylesheet" type="text/css" href="../../../gcov.css">
+</head>
+
+<body>
+
+  <table width="100%" border=0 cellspacing=0 cellpadding=0>
+    <tr><td class="title">LCOV - code coverage report</td></tr>
+    <tr><td class="ruler"><img src="../../../glass.png" width=3 height=3 alt=""></td></tr>
+
+    <tr>
+      <td width="100%">
+        <table cellpadding=1 border=0 width="100%">
+          <tr>
+            <td width="10%" class="headerItem">Current view:</td>
+            <td width="35%" class="headerValue"><a href="../../../index.html">top level</a> - <a href="index.html">livre/eq/zeq</a> - communicator.cpp<span style="font-size: 80%;"> (source / <a href="communicator.cpp.func-sort-c.html">functions</a>)</span></td>
+            <td width="5%"></td>
+            <td width="15%"></td>
+            <td width="10%" class="headerCovTableHead">Hit</td>
+            <td width="10%" class="headerCovTableHead">Total</td>
+            <td width="15%" class="headerCovTableHead">Coverage</td>
+          </tr>
+          <tr>
+            <td class="headerItem">Test:</td>
+            <td class="headerValue">Livre</td>
+            <td></td>
+            <td class="headerItem">Lines:</td>
+            <td class="headerCovTableEntry">1</td>
+            <td class="headerCovTableEntry">167</td>
+            <td class="headerCovTableEntryLo">0.6 %</td>
+          </tr>
+          <tr>
+            <td class="headerItem">Date:</td>
+            <td class="headerValue">2016-03-10 14:06:39</td>
+            <td></td>
+            <td class="headerItem">Functions:</td>
+            <td class="headerCovTableEntry">2</td>
+            <td class="headerCovTableEntry">34</td>
+            <td class="headerCovTableEntryLo">5.9 %</td>
+          </tr>
+          <tr><td><img src="../../../glass.png" width=3 height=3 alt=""></td></tr>
+        </table>
+      </td>
+    </tr>
+
+    <tr><td class="ruler"><img src="../../../glass.png" width=3 height=3 alt=""></td></tr>
+  </table>
+
+  <table cellpadding=0 cellspacing=0 border=0>
+    <tr>
+      <td><br></td>
+    </tr>
+    <tr>
+      <td>
+<pre class="sourceHeading">          Line data    Source code</pre>
+<pre class="source">
+<a name="1"><span class="lineNum">       1 </span>            : </a>
+<span class="lineNum">       2 </span>            : /* Copyright (c) 2015-2016, Daniel.Nachbaur@epfl.ch
+<span class="lineNum">       3 </span>            :  *                          Stefan.Eilemann@epfl.ch
+<span class="lineNum">       4 </span>            :  *
+<span class="lineNum">       5 </span>            :  * This file is part of Livre &lt;https://github.com/BlueBrain/Livre&gt;
+<span class="lineNum">       6 </span>            :  *
+<span class="lineNum">       7 </span>            :  * This library is free software; you can redistribute it and/or modify it under
+<span class="lineNum">       8 </span>            :  * the terms of the GNU Lesser General Public License version 3.0 as published
+<span class="lineNum">       9 </span>            :  * by the Free Software Foundation.
+<span class="lineNum">      10 </span>            :  *
+<span class="lineNum">      11 </span>            :  * This library is distributed in the hope that it will be useful, but WITHOUT
+<span class="lineNum">      12 </span>            :  * ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS
+<span class="lineNum">      13 </span>            :  * FOR A PARTICULAR PURPOSE.  See the GNU Lesser General Public License for more
+<span class="lineNum">      14 </span>            :  * details.
+<span class="lineNum">      15 </span>            :  *
+<span class="lineNum">      16 </span>            :  * You should have received a copy of the GNU Lesser General Public License
+<span class="lineNum">      17 </span>            :  * along with this library; if not, write to the Free Software Foundation, Inc.,
+<span class="lineNum">      18 </span>            :  * 51 Franklin Street, Fifth Floor, Boston, MA 02110-1301 USA.
+<span class="lineNum">      19 </span>            :  */
+<span class="lineNum">      20 </span>            : 
+<span class="lineNum">      21 </span>            : #include &quot;communicator.h&quot;
+<span class="lineNum">      22 </span>            : 
+<span class="lineNum">      23 </span>            : #include &lt;livre/eq/Config.h&gt;
+<span class="lineNum">      24 </span>            : #include &lt;livre/eq/Event.h&gt;
+<span class="lineNum">      25 </span>            : #include &lt;livre/eq/FrameData.h&gt;
+<span class="lineNum">      26 </span>            : #include &lt;livre/eq/settings/CameraSettings.h&gt;
+<span class="lineNum">      27 </span>            : #include &lt;livre/eq/settings/FrameSettings.h&gt;
+<span class="lineNum">      28 </span>            : #include &lt;livre/eq/settings/RenderSettings.h&gt;
+<span class="lineNum">      29 </span>            : 
+<span class="lineNum">      30 </span>            : #include &lt;livre/lib/configuration/ApplicationParameters.h&gt;
+<span class="lineNum">      31 </span>            : #include &lt;livre/lib/configuration/VolumeRendererParameters.h&gt;
+<span class="lineNum">      32 </span>            : 
+<span class="lineNum">      33 </span>            : #include &lt;lunchbox/clock.h&gt;
+<span class="lineNum">      34 </span>            : #include &lt;servus/uri.h&gt;
+<span class="lineNum">      35 </span>            : #include &lt;zeq/zeq.h&gt;
+<span class="lineNum">      36 </span>            : #include &lt;zeq/hbp/hbp.h&gt;
+<span class="lineNum">      37 </span>            : 
+<span class="lineNum">      38 </span>            : #ifdef LIVRE_USE_RESTBRIDGE
+<span class="lineNum">      39 </span>            : #  include &lt;restbridge/RestBridge.h&gt;
+<span class="lineNum">      40 </span>            : #endif
+<span class="lineNum">      41 </span>            : 
+<span class="lineNum">      42 </span>            : #include &lt;functional&gt;
+<span class="lineNum">      43 </span>            : #include &lt;map&gt;
+<span class="lineNum">      44 </span>            : #include &lt;unordered_map&gt;
+<span class="lineNum">      45 </span>            : 
+<span class="lineNum">      46 </span>            : #define DEFAULT_HEARTBEAT_TIME 1000.0f
+<span class="lineNum">      47 </span>            : 
+<span class="lineNum">      48 </span>            : namespace livre
+<span class="lineNum">      49 </span>            : {
+<a name="50"><span class="lineNum">      50 </span>            : namespace zeq</a>
+<span class="lineNum">      51 </span>            : {
+<span class="lineNum">      52 </span><span class="lineNoCov">          0 : class Communicator::Impl</span>
+<a name="53"><span class="lineNum">      53 </span>            : {</a>
+<span class="lineNum">      54 </span>            : public:
+<span class="lineNum">      55 </span><span class="lineNoCov">          0 :     Impl( Config&amp; config, const int argc, char** argv )</span>
+<span class="lineNum">      56 </span><span class="lineNoCov">          0 :         : _config( config )</span>
+<span class="lineNum">      57 </span>            :     {
+<span class="lineNum">      58 </span><span class="lineNoCov">          0 :         if( !servus::Servus::isAvailable( ))</span>
+<span class="lineNum">      59 </span><span class="lineNoCov">          0 :             return;</span>
+<span class="lineNum">      60 </span>            : 
+<span class="lineNum">      61 </span><span class="lineNoCov">          0 :         _setupPublisher();</span>
+<span class="lineNum">      62 </span><span class="lineNoCov">          0 :         _setupRequests();</span>
+<span class="lineNum">      63 </span><span class="lineNoCov">          0 :         _setupRESTBridge( argc, argv );</span>
+<span class="lineNum">      64 </span><span class="lineNoCov">          0 :         _setupSubscribers();</span>
+<a name="65"><span class="lineNum">      65 </span>            :     }</a>
+<span class="lineNum">      66 </span>            : 
+<span class="lineNum">      67 </span><span class="lineNoCov">          0 :     void publishModelView( const Matrix4f&amp; modelView )</span>
+<span class="lineNum">      68 </span>            :     {
+<span class="lineNum">      69 </span><span class="lineNoCov">          0 :         if( !_publisher )</span>
+<span class="lineNum">      70 </span><span class="lineNoCov">          0 :             return;</span>
+<span class="lineNum">      71 </span>            : 
+<span class="lineNum">      72 </span><span class="lineNoCov">          0 :         const Floats matrix( modelView.begin(), modelView.end( ));</span>
+<span class="lineNum">      73 </span><span class="lineNoCov">          0 :         _publisher-&gt;publish( ::zeq::hbp::serializeCamera( matrix ));</span>
+<a name="74"><span class="lineNum">      74 </span>            :     }</a>
+<span class="lineNum">      75 </span>            : 
+<span class="lineNum">      76 </span><span class="lineNoCov">          0 :     void publishCamera()</span>
+<span class="lineNum">      77 </span>            :     {
+<span class="lineNum">      78 </span><span class="lineNoCov">          0 :         if( !_publisher )</span>
+<span class="lineNum">      79 </span><span class="lineNoCov">          0 :             return;</span>
+<span class="lineNum">      80 </span>            : 
+<span class="lineNum">      81 </span><span class="lineNoCov">          0 :         const auto&amp; cameraSettings = _getFrameData().getCameraSettings();</span>
+<span class="lineNum">      82 </span><span class="lineNoCov">          0 :         const Matrix4f&amp; modelView = cameraSettings.getModelViewMatrix();</span>
+<span class="lineNum">      83 </span><span class="lineNoCov">          0 :         const Floats matrix( modelView.begin(), modelView.end( ));</span>
+<span class="lineNum">      84 </span><span class="lineNoCov">          0 :         _publisher-&gt;publish( ::zeq::hbp::serializeCamera( matrix ));</span>
+<a name="85"><span class="lineNum">      85 </span>            :     }</a>
+<span class="lineNum">      86 </span>            : 
+<span class="lineNum">      87 </span><span class="lineNoCov">          0 :     void publishExit()</span>
+<span class="lineNum">      88 </span>            :     {
+<span class="lineNum">      89 </span><span class="lineNoCov">          0 :         if( !_publisher )</span>
+<span class="lineNum">      90 </span><span class="lineNoCov">          0 :             return;</span>
+<span class="lineNum">      91 </span>            : 
+<span class="lineNum">      92 </span><span class="lineNoCov">          0 :         _publisher-&gt;publish( ::zeq::Event( ::zeq::vocabulary::EVENT_EXIT ));</span>
+<a name="93"><span class="lineNum">      93 </span>            :     }</a>
+<span class="lineNum">      94 </span>            : 
+<span class="lineNum">      95 </span><span class="lineNoCov">          0 :     void publishLookupTable1D()</span>
+<span class="lineNum">      96 </span>            :     {
+<span class="lineNum">      97 </span><span class="lineNoCov">          0 :         if( !_publisher )</span>
+<span class="lineNum">      98 </span><span class="lineNoCov">          0 :             return;</span>
+<span class="lineNum">      99 </span>            : 
+<span class="lineNum">     100 </span><span class="lineNoCov">          0 :         const auto&amp; renderSettings = _getFrameData().getRenderSettings();</span>
+<span class="lineNum">     101 </span><span class="lineNoCov">          0 :         const auto&amp; lut = renderSettings.getTransferFunction().getData();</span>
+<span class="lineNum">     102 </span><span class="lineNoCov">          0 :         _publisher-&gt;publish( ::zeq::hbp::serializeLookupTable1D( lut ) );</span>
+<a name="103"><span class="lineNum">     103 </span>            :     }</a>
+<span class="lineNum">     104 </span>            : 
+<span class="lineNum">     105 </span><span class="lineNoCov">          0 :     void publishFrame()</span>
+<span class="lineNum">     106 </span>            :     {
+<span class="lineNum">     107 </span><span class="lineNoCov">          0 :         if( !_publisher )</span>
+<span class="lineNum">     108 </span><span class="lineNoCov">          0 :             return;</span>
+<span class="lineNum">     109 </span>            : 
+<span class="lineNum">     110 </span><span class="lineNoCov">          0 :         const auto&amp; frameSettings = _getFrameData().getFrameSettings();</span>
+<span class="lineNum">     111 </span><span class="lineNoCov">          0 :         const auto&amp; params = _config.getApplicationParameters();</span>
+<span class="lineNum">     112 </span>            : 
+<span class="lineNum">     113 </span>            :         const ::zeq::Event&amp; frame = ::zeq::hbp::serializeFrame(
+<span class="lineNum">     114 </span>            :                                         ::zeq::hbp::data::Frame(
+<span class="lineNum">     115 </span><span class="lineNoCov">          0 :                                             params.frames[0],</span>
+<span class="lineNum">     116 </span>            :                                             frameSettings.getFrameNumber(),
+<span class="lineNum">     117 </span><span class="lineNoCov">          0 :                                             params.frames[1],</span>
+<span class="lineNum">     118 </span><span class="lineNoCov">          0 :                                             params.animation ));</span>
+<span class="lineNum">     119 </span><span class="lineNoCov">          0 :         _publisher-&gt;publish( frame );</span>
+<span class="lineNum">     120 </span>            :     }
+<span class="lineNum">     121 </span>            : 
+<span class="lineNum">     122 </span>            :     void publishVolumeRendererParameters()
+<span class="lineNum">     123 </span>            :     {
+<span class="lineNum">     124 </span>            :          _publisher-&gt;publish( _getFrameData().getVRParameters( ));
+<span class="lineNum">     125 </span>            :     }
+<span class="lineNum">     126 </span>            : 
+<span class="lineNum">     127 </span>            :     void publishVocabulary()
+<span class="lineNum">     128 </span>            :     {
+<span class="lineNum">     129 </span>            :         if( !_publisher )
+<span class="lineNum">     130 </span>            :             return;
+<span class="lineNum">     131 </span>            : 
+<span class="lineNum">     132 </span>            :         ::zeq::EventDescriptors vocabulary;
+<span class="lineNum">     133 </span>            :         vocabulary.push_back(
+<span class="lineNum">     134 </span>            :                     ::zeq::EventDescriptor( ::zeq::hbp::IMAGEJPEG,
+<span class="lineNum">     135 </span>            :                                             ::zeq::hbp::EVENT_IMAGEJPEG,
+<span class="lineNum">     136 </span>            :                                             ::zeq::hbp::SCHEMA_IMAGEJPEG,
+<span class="lineNum">     137 </span>            :                                             ::zeq::PUBLISHER ));
+<span class="lineNum">     138 </span>            :         vocabulary.push_back(
+<span class="lineNum">     139 </span>            :                     ::zeq::EventDescriptor( ::zeq::hbp::CAMERA,
+<span class="lineNum">     140 </span>            :                                             ::zeq::hbp::EVENT_CAMERA,
+<span class="lineNum">     141 </span>            :                                             ::zeq::hbp::SCHEMA_CAMERA,
+<span class="lineNum">     142 </span>            :                                             ::zeq::BIDIRECTIONAL ));
+<span class="lineNum">     143 </span>            :         vocabulary.push_back(
+<span class="lineNum">     144 </span>            :                     ::zeq::EventDescriptor( ::zeq::vocabulary::EXIT,
+<span class="lineNum">     145 </span>            :                                             ::zeq::vocabulary::EVENT_EXIT,
+<span class="lineNum">     146 </span>            :                                             ::zeq::vocabulary::SCHEMA_EXIT,
+<span class="lineNum">     147 </span>            :                                             ::zeq::PUBLISHER ));
+<span class="lineNum">     148 </span>            :         vocabulary.push_back(
+<span class="lineNum">     149 </span>            :                     ::zeq::EventDescriptor( ::zeq::hbp::LOOKUPTABLE1D,
+<span class="lineNum">     150 </span>            :                                             ::zeq::hbp::EVENT_LOOKUPTABLE1D,
+<span class="lineNum">     151 </span>            :                                             ::zeq::hbp::SCHEMA_LOOKUPTABLE1D,
+<span class="lineNum">     152 </span>            :                                             ::zeq::BIDIRECTIONAL ));
+<span class="lineNum">     153 </span>            :         vocabulary.push_back(
+<span class="lineNum">     154 </span>            :                     ::zeq::EventDescriptor( ::zeq::hbp::FRAME,
+<span class="lineNum">     155 </span>            :                                             ::zeq::hbp::EVENT_FRAME,
+<span class="lineNum">     156 </span>            :                                             ::zeq::hbp::SCHEMA_FRAME,
+<span class="lineNum">     157 </span>            :                                             ::zeq::BIDIRECTIONAL ));
+<span class="lineNum">     158 </span>            :         const auto&amp; event = ::zeq::vocabulary::serializeVocabulary( vocabulary);
+<span class="lineNum">     159 </span>            :         _publisher-&gt;publish( event );
+<a name="160"><span class="lineNum">     160 </span>            :     }</a>
+<span class="lineNum">     161 </span>            : 
+<span class="lineNum">     162 </span><span class="lineNoCov">          0 :     void publishHeartbeat()</span>
+<span class="lineNum">     163 </span>            :     {
+<span class="lineNum">     164 </span><span class="lineNoCov">          0 :         if( !_publisher )</span>
+<span class="lineNum">     165 </span><span class="lineNoCov">          0 :             return;</span>
+<span class="lineNum">     166 </span>            : 
+<span class="lineNum">     167 </span><span class="lineNoCov">          0 :         if( _heartbeatClock.getTimef() &gt;= DEFAULT_HEARTBEAT_TIME )</span>
+<span class="lineNum">     168 </span>            :         {
+<span class="lineNum">     169 </span><span class="lineNoCov">          0 :             _heartbeatClock.reset();</span>
+<span class="lineNum">     170 </span>            :             _publisher-&gt;publish(
+<span class="lineNum">     171 </span><span class="lineNoCov">          0 :                 ::zeq::Event( ::zeq::vocabulary::EVENT_HEARTBEAT ));</span>
+<span class="lineNum">     172 </span>            :         }
+<a name="173"><span class="lineNum">     173 </span>            :     }</a>
+<span class="lineNum">     174 </span>            : 
+<span class="lineNum">     175 </span><span class="lineNoCov">          0 :     void publishImageJPEG( const uint8_t* data, const uint64_t size )</span>
+<span class="lineNum">     176 </span>            :     {
+<span class="lineNum">     177 </span><span class="lineNoCov">          0 :         if( !_publisher )</span>
+<span class="lineNum">     178 </span><span class="lineNoCov">          0 :             return;</span>
+<span class="lineNum">     179 </span>            : 
+<span class="lineNum">     180 </span><span class="lineNoCov">          0 :         const ::zeq::hbp::data::ImageJPEG image( size, data );</span>
+<span class="lineNum">     181 </span><span class="lineNoCov">          0 :         const auto&amp; event = ::zeq::hbp::serializeImageJPEG( image );</span>
+<span class="lineNum">     182 </span><span class="lineNoCov">          0 :         _publisher-&gt;publish( event );</span>
+<a name="183"><span class="lineNum">     183 </span>            :     }</a>
+<span class="lineNum">     184 </span>            : 
+<span class="lineNum">     185 </span><span class="lineNoCov">          0 :     void onRequest( const ::zeq::Event&amp; event )</span>
+<span class="lineNum">     186 </span>            :     {
+<span class="lineNum">     187 </span><span class="lineNoCov">          0 :         const auto&amp; eventType = ::zeq::vocabulary::deserializeRequest( event );</span>
+<span class="lineNum">     188 </span><span class="lineNoCov">          0 :         const auto&amp; i = _requests.find( eventType );</span>
+<span class="lineNum">     189 </span><span class="lineNoCov">          0 :         if( i != _requests.end( ))</span>
+<span class="lineNum">     190 </span><span class="lineNoCov">          0 :             i-&gt;second();</span>
+<span class="lineNum">     191 </span><span class="lineNoCov">          0 :     }</span>
+<a name="192"><span class="lineNum">     192 </span>            : </a>
+<span class="lineNum">     193 </span>            :     // Generic camera (from REST) in meters
+<span class="lineNum">     194 </span><span class="lineNoCov">          0 :     void onCamera( const ::zeq::Event&amp; event )</span>
+<span class="lineNum">     195 </span>            :     {
+<span class="lineNum">     196 </span><span class="lineNoCov">          0 :         const auto&amp; matrix = ::zeq::hbp::deserializeCamera( event );</span>
+<span class="lineNum">     197 </span><span class="lineNoCov">          0 :         Matrix4f modelViewMatrix;</span>
+<span class="lineNum">     198 </span><span class="lineNoCov">          0 :         modelViewMatrix.set( matrix.begin(), matrix.end(), false );</span>
+<span class="lineNum">     199 </span><span class="lineNoCov">          0 :         auto&amp; cameraSettings = _getFrameData().getCameraSettings();</span>
+<span class="lineNum">     200 </span><span class="lineNoCov">          0 :         cameraSettings.setModelViewMatrix( modelViewMatrix );</span>
+<span class="lineNum">     201 </span><span class="lineNoCov">          0 :     }</span>
+<a name="202"><span class="lineNum">     202 </span>            : </a>
+<span class="lineNum">     203 </span>            :     // HBP 'micron' camera from other brain applications
+<span class="lineNum">     204 </span><span class="lineNoCov">          0 :     void onHBPCamera( const ::zeq::Event&amp; event )</span>
+<span class="lineNum">     205 </span>            :     {
+<span class="lineNum">     206 </span><span class="lineNoCov">          0 :         const auto&amp; matrix = ::zeq::hbp::deserializeCamera( event );</span>
+<span class="lineNum">     207 </span><span class="lineNoCov">          0 :         Matrix4f modelViewMatrixMicron;</span>
+<span class="lineNum">     208 </span><span class="lineNoCov">          0 :         modelViewMatrixMicron.set( matrix.begin(), matrix.end(), false );</span>
+<span class="lineNum">     209 </span>            : 
+<span class="lineNum">     210 </span>            :         const auto&amp; modelViewMatrix =
+<span class="lineNum">     211 </span><span class="lineNoCov">          0 :                 _config.convertFromHBPCamera( modelViewMatrixMicron );</span>
+<span class="lineNum">     212 </span><span class="lineNoCov">          0 :         auto&amp; cameraSettings = _getFrameData().getCameraSettings();</span>
+<span class="lineNum">     213 </span><span class="lineNoCov">          0 :         cameraSettings.setModelViewMatrix( modelViewMatrix );</span>
+<a name="214"><span class="lineNum">     214 </span><span class="lineNoCov">          0 :     }</span></a>
+<span class="lineNum">     215 </span>            : 
+<span class="lineNum">     216 </span><span class="lineNoCov">          0 :     void onLookupTable1D( const ::zeq::Event&amp; event )</span>
+<span class="lineNum">     217 </span>            :     {
+<span class="lineNum">     218 </span>            :         const TransferFunction1D transferFunction(
+<span class="lineNum">     219 </span><span class="lineNoCov">          0 :             ::zeq::hbp::deserializeLookupTable1D( event ));</span>
+<span class="lineNum">     220 </span><span class="lineNoCov">          0 :         auto&amp; renderSettings = _getRenderSettings();</span>
+<span class="lineNum">     221 </span><span class="lineNoCov">          0 :         renderSettings.setTransferFunction( transferFunction );</span>
+<a name="222"><span class="lineNum">     222 </span><span class="lineNoCov">          0 :     }</span></a>
+<span class="lineNum">     223 </span>            : 
+<span class="lineNum">     224 </span><span class="lineNoCov">          0 :     void onFrame( const ::zeq::Event&amp; event )</span>
+<span class="lineNum">     225 </span>            :     {
+<span class="lineNum">     226 </span><span class="lineNoCov">          0 :         const auto&amp; frame = ::zeq::hbp::deserializeFrame( event );</span>
+<span class="lineNum">     227 </span>            : 
+<span class="lineNum">     228 </span><span class="lineNoCov">          0 :         if( _config.getDataFrameCount() == 0 )</span>
+<span class="lineNum">     229 </span><span class="lineNoCov">          0 :             return;</span>
+<span class="lineNum">     230 </span>            : 
+<span class="lineNum">     231 </span><span class="lineNoCov">          0 :         auto&amp; frameSettings = _getFrameData().getFrameSettings();</span>
+<span class="lineNum">     232 </span><span class="lineNoCov">          0 :         auto&amp; params = _config.getApplicationParameters();</span>
+<span class="lineNum">     233 </span>            : 
+<span class="lineNum">     234 </span><span class="lineNoCov">          0 :         if( frame.current == frameSettings.getFrameNumber() &amp;&amp;</span>
+<span class="lineNum">     235 </span><span class="lineNoCov">          0 :             frame.delta == params.animation &amp;&amp;</span>
+<span class="lineNum">     236 </span><span class="lineNoCov">          0 :             frame.start == params.frames.x() &amp;&amp;</span>
+<span class="lineNum">     237 </span><span class="lineNoCov">          0 :             frame.end == params.frames.y( ))</span>
+<span class="lineNum">     238 </span>            :         {
+<span class="lineNum">     239 </span><span class="lineNoCov">          0 :             return;</span>
+<span class="lineNum">     240 </span>            :         }
+<span class="lineNum">     241 </span>            : 
+<span class="lineNum">     242 </span><span class="lineNoCov">          0 :         frameSettings.setFrameNumber( frame.current );</span>
+<span class="lineNum">     243 </span><span class="lineNoCov">          0 :         params.animation = frame.delta;</span>
+<span class="lineNum">     244 </span><span class="lineNoCov">          0 :         params.frames = { frame.start, frame.end };</span>
+<a name="245"><span class="lineNum">     245 </span>            :     }</a>
+<span class="lineNum">     246 </span>            : 
+<span class="lineNum">     247 </span><span class="lineNoCov">          0 :     void requestImageJPEG()</span>
+<span class="lineNum">     248 </span>            :     {
+<span class="lineNum">     249 </span><span class="lineNoCov">          0 :         _getFrameData().getFrameSettings().setGrabFrame( true );</span>
+<a name="250"><span class="lineNum">     250 </span><span class="lineNoCov">          0 :     }</span></a>
+<span class="lineNum">     251 </span>            : 
+<span class="lineNum">     252 </span><span class="lineNoCov">          0 :     void requestExit()</span>
+<span class="lineNum">     253 </span>            :     {
+<span class="lineNum">     254 </span><span class="lineNoCov">          0 :         _config.stopRunning();</span>
+<a name="255"><span class="lineNum">     255 </span><span class="lineNoCov">          0 :     }</span></a>
+<span class="lineNum">     256 </span>            : 
+<span class="lineNum">     257 </span><span class="lineNoCov">          0 :     void handleEvents()</span>
+<span class="lineNum">     258 </span>            :     {
+<span class="lineNum">     259 </span>            :         // Receiving all queued events from all receivers without blocking.
+<span class="lineNum">     260 </span><span class="lineNoCov">          0 :         for( auto subscriber : subscribers )</span>
+<span class="lineNum">     261 </span><span class="lineNoCov">          0 :             while( subscriber-&gt;receive( 0 ))</span>
+<span class="lineNum">     262 </span><span class="lineNoCov">          0 :                 _config.sendEvent( REDRAW );</span>
+<span class="lineNum">     263 </span><span class="lineNoCov">          0 :     }</span>
+<a name="264"><span class="lineNum">     264 </span>            : </a>
+<span class="lineNum">     265 </span>            : private:
+<span class="lineNum">     266 </span><span class="lineNoCov">          0 :     void _setupPublisher()</span>
+<span class="lineNum">     267 </span>            :     {
+<span class="lineNum">     268 </span><span class="lineNoCov">          0 :         _publisher.reset( new ::zeq::Publisher );</span>
+<a name="269"><span class="lineNum">     269 </span><span class="lineNoCov">          0 :     }</span></a>
+<span class="lineNum">     270 </span>            : 
+<span class="lineNum">     271 </span><span class="lineNoCov">          0 :     void _setupRequests()</span>
+<span class="lineNum">     272 </span>            :     {
+<span class="lineNum">     273 </span><span class="lineNoCov">          0 :         _requests[::zeq::hbp::EVENT_CAMERA] =</span>
+<span class="lineNum">     274 </span><span class="lineNoCov">          0 :             std::bind( &amp;Impl::publishCamera, this );</span>
+<span class="lineNum">     275 </span><span class="lineNoCov">          0 :         _requests[::zeq::hbp::EVENT_FRAME] =</span>
+<span class="lineNum">     276 </span><span class="lineNoCov">          0 :             std::bind( &amp;Impl::publishFrame, this );</span>
+<span class="lineNum">     277 </span><span class="lineNoCov">          0 :         _requests[::zeq::hbp::EVENT_LOOKUPTABLE1D] =</span>
+<span class="lineNum">     278 </span><span class="lineNoCov">          0 :             std::bind( &amp;Impl::publishLookupTable1D, this );</span>
+<span class="lineNum">     279 </span><span class="lineNoCov">          0 :         _requests[::zeq::hbp::EVENT_IMAGEJPEG] =</span>
+<span class="lineNum">     280 </span><span class="lineNoCov">          0 :             std::bind( &amp;Impl::requestImageJPEG, this );</span>
+<span class="lineNum">     281 </span><span class="lineNoCov">          0 :         _requests[::zeq::vocabulary::EVENT_EXIT] =</span>
+<a name="282"><span class="lineNum">     282 </span><span class="lineNoCov">          0 :             std::bind( &amp;Impl::requestExit, this );</span></a>
+<span class="lineNum">     283 </span><span class="lineNoCov">          0 :         const auto&amp; renderParams = _getFrameData().getVRParameters();</span>
+<span class="lineNum">     284 </span><span class="lineNoCov">          0 :         _requests[ renderParams.getTypeIdentifier( )] = [&amp;]</span>
+<span class="lineNum">     285 </span><span class="lineNoCov">          0 :             { _publisher-&gt;publish( _getFrameData().getVRParameters( )); };</span>
+<a name="286"><span class="lineNum">     286 </span><span class="lineNoCov">          0 :     }</span></a>
+<span class="lineNum">     287 </span>            : 
+<span class="lineNum">     288 </span><span class="lineNoCov">          0 :     void _setupRESTBridge( const int argc LB_UNUSED, char** argv LB_UNUSED )</span>
+<span class="lineNum">     289 </span>            :     {
+<span class="lineNum">     290 </span>            : #ifdef LIVRE_USE_RESTBRIDGE
+<span class="lineNum">     291 </span><span class="lineNoCov">          0 :         _restBridge = restbridge::RestBridge::parse( *_publisher, argc, argv );</span>
+<span class="lineNum">     292 </span><span class="lineNoCov">          0 :         if( !_restBridge )</span>
+<span class="lineNum">     293 </span><span class="lineNoCov">          0 :             return;</span>
+<span class="lineNum">     294 </span>            : 
+<span class="lineNum">     295 </span>            :         SubscriberPtr subscriber(
+<span class="lineNum">     296 </span><span class="lineNoCov">          0 :             new ::zeq::Subscriber( _restBridge-&gt;getSubscriberURI( )));</span>
+<span class="lineNum">     297 </span><span class="lineNoCov">          0 :         subscribers.push_back( subscriber );</span>
+<span class="lineNum">     298 </span>            :         subscriber-&gt;registerHandler( ::zeq::hbp::EVENT_CAMERA,
+<span class="lineNum">     299 </span>            :                                         std::bind( &amp;Impl::onCamera, this,
+<span class="lineNum">     300 </span><span class="lineNoCov">          0 :                                                    std::placeholders::_1 ));</span>
+<span class="lineNum">     301 </span>            :         subscriber-&gt;registerHandler( ::zeq::vocabulary::EVENT_REQUEST,
+<span class="lineNum">     302 </span>            :                                         std::bind( &amp;Impl::onRequest, this,
+<span class="lineNum">     303 </span><span class="lineNoCov">          0 :                                                    std::placeholders::_1 ));</span>
+<span class="lineNum">     304 </span>            :         subscriber-&gt;registerHandler( ::zeq::hbp::EVENT_FRAME,
+<span class="lineNum">     305 </span>            :                                         std::bind( &amp;Impl::onFrame, this,
+<span class="lineNum">     306 </span><span class="lineNoCov">          0 :                                                    std::placeholders::_1 ));</span>
+<span class="lineNum">     307 </span>            :         subscriber-&gt;registerHandler( ::zeq::hbp::EVENT_LOOKUPTABLE1D,
+<span class="lineNum">     308 </span>            :                                         std::bind( &amp;Impl::onLookupTable1D, this,
+<span class="lineNum">     309 </span><span class="lineNoCov">          0 :                                                    std::placeholders::_1 ));</span>
+<span class="lineNum">     310 </span>            : #endif
+<a name="311"><span class="lineNum">     311 </span>            :     }</a>
+<span class="lineNum">     312 </span>            : 
+<span class="lineNum">     313 </span><span class="lineNoCov">          0 :     void _setupSubscribers()</span>
+<span class="lineNum">     314 </span>            :     {
+<span class="lineNum">     315 </span><span class="lineNoCov">          0 :         SubscriberPtr subscriber( new ::zeq::Subscriber );</span>
+<span class="lineNum">     316 </span>            : 
+<span class="lineNum">     317 </span><span class="lineNoCov">          0 :         subscribers.push_back( subscriber );</span>
+<span class="lineNum">     318 </span>            :         subscriber-&gt;registerHandler( ::zeq::hbp::EVENT_CAMERA,
+<span class="lineNum">     319 </span>            :                                      std::bind( &amp;Impl::onHBPCamera,
+<span class="lineNum">     320 </span><span class="lineNoCov">          0 :                                                 this, std::placeholders::_1 ));</span>
+<span class="lineNum">     321 </span>            :         subscriber-&gt;registerHandler( ::zeq::hbp::EVENT_LOOKUPTABLE1D,
+<span class="lineNum">     322 </span>            :                                      std::bind( &amp;Impl::onLookupTable1D,
+<span class="lineNum">     323 </span><span class="lineNoCov">          0 :                                                 this, std::placeholders::_1 ));</span>
+<span class="lineNum">     324 </span>            :         subscriber-&gt;registerHandler( ::zeq::hbp::EVENT_FRAME,
+<span class="lineNum">     325 </span>            :                                      std::bind( &amp;Impl::onFrame,
+<span class="lineNum">     326 </span><span class="lineNoCov">          0 :                                                  this, std::placeholders::_1 ));</span>
+<span class="lineNum">     327 </span>            :         subscriber-&gt;registerHandler( ::zeq::vocabulary::EVENT_REQUEST,
+<span class="lineNum">     328 </span>            :                                      std::bind( &amp;Impl::onRequest,
+<span class="lineNum">     329 </span><span class="lineNoCov">          0 :                                                 this, std::placeholders::_1 ));</span>
+<span class="lineNum">     330 </span><span class="lineNoCov">          0 :         subscriber-&gt;subscribe( _getFrameData().getVRParameters( ));</span>
+<a name="331"><span class="lineNum">     331 </span><span class="lineNoCov">          0 :     }</span></a>
+<span class="lineNum">     332 </span>            : 
+<a name="333"><span class="lineNum">     333 </span><span class="lineNoCov">          0 :     FrameData&amp; _getFrameData() { return _config.getFrameData(); }</span></a>
+<span class="lineNum">     334 </span>            :     const FrameData&amp; _getFrameData() const { return _config.getFrameData(); }
+<span class="lineNum">     335 </span><span class="lineNoCov">          0 :     RenderSettings&amp; _getRenderSettings()</span>
+<span class="lineNum">     336 </span><span class="lineNoCov">          0 :         { return _getFrameData().getRenderSettings(); }</span>
+<span class="lineNum">     337 </span>            :     const RenderSettings&amp; _getRenderSettings() const
+<span class="lineNum">     338 </span>            :         { return _getFrameData().getRenderSettings(); }
+<span class="lineNum">     339 </span>            : 
+<span class="lineNum">     340 </span>            :     typedef std::shared_ptr&lt; ::zeq::Subscriber &gt; SubscriberPtr;
+<span class="lineNum">     341 </span>            :     typedef std::shared_ptr&lt; ::zeq::Publisher &gt; PublisherPtr;
+<span class="lineNum">     342 </span>            :     typedef std::vector&lt; SubscriberPtr &gt; Subscribers;
+<span class="lineNum">     343 </span>            : 
+<span class="lineNum">     344 </span>            :     Subscribers subscribers;
+<span class="lineNum">     345 </span>            :     PublisherPtr _publisher;
+<span class="lineNum">     346 </span>            :     lunchbox::Clock _heartbeatClock;
+<span class="lineNum">     347 </span>            :     typedef std::function&lt; void() &gt; RequestFunc;
+<span class="lineNum">     348 </span>            :     typedef std::map&lt; ::zeq::uint128_t, RequestFunc &gt; RequestFuncs;
+<span class="lineNum">     349 </span>            :     RequestFuncs _requests;
+<span class="lineNum">     350 </span>            : #ifdef LIVRE_USE_RESTBRIDGE
+<span class="lineNum">     351 </span>            :     std::unique_ptr&lt; restbridge::RestBridge &gt; _restBridge;
+<span class="lineNum">     352 </span>            : #endif
+<span class="lineNum">     353 </span>            :     Config&amp; _config;
+<a name="354"><span class="lineNum">     354 </span>            : };</a>
+<span class="lineNum">     355 </span>            : 
+<span class="lineNum">     356 </span><span class="lineNoCov">          0 : Communicator::Communicator( Config&amp; config, const int argc, char* argv[] )</span>
+<span class="lineNum">     357 </span><span class="lineNoCov">          0 :     : _impl( new Impl( config, argc, argv ))</span>
+<span class="lineNum">     358 </span>            : {
+<a name="359"><span class="lineNum">     359 </span><span class="lineNoCov">          0 : }</span></a>
+<span class="lineNum">     360 </span>            : 
+<span class="lineNum">     361 </span><span class="lineNoCov">          0 : Communicator::~Communicator()</span>
+<span class="lineNum">     362 </span>            : {
+<a name="363"><span class="lineNum">     363 </span><span class="lineNoCov">          0 : }</span></a>
+<span class="lineNum">     364 </span>            : 
+<span class="lineNum">     365 </span><span class="lineNoCov">          0 : void Communicator::publishImageJPEG( const uint8_t* data, const uint64_t size )</span>
+<span class="lineNum">     366 </span>            : {
+<span class="lineNum">     367 </span><span class="lineNoCov">          0 :     _impl-&gt;publishImageJPEG( data, size );</span>
+<a name="368"><span class="lineNum">     368 </span><span class="lineNoCov">          0 : }</span></a>
+<span class="lineNum">     369 </span>            : 
+<span class="lineNum">     370 </span><span class="lineNoCov">          0 : void Communicator::publishModelView( const Matrix4f&amp; modelView )</span>
+<span class="lineNum">     371 </span>            : {
+<span class="lineNum">     372 </span><span class="lineNoCov">          0 :     _impl-&gt;publishModelView( modelView );</span>
+<a name="373"><span class="lineNum">     373 </span><span class="lineNoCov">          0 : }</span></a>
+<span class="lineNum">     374 </span>            : 
+<span class="lineNum">     375 </span><span class="lineNoCov">          0 : void Communicator::publishHeartbeat()</span>
+<span class="lineNum">     376 </span>            : {
+<span class="lineNum">     377 </span><span class="lineNoCov">          0 :     _impl-&gt;publishHeartbeat();</span>
+<a name="378"><span class="lineNum">     378 </span><span class="lineNoCov">          0 : }</span></a>
+<span class="lineNum">     379 </span>            : 
+<span class="lineNum">     380 </span><span class="lineNoCov">          0 : void Communicator::publishExit()</span>
+<span class="lineNum">     381 </span>            : {
+<span class="lineNum">     382 </span><span class="lineNoCov">          0 :     _impl-&gt;publishExit();</span>
+<a name="383"><span class="lineNum">     383 </span><span class="lineNoCov">          0 : }</span></a>
+<span class="lineNum">     384 </span>            : 
+<span class="lineNum">     385 </span><span class="lineNoCov">          0 : void Communicator::publishFrame()</span>
+<span class="lineNum">     386 </span>            : {
+<span class="lineNum">     387 </span><span class="lineNoCov">          0 :     _impl-&gt;publishFrame();</span>
+<a name="388"><span class="lineNum">     388 </span><span class="lineNoCov">          0 : }</span></a>
+<span class="lineNum">     389 </span>            : 
+<span class="lineNum">     390 </span><span class="lineNoCov">          0 : void Communicator::handleEvents()</span>
+<span class="lineNum">     391 </span>            : {
+<span class="lineNum">     392 </span><span class="lineNoCov">          0 :     _impl-&gt;handleEvents();</span>
+<span class="lineNum">     393 </span><span class="lineNoCov">          0 : }</span>
+<a name="394"><span class="lineNum">     394 </span>            : </a>
+<span class="lineNum">     395 </span>            : }
+<span class="lineNum">     396 </span><span class="lineCov">         60 : }</span>
+</pre>
+      </td>
+    </tr>
+  </table>
+  <br>
+
+  <table width="100%" border=0 cellspacing=0 cellpadding=0>
+    <tr><td class="ruler"><img src="../../../glass.png" width=3 height=3 alt=""></td></tr>
+    <tr><td class="versionInfo">Generated by: <a href="http://ltp.sourceforge.net/coverage/lcov.php" target="_parent">LCOV version 1.11</a></td></tr>
+  </table>
+  <br>
+
+</body>
+</html>

@@ -1,0 +1,246 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+
+<html lang="en">
+
+<head>
+  <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+  <title>LCOV - Livre - hwsd/hwsd/gpu/glx/module.cpp</title>
+  <link rel="stylesheet" type="text/css" href="../../../../gcov.css">
+</head>
+
+<body>
+
+  <table width="100%" border=0 cellspacing=0 cellpadding=0>
+    <tr><td class="title">LCOV - code coverage report</td></tr>
+    <tr><td class="ruler"><img src="../../../../glass.png" width=3 height=3 alt=""></td></tr>
+
+    <tr>
+      <td width="100%">
+        <table cellpadding=1 border=0 width="100%">
+          <tr>
+            <td width="10%" class="headerItem">Current view:</td>
+            <td width="35%" class="headerValue"><a href="../../../../index.html">top level</a> - <a href="index.html">hwsd/hwsd/gpu/glx</a> - module.cpp<span style="font-size: 80%;"> (source / <a href="module.cpp.func-sort-c.html">functions</a>)</span></td>
+            <td width="5%"></td>
+            <td width="15%"></td>
+            <td width="10%" class="headerCovTableHead">Hit</td>
+            <td width="10%" class="headerCovTableHead">Total</td>
+            <td width="15%" class="headerCovTableHead">Coverage</td>
+          </tr>
+          <tr>
+            <td class="headerItem">Test:</td>
+            <td class="headerValue">Livre</td>
+            <td></td>
+            <td class="headerItem">Lines:</td>
+            <td class="headerCovTableEntry">1</td>
+            <td class="headerCovTableEntry">75</td>
+            <td class="headerCovTableEntryLo">1.3 %</td>
+          </tr>
+          <tr>
+            <td class="headerItem">Date:</td>
+            <td class="headerValue">2016-03-10 14:06:39</td>
+            <td></td>
+            <td class="headerItem">Functions:</td>
+            <td class="headerCovTableEntry">2</td>
+            <td class="headerCovTableEntry">7</td>
+            <td class="headerCovTableEntryLo">28.6 %</td>
+          </tr>
+          <tr><td><img src="../../../../glass.png" width=3 height=3 alt=""></td></tr>
+        </table>
+      </td>
+    </tr>
+
+    <tr><td class="ruler"><img src="../../../../glass.png" width=3 height=3 alt=""></td></tr>
+  </table>
+
+  <table cellpadding=0 cellspacing=0 border=0>
+    <tr>
+      <td><br></td>
+    </tr>
+    <tr>
+      <td>
+<pre class="sourceHeading">          Line data    Source code</pre>
+<pre class="source">
+<a name="1"><span class="lineNum">       1 </span>            : </a>
+<span class="lineNum">       2 </span>            : /* Copyright (c) 2011-2012, Stefan Eilemann &lt;eile@eyescale.ch&gt;
+<span class="lineNum">       3 </span>            :  *
+<span class="lineNum">       4 </span>            :  * This library is free software; you can redistribute it and/or modify it under
+<span class="lineNum">       5 </span>            :  * the terms of the GNU Lesser General Public License version 2.1 as published
+<span class="lineNum">       6 </span>            :  * by the Free Software Foundation.
+<span class="lineNum">       7 </span>            :  *
+<span class="lineNum">       8 </span>            :  * This library is distributed in the hope that it will be useful, but WITHOUT
+<span class="lineNum">       9 </span>            :  * ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS
+<span class="lineNum">      10 </span>            :  * FOR A PARTICULAR PURPOSE.  See the GNU Lesser General Public License for more
+<span class="lineNum">      11 </span>            :  * details.
+<span class="lineNum">      12 </span>            :  *
+<span class="lineNum">      13 </span>            :  * You should have received a copy of the GNU Lesser General Public License
+<span class="lineNum">      14 </span>            :  * along with this library; if not, write to the Free Software Foundation, Inc.,
+<span class="lineNum">      15 </span>            :  * 51 Franklin Street, Fifth Floor, Boston, MA 02110-1301 USA.
+<span class="lineNum">      16 </span>            :  */
+<span class="lineNum">      17 </span>            : 
+<span class="lineNum">      18 </span>            : #include &quot;module.h&quot;
+<span class="lineNum">      19 </span>            : 
+<span class="lineNum">      20 </span>            : #include &lt;hwsd/gpuInfo.h&gt;
+<span class="lineNum">      21 </span>            : 
+<span class="lineNum">      22 </span>            : #include &lt;X11/Xlib.h&gt;
+<span class="lineNum">      23 </span>            : #include &lt;GL/glx.h&gt;
+<span class="lineNum">      24 </span>            : #include &lt;cstdlib&gt;
+<span class="lineNum">      25 </span>            : #include &lt;limits&gt;
+<span class="lineNum">      26 </span>            : #include &lt;sstream&gt;
+<span class="lineNum">      27 </span>            : 
+<span class="lineNum">      28 </span>            : #define TRY_PORTS 10
+<span class="lineNum">      29 </span>            : 
+<span class="lineNum">      30 </span>            : namespace hwsd
+<span class="lineNum">      31 </span>            : {
+<span class="lineNum">      32 </span>            : namespace gpu
+<span class="lineNum">      33 </span>            : {
+<span class="lineNum">      34 </span>            : namespace glx
+<span class="lineNum">      35 </span>            : {
+<span class="lineNum">      36 </span>            : namespace
+<span class="lineNum">      37 </span>            : {
+<a name="38"><span class="lineNum">      38 </span>            : static Module* instance = 0;</a>
+<span class="lineNum">      39 </span>            : 
+<span class="lineNum">      40 </span><span class="lineNoCov">          0 : static bool getGPUInfo_( Display* display, GPUInfo&amp; info )</span>
+<span class="lineNum">      41 </span>            : {
+<span class="lineNum">      42 </span>            :     int major, event, error;
+<span class="lineNum">      43 </span><span class="lineNoCov">          0 :     if( !display || !XQueryExtension( display, &quot;GLX&quot;, &amp;major, &amp;event, &amp;error ))</span>
+<span class="lineNum">      44 </span><span class="lineNoCov">          0 :         return false;</span>
+<span class="lineNum">      45 </span>            : 
+<span class="lineNum">      46 </span><span class="lineNoCov">          0 :     std::string displayString = DisplayString( display );</span>
+<span class="lineNum">      47 </span><span class="lineNoCov">          0 :     const size_t colonPos = displayString.find( ':' );</span>
+<span class="lineNum">      48 </span><span class="lineNoCov">          0 :     if( colonPos != std::string::npos )</span>
+<span class="lineNum">      49 </span>            :     {
+<span class="lineNum">      50 </span><span class="lineNoCov">          0 :         const std::string displayNumber = displayString.substr( colonPos+1 );</span>
+<span class="lineNum">      51 </span><span class="lineNoCov">          0 :         info.port = atoi( displayNumber.c_str( ));</span>
+<span class="lineNum">      52 </span><span class="lineNoCov">          0 :         info.device = DefaultScreen( display );</span>
+<span class="lineNum">      53 </span>            :     }
+<span class="lineNum">      54 </span>            : 
+<span class="lineNum">      55 </span><span class="lineNoCov">          0 :     info.pvp[0] = 0;</span>
+<span class="lineNum">      56 </span><span class="lineNoCov">          0 :     info.pvp[1] = 0;</span>
+<span class="lineNum">      57 </span><span class="lineNoCov">          0 :     info.pvp[2] = DisplayWidth(  display, DefaultScreen( display ));</span>
+<span class="lineNum">      58 </span><span class="lineNoCov">          0 :     info.pvp[3] = DisplayHeight( display, DefaultScreen( display ));</span>
+<span class="lineNum">      59 </span>            : 
+<span class="lineNum">      60 </span><span class="lineNoCov">          0 :     const char* vendor = glXGetClientString( display, GLX_VENDOR );</span>
+<span class="lineNum">      61 </span><span class="lineNoCov">          0 :     if( vendor &amp;&amp; std::string( vendor ) == &quot;VirtualGL&quot; )</span>
+<span class="lineNum">      62 </span>            :     {
+<span class="lineNum">      63 </span><span class="lineNoCov">          0 :         info.flags |= GPUInfo::FLAG_VIRTUALGL;</span>
+<span class="lineNum">      64 </span><span class="lineNoCov">          0 :         const char* vglDisplayEnv = getenv( &quot;VGL_DISPLAY&quot; );</span>
+<span class="lineNum">      65 </span><span class="lineNoCov">          0 :         std::string vglDisplay( vglDisplayEnv ? vglDisplayEnv : &quot;:0&quot; );</span>
+<span class="lineNum">      66 </span><span class="lineNoCov">          0 :         const bool vglHasScreen = vglDisplay[ vglDisplay.size() - 2 ] == '.';</span>
+<span class="lineNum">      67 </span>            : 
+<span class="lineNum">      68 </span><span class="lineNoCov">          0 :         std::stringstream xDisplay;</span>
+<span class="lineNum">      69 </span><span class="lineNoCov">          0 :         xDisplay &lt;&lt; DisplayString( display );</span>
+<span class="lineNum">      70 </span><span class="lineNoCov">          0 :         if( xDisplay.str() == &quot;:0&quot; &amp;&amp; vglHasScreen )</span>
+<span class="lineNum">      71 </span><span class="lineNoCov">          0 :             xDisplay &lt;&lt; &quot;.&quot; &lt;&lt; DefaultScreen( display );</span>
+<span class="lineNum">      72 </span>            : 
+<span class="lineNum">      73 </span><span class="lineNoCov">          0 :         const std::string&amp; xDisplayStr = xDisplay.str();</span>
+<span class="lineNum">      74 </span><span class="lineNoCov">          0 :         const bool xHasScreen = xDisplayStr[ xDisplayStr.size() - 2 ] == '.';</span>
+<span class="lineNum">      75 </span><span class="lineNoCov">          0 :         if( xHasScreen &amp;&amp; !vglHasScreen )</span>
+<span class="lineNum">      76 </span><span class="lineNoCov">          0 :             vglDisplay += &quot;.0&quot;;</span>
+<span class="lineNum">      77 </span>            : 
+<span class="lineNum">      78 </span><span class="lineNoCov">          0 :         if( vglDisplay == xDisplayStr )</span>
+<span class="lineNum">      79 </span><span class="lineNoCov">          0 :             info.flags |= GPUInfo::FLAG_VIRTUALGL_DISPLAY;</span>
+<span class="lineNum">      80 </span>            :     }
+<span class="lineNum">      81 </span>            : 
+<span class="lineNum">      82 </span><span class="lineNoCov">          0 :     if ( XQueryExtension( display, &quot;VNC-EXTENSION&quot;, &amp;major, &amp;event, &amp;error ))</span>
+<span class="lineNum">      83 </span><span class="lineNoCov">          0 :         info.flags |= GPUInfo::FLAG_VNC;</span>
+<span class="lineNum">      84 </span>            : 
+<span class="lineNum">      85 </span><span class="lineNoCov">          0 :     return true;</span>
+<a name="86"><span class="lineNum">      86 </span>            : }</a>
+<span class="lineNum">      87 </span>            : 
+<span class="lineNum">      88 </span><span class="lineNoCov">          0 : static bool queryDisplay_( const std::string&amp; display, GPUInfo&amp; info )</span>
+<span class="lineNum">      89 </span>            : {
+<span class="lineNum">      90 </span><span class="lineNoCov">          0 :     ::Display* xDisplay = XOpenDisplay( display.c_str( ));</span>
+<span class="lineNum">      91 </span><span class="lineNoCov">          0 :     if( !xDisplay )</span>
+<span class="lineNum">      92 </span><span class="lineNoCov">          0 :         return false;</span>
+<span class="lineNum">      93 </span>            : 
+<span class="lineNum">      94 </span>            :     int major, event, error;
+<span class="lineNum">      95 </span><span class="lineNoCov">          0 :     if( !XQueryExtension( xDisplay, &quot;GLX&quot;, &amp;major, &amp;event, &amp;error ))</span>
+<span class="lineNum">      96 </span>            :     {
+<span class="lineNum">      97 </span><span class="lineNoCov">          0 :         XCloseDisplay( xDisplay );</span>
+<span class="lineNum">      98 </span><span class="lineNoCov">          0 :         return false;</span>
+<span class="lineNum">      99 </span>            :     }
+<span class="lineNum">     100 </span>            : 
+<span class="lineNum">     101 </span><span class="lineNoCov">          0 :     getGPUInfo_( xDisplay, info );</span>
+<span class="lineNum">     102 </span><span class="lineNoCov">          0 :     XCloseDisplay( xDisplay );</span>
+<span class="lineNum">     103 </span><span class="lineNoCov">          0 :     return true;</span>
+<span class="lineNum">     104 </span>            : }
+<span class="lineNum">     105 </span>            : 
+<a name="106"><span class="lineNum">     106 </span>            : }</a>
+<span class="lineNum">     107 </span>            : 
+<span class="lineNum">     108 </span><span class="lineNoCov">          0 : void Module::use()</span>
+<span class="lineNum">     109 </span>            : {
+<span class="lineNum">     110 </span><span class="lineNoCov">          0 :     if( !instance )</span>
+<span class="lineNum">     111 </span><span class="lineNoCov">          0 :         instance = new Module;</span>
+<a name="112"><span class="lineNum">     112 </span><span class="lineNoCov">          0 : }</span></a>
+<span class="lineNum">     113 </span>            : 
+<span class="lineNum">     114 </span><span class="lineNoCov">          0 : void Module::dispose()</span>
+<span class="lineNum">     115 </span>            : {
+<span class="lineNum">     116 </span><span class="lineNoCov">          0 :     delete instance;</span>
+<span class="lineNum">     117 </span><span class="lineNoCov">          0 :     instance = 0;</span>
+<a name="118"><span class="lineNum">     118 </span><span class="lineNoCov">          0 : }</span></a>
+<span class="lineNum">     119 </span>            : 
+<span class="lineNum">     120 </span><span class="lineNoCov">          0 : GPUInfos Module::discover() const</span>
+<span class="lineNum">     121 </span>            : {
+<span class="lineNum">     122 </span><span class="lineNoCov">          0 :     GPUInfos result;</span>
+<span class="lineNum">     123 </span><span class="lineNoCov">          0 :     GPUInfo defaultInfo( &quot;GLX&quot; );</span>
+<span class="lineNum">     124 </span>            : 
+<span class="lineNum">     125 </span><span class="lineNoCov">          0 :     const char* displayEnv = getenv( &quot;DISPLAY&quot; );</span>
+<span class="lineNum">     126 </span><span class="lineNoCov">          0 :     if( displayEnv &amp;&amp; displayEnv[0] != '\0' )</span>
+<span class="lineNum">     127 </span>            :     {
+<span class="lineNum">     128 </span><span class="lineNoCov">          0 :         const std::string display( displayEnv );</span>
+<span class="lineNum">     129 </span><span class="lineNoCov">          0 :         if( queryDisplay_( display, defaultInfo ))</span>
+<span class="lineNum">     130 </span>            :         {
+<span class="lineNum">     131 </span><span class="lineNoCov">          0 :             if( display[0] != ':' )</span>
+<span class="lineNum">     132 </span>            :             {
+<span class="lineNum">     133 </span><span class="lineNoCov">          0 :                 defaultInfo.port = GPUInfo::defaultValue;</span>
+<span class="lineNum">     134 </span><span class="lineNoCov">          0 :                 defaultInfo.device = GPUInfo::defaultValue;</span>
+<span class="lineNum">     135 </span>            :             }
+<span class="lineNum">     136 </span><span class="lineNoCov">          0 :             result.push_back( defaultInfo );</span>
+<span class="lineNum">     137 </span>            : #ifdef __APPLE__
+<span class="lineNum">     138 </span>            :             // OS X only has one X server, but launchd magic makes duplicate
+<span class="lineNum">     139 </span>            :             // detection hard
+<span class="lineNum">     140 </span>            :             return result;
+<span class="lineNum">     141 </span>            : #endif
+<span class="lineNum">     142 </span><span class="lineNoCov">          0 :         }</span>
+<span class="lineNum">     143 </span>            :     }
+<span class="lineNum">     144 </span>            : 
+<span class="lineNum">     145 </span>            :     // try x servers :0 - :n
+<span class="lineNum">     146 </span><span class="lineNoCov">          0 :     for( unsigned i = 0; i &lt; std::numeric_limits&lt; unsigned &gt;::max() ; ++i )</span>
+<span class="lineNum">     147 </span>            :         // x screens :n.0 - :n.m
+<span class="lineNum">     148 </span><span class="lineNoCov">          0 :         for( unsigned j = 0; j &lt; std::numeric_limits&lt; unsigned &gt;::max(); ++j )</span>
+<span class="lineNum">     149 </span>            :         {
+<span class="lineNum">     150 </span><span class="lineNoCov">          0 :             std::stringstream stream;</span>
+<span class="lineNum">     151 </span><span class="lineNoCov">          0 :             stream &lt;&lt;  ':' &lt;&lt; i &lt;&lt; '.' &lt;&lt; j;</span>
+<span class="lineNum">     152 </span>            : 
+<span class="lineNum">     153 </span><span class="lineNoCov">          0 :             GPUInfo info( &quot;GLX&quot; );</span>
+<span class="lineNum">     154 </span><span class="lineNoCov">          0 :             if( queryDisplay_( stream.str(), info ))</span>
+<span class="lineNum">     155 </span>            :             {
+<span class="lineNum">     156 </span><span class="lineNoCov">          0 :                 if( info != defaultInfo )</span>
+<span class="lineNum">     157 </span><span class="lineNoCov">          0 :                     result.push_back( info );</span>
+<span class="lineNum">     158 </span>            :             }
+<span class="lineNum">     159 </span><span class="lineNoCov">          0 :             else if( j == 0 &amp;&amp; i &gt;= TRY_PORTS )</span>
+<span class="lineNum">     160 </span>            :                 // X Server does not exist, stop query
+<span class="lineNum">     161 </span><span class="lineNoCov">          0 :                 return result;</span>
+<span class="lineNum">     162 </span>            :             else // X Screen does not exist, try next server
+<span class="lineNum">     163 </span>            :                 break;
+<span class="lineNum">     164 </span><span class="lineNoCov">          0 :         }</span>
+<span class="lineNum">     165 </span><span class="lineNoCov">          0 :     return result;</span>
+<span class="lineNum">     166 </span>            : }
+<span class="lineNum">     167 </span>            : 
+<a name="168"><span class="lineNum">     168 </span>            : }</a>
+<span class="lineNum">     169 </span>            : }
+<span class="lineNum">     170 </span><span class="lineCov">         60 : }</span>
+</pre>
+      </td>
+    </tr>
+  </table>
+  <br>
+
+  <table width="100%" border=0 cellspacing=0 cellpadding=0>
+    <tr><td class="ruler"><img src="../../../../glass.png" width=3 height=3 alt=""></td></tr>
+    <tr><td class="versionInfo">Generated by: <a href="http://ltp.sourceforge.net/coverage/lcov.php" target="_parent">LCOV version 1.11</a></td></tr>
+  </table>
+  <br>
+
+</body>
+</html>

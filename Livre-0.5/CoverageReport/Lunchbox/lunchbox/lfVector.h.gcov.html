@@ -1,0 +1,325 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+
+<html lang="en">
+
+<head>
+  <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+  <title>LCOV - Livre - Lunchbox/lunchbox/lfVector.h</title>
+  <link rel="stylesheet" type="text/css" href="../../gcov.css">
+</head>
+
+<body>
+
+  <table width="100%" border=0 cellspacing=0 cellpadding=0>
+    <tr><td class="title">LCOV - code coverage report</td></tr>
+    <tr><td class="ruler"><img src="../../glass.png" width=3 height=3 alt=""></td></tr>
+
+    <tr>
+      <td width="100%">
+        <table cellpadding=1 border=0 width="100%">
+          <tr>
+            <td width="10%" class="headerItem">Current view:</td>
+            <td width="35%" class="headerValue"><a href="../../index.html">top level</a> - <a href="index.html">Lunchbox/lunchbox</a> - lfVector.h<span style="font-size: 80%;"> (source / <a href="lfVector.h.func-sort-c.html">functions</a>)</span></td>
+            <td width="5%"></td>
+            <td width="15%"></td>
+            <td width="10%" class="headerCovTableHead">Hit</td>
+            <td width="10%" class="headerCovTableHead">Total</td>
+            <td width="15%" class="headerCovTableHead">Coverage</td>
+          </tr>
+          <tr>
+            <td class="headerItem">Test:</td>
+            <td class="headerValue">Livre</td>
+            <td></td>
+            <td class="headerItem">Lines:</td>
+            <td class="headerCovTableEntry">0</td>
+            <td class="headerCovTableEntry">3</td>
+            <td class="headerCovTableEntryLo">0.0 %</td>
+          </tr>
+          <tr>
+            <td class="headerItem">Date:</td>
+            <td class="headerValue">2016-03-10 14:06:39</td>
+            <td></td>
+            <td class="headerItem">Functions:</td>
+            <td class="headerCovTableEntry">0</td>
+            <td class="headerCovTableEntry">14</td>
+            <td class="headerCovTableEntryLo">0.0 %</td>
+          </tr>
+          <tr><td><img src="../../glass.png" width=3 height=3 alt=""></td></tr>
+        </table>
+      </td>
+    </tr>
+
+    <tr><td class="ruler"><img src="../../glass.png" width=3 height=3 alt=""></td></tr>
+  </table>
+
+  <table cellpadding=0 cellspacing=0 border=0>
+    <tr>
+      <td><br></td>
+    </tr>
+    <tr>
+      <td>
+<pre class="sourceHeading">          Line data    Source code</pre>
+<pre class="source">
+<a name="1"><span class="lineNum">       1 </span>            : </a>
+<span class="lineNum">       2 </span>            : /* Copyright (c) 2011-2015, EPFL/Blue Brain Project
+<span class="lineNum">       3 </span>            :  *                          Stefan Eilemann &lt;stefan.eilemann@epfl.ch&gt;
+<span class="lineNum">       4 </span>            :  *
+<span class="lineNum">       5 </span>            :  * This file is part of Lunchbox &lt;https://github.com/Eyescale/Lunchbox&gt;
+<span class="lineNum">       6 </span>            :  *
+<span class="lineNum">       7 </span>            :  * This library is free software; you can redistribute it and/or modify it under
+<span class="lineNum">       8 </span>            :  * the terms of the GNU Lesser General Public License version 3.0 as published
+<span class="lineNum">       9 </span>            :  * by the Free Software Foundation.
+<span class="lineNum">      10 </span>            :  *
+<span class="lineNum">      11 </span>            :  * This library is distributed in the hope that it will be useful, but WITHOUT
+<span class="lineNum">      12 </span>            :  * ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS
+<span class="lineNum">      13 </span>            :  * FOR A PARTICULAR PURPOSE.  See the GNU Lesser General Public License for more
+<span class="lineNum">      14 </span>            :  * details.
+<span class="lineNum">      15 </span>            :  *
+<span class="lineNum">      16 </span>            :  * You should have received a copy of the GNU Lesser General Public License
+<span class="lineNum">      17 </span>            :  * along with this library; if not, write to the Free Software Foundation, Inc.,
+<span class="lineNum">      18 </span>            :  * 51 Franklin Street, Fifth Floor, Boston, MA 02110-1301 USA.
+<span class="lineNum">      19 </span>            :  */
+<span class="lineNum">      20 </span>            : 
+<span class="lineNum">      21 </span>            : #ifndef LUNCHBOX_LFVECTOR_H
+<span class="lineNum">      22 </span>            : #define LUNCHBOX_LFVECTOR_H
+<span class="lineNum">      23 </span>            : 
+<span class="lineNum">      24 </span>            : #include &lt;lunchbox/bitOperation.h&gt; // used inline
+<span class="lineNum">      25 </span>            : #include &lt;lunchbox/debug.h&gt; // used inline
+<span class="lineNum">      26 </span>            : #include &lt;lunchbox/os.h&gt; // bzero()
+<span class="lineNum">      27 </span>            : #include &lt;lunchbox/scopedMutex.h&gt; // member
+<span class="lineNum">      28 </span>            : #include &lt;lunchbox/serializable.h&gt;
+<span class="lineNum">      29 </span>            : #include &lt;lunchbox/spinLock.h&gt; // member
+<span class="lineNum">      30 </span>            : #include &lt;algorithm&gt; // used inline
+<span class="lineNum">      31 </span>            : #include &lt;stdexcept&gt;
+<span class="lineNum">      32 </span>            : 
+<span class="lineNum">      33 </span>            : namespace lunchbox
+<span class="lineNum">      34 </span>            : {
+<span class="lineNum">      35 </span>            : /**
+<span class="lineNum">      36 </span>            :  * STL-like vector implementation providing certain thread-safety guarantees.
+<span class="lineNum">      37 </span>            :  *
+<span class="lineNum">      38 </span>            :  * All operations not modifying the vector size are lock-free and wait-free. All
+<span class="lineNum">      39 </span>            :  * operations modifying the vector size are serialized using a spin lock. The
+<span class="lineNum">      40 </span>            :  * interaction of operations is documented in the corresponding modify
+<span class="lineNum">      41 </span>            :  * operation.
+<span class="lineNum">      42 </span>            :  *
+<span class="lineNum">      43 </span>            :  * Undocumented methods behave like the STL implementation. The number of slots
+<span class="lineNum">      44 </span>            :  * (default 32) sets the maximum elements the vector may hold to
+<span class="lineNum">      45 </span>            :  * 2^nSlots-1. Each slot needs one pointer additional storage. Naturally it
+<span class="lineNum">      46 </span>            :  * should never be set higher than 64.
+<span class="lineNum">      47 </span>            :  *
+<span class="lineNum">      48 </span>            :  * Not all std::vector methods are implemented. Serializable using
+<span class="lineNum">      49 </span>            :  * boost.serialization.
+<span class="lineNum">      50 </span>            :  *
+<span class="lineNum">      51 </span>            :  * Example: @include tests/perf/lfVector.cpp
+<span class="lineNum">      52 </span>            :  */
+<span class="lineNum">      53 </span>            : template&lt; class T, int32_t nSlots = 32 &gt; class LFVector
+<span class="lineNum">      54 </span>            : {
+<span class="lineNum">      55 </span>            : public:
+<span class="lineNum">      56 </span>            :     typedef ScopedFastWrite ScopedWrite;
+<span class="lineNum">      57 </span>            :     typedef T value_type;
+<span class="lineNum">      58 </span>            : 
+<span class="lineNum">      59 </span>            :     /** @version 1.3.2 */
+<span class="lineNum">      60 </span>            :     LFVector();
+<span class="lineNum">      61 </span>            : 
+<span class="lineNum">      62 </span>            :     /** @version 1.3.2 */
+<span class="lineNum">      63 </span>            :     explicit LFVector( const size_t n );
+<span class="lineNum">      64 </span>            : 
+<span class="lineNum">      65 </span>            :     /** @version 1.3.2 */
+<span class="lineNum">      66 </span>            :     LFVector( const size_t n, const T&amp; t );
+<span class="lineNum">      67 </span>            : 
+<span class="lineNum">      68 </span>            :     /** @version 1.3.2 */
+<span class="lineNum">      69 </span>            :     explicit LFVector( const LFVector&amp; from );
+<span class="lineNum">      70 </span>            : 
+<span class="lineNum">      71 </span>            :     /** @version 1.3.2 */
+<span class="lineNum">      72 </span>            :     template&lt; int32_t fromSlots &gt;
+<span class="lineNum">      73 </span>            :     explicit LFVector( const LFVector&lt; T, fromSlots &gt;&amp; from );
+<span class="lineNum">      74 </span>            : 
+<span class="lineNum">      75 </span>            :     /** @version 1.3.2 */
+<span class="lineNum">      76 </span>            :     ~LFVector();
+<span class="lineNum">      77 </span>            : 
+<span class="lineNum">      78 </span>            :     /** @version 1.3.2 */
+<span class="lineNum">      79 </span>            :     LFVector&amp; operator = ( const LFVector&amp; from );
+<span class="lineNum">      80 </span>            : 
+<span class="lineNum">      81 </span>            :     /** @version 1.3.2 */
+<span class="lineNum">      82 </span>            :     bool operator == ( const LFVector&amp; rhs ) const;
+<span class="lineNum">      83 </span>            : 
+<span class="lineNum">      84 </span>            :     /** @version 1.3.2 */
+<a name="85"><span class="lineNum">      85 </span>            :     bool operator != ( const LFVector&amp; rhs ) const { return !(*this == rhs); }</a>
+<a name="86"><span class="lineNum">      86 </span>            : </a>
+<span class="lineNum">      87 </span><span class="lineNoCov">          0 :     bool empty() const { return size_ == 0; } //!&lt; @version 1.3.2</span>
+<span class="lineNum">      88 </span><span class="lineNoCov">          0 :     size_t size() const { return size_; } //!&lt; @version 1.3.2</span>
+<span class="lineNum">      89 </span>            : 
+<span class="lineNum">      90 </span>            :     /** @version 1.3.2 */
+<span class="lineNum">      91 </span>            :     T&amp; operator[]( size_t i );
+<span class="lineNum">      92 </span>            : 
+<span class="lineNum">      93 </span>            :     /** @version 1.3.2 */
+<span class="lineNum">      94 </span>            :     const T&amp; operator[]( size_t i ) const;
+<span class="lineNum">      95 </span>            : 
+<span class="lineNum">      96 </span>            :     /** @version 1.3.2 */
+<span class="lineNum">      97 </span>            :     T&amp; front();
+<span class="lineNum">      98 </span>            : 
+<span class="lineNum">      99 </span>            :     /** @version 1.3.2 */
+<span class="lineNum">     100 </span>            :     T&amp; back();
+<span class="lineNum">     101 </span>            : 
+<span class="lineNum">     102 </span>            :     /** Iterator over the vector elements. @version 1.3.2 */
+<span class="lineNum">     103 </span>            :     typedef LFVectorIterator&lt; LFVector&lt; T, nSlots &gt;, T &gt; iterator;
+<span class="lineNum">     104 </span>            : 
+<span class="lineNum">     105 </span>            :     /** Iterator over the const vector elements. @version 1.3.2 */
+<span class="lineNum">     106 </span>            :     typedef LFVectorIterator&lt;const LFVector&lt;T, nSlots&gt;, const T&gt; const_iterator;
+<span class="lineNum">     107 </span>            : 
+<span class="lineNum">     108 </span>            :     const_iterator begin() const; //!&lt; @version 1.3.2
+<span class="lineNum">     109 </span>            :     const_iterator end() const; //!&lt; @version 1.3.2
+<span class="lineNum">     110 </span>            :     iterator begin(); //!&lt; @version 1.3.2
+<span class="lineNum">     111 </span>            :     iterator end(); //!&lt; @version 1.3.2
+<span class="lineNum">     112 </span>            : 
+<span class="lineNum">     113 </span>            :     /**
+<span class="lineNum">     114 </span>            :      * Resize the vector to at least the given size.
+<span class="lineNum">     115 </span>            :      *
+<span class="lineNum">     116 </span>            :      * In contrast to resize(), expand() only increases the size of the vector,
+<span class="lineNum">     117 </span>            :      * allowing concurrent resize operations on the same vector. Completely
+<span class="lineNum">     118 </span>            :      * thread-save with read operations. Existing end() iterators will keep
+<span class="lineNum">     119 </span>            :      * pointing to the old end of the vector. The size is updated after all
+<span class="lineNum">     120 </span>            :      * elements have been inserted, so size() followed by a read is
+<span class="lineNum">     121 </span>            :      * thread-safe. In contrast to &lt;code&gt;while( vector.size() &lt; newSize )
+<span class="lineNum">     122 </span>            :      * vector.insert( item );&lt;/code&gt; this method's operation is atomic with
+<span class="lineNum">     123 </span>            :      * other writes.
+<span class="lineNum">     124 </span>            :      *
+<span class="lineNum">     125 </span>            :      * @param newSize the minimum new size.
+<span class="lineNum">     126 </span>            :      * @param item the element to insert.
+<span class="lineNum">     127 </span>            :      * @throw std::runtime_error if the vector is full
+<span class="lineNum">     128 </span>            :      * @version 1.3.2
+<span class="lineNum">     129 </span>            :      */
+<span class="lineNum">     130 </span>            :     void expand( const size_t newSize, const T&amp; item = T( ));
+<span class="lineNum">     131 </span>            : 
+<span class="lineNum">     132 </span>            :     /**
+<span class="lineNum">     133 </span>            :      * Add an element to the vector.
+<span class="lineNum">     134 </span>            :      *
+<span class="lineNum">     135 </span>            :      * Completely thread-save with read operations. Existing end() iterators
+<span class="lineNum">     136 </span>            :      * will keep pointing to the old end of the vector. The size is updated
+<span class="lineNum">     137 </span>            :      * after the element is inserted, so size() followed by a read is
+<span class="lineNum">     138 </span>            :      * thread-safe.
+<span class="lineNum">     139 </span>            :      *
+<span class="lineNum">     140 </span>            :      * @param item the element to insert.
+<span class="lineNum">     141 </span>            :      * @param lock true for internal lock, false if locked with getWriteLock()
+<span class="lineNum">     142 </span>            :      * @throw std::runtime_error if the vector is full
+<span class="lineNum">     143 </span>            :      * @version 1.3.2
+<span class="lineNum">     144 </span>            :      */
+<span class="lineNum">     145 </span>            :     void push_back( const T&amp; item, bool lock = true );
+<span class="lineNum">     146 </span>            : 
+<span class="lineNum">     147 </span>            :     /**
+<span class="lineNum">     148 </span>            :      * Remove the last element (STL version).
+<span class="lineNum">     149 </span>            :      *
+<span class="lineNum">     150 </span>            :      * A concurrent read on the removed item produces undefined results, in
+<span class="lineNum">     151 </span>            :      * particular end() and back().
+<span class="lineNum">     152 </span>            :      *
+<span class="lineNum">     153 </span>            :      * @version 1.3.2
+<span class="lineNum">     154 </span>            :      */
+<span class="lineNum">     155 </span>            :     void pop_back();
+<span class="lineNum">     156 </span>            : 
+<span class="lineNum">     157 </span>            :     /**
+<span class="lineNum">     158 </span>            :      * Remove the last element (atomic version).
+<span class="lineNum">     159 </span>            :      *
+<span class="lineNum">     160 </span>            :      * A concurrent read on the removed item produces undefined results, in
+<span class="lineNum">     161 </span>            :      * particular end() and back(). The last element is assigned to the given
+<span class="lineNum">     162 </span>            :      * output element if the vector is not empty. If the vector is empty,
+<span class="lineNum">     163 </span>            :      * element is not touched and false is returned. The whole operation is
+<span class="lineNum">     164 </span>            :      * atomic with other operations changing the size of the vector.
+<span class="lineNum">     165 </span>            :      *
+<span class="lineNum">     166 </span>            :      * @param element the item receiving the value which was stored at the end.
+<span class="lineNum">     167 </span>            :      * @return true if the vector was not empty, false if no item was popped.
+<span class="lineNum">     168 </span>            :      * @version 1.3.2
+<span class="lineNum">     169 </span>            :      */
+<span class="lineNum">     170 </span>            :     bool pop_back( T&amp; element );
+<span class="lineNum">     171 </span>            : 
+<span class="lineNum">     172 </span>            :     /**
+<span class="lineNum">     173 </span>            :      * Remove an element.
+<span class="lineNum">     174 </span>            :      *
+<span class="lineNum">     175 </span>            :      * A concurrent read on the item or any following item is not thread
+<span class="lineNum">     176 </span>            :      * save. The vector's size is decremented first. Returns end() if the
+<span class="lineNum">     177 </span>            :      * element can't be removed, i.e., the iterator is past end() or not for
+<span class="lineNum">     178 </span>            :      * this vector.
+<span class="lineNum">     179 </span>            :      *
+<span class="lineNum">     180 </span>            :      * @param pos the element to remove
+<span class="lineNum">     181 </span>            :      * @return an iterator pointing to the element after the removed element, or
+<span class="lineNum">     182 </span>            :      *         end() if nothing was erased.
+<span class="lineNum">     183 </span>            :      * @version 1.3.2
+<span class="lineNum">     184 </span>            :      */
+<span class="lineNum">     185 </span>            :     iterator erase( typename LFVector&lt; T, nSlots &gt;::iterator pos );
+<span class="lineNum">     186 </span>            : 
+<span class="lineNum">     187 </span>            :     /**
+<span class="lineNum">     188 </span>            :      * Remove the last occurence of the given element.
+<span class="lineNum">     189 </span>            :      *
+<span class="lineNum">     190 </span>            :      * A concurrent read on the item or any following item is not thread
+<span class="lineNum">     191 </span>            :      * save. The vector's size is decremented first. Returns end() if the
+<span class="lineNum">     192 </span>            :      * element can't be removed, i.e., the vector does not contain the element.
+<span class="lineNum">     193 </span>            :      *
+<span class="lineNum">     194 </span>            :      * @param element the element to remove
+<span class="lineNum">     195 </span>            :      * @return an iterator pointing to the element after the removed element, or
+<span class="lineNum">     196 </span>            :      *         end() if nothing was erased.
+<span class="lineNum">     197 </span>            :      * @version 1.3.2
+<span class="lineNum">     198 </span>            :      */
+<span class="lineNum">     199 </span>            :     iterator erase( const T&amp; element );
+<span class="lineNum">     200 </span>            : 
+<span class="lineNum">     201 </span>            :     /**
+<span class="lineNum">     202 </span>            :      * Resize the vector.
+<span class="lineNum">     203 </span>            :      *
+<span class="lineNum">     204 </span>            :      * Thread-safe with other write operations. Shrinking is not thread-safe
+<span class="lineNum">     205 </span>            :      * with concurrent reads on the removed elements and produces undefined
+<span class="lineNum">     206 </span>            :      * results.
+<span class="lineNum">     207 </span>            :      *
+<span class="lineNum">     208 </span>            :      * @throw std::runtime_error if the vector is full
+<span class="lineNum">     209 </span>            :      * @version 1.7.2
+<span class="lineNum">     210 </span>            :      */
+<span class="lineNum">     211 </span>            :     void resize( const size_t size, const T&amp; value = T( ));
+<span class="lineNum">     212 </span>            : 
+<span class="lineNum">     213 </span>            :     /**
+<span class="lineNum">     214 </span>            :      * Clear the vector and all storage.
+<span class="lineNum">     215 </span>            :      *
+<span class="lineNum">     216 </span>            :      * Thread-safe with other write operations. By nature not thread-safe with
+<span class="lineNum">     217 </span>            :      * read operations.
+<span class="lineNum">     218 </span>            :      *
+<span class="lineNum">     219 </span>            :      * @version 1.3.2
+<span class="lineNum">     220 </span>            :      */
+<span class="lineNum">     221 </span>            :     void clear();
+<span class="lineNum">     222 </span>            : 
+<span class="lineNum">     223 </span>            :     /** @return the locked mutex for unlocked write operations. @version 1.5 */
+<span class="lineNum">     224 </span>            :     ScopedWrite getWriteLock();
+<a name="225"><span class="lineNum">     225 </span>            : </a>
+<span class="lineNum">     226 </span>            : private:
+<span class="lineNum">     227 </span><span class="lineNoCov">          0 :     LB_SERIALIZABLE</span>
+<span class="lineNum">     228 </span>            : 
+<span class="lineNum">     229 </span>            :     T* slots_[ nSlots ];
+<span class="lineNum">     230 </span>            :     size_t size_;
+<span class="lineNum">     231 </span>            :     mutable SpinLock lock_;
+<span class="lineNum">     232 </span>            : 
+<span class="lineNum">     233 </span>            :     template&lt; int32_t fromSlots &gt;
+<span class="lineNum">     234 </span>            :     void assign_( const LFVector&lt; T, fromSlots &gt;&amp; from );
+<span class="lineNum">     235 </span>            : 
+<span class="lineNum">     236 </span>            :     void push_back_unlocked_( const T&amp; item );
+<span class="lineNum">     237 </span>            : 
+<span class="lineNum">     238 </span>            :     void trim_();
+<span class="lineNum">     239 </span>            : };
+<span class="lineNum">     240 </span>            : 
+<span class="lineNum">     241 </span>            : /** Output the vector and  up to 256 items to the ostream. @version 0.1 */
+<span class="lineNum">     242 </span>            : template&lt; class T &gt;
+<span class="lineNum">     243 </span>            : std::ostream&amp; operator &lt;&lt; ( std::ostream&amp; os, const LFVector&lt; T &gt;&amp; v );
+<span class="lineNum">     244 </span>            : 
+<span class="lineNum">     245 </span>            : }
+<span class="lineNum">     246 </span>            : 
+<span class="lineNum">     247 </span>            : #include &quot;lfVector.ipp&quot; // template implementation
+<span class="lineNum">     248 </span>            : 
+<span class="lineNum">     249 </span>            : #endif // LUNCHBOX_LFVECTOR_H
+</pre>
+      </td>
+    </tr>
+  </table>
+  <br>
+
+  <table width="100%" border=0 cellspacing=0 cellpadding=0>
+    <tr><td class="ruler"><img src="../../glass.png" width=3 height=3 alt=""></td></tr>
+    <tr><td class="versionInfo">Generated by: <a href="http://ltp.sourceforge.net/coverage/lcov.php" target="_parent">LCOV version 1.11</a></td></tr>
+  </table>
+  <br>
+
+</body>
+</html>

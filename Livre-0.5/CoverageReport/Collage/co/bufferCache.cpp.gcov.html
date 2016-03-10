@@ -1,0 +1,342 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+
+<html lang="en">
+
+<head>
+  <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+  <title>LCOV - Livre - Collage/co/bufferCache.cpp</title>
+  <link rel="stylesheet" type="text/css" href="../../gcov.css">
+</head>
+
+<body>
+
+  <table width="100%" border=0 cellspacing=0 cellpadding=0>
+    <tr><td class="title">LCOV - code coverage report</td></tr>
+    <tr><td class="ruler"><img src="../../glass.png" width=3 height=3 alt=""></td></tr>
+
+    <tr>
+      <td width="100%">
+        <table cellpadding=1 border=0 width="100%">
+          <tr>
+            <td width="10%" class="headerItem">Current view:</td>
+            <td width="35%" class="headerValue"><a href="../../index.html">top level</a> - <a href="index.html">Collage/co</a> - bufferCache.cpp<span style="font-size: 80%;"> (source / <a href="bufferCache.cpp.func-sort-c.html">functions</a>)</span></td>
+            <td width="5%"></td>
+            <td width="15%"></td>
+            <td width="10%" class="headerCovTableHead">Hit</td>
+            <td width="10%" class="headerCovTableHead">Total</td>
+            <td width="15%" class="headerCovTableHead">Coverage</td>
+          </tr>
+          <tr>
+            <td class="headerItem">Test:</td>
+            <td class="headerValue">Livre</td>
+            <td></td>
+            <td class="headerItem">Lines:</td>
+            <td class="headerCovTableEntry">1</td>
+            <td class="headerCovTableEntry">104</td>
+            <td class="headerCovTableEntryLo">1.0 %</td>
+          </tr>
+          <tr>
+            <td class="headerItem">Date:</td>
+            <td class="headerValue">2016-03-10 14:06:39</td>
+            <td></td>
+            <td class="headerItem">Functions:</td>
+            <td class="headerCovTableEntry">2</td>
+            <td class="headerCovTableEntry">15</td>
+            <td class="headerCovTableEntryLo">13.3 %</td>
+          </tr>
+          <tr><td><img src="../../glass.png" width=3 height=3 alt=""></td></tr>
+        </table>
+      </td>
+    </tr>
+
+    <tr><td class="ruler"><img src="../../glass.png" width=3 height=3 alt=""></td></tr>
+  </table>
+
+  <table cellpadding=0 cellspacing=0 border=0>
+    <tr>
+      <td><br></td>
+    </tr>
+    <tr>
+      <td>
+<pre class="sourceHeading">          Line data    Source code</pre>
+<pre class="source">
+<a name="1"><span class="lineNum">       1 </span>            : </a>
+<span class="lineNum">       2 </span>            : /* Copyright (c) 2006-2014, Stefan Eilemann &lt;eile@equalizergraphics.com&gt;
+<span class="lineNum">       3 </span>            :  *                    2012, Daniel Nachbaur &lt;danielnachbaur@gmail.com&gt;
+<span class="lineNum">       4 </span>            :  *
+<span class="lineNum">       5 </span>            :  * This file is part of Collage &lt;https://github.com/Eyescale/Collage&gt;
+<span class="lineNum">       6 </span>            :  *
+<span class="lineNum">       7 </span>            :  * This library is free software; you can redistribute it and/or modify it under
+<span class="lineNum">       8 </span>            :  * the terms of the GNU Lesser General Public License version 2.1 as published
+<span class="lineNum">       9 </span>            :  * by the Free Software Foundation.
+<span class="lineNum">      10 </span>            :  *
+<span class="lineNum">      11 </span>            :  * This library is distributed in the hope that it will be useful, but WITHOUT
+<span class="lineNum">      12 </span>            :  * ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS
+<span class="lineNum">      13 </span>            :  * FOR A PARTICULAR PURPOSE.  See the GNU Lesser General Public License for more
+<span class="lineNum">      14 </span>            :  * details.
+<span class="lineNum">      15 </span>            :  *
+<span class="lineNum">      16 </span>            :  * You should have received a copy of the GNU Lesser General Public License
+<span class="lineNum">      17 </span>            :  * along with this library; if not, write to the Free Software Foundation, Inc.,
+<span class="lineNum">      18 </span>            :  * 51 Franklin Street, Fifth Floor, Boston, MA 02110-1301 USA.
+<span class="lineNum">      19 </span>            :  */
+<span class="lineNum">      20 </span>            : 
+<span class="lineNum">      21 </span>            : #include &quot;bufferCache.h&quot;
+<span class="lineNum">      22 </span>            : 
+<span class="lineNum">      23 </span>            : #include &quot;buffer.h&quot;
+<span class="lineNum">      24 </span>            : #include &quot;bufferListener.h&quot;
+<span class="lineNum">      25 </span>            : #include &quot;iCommand.h&quot;
+<span class="lineNum">      26 </span>            : #include &quot;node.h&quot;
+<span class="lineNum">      27 </span>            : 
+<span class="lineNum">      28 </span>            : #include &lt;lunchbox/atomic.h&gt;
+<span class="lineNum">      29 </span>            : #include &lt;list&gt;
+<span class="lineNum">      30 </span>            : 
+<span class="lineNum">      31 </span>            : //#define PROFILE
+<span class="lineNum">      32 </span>            : // 31300 hits, 35 misses, 297640 lookups, 126976b allocated in 31 buffers
+<span class="lineNum">      33 </span>            : // 31300 hits, 35 misses, 49228 lookups, 135168b allocated in 34 buffers
+<span class="lineNum">      34 </span>            : //
+<span class="lineNum">      35 </span>            : // The buffer cache periodically frees allocated buffers to bound memory usage:
+<span class="lineNum">      36 </span>            : // * 'minFree' buffers (given in ctor) are always kept free
+<span class="lineNum">      37 </span>            : // * above 'size &gt;&gt; _maxFreeShift' free buffers compaction occurs
+<span class="lineNum">      38 </span>            : // * compaction tries to reach '(size &gt;&gt; _maxFreeShift) &gt;&gt; _targetShift' buffers
+<span class="lineNum">      39 </span>            : //
+<span class="lineNum">      40 </span>            : // In other words, using the values below, if more than half of the buffers are
+<span class="lineNum">      41 </span>            : // free, the cache is compacted to until one quarter of the buffers is free.
+<span class="lineNum">      42 </span>            : 
+<span class="lineNum">      43 </span>            : namespace co
+<span class="lineNum">      44 </span>            : {
+<span class="lineNum">      45 </span>            : namespace
+<span class="lineNum">      46 </span>            : {
+<span class="lineNum">      47 </span>            : typedef std::list&lt; Buffer* &gt; Data;
+<span class="lineNum">      48 </span>            : typedef Data::const_iterator DataCIter;
+<span class="lineNum">      49 </span>            : 
+<span class="lineNum">      50 </span>            : static const uint32_t _maxFreeShift = 1; // _maxFree = size &gt;&gt; shift
+<span class="lineNum">      51 </span>            : static const uint32_t _targetShift = 1; // _targetFree = _maxFree &gt;&gt; shift
+<span class="lineNum">      52 </span>            : 
+<span class="lineNum">      53 </span>            : #ifdef PROFILE
+<span class="lineNum">      54 </span>            : static lunchbox::a_int32_t _hits;
+<span class="lineNum">      55 </span>            : static lunchbox::a_int32_t _misses;
+<span class="lineNum">      56 </span>            : static lunchbox::a_int32_t _lookups;
+<span class="lineNum">      57 </span>            : static lunchbox::a_int32_t _allocs;
+<span class="lineNum">      58 </span>            : static lunchbox::a_int32_t _frees;
+<span class="lineNum">      59 </span>            : #endif
+<span class="lineNum">      60 </span>            : }
+<span class="lineNum">      61 </span>            : namespace detail
+<span class="lineNum">      62 </span>            : {
+<span class="lineNum">      63 </span>            : class BufferCache : public BufferListener
+<a name="64"><span class="lineNum">      64 </span>            : {</a>
+<span class="lineNum">      65 </span>            : public:
+<span class="lineNum">      66 </span><span class="lineNoCov">          0 :     explicit BufferCache( const int32_t minFree )</span>
+<span class="lineNum">      67 </span><span class="lineNoCov">          0 :         : _minFree( minFree )</span>
+<span class="lineNum">      68 </span>            :     {
+<span class="lineNum">      69 </span><span class="lineNoCov">          0 :         LBASSERT( minFree &gt; 1);</span>
+<span class="lineNum">      70 </span><span class="lineNoCov">          0 :         flush();</span>
+<a name="71"><span class="lineNum">      71 </span><span class="lineNoCov">          0 :     }</span></a>
+<span class="lineNum">      72 </span>            : 
+<span class="lineNum">      73 </span><span class="lineNoCov">          0 :     ~BufferCache()</span>
+<span class="lineNum">      74 </span><span class="lineNoCov">          0 :     {</span>
+<span class="lineNum">      75 </span><span class="lineNoCov">          0 :         LBASSERT( _cache.size() == 1 );</span>
+<span class="lineNum">      76 </span><span class="lineNoCov">          0 :         LBASSERT( _cache.front()-&gt;isFree( ));</span>
+<span class="lineNum">      77 </span>            : 
+<span class="lineNum">      78 </span><span class="lineNoCov">          0 :         delete _cache.front();</span>
+<span class="lineNum">      79 </span><span class="lineNoCov">          0 :         _cache.clear();</span>
+<a name="80"><span class="lineNum">      80 </span><span class="lineNoCov">          0 :     }</span></a>
+<span class="lineNum">      81 </span>            : 
+<span class="lineNum">      82 </span><span class="lineNoCov">          0 :     void flush()</span>
+<span class="lineNum">      83 </span>            :     {
+<span class="lineNum">      84 </span><span class="lineNoCov">          0 :         for( DataCIter i = _cache.begin(); i != _cache.end(); ++i )</span>
+<span class="lineNum">      85 </span>            :         {
+<span class="lineNum">      86 </span><span class="lineNoCov">          0 :             co::Buffer* buffer = *i;</span>
+<span class="lineNum">      87 </span>            :             //LBASSERTINFO( buffer-&gt;isFree(), *buffer );
+<span class="lineNum">      88 </span><span class="lineNoCov">          0 :             delete buffer;</span>
+<span class="lineNum">      89 </span>            :         }
+<span class="lineNum">      90 </span><span class="lineNoCov">          0 :         LBASSERTINFO( size_t( _free ) == _cache.size(),</span>
+<span class="lineNum">      91 </span>            :                       size_t( _free ) &lt;&lt; &quot; != &quot; &lt;&lt; _cache.size() );
+<span class="lineNum">      92 </span>            : 
+<span class="lineNum">      93 </span><span class="lineNoCov">          0 :         _cache.clear();</span>
+<span class="lineNum">      94 </span><span class="lineNoCov">          0 :         _cache.push_back( new co::Buffer( this ));</span>
+<span class="lineNum">      95 </span><span class="lineNoCov">          0 :         _free = 1;</span>
+<span class="lineNum">      96 </span><span class="lineNoCov">          0 :         _maxFree = _minFree;</span>
+<span class="lineNum">      97 </span><span class="lineNoCov">          0 :         _position = _cache.begin();</span>
+<a name="98"><span class="lineNum">      98 </span><span class="lineNoCov">          0 :     }</span></a>
+<span class="lineNum">      99 </span>            : 
+<span class="lineNum">     100 </span><span class="lineNoCov">          0 :     BufferPtr newBuffer()</span>
+<span class="lineNum">     101 </span>            :     {
+<span class="lineNum">     102 </span><span class="lineNoCov">          0 :         const uint32_t cacheSize = uint32_t( _cache.size( ));</span>
+<span class="lineNum">     103 </span><span class="lineNoCov">          0 :         LBASSERTINFO( size_t( _free ) &lt;= cacheSize,</span>
+<span class="lineNum">     104 </span>            :                       size_t( _free ) &lt;&lt; &quot; &gt; &quot; &lt;&lt; cacheSize );
+<span class="lineNum">     105 </span>            : 
+<span class="lineNum">     106 </span><span class="lineNoCov">          0 :         if( _free &gt; 0 )</span>
+<span class="lineNum">     107 </span>            :         {
+<span class="lineNum">     108 </span><span class="lineNoCov">          0 :             LBASSERT( cacheSize &gt; 0 );</span>
+<span class="lineNum">     109 </span>            : 
+<span class="lineNum">     110 </span><span class="lineNoCov">          0 :             const DataCIter end = _position;</span>
+<span class="lineNum">     111 </span><span class="lineNoCov">          0 :             DataCIter&amp; i = _position;</span>
+<span class="lineNum">     112 </span>            : 
+<span class="lineNum">     113 </span><span class="lineNoCov">          0 :             for( ++i; i != end; ++i )</span>
+<span class="lineNum">     114 </span>            :             {
+<span class="lineNum">     115 </span><span class="lineNoCov">          0 :                 if( i == _cache.end( ))</span>
+<span class="lineNum">     116 </span><span class="lineNoCov">          0 :                     i = _cache.begin();</span>
+<span class="lineNum">     117 </span>            : #ifdef PROFILE
+<span class="lineNum">     118 </span>            :                 ++_lookups;
+<span class="lineNum">     119 </span>            : #endif
+<span class="lineNum">     120 </span><span class="lineNoCov">          0 :                 co::Buffer* buffer = *i;</span>
+<span class="lineNum">     121 </span><span class="lineNoCov">          0 :                 if( !buffer-&gt;isFree( ))</span>
+<span class="lineNum">     122 </span><span class="lineNoCov">          0 :                     continue;</span>
+<span class="lineNum">     123 </span>            : 
+<span class="lineNum">     124 </span>            : #ifdef PROFILE
+<span class="lineNum">     125 </span>            :                 const long hits = ++_hits;
+<span class="lineNum">     126 </span>            :                 if( (hits%1000) == 0 )
+<span class="lineNum">     127 </span>            :                 {
+<span class="lineNum">     128 </span>            :                     size_t size = 0;
+<span class="lineNum">     129 </span>            :                     for( DataCIter j = _cache.begin(); j != _cache.end(); ++j )
+<span class="lineNum">     130 </span>            :                             size += (*j)-&gt;getMaxSize();
+<span class="lineNum">     131 </span>            : 
+<span class="lineNum">     132 </span>            :                     LBINFO &lt;&lt; _hits &lt;&lt; &quot;/&quot; &lt;&lt; _hits + _misses &lt;&lt; &quot; hits, &quot;
+<span class="lineNum">     133 </span>            :                            &lt;&lt; _lookups &lt;&lt; &quot; lookups, &quot; &lt;&lt; _free &lt;&lt; &quot; of &quot;
+<span class="lineNum">     134 </span>            :                            &lt;&lt; _cache.size() &lt;&lt; &quot; buffers free (min &quot; &lt;&lt; _minFree
+<span class="lineNum">     135 </span>            :                            &lt;&lt; &quot; max &quot; &lt;&lt; _maxFree &lt;&lt; &quot;), &quot; &lt;&lt; _allocs
+<span class="lineNum">     136 </span>            :                            &lt;&lt; &quot; allocs, &quot; &lt;&lt; _frees &lt;&lt; &quot; frees, &quot;
+<span class="lineNum">     137 </span>            :                            &lt;&lt; size / 1024 &lt;&lt; &quot;KB&quot; &lt;&lt; std::endl;
+<span class="lineNum">     138 </span>            :                 }
+<span class="lineNum">     139 </span>            : #endif
+<span class="lineNum">     140 </span><span class="lineNoCov">          0 :                 --_free;</span>
+<span class="lineNum">     141 </span><span class="lineNoCov">          0 :                 buffer-&gt;setUsed();</span>
+<span class="lineNum">     142 </span><span class="lineNoCov">          0 :                 return buffer;</span>
+<span class="lineNum">     143 </span>            :             }
+<span class="lineNum">     144 </span>            :         }
+<span class="lineNum">     145 </span>            : 
+<span class="lineNum">     146 </span><span class="lineNoCov">          0 :         const uint32_t add = (cacheSize &gt;&gt; 3) + 1;</span>
+<span class="lineNum">     147 </span><span class="lineNoCov">          0 :         for( size_t j = 0; j &lt; add; ++j )</span>
+<span class="lineNum">     148 </span><span class="lineNoCov">          0 :             _cache.push_back( new co::Buffer( this ));</span>
+<span class="lineNum">     149 </span>            : 
+<span class="lineNum">     150 </span><span class="lineNoCov">          0 :         _free += add - 1;</span>
+<span class="lineNum">     151 </span><span class="lineNoCov">          0 :         const int32_t num = int32_t( _cache.size() &gt;&gt; _maxFreeShift );</span>
+<span class="lineNum">     152 </span><span class="lineNoCov">          0 :         _maxFree = LB_MAX( _minFree, num );</span>
+<span class="lineNum">     153 </span><span class="lineNoCov">          0 :         _position = _cache.begin();</span>
+<span class="lineNum">     154 </span>            : 
+<span class="lineNum">     155 </span>            : #ifdef PROFILE
+<span class="lineNum">     156 </span>            :         ++_misses;
+<span class="lineNum">     157 </span>            :         _allocs += add;
+<span class="lineNum">     158 </span>            : #endif
+<span class="lineNum">     159 </span><span class="lineNoCov">          0 :         _cache.back()-&gt;setUsed();</span>
+<span class="lineNum">     160 </span><span class="lineNoCov">          0 :         return _cache.back();</span>
+<a name="161"><span class="lineNum">     161 </span>            :     }</a>
+<span class="lineNum">     162 </span>            : 
+<span class="lineNum">     163 </span><span class="lineNoCov">          0 :     void compact()</span>
+<span class="lineNum">     164 </span>            :     {
+<span class="lineNum">     165 </span><span class="lineNoCov">          0 :         if( _free &lt;= _maxFree )</span>
+<span class="lineNum">     166 </span><span class="lineNoCov">          0 :             return;</span>
+<span class="lineNum">     167 </span>            : 
+<span class="lineNum">     168 </span><span class="lineNoCov">          0 :         const int32_t tgt = _maxFree &gt;&gt; _targetShift;</span>
+<span class="lineNum">     169 </span><span class="lineNoCov">          0 :         const int32_t target = LB_MAX( tgt, _minFree );</span>
+<span class="lineNum">     170 </span><span class="lineNoCov">          0 :         LBASSERT( target &gt; 0 );</span>
+<span class="lineNum">     171 </span>            : 
+<span class="lineNum">     172 </span><span class="lineNoCov">          0 :         Data::iterator i = _cache.begin();</span>
+<span class="lineNum">     173 </span><span class="lineNoCov">          0 :         while( i != _cache.end( ))</span>
+<span class="lineNum">     174 </span>            :         {
+<span class="lineNum">     175 </span><span class="lineNoCov">          0 :             const co::Buffer* buffer = *i;</span>
+<span class="lineNum">     176 </span><span class="lineNoCov">          0 :             if( buffer-&gt;isFree( ))</span>
+<span class="lineNum">     177 </span>            :             {
+<span class="lineNum">     178 </span><span class="lineNoCov">          0 :                 LBASSERT( _free &gt; 0 );</span>
+<span class="lineNum">     179 </span>            : #  ifdef PROFILE
+<span class="lineNum">     180 </span>            :                 ++_frees;
+<span class="lineNum">     181 </span>            : #  endif
+<span class="lineNum">     182 </span><span class="lineNoCov">          0 :                 i = _cache.erase( i );</span>
+<span class="lineNum">     183 </span><span class="lineNoCov">          0 :                 delete buffer;</span>
+<span class="lineNum">     184 </span>            : 
+<span class="lineNum">     185 </span><span class="lineNoCov">          0 :                 if( --_free &lt;= target )</span>
+<span class="lineNum">     186 </span><span class="lineNoCov">          0 :                     break;</span>
+<span class="lineNum">     187 </span>            :             }
+<span class="lineNum">     188 </span>            :             else
+<span class="lineNum">     189 </span><span class="lineNoCov">          0 :                 ++i;</span>
+<span class="lineNum">     190 </span>            :         }
+<span class="lineNum">     191 </span>            : 
+<span class="lineNum">     192 </span><span class="lineNoCov">          0 :         const int32_t num = int32_t( _cache.size() &gt;&gt; _maxFreeShift );</span>
+<span class="lineNum">     193 </span><span class="lineNoCov">          0 :         _maxFree = LB_MAX( _minFree, num );</span>
+<span class="lineNum">     194 </span><span class="lineNoCov">          0 :         _position = (i == _cache.end( )) ? _cache.begin() : i;</span>
+<span class="lineNum">     195 </span>            :     }
+<span class="lineNum">     196 </span>            : 
+<span class="lineNum">     197 </span>            : private:
+<span class="lineNum">     198 </span>            :     friend std::ostream&amp; co::operator &lt;&lt; (std::ostream&amp;,const co::BufferCache&amp;);
+<span class="lineNum">     199 </span>            : 
+<span class="lineNum">     200 </span>            :     Data _cache;
+<span class="lineNum">     201 </span>            :     DataCIter _position; //!&lt; Last lookup position
+<span class="lineNum">     202 </span>            :     lunchbox::a_int32_t _free; //!&lt; The current number of free items
+<span class="lineNum">     203 </span>            : 
+<span class="lineNum">     204 </span>            :     const int32_t _minFree;
+<a name="205"><span class="lineNum">     205 </span>            :     int32_t _maxFree; //!&lt; The maximum number of free items</a>
+<span class="lineNum">     206 </span>            : 
+<span class="lineNum">     207 </span><span class="lineNoCov">          0 :     virtual void notifyFree( co::Buffer* )</span>
+<span class="lineNum">     208 </span>            :     {
+<span class="lineNum">     209 </span><span class="lineNoCov">          0 :         ++_free;</span>
+<span class="lineNum">     210 </span><span class="lineNoCov">          0 :     }</span>
+<span class="lineNum">     211 </span>            : };
+<a name="212"><span class="lineNum">     212 </span>            : }</a>
+<span class="lineNum">     213 </span>            : 
+<span class="lineNum">     214 </span><span class="lineNoCov">          0 : BufferCache::BufferCache( const int32_t minFree )</span>
+<span class="lineNum">     215 </span><span class="lineNoCov">          0 :         : _impl( new detail::BufferCache( minFree ))</span>
+<a name="216"><span class="lineNum">     216 </span><span class="lineNoCov">          0 : {}</span></a>
+<span class="lineNum">     217 </span>            : 
+<span class="lineNum">     218 </span><span class="lineNoCov">          0 : BufferCache::~BufferCache()</span>
+<span class="lineNum">     219 </span>            : {
+<span class="lineNum">     220 </span><span class="lineNoCov">          0 :     flush();</span>
+<span class="lineNum">     221 </span><span class="lineNoCov">          0 :     delete _impl;</span>
+<a name="222"><span class="lineNum">     222 </span><span class="lineNoCov">          0 : }</span></a>
+<span class="lineNum">     223 </span>            : 
+<span class="lineNum">     224 </span><span class="lineNoCov">          0 : void BufferCache::flush()</span>
+<span class="lineNum">     225 </span>            : {
+<span class="lineNum">     226 </span><span class="lineNoCov">          0 :     _impl-&gt;flush();</span>
+<a name="227"><span class="lineNum">     227 </span><span class="lineNoCov">          0 : }</span></a>
+<span class="lineNum">     228 </span>            : 
+<span class="lineNum">     229 </span><span class="lineNoCov">          0 : BufferPtr BufferCache::alloc( const uint64_t size )</span>
+<span class="lineNum">     230 </span>            : {
+<span class="lineNum">     231 </span><span class="lineNoCov">          0 :     LB_TS_SCOPED( _thread );</span>
+<span class="lineNum">     232 </span><span class="lineNoCov">          0 :     LBASSERTINFO( size &gt;= COMMAND_ALLOCSIZE, size );</span>
+<span class="lineNum">     233 </span><span class="lineNoCov">          0 :     LBASSERTINFO( size &lt; LB_BIT48,</span>
+<span class="lineNum">     234 </span>            :                   &quot;Out-of-sync network stream: buffer size &quot; &lt;&lt; size &lt;&lt; &quot;?&quot; );
+<span class="lineNum">     235 </span>            : 
+<span class="lineNum">     236 </span><span class="lineNoCov">          0 :     BufferPtr buffer = _impl-&gt;newBuffer();</span>
+<span class="lineNum">     237 </span><span class="lineNoCov">          0 :     LBASSERT( buffer-&gt;getRefCount() == 1 );</span>
+<span class="lineNum">     238 </span>            : 
+<span class="lineNum">     239 </span><span class="lineNoCov">          0 :     buffer-&gt;reserve( size );</span>
+<span class="lineNum">     240 </span><span class="lineNoCov">          0 :     buffer-&gt;resize( 0 );</span>
+<span class="lineNum">     241 </span><span class="lineNoCov">          0 :     return buffer;</span>
+<a name="242"><span class="lineNum">     242 </span>            : }</a>
+<span class="lineNum">     243 </span>            : 
+<span class="lineNum">     244 </span><span class="lineNoCov">          0 : void BufferCache::compact()</span>
+<span class="lineNum">     245 </span>            : {
+<span class="lineNum">     246 </span><span class="lineNoCov">          0 :     _impl-&gt;compact();</span>
+<a name="247"><span class="lineNum">     247 </span><span class="lineNoCov">          0 : }</span></a>
+<span class="lineNum">     248 </span>            : 
+<span class="lineNum">     249 </span><span class="lineNoCov">          0 : std::ostream&amp; operator &lt;&lt; ( std::ostream&amp; os, const BufferCache&amp; cache )</span>
+<span class="lineNum">     250 </span>            : {
+<span class="lineNum">     251 </span><span class="lineNoCov">          0 :     const Data&amp; buffers = cache._impl-&gt;_cache;</span>
+<span class="lineNum">     252 </span><span class="lineNoCov">          0 :     os &lt;&lt; lunchbox::disableFlush &lt;&lt; &quot;Cache has &quot;</span>
+<span class="lineNum">     253 </span><span class="lineNoCov">          0 :        &lt;&lt; buffers.size() - cache._impl-&gt;_free &lt;&lt; &quot; used buffers:&quot; &lt;&lt; std::endl</span>
+<span class="lineNum">     254 </span><span class="lineNoCov">          0 :        &lt;&lt; lunchbox::indent &lt;&lt; lunchbox::disableHeader;</span>
+<span class="lineNum">     255 </span>            : 
+<span class="lineNum">     256 </span><span class="lineNoCov">          0 :     for( DataCIter i = buffers.begin(); i != buffers.end(); ++i )</span>
+<span class="lineNum">     257 </span>            :     {
+<span class="lineNum">     258 </span><span class="lineNoCov">          0 :         Buffer* buffer = *i;</span>
+<span class="lineNum">     259 </span><span class="lineNoCov">          0 :         if( !buffer-&gt;isFree( ))</span>
+<span class="lineNum">     260 </span><span class="lineNoCov">          0 :             os &lt;&lt; ICommand( 0, 0, buffer, false /*swap*/ ) &lt;&lt; std::endl;</span>
+<span class="lineNum">     261 </span>            :     }
+<span class="lineNum">     262 </span><span class="lineNoCov">          0 :     return os &lt;&lt; lunchbox::enableHeader &lt;&lt; lunchbox::exdent</span>
+<span class="lineNum">     263 </span><span class="lineNoCov">          0 :               &lt;&lt; lunchbox::enableFlush;</span>
+<a name="264"><span class="lineNum">     264 </span>            : }</a>
+<span class="lineNum">     265 </span>            : 
+<span class="lineNum">     266 </span><span class="lineCov">         60 : }</span>
+</pre>
+      </td>
+    </tr>
+  </table>
+  <br>
+
+  <table width="100%" border=0 cellspacing=0 cellpadding=0>
+    <tr><td class="ruler"><img src="../../glass.png" width=3 height=3 alt=""></td></tr>
+    <tr><td class="versionInfo">Generated by: <a href="http://ltp.sourceforge.net/coverage/lcov.php" target="_parent">LCOV version 1.11</a></td></tr>
+  </table>
+  <br>
+
+</body>
+</html>
