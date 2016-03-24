@@ -1,4 +1,4 @@
 var searchData=
 [
-  ['updatemapping',['updateMapping',['../classbrion_1_1_compartment_report.html#a6ee6420e43db4ac5319a86b074d94ba4',1,'brion::CompartmentReport::updateMapping()'],['../classbrion_1_1_compartment_report_plugin.html#a979a0f56cfe3fc560eadc776dd865910',1,'brion::CompartmentReportPlugin::updateMapping()']]]
+  ['target',['Target',['../classbrion_1_1_target.html#a967607b68d715c7191d56cf2d19ad6ca',1,'brion::Target::Target(const Target &amp;from)'],['../classbrion_1_1_target.html#a2c1de15976a2e1f569b0083bb56d0480',1,'brion::Target::Target(const std::string &amp;source)']]]
 ];

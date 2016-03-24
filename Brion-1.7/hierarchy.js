@@ -2,7 +2,7 @@ var hierarchy =
 [
     [ "noncopyable", null, [
       [ "brain::Circuit", "classbrain_1_1_circuit.html", null ],
-      [ "brain::Morphology", "classbrain_1_1_morphology.html", null ],
+      [ "brain::neuron::Morphology", "classbrain_1_1neuron_1_1_morphology.html", null ],
       [ "brion::BlueConfig", "classbrion_1_1_blue_config.html", null ],
       [ "brion::Circuit", "classbrion_1_1_circuit.html", null ],
       [ "brion::CompartmentReport", "classbrion_1_1_compartment_report.html", null ],
@@ -15,6 +15,8 @@ var hierarchy =
       [ "brion::Synapse", "classbrion_1_1_synapse.html", null ],
       [ "brion::SynapseSummary", "classbrion_1_1_synapse_summary.html", null ]
     ] ],
+    [ "brain::neuron::Section", "classbrain_1_1neuron_1_1_section.html", null ],
+    [ "brain::neuron::Soma", "classbrain_1_1neuron_1_1_soma.html", null ],
     [ "brain::Version", "classbrain_1_1_version.html", null ],
     [ "brion::PluginInitData", "classbrion_1_1_plugin_init_data.html", [
       [ "brion::CompartmentReportInitData", "classbrion_1_1_compartment_report_init_data.html", null ],
