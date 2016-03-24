@@ -5,6 +5,7 @@ var NAVTREE =
     [ "Features", "index.html#Features", null ],
     [ "Building", "index.html#Building", null ],
     [ "Changelog", "_changelog.html", null ],
+    [ "Compartment report writing from MPI applications", "md__gpfs_bbp_8cscs_8ch_home_chevtche__brion_doc_feature_compartment_report_m_p_i.html", null ],
     [ "Deprecated List", "deprecated.html", null ],
     [ "Namespaces", null, [
       [ "Namespace List", "namespaces.html", "namespaces" ],
@@ -20,8 +21,8 @@ var NAVTREE =
       [ "Class Index", "classes.html", null ],
       [ "Class Hierarchy", "hierarchy.html", "hierarchy" ],
       [ "Class Members", "functions.html", [
-        [ "All", "functions.html", null ],
-        [ "Functions", "functions_func.html", null ],
+        [ "All", "functions.html", "functions_dup" ],
+        [ "Functions", "functions_func.html", "functions_func" ],
         [ "Enumerations", "functions_enum.html", null ],
         [ "Related Functions", "functions_rela.html", null ]
       ] ]
@@ -38,8 +39,9 @@ var NAVTREE =
 
 var NAVTREEINDEX =
 [
-"_changelog.html",
-"classbrion_1_1_spike_report_plugin.html#a68b6256973a2f66bf86a42419bcf19bb"
+".html",
+"classbrion_1_1_morphology_plugin.html#a91ae737aac22e339203acfa2d563dbb0",
+"morphology_plugin_8h_source.html"
 ];
 
 var SYNCONMSG = 'click to disable panel synchronisation';

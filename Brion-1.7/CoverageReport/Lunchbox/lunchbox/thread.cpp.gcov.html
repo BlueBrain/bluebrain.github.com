@@ -1,0 +1,521 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+
+<html lang="en">
+
+<head>
+  <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+  <title>LCOV - Brion - Lunchbox/lunchbox/thread.cpp</title>
+  <link rel="stylesheet" type="text/css" href="../../gcov.css">
+</head>
+
+<body>
+
+  <table width="100%" border=0 cellspacing=0 cellpadding=0>
+    <tr><td class="title">LCOV - code coverage report</td></tr>
+    <tr><td class="ruler"><img src="../../glass.png" width=3 height=3 alt=""></td></tr>
+
+    <tr>
+      <td width="100%">
+        <table cellpadding=1 border=0 width="100%">
+          <tr>
+            <td width="10%" class="headerItem">Current view:</td>
+            <td width="35%" class="headerValue"><a href="../../index.html">top level</a> - <a href="index.html">Lunchbox/lunchbox</a> - thread.cpp<span style="font-size: 80%;"> (source / <a href="thread.cpp.func-sort-c.html">functions</a>)</span></td>
+            <td width="5%"></td>
+            <td width="15%"></td>
+            <td width="10%" class="headerCovTableHead">Hit</td>
+            <td width="10%" class="headerCovTableHead">Total</td>
+            <td width="15%" class="headerCovTableHead">Coverage</td>
+          </tr>
+          <tr>
+            <td class="headerItem">Test:</td>
+            <td class="headerValue">Brion</td>
+            <td></td>
+            <td class="headerItem">Lines:</td>
+            <td class="headerCovTableEntry">6</td>
+            <td class="headerCovTableEntry">157</td>
+            <td class="headerCovTableEntryLo">3.8 %</td>
+          </tr>
+          <tr>
+            <td class="headerItem">Date:</td>
+            <td class="headerValue">2016-03-24 16:18:21</td>
+            <td></td>
+            <td class="headerItem">Functions:</td>
+            <td class="headerCovTableEntry">3</td>
+            <td class="headerCovTableEntry">25</td>
+            <td class="headerCovTableEntryLo">12.0 %</td>
+          </tr>
+          <tr><td><img src="../../glass.png" width=3 height=3 alt=""></td></tr>
+        </table>
+      </td>
+    </tr>
+
+    <tr><td class="ruler"><img src="../../glass.png" width=3 height=3 alt=""></td></tr>
+  </table>
+
+  <table cellpadding=0 cellspacing=0 border=0>
+    <tr>
+      <td><br></td>
+    </tr>
+    <tr>
+      <td>
+<pre class="sourceHeading">          Line data    Source code</pre>
+<pre class="source">
+<a name="1"><span class="lineNum">       1 </span>            : </a>
+<span class="lineNum">       2 </span>            : /* Copyright (c) 2005-2014, Stefan Eilemann &lt;eile@equalizergraphics.com&gt;
+<span class="lineNum">       3 </span>            :  *                    2012, Marwan Abdellah &lt;marwan.abdellah@epfl.ch&gt;
+<span class="lineNum">       4 </span>            :  *               2011-2012, Daniel Nachbaur &lt;danielnachbaur@gmail.com&gt;
+<span class="lineNum">       5 </span>            :  *
+<span class="lineNum">       6 </span>            :  * This library is free software; you can redistribute it and/or modify it under
+<span class="lineNum">       7 </span>            :  * the terms of the GNU Lesser General Public License version 2.1 as published
+<span class="lineNum">       8 </span>            :  * by the Free Software Foundation.
+<span class="lineNum">       9 </span>            :  *
+<span class="lineNum">      10 </span>            :  * This library is distributed in the hope that it will be useful, but WITHOUT
+<span class="lineNum">      11 </span>            :  * ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS
+<span class="lineNum">      12 </span>            :  * FOR A PARTICULAR PURPOSE.  See the GNU Lesser General Public License for more
+<span class="lineNum">      13 </span>            :  * details.
+<span class="lineNum">      14 </span>            :  *
+<span class="lineNum">      15 </span>            :  * You should have received a copy of the GNU Lesser General Public License
+<span class="lineNum">      16 </span>            :  * along with this library; if not, write to the Free Software Foundation, Inc.,
+<span class="lineNum">      17 </span>            :  * 51 Franklin Street, Fifth Floor, Boston, MA 02110-1301 USA.
+<span class="lineNum">      18 </span>            :  */
+<span class="lineNum">      19 </span>            : 
+<span class="lineNum">      20 </span>            : #include &quot;thread.h&quot;
+<span class="lineNum">      21 </span>            : 
+<span class="lineNum">      22 </span>            : #include &quot;os.h&quot;
+<span class="lineNum">      23 </span>            : #include &quot;debug.h&quot;
+<span class="lineNum">      24 </span>            : #include &quot;lock.h&quot;
+<span class="lineNum">      25 </span>            : #include &quot;log.h&quot;
+<span class="lineNum">      26 </span>            : #include &quot;monitor.h&quot;
+<span class="lineNum">      27 </span>            : #include &quot;rng.h&quot;
+<span class="lineNum">      28 </span>            : #include &quot;scopedMutex.h&quot;
+<span class="lineNum">      29 </span>            : #include &quot;sleep.h&quot;
+<span class="lineNum">      30 </span>            : #include &quot;spinLock.h&quot;
+<span class="lineNum">      31 </span>            : 
+<span class="lineNum">      32 </span>            : #include &lt;boost/lexical_cast.hpp&gt;
+<span class="lineNum">      33 </span>            : #include &lt;errno.h&gt;
+<span class="lineNum">      34 </span>            : #include &lt;pthread.h&gt;
+<span class="lineNum">      35 </span>            : #include &lt;algorithm&gt;
+<span class="lineNum">      36 </span>            : #include &lt;map&gt;
+<span class="lineNum">      37 </span>            : #include &lt;set&gt;
+<span class="lineNum">      38 </span>            : 
+<span class="lineNum">      39 </span>            : // Experimental Win32 thread pinning
+<span class="lineNum">      40 </span>            : #ifdef _WIN32
+<span class="lineNum">      41 </span>            : //#  define LB_WIN32_THREAD_AFFINITY
+<span class="lineNum">      42 </span>            : #  pragma message (&quot;Thread affinity not supported on WIN32&quot;)
+<span class="lineNum">      43 </span>            : #endif
+<span class="lineNum">      44 </span>            : 
+<span class="lineNum">      45 </span>            : #ifdef __linux__
+<span class="lineNum">      46 </span>            : #  include &lt;signal.h&gt;
+<span class="lineNum">      47 </span>            : #  include &lt;sys/prctl.h&gt;
+<span class="lineNum">      48 </span>            : #endif
+<span class="lineNum">      49 </span>            : 
+<span class="lineNum">      50 </span>            : #ifdef LUNCHBOX_USE_HWLOC
+<span class="lineNum">      51 </span>            : #  include &lt;hwloc.h&gt;
+<span class="lineNum">      52 </span>            : #endif
+<span class="lineNum">      53 </span>            : 
+<span class="lineNum">      54 </span>            : #include &quot;detail/threadID.h&quot;
+<span class="lineNum">      55 </span>            : 
+<span class="lineNum">      56 </span>            : namespace lunchbox
+<span class="lineNum">      57 </span>            : {
+<a name="58"><span class="lineNum">      58 </span>            : namespace</a>
+<span class="lineNum">      59 </span>            : {
+<span class="lineNum">      60 </span><span class="lineCov">         22 : a_int32_t _threadIDs;</span>
+<span class="lineNum">      61 </span>            : 
+<span class="lineNum">      62 </span>            : enum ThreadState //!&lt; The current state of a thread.
+<span class="lineNum">      63 </span>            : {
+<span class="lineNum">      64 </span>            :     STATE_STOPPED,
+<span class="lineNum">      65 </span>            :     STATE_STARTING, // start() in progress
+<span class="lineNum">      66 </span>            :     STATE_RUNNING,
+<span class="lineNum">      67 </span>            :     STATE_STOPPING  // child no longer active, join() not yet called
+<span class="lineNum">      68 </span>            : };
+<span class="lineNum">      69 </span>            : 
+<span class="lineNum">      70 </span>            : #ifdef __linux__
+<a name="71"><span class="lineNum">      71 </span>            : typedef std::set&lt; ThreadID &gt; ThreadIDSet;</a>
+<span class="lineNum">      72 </span><span class="lineCov">         22 : static Lockable&lt; ThreadIDSet, SpinLock &gt; _threads;</span>
+<span class="lineNum">      73 </span><span class="lineNoCov">          0 : void _sigUserHandler( int, siginfo_t*, void* )</span>
+<span class="lineNum">      74 </span>            : {
+<span class="lineNum">      75 </span><span class="lineNoCov">          0 :     LBERROR &lt;&lt; &quot;:&quot; &lt;&lt; backtrace &lt;&lt; std::endl;</span>
+<span class="lineNum">      76 </span><span class="lineNoCov">          0 : }</span>
+<span class="lineNum">      77 </span>            : #endif
+<span class="lineNum">      78 </span>            : 
+<span class="lineNum">      79 </span>            : }
+<span class="lineNum">      80 </span>            : 
+<a name="81"><span class="lineNum">      81 </span>            : namespace detail</a>
+<span class="lineNum">      82 </span>            : {
+<span class="lineNum">      83 </span><span class="lineNoCov">          0 : class Thread</span>
+<a name="84"><span class="lineNum">      84 </span>            : {</a>
+<span class="lineNum">      85 </span>            : public:
+<span class="lineNum">      86 </span><span class="lineNoCov">          0 :     Thread() : state( STATE_STOPPED ), index( ++_threadIDs ) {}</span>
+<span class="lineNum">      87 </span>            : 
+<span class="lineNum">      88 </span>            :     lunchbox::ThreadID id;
+<span class="lineNum">      89 </span>            :     Monitor&lt; ThreadState &gt; state;
+<span class="lineNum">      90 </span>            :     int32_t index;
+<span class="lineNum">      91 </span>            : };
+<a name="92"><span class="lineNum">      92 </span>            : }</a>
+<span class="lineNum">      93 </span>            : 
+<span class="lineNum">      94 </span><span class="lineNoCov">          0 : Thread::Thread()</span>
+<span class="lineNum">      95 </span><span class="lineNoCov">          0 :     : _impl( new detail::Thread )</span>
+<span class="lineNum">      96 </span>            : {
+<a name="97"><span class="lineNum">      97 </span><span class="lineNoCov">          0 : }</span></a>
+<span class="lineNum">      98 </span>            : 
+<span class="lineNum">      99 </span><span class="lineNoCov">          0 : Thread::Thread( const Thread&amp; )</span>
+<span class="lineNum">     100 </span><span class="lineNoCov">          0 :     : _impl( new detail::Thread )</span>
+<span class="lineNum">     101 </span>            : {
+<a name="102"><span class="lineNum">     102 </span><span class="lineNoCov">          0 : }</span></a>
+<span class="lineNum">     103 </span>            : 
+<span class="lineNum">     104 </span><span class="lineNoCov">          0 : Thread::~Thread()</span>
+<span class="lineNum">     105 </span>            : {
+<span class="lineNum">     106 </span><span class="lineNoCov">          0 :     delete _impl;</span>
+<a name="107"><span class="lineNum">     107 </span><span class="lineNoCov">          0 : }</span></a>
+<span class="lineNum">     108 </span>            : 
+<span class="lineNum">     109 </span><span class="lineNoCov">          0 : bool Thread::isStopped() const</span>
+<span class="lineNum">     110 </span>            : {
+<span class="lineNum">     111 </span><span class="lineNoCov">          0 :     return ( _impl-&gt;state == STATE_STOPPED );</span>
+<a name="112"><span class="lineNum">     112 </span>            : }</a>
+<span class="lineNum">     113 </span>            : 
+<span class="lineNum">     114 </span><span class="lineNoCov">          0 : bool Thread::isRunning() const</span>
+<span class="lineNum">     115 </span>            : {
+<span class="lineNum">     116 </span><span class="lineNoCov">          0 :     return ( _impl-&gt;state == STATE_RUNNING );</span>
+<a name="117"><span class="lineNum">     117 </span>            : }</a>
+<span class="lineNum">     118 </span>            : 
+<span class="lineNum">     119 </span><span class="lineNoCov">          0 : void* Thread::runChild( void* arg )</span>
+<span class="lineNum">     120 </span>            : {
+<span class="lineNum">     121 </span><span class="lineNoCov">          0 :     Thread* thread = static_cast&lt;Thread*&gt;(arg);</span>
+<span class="lineNum">     122 </span><span class="lineNoCov">          0 :     thread-&gt;_runChild();</span>
+<span class="lineNum">     123 </span><span class="lineNoCov">          0 :     return 0; // not reached</span>
+<a name="124"><span class="lineNum">     124 </span>            : }</a>
+<span class="lineNum">     125 </span>            : 
+<span class="lineNum">     126 </span><span class="lineNoCov">          0 : void Thread::_runChild()</span>
+<span class="lineNum">     127 </span>            : {
+<span class="lineNum">     128 </span><span class="lineNoCov">          0 :     setName( boost::lexical_cast&lt; std::string &gt;( _impl-&gt;index ));</span>
+<span class="lineNum">     129 </span><span class="lineNoCov">          0 :     _impl-&gt;id._impl-&gt;pthread = pthread_self();</span>
+<span class="lineNum">     130 </span>            : #ifdef __linux__
+<span class="lineNum">     131 </span>            :     {
+<span class="lineNum">     132 </span><span class="lineNoCov">          0 :         ScopedFastWrite mutex( _threads );</span>
+<span class="lineNum">     133 </span><span class="lineNoCov">          0 :         _threads-&gt;insert( _impl-&gt;id );</span>
+<span class="lineNum">     134 </span>            :     }
+<span class="lineNum">     135 </span>            :     // install signal handler to dump thread state for debugging
+<span class="lineNum">     136 </span>            :     struct sigaction sa;
+<span class="lineNum">     137 </span><span class="lineNoCov">          0 :     ::sigfillset( &amp;sa.sa_mask );</span>
+<span class="lineNum">     138 </span><span class="lineNoCov">          0 :     sa.sa_flags = SA_SIGINFO;</span>
+<span class="lineNum">     139 </span><span class="lineNoCov">          0 :     sa.sa_sigaction = _sigUserHandler;</span>
+<span class="lineNum">     140 </span><span class="lineNoCov">          0 :     ::sigaction( SIGUSR1, &amp;sa, 0 );</span>
+<span class="lineNum">     141 </span>            : #endif
+<span class="lineNum">     142 </span>            : 
+<span class="lineNum">     143 </span><span class="lineNoCov">          0 :     if( !init( ))</span>
+<span class="lineNum">     144 </span>            :     {
+<span class="lineNum">     145 </span><span class="lineNoCov">          0 :         LBWARN &lt;&lt; &quot;Thread &quot; &lt;&lt; className( this ) &lt;&lt; &quot; failed to initialize&quot;</span>
+<span class="lineNum">     146 </span><span class="lineNoCov">          0 :                &lt;&lt; std::endl;</span>
+<span class="lineNum">     147 </span><span class="lineNoCov">          0 :         _impl-&gt;state = STATE_STOPPED;</span>
+<span class="lineNum">     148 </span><span class="lineNoCov">          0 :         pthread_exit( 0 );</span>
+<span class="lineNum">     149 </span>            :         LBUNREACHABLE;
+<span class="lineNum">     150 </span>            :     }
+<span class="lineNum">     151 </span>            : 
+<span class="lineNum">     152 </span><span class="lineNoCov">          0 :     _impl-&gt;state = STATE_RUNNING;</span>
+<span class="lineNum">     153 </span><span class="lineNoCov">          0 :     LBDEBUG &lt;&lt; &quot;Thread #&quot; &lt;&lt; _impl-&gt;index &lt;&lt; &quot; type &quot; &lt;&lt; className( *this )</span>
+<span class="lineNum">     154 </span><span class="lineNoCov">          0 :            &lt;&lt; &quot; successfully initialized&quot; &lt;&lt; std::endl;</span>
+<span class="lineNum">     155 </span>            : 
+<span class="lineNum">     156 </span><span class="lineNoCov">          0 :     run();</span>
+<span class="lineNum">     157 </span><span class="lineNoCov">          0 :     LBVERB &lt;&lt; &quot;Thread &quot; &lt;&lt; className( this ) &lt;&lt; &quot; finished&quot; &lt;&lt; std::endl;</span>
+<span class="lineNum">     158 </span>            : #ifdef __linux__
+<span class="lineNum">     159 </span>            :     {
+<span class="lineNum">     160 </span><span class="lineNoCov">          0 :         ScopedFastWrite mutex( _threads );</span>
+<span class="lineNum">     161 </span><span class="lineNoCov">          0 :         _threads-&gt;erase( _impl-&gt;id );</span>
+<span class="lineNum">     162 </span>            :     }
+<span class="lineNum">     163 </span>            : #endif
+<span class="lineNum">     164 </span><span class="lineNoCov">          0 :     this-&gt;exit();</span>
+<span class="lineNum">     165 </span>            : 
+<span class="lineNum">     166 </span><span class="lineNoCov">          0 :     LBUNREACHABLE;</span>
+<a name="167"><span class="lineNum">     167 </span><span class="lineNoCov">          0 : }</span></a>
+<span class="lineNum">     168 </span>            : 
+<span class="lineNum">     169 </span><span class="lineNoCov">          0 : bool Thread::start()</span>
+<span class="lineNum">     170 </span>            : {
+<span class="lineNum">     171 </span><span class="lineNoCov">          0 :     if( _impl-&gt;state != STATE_STOPPED )</span>
+<span class="lineNum">     172 </span><span class="lineNoCov">          0 :         return false;</span>
+<span class="lineNum">     173 </span>            : 
+<span class="lineNum">     174 </span><span class="lineNoCov">          0 :     _impl-&gt;state = STATE_STARTING;</span>
+<span class="lineNum">     175 </span>            : 
+<span class="lineNum">     176 </span>            :     pthread_attr_t attributes;
+<span class="lineNum">     177 </span><span class="lineNoCov">          0 :     pthread_attr_init( &amp;attributes );</span>
+<span class="lineNum">     178 </span><span class="lineNoCov">          0 :     pthread_attr_setscope( &amp;attributes, PTHREAD_SCOPE_SYSTEM );</span>
+<span class="lineNum">     179 </span>            : 
+<span class="lineNum">     180 </span><span class="lineNoCov">          0 :     int nTries = 10;</span>
+<span class="lineNum">     181 </span><span class="lineNoCov">          0 :     while( nTries-- )</span>
+<span class="lineNum">     182 </span>            :     {
+<span class="lineNum">     183 </span>            :         const int error = pthread_create( &amp;_impl-&gt;id._impl-&gt;pthread,
+<span class="lineNum">     184 </span><span class="lineNoCov">          0 :                                           &amp;attributes, runChild, this );</span>
+<span class="lineNum">     185 </span><span class="lineNoCov">          0 :         if( error == 0 ) // succeeded</span>
+<span class="lineNum">     186 </span>            :         {
+<span class="lineNum">     187 </span><span class="lineNoCov">          0 :             LBVERB &lt;&lt; &quot;Created pthread &quot; &lt;&lt; this &lt;&lt; std::endl;</span>
+<span class="lineNum">     188 </span><span class="lineNoCov">          0 :             break;</span>
+<span class="lineNum">     189 </span>            :         }
+<span class="lineNum">     190 </span><span class="lineNoCov">          0 :         if( error != EAGAIN || nTries == 0 )</span>
+<span class="lineNum">     191 </span>            :         {
+<span class="lineNum">     192 </span><span class="lineNoCov">          0 :             LBWARN &lt;&lt; &quot;Could not create thread: &quot; &lt;&lt; strerror( error )</span>
+<span class="lineNum">     193 </span><span class="lineNoCov">          0 :                    &lt;&lt; std::endl;</span>
+<span class="lineNum">     194 </span><span class="lineNoCov">          0 :             return false;</span>
+<span class="lineNum">     195 </span>            :         }
+<span class="lineNum">     196 </span><span class="lineNoCov">          0 :         sleep( 1 ); // Give EAGAIN some time to recover</span>
+<span class="lineNum">     197 </span>            :     }
+<span class="lineNum">     198 </span>            : 
+<span class="lineNum">     199 </span>            :     // avoid memleak, we don't use pthread_join
+<span class="lineNum">     200 </span><span class="lineNoCov">          0 :     pthread_detach( _impl-&gt;id._impl-&gt;pthread );</span>
+<span class="lineNum">     201 </span><span class="lineNoCov">          0 :     _impl-&gt;state.waitNE( STATE_STARTING );</span>
+<span class="lineNum">     202 </span><span class="lineNoCov">          0 :     return (_impl-&gt;state != STATE_STOPPED);</span>
+<a name="203"><span class="lineNum">     203 </span>            : }</a>
+<span class="lineNum">     204 </span>            : 
+<span class="lineNum">     205 </span><span class="lineNoCov">          0 : void Thread::exit()</span>
+<span class="lineNum">     206 </span>            : {
+<span class="lineNum">     207 </span><span class="lineNoCov">          0 :     LBASSERTINFO( isCurrent(), &quot;Thread::exit not called from child thread&quot; );</span>
+<span class="lineNum">     208 </span><span class="lineNoCov">          0 :     LBVERB &lt;&lt; &quot;Exiting thread &quot; &lt;&lt; className( this ) &lt;&lt; std::endl;</span>
+<span class="lineNum">     209 </span><span class="lineNoCov">          0 :     Log::instance().forceFlush();</span>
+<span class="lineNum">     210 </span><span class="lineNoCov">          0 :     Log::instance().exit();</span>
+<span class="lineNum">     211 </span>            : 
+<span class="lineNum">     212 </span><span class="lineNoCov">          0 :     _impl-&gt;state = STATE_STOPPING;</span>
+<span class="lineNum">     213 </span><span class="lineNoCov">          0 :     pthread_exit( 0 );</span>
+<span class="lineNum">     214 </span>            :     LBUNREACHABLE;
+<a name="215"><span class="lineNum">     215 </span>            : }</a>
+<span class="lineNum">     216 </span>            : 
+<span class="lineNum">     217 </span><span class="lineNoCov">          0 : void Thread::cancel()</span>
+<span class="lineNum">     218 </span>            : {
+<span class="lineNum">     219 </span><span class="lineNoCov">          0 :     LBASSERTINFO( !isCurrent(), &quot;Thread::cancel called from child thread&quot; );</span>
+<span class="lineNum">     220 </span>            : 
+<span class="lineNum">     221 </span><span class="lineNoCov">          0 :     LBVERB &lt;&lt; &quot;Canceling thread &quot; &lt;&lt; className( this ) &lt;&lt; std::endl;</span>
+<span class="lineNum">     222 </span><span class="lineNoCov">          0 :     _impl-&gt;state = STATE_STOPPING;</span>
+<span class="lineNum">     223 </span>            : 
+<span class="lineNum">     224 </span><span class="lineNoCov">          0 :     const int error = pthread_cancel( _impl-&gt;id._impl-&gt;pthread );</span>
+<span class="lineNum">     225 </span><span class="lineNoCov">          0 :     if( error !=  0 )</span>
+<span class="lineNum">     226 </span><span class="lineNoCov">          0 :         LBWARN &lt;&lt; &quot;Could not cancel thread: &quot; &lt;&lt; strerror( error ) &lt;&lt; std::endl;</span>
+<a name="227"><span class="lineNum">     227 </span><span class="lineNoCov">          0 : }</span></a>
+<span class="lineNum">     228 </span>            : 
+<span class="lineNum">     229 </span><span class="lineNoCov">          0 : bool Thread::join()</span>
+<span class="lineNum">     230 </span>            : {
+<span class="lineNum">     231 </span><span class="lineNoCov">          0 :     if( _impl-&gt;state == STATE_STOPPED )</span>
+<span class="lineNum">     232 </span><span class="lineNoCov">          0 :         return false;</span>
+<span class="lineNum">     233 </span><span class="lineNoCov">          0 :     if( isCurrent( )) // can't join self</span>
+<span class="lineNum">     234 </span><span class="lineNoCov">          0 :         return false;</span>
+<span class="lineNum">     235 </span>            : 
+<span class="lineNum">     236 </span><span class="lineNoCov">          0 :     _impl-&gt;state.waitNE( STATE_RUNNING );</span>
+<span class="lineNum">     237 </span><span class="lineNoCov">          0 :     _impl-&gt;state = STATE_STOPPED;</span>
+<span class="lineNum">     238 </span>            : 
+<span class="lineNum">     239 </span><span class="lineNoCov">          0 :     LBVERB &lt;&lt; &quot;Joined thread &quot; &lt;&lt; className( this ) &lt;&lt; std::endl;</span>
+<span class="lineNum">     240 </span><span class="lineNoCov">          0 :     return true;</span>
+<a name="241"><span class="lineNum">     241 </span>            : }</a>
+<span class="lineNum">     242 </span>            : 
+<span class="lineNum">     243 </span><span class="lineNoCov">          0 : bool Thread::isCurrent() const</span>
+<span class="lineNum">     244 </span>            : {
+<span class="lineNum">     245 </span><span class="lineNoCov">          0 :     return pthread_equal( pthread_self(), _impl-&gt;id._impl-&gt;pthread );</span>
+<a name="246"><span class="lineNum">     246 </span>            : }</a>
+<span class="lineNum">     247 </span>            : 
+<span class="lineNum">     248 </span><span class="lineNoCov">          0 : ThreadID Thread::getSelfThreadID()</span>
+<span class="lineNum">     249 </span>            : {
+<span class="lineNum">     250 </span><span class="lineNoCov">          0 :     ThreadID threadID;</span>
+<span class="lineNum">     251 </span><span class="lineNoCov">          0 :     threadID._impl-&gt;pthread = pthread_self();</span>
+<span class="lineNum">     252 </span><span class="lineNoCov">          0 :     return threadID;</span>
+<a name="253"><span class="lineNum">     253 </span>            : }</a>
+<span class="lineNum">     254 </span>            : 
+<span class="lineNum">     255 </span><span class="lineCov">   29422940 : void Thread::yield()</span>
+<span class="lineNum">     256 </span>            : {
+<span class="lineNum">     257 </span>            : #ifdef _MSC_VER
+<span class="lineNum">     258 </span>            :     ::Sleep( 0 ); // sleeps thread
+<span class="lineNum">     259 </span>            :     // or ::SwitchToThread() ? // switches to another waiting thread, if exists
+<span class="lineNum">     260 </span>            : #elif defined (__APPLE__)
+<span class="lineNum">     261 </span>            :     ::pthread_yield_np();
+<span class="lineNum">     262 </span>            : #else
+<span class="lineNum">     263 </span><span class="lineCov">   29422940 :     ::sched_yield();</span>
+<span class="lineNum">     264 </span>            : #endif
+<span class="lineNum">     265 </span><span class="lineCov">   38007220 : }</span>
+<span class="lineNum">     266 </span>            : 
+<span class="lineNum">     267 </span>            : #ifdef _MSC_VER
+<span class="lineNum">     268 </span>            : #  ifndef MS_VC_EXCEPTION
+<span class="lineNum">     269 </span>            : #    define MS_VC_EXCEPTION 0x406D1388
+<span class="lineNum">     270 </span>            : #  endif
+<span class="lineNum">     271 </span>            : 
+<span class="lineNum">     272 </span>            : #  pragma pack(push,8)
+<span class="lineNum">     273 </span>            : typedef struct tagTHREADNAME_INFO
+<span class="lineNum">     274 </span>            : {
+<span class="lineNum">     275 </span>            :     DWORD dwType; // Must be 0x1000.
+<span class="lineNum">     276 </span>            :     LPCSTR szName; // Pointer to name (in user addr space).
+<span class="lineNum">     277 </span>            :     DWORD dwThreadID; // Thread ID (-1=caller thread).
+<span class="lineNum">     278 </span>            :     DWORD dwFlags; // Reserved for future use, must be zero.
+<span class="lineNum">     279 </span>            : } THREADNAME_INFO;
+<span class="lineNum">     280 </span>            : #  pragma pack(pop)
+<span class="lineNum">     281 </span>            : static void _setVCName( const char* name )
+<span class="lineNum">     282 </span>            : {
+<span class="lineNum">     283 </span>            :     ::Sleep(10);
+<span class="lineNum">     284 </span>            : 
+<span class="lineNum">     285 </span>            :     THREADNAME_INFO info;
+<span class="lineNum">     286 </span>            :     info.dwType = 0x1000;
+<span class="lineNum">     287 </span>            :     info.szName = name;
+<span class="lineNum">     288 </span>            :     info.dwThreadID = GetCurrentThreadId();
+<span class="lineNum">     289 </span>            :     info.dwFlags = 0;
+<span class="lineNum">     290 </span>            : 
+<span class="lineNum">     291 </span>            :     __try
+<span class="lineNum">     292 </span>            :     {
+<span class="lineNum">     293 </span>            :         RaiseException( MS_VC_EXCEPTION, 0, sizeof(info)/sizeof(ULONG_PTR),
+<span class="lineNum">     294 </span>            :                         (ULONG_PTR*)&amp;info );
+<span class="lineNum">     295 </span>            :     }
+<span class="lineNum">     296 </span>            :     __except(EXCEPTION_EXECUTE_HANDLER)
+<span class="lineNum">     297 </span>            :     {
+<span class="lineNum">     298 </span>            :     }
+<span class="lineNum">     299 </span>            : }
+<a name="300"><span class="lineNum">     300 </span>            : #endif</a>
+<span class="lineNum">     301 </span>            : 
+<span class="lineNum">     302 </span><span class="lineNoCov">          0 : void Thread::setName( const std::string&amp; name )</span>
+<span class="lineNum">     303 </span>            : {
+<span class="lineNum">     304 </span><span class="lineNoCov">          0 :     Log::instance().setThreadName( name );</span>
+<span class="lineNum">     305 </span>            : 
+<span class="lineNum">     306 </span>            : #ifdef _MSC_VER
+<span class="lineNum">     307 </span>            : #  ifndef NDEBUG
+<span class="lineNum">     308 </span>            :     _setVCName( name.c_str( ));
+<span class="lineNum">     309 </span>            : #  endif
+<span class="lineNum">     310 </span>            : #elif __MAC_OS_X_VERSION_MIN_REQUIRED &gt;= 1060
+<span class="lineNum">     311 </span>            :     pthread_setname_np( name.c_str( ));
+<span class="lineNum">     312 </span>            : #elif defined(__linux__)
+<span class="lineNum">     313 </span><span class="lineNoCov">          0 :     prctl( PR_SET_NAME, name.c_str(), 0, 0, 0 );</span>
+<span class="lineNum">     314 </span>            : #else
+<span class="lineNum">     315 </span>            :     // Not implemented
+<span class="lineNum">     316 </span>            :     LBVERB &lt;&lt; &quot;Thread::setName() not implemented&quot; &lt;&lt; std::endl;
+<span class="lineNum">     317 </span>            : #endif
+<span class="lineNum">     318 </span><span class="lineNoCov">          0 : }</span>
+<a name="319"><span class="lineNum">     319 </span>            : </a>
+<span class="lineNum">     320 </span>            : #ifdef LUNCHBOX_USE_HWLOC
+<span class="lineNum">     321 </span><span class="lineNoCov">          0 : static hwloc_bitmap_t _getCpuSet( const int32_t affinity,</span>
+<span class="lineNum">     322 </span>            :                                   hwloc_topology_t topology )
+<span class="lineNum">     323 </span>            : {
+<span class="lineNum">     324 </span><span class="lineNoCov">          0 :     hwloc_bitmap_t cpuSet = hwloc_bitmap_alloc(); // HWloc CPU set</span>
+<span class="lineNum">     325 </span><span class="lineNoCov">          0 :     hwloc_bitmap_zero( cpuSet ); // Initialize to zeros</span>
+<span class="lineNum">     326 </span>            : 
+<span class="lineNum">     327 </span><span class="lineNoCov">          0 :     if( affinity &gt;= Thread::CORE )</span>
+<span class="lineNum">     328 </span>            :     {
+<span class="lineNum">     329 </span><span class="lineNoCov">          0 :         const int32_t coreIndex = affinity - Thread::CORE;</span>
+<span class="lineNum">     330 </span><span class="lineNoCov">          0 :         if( hwloc_get_obj_by_type( topology, HWLOC_OBJ_CORE, coreIndex ) == 0 )</span>
+<span class="lineNum">     331 </span>            :         {
+<span class="lineNum">     332 </span><span class="lineNoCov">          0 :             LBWARN &lt;&lt; &quot;Core &quot; &lt;&lt; coreIndex &lt;&lt; &quot; does not exist in the topology&quot;</span>
+<span class="lineNum">     333 </span><span class="lineNoCov">          0 :                    &lt;&lt; std::endl;</span>
+<span class="lineNum">     334 </span><span class="lineNoCov">          0 :             return cpuSet;</span>
+<span class="lineNum">     335 </span>            :         }
+<span class="lineNum">     336 </span>            : 
+<span class="lineNum">     337 </span>            :         // Getting the core object #coreIndex
+<span class="lineNum">     338 </span>            :         const hwloc_obj_t coreObj = hwloc_get_obj_by_type( topology,
+<span class="lineNum">     339 </span>            :                                                            HWLOC_OBJ_CORE,
+<span class="lineNum">     340 </span><span class="lineNoCov">          0 :                                                            coreIndex );</span>
+<span class="lineNum">     341 </span>            :         // Get the CPU set associated with the specified core
+<span class="lineNum">     342 </span><span class="lineNoCov">          0 :         cpuSet = coreObj-&gt;allowed_cpuset;</span>
+<span class="lineNum">     343 </span><span class="lineNoCov">          0 :         return cpuSet;</span>
+<span class="lineNum">     344 </span>            :     }
+<span class="lineNum">     345 </span>            : 
+<span class="lineNum">     346 </span><span class="lineNoCov">          0 :     if( affinity == Thread::NONE )</span>
+<span class="lineNum">     347 </span><span class="lineNoCov">          0 :         return cpuSet;</span>
+<span class="lineNum">     348 </span>            : 
+<span class="lineNum">     349 </span>            :     // Sets the affinity to a specific CPU or &quot;socket&quot;
+<span class="lineNum">     350 </span><span class="lineNoCov">          0 :     LBASSERT( affinity &gt;= Thread::SOCKET &amp;&amp; affinity &lt; Thread::SOCKET_MAX );</span>
+<span class="lineNum">     351 </span><span class="lineNoCov">          0 :     const int32_t socketIndex = affinity - Thread::SOCKET;</span>
+<span class="lineNum">     352 </span>            : 
+<span class="lineNum">     353 </span><span class="lineNoCov">          0 :     if( hwloc_get_obj_by_type( topology, HWLOC_OBJ_SOCKET, socketIndex ) == 0 )</span>
+<span class="lineNum">     354 </span>            :     {
+<span class="lineNum">     355 </span><span class="lineNoCov">          0 :         LBWARN &lt;&lt; &quot;Socket &quot; &lt;&lt; socketIndex &lt;&lt; &quot; does not exist in the topology&quot;</span>
+<span class="lineNum">     356 </span><span class="lineNoCov">          0 :                &lt;&lt; std::endl;</span>
+<span class="lineNum">     357 </span><span class="lineNoCov">          0 :         return cpuSet;</span>
+<span class="lineNum">     358 </span>            :     }
+<span class="lineNum">     359 </span>            : 
+<span class="lineNum">     360 </span>            :     // Getting the CPU object #cpuIndex (subtree node)
+<span class="lineNum">     361 </span>            :     const hwloc_obj_t socketObj = hwloc_get_obj_by_type( topology,
+<span class="lineNum">     362 </span>            :                                                          HWLOC_OBJ_SOCKET,
+<span class="lineNum">     363 </span><span class="lineNoCov">          0 :                                                          socketIndex );</span>
+<span class="lineNum">     364 </span>            :     // Get the CPU set associated with the specified socket
+<span class="lineNum">     365 </span><span class="lineNoCov">          0 :     hwloc_bitmap_copy( cpuSet, socketObj-&gt;allowed_cpuset );</span>
+<span class="lineNum">     366 </span><span class="lineNoCov">          0 :     return cpuSet;</span>
+<span class="lineNum">     367 </span>            : }
+<a name="368"><span class="lineNum">     368 </span>            : #endif</a>
+<span class="lineNum">     369 </span>            : 
+<span class="lineNum">     370 </span><span class="lineNoCov">          0 : void Thread::setAffinity( const int32_t affinity )</span>
+<span class="lineNum">     371 </span>            : {
+<span class="lineNum">     372 </span><span class="lineNoCov">          0 :     if( affinity == Thread::NONE )</span>
+<span class="lineNum">     373 </span><span class="lineNoCov">          0 :         return;</span>
+<span class="lineNum">     374 </span>            : 
+<span class="lineNum">     375 </span>            : #ifdef LUNCHBOX_USE_HWLOC
+<span class="lineNum">     376 </span>            :     hwloc_topology_t topology;
+<span class="lineNum">     377 </span><span class="lineNoCov">          0 :     hwloc_topology_init( &amp;topology ); // Allocate &amp; initialize the topology</span>
+<span class="lineNum">     378 </span><span class="lineNoCov">          0 :     hwloc_topology_load( topology );  // Perform HW topology detection</span>
+<span class="lineNum">     379 </span><span class="lineNoCov">          0 :     const hwloc_bitmap_t cpuSet = _getCpuSet( affinity, topology );</span>
+<span class="lineNum">     380 </span>            :     const int result = hwloc_set_cpubind( topology, cpuSet,
+<span class="lineNum">     381 </span><span class="lineNoCov">          0 :                                           HWLOC_CPUBIND_THREAD );</span>
+<span class="lineNum">     382 </span>            :     char* cpuSetString;
+<span class="lineNum">     383 </span><span class="lineNoCov">          0 :     hwloc_bitmap_asprintf( &amp;cpuSetString, cpuSet );</span>
+<span class="lineNum">     384 </span>            : 
+<span class="lineNum">     385 </span><span class="lineNoCov">          0 :     if( result == 0 )</span>
+<span class="lineNum">     386 </span>            :     {
+<span class="lineNum">     387 </span><span class="lineNoCov">          0 :         LBVERB &lt;&lt; &quot;Bound to cpu set &quot;  &lt;&lt; cpuSetString &lt;&lt; std::endl;</span>
+<span class="lineNum">     388 </span>            :     }
+<span class="lineNum">     389 </span>            :     else
+<span class="lineNum">     390 </span>            :     {
+<span class="lineNum">     391 </span><span class="lineNoCov">          0 :         LBWARN &lt;&lt; &quot;Error binding to cpu set &quot; &lt;&lt; cpuSetString &lt;&lt; std::endl;</span>
+<span class="lineNum">     392 </span>            :     }
+<span class="lineNum">     393 </span><span class="lineNoCov">          0 :     ::free( cpuSetString );</span>
+<span class="lineNum">     394 </span><span class="lineNoCov">          0 :     hwloc_bitmap_free( cpuSet );</span>
+<span class="lineNum">     395 </span><span class="lineNoCov">          0 :     hwloc_topology_destroy( topology );</span>
+<span class="lineNum">     396 </span>            : 
+<span class="lineNum">     397 </span>            : #else
+<span class="lineNum">     398 </span>            :     LBWARN &lt;&lt; &quot;Thread::setAffinity not implemented, hwloc library missing&quot;
+<span class="lineNum">     399 </span>            :            &lt;&lt; std::endl;
+<span class="lineNum">     400 </span>            : #endif
+<a name="401"><span class="lineNum">     401 </span>            : }</a>
+<span class="lineNum">     402 </span>            : 
+<span class="lineNum">     403 </span><span class="lineNoCov">          0 : void Thread::_dumpAll()</span>
+<span class="lineNum">     404 </span>            : {
+<span class="lineNum">     405 </span>            : #ifdef __linux__
+<span class="lineNum">     406 </span><span class="lineNoCov">          0 :     ScopedFastRead mutex( _threads );</span>
+<span class="lineNum">     407 </span><span class="lineNoCov">          0 :     for( ThreadIDSet::const_iterator i = _threads.data.begin();</span>
+<span class="lineNum">     408 </span><span class="lineNoCov">          0 :          i != _threads.data.end(); ++i )</span>
+<span class="lineNum">     409 </span>            :     {
+<span class="lineNum">     410 </span><span class="lineNoCov">          0 :         pthread_kill( i-&gt;_impl-&gt;pthread, SIGUSR1 );</span>
+<span class="lineNum">     411 </span><span class="lineNoCov">          0 :     }</span>
+<span class="lineNum">     412 </span>            : #endif
+<a name="413"><span class="lineNum">     413 </span><span class="lineNoCov">          0 : }</span></a>
+<span class="lineNum">     414 </span>            : 
+<span class="lineNum">     415 </span><span class="lineNoCov">          0 : std::ostream&amp; operator &lt;&lt; ( std::ostream&amp; os, const Thread::Affinity affinity )</span>
+<span class="lineNum">     416 </span>            : {
+<span class="lineNum">     417 </span><span class="lineNoCov">          0 :     if( affinity == Thread::NONE )</span>
+<span class="lineNum">     418 </span><span class="lineNoCov">          0 :         return os &lt;&lt; &quot;No affinity&quot;;</span>
+<span class="lineNum">     419 </span><span class="lineNoCov">          0 :     if( affinity &gt;= Thread::CORE )</span>
+<span class="lineNum">     420 </span><span class="lineNoCov">          0 :         return os &lt;&lt; &quot;Core &quot; &lt;&lt; affinity - Thread::CORE;</span>
+<span class="lineNum">     421 </span>            : 
+<span class="lineNum">     422 </span><span class="lineNoCov">          0 :     LBASSERT( affinity &gt;= Thread::SOCKET &amp;&amp; affinity &lt; Thread::SOCKET_MAX );</span>
+<span class="lineNum">     423 </span><span class="lineNoCov">          0 :     return os &lt;&lt; &quot;Socket &quot; &lt;&lt;  affinity - Thread::SOCKET;</span>
+<span class="lineNum">     424 </span>            : }
+<span class="lineNum">     425 </span>            : 
+<span class="lineNum">     426 </span>            : #if 0
+<span class="lineNum">     427 </span>            : std::ostream&amp; operator &lt;&lt; ( std::ostream&amp; os, const Thread* thread )
+<span class="lineNum">     428 </span>            : {
+<span class="lineNum">     429 </span>            :     os &lt;&lt; &quot;Thread &quot; &lt;&lt; thread-&gt;_impl-&gt;id &lt;&lt; &quot; state &quot;
+<span class="lineNum">     430 </span>            :        &lt;&lt; ( thread-&gt;_impl-&gt;state == Thread::STATE_STOPPED  ? &quot;stopped&quot;  :
+<span class="lineNum">     431 </span>            :             thread-&gt;_impl-&gt;state == Thread::STATE_STARTING ? &quot;starting&quot; :
+<span class="lineNum">     432 </span>            :             thread-&gt;_impl-&gt;state == Thread::STATE_RUNNING  ? &quot;running&quot;  :
+<span class="lineNum">     433 </span>            :             thread-&gt;_impl-&gt;state == Thread::STATE_STOPPING ? &quot;stopping&quot; :
+<span class="lineNum">     434 </span>            :             &quot;unknown&quot; );
+<span class="lineNum">     435 </span>            : 
+<span class="lineNum">     436 </span>            : #ifdef PTW32_VERSION
+<span class="lineNum">     437 </span>            :     os &lt;&lt; &quot; called from &quot; &lt;&lt; pthread_self().p;
+<span class="lineNum">     438 </span>            : #else
+<span class="lineNum">     439 </span>            :     os &lt;&lt; &quot; called from &quot; &lt;&lt; pthread_self();
+<span class="lineNum">     440 </span>            : #endif
+<span class="lineNum">     441 </span>            : 
+<span class="lineNum">     442 </span>            :     return os;
+<a name="443"><span class="lineNum">     443 </span>            : }</a>
+<span class="lineNum">     444 </span>            : #endif
+<span class="lineNum">     445 </span><span class="lineCov">         66 : }</span>
+</pre>
+      </td>
+    </tr>
+  </table>
+  <br>
+
+  <table width="100%" border=0 cellspacing=0 cellpadding=0>
+    <tr><td class="ruler"><img src="../../glass.png" width=3 height=3 alt=""></td></tr>
+    <tr><td class="versionInfo">Generated by: <a href="http://ltp.sourceforge.net/coverage/lcov.php" target="_parent">LCOV version 1.11</a></td></tr>
+  </table>
+  <br>
+
+</body>
+</html>
