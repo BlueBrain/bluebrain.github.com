@@ -1,0 +1,7 @@
+set(DEFLECT_MATURITY "EP")
+set(DEFLECT_DESCRIPTION "A fast C++ library for streaming pixels and events")
+set(DEFLECT_GIT_ROOT_URL "git@github.com:BlueBrain/Deflect.git")
+set(DEFLECT_PACKAGE_URL "")
+set(DEFLECT_CI_URL "git@travis-ci.org:BlueBrain/Deflect")
+set(DEFLECT_CI_PNG "git@travis-ci.org:BlueBrain/Deflect.png")
+set(DEFLECT_ISSUES_URL "git@github.com:BlueBrain/Deflect/issues")

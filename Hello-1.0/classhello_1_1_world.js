@@ -1,5 +1,5 @@
 var classhello_1_1_world =
 [
-    [ "getN", "classhello_1_1_world.html#a0baddbe112935ff8d86ae19cccfb7a61", null ],
-    [ "greet", "classhello_1_1_world.html#ad0fd2b6b8f2a972da8b35ad0eeffdd38", null ]
+    [ "getN", "classhello_1_1_world.html#a0e0cf61683e371d3519dfb48d7c33dac", null ],
+    [ "greet", "classhello_1_1_world.html#ad46b5c62d56af7a25551965b6086b0a7", null ]
 ];
