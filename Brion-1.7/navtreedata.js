@@ -5,7 +5,8 @@ var NAVTREE =
     [ "Features", "index.html#Features", null ],
     [ "Building", "index.html#Building", null ],
     [ "Changelog", "_changelog.html", null ],
-    [ "Compartment report writing from MPI applications", "md__gpfs_bbp_8cscs_8ch_home_chevtche__brion_doc_feature_compartment_report_m_p_i.html", null ],
+    [ "Compartment report writing from MPI applications", "md__gpfs_bbp_8cscs_8ch_home_chevtche_stable_brion__brion_doc_feature_compartment_report_m_p_i.html", null ],
+    [ "Redesign of the SpikeReport and Spikes container", "md__gpfs_bbp_8cscs_8ch_home_chevtche_stable_brion__brion_doc_feature_spike_report.html", null ],
     [ "Deprecated List", "deprecated.html", null ],
     [ "Namespaces", null, [
       [ "Namespace List", "namespaces.html", "namespaces" ],
@@ -41,7 +42,7 @@ var NAVTREEINDEX =
 [
 ".html",
 "classbrion_1_1_morphology_plugin.html#a91ae737aac22e339203acfa2d563dbb0",
-"morphology_plugin_8h_source.html"
+"md__gpfs_bbp_8cscs_8ch_home_chevtche_stable_brion__brion_doc_feature_spike_report.html"
 ];
 
 var SYNCONMSG = 'click to disable panel synchronisation';

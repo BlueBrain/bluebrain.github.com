@@ -4,15 +4,15 @@ version: "1.7"
 major: 1
 minor: 7
 description: The Blue Brain C++ I/O library
-updated: 24/03/16
+updated: 04/04/16
 homepage: https://github.com/BlueBrain/Brion
-repository: https://github.com/BlueBrain/Brion
-issuesurl: https://github.com/BlueBrain/Brion
+repository: https://github.com/BlueBrain/Brion.git
+issuesurl: https://github.com/BlueBrain/Brion/issues
 packageurl: 
 license: LGPL
 maturity: EP
 maintainers: Blue Brain Project (bbp-open-source@googlegroups.com)
-contributors: Adrien Devresse; Ahmet Bilgili; Cyrille Favreau; Daniel Nachbaur; Jafet Villafranca; Juan Hernando; Juan Hernando Vieites; Mike Gevaert; Pablo Toharia; Raphael Dumusc; Stefan Eilemann; hernando
+contributors: Adrien Devresse; Ahmet Bilgili; Chevtchenko Grigori; Cyrille Favreau; Daniel Nachbaur; Jafet Villafranca; Juan Hernando; Juan Hernando Vieites; Mike Gevaert; Pablo Toharia; Raphael Dumusc; Stefan Eilemann; chevtche; hernando
 readmetype: text/x-markdown
 ---
 [TOC]
@@ -28,7 +28,7 @@ Mesh, Morphology, Synapse and Target files.
 Brion can be retrieved by cloning the
 [source code](https://github.com/BlueBrain/Brion.git).
 The [latest API documentation]
-(http://bluebrain.github.io/Brion-1.6/index.html) can be found on
+(http://bluebrain.github.io/Brion-1.7/index.html) can be found on
 [bluebrain.github.io](http://bluebrain.github.io).
 
 To keep track of the changes between releases check the [changelog](@ref Changelog).
