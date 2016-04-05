@@ -1,0 +1,7 @@
+set(FIVOX_MATURITY "EP")
+set(FIVOX_DESCRIPTION "ITK library to sample events into regular volumes")
+set(FIVOX_GIT_ROOT_URL "https://github.com/BlueBrain/Fivox")
+set(FIVOX_PACKAGE_URL "")
+set(FIVOX_CI_URL "https://travis-ci.org/BlueBrain/Fivox")
+set(FIVOX_CI_PNG "https://travis-ci.org/BlueBrain/Fivox.png")
+set(FIVOX_ISSUES_URL "https://github.com/BlueBrain/Fivox")

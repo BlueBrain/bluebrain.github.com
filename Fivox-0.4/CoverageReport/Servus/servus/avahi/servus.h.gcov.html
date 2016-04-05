@@ -1,0 +1,554 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+
+<html lang="en">
+
+<head>
+  <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+  <title>LCOV - Fivox - Servus/servus/avahi/servus.h</title>
+  <link rel="stylesheet" type="text/css" href="../../../gcov.css">
+</head>
+
+<body>
+
+  <table width="100%" border=0 cellspacing=0 cellpadding=0>
+    <tr><td class="title">LCOV - code coverage report</td></tr>
+    <tr><td class="ruler"><img src="../../../glass.png" width=3 height=3 alt=""></td></tr>
+
+    <tr>
+      <td width="100%">
+        <table cellpadding=1 border=0 width="100%">
+          <tr>
+            <td width="10%" class="headerItem">Current view:</td>
+            <td width="35%" class="headerValue"><a href="../../../index.html">top level</a> - <a href="index.html">Servus/servus/avahi</a> - servus.h<span style="font-size: 80%;"> (source / <a href="servus.h.func-sort-c.html">functions</a>)</span></td>
+            <td width="5%"></td>
+            <td width="15%"></td>
+            <td width="10%" class="headerCovTableHead">Hit</td>
+            <td width="10%" class="headerCovTableHead">Total</td>
+            <td width="15%" class="headerCovTableHead">Coverage</td>
+          </tr>
+          <tr>
+            <td class="headerItem">Test:</td>
+            <td class="headerValue">Fivox</td>
+            <td></td>
+            <td class="headerItem">Lines:</td>
+            <td class="headerCovTableEntry">76</td>
+            <td class="headerCovTableEntry">205</td>
+            <td class="headerCovTableEntryLo">37.1 %</td>
+          </tr>
+          <tr>
+            <td class="headerItem">Date:</td>
+            <td class="headerValue">2016-04-05 17:13:52</td>
+            <td></td>
+            <td class="headerItem">Functions:</td>
+            <td class="headerCovTableEntry">14</td>
+            <td class="headerCovTableEntry">24</td>
+            <td class="headerCovTableEntryMed">58.3 %</td>
+          </tr>
+          <tr><td><img src="../../../glass.png" width=3 height=3 alt=""></td></tr>
+        </table>
+      </td>
+    </tr>
+
+    <tr><td class="ruler"><img src="../../../glass.png" width=3 height=3 alt=""></td></tr>
+  </table>
+
+  <table cellpadding=0 cellspacing=0 border=0>
+    <tr>
+      <td><br></td>
+    </tr>
+    <tr>
+      <td>
+<pre class="sourceHeading">          Line data    Source code</pre>
+<pre class="source">
+<a name="1"><span class="lineNum">       1 </span>            : /* Copyright (c) 2014-2015, Stefan.Eilemann@epfl.ch</a>
+<span class="lineNum">       2 </span>            :  *               2015, Juan Hernando &lt;jhernando@fi.upm.es&gt;
+<span class="lineNum">       3 </span>            :  *
+<span class="lineNum">       4 </span>            :  * This file is part of Servus &lt;https://github.com/HBPVIS/Servus&gt;
+<span class="lineNum">       5 </span>            :  *
+<span class="lineNum">       6 </span>            :  * This library is free software; you can redistribute it and/or modify it under
+<span class="lineNum">       7 </span>            :  * the terms of the GNU Lesser General Public License version 3.0 as published
+<span class="lineNum">       8 </span>            :  * by the Free Software Foundation.
+<span class="lineNum">       9 </span>            :  *
+<span class="lineNum">      10 </span>            :  * This library is distributed in the hope that it will be useful, but WITHOUT
+<span class="lineNum">      11 </span>            :  * ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS
+<span class="lineNum">      12 </span>            :  * FOR A PARTICULAR PURPOSE.  See the GNU Lesser General Public License for more
+<span class="lineNum">      13 </span>            :  * details.
+<span class="lineNum">      14 </span>            :  *
+<span class="lineNum">      15 </span>            :  * You should have received a copy of the GNU Lesser General Public License
+<span class="lineNum">      16 </span>            :  * along with this library; if not, write to the Free Software Foundation, Inc.,
+<span class="lineNum">      17 </span>            :  * 51 Franklin Street, Fifth Floor, Boston, MA 02110-1301 USA.
+<span class="lineNum">      18 </span>            :  */
+<span class="lineNum">      19 </span>            : 
+<span class="lineNum">      20 </span>            : #include &lt;avahi-client/client.h&gt;
+<span class="lineNum">      21 </span>            : #include &lt;avahi-client/lookup.h&gt;
+<span class="lineNum">      22 </span>            : #include &lt;avahi-client/publish.h&gt;
+<span class="lineNum">      23 </span>            : #include &lt;avahi-common/error.h&gt;
+<span class="lineNum">      24 </span>            : #include &lt;avahi-common/simple-watch.h&gt;
+<span class="lineNum">      25 </span>            : 
+<span class="lineNum">      26 </span>            : #include &lt;net/if.h&gt;
+<span class="lineNum">      27 </span>            : #include &lt;stdexcept&gt;
+<span class="lineNum">      28 </span>            : 
+<span class="lineNum">      29 </span>            : #include &lt;cassert&gt;
+<span class="lineNum">      30 </span>            : 
+<span class="lineNum">      31 </span>            : #ifdef COMMON_USE_CXX03
+<span class="lineNum">      32 </span>            : #  include &lt;boost/chrono.hpp&gt;
+<span class="lineNum">      33 </span>            : #  include &lt;boost/thread/mutex.hpp&gt;
+<span class="lineNum">      34 </span>            :     using boost::mutex;
+<span class="lineNum">      35 </span>            :     typedef boost::unique_lock&lt; mutex &gt; ScopedLock;
+<span class="lineNum">      36 </span>            :     namespace chrono = boost::chrono;
+<span class="lineNum">      37 </span>            : #else
+<span class="lineNum">      38 </span>            : #  include &lt;mutex&gt;
+<span class="lineNum">      39 </span>            :     using std::mutex;
+<span class="lineNum">      40 </span>            :     typedef std::unique_lock&lt; mutex &gt; ScopedLock;
+<span class="lineNum">      41 </span>            :     namespace chrono = std::chrono;
+<span class="lineNum">      42 </span>            : #endif
+<span class="lineNum">      43 </span>            : 
+<span class="lineNum">      44 </span>            : #define WARN std::cerr &lt;&lt; __FILE__ &lt;&lt; &quot;:&quot; &lt;&lt; __LINE__ &lt;&lt; &quot;: &quot;
+<span class="lineNum">      45 </span>            : 
+<span class="lineNum">      46 </span>            : // http://stackoverflow.com/questions/14430906
+<span class="lineNum">      47 </span>            : //   Proper way of doing this is using the threaded polling in avahi
+<span class="lineNum">      48 </span>            : namespace
+<span class="lineNum">      49 </span>            : {
+<a name="50"><span class="lineNum">      50 </span>            : static mutex _mutex;</a>
+<span class="lineNum">      51 </span>            : 
+<span class="lineNum">      52 </span><span class="lineNoCov">          0 : int64_t _elapsedMilliseconds(</span>
+<span class="lineNum">      53 </span>            :     const chrono::high_resolution_clock::time_point&amp; startTime )
+<span class="lineNum">      54 </span>            : {
+<span class="lineNum">      55 </span>            :     const chrono::high_resolution_clock::time_point&amp; endTime =
+<span class="lineNum">      56 </span><span class="lineNoCov">          0 :         chrono::high_resolution_clock::now();</span>
+<span class="lineNum">      57 </span><span class="lineNoCov">          0 :     return chrono::nanoseconds( endTime - startTime ).count() / 1000000;</span>
+<span class="lineNum">      58 </span>            : }
+<span class="lineNum">      59 </span>            : 
+<span class="lineNum">      60 </span>            : }
+<span class="lineNum">      61 </span>            : 
+<span class="lineNum">      62 </span>            : namespace servus
+<span class="lineNum">      63 </span>            : {
+<span class="lineNum">      64 </span>            : namespace avahi
+<span class="lineNum">      65 </span>            : {
+<a name="66"><span class="lineNum">      66 </span>            : namespace</a>
+<span class="lineNum">      67 </span>            : {
+<span class="lineNum">      68 </span><span class="lineCov">          4 : AvahiSimplePoll* _newSimplePoll()</span>
+<span class="lineNum">      69 </span>            : {
+<span class="lineNum">      70 </span><span class="lineCov">          4 :     ScopedLock lock( _mutex );</span>
+<span class="lineNum">      71 </span><span class="lineCov">          4 :     return avahi_simple_poll_new();</span>
+<span class="lineNum">      72 </span>            : }
+<span class="lineNum">      73 </span>            : }
+<span class="lineNum">      74 </span>            : 
+<span class="lineNum">      75 </span>            : class Servus : public detail::Servus
+<a name="76"><span class="lineNum">      76 </span>            : {</a>
+<span class="lineNum">      77 </span>            : public:
+<span class="lineNum">      78 </span><span class="lineCov">          4 :     explicit Servus( const std::string&amp; name )</span>
+<span class="lineNum">      79 </span>            :         : detail::Servus( name )
+<span class="lineNum">      80 </span><span class="lineCov">          4 :         , _poll( _newSimplePoll( ))</span>
+<span class="lineNum">      81 </span>            :         , _client( 0 )
+<span class="lineNum">      82 </span>            :         , _browser( 0 )
+<span class="lineNum">      83 </span>            :         , _group( 0 )
+<span class="lineNum">      84 </span>            :         , _result( servus::Servus::Result::PENDING )
+<span class="lineNum">      85 </span>            :         , _port( 0 )
+<span class="lineNum">      86 </span>            :         , _announcable( false )
+<span class="lineNum">      87 </span><span class="lineCov">          8 :         , _scope( servus::Servus::IF_ALL )</span>
+<span class="lineNum">      88 </span>            :     {
+<span class="lineNum">      89 </span><span class="lineCov">          4 :         if( !_poll )</span>
+<span class="lineNum">      90 </span><span class="lineNoCov">          0 :             throw std::runtime_error( &quot;Can't setup avahi poll device&quot; );</span>
+<span class="lineNum">      91 </span>            : 
+<span class="lineNum">      92 </span><span class="lineCov">          4 :         int error = 0;</span>
+<span class="lineNum">      93 </span><span class="lineCov">          4 :         ScopedLock lock( _mutex );</span>
+<span class="lineNum">      94 </span>            :         _client = avahi_client_new( avahi_simple_poll_get( _poll ),
+<span class="lineNum">      95 </span>            :                                     (AvahiClientFlags)(0), _clientCBS, this,
+<span class="lineNum">      96 </span><span class="lineCov">          4 :                                     &amp;error );</span>
+<span class="lineNum">      97 </span><span class="lineCov">          4 :         if( !_client )</span>
+<span class="lineNum">      98 </span>            :             throw std::runtime_error(
+<span class="lineNum">      99 </span><span class="lineNoCov">          0 :                 std::string( &quot;Can't setup avahi client: &quot; ) +</span>
+<span class="lineNum">     100 </span><span class="lineNoCov">          0 :                 avahi_strerror( error ));</span>
+<a name="101"><span class="lineNum">     101 </span><span class="lineCov">          4 :     }</span></a>
+<span class="lineNum">     102 </span>            : 
+<span class="lineNum">     103 </span><span class="lineCov">          8 :     virtual ~Servus()</span>
+<span class="lineNum">     104 </span><span class="lineCov">          8 :     {</span>
+<span class="lineNum">     105 </span><span class="lineCov">          4 :         withdraw();</span>
+<span class="lineNum">     106 </span><span class="lineCov">          4 :         endBrowsing();</span>
+<span class="lineNum">     107 </span>            : 
+<span class="lineNum">     108 </span><span class="lineCov">          4 :         ScopedLock lock( _mutex );</span>
+<span class="lineNum">     109 </span><span class="lineCov">          4 :         if( _client )</span>
+<span class="lineNum">     110 </span><span class="lineCov">          4 :             avahi_client_free( _client );</span>
+<span class="lineNum">     111 </span><span class="lineCov">          4 :         if( _poll )</span>
+<span class="lineNum">     112 </span><span class="lineCov">          4 :             avahi_simple_poll_free( _poll );</span>
+<a name="113"><span class="lineNum">     113 </span><span class="lineCov">          8 :     }</span></a>
+<span class="lineNum">     114 </span>            : 
+<a name="115"><span class="lineNum">     115 </span><span class="lineNoCov">          0 :     std::string getClassName() const { return &quot;avahi&quot;; }</span></a>
+<span class="lineNum">     116 </span>            : 
+<span class="lineNum">     117 </span><span class="lineCov">          2 :     servus::Servus::Result announce( const unsigned short port,</span>
+<span class="lineNum">     118 </span>            :                                      const std::string&amp; instance ) final
+<span class="lineNum">     119 </span>            :     {
+<span class="lineNum">     120 </span>            : 
+<span class="lineNum">     121 </span><span class="lineCov">          2 :         ScopedLock lock( _mutex );</span>
+<span class="lineNum">     122 </span>            : 
+<span class="lineNum">     123 </span><span class="lineCov">          2 :         _result = servus::Servus::Result::PENDING;</span>
+<span class="lineNum">     124 </span><span class="lineCov">          2 :         _port = port;</span>
+<span class="lineNum">     125 </span><span class="lineCov">          2 :         if( instance.empty( ))</span>
+<span class="lineNum">     126 </span><span class="lineNoCov">          0 :             _announce = getHostname();</span>
+<span class="lineNum">     127 </span>            :         else
+<span class="lineNum">     128 </span><span class="lineCov">          2 :             _announce = instance;</span>
+<span class="lineNum">     129 </span>            : 
+<span class="lineNum">     130 </span><span class="lineCov">          2 :         if( _announcable )</span>
+<span class="lineNum">     131 </span><span class="lineCov">          2 :             _createServices();</span>
+<span class="lineNum">     132 </span>            :         else
+<span class="lineNum">     133 </span>            :         {
+<span class="lineNum">     134 </span>            :             const chrono::high_resolution_clock::time_point&amp; startTime =
+<span class="lineNum">     135 </span><span class="lineNoCov">          0 :                 chrono::high_resolution_clock::now();</span>
+<span class="lineNum">     136 </span><span class="lineNoCov">          0 :             while( !_announcable &amp;&amp;</span>
+<span class="lineNum">     137 </span><span class="lineNoCov">          0 :                    _result == servus::Servus::Result::PENDING &amp;&amp;</span>
+<span class="lineNum">     138 </span><span class="lineNoCov">          0 :                    _elapsedMilliseconds( startTime ) &lt; ANNOUNCE_TIMEOUT )</span>
+<span class="lineNum">     139 </span>            :             {
+<span class="lineNum">     140 </span><span class="lineNoCov">          0 :                 avahi_simple_poll_iterate( _poll, ANNOUNCE_TIMEOUT );</span>
+<span class="lineNum">     141 </span>            :             }
+<span class="lineNum">     142 </span>            :         }
+<span class="lineNum">     143 </span>            : 
+<span class="lineNum">     144 </span><span class="lineCov">          2 :         return servus::Servus::Result( _result );</span>
+<a name="145"><span class="lineNum">     145 </span>            :     }</a>
+<span class="lineNum">     146 </span>            : 
+<span class="lineNum">     147 </span><span class="lineCov">          4 :     void withdraw() final</span>
+<span class="lineNum">     148 </span>            :     {
+<span class="lineNum">     149 </span><span class="lineCov">          4 :         ScopedLock lock( _mutex );</span>
+<span class="lineNum">     150 </span><span class="lineCov">          4 :         _announce.clear();</span>
+<span class="lineNum">     151 </span><span class="lineCov">          4 :         _port = 0;</span>
+<span class="lineNum">     152 </span><span class="lineCov">          4 :         if( _group )</span>
+<span class="lineNum">     153 </span><span class="lineCov">          2 :             avahi_entry_group_reset( _group );</span>
+<a name="154"><span class="lineNum">     154 </span><span class="lineCov">          4 :     }</span></a>
+<span class="lineNum">     155 </span>            : 
+<span class="lineNum">     156 </span><span class="lineNoCov">          0 :     bool isAnnounced() const final</span>
+<span class="lineNum">     157 </span>            :     {
+<span class="lineNum">     158 </span><span class="lineNoCov">          0 :         ScopedLock lock( _mutex );</span>
+<span class="lineNum">     159 </span><span class="lineNoCov">          0 :         return ( _group &amp;&amp; !avahi_entry_group_is_empty( _group ));</span>
+<a name="160"><span class="lineNum">     160 </span>            :     }</a>
+<span class="lineNum">     161 </span>            : 
+<span class="lineNum">     162 </span><span class="lineNoCov">          0 :     servus::Servus::Result beginBrowsing(</span>
+<span class="lineNum">     163 </span>            :         const ::servus::Servus::Interface addr ) final
+<span class="lineNum">     164 </span>            :     {
+<span class="lineNum">     165 </span><span class="lineNoCov">          0 :         if( _browser )</span>
+<span class="lineNum">     166 </span><span class="lineNoCov">          0 :             return servus::Servus::Result( servus::Servus::Result::PENDING );</span>
+<span class="lineNum">     167 </span>            : 
+<span class="lineNum">     168 </span><span class="lineNoCov">          0 :         ScopedLock lock( _mutex );</span>
+<span class="lineNum">     169 </span><span class="lineNoCov">          0 :         _scope = addr;</span>
+<span class="lineNum">     170 </span><span class="lineNoCov">          0 :         _instanceMap.clear();</span>
+<span class="lineNum">     171 </span><span class="lineNoCov">          0 :         _result = servus::Servus::Result::SUCCESS;</span>
+<span class="lineNum">     172 </span>            :         _browser = avahi_service_browser_new( _client, AVAHI_IF_UNSPEC,
+<span class="lineNum">     173 </span>            :                                               AVAHI_PROTO_UNSPEC, _name.c_str(),
+<span class="lineNum">     174 </span>            :                                               0, (AvahiLookupFlags)(0),
+<span class="lineNum">     175 </span><span class="lineNoCov">          0 :                                               _browseCBS, this );</span>
+<span class="lineNum">     176 </span><span class="lineNoCov">          0 :         if( _browser )</span>
+<span class="lineNum">     177 </span><span class="lineNoCov">          0 :             return servus::Servus::Result( _result );</span>
+<span class="lineNum">     178 </span>            : 
+<span class="lineNum">     179 </span><span class="lineNoCov">          0 :         _result = avahi_client_errno( _client );</span>
+<span class="lineNum">     180 </span><span class="lineNoCov">          0 :         WARN &lt;&lt; &quot;Failed to create browser for &quot; &lt;&lt; _name &lt;&lt; &quot;: &quot;</span>
+<span class="lineNum">     181 </span><span class="lineNoCov">          0 :              &lt;&lt; avahi_strerror( _result ) &lt;&lt; std::endl;</span>
+<span class="lineNum">     182 </span><span class="lineNoCov">          0 :         return servus::Servus::Result( _result );</span>
+<a name="183"><span class="lineNum">     183 </span>            :     }</a>
+<span class="lineNum">     184 </span>            : 
+<span class="lineNum">     185 </span><span class="lineNoCov">          0 :     servus::Servus::Result browse( const int32_t timeout ) final</span>
+<span class="lineNum">     186 </span>            :     {
+<span class="lineNum">     187 </span><span class="lineNoCov">          0 :         ScopedLock lock( _mutex );</span>
+<span class="lineNum">     188 </span><span class="lineNoCov">          0 :         _result = servus::Servus::Result::PENDING;</span>
+<span class="lineNum">     189 </span>            :         const chrono::high_resolution_clock::time_point&amp; startTime =
+<span class="lineNum">     190 </span><span class="lineNoCov">          0 :             chrono::high_resolution_clock::now();</span>
+<span class="lineNum">     191 </span>            : 
+<span class="lineNum">     192 </span><span class="lineNoCov">          0 :         do</span>
+<span class="lineNum">     193 </span>            :         {
+<span class="lineNum">     194 </span><span class="lineNoCov">          0 :             if( avahi_simple_poll_iterate( _poll, timeout ) != 0 )</span>
+<span class="lineNum">     195 </span>            :             {
+<span class="lineNum">     196 </span><span class="lineNoCov">          0 :                 _result = servus::Servus::Result::POLL_ERROR;</span>
+<span class="lineNum">     197 </span><span class="lineNoCov">          0 :                 break;</span>
+<span class="lineNum">     198 </span>            :             }
+<span class="lineNum">     199 </span>            :         }
+<span class="lineNum">     200 </span><span class="lineNoCov">          0 :         while( _elapsedMilliseconds( startTime ) &lt; timeout );</span>
+<span class="lineNum">     201 </span>            : 
+<span class="lineNum">     202 </span><span class="lineNoCov">          0 :         if( _result != servus::Servus::Result::POLL_ERROR )</span>
+<span class="lineNum">     203 </span><span class="lineNoCov">          0 :             _result = servus::Servus::Result::SUCCESS;</span>
+<span class="lineNum">     204 </span>            : 
+<span class="lineNum">     205 </span><span class="lineNoCov">          0 :         return servus::Servus::Result( _result );</span>
+<a name="206"><span class="lineNum">     206 </span>            :     }</a>
+<span class="lineNum">     207 </span>            : 
+<span class="lineNum">     208 </span><span class="lineCov">          4 :     void endBrowsing() final</span>
+<span class="lineNum">     209 </span>            :     {
+<span class="lineNum">     210 </span><span class="lineCov">          4 :         ScopedLock lock( _mutex );</span>
+<span class="lineNum">     211 </span><span class="lineCov">          4 :         if( _browser )</span>
+<span class="lineNum">     212 </span><span class="lineNoCov">          0 :             avahi_service_browser_free( _browser );</span>
+<span class="lineNum">     213 </span><span class="lineCov">          4 :         _browser = 0;</span>
+<a name="214"><span class="lineNum">     214 </span><span class="lineCov">          4 :     }</span></a>
+<span class="lineNum">     215 </span>            : 
+<a name="216"><span class="lineNum">     216 </span><span class="lineCov">         34 :     bool isBrowsing() const final { return _browser; }</span></a>
+<span class="lineNum">     217 </span>            : 
+<span class="lineNum">     218 </span><span class="lineNoCov">          0 :     Strings discover( const ::servus::Servus::Interface addr,</span>
+<span class="lineNum">     219 </span>            :                       const unsigned browseTime ) final
+<span class="lineNum">     220 </span>            :     {
+<span class="lineNum">     221 </span><span class="lineNoCov">          0 :         const servus::Servus::Result&amp; result = beginBrowsing( addr );</span>
+<span class="lineNum">     222 </span><span class="lineNoCov">          0 :         if( !result &amp;&amp; result != servus::Servus::Result::PENDING )</span>
+<span class="lineNum">     223 </span><span class="lineNoCov">          0 :             return getInstances();</span>
+<span class="lineNum">     224 </span>            : 
+<span class="lineNum">     225 </span><span class="lineNoCov">          0 :         assert( _browser );</span>
+<span class="lineNum">     226 </span><span class="lineNoCov">          0 :         browse( browseTime );</span>
+<span class="lineNum">     227 </span><span class="lineNoCov">          0 :         if( result != servus::Servus::Result::PENDING )</span>
+<span class="lineNum">     228 </span><span class="lineNoCov">          0 :             endBrowsing();</span>
+<span class="lineNum">     229 </span><span class="lineNoCov">          0 :         return getInstances();</span>
+<span class="lineNum">     230 </span>            :     }
+<span class="lineNum">     231 </span>            : 
+<span class="lineNum">     232 </span>            : private:
+<span class="lineNum">     233 </span>            :     AvahiSimplePoll* const _poll;
+<span class="lineNum">     234 </span>            :     AvahiClient* _client;
+<span class="lineNum">     235 </span>            :     AvahiServiceBrowser* _browser;
+<span class="lineNum">     236 </span>            :     AvahiEntryGroup* _group;
+<span class="lineNum">     237 </span>            :     int32_t _result;
+<span class="lineNum">     238 </span>            :     std::string _announce;
+<span class="lineNum">     239 </span>            :     unsigned short _port;
+<span class="lineNum">     240 </span>            :     bool _announcable;
+<span class="lineNum">     241 </span>            :     servus::Servus::Interface _scope;
+<a name="242"><span class="lineNum">     242 </span>            : </a>
+<span class="lineNum">     243 </span>            :     // Client state change
+<span class="lineNum">     244 </span><span class="lineCov">          4 :     static void _clientCBS( AvahiClient*, AvahiClientState state,</span>
+<span class="lineNum">     245 </span>            :                             void* servus )
+<span class="lineNum">     246 </span>            :     {
+<span class="lineNum">     247 </span><span class="lineCov">          4 :         ((Servus*)servus)-&gt;_clientCB( state );</span>
+<a name="248"><span class="lineNum">     248 </span><span class="lineCov">          4 :     }</span></a>
+<span class="lineNum">     249 </span>            : 
+<span class="lineNum">     250 </span><span class="lineCov">          4 :     void _clientCB( AvahiClientState state )</span>
+<span class="lineNum">     251 </span>            :     {
+<span class="lineNum">     252 </span><span class="lineCov">          4 :         switch (state)</span>
+<span class="lineNum">     253 </span>            :         {
+<span class="lineNum">     254 </span>            :         case AVAHI_CLIENT_S_RUNNING:
+<span class="lineNum">     255 </span><span class="lineCov">          4 :             _announcable = true;</span>
+<span class="lineNum">     256 </span><span class="lineCov">          4 :             if( !_announce.empty( ))</span>
+<span class="lineNum">     257 </span><span class="lineNoCov">          0 :                 _createServices();</span>
+<span class="lineNum">     258 </span><span class="lineCov">          4 :             break;</span>
+<span class="lineNum">     259 </span>            : 
+<span class="lineNum">     260 </span>            :         case AVAHI_CLIENT_FAILURE:
+<span class="lineNum">     261 </span><span class="lineNoCov">          0 :             _result = avahi_client_errno( _client );</span>
+<span class="lineNum">     262 </span><span class="lineNoCov">          0 :             WARN &lt;&lt; &quot;Client failure: &quot; &lt;&lt; avahi_strerror( _result )</span>
+<span class="lineNum">     263 </span><span class="lineNoCov">          0 :                  &lt;&lt; std::endl;</span>
+<span class="lineNum">     264 </span><span class="lineNoCov">          0 :             avahi_simple_poll_quit( _poll );</span>
+<span class="lineNum">     265 </span><span class="lineNoCov">          0 :             break;</span>
+<span class="lineNum">     266 </span>            : 
+<span class="lineNum">     267 </span>            :         case AVAHI_CLIENT_S_COLLISION:
+<span class="lineNum">     268 </span>            :             // Can't setup client
+<span class="lineNum">     269 </span><span class="lineNoCov">          0 :             _result = EEXIST;</span>
+<span class="lineNum">     270 </span><span class="lineNoCov">          0 :             avahi_simple_poll_quit( _poll );</span>
+<span class="lineNum">     271 </span><span class="lineNoCov">          0 :             break;</span>
+<span class="lineNum">     272 </span>            : 
+<span class="lineNum">     273 </span>            :         case AVAHI_CLIENT_S_REGISTERING:
+<span class="lineNum">     274 </span>            :             // The server records are now being established. This might be
+<span class="lineNum">     275 </span>            :             // caused by a host name change. We need to wait for our own records
+<span class="lineNum">     276 </span>            :             // to register until the host name is properly established.
+<span class="lineNum">     277 </span>            :             throw std::runtime_error(
+<span class="lineNum">     278 </span><span class="lineNoCov">          0 :                 &quot;Unimplemented AVAHI_CLIENT_S_REGISTERING event&quot; );</span>
+<span class="lineNum">     279 </span>            :             // withdraw &amp; _createServices ?
+<span class="lineNum">     280 </span>            :             break;
+<span class="lineNum">     281 </span>            : 
+<span class="lineNum">     282 </span>            :         case AVAHI_CLIENT_CONNECTING:
+<span class="lineNum">     283 </span>            :             /*nop*/;
+<span class="lineNum">     284 </span>            :         }
+<span class="lineNum">     285 </span><span class="lineCov">          4 :     }</span>
+<a name="286"><span class="lineNum">     286 </span>            : </a>
+<span class="lineNum">     287 </span>            :     // Browsing
+<span class="lineNum">     288 </span><span class="lineNoCov">          0 :     static void _browseCBS( AvahiServiceBrowser*, AvahiIfIndex ifIndex,</span>
+<span class="lineNum">     289 </span>            :                             AvahiProtocol protocol, AvahiBrowserEvent event,
+<span class="lineNum">     290 </span>            :                             const char* name, const char* type,
+<span class="lineNum">     291 </span>            :                             const char* domain, AvahiLookupResultFlags,
+<span class="lineNum">     292 </span>            :                             void* servus )
+<span class="lineNum">     293 </span>            :     {
+<span class="lineNum">     294 </span>            :         ((Servus*)servus)-&gt;_browseCB( ifIndex, protocol, event, name, type,
+<span class="lineNum">     295 </span><span class="lineNoCov">          0 :                                       domain );</span>
+<a name="296"><span class="lineNum">     296 </span><span class="lineNoCov">          0 :     }</span></a>
+<span class="lineNum">     297 </span>            : 
+<span class="lineNum">     298 </span><span class="lineNoCov">          0 :     void _browseCB( const AvahiIfIndex ifIndex, const AvahiProtocol protocol,</span>
+<span class="lineNum">     299 </span>            :                     const AvahiBrowserEvent event, const char* name,
+<span class="lineNum">     300 </span>            :                     const char* type, const char* domain )
+<span class="lineNum">     301 </span>            :     {
+<span class="lineNum">     302 </span><span class="lineNoCov">          0 :         switch( event )</span>
+<span class="lineNum">     303 </span>            :         {
+<span class="lineNum">     304 </span>            :         case AVAHI_BROWSER_FAILURE:
+<span class="lineNum">     305 </span><span class="lineNoCov">          0 :             _result = avahi_client_errno( _client );</span>
+<span class="lineNum">     306 </span><span class="lineNoCov">          0 :             WARN &lt;&lt; &quot;Browser failure: &quot; &lt;&lt; avahi_strerror( _result )</span>
+<span class="lineNum">     307 </span><span class="lineNoCov">          0 :                  &lt;&lt; std::endl;</span>
+<span class="lineNum">     308 </span><span class="lineNoCov">          0 :             avahi_simple_poll_quit( _poll );</span>
+<span class="lineNum">     309 </span><span class="lineNoCov">          0 :             break;</span>
+<span class="lineNum">     310 </span>            : 
+<span class="lineNum">     311 </span>            :         case AVAHI_BROWSER_NEW:
+<span class="lineNum">     312 </span>            :             // We ignore the returned resolver object. In the callback function
+<span class="lineNum">     313 </span>            :             // we free it. If the server is terminated before the callback
+<span class="lineNum">     314 </span>            :             // function is called the server will free the resolver for us.
+<span class="lineNum">     315 </span><span class="lineNoCov">          0 :             if( !avahi_service_resolver_new( _client, ifIndex, protocol, name,</span>
+<span class="lineNum">     316 </span>            :                                              type, domain, AVAHI_PROTO_UNSPEC,
+<span class="lineNum">     317 </span>            :                                              (AvahiLookupFlags)(0),
+<span class="lineNum">     318 </span><span class="lineNoCov">          0 :                                              _resolveCBS, this ))</span>
+<span class="lineNum">     319 </span>            :             {
+<span class="lineNum">     320 </span><span class="lineNoCov">          0 :                 _result = avahi_client_errno( _client );</span>
+<span class="lineNum">     321 </span><span class="lineNoCov">          0 :                 WARN &lt;&lt; &quot;Error creating resolver: &quot;</span>
+<span class="lineNum">     322 </span><span class="lineNoCov">          0 :                      &lt;&lt; avahi_strerror( _result ) &lt;&lt; std::endl;</span>
+<span class="lineNum">     323 </span><span class="lineNoCov">          0 :                 avahi_simple_poll_quit( _poll );</span>
+<span class="lineNum">     324 </span><span class="lineNoCov">          0 :                 break;</span>
+<span class="lineNum">     325 </span>            :             }
+<span class="lineNum">     326 </span>            : 
+<span class="lineNum">     327 </span>            :         case AVAHI_BROWSER_REMOVE:
+<span class="lineNum">     328 </span><span class="lineNoCov">          0 :             _instanceMap.erase( name );</span>
+<span class="lineNum">     329 </span><span class="lineNoCov">          0 :             for( detail::Listeners::iterator i = _listeners.begin();</span>
+<span class="lineNum">     330 </span><span class="lineNoCov">          0 :                  i != _listeners.end(); ++i )</span>
+<span class="lineNum">     331 </span>            :             {
+<span class="lineNum">     332 </span><span class="lineNoCov">          0 :                 (*i)-&gt;instanceRemoved( name );</span>
+<span class="lineNum">     333 </span>            :             }
+<span class="lineNum">     334 </span><span class="lineNoCov">          0 :             break;</span>
+<span class="lineNum">     335 </span>            : 
+<span class="lineNum">     336 </span>            :         case AVAHI_BROWSER_ALL_FOR_NOW:
+<span class="lineNum">     337 </span>            :         case AVAHI_BROWSER_CACHE_EXHAUSTED:
+<span class="lineNum">     338 </span><span class="lineNoCov">          0 :             _result = servus::Result::SUCCESS;</span>
+<span class="lineNum">     339 </span><span class="lineNoCov">          0 :             break;</span>
+<span class="lineNum">     340 </span>            :         }
+<a name="341"><span class="lineNum">     341 </span><span class="lineNoCov">          0 :     }</span></a>
+<span class="lineNum">     342 </span>            : 
+<span class="lineNum">     343 </span><span class="lineNoCov">          0 :     static void _resolveCBS( AvahiServiceResolver* resolver,</span>
+<span class="lineNum">     344 </span>            :                              AvahiIfIndex, AvahiProtocol,
+<span class="lineNum">     345 </span>            :                              AvahiResolverEvent event, const char* name,
+<span class="lineNum">     346 </span>            :                              const char*, const char*,
+<span class="lineNum">     347 </span>            :                              const char* host, const AvahiAddress*,
+<span class="lineNum">     348 </span>            :                              uint16_t, AvahiStringList *txt,
+<span class="lineNum">     349 </span>            :                              AvahiLookupResultFlags, void* servus )
+<span class="lineNum">     350 </span>            :     {
+<span class="lineNum">     351 </span><span class="lineNoCov">          0 :         ((Servus*)servus)-&gt;_resolveCB( resolver, event, name, host, txt );</span>
+<a name="352"><span class="lineNum">     352 </span><span class="lineNoCov">          0 :     }</span></a>
+<span class="lineNum">     353 </span>            : 
+<span class="lineNum">     354 </span><span class="lineNoCov">          0 :     void _resolveCB( AvahiServiceResolver* resolver,</span>
+<span class="lineNum">     355 </span>            :                      const AvahiResolverEvent event, const char* name,
+<span class="lineNum">     356 </span>            :                      const char* host, AvahiStringList *txt )
+<span class="lineNum">     357 </span>            :     {
+<span class="lineNum">     358 </span>            :         // If browsing through the local interface,
+<span class="lineNum">     359 </span>            :         // consider only the local instances
+<span class="lineNum">     360 </span><span class="lineNoCov">          0 :         if( _scope == servus::Servus::IF_LOCAL )</span>
+<span class="lineNum">     361 </span>            :         {
+<span class="lineNum">     362 </span><span class="lineNoCov">          0 :             const std::string&amp; hostStr( host );</span>
+<span class="lineNum">     363 </span>            :             // host in &quot;hostname.local&quot; format
+<span class="lineNum">     364 </span><span class="lineNoCov">          0 :             const size_t pos = hostStr.find_last_of( &quot;.&quot; );</span>
+<span class="lineNum">     365 </span><span class="lineNoCov">          0 :             const std::string hostName = hostStr.substr( 0, pos );</span>
+<span class="lineNum">     366 </span>            : 
+<span class="lineNum">     367 </span><span class="lineNoCov">          0 :             const std::string&amp; localHost = getHostname();</span>
+<span class="lineNum">     368 </span>            :             // omit the domain for the local hostname
+<span class="lineNum">     369 </span><span class="lineNoCov">          0 :             if( hostName != localHost.substr( 0,</span>
+<span class="lineNum">     370 </span>            :                                               localHost.find_first_of( &quot;.&quot; )))
+<span class="lineNum">     371 </span><span class="lineNoCov">          0 :                 return;</span>
+<span class="lineNum">     372 </span>            :         }
+<span class="lineNum">     373 </span>            : 
+<span class="lineNum">     374 </span><span class="lineNoCov">          0 :         switch( event )</span>
+<span class="lineNum">     375 </span>            :         {
+<span class="lineNum">     376 </span>            :         case AVAHI_RESOLVER_FAILURE:
+<span class="lineNum">     377 </span><span class="lineNoCov">          0 :             _result = avahi_client_errno( _client );</span>
+<span class="lineNum">     378 </span><span class="lineNoCov">          0 :             WARN &lt;&lt; &quot;Resolver error: &quot; &lt;&lt; avahi_strerror( _result )</span>
+<span class="lineNum">     379 </span><span class="lineNoCov">          0 :                  &lt;&lt; std::endl;</span>
+<span class="lineNum">     380 </span><span class="lineNoCov">          0 :             break;</span>
+<span class="lineNum">     381 </span>            : 
+<span class="lineNum">     382 </span>            :         case AVAHI_RESOLVER_FOUND:
+<span class="lineNum">     383 </span>            :             {
+<span class="lineNum">     384 </span><span class="lineNoCov">          0 :                 detail::ValueMap&amp; values = _instanceMap[ name ];</span>
+<span class="lineNum">     385 </span><span class="lineNoCov">          0 :                 values[ &quot;servus_host&quot; ] = host;</span>
+<span class="lineNum">     386 </span><span class="lineNoCov">          0 :                 for( ; txt; txt = txt-&gt;next )</span>
+<span class="lineNum">     387 </span>            :                 {
+<span class="lineNum">     388 </span>            :                     const std::string entry(
+<span class="lineNum">     389 </span>            :                                 reinterpret_cast&lt; const char* &gt;( txt-&gt;text ),
+<span class="lineNum">     390 </span><span class="lineNoCov">          0 :                                 txt-&gt;size );</span>
+<span class="lineNum">     391 </span><span class="lineNoCov">          0 :                     const size_t pos = entry.find_first_of( &quot;=&quot; );</span>
+<span class="lineNum">     392 </span><span class="lineNoCov">          0 :                     const std::string key = entry.substr( 0, pos );</span>
+<span class="lineNum">     393 </span><span class="lineNoCov">          0 :                     const std::string value = entry.substr( pos + 1 );</span>
+<span class="lineNum">     394 </span><span class="lineNoCov">          0 :                     values[ key ] = value;</span>
+<span class="lineNum">     395 </span><span class="lineNoCov">          0 :                 }</span>
+<span class="lineNum">     396 </span><span class="lineNoCov">          0 :                 for( detail::Listeners::iterator i = _listeners.begin();</span>
+<span class="lineNum">     397 </span><span class="lineNoCov">          0 :                      i != _listeners.end(); ++i )</span>
+<span class="lineNum">     398 </span>            :                 {
+<span class="lineNum">     399 </span><span class="lineNoCov">          0 :                     (*i)-&gt;instanceAdded( name );</span>
+<span class="lineNum">     400 </span>            :                 }
+<span class="lineNum">     401 </span><span class="lineNoCov">          0 :             } break;</span>
+<span class="lineNum">     402 </span>            :         }
+<span class="lineNum">     403 </span>            : 
+<span class="lineNum">     404 </span><span class="lineNoCov">          0 :         avahi_service_resolver_free( resolver );</span>
+<a name="405"><span class="lineNum">     405 </span>            :     }</a>
+<span class="lineNum">     406 </span>            : 
+<span class="lineNum">     407 </span><span class="lineCov">          8 :     void _updateRecord() final</span>
+<span class="lineNum">     408 </span>            :     {
+<span class="lineNum">     409 </span><span class="lineCov">          8 :         if( _announce.empty() || !_announcable )</span>
+<span class="lineNum">     410 </span><span class="lineCov">         16 :             return;</span>
+<span class="lineNum">     411 </span>            : 
+<span class="lineNum">     412 </span><span class="lineNoCov">          0 :         if( _group )</span>
+<span class="lineNum">     413 </span><span class="lineNoCov">          0 :             avahi_entry_group_reset( _group );</span>
+<span class="lineNum">     414 </span><span class="lineNoCov">          0 :         _createServices();</span>
+<a name="415"><span class="lineNum">     415 </span>            :     }</a>
+<span class="lineNum">     416 </span>            : 
+<span class="lineNum">     417 </span><span class="lineCov">          2 :     void _createServices()</span>
+<span class="lineNum">     418 </span>            :     {
+<span class="lineNum">     419 </span><span class="lineCov">          2 :         if( !_group )</span>
+<span class="lineNum">     420 </span><span class="lineCov">          2 :             _group = avahi_entry_group_new( _client, _groupCBS, this );</span>
+<span class="lineNum">     421 </span>            :         else
+<span class="lineNum">     422 </span><span class="lineNoCov">          0 :             avahi_entry_group_reset( _group );</span>
+<span class="lineNum">     423 </span>            : 
+<span class="lineNum">     424 </span><span class="lineCov">          2 :         if( !_group )</span>
+<span class="lineNum">     425 </span><span class="lineNoCov">          0 :             return;</span>
+<span class="lineNum">     426 </span>            : 
+<span class="lineNum">     427 </span><span class="lineCov">          2 :         AvahiStringList* data = 0;</span>
+<span class="lineNum">     428 </span><span class="lineCov">         10 :         for( detail::ValueMapCIter i = _data.begin(); i != _data.end(); ++i )</span>
+<span class="lineNum">     429 </span><span class="lineCov">          8 :             data = avahi_string_list_add_pair( data, i-&gt;first.c_str(),</span>
+<span class="lineNum">     430 </span><span class="lineCov">         16 :                                                i-&gt;second.c_str( ));</span>
+<span class="lineNum">     431 </span>            : 
+<span class="lineNum">     432 </span>            :         _result = avahi_entry_group_add_service_strlst(
+<span class="lineNum">     433 </span>            :             _group, AVAHI_IF_UNSPEC, AVAHI_PROTO_UNSPEC,
+<span class="lineNum">     434 </span>            :                 (AvahiPublishFlags)(0), _announce.c_str(), _name.c_str(), 0, 0,
+<span class="lineNum">     435 </span><span class="lineCov">          2 :                 _port, data );</span>
+<span class="lineNum">     436 </span>            : 
+<span class="lineNum">     437 </span><span class="lineCov">          2 :         if( data )</span>
+<span class="lineNum">     438 </span><span class="lineCov">          2 :             avahi_string_list_free( data );</span>
+<span class="lineNum">     439 </span>            : 
+<span class="lineNum">     440 </span><span class="lineCov">          2 :         if( _result != servus::Result::SUCCESS )</span>
+<span class="lineNum">     441 </span>            :         {
+<span class="lineNum">     442 </span><span class="lineNoCov">          0 :             avahi_simple_poll_quit( _poll );</span>
+<span class="lineNum">     443 </span><span class="lineNoCov">          0 :             return;</span>
+<span class="lineNum">     444 </span>            :         }
+<span class="lineNum">     445 </span>            : 
+<span class="lineNum">     446 </span><span class="lineCov">          2 :         _result = avahi_entry_group_commit( _group );</span>
+<span class="lineNum">     447 </span><span class="lineCov">          2 :         if( _result != servus::Result::SUCCESS )</span>
+<span class="lineNum">     448 </span><span class="lineNoCov">          0 :             avahi_simple_poll_quit( _poll );</span>
+<a name="449"><span class="lineNum">     449 </span>            :     }</a>
+<span class="lineNum">     450 </span>            : 
+<span class="lineNum">     451 </span><span class="lineCov">          2 :     static void _groupCBS( AvahiEntryGroup*, AvahiEntryGroupState state,</span>
+<span class="lineNum">     452 </span>            :                            void* servus )
+<span class="lineNum">     453 </span>            :     {
+<span class="lineNum">     454 </span><span class="lineCov">          2 :         ((Servus*)servus)-&gt;_groupCB( state );</span>
+<a name="455"><span class="lineNum">     455 </span><span class="lineCov">          2 :     }</span></a>
+<span class="lineNum">     456 </span>            : 
+<span class="lineNum">     457 </span><span class="lineCov">          2 :     void _groupCB( const AvahiEntryGroupState state )</span>
+<span class="lineNum">     458 </span>            :     {
+<span class="lineNum">     459 </span><span class="lineCov">          2 :         switch( state )</span>
+<span class="lineNum">     460 </span>            :         {
+<span class="lineNum">     461 </span>            :         case AVAHI_ENTRY_GROUP_ESTABLISHED:
+<span class="lineNum">     462 </span><span class="lineNoCov">          0 :             break;</span>
+<span class="lineNum">     463 </span>            : 
+<span class="lineNum">     464 </span>            :         case AVAHI_ENTRY_GROUP_COLLISION:
+<span class="lineNum">     465 </span>            :         case AVAHI_ENTRY_GROUP_FAILURE:
+<span class="lineNum">     466 </span><span class="lineNoCov">          0 :             _result = EEXIST;</span>
+<span class="lineNum">     467 </span><span class="lineNoCov">          0 :             avahi_simple_poll_quit( _poll );</span>
+<span class="lineNum">     468 </span><span class="lineNoCov">          0 :             break;</span>
+<span class="lineNum">     469 </span>            : 
+<span class="lineNum">     470 </span>            :         case AVAHI_ENTRY_GROUP_UNCOMMITED:
+<span class="lineNum">     471 </span>            :         case AVAHI_ENTRY_GROUP_REGISTERING:
+<span class="lineNum">     472 </span>            :             /*nop*/ ;
+<span class="lineNum">     473 </span>            :         }
+<span class="lineNum">     474 </span><span class="lineCov">          2 :     }</span>
+<span class="lineNum">     475 </span>            : };
+<span class="lineNum">     476 </span>            : 
+<span class="lineNum">     477 </span>            : }
+<span class="lineNum">     478 </span>            : }
+</pre>
+      </td>
+    </tr>
+  </table>
+  <br>
+
+  <table width="100%" border=0 cellspacing=0 cellpadding=0>
+    <tr><td class="ruler"><img src="../../../glass.png" width=3 height=3 alt=""></td></tr>
+    <tr><td class="versionInfo">Generated by: <a href="http://ltp.sourceforge.net/coverage/lcov.php" target="_parent">LCOV version 1.11</a></td></tr>
+  </table>
+  <br>
+
+</body>
+</html>

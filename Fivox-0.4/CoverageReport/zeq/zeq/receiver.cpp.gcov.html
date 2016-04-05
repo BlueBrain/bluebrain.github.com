@@ -1,0 +1,251 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+
+<html lang="en">
+
+<head>
+  <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+  <title>LCOV - Fivox - zeq/zeq/receiver.cpp</title>
+  <link rel="stylesheet" type="text/css" href="../../gcov.css">
+</head>
+
+<body>
+
+  <table width="100%" border=0 cellspacing=0 cellpadding=0>
+    <tr><td class="title">LCOV - code coverage report</td></tr>
+    <tr><td class="ruler"><img src="../../glass.png" width=3 height=3 alt=""></td></tr>
+
+    <tr>
+      <td width="100%">
+        <table cellpadding=1 border=0 width="100%">
+          <tr>
+            <td width="10%" class="headerItem">Current view:</td>
+            <td width="35%" class="headerValue"><a href="../../index.html">top level</a> - <a href="index.html">zeq/zeq</a> - receiver.cpp<span style="font-size: 80%;"> (source / <a href="receiver.cpp.func-sort-c.html">functions</a>)</span></td>
+            <td width="5%"></td>
+            <td width="15%"></td>
+            <td width="10%" class="headerCovTableHead">Hit</td>
+            <td width="10%" class="headerCovTableHead">Total</td>
+            <td width="15%" class="headerCovTableHead">Coverage</td>
+          </tr>
+          <tr>
+            <td class="headerItem">Test:</td>
+            <td class="headerValue">Fivox</td>
+            <td></td>
+            <td class="headerItem">Lines:</td>
+            <td class="headerCovTableEntry">60</td>
+            <td class="headerCovTableEntry">77</td>
+            <td class="headerCovTableEntryMed">77.9 %</td>
+          </tr>
+          <tr>
+            <td class="headerItem">Date:</td>
+            <td class="headerValue">2016-04-05 17:13:52</td>
+            <td></td>
+            <td class="headerItem">Functions:</td>
+            <td class="headerCovTableEntry">13</td>
+            <td class="headerCovTableEntry">16</td>
+            <td class="headerCovTableEntryHi">81.2 %</td>
+          </tr>
+          <tr><td><img src="../../glass.png" width=3 height=3 alt=""></td></tr>
+        </table>
+      </td>
+    </tr>
+
+    <tr><td class="ruler"><img src="../../glass.png" width=3 height=3 alt=""></td></tr>
+  </table>
+
+  <table cellpadding=0 cellspacing=0 border=0>
+    <tr>
+      <td><br></td>
+    </tr>
+    <tr>
+      <td>
+<pre class="sourceHeading">          Line data    Source code</pre>
+<pre class="source">
+<a name="1"><span class="lineNum">       1 </span>            : </a>
+<span class="lineNum">       2 </span>            : /* Copyright (c) 2014, Human Brain Project
+<span class="lineNum">       3 </span>            :  *                     Daniel Nachbaur &lt;daniel.nachbaur@epfl.ch&gt;
+<span class="lineNum">       4 </span>            :  *                     Stefan.Eilemann@epfl.ch
+<span class="lineNum">       5 </span>            :  */
+<span class="lineNum">       6 </span>            : 
+<span class="lineNum">       7 </span>            : #define NOMINMAX // otherwise std::min/max below don't work on VS
+<span class="lineNum">       8 </span>            : 
+<span class="lineNum">       9 </span>            : #include &quot;receiver.h&quot;
+<span class="lineNum">      10 </span>            : #include &quot;log.h&quot;
+<span class="lineNum">      11 </span>            : #include &quot;detail/socket.h&quot;
+<span class="lineNum">      12 </span>            : 
+<span class="lineNum">      13 </span>            : #include &lt;algorithm&gt;
+<span class="lineNum">      14 </span>            : #include &lt;chrono&gt;
+<span class="lineNum">      15 </span>            : #include &lt;deque&gt;
+<span class="lineNum">      16 </span>            : #include &lt;stdexcept&gt;
+<span class="lineNum">      17 </span>            : 
+<span class="lineNum">      18 </span>            : namespace zeq
+<span class="lineNum">      19 </span>            : {
+<span class="lineNum">      20 </span>            : namespace detail
+<span class="lineNum">      21 </span>            : {
+<span class="lineNum">      22 </span>            : class Receiver
+<a name="23"><span class="lineNum">      23 </span>            : {</a>
+<span class="lineNum">      24 </span>            : public:
+<span class="lineNum">      25 </span><span class="lineCov">          2 :     Receiver()</span>
+<span class="lineNum">      26 </span><span class="lineCov">          2 :         : _context( zmq_ctx_new( ))</span>
+<a name="27"><span class="lineNum">      27 </span><span class="lineCov">          2 :     {}</span></a>
+<span class="lineNum">      28 </span>            : 
+<span class="lineNum">      29 </span><span class="lineCov">          2 :     ~Receiver()</span>
+<span class="lineNum">      30 </span><span class="lineCov">          2 :     {</span>
+<span class="lineNum">      31 </span><span class="lineCov">          2 :         zmq_ctx_destroy( _context );</span>
+<a name="32"><span class="lineNum">      32 </span><span class="lineCov">          2 :     }</span></a>
+<span class="lineNum">      33 </span>            : 
+<span class="lineNum">      34 </span><span class="lineCov">          2 :     void add( ::zeq::Receiver* receiver )</span>
+<span class="lineNum">      35 </span>            :     {
+<span class="lineNum">      36 </span><span class="lineCov">          2 :         _shared.push_back( receiver );</span>
+<a name="37"><span class="lineNum">      37 </span><span class="lineCov">          2 :     }</span></a>
+<span class="lineNum">      38 </span>            : 
+<span class="lineNum">      39 </span><span class="lineCov">          2 :     void remove( ::zeq::Receiver* receiver )</span>
+<span class="lineNum">      40 </span>            :     {
+<span class="lineNum">      41 </span>            :         _shared.erase( std::remove( _shared.begin(), _shared.end(), receiver ),
+<span class="lineNum">      42 </span><span class="lineCov">          2 :                        _shared.end( ));</span>
+<a name="43"><span class="lineNum">      43 </span><span class="lineCov">          2 :     }</span></a>
+<span class="lineNum">      44 </span>            : 
+<span class="lineNum">      45 </span><span class="lineCov">         32 :     bool receive( const uint32_t timeout )</span>
+<span class="lineNum">      46 </span>            :     {
+<span class="lineNum">      47 </span><span class="lineCov">         32 :         if( timeout == TIMEOUT_INDEFINITE )</span>
+<span class="lineNum">      48 </span><span class="lineNoCov">          0 :             return _receive();</span>
+<span class="lineNum">      49 </span>            : 
+<span class="lineNum">      50 </span>            :         // Never fully block. Give receivers a chance to update, e.g., to check
+<span class="lineNum">      51 </span>            :         // for new connections from zeroconf (#20)
+<span class="lineNum">      52 </span><span class="lineCov">         32 :         const uint32_t block = std::min( 1000u, timeout / 10 );</span>
+<span class="lineNum">      53 </span>            : 
+<span class="lineNum">      54 </span><span class="lineCov">         32 :         const auto startTime = std::chrono::high_resolution_clock::now();</span>
+<span class="lineNum">      55 </span>            :         while( true )
+<span class="lineNum">      56 </span>            :         {
+<span class="lineNum">      57 </span><span class="lineCov">         64 :             for( ::zeq::Receiver* receiver : _shared )</span>
+<span class="lineNum">      58 </span><span class="lineCov">         32 :                 receiver-&gt;update();</span>
+<span class="lineNum">      59 </span>            : 
+<span class="lineNum">      60 </span><span class="lineCov">         32 :             const auto endTime = std::chrono::high_resolution_clock::now();</span>
+<span class="lineNum">      61 </span>            :             const uint32_t elapsed =
+<span class="lineNum">      62 </span><span class="lineCov">         64 :                 std::chrono::nanoseconds( endTime - startTime ).count() /</span>
+<span class="lineNum">      63 </span><span class="lineCov">         32 :                 1000000;</span>
+<span class="lineNum">      64 </span><span class="lineCov">         32 :             uint32_t wait = 0;</span>
+<span class="lineNum">      65 </span><span class="lineCov">         32 :             if( elapsed &lt; timeout )</span>
+<span class="lineNum">      66 </span><span class="lineNoCov">          0 :                 wait = std::min( timeout - uint32_t( elapsed ), block );</span>
+<span class="lineNum">      67 </span>            : 
+<span class="lineNum">      68 </span><span class="lineCov">         32 :             if( _receive( wait ))</span>
+<span class="lineNum">      69 </span><span class="lineCov">         44 :                 return true;</span>
+<span class="lineNum">      70 </span>            : 
+<span class="lineNum">      71 </span><span class="lineCov">         20 :             if( elapsed &gt;= timeout )</span>
+<span class="lineNum">      72 </span><span class="lineCov">         20 :                 return false;</span>
+<span class="lineNum">      73 </span><span class="lineNoCov">          0 :         }</span>
+<a name="74"><span class="lineNum">      74 </span>            :     }</a>
+<span class="lineNum">      75 </span>            : 
+<span class="lineNum">      76 </span><span class="lineCov">         34 :     void* getZMQContext() { return _context; }</span>
+<span class="lineNum">      77 </span>            : 
+<span class="lineNum">      78 </span>            : private:
+<span class="lineNum">      79 </span>            :     void* _context;
+<span class="lineNum">      80 </span>            :     typedef std::vector&lt; ::zeq::Receiver* &gt; Receivers;
+<span class="lineNum">      81 </span>            :     typedef Receivers::iterator ReceiversIter;
+<span class="lineNum">      82 </span>            : 
+<a name="83"><span class="lineNum">      83 </span>            :     Receivers _shared;</a>
+<span class="lineNum">      84 </span>            : 
+<span class="lineNum">      85 </span><span class="lineNoCov">          0 :     bool _receive()</span>
+<span class="lineNum">      86 </span>            :     {
+<span class="lineNum">      87 </span>            :         while( true )
+<span class="lineNum">      88 </span>            :         {
+<span class="lineNum">      89 </span><span class="lineNoCov">          0 :             for( ::zeq::Receiver* receiver : _shared )</span>
+<span class="lineNum">      90 </span><span class="lineNoCov">          0 :                 receiver-&gt;update();</span>
+<span class="lineNum">      91 </span>            : 
+<span class="lineNum">      92 </span>            :             // Never fully block. Give receivers a chance to update, e.g., to
+<span class="lineNum">      93 </span>            :             // check for new connections from zeroconf (#20)
+<span class="lineNum">      94 </span><span class="lineNoCov">          0 :             if( _receive( 1000 ))</span>
+<span class="lineNum">      95 </span><span class="lineNoCov">          0 :                 return true;</span>
+<span class="lineNum">      96 </span><span class="lineNoCov">          0 :         }</span>
+<a name="97"><span class="lineNum">      97 </span>            :     }</a>
+<span class="lineNum">      98 </span>            : 
+<span class="lineNum">      99 </span><span class="lineCov">         32 :     bool _receive( const uint32_t timeout )</span>
+<span class="lineNum">     100 </span>            :     {
+<span class="lineNum">     101 </span><span class="lineCov">         32 :         std::vector&lt; Socket &gt; sockets;</span>
+<span class="lineNum">     102 </span><span class="lineCov">         64 :         std::deque&lt; size_t &gt; intervals;</span>
+<span class="lineNum">     103 </span><span class="lineCov">         64 :         for( ::zeq::Receiver* receiver : _shared )</span>
+<span class="lineNum">     104 </span>            :         {
+<span class="lineNum">     105 </span><span class="lineCov">         32 :             const size_t before = sockets.size();</span>
+<span class="lineNum">     106 </span><span class="lineCov">         32 :             receiver-&gt;addSockets( sockets );</span>
+<span class="lineNum">     107 </span><span class="lineCov">         32 :             intervals.push_back( sockets.size() - before );</span>
+<span class="lineNum">     108 </span>            :         }
+<span class="lineNum">     109 </span>            : 
+<span class="lineNum">     110 </span><span class="lineCov">         64 :         switch( zmq_poll( sockets.data(), int( sockets.size( )),</span>
+<span class="lineNum">     111 </span><span class="lineCov">         64 :                           timeout == TIMEOUT_INDEFINITE ? -1 : timeout ))</span>
+<span class="lineNum">     112 </span>            :         {
+<span class="lineNum">     113 </span>            :         case -1: // error
+<span class="lineNum">     114 </span><span class="lineNoCov">          0 :             ZEQTHROW( std::runtime_error( std::string( &quot;Poll error: &quot; ) +</span>
+<span class="lineNum">     115 </span>            :                                           zmq_strerror( zmq_errno( ))));
+<span class="lineNum">     116 </span>            :         case 0: // timeout; no events signaled during poll
+<span class="lineNum">     117 </span><span class="lineCov">         20 :             return false;</span>
+<span class="lineNum">     118 </span>            : 
+<span class="lineNum">     119 </span>            :         default:
+<span class="lineNum">     120 </span>            :         {
+<span class="lineNum">     121 </span>            :             // For each event, find the subscriber which supplied the socket and
+<span class="lineNum">     122 </span>            :             // inform it in case there is data on the socket. We saved #sockets
+<span class="lineNum">     123 </span>            :             // for each subscriber above and track them down here as we iterate
+<span class="lineNum">     124 </span>            :             // over all sockets:
+<span class="lineNum">     125 </span><span class="lineCov">         12 :             ReceiversIter i = _shared.begin();</span>
+<span class="lineNum">     126 </span><span class="lineCov">         12 :             size_t interval = intervals.front();</span>
+<span class="lineNum">     127 </span><span class="lineCov">         12 :             intervals.pop_front();</span>
+<span class="lineNum">     128 </span>            : 
+<span class="lineNum">     129 </span><span class="lineCov">         24 :             for( Socket&amp; socket : sockets )</span>
+<span class="lineNum">     130 </span>            :             {
+<span class="lineNum">     131 </span><span class="lineCov">         24 :                 while( interval == 0 || interval-- == 0 )</span>
+<span class="lineNum">     132 </span>            :                 {
+<span class="lineNum">     133 </span><span class="lineNoCov">          0 :                     ++i;</span>
+<span class="lineNum">     134 </span><span class="lineNoCov">          0 :                     interval = intervals.front();</span>
+<span class="lineNum">     135 </span><span class="lineNoCov">          0 :                     intervals.pop_front();</span>
+<span class="lineNum">     136 </span>            :                 }
+<span class="lineNum">     137 </span>            : 
+<span class="lineNum">     138 </span><span class="lineCov">         12 :                 if( socket.revents &amp; ZMQ_POLLIN )</span>
+<span class="lineNum">     139 </span><span class="lineCov">         12 :                     (*i)-&gt;process( socket );</span>
+<span class="lineNum">     140 </span>            :             }
+<span class="lineNum">     141 </span><span class="lineCov">         12 :             return true;</span>
+<span class="lineNum">     142 </span>            :         }
+<span class="lineNum">     143 </span><span class="lineCov">         32 :         }</span>
+<span class="lineNum">     144 </span>            :     }
+<span class="lineNum">     145 </span>            : };
+<a name="146"><span class="lineNum">     146 </span>            : }</a>
+<span class="lineNum">     147 </span>            : 
+<span class="lineNum">     148 </span><span class="lineCov">          2 : Receiver::Receiver()</span>
+<span class="lineNum">     149 </span><span class="lineCov">          2 :     : _impl( new detail::Receiver )</span>
+<span class="lineNum">     150 </span>            : {
+<span class="lineNum">     151 </span><span class="lineCov">          2 :     _impl-&gt;add( this );</span>
+<a name="152"><span class="lineNum">     152 </span><span class="lineCov">          2 : }</span></a>
+<span class="lineNum">     153 </span>            : 
+<span class="lineNum">     154 </span><span class="lineNoCov">          0 : Receiver::Receiver( Receiver&amp; shared )</span>
+<span class="lineNum">     155 </span><span class="lineNoCov">          0 :     : _impl( shared._impl )</span>
+<span class="lineNum">     156 </span>            : {
+<span class="lineNum">     157 </span><span class="lineNoCov">          0 :     _impl-&gt;add( this );</span>
+<a name="158"><span class="lineNum">     158 </span><span class="lineNoCov">          0 : }</span></a>
+<span class="lineNum">     159 </span>            : 
+<span class="lineNum">     160 </span><span class="lineCov">          4 : Receiver::~Receiver()</span>
+<span class="lineNum">     161 </span>            : {
+<span class="lineNum">     162 </span><span class="lineCov">          2 :     _impl-&gt;remove( this );</span>
+<a name="163"><span class="lineNum">     163 </span><span class="lineCov">          2 : }</span></a>
+<span class="lineNum">     164 </span>            : 
+<span class="lineNum">     165 </span><span class="lineCov">         32 : bool Receiver::receive( const uint32_t timeout )</span>
+<span class="lineNum">     166 </span>            : {
+<span class="lineNum">     167 </span><span class="lineCov">         32 :     return _impl-&gt;receive( timeout );</span>
+<a name="168"><span class="lineNum">     168 </span>            : }</a>
+<span class="lineNum">     169 </span>            : 
+<span class="lineNum">     170 </span><span class="lineCov">         34 : void* Receiver::getZMQContext()</span>
+<span class="lineNum">     171 </span>            : {
+<span class="lineNum">     172 </span><span class="lineCov">         34 :     return _impl-&gt;getZMQContext();</span>
+<a name="173"><span class="lineNum">     173 </span>            : }</a>
+<span class="lineNum">     174 </span>            : 
+<span class="lineNum">     175 </span><span class="lineCov">         24 : }</span>
+</pre>
+      </td>
+    </tr>
+  </table>
+  <br>
+
+  <table width="100%" border=0 cellspacing=0 cellpadding=0>
+    <tr><td class="ruler"><img src="../../glass.png" width=3 height=3 alt=""></td></tr>
+    <tr><td class="versionInfo">Generated by: <a href="http://ltp.sourceforge.net/coverage/lcov.php" target="_parent">LCOV version 1.11</a></td></tr>
+  </table>
+  <br>
+
+</body>
+</html>
