@@ -1,6 +1,6 @@
 var searchData=
 [
-  ['redesign_20of_20the_20spikereport_20and_20spikes_20container',['Redesign of the SpikeReport and Spikes container',['../md__gpfs_bbp_8cscs_8ch_home_chevtche_stable_brion__brion_doc_feature_spike_report.html',1,'']]],
+  ['redesign_20of_20the_20spikereport_20and_20spikes_20container',['Redesign of the SpikeReport and Spikes container',['../md__home_eilemann_config_8bbp__brion_doc_feature_spike_report.html',1,'']]],
   ['read',['read',['../classbrion_1_1_synapse.html#a62371ecb873ea2ff7be426306fb5d6db',1,'brion::Synapse::read()'],['../classbrion_1_1_synapse_summary.html#a1761a2a8a94c76762ce5312076568c90',1,'brion::SynapseSummary::read()']]],
   ['readapicals',['readApicals',['../classbrion_1_1_morphology.html#a8bc8172057581f9e03b72ab1da560eb7',1,'brion::Morphology::readApicals()'],['../classbrion_1_1_morphology_plugin.html#ad33e4fa8fc3e5b55613a958b82327d6f',1,'brion::MorphologyPlugin::readApicals()']]],
   ['readmode',['ReadMode',['../classbrion_1_1_spike_report.html#ad9af81cd27062d7bc7e88f262829ce3e',1,'brion::SpikeReport']]],

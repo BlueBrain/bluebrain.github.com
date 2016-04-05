@@ -16,5 +16,5 @@ var searchData=
   ['compartmentreportplugin',['CompartmentReportPlugin',['../classbrion_1_1_compartment_report_plugin.html',1,'brion']]],
   ['contains',['contains',['../classbrion_1_1_target.html#aa58924378a7389ae2a44867ce5e8be20',1,'brion::Target']]],
   ['coordinates',['Coordinates',['../classbrain_1_1_circuit.html#a1f220992f40a8759f34ef96da4041610',1,'brain::Circuit']]],
-  ['compartment_20report_20writing_20from_20mpi_20applications',['Compartment report writing from MPI applications',['../md__gpfs_bbp_8cscs_8ch_home_chevtche_stable_brion__brion_doc_feature_compartment_report_m_p_i.html',1,'']]]
+  ['compartment_20report_20writing_20from_20mpi_20applications',['Compartment report writing from MPI applications',['../md__home_eilemann_config_8bbp__brion_doc_feature_compartment_report_m_p_i.html',1,'']]]
 ];

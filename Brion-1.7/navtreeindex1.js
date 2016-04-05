@@ -1,6 +1,5 @@
 var NAVTREEINDEX1 =
 {
-"classbrion_1_1_morphology_plugin.html#a91ae737aac22e339203acfa2d563dbb0":[8,0,1,8,0],
 "classbrion_1_1_morphology_plugin.html#a981eb1b3077076874e4fe276dccbc064":[8,0,1,8,6],
 "classbrion_1_1_morphology_plugin.html#aa463ab7bb4ac29fe22fcaf095913dc4b":[8,0,1,8,8],
 "classbrion_1_1_morphology_plugin.html#ab83fc61f7379ea0ffc5b7c2c26db49df":[8,0,1,8,12],
@@ -213,8 +212,8 @@ var NAVTREEINDEX1 =
 "functions_c.html":[8,3,0,1],
 "functions_enum.html":[8,3,2],
 "functions_f.html":[8,3,0,2],
-"functions_func.html":[8,3,1],
 "functions_func.html":[8,3,1,0],
+"functions_func.html":[8,3,1],
 "functions_func_c.html":[8,3,1,1],
 "functions_func_f.html":[8,3,1,2],
 "functions_func_g.html":[8,3,1,3],
@@ -249,5 +248,6 @@ var NAVTREEINDEX1 =
 "index.html#Building":[2],
 "index.html#Features":[1],
 "index.html#Introduction":[0],
-"md__gpfs_bbp_8cscs_8ch_home_chevtche_stable_brion__brion_doc_feature_compartment_report_m_p_i.html":[4]
+"md__home_eilemann_config_8bbp__brion_doc_feature_compartment_report_m_p_i.html":[4],
+"md__home_eilemann_config_8bbp__brion_doc_feature_spike_report.html":[5]
 };

@@ -1,6 +1,5 @@
 var NAVTREEINDEX0 =
 {
-".html":[8,0,0,0],
 "_changelog.html":[3],
 "annotated.html":[8,0],
 "blue_config_8h_source.html":[9,0,2],
@@ -249,5 +248,6 @@ var NAVTREEINDEX0 =
 "classbrion_1_1_morphology_plugin.html#a18df5a3cda416dac5f6c8ad2b1ec9f43":[8,0,1,8,2],
 "classbrion_1_1_morphology_plugin.html#a5820e211cda2689b7e83b13d2d32c00d":[8,0,1,8,7],
 "classbrion_1_1_morphology_plugin.html#a66b542efcf23d913e49ce4489e314ef4":[8,0,1,8,10],
-"classbrion_1_1_morphology_plugin.html#a7e46021d144fc5dad9faa3e23ea0b20d":[8,0,1,8,3]
+"classbrion_1_1_morphology_plugin.html#a7e46021d144fc5dad9faa3e23ea0b20d":[8,0,1,8,3],
+"classbrion_1_1_morphology_plugin.html#a91ae737aac22e339203acfa2d563dbb0":[8,0,1,8,0]
 };

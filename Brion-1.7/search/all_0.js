@@ -2,8 +2,8 @@ var searchData=
 [
   ['api_2eh',['api.h',['../brion_2api_8h.html',1,'']]],
   ['api_2eh',['api.h',['../brain_2api_8h.html',1,'']]],
-  ['blueconfig',['BlueConfig',['../classbrion_1_1_blue_config.html#afbac59429e4019abf307e9f415efdace',1,'brion::BlueConfig']]],
   ['blueconfig',['BlueConfig',['../classbrion_1_1_blue_config.html',1,'brion']]],
+  ['blueconfig',['BlueConfig',['../classbrion_1_1_blue_config.html#afbac59429e4019abf307e9f415efdace',1,'brion::BlueConfig']]],
   ['brain',['brain',['../namespacebrain.html',1,'']]],
   ['brain_5fversion_5fabi',['BRAIN_VERSION_ABI',['../brain_2version_8h.html#a43f616dc38b671e3b6afa09ea65d6ed0',1,'version.h']]],
   ['brain_5fversion_5fge',['BRAIN_VERSION_GE',['../brain_2version_8h.html#a9846b2663aab194bf239ca7f7856a215',1,'version.h']]],
@@ -25,6 +25,7 @@ var searchData=
   ['brion_5fversion_5fpatch',['BRION_VERSION_PATCH',['../brion_2version_8h.html#ab7df48db132552459d856511d31fec71',1,'version.h']]],
   ['brion_5fversion_5frevision',['BRION_VERSION_REVISION',['../brion_2version_8h.html#a6044ab3ac01614da058254ed01b5b206',1,'version.h']]],
   ['defines_2eh',['defines.h',['../brion_2defines_8h.html',1,'']]],
+  ['neuron',['neuron',['../namespacebrain_1_1neuron.html',1,'brain']]],
   ['version_2eh',['version.h',['../brain_2version_8h.html',1,'']]],
   ['version_2eh',['version.h',['../brion_2version_8h.html',1,'']]]
 ];

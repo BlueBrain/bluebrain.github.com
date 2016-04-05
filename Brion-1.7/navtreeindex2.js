@@ -1,13 +1,15 @@
 var NAVTREEINDEX2 =
 {
-"md__gpfs_bbp_8cscs_8ch_home_chevtche_stable_brion__brion_doc_feature_spike_report.html":[5],
 "mesh_8h_source.html":[9,0,14],
 "morphology_plugin_8h_source.html":[9,0,17],
 "namespacebrain.html":[8,0,0],
 "namespacebrain.html":[7,0,0],
-"namespacebrion.html":[8,0,1],
+"namespacebrain_1_1neuron.html":[8,0,0,0],
+"namespacebrain_1_1neuron.html":[7,0,0,0],
 "namespacebrion.html":[7,0,1],
+"namespacebrion.html":[8,0,1],
 "namespaceenums.html":[7,0,2],
+"namespaceenums.html":[8,0,2],
 "namespacemembers.html":[7,1,0],
 "namespacemembers_func.html":[7,1,1],
 "namespacemembers_type.html":[7,1,3],
