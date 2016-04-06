@@ -6,7 +6,7 @@ var classlivre_1_1_l_o_d_node =
     [ "getAbsolutePosition", "classlivre_1_1_l_o_d_node.html#a7485ed533fe911e1337fdc04883d1611", null ],
     [ "getBlockSize", "classlivre_1_1_l_o_d_node.html#acbb0375e0458d74fc22d2edbc71ed8d4", null ],
     [ "getNodeId", "classlivre_1_1_l_o_d_node.html#ade7b069cb004366db643c06f20b927d5", null ],
-    [ "getRefLevel", "classlivre_1_1_l_o_d_node.html#a52ec306e37801d4d023658f5ee3a8e6a", null ],
+    [ "getRefLevel", "classlivre_1_1_l_o_d_node.html#ae08e05e94db5b43977747969e8a7fac2", null ],
     [ "getRelativePosition", "classlivre_1_1_l_o_d_node.html#a6ae4cffe00c659bcf2c3dc32643e8e1e", null ],
     [ "getVoxelBox", "classlivre_1_1_l_o_d_node.html#ad6f94287d0e1aa322b560a8f9d6c3150", null ],
     [ "getWorldBox", "classlivre_1_1_l_o_d_node.html#af0c1b5a3d325729b76953d482b652d95", null ],

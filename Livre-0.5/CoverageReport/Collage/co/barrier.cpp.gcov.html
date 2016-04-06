@@ -32,12 +32,12 @@
             <td></td>
             <td class="headerItem">Lines:</td>
             <td class="headerCovTableEntry">1</td>
-            <td class="headerCovTableEntry">162</td>
+            <td class="headerCovTableEntry">160</td>
             <td class="headerCovTableEntryLo">0.6 %</td>
           </tr>
           <tr>
             <td class="headerItem">Date:</td>
-            <td class="headerValue">2016-03-10 14:06:39</td>
+            <td class="headerValue">2016-04-06 15:42:20</td>
             <td></td>
             <td class="headerItem">Functions:</td>
             <td class="headerCovTableEntry">2</td>
@@ -111,7 +111,7 @@
 <span class="lineNum">      49 </span>            :     Nodes nodes;
 <span class="lineNum">      50 </span>            : };
 <span class="lineNum">      51 </span>            : 
-<span class="lineNum">      52 </span>            : typedef stde::hash_map&lt; uint128_t, Request &gt; RequestMap;
+<span class="lineNum">      52 </span>            : typedef std::unordered_map&lt; uint128_t, Request &gt; RequestMap;
 <span class="lineNum">      53 </span>            : typedef RequestMap::iterator RequestMapIter;
 <span class="lineNum">      54 </span>            : }
 <span class="lineNum">      55 </span>            : 
@@ -359,76 +359,74 @@
 <span class="lineNum">     297 </span><span class="lineNoCov">          0 :         _sendNotify( version, *i );</span>
 <span class="lineNum">     298 </span>            : 
 <span class="lineNum">     299 </span>            :     // delete node vector for version
-<span class="lineNum">     300 </span><span class="lineNoCov">          0 :     RequestMapIter i = _impl-&gt;enteredNodes.find( version );</span>
-<span class="lineNum">     301 </span><span class="lineNoCov">          0 :     LBASSERT( i != _impl-&gt;enteredNodes.end( ));</span>
-<span class="lineNum">     302 </span><span class="lineNoCov">          0 :     _impl-&gt;enteredNodes.erase( i );</span>
-<span class="lineNum">     303 </span><span class="lineNoCov">          0 :     return true;</span>
-<a name="304"><span class="lineNum">     304 </span>            : }</a>
-<span class="lineNum">     305 </span>            : 
-<span class="lineNum">     306 </span><span class="lineNoCov">          0 : void Barrier::_sendNotify( const uint128_t&amp; version, NodePtr node )</span>
-<span class="lineNum">     307 </span>            : {
-<span class="lineNum">     308 </span><span class="lineNoCov">          0 :     LB_TS_THREAD( _thread );</span>
-<span class="lineNum">     309 </span><span class="lineNoCov">          0 :     LBASSERTINFO( !_impl-&gt;master || _impl-&gt;master == getLocalNode(),</span>
-<span class="lineNum">     310 </span>            :                   _impl-&gt;master );
-<span class="lineNum">     311 </span>            : 
-<span class="lineNum">     312 </span><span class="lineNoCov">          0 :     if( node-&gt;isLocal( )) // OPT</span>
-<span class="lineNum">     313 </span>            :     {
-<span class="lineNum">     314 </span><span class="lineNoCov">          0 :         LBLOG( LOG_BARRIER ) &lt;&lt; &quot;Unlock local user(s)&quot; &lt;&lt; std::endl;</span>
-<span class="lineNum">     315 </span>            :         // the case where we receive a different version of the barrier meant
-<span class="lineNum">     316 </span>            :         // that previosly we have detect a timeout true negative
-<span class="lineNum">     317 </span><span class="lineNoCov">          0 :         if( version == getVersion() )</span>
-<span class="lineNum">     318 </span><span class="lineNoCov">          0 :             ++_impl-&gt;incarnation;</span>
-<span class="lineNum">     319 </span>            :     }
-<span class="lineNum">     320 </span>            :     else
-<span class="lineNum">     321 </span>            :     {
-<span class="lineNum">     322 </span><span class="lineNoCov">          0 :         LBLOG( LOG_BARRIER ) &lt;&lt; &quot;Unlock &quot; &lt;&lt; node &lt;&lt; std::endl;</span>
-<span class="lineNum">     323 </span><span class="lineNoCov">          0 :         send( node, CMD_BARRIER_ENTER_REPLY ) &lt;&lt; version;</span>
-<span class="lineNum">     324 </span>            :     }
-<a name="325"><span class="lineNum">     325 </span><span class="lineNoCov">          0 : }</span></a>
-<span class="lineNum">     326 </span>            : 
-<span class="lineNum">     327 </span><span class="lineNoCov">          0 : void Barrier::_cleanup( const uint64_t time )</span>
-<span class="lineNum">     328 </span>            : {
-<span class="lineNum">     329 </span><span class="lineNoCov">          0 :     LB_TS_THREAD( _thread );</span>
-<span class="lineNum">     330 </span><span class="lineNoCov">          0 :     LBASSERTINFO( !_impl-&gt;master || _impl-&gt;master == getLocalNode(),</span>
-<span class="lineNum">     331 </span>            :                   _impl-&gt;master );
-<span class="lineNum">     332 </span>            : 
-<span class="lineNum">     333 </span><span class="lineNoCov">          0 :     if( _impl-&gt;enteredNodes.size() &lt; 2 )</span>
-<span class="lineNum">     334 </span><span class="lineNoCov">          0 :         return;</span>
-<span class="lineNum">     335 </span>            : 
-<span class="lineNum">     336 </span><span class="lineNoCov">          0 :     for( RequestMapIter i = _impl-&gt;enteredNodes.begin();</span>
-<span class="lineNum">     337 </span><span class="lineNoCov">          0 :          i != _impl-&gt;enteredNodes.end(); ++i )</span>
-<span class="lineNum">     338 </span>            :     {
-<span class="lineNum">     339 </span><span class="lineNoCov">          0 :         Request&amp; cleanNodes = i-&gt;second;</span>
-<span class="lineNum">     340 </span>            : 
-<span class="lineNum">     341 </span><span class="lineNoCov">          0 :         if( cleanNodes.timeout == LB_TIMEOUT_INDEFINITE )</span>
-<span class="lineNum">     342 </span><span class="lineNoCov">          0 :             continue;</span>
-<span class="lineNum">     343 </span>            : 
-<span class="lineNum">     344 </span><span class="lineNoCov">          0 :         const uint32_t timeout = cleanNodes.timeout != LB_TIMEOUT_DEFAULT ?</span>
-<span class="lineNum">     345 </span>            :                         cleanNodes.timeout :
-<span class="lineNum">     346 </span><span class="lineNoCov">          0 :                         Global::getIAttribute( Global::IATTR_TIMEOUT_DEFAULT );</span>
-<span class="lineNum">     347 </span>            : 
-<span class="lineNum">     348 </span><span class="lineNoCov">          0 :         if( time &gt; cleanNodes.time + timeout )</span>
-<span class="lineNum">     349 </span>            :         {
-<span class="lineNum">     350 </span><span class="lineNoCov">          0 :             _impl-&gt;enteredNodes.erase( i );</span>
-<span class="lineNum">     351 </span><span class="lineNoCov">          0 :             return;</span>
-<span class="lineNum">     352 </span>            :         }
-<span class="lineNum">     353 </span>            :     }
-<a name="354"><span class="lineNum">     354 </span>            : }</a>
-<span class="lineNum">     355 </span>            : 
-<span class="lineNum">     356 </span><span class="lineNoCov">          0 : bool Barrier::_cmdEnterReply( ICommand&amp; cmd )</span>
-<span class="lineNum">     357 </span>            : {
-<span class="lineNum">     358 </span><span class="lineNoCov">          0 :     ObjectICommand command( cmd );</span>
-<span class="lineNum">     359 </span><span class="lineNoCov">          0 :     LB_TS_THREAD( _thread );</span>
-<span class="lineNum">     360 </span><span class="lineNoCov">          0 :     LBLOG( LOG_BARRIER ) &lt;&lt; &quot;Got ok, unlock local user(s)&quot; &lt;&lt; std::endl;</span>
-<span class="lineNum">     361 </span><span class="lineNoCov">          0 :     const uint128_t version = command.get&lt; uint128_t &gt;();</span>
-<span class="lineNum">     362 </span>            : 
-<span class="lineNum">     363 </span><span class="lineNoCov">          0 :     if( version == getVersion( ))</span>
-<span class="lineNum">     364 </span><span class="lineNoCov">          0 :         ++_impl-&gt;incarnation;</span>
-<span class="lineNum">     365 </span>            : 
-<span class="lineNum">     366 </span><span class="lineNoCov">          0 :     return true;</span>
-<a name="367"><span class="lineNum">     367 </span>            : }</a>
-<span class="lineNum">     368 </span>            : 
-<span class="lineNum">     369 </span><span class="lineCov">         60 : }</span>
+<span class="lineNum">     300 </span><span class="lineNoCov">          0 :     _impl-&gt;enteredNodes.erase( version );</span>
+<span class="lineNum">     301 </span><span class="lineNoCov">          0 :     return true;</span>
+<a name="302"><span class="lineNum">     302 </span>            : }</a>
+<span class="lineNum">     303 </span>            : 
+<span class="lineNum">     304 </span><span class="lineNoCov">          0 : void Barrier::_sendNotify( const uint128_t&amp; version, NodePtr node )</span>
+<span class="lineNum">     305 </span>            : {
+<span class="lineNum">     306 </span><span class="lineNoCov">          0 :     LB_TS_THREAD( _thread );</span>
+<span class="lineNum">     307 </span><span class="lineNoCov">          0 :     LBASSERTINFO( !_impl-&gt;master || _impl-&gt;master == getLocalNode(),</span>
+<span class="lineNum">     308 </span>            :                   _impl-&gt;master );
+<span class="lineNum">     309 </span>            : 
+<span class="lineNum">     310 </span><span class="lineNoCov">          0 :     if( node-&gt;isLocal( )) // OPT</span>
+<span class="lineNum">     311 </span>            :     {
+<span class="lineNum">     312 </span><span class="lineNoCov">          0 :         LBLOG( LOG_BARRIER ) &lt;&lt; &quot;Unlock local user(s)&quot; &lt;&lt; std::endl;</span>
+<span class="lineNum">     313 </span>            :         // the case where we receive a different version of the barrier meant
+<span class="lineNum">     314 </span>            :         // that previosly we have detect a timeout true negative
+<span class="lineNum">     315 </span><span class="lineNoCov">          0 :         if( version == getVersion() )</span>
+<span class="lineNum">     316 </span><span class="lineNoCov">          0 :             ++_impl-&gt;incarnation;</span>
+<span class="lineNum">     317 </span>            :     }
+<span class="lineNum">     318 </span>            :     else
+<span class="lineNum">     319 </span>            :     {
+<span class="lineNum">     320 </span><span class="lineNoCov">          0 :         LBLOG( LOG_BARRIER ) &lt;&lt; &quot;Unlock &quot; &lt;&lt; node &lt;&lt; std::endl;</span>
+<span class="lineNum">     321 </span><span class="lineNoCov">          0 :         send( node, CMD_BARRIER_ENTER_REPLY ) &lt;&lt; version;</span>
+<span class="lineNum">     322 </span>            :     }
+<a name="323"><span class="lineNum">     323 </span><span class="lineNoCov">          0 : }</span></a>
+<span class="lineNum">     324 </span>            : 
+<span class="lineNum">     325 </span><span class="lineNoCov">          0 : void Barrier::_cleanup( const uint64_t time )</span>
+<span class="lineNum">     326 </span>            : {
+<span class="lineNum">     327 </span><span class="lineNoCov">          0 :     LB_TS_THREAD( _thread );</span>
+<span class="lineNum">     328 </span><span class="lineNoCov">          0 :     LBASSERTINFO( !_impl-&gt;master || _impl-&gt;master == getLocalNode(),</span>
+<span class="lineNum">     329 </span>            :                   _impl-&gt;master );
+<span class="lineNum">     330 </span>            : 
+<span class="lineNum">     331 </span><span class="lineNoCov">          0 :     if( _impl-&gt;enteredNodes.size() &lt; 2 )</span>
+<span class="lineNum">     332 </span><span class="lineNoCov">          0 :         return;</span>
+<span class="lineNum">     333 </span>            : 
+<span class="lineNum">     334 </span><span class="lineNoCov">          0 :     for( RequestMapIter i = _impl-&gt;enteredNodes.begin();</span>
+<span class="lineNum">     335 </span><span class="lineNoCov">          0 :          i != _impl-&gt;enteredNodes.end(); ++i )</span>
+<span class="lineNum">     336 </span>            :     {
+<span class="lineNum">     337 </span><span class="lineNoCov">          0 :         Request&amp; cleanNodes = i-&gt;second;</span>
+<span class="lineNum">     338 </span>            : 
+<span class="lineNum">     339 </span><span class="lineNoCov">          0 :         if( cleanNodes.timeout == LB_TIMEOUT_INDEFINITE )</span>
+<span class="lineNum">     340 </span><span class="lineNoCov">          0 :             continue;</span>
+<span class="lineNum">     341 </span>            : 
+<span class="lineNum">     342 </span><span class="lineNoCov">          0 :         const uint32_t timeout = cleanNodes.timeout != LB_TIMEOUT_DEFAULT ?</span>
+<span class="lineNum">     343 </span>            :                         cleanNodes.timeout :
+<span class="lineNum">     344 </span><span class="lineNoCov">          0 :                         Global::getIAttribute( Global::IATTR_TIMEOUT_DEFAULT );</span>
+<span class="lineNum">     345 </span>            : 
+<span class="lineNum">     346 </span><span class="lineNoCov">          0 :         if( time &gt; cleanNodes.time + timeout )</span>
+<span class="lineNum">     347 </span>            :         {
+<span class="lineNum">     348 </span><span class="lineNoCov">          0 :             _impl-&gt;enteredNodes.erase( i );</span>
+<span class="lineNum">     349 </span><span class="lineNoCov">          0 :             return;</span>
+<span class="lineNum">     350 </span>            :         }
+<span class="lineNum">     351 </span>            :     }
+<a name="352"><span class="lineNum">     352 </span>            : }</a>
+<span class="lineNum">     353 </span>            : 
+<span class="lineNum">     354 </span><span class="lineNoCov">          0 : bool Barrier::_cmdEnterReply( ICommand&amp; cmd )</span>
+<span class="lineNum">     355 </span>            : {
+<span class="lineNum">     356 </span><span class="lineNoCov">          0 :     ObjectICommand command( cmd );</span>
+<span class="lineNum">     357 </span><span class="lineNoCov">          0 :     LB_TS_THREAD( _thread );</span>
+<span class="lineNum">     358 </span><span class="lineNoCov">          0 :     LBLOG( LOG_BARRIER ) &lt;&lt; &quot;Got ok, unlock local user(s)&quot; &lt;&lt; std::endl;</span>
+<span class="lineNum">     359 </span><span class="lineNoCov">          0 :     const uint128_t version = command.get&lt; uint128_t &gt;();</span>
+<span class="lineNum">     360 </span>            : 
+<span class="lineNum">     361 </span><span class="lineNoCov">          0 :     if( version == getVersion( ))</span>
+<span class="lineNum">     362 </span><span class="lineNoCov">          0 :         ++_impl-&gt;incarnation;</span>
+<span class="lineNum">     363 </span>            : 
+<span class="lineNum">     364 </span><span class="lineNoCov">          0 :     return true;</span>
+<a name="365"><span class="lineNum">     365 </span>            : }</a>
+<span class="lineNum">     366 </span>            : 
+<span class="lineNum">     367 </span><span class="lineCov">         60 : }</span>
 </pre>
       </td>
     </tr>

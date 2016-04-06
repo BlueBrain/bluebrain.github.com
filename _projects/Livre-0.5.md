@@ -4,7 +4,7 @@ version: "0.5"
 major: 0
 minor: 5
 description: Largescale Interactive Volume Rendering Engine (Livre)
-updated: 10/03/16
+updated: 06/04/16
 homepage: https://github.com/BlueBrain/Livre
 repository: https://github.com/BlueBrain/Livre.git
 issuesurl: https://github.com/BlueBrain/Livre/issues
@@ -47,6 +47,6 @@ The following platforms and build environments are tested:
 
 * Linux: Ubuntu 14.04, RHEL 6.5 (Makefile, x64)
 
-The [API documentation](http://bluebrain.github.io/Livre-0.5/index.html)
+The [API documentation](http://bluebrain.github.io/Livre-0.4/index.html)
 can be found on [bluebrain.github.io](http://bluebrain.github.io/).
 

@@ -2,7 +2,8 @@ var NAVTREE =
 [
   [ "Livre", "index.html", [
     [ "Changelog", "_changelog.html", [
-      [ "Release 0.5 (2016-03-10)", "_changelog.html#Release050", null ],
+      [ "master", "_changelog.html#master", null ],
+      [ "Release 0.5 (2016-04-06)", "_changelog.html#Release050", null ],
       [ "Release 0.4 (2015-11-09)", "_changelog.html#Release040", null ],
       [ "Release 0.3 (2015-07-07)", "_changelog.html#Release030", null ],
       [ "Release 0.2 (2014-10-15)", "_changelog.html#Release020", null ]

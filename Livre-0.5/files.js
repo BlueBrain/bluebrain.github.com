@@ -7,7 +7,6 @@ var files =
     [ "definesLinux.h", "defines_linux_8h_source.html", null ],
     [ "GLContext.h", "_g_l_context_8h_source.html", null ],
     [ "GLSLShaders.h", "_g_l_s_l_shaders_8h_source.html", null ],
-    [ "LODEvaluator.h", "_l_o_d_evaluator_8h_source.html", null ],
     [ "LODNode.h", "_l_o_d_node_8h_source.html", null ],
     [ "lunchboxTypes.h", "lunchbox_types_8h_source.html", null ],
     [ "mathTypes.h", "math_types_8h_source.html", null ],
