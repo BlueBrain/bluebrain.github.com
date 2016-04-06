@@ -7,7 +7,7 @@ var NAVTREE =
       [ "Release 0.2 (9-Jul-2015)", "changelog.html#Release02", null ],
       [ "Release 0.1 (30-Apr-2015)", "changelog.html#Release01", null ]
     ] ],
-    [ "Rescaling output voxel values", "md__gpfs_bbp_8cscs_8ch_scratch_gss_viz_villafra_dev__fivox_doc_feature_rescale_output.html", null ],
+    [ "Rescaling output voxel values", "md__gpfs_bbp_8cscs_8ch_scratch_gss_viz_villafra_dev_stable___fivox_doc_feature_rescale_output.html", null ],
     [ "Namespaces", null, [
       [ "Namespace List", "namespaces.html", "namespaces" ],
       [ "Namespace Members", "namespacemembers.html", [

@@ -1,10 +1,13 @@
 var files =
 [
     [ "api.h", "api_8h.html", "api_8h" ],
+    [ "livre/api.h", "livre_2api_8h.html", "livre_2api_8h" ],
     [ "attenuationCurve.h", "attenuation_curve_8h_source.html", null ],
     [ "compartmentLoader.h", "compartment_loader_8h_source.html", null ],
     [ "defines.h", "defines_8h.html", null ],
+    [ "livre/defines.h", "livre_2defines_8h_source.html", null ],
     [ "definesLinux.h", "defines_linux_8h_source.html", null ],
+    [ "livre/definesLinux.h", "livre_2defines_linux_8h_source.html", null ],
     [ "densityFunctor.h", "density_functor_8h_source.html", null ],
     [ "event.h", "event_8h_source.html", null ],
     [ "eventFunctor.h", "event_functor_8h_source.html", null ],
@@ -15,6 +18,7 @@ var files =
     [ "imageSource.h", "image_source_8h_source.html", null ],
     [ "itk.h", "itk_8h_source.html", null ],
     [ "lfpFunctor.h", "lfp_functor_8h_source.html", null ],
+    [ "livre.h", "livre_8h_source.html", null ],
     [ "progressObserver.h", "progress_observer_8h_source.html", null ],
     [ "somaLoader.h", "soma_loader_8h_source.html", null ],
     [ "spikeLoader.h", "spike_loader_8h_source.html", null ],
@@ -22,6 +26,7 @@ var files =
     [ "testLoader.h", "test_loader_8h_source.html", null ],
     [ "types.h", "types_8h_source.html", null ],
     [ "uriHandler.h", "uri_handler_8h_source.html", null ],
+    [ "livre/version.h", "livre_2version_8h.html", "livre_2version_8h" ],
     [ "version.h", "version_8h.html", "version_8h" ],
     [ "vsdLoader.h", "vsd_loader_8h_source.html", null ]
 ];
