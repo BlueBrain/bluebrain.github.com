@@ -4,7 +4,7 @@ version: "1.0"
 major: 1
 minor: 0
 description: A Tiled Interactive DisplayWall Environment
-updated: 30/03/16
+updated: 08/04/16
 homepage: https://github.com/BlueBrain/Tide
 repository: https://github.com/BlueBrain/Tide.git
 issuesurl: https://github.com/BlueBrain/Tide/issues
@@ -12,7 +12,7 @@ packageurl:
 license: BSD
 maturity: EP
 maintainers: Blue Brain Project (bbp-open-source@googlegroups.com)
-contributors: Daniel Nachbaur
+contributors: Daniel Nachbaur; Raphael Dumusc
 readmetype: text/x-markdown
 ---
 # Tide

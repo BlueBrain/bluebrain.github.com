@@ -2,8 +2,8 @@ var NAVTREE =
 [
   [ "Tide", "index.html", [
     [ "Introduction", "index.html", null ],
+    [ "Changelog", "_changelog.html", null ],
     [ "Documentation", "documentation.html", null ],
-    [ "Release Notes", "_release_notes.html", null ],
     [ "User Guide", "_user_guide.html", [
       [ "Usage", "_user_guide.html#usage", [
         [ "Configuration file", "_user_guide.html#xmlconfig", null ],
@@ -37,11 +37,11 @@ var NAVTREE =
 var NAVTREEINDEX =
 [
 ".html",
-"class_content_action.html#af822c1206a61625a7d8dd576020f7729",
-"class_dock_pixel_streamer.html#a8bf76ee5cddb35c8f13e9d30352c12a1",
-"class_movie_synchronizer.html#a57be3b2b0c8c68c0753900189a734aad",
-"class_quad_line_node.html#ad0422ea5f0d04a3a93de1236f810e34f",
-"classtide_1_1_version.html#afdf47bdc2db574072947ff605eb4afc6"
+"class_content_action.html#af3cff0112d5530581859bf1758cddc70",
+"class_dock_pixel_streamer.html#a6518b266be588c0fb1f613c3cff18830",
+"class_movie_synchronizer.html#a2f6d81a9a4bbb8a9ccaa40fd22edd213",
+"class_quad_line_node.html#a19f9f3248c339ab0c2ed6fd3184ce51d",
+"classtide_1_1_version.html#ae38ec59f6d1c305d5737a21e3e574394"
 ];
 
 var SYNCONMSG = 'click to disable panel synchronisation';

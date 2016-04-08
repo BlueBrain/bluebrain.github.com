@@ -1,7 +1,7 @@
 var searchData=
 [
   ['wallapplication',['WallApplication',['../class_wall_application.html#a8b3f627770c09407345a9dbbacb29979',1,'WallApplication']]],
-  ['wallconfiguration',['WallConfiguration',['../class_wall_configuration.html#aea5753620ffbbc4459200e408c83b48e',1,'WallConfiguration']]],
+  ['wallconfiguration',['WallConfiguration',['../class_wall_configuration.html#a7e44c5d98df432d18c455bcae2decf3a',1,'WallConfiguration']]],
   ['wallfrommasterchannel',['WallFromMasterChannel',['../class_wall_from_master_channel.html#a8f799726df2923051e9615728de8ed36',1,'WallFromMasterChannel']]],
   ['walltomasterchannel',['WallToMasterChannel',['../class_wall_to_master_channel.html#a566e3c97ead7e0578a81e11d2d24adcd',1,'WallToMasterChannel']]],
   ['walltowallchannel',['WallToWallChannel',['../class_wall_to_wall_channel.html#aba4b1dba030d03dde3e677ded75a688f',1,'WallToWallChannel']]],
