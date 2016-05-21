@@ -1,0 +1,25 @@
+var class_multitouch_area =
+[
+    [ "MultitouchArea", "class_multitouch_area.html#a9dc4b134e58f75bcb697f0d3452f98de", null ],
+    [ "doubleTap", "class_multitouch_area.html#adb8cdf3637fd79b43967ffc5d1faf8f5", null ],
+    [ "getPanThreshold", "class_multitouch_area.html#a53a77083c79f2ed9b3b6b5495110657a", null ],
+    [ "getReferenceItem", "class_multitouch_area.html#a2c5721dee3b540b340cfd81772af767b", null ],
+    [ "pan", "class_multitouch_area.html#ac6fff56a3bf42cb747428eae5aa484ad", null ],
+    [ "panEnded", "class_multitouch_area.html#a84b90afb21f9a1a305db11bf5655df09", null ],
+    [ "panStarted", "class_multitouch_area.html#a3ab553b0eeb82b0cd74c40da8ceea828", null ],
+    [ "panThresholdChanged", "class_multitouch_area.html#aafa90142e4b1783e756ecc8dc852ce07", null ],
+    [ "pinch", "class_multitouch_area.html#aae244fdea93c301a57d2c44508a7f0d8", null ],
+    [ "referenceItemChanged", "class_multitouch_area.html#af2695ce0a754dad55985d5ede309e634", null ],
+    [ "setPanThreshold", "class_multitouch_area.html#a0f87880710e1e60b36267b1f7ec79d07", null ],
+    [ "setReferenceItem", "class_multitouch_area.html#ae8c143b3ef87ea481bc9037cc69dacbd", null ],
+    [ "swipeDown", "class_multitouch_area.html#a4e496a1d465f0dc8095266c8730196b9", null ],
+    [ "swipeLeft", "class_multitouch_area.html#a9b6c5bb959a9635e601caa42f8cbeeab", null ],
+    [ "swipeRight", "class_multitouch_area.html#ab7a38b99b679b3c669908dd75dea0b20", null ],
+    [ "swipeUp", "class_multitouch_area.html#aca86b7d783c0f2db38665328608fada8", null ],
+    [ "tap", "class_multitouch_area.html#a4a7f521ad8c5eb0c7756f737134fb4e0", null ],
+    [ "tapAndHold", "class_multitouch_area.html#a9fa57731dec1ccec0e551e9039840afe", null ],
+    [ "touchEnded", "class_multitouch_area.html#a6e02038540cd46754d22afa699377624", null ],
+    [ "touchStarted", "class_multitouch_area.html#a9930406bdbbcb1a9ad99f10d691e2313", null ],
+    [ "panThreshold", "class_multitouch_area.html#a8c09c39e97a782bbedafd33d6563e8a5", null ],
+    [ "referenceItem", "class_multitouch_area.html#acf4c07d20413d2c86eb5bf08e0cc3e13", null ]
+];
