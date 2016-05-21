@@ -1,0 +1,742 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+
+<html lang="en">
+
+<head>
+  <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+  <title>LCOV - Brion - brion/plugin/compartmentReportHDF5.cpp</title>
+  <link rel="stylesheet" type="text/css" href="../../gcov.css">
+</head>
+
+<body>
+
+  <table width="100%" border=0 cellspacing=0 cellpadding=0>
+    <tr><td class="title">LCOV - code coverage report</td></tr>
+    <tr><td class="ruler"><img src="../../glass.png" width=3 height=3 alt=""></td></tr>
+
+    <tr>
+      <td width="100%">
+        <table cellpadding=1 border=0 width="100%">
+          <tr>
+            <td width="10%" class="headerItem">Current view:</td>
+            <td width="35%" class="headerValue"><a href="../../index.html">top level</a> - <a href="index.html">brion/plugin</a> - compartmentReportHDF5.cpp<span style="font-size: 80%;"> (source / <a href="compartmentReportHDF5.cpp.func-sort-c.html">functions</a>)</span></td>
+            <td width="5%"></td>
+            <td width="15%"></td>
+            <td width="10%" class="headerCovTableHead">Hit</td>
+            <td width="10%" class="headerCovTableHead">Total</td>
+            <td width="15%" class="headerCovTableHead">Coverage</td>
+          </tr>
+          <tr>
+            <td class="headerItem">Test:</td>
+            <td class="headerValue">Brion</td>
+            <td></td>
+            <td class="headerItem">Lines:</td>
+            <td class="headerCovTableEntry">281</td>
+            <td class="headerCovTableEntry">315</td>
+            <td class="headerCovTableEntryHi">89.2 %</td>
+          </tr>
+          <tr>
+            <td class="headerItem">Date:</td>
+            <td class="headerValue">2016-05-21 06:02:09</td>
+            <td></td>
+            <td class="headerItem">Functions:</td>
+            <td class="headerCovTableEntry">25</td>
+            <td class="headerCovTableEntry">26</td>
+            <td class="headerCovTableEntryHi">96.2 %</td>
+          </tr>
+          <tr><td><img src="../../glass.png" width=3 height=3 alt=""></td></tr>
+        </table>
+      </td>
+    </tr>
+
+    <tr><td class="ruler"><img src="../../glass.png" width=3 height=3 alt=""></td></tr>
+  </table>
+
+  <table cellpadding=0 cellspacing=0 border=0>
+    <tr>
+      <td><br></td>
+    </tr>
+    <tr>
+      <td>
+<pre class="sourceHeading">          Line data    Source code</pre>
+<pre class="source">
+<a name="1"><span class="lineNum">       1 </span>            : /* Copyright (c) 2013-2016, EPFL/Blue Brain Project</a>
+<span class="lineNum">       2 </span>            :  *                          Daniel Nachbaur &lt;daniel.nachbaur@epfl.ch&gt;
+<span class="lineNum">       3 </span>            :  *
+<span class="lineNum">       4 </span>            :  * This file is part of Brion &lt;https://github.com/BlueBrain/Brion&gt;
+<span class="lineNum">       5 </span>            :  *
+<span class="lineNum">       6 </span>            :  * This library is free software; you can redistribute it and/or modify it under
+<span class="lineNum">       7 </span>            :  * the terms of the GNU Lesser General Public License version 3.0 as published
+<span class="lineNum">       8 </span>            :  * by the Free Software Foundation.
+<span class="lineNum">       9 </span>            :  *
+<span class="lineNum">      10 </span>            :  * This library is distributed in the hope that it will be useful, but WITHOUT
+<span class="lineNum">      11 </span>            :  * ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS
+<span class="lineNum">      12 </span>            :  * FOR A PARTICULAR PURPOSE.  See the GNU Lesser General Public License for more
+<span class="lineNum">      13 </span>            :  * details.
+<span class="lineNum">      14 </span>            :  *
+<span class="lineNum">      15 </span>            :  * You should have received a copy of the GNU Lesser General Public License
+<span class="lineNum">      16 </span>            :  * along with this library; if not, write to the Free Software Foundation, Inc.,
+<span class="lineNum">      17 </span>            :  * 51 Franklin Street, Fifth Floor, Boston, MA 02110-1301 USA.
+<span class="lineNum">      18 </span>            :  */
+<span class="lineNum">      19 </span>            : 
+<span class="lineNum">      20 </span>            : #include &quot;compartmentReportHDF5.h&quot;
+<span class="lineNum">      21 </span>            : #include &quot;../detail/lockHDF5.h&quot;
+<span class="lineNum">      22 </span>            : #include &quot;../detail/silenceHDF5.h&quot;
+<span class="lineNum">      23 </span>            : #include &quot;../detail/utilsHDF5.h&quot;
+<span class="lineNum">      24 </span>            : #include &lt;brion/version.h&gt;
+<span class="lineNum">      25 </span>            : 
+<span class="lineNum">      26 </span>            : #include &lt;boost/filesystem.hpp&gt;
+<span class="lineNum">      27 </span>            : #include &lt;boost/scoped_array.hpp&gt;
+<span class="lineNum">      28 </span>            : #include &lt;lunchbox/debug.h&gt;
+<span class="lineNum">      29 </span>            : #include &lt;lunchbox/log.h&gt;
+<span class="lineNum">      30 </span>            : #include &lt;lunchbox/pluginRegisterer.h&gt;
+<span class="lineNum">      31 </span>            : #include &lt;lunchbox/scopedMutex.h&gt;
+<span class="lineNum">      32 </span>            : 
+<span class="lineNum">      33 </span>            : #define CATCH_HDF5ERRORS \
+<span class="lineNum">      34 </span>            :     catch( const H5::FileIException&amp; exc ) \
+<span class="lineNum">      35 </span>            :     { \
+<span class="lineNum">      36 </span>            :         LBERROR &lt;&lt; exc.getCDetailMsg() &lt;&lt; std::endl; \
+<span class="lineNum">      37 </span>            :     } \
+<span class="lineNum">      38 </span>            :     catch( const H5::DataSetIException&amp; exc ) \
+<span class="lineNum">      39 </span>            :     { \
+<span class="lineNum">      40 </span>            :         LBERROR &lt;&lt; exc.getCDetailMsg() &lt;&lt; std::endl; \
+<span class="lineNum">      41 </span>            :     } \
+<span class="lineNum">      42 </span>            :     catch( const H5::DataSpaceIException&amp; exc ) \
+<span class="lineNum">      43 </span>            :     { \
+<span class="lineNum">      44 </span>            :         LBERROR &lt;&lt; exc.getCDetailMsg() &lt;&lt; std::endl; \
+<span class="lineNum">      45 </span>            :     }
+<span class="lineNum">      46 </span>            : 
+<span class="lineNum">      47 </span>            : 
+<span class="lineNum">      48 </span>            : namespace brion
+<span class="lineNum">      49 </span>            : {
+<span class="lineNum">      50 </span>            : namespace plugin
+<span class="lineNum">      51 </span>            : {
+<span class="lineNum">      52 </span>            : 
+<a name="53"><span class="lineNum">      53 </span>            : namespace</a>
+<span class="lineNum">      54 </span>            : {
+<span class="lineNum">      55 </span><span class="lineCov">         12 :     lunchbox::PluginRegisterer&lt; CompartmentReportHDF5 &gt; registerer;</span>
+<span class="lineNum">      56 </span>            : }
+<span class="lineNum">      57 </span>            : 
+<a name="58"><span class="lineNum">      58 </span>            : // Computes compartment counts for a section within a cell inside an ordered</a>
+<span class="lineNum">      59 </span>            : // offset based compartment mapping (see CompartmentReportMapping).
+<span class="lineNum">      60 </span><span class="lineCov">      77728 : uint16_t calcCompartmentCounts( SectionOffsets::const_iterator cell,</span>
+<span class="lineNum">      61 </span>            :                                 uint64_ts::const_iterator section,
+<span class="lineNum">      62 </span>            :                                 const SectionOffsets&amp; mapping,
+<span class="lineNum">      63 </span>            :                                 const size_t totalCompartments )
+<span class="lineNum">      64 </span>            : {
+<span class="lineNum">      65 </span><span class="lineCov">      77728 :     const uint64_t firstIndex = *section;</span>
+<span class="lineNum">      66 </span><span class="lineCov">      77728 :     if( firstIndex == LB_UNDEFINED_UINT64 ) // Detecting empty sections</span>
+<span class="lineNum">      67 </span><span class="lineCov">      29151 :         return 0;</span>
+<span class="lineNum">      68 </span>            : 
+<span class="lineNum">      69 </span>            :     // Skipping sections that don't appear in the report. Right now, this is not
+<span class="lineNum">      70 </span>            :     // very bad since we will only have to skip sections when we ask for the
+<span class="lineNum">      71 </span>            :     // second axon section, due to the remaining axon sections not being
+<span class="lineNum">      72 </span>            :     // reported.
+<span class="lineNum">      73 </span><span class="lineCov">      48577 :     uint64_t lastIndex = LB_UNDEFINED_UINT64;</span>
+<span class="lineNum">      74 </span><span class="lineCov">     124820 :     for( ++section; section != cell-&gt;end() &amp;&amp; lastIndex == LB_UNDEFINED_UINT64;</span>
+<span class="lineNum">      75 </span>            :          ++section )
+<span class="lineNum">      76 </span>            :     {
+<span class="lineNum">      77 </span><span class="lineCov">      76243 :         lastIndex = *section;</span>
+<span class="lineNum">      78 </span>            :     }
+<span class="lineNum">      79 </span>            : 
+<span class="lineNum">      80 </span><span class="lineCov">      48577 :     if( lastIndex == LB_UNDEFINED_UINT64 )</span>
+<span class="lineNum">      81 </span>            :     {
+<span class="lineNum">      82 </span>            :         // We reached the end of the neuron without finding a section with valid
+<span class="lineNum">      83 </span>            :         // offset. We need to search for the first offset of the next neuron (if
+<span class="lineNum">      84 </span>            :         // any). For simplicity we assume that first section (soma) always has a
+<span class="lineNum">      85 </span>            :         // defined offset.
+<span class="lineNum">      86 </span><span class="lineCov">       1485 :         while( ++cell != mapping.end() &amp;&amp; cell-&gt;empty() )</span>
+<span class="lineNum">      87 </span>            :         {}
+<span class="lineNum">      88 </span>            : 
+<span class="lineNum">      89 </span><span class="lineCov">       1485 :         if( cell != mapping.end( ))</span>
+<span class="lineNum">      90 </span>            :         {
+<span class="lineNum">      91 </span><span class="lineCov">       1471 :             lastIndex = *cell-&gt;begin();</span>
+<span class="lineNum">      92 </span><span class="lineCov">       1471 :             LBASSERT( lastIndex != LB_UNDEFINED_UINT64 );</span>
+<span class="lineNum">      93 </span>            :         }
+<span class="lineNum">      94 </span>            :         else
+<span class="lineNum">      95 </span>            :             // No cell with mapping found after the initial one.
+<span class="lineNum">      96 </span><span class="lineCov">         14 :             lastIndex = totalCompartments;</span>
+<span class="lineNum">      97 </span>            :     }
+<span class="lineNum">      98 </span>            : 
+<span class="lineNum">      99 </span><span class="lineCov">      48577 :     LBASSERT( lastIndex - firstIndex &gt; 0 &amp;&amp;</span>
+<span class="lineNum">     100 </span>            :                 lastIndex - firstIndex &lt;= std::numeric_limits&lt;size_t&gt;::max( ));
+<span class="lineNum">     101 </span><span class="lineCov">      48577 :     return uint16_t(lastIndex - firstIndex);</span>
+<span class="lineNum">     102 </span>            : }
+<span class="lineNum">     103 </span>            : 
+<span class="lineNum">     104 </span><span class="lineCov">         12 : const std::string mappingDatasetName( &quot;mapping&quot; );</span>
+<a name="105"><span class="lineNum">     105 </span><span class="lineCov">         12 : const std::string dataDatasetName( &quot;data&quot; );</span></a>
+<span class="lineNum">     106 </span>            : 
+<a name="107"><span class="lineNum">     107 </span><span class="lineCov">         24 : const std::string mappingAttributes[] =</span></a>
+<span class="lineNum">     108 </span><span class="lineCov">         12 :                         { &quot;type&quot;, &quot;sections&quot;, &quot;soma&quot;, &quot;axon&quot;, &quot;basal&quot;, &quot;apic&quot; };</span>
+<span class="lineNum">     109 </span><span class="lineCov">         24 : const std::string dataAttributes[] =</span>
+<a name="110"><span class="lineNum">     110 </span><span class="lineCov">         12 :                           { &quot;rank&quot;, &quot;tstart&quot;, &quot;tstop&quot;, &quot;Dt&quot;, &quot;dunit&quot;, &quot;tunit&quot; };</span></a>
+<span class="lineNum">     111 </span>            : 
+<span class="lineNum">     112 </span><span class="lineCov">         20 : CompartmentReportHDF5::CompartmentReportHDF5(</span>
+<span class="lineNum">     113 </span>            :                                     const CompartmentReportInitData&amp; initData )
+<span class="lineNum">     114 </span>            :     : _startTime( 0 )
+<span class="lineNum">     115 </span>            :     , _endTime( 0 )
+<span class="lineNum">     116 </span>            :     , _timestep( 0 )
+<span class="lineNum">     117 </span>            :     , _comps( 0 )
+<span class="lineNum">     118 </span><span class="lineCov">         22 :     , _path( initData.getURI().getPath() )</span>
+<span class="lineNum">     119 </span>            : {
+<span class="lineNum">     120 </span>            : 
+<span class="lineNum">     121 </span><span class="lineCov">         20 :     const int accessMode = initData.getAccessMode();</span>
+<span class="lineNum">     122 </span>            : 
+<span class="lineNum">     123 </span>            :     {
+<span class="lineNum">     124 </span><span class="lineCov">         20 :         lunchbox::ScopedWrite mutex( detail::_hdf5Lock );</span>
+<span class="lineNum">     125 </span>            : 
+<span class="lineNum">     126 </span>            :         namespace fs = boost::filesystem;
+<span class="lineNum">     127 </span>            : 
+<span class="lineNum">     128 </span><span class="lineCov">         20 :         if( accessMode &amp; MODE_WRITE )</span>
+<span class="lineNum">     129 </span>            :         {
+<span class="lineNum">     130 </span><span class="lineCov">         12 :             if(( accessMode &amp; MODE_OVERWRITE ) != MODE_OVERWRITE</span>
+<span class="lineNum">     131 </span><span class="lineCov">          6 :                     &amp;&amp; fs::exists( _path ))</span>
+<span class="lineNum">     132 </span>            :             {
+<span class="lineNum">     133 </span><span class="lineCov">          1 :                 LBTHROW( std::runtime_error( &quot;Cannot overwrite existing file &quot; +</span>
+<span class="lineNum">     134 </span>            :                                               _path.string( )));
+<span class="lineNum">     135 </span>            :             }
+<span class="lineNum">     136 </span>            : 
+<span class="lineNum">     137 </span><span class="lineCov">          5 :             _file = H5::H5File( _path.string(), H5F_ACC_TRUNC );</span>
+<span class="lineNum">     138 </span><span class="lineCov">          5 :             _reportName = fs::basename( _path );</span>
+<span class="lineNum">     139 </span><span class="lineCov">         23 :             return;</span>
+<span class="lineNum">     140 </span>            :         }
+<span class="lineNum">     141 </span>            : 
+<span class="lineNum">     142 </span><span class="lineCov">         28 :         H5::H5File file;</span>
+<span class="lineNum">     143 </span>            : 
+<span class="lineNum">     144 </span>            :         // assume one file per cell
+<span class="lineNum">     145 </span><span class="lineCov">         14 :         if( fs::is_directory( _path ))</span>
+<span class="lineNum">     146 </span>            :         {
+<span class="lineNum">     147 </span><span class="lineNoCov">          0 :             fs::directory_iterator it( _path );</span>
+<span class="lineNum">     148 </span><span class="lineNoCov">          0 :             if( it == fs::directory_iterator( ))</span>
+<span class="lineNum">     149 </span><span class="lineNoCov">          0 :                 LBTHROW( std::runtime_error( &quot;No files in &quot; + _path.string( )));</span>
+<span class="lineNum">     150 </span><span class="lineNoCov">          0 :             file = H5::H5File( it-&gt;path().string(), H5F_ACC_RDONLY );</span>
+<span class="lineNum">     151 </span><span class="lineNoCov">          0 :             if( !file.getId( ))</span>
+<span class="lineNum">     152 </span><span class="lineNoCov">          0 :                 LBTHROW( std::runtime_error( &quot;File not found: &quot; +</span>
+<span class="lineNum">     153 </span><span class="lineNoCov">          0 :                                              it-&gt;path().string( )));</span>
+<span class="lineNum">     154 </span>            :         }
+<span class="lineNum">     155 </span>            :         // assume one file for all cells
+<span class="lineNum">     156 </span>            :         else
+<span class="lineNum">     157 </span>            :         {
+<span class="lineNum">     158 </span><span class="lineCov">         14 :             _reportName = fs::basename( _path );</span>
+<span class="lineNum">     159 </span><span class="lineCov">         14 :             _file = H5::H5File( _path.string(), H5F_ACC_RDONLY );</span>
+<span class="lineNum">     160 </span><span class="lineCov">         14 :             if( !_file.getId( ))</span>
+<span class="lineNum">     161 </span><span class="lineNoCov">          0 :                 LBTHROW( std::runtime_error( &quot;File not found: &quot; +</span>
+<span class="lineNum">     162 </span>            :                                              _path.string( )));
+<span class="lineNum">     163 </span><span class="lineCov">         14 :             file = _file;</span>
+<span class="lineNum">     164 </span>            :         }
+<span class="lineNum">     165 </span>            : 
+<span class="lineNum">     166 </span><span class="lineCov">         14 :         if( !file.getNumObjs( ))</span>
+<span class="lineNum">     167 </span><span class="lineNoCov">          0 :             LBTHROW( std::runtime_error( &quot;File is empty: &quot; +</span>
+<span class="lineNum">     168 </span>            :                                          file.getFileName( )));
+<span class="lineNum">     169 </span>            : 
+<span class="lineNum">     170 </span>            :         try
+<span class="lineNum">     171 </span>            :         {
+<span class="lineNum">     172 </span><span class="lineCov">         14 :             detail::SilenceHDF5 silence;</span>
+<span class="lineNum">     173 </span><span class="lineCov">         28 :             const H5std_string&amp; datasetName = file.getObjnameByIdx( 0 );</span>
+<span class="lineNum">     174 </span><span class="lineCov">         27 :             const H5::Group&amp; reportGroup = file.openGroup( datasetName );</span>
+<span class="lineNum">     175 </span><span class="lineCov">         13 :             _reportName = reportGroup.getObjnameByIdx( 0 );</span>
+<span class="lineNum">     176 </span><span class="lineCov">         26 :             std::stringstream tmp;</span>
+<span class="lineNum">     177 </span><span class="lineCov">         13 :             tmp &lt;&lt; datasetName.substr( 1 );</span>
+<span class="lineNum">     178 </span>            :             uint32_t gid;
+<span class="lineNum">     179 </span><span class="lineCov">         13 :             tmp &gt;&gt; gid;</span>
+<span class="lineNum">     180 </span>            : 
+<span class="lineNum">     181 </span><span class="lineCov">         26 :             const H5::DataSet&amp; dataset = _openDataset( file, gid );</span>
+<span class="lineNum">     182 </span>            :             dataset.openAttribute( dataAttributes[1] ).read(
+<span class="lineNum">     183 </span><span class="lineCov">         13 :                                      H5::PredType::NATIVE_DOUBLE, &amp;_startTime );</span>
+<span class="lineNum">     184 </span>            :             dataset.openAttribute( dataAttributes[2] ).read(
+<span class="lineNum">     185 </span><span class="lineCov">         13 :                                      H5::PredType::NATIVE_DOUBLE, &amp;_endTime );</span>
+<span class="lineNum">     186 </span>            :             dataset.openAttribute( dataAttributes[3] ).read(
+<span class="lineNum">     187 </span><span class="lineCov">         13 :                                      H5::PredType::NATIVE_DOUBLE, &amp;_timestep );</span>
+<span class="lineNum">     188 </span><span class="lineCov">         13 :             _dunit = &quot;mV&quot;;</span>
+<span class="lineNum">     189 </span><span class="lineCov">         27 :             _tunit = &quot;ms&quot;;</span>
+<span class="lineNum">     190 </span>            :         }
+<span class="lineNum">     191 </span><span class="lineCov">          1 :         catch( ... )</span>
+<span class="lineNum">     192 </span>            :         {
+<span class="lineNum">     193 </span><span class="lineCov">          1 :             LBTHROW( std::runtime_error( _path.string() + &quot; not a valid H5&quot;\</span>
+<span class="lineNum">     194 </span>            :                                          &quot; compartment report file&quot; ));
+<span class="lineNum">     195 </span><span class="lineCov">         15 :         }</span>
+<span class="lineNum">     196 </span>            :     }
+<span class="lineNum">     197 </span><span class="lineCov">         13 :     _cacheNeuronCompartmentCounts( initData.getGids() );</span>
+<a name="198"><span class="lineNum">     198 </span>            : }</a>
+<span class="lineNum">     199 </span>            : 
+<span class="lineNum">     200 </span><span class="lineCov">         54 : CompartmentReportHDF5::~CompartmentReportHDF5()</span>
+<span class="lineNum">     201 </span>            : {
+<span class="lineNum">     202 </span><span class="lineCov">         18 :     lunchbox::ScopedWrite mutex( detail::_hdf5Lock );</span>
+<span class="lineNum">     203 </span>            : 
+<span class="lineNum">     204 </span><span class="lineCov">         18 :     if( _file.getId( ))</span>
+<span class="lineNum">     205 </span><span class="lineCov">         18 :         _file.close();</span>
+<a name="206"><span class="lineNum">     206 </span><span class="lineCov">         36 : }</span></a>
+<span class="lineNum">     207 </span>            : 
+<span class="lineNum">     208 </span><span class="lineCov">         31 : bool CompartmentReportHDF5::handles( const CompartmentReportInitData&amp; initData )</span>
+<span class="lineNum">     209 </span>            : {
+<span class="lineNum">     210 </span><span class="lineCov">         31 :     const URI&amp; uri = initData.getURI();</span>
+<span class="lineNum">     211 </span><span class="lineCov">         31 :     if( !uri.getScheme().empty() &amp;&amp; uri.getScheme() != &quot;file&quot; )</span>
+<span class="lineNum">     212 </span><span class="lineCov">          7 :         return false;</span>
+<span class="lineNum">     213 </span>            : 
+<span class="lineNum">     214 </span>            :     const boost::filesystem::path ext =
+<span class="lineNum">     215 </span><span class="lineCov">         24 :             boost::filesystem::path( uri.getPath() ).extension();</span>
+<span class="lineNum">     216 </span><span class="lineCov">         24 :     return ext == &quot;.h5&quot; || ext == &quot;.hdf5&quot;;</span>
+<a name="217"><span class="lineNum">     217 </span>            : }</a>
+<span class="lineNum">     218 </span>            : 
+<span class="lineNum">     219 </span><span class="lineCov">         12 : const GIDSet&amp; CompartmentReportHDF5::getGIDs() const</span>
+<span class="lineNum">     220 </span>            : {
+<span class="lineNum">     221 </span><span class="lineCov">         12 :     return _gids;</span>
+<a name="222"><span class="lineNum">     222 </span>            : }</a>
+<span class="lineNum">     223 </span>            : 
+<span class="lineNum">     224 </span><span class="lineCov">        105 : const SectionOffsets&amp; CompartmentReportHDF5::getOffsets() const</span>
+<span class="lineNum">     225 </span>            : {
+<span class="lineNum">     226 </span><span class="lineCov">        105 :     return _offsets;</span>
+<a name="227"><span class="lineNum">     227 </span>            : }</a>
+<span class="lineNum">     228 </span>            : 
+<span class="lineNum">     229 </span><span class="lineCov">         18 : const CompartmentCounts&amp; CompartmentReportHDF5::getCompartmentCounts() const</span>
+<span class="lineNum">     230 </span>            : {
+<span class="lineNum">     231 </span><span class="lineCov">         18 :     return _counts;</span>
+<a name="232"><span class="lineNum">     232 </span>            : }</a>
+<span class="lineNum">     233 </span>            : 
+<span class="lineNum">     234 </span><span class="lineCov">       2202 : size_t CompartmentReportHDF5::getFrameSize() const</span>
+<span class="lineNum">     235 </span>            : {
+<span class="lineNum">     236 </span><span class="lineCov">       2202 :     return _comps;</span>
+<a name="237"><span class="lineNum">     237 </span>            : }</a>
+<span class="lineNum">     238 </span>            : 
+<span class="lineNum">     239 </span><span class="lineCov">        709 : floatsPtr CompartmentReportHDF5::loadFrame( const float timestamp ) const</span>
+<span class="lineNum">     240 </span>            : {
+<span class="lineNum">     241 </span><span class="lineCov">        709 :     if( _offsets.empty( ))</span>
+<span class="lineNum">     242 </span><span class="lineNoCov">          0 :         return floatsPtr();</span>
+<span class="lineNum">     243 </span>            : 
+<span class="lineNum">     244 </span><span class="lineCov">        709 :     lunchbox::ScopedWrite mutex( detail::_hdf5Lock );</span>
+<span class="lineNum">     245 </span>            : 
+<span class="lineNum">     246 </span>            :     // The offset for the first comparment of the cell being processed
+<span class="lineNum">     247 </span><span class="lineCov">        709 :     hsize_t firstCompartmentOffset = 0;</span>
+<span class="lineNum">     248 </span>            : 
+<span class="lineNum">     249 </span><span class="lineCov">        709 :     const size_t frameNumber = _getFrameNumber( timestamp );</span>
+<span class="lineNum">     250 </span><span class="lineCov">       1418 :     floatsPtr buffer( new floats( getFrameSize( )));</span>
+<span class="lineNum">     251 </span>            : 
+<span class="lineNum">     252 </span><span class="lineCov">      25254 :     for( GIDSetCIter cellID = _gids.begin(); cellID != _gids.end(); ++cellID )</span>
+<span class="lineNum">     253 </span>            :     {
+<span class="lineNum">     254 </span><span class="lineCov">      24545 :         const H5::DataSet&amp; dataset = _datas.find( *cellID )-&gt;second;</span>
+<span class="lineNum">     255 </span>            : 
+<span class="lineNum">     256 </span><span class="lineCov">      24545 :         const H5::DataSpace&amp; space = _fspaces.find( *cellID )-&gt;second;</span>
+<span class="lineNum">     257 </span><span class="lineCov">      24545 :         const H5::DataSpace&amp; targetSpace = _mspaces.find( *cellID )-&gt;second;</span>
+<span class="lineNum">     258 </span>            : 
+<span class="lineNum">     259 </span>            :         hsize_t sourceSizes[2];
+<span class="lineNum">     260 </span><span class="lineCov">      24545 :         space.getSimpleExtentDims( sourceSizes );</span>
+<span class="lineNum">     261 </span><span class="lineCov">      24545 :         const hsize_t readCounts[2] = { 1, sourceSizes[1] };</span>
+<span class="lineNum">     262 </span>            : 
+<span class="lineNum">     263 </span><span class="lineCov">      24545 :         const hsize_t readOffsets[2] = { frameNumber, 0 };</span>
+<span class="lineNum">     264 </span><span class="lineCov">      24545 :         space.selectHyperslab( H5S_SELECT_SET, readCounts, readOffsets );</span>
+<span class="lineNum">     265 </span>            : 
+<span class="lineNum">     266 </span><span class="lineCov">      24545 :         const hsize_t targetOffsets[2] = { 0, firstCompartmentOffset };</span>
+<span class="lineNum">     267 </span>            :         targetSpace.selectHyperslab( H5S_SELECT_SET, readCounts,
+<span class="lineNum">     268 </span><span class="lineCov">      24545 :                                      targetOffsets );</span>
+<span class="lineNum">     269 </span>            : 
+<span class="lineNum">     270 </span><span class="lineCov">      24545 :         dataset.read( buffer-&gt;data(), H5::PredType::NATIVE_FLOAT, targetSpace,</span>
+<span class="lineNum">     271 </span><span class="lineCov">      24545 :                       space );</span>
+<span class="lineNum">     272 </span>            : 
+<span class="lineNum">     273 </span><span class="lineCov">      24545 :         firstCompartmentOffset += sourceSizes[1];</span>
+<span class="lineNum">     274 </span>            :     }
+<span class="lineNum">     275 </span>            : 
+<span class="lineNum">     276 </span><span class="lineCov">       1418 :     return buffer;</span>
+<a name="277"><span class="lineNum">     277 </span>            : }</a>
+<span class="lineNum">     278 </span>            : 
+<span class="lineNum">     279 </span><span class="lineCov">         14 : void CompartmentReportHDF5::updateMapping( const GIDSet&amp; gids )</span>
+<span class="lineNum">     280 </span>            : {
+<span class="lineNum">     281 </span><span class="lineCov">         14 :     lunchbox::ScopedWrite mutex( detail::_hdf5Lock );</span>
+<span class="lineNum">     282 </span>            : 
+<span class="lineNum">     283 </span><span class="lineCov">         14 :     _gids = gids;</span>
+<span class="lineNum">     284 </span>            : 
+<span class="lineNum">     285 </span><span class="lineCov">         14 :     _datas.clear();</span>
+<span class="lineNum">     286 </span><span class="lineCov">         14 :     _fspaces.clear();</span>
+<span class="lineNum">     287 </span><span class="lineCov">         14 :     _mspaces.clear();</span>
+<span class="lineNum">     288 </span>            : 
+<span class="lineNum">     289 </span><span class="lineCov">         14 :     if( _gids.empty( ))</span>
+<span class="lineNum">     290 </span>            :     {
+<span class="lineNum">     291 </span><span class="lineCov">         10 :         if( !_file.getId( ))</span>
+<span class="lineNum">     292 </span><span class="lineCov">         14 :             return;</span>
+<span class="lineNum">     293 </span>            : 
+<span class="lineNum">     294 </span><span class="lineCov">       1490 :         for( hsize_t i = 0; i &lt; _file.getNumObjs(); ++i )</span>
+<span class="lineNum">     295 </span>            :         {
+<span class="lineNum">     296 </span><span class="lineCov">       1480 :             const H5std_string&amp; datasetName = _file.getObjnameByIdx( i );</span>
+<span class="lineNum">     297 </span><span class="lineCov">       2960 :             std::stringstream tmp;</span>
+<span class="lineNum">     298 </span><span class="lineCov">       1480 :             tmp &lt;&lt; datasetName.substr( 1 );</span>
+<span class="lineNum">     299 </span>            :             uint32_t gid;
+<span class="lineNum">     300 </span><span class="lineCov">       1480 :             tmp &gt;&gt; gid;</span>
+<span class="lineNum">     301 </span><span class="lineCov">       1480 :             _gids.insert( gid );</span>
+<span class="lineNum">     302 </span><span class="lineCov">       1480 :         }</span>
+<span class="lineNum">     303 </span>            :     }
+<span class="lineNum">     304 </span>            : 
+<span class="lineNum">     305 </span><span class="lineCov">         14 :     _offsets.resize( _gids.size( ));</span>
+<span class="lineNum">     306 </span>            : 
+<span class="lineNum">     307 </span><span class="lineCov">         14 :     size_t nextCompartmentIndex = 0;</span>
+<span class="lineNum">     308 </span><span class="lineCov">         14 :     size_t cellIndex = 0;</span>
+<span class="lineNum">     309 </span><span class="lineCov">       1499 :     for( GIDSetCIter cellID = _gids.begin(); cellID != _gids.end();</span>
+<span class="lineNum">     310 </span>            :          ++cellID, ++cellIndex )
+<span class="lineNum">     311 </span>            :     {
+<span class="lineNum">     312 </span><span class="lineCov">       1485 :         _openFile( *cellID );</span>
+<span class="lineNum">     313 </span>            : 
+<span class="lineNum">     314 </span><span class="lineCov">       1485 :         const H5::H5File&amp; file = _file.getId() ? _file :</span>
+<span class="lineNum">     315 </span><span class="lineCov">       1485 :                                              _files.find( *cellID )-&gt;second;</span>
+<span class="lineNum">     316 </span>            : 
+<span class="lineNum">     317 </span><span class="lineCov">       1485 :         std::stringstream cellName;</span>
+<span class="lineNum">     318 </span><span class="lineCov">       1485 :         cellName &lt;&lt; &quot;a&quot; &lt;&lt; *cellID;</span>
+<span class="lineNum">     319 </span><span class="lineCov">       4455 :         const std::string datasetName = &quot;/&quot; + cellName.str() + &quot;/&quot; +</span>
+<span class="lineNum">     320 </span><span class="lineCov">       4455 :                                         _reportName + &quot;/&quot; + mappingDatasetName;</span>
+<span class="lineNum">     321 </span><span class="lineCov">       2970 :         H5::DataSet dataset;</span>
+<span class="lineNum">     322 </span><span class="lineCov">       1485 :         H5E_BEGIN_TRY</span>
+<span class="lineNum">     323 </span><span class="lineCov">       1485 :             dataset = file.openDataSet( datasetName );</span>
+<span class="lineNum">     324 </span><span class="lineCov">       1485 :         H5E_END_TRY</span>
+<span class="lineNum">     325 </span><span class="lineCov">       1485 :         if( !dataset.getId() )</span>
+<span class="lineNum">     326 </span>            :         {
+<span class="lineNum">     327 </span><span class="lineNoCov">          0 :             LBTHROW(</span>
+<span class="lineNum">     328 </span>            :                 std::runtime_error( &quot;ReportReaderHDF5: &quot;
+<span class="lineNum">     329 </span>            :                                   &quot;Dataset &quot; + datasetName + &quot; not found &quot;
+<span class="lineNum">     330 </span>            :                                   &quot;in file: &quot; + file.getFileName( )));
+<span class="lineNum">     331 </span>            :         }
+<span class="lineNum">     332 </span>            : 
+<span class="lineNum">     333 </span><span class="lineCov">       1485 :         if( dataset.getSpace().getSimpleExtentNdims() != 2 )</span>
+<span class="lineNum">     334 </span>            :         {
+<span class="lineNum">     335 </span><span class="lineNoCov">          0 :             LBTHROW(</span>
+<span class="lineNum">     336 </span>            :                 std::runtime_error(&quot;Compartment_Report_HDF5_File_Reader: &quot;
+<span class="lineNum">     337 </span>            :                                  &quot;Error, not 2 dimensional array on &quot; +
+<span class="lineNum">     338 </span>            :                                  datasetName));
+<span class="lineNum">     339 </span>            :         }
+<span class="lineNum">     340 </span>            : 
+<span class="lineNum">     341 </span>            :         hsize_t dims[2];
+<span class="lineNum">     342 </span><span class="lineCov">       1485 :         dataset.getSpace().getSimpleExtentDims( dims );</span>
+<span class="lineNum">     343 </span>            : 
+<span class="lineNum">     344 </span><span class="lineCov">       2970 :         boost::scoped_array&lt; float &gt; buffer( new float[dims[1]] );</span>
+<span class="lineNum">     345 </span><span class="lineCov">       1485 :         dataset.read( buffer.get(), H5::PredType::NATIVE_FLOAT );</span>
+<span class="lineNum">     346 </span>            : 
+<span class="lineNum">     347 </span>            :         // Getting the last section id;
+<span class="lineNum">     348 </span><span class="lineCov">       1485 :         size_t largestSectionID = 0;</span>
+<span class="lineNum">     349 </span><span class="lineCov">     167134 :         for( size_t i = 0; i &lt; dims[1]; ++i )</span>
+<span class="lineNum">     350 </span>            :         {
+<span class="lineNum">     351 </span><span class="lineCov">     165649 :             if( buffer[i] &gt; largestSectionID )</span>
+<span class="lineNum">     352 </span><span class="lineCov">      47092 :                 largestSectionID  = buffer[i];</span>
+<span class="lineNum">     353 </span>            :         }
+<span class="lineNum">     354 </span>            : 
+<span class="lineNum">     355 </span><span class="lineCov">       1485 :         uint64_ts&amp; offsets = _offsets[cellIndex];</span>
+<span class="lineNum">     356 </span><span class="lineCov">       1485 :         offsets.resize( largestSectionID+1, LB_UNDEFINED_UINT64 );</span>
+<span class="lineNum">     357 </span>            : 
+<span class="lineNum">     358 </span><span class="lineCov">       1485 :         size_t lastSection = LB_UNDEFINED_UINT16;</span>
+<span class="lineNum">     359 </span><span class="lineCov">     167134 :         for( size_t i = 0; i &lt; dims[1]; ++i, ++nextCompartmentIndex )</span>
+<span class="lineNum">     360 </span>            :         {
+<span class="lineNum">     361 </span><span class="lineCov">     165649 :             const size_t section = buffer[i];</span>
+<span class="lineNum">     362 </span><span class="lineCov">     165649 :             if( lastSection != section )</span>
+<span class="lineNum">     363 </span>            :             {
+<span class="lineNum">     364 </span><span class="lineCov">      48577 :                 lastSection = section;</span>
+<span class="lineNum">     365 </span>            :                 // Storing the start index of a new section with at
+<span class="lineNum">     366 </span>            :                 // least 1 compartment
+<span class="lineNum">     367 </span><span class="lineCov">      48577 :                 offsets[section] = nextCompartmentIndex;</span>
+<span class="lineNum">     368 </span>            :             }
+<span class="lineNum">     369 </span>            :         }
+<span class="lineNum">     370 </span><span class="lineCov">       1485 :     }</span>
+<span class="lineNum">     371 </span>            : 
+<span class="lineNum">     372 </span><span class="lineCov">         14 :     _comps = nextCompartmentIndex;</span>
+<span class="lineNum">     373 </span><span class="lineCov">         14 :     _counts.resize( _offsets.size( ));</span>
+<span class="lineNum">     374 </span>            : 
+<span class="lineNum">     375 </span><span class="lineCov">         14 :     SectionOffsets::const_iterator offsetsIt;</span>
+<span class="lineNum">     376 </span><span class="lineCov">         14 :     CompartmentCounts::iterator countsIt;</span>
+<span class="lineNum">     377 </span><span class="lineCov">       4511 :     for( offsetsIt = _offsets.begin(),</span>
+<span class="lineNum">     378 </span><span class="lineCov">         14 :          countsIt = _counts.begin();</span>
+<span class="lineNum">     379 </span><span class="lineCov">       2998 :          offsetsIt != _offsets.end();</span>
+<span class="lineNum">     380 </span>            :          ++offsetsIt, ++countsIt )
+<span class="lineNum">     381 </span>            :     {
+<span class="lineNum">     382 </span><span class="lineCov">       1485 :         countsIt-&gt;reserve( offsetsIt-&gt;size( ));</span>
+<span class="lineNum">     383 </span>            : 
+<span class="lineNum">     384 </span><span class="lineCov">       1485 :         uint64_ts::const_iterator sectionOffsetsIt;</span>
+<span class="lineNum">     385 </span><span class="lineCov">     237639 :         for( sectionOffsetsIt = offsetsIt-&gt;begin();</span>
+<span class="lineNum">     386 </span><span class="lineCov">     158426 :              sectionOffsetsIt != offsetsIt-&gt;end(); ++sectionOffsetsIt )</span>
+<span class="lineNum">     387 </span>            :         {
+<span class="lineNum">     388 </span>            :             countsIt-&gt;push_back( calcCompartmentCounts( offsetsIt,
+<span class="lineNum">     389 </span>            :                                                         sectionOffsetsIt,
+<span class="lineNum">     390 </span>            :                                                         _offsets,
+<span class="lineNum">     391 </span><span class="lineCov">      77728 :                                                        nextCompartmentIndex ));</span>
+<span class="lineNum">     392 </span>            :         }
+<span class="lineNum">     393 </span>            :     }
+<span class="lineNum">     394 </span>            : 
+<span class="lineNum">     395 </span><span class="lineCov">       1499 :     for( GIDSetCIter cellID = _gids.begin(); cellID != _gids.end();</span>
+<span class="lineNum">     396 </span>            :          ++cellID, ++cellIndex )
+<span class="lineNum">     397 </span>            :     {
+<span class="lineNum">     398 </span><span class="lineCov">       1485 :         const H5::H5File&amp; file = _file.getId() ? _file :</span>
+<span class="lineNum">     399 </span><span class="lineCov">       1485 :                                                  _files.find( *cellID )-&gt;second;</span>
+<span class="lineNum">     400 </span><span class="lineCov">       1485 :         const H5::DataSet&amp; dataset = _openDataset( file, *cellID );</span>
+<span class="lineNum">     401 </span><span class="lineCov">       1485 :         _datas[*cellID] = dataset;</span>
+<span class="lineNum">     402 </span><span class="lineCov">       1485 :         _fspaces[*cellID] = dataset.getSpace();</span>
+<span class="lineNum">     403 </span><span class="lineCov">       1485 :         hsize_t targetSizes[2] = { 1, getFrameSize() };</span>
+<span class="lineNum">     404 </span><span class="lineCov">       2970 :         H5::DataSpace targetSpace( 2, targetSizes );</span>
+<span class="lineNum">     405 </span><span class="lineCov">       1485 :         _mspaces[*cellID] = targetSpace;</span>
+<span class="lineNum">     406 </span><span class="lineCov">       1499 :     }</span>
+<a name="407"><span class="lineNum">     407 </span>            : }</a>
+<span class="lineNum">     408 </span>            : 
+<span class="lineNum">     409 </span><span class="lineCov">          3 : void CompartmentReportHDF5::writeHeader( const float startTime,</span>
+<span class="lineNum">     410 </span>            :                                          const float endTime,
+<span class="lineNum">     411 </span>            :                                          const float timestep,
+<span class="lineNum">     412 </span>            :                                          const std::string&amp; dunit,
+<span class="lineNum">     413 </span>            :                                          const std::string&amp; tunit )
+<span class="lineNum">     414 </span>            : {
+<span class="lineNum">     415 </span><span class="lineCov">          3 :     LBASSERTINFO( endTime-startTime &gt;= timestep,</span>
+<span class="lineNum">     416 </span>            :                   &quot;Invalid report time &quot; &lt;&lt; startTime &lt;&lt; &quot;..&quot; &lt;&lt; endTime &lt;&lt;
+<span class="lineNum">     417 </span>            :                   &quot;/&quot; &lt;&lt; timestep );
+<span class="lineNum">     418 </span><span class="lineCov">          3 :     if( timestep &lt;= 0.f )</span>
+<span class="lineNum">     419 </span>            :     {
+<span class="lineNum">     420 </span><span class="lineNoCov">          0 :         std::ostringstream msg;</span>
+<span class="lineNum">     421 </span><span class="lineNoCov">          0 :         msg &lt;&lt; &quot;Timestep is not &gt; 0.0, got &quot; &lt;&lt; timestep;</span>
+<span class="lineNum">     422 </span><span class="lineNoCov">          0 :         throw std::invalid_argument( msg.str( ));</span>
+<span class="lineNum">     423 </span>            :     }
+<span class="lineNum">     424 </span>            : 
+<span class="lineNum">     425 </span><span class="lineCov">          3 :     _startTime = startTime;</span>
+<span class="lineNum">     426 </span><span class="lineCov">          3 :     _endTime = endTime;</span>
+<span class="lineNum">     427 </span><span class="lineCov">          3 :     _timestep = timestep;</span>
+<span class="lineNum">     428 </span><span class="lineCov">          3 :     _dunit = dunit;</span>
+<span class="lineNum">     429 </span><span class="lineCov">          3 :     _tunit = tunit;</span>
+<span class="lineNum">     430 </span>            : 
+<span class="lineNum">     431 </span><span class="lineCov">          3 :     _createMetaData();</span>
+<a name="432"><span class="lineNum">     432 </span><span class="lineCov">          3 : }</span></a>
+<span class="lineNum">     433 </span>            : 
+<span class="lineNum">     434 </span><span class="lineCov">        105 : bool CompartmentReportHDF5::writeCompartments( const uint32_t gid,</span>
+<span class="lineNum">     435 </span>            :                                                const uint16_ts&amp; counts )
+<span class="lineNum">     436 </span>            : {
+<span class="lineNum">     437 </span><span class="lineCov">        105 :     lunchbox::ScopedWrite mutex( detail::_hdf5Lock );</span>
+<span class="lineNum">     438 </span>            : 
+<span class="lineNum">     439 </span>            :     try
+<span class="lineNum">     440 </span>            :     {
+<span class="lineNum">     441 </span>            :         const size_t compCount = std::accumulate( counts.begin(),
+<span class="lineNum">     442 </span><span class="lineCov">        105 :                                                   counts.end(), 0 );</span>
+<span class="lineNum">     443 </span><span class="lineCov">        105 :         LBASSERT( !counts.empty( ));</span>
+<span class="lineNum">     444 </span><span class="lineCov">        105 :         LBASSERTINFO( compCount &gt; 0, gid );</span>
+<span class="lineNum">     445 </span><span class="lineCov">        105 :         H5::DataSet dataset = _createDataset( gid, compCount );</span>
+<span class="lineNum">     446 </span>            : 
+<span class="lineNum">     447 </span><span class="lineCov">        105 :         const size_t sections = counts.size();</span>
+<span class="lineNum">     448 </span><span class="lineCov">        105 :         LBASSERT( sections &gt; 0 );</span>
+<span class="lineNum">     449 </span><span class="lineCov">        105 :         dataset.openAttribute( 1 ).write( H5::PredType::NATIVE_INT, &amp;sections );</span>
+<span class="lineNum">     450 </span>            : 
+<span class="lineNum">     451 </span>            : //        dataset.openAttribute( 2 ).write( H5::PredType::NATIVE_INT, &amp;somas );
+<span class="lineNum">     452 </span>            : //        dataset.openAttribute( 3 ).write( H5::PredType::NATIVE_INT, &amp;axons );
+<span class="lineNum">     453 </span>            : //        dataset.openAttribute( 4 ).write( H5::PredType::NATIVE_INT, &amp;basals );
+<span class="lineNum">     454 </span>            : //        dataset.openAttribute( 5 ).write( H5::PredType::NATIVE_INT, &amp;apics );
+<span class="lineNum">     455 </span>            : 
+<span class="lineNum">     456 </span><span class="lineCov">        210 :         boost::scoped_array&lt; float &gt; mapping( new float[compCount] );</span>
+<span class="lineNum">     457 </span><span class="lineCov">        105 :         size_t i = 0;</span>
+<span class="lineNum">     458 </span><span class="lineCov">      28404 :         for( size_t j = 0; j &lt; counts.size(); ++j )</span>
+<span class="lineNum">     459 </span>            :         {
+<span class="lineNum">     460 </span><span class="lineCov">      89379 :             for( size_t k = 0; k &lt; counts[j]; ++k )</span>
+<span class="lineNum">     461 </span><span class="lineCov">      61080 :                 mapping[i++] = j;</span>
+<span class="lineNum">     462 </span>            :         }
+<span class="lineNum">     463 </span><span class="lineCov">        105 :         dataset.write( mapping.get(), H5::PredType::NATIVE_FLOAT );</span>
+<span class="lineNum">     464 </span><span class="lineCov">        210 :         return true;</span>
+<span class="lineNum">     465 </span>            :     }
+<span class="lineNum">     466 </span><span class="lineNoCov">          0 :     CATCH_HDF5ERRORS</span>
+<span class="lineNum">     467 </span><span class="lineNoCov">          0 :     return false;</span>
+<a name="468"><span class="lineNum">     468 </span>            : }</a>
+<span class="lineNum">     469 </span>            : 
+<span class="lineNum">     470 </span><span class="lineCov">      10500 : bool CompartmentReportHDF5::writeFrame( const uint32_t gid,</span>
+<span class="lineNum">     471 </span>            :                                         const floats&amp; voltages,
+<span class="lineNum">     472 </span>            :                                         const float timestamp )
+<span class="lineNum">     473 </span>            : {
+<span class="lineNum">     474 </span><span class="lineCov">      10500 :     lunchbox::ScopedWrite mutex( detail::_hdf5Lock );</span>
+<span class="lineNum">     475 </span>            : 
+<span class="lineNum">     476 </span>            :     try
+<span class="lineNum">     477 </span>            :     {
+<span class="lineNum">     478 </span><span class="lineCov">      10500 :         H5::DataSet&amp; dataset = _getDataset( gid );</span>
+<span class="lineNum">     479 </span><span class="lineCov">      10500 :         const H5::DataSpace&amp; dataFspace = dataset.getSpace();</span>
+<span class="lineNum">     480 </span>            : 
+<span class="lineNum">     481 </span><span class="lineCov">      10500 :         const size_t frameNumber = _getFrameNumber( timestamp );</span>
+<span class="lineNum">     482 </span>            :         hsize_t dims[2];
+<span class="lineNum">     483 </span><span class="lineCov">      10500 :         dataFspace.getSimpleExtentDims( dims );</span>
+<span class="lineNum">     484 </span>            : 
+<span class="lineNum">     485 </span>            :         // get the correct slab
+<span class="lineNum">     486 </span><span class="lineCov">      10500 :         const hsize_t dataDim[2] = { 1, dims[1] };</span>
+<span class="lineNum">     487 </span><span class="lineCov">      10500 :         const hsize_t dataOffset[2] = { frameNumber, 0 };</span>
+<span class="lineNum">     488 </span><span class="lineCov">      10500 :         dataFspace.selectHyperslab( H5S_SELECT_SET, dataDim, dataOffset );</span>
+<span class="lineNum">     489 </span>            : 
+<span class="lineNum">     490 </span>            :         // define mspace
+<span class="lineNum">     491 </span><span class="lineCov">      21000 :         H5::DataSpace dataMspace( 1, &amp;dataDim[1] );</span>
+<span class="lineNum">     492 </span>            : 
+<span class="lineNum">     493 </span>            :         // Write data to the dataset
+<span class="lineNum">     494 </span><span class="lineCov">      10500 :         dataset.write( &amp;voltages[0], H5::PredType::NATIVE_FLOAT, dataMspace,</span>
+<span class="lineNum">     495 </span><span class="lineCov">      10500 :                        dataFspace );</span>
+<span class="lineNum">     496 </span><span class="lineCov">      21000 :         return true;</span>
+<span class="lineNum">     497 </span>            :     }
+<span class="lineNum">     498 </span><span class="lineNoCov">          0 :     CATCH_HDF5ERRORS</span>
+<span class="lineNum">     499 </span><span class="lineNoCov">          0 :     return false;</span>
+<a name="500"><span class="lineNum">     500 </span>            : }</a>
+<span class="lineNum">     501 </span>            : 
+<span class="lineNum">     502 </span><span class="lineNoCov">          0 : bool CompartmentReportHDF5::flush()</span>
+<span class="lineNum">     503 </span>            : {
+<span class="lineNum">     504 </span><span class="lineNoCov">          0 :     lunchbox::ScopedWrite mutex( detail::_hdf5Lock );</span>
+<span class="lineNum">     505 </span><span class="lineNoCov">          0 :     _file.flush( H5F_SCOPE_GLOBAL );</span>
+<span class="lineNum">     506 </span><span class="lineNoCov">          0 :     return true;</span>
+<a name="507"><span class="lineNum">     507 </span>            : }</a>
+<span class="lineNum">     508 </span>            : 
+<span class="lineNum">     509 </span><span class="lineCov">       1485 : void CompartmentReportHDF5::_openFile( const uint32_t cellID )</span>
+<span class="lineNum">     510 </span>            : {
+<span class="lineNum">     511 </span><span class="lineCov">       1485 :     if( _file.getId( ))</span>
+<span class="lineNum">     512 </span><span class="lineCov">       2970 :         return;</span>
+<span class="lineNum">     513 </span>            : 
+<span class="lineNum">     514 </span><span class="lineNoCov">          0 :     assert( _files.find( cellID ) == _files.end( ));</span>
+<span class="lineNum">     515 </span>            : 
+<span class="lineNum">     516 </span><span class="lineNoCov">          0 :     std::stringstream cellName;</span>
+<span class="lineNum">     517 </span><span class="lineNoCov">          0 :     cellName &lt;&lt; &quot;a&quot; &lt;&lt; cellID;</span>
+<span class="lineNum">     518 </span><span class="lineNoCov">          0 :     const boost::filesystem::path filename = _path / (cellName.str() + &quot;.h5&quot;);</span>
+<span class="lineNum">     519 </span>            : 
+<span class="lineNum">     520 </span><span class="lineNoCov">          0 :     H5::H5File file( filename.string().c_str(), H5F_ACC_RDONLY );</span>
+<span class="lineNum">     521 </span><span class="lineNoCov">          0 :     if( !file.getId())</span>
+<span class="lineNum">     522 </span>            :     {
+<span class="lineNum">     523 </span><span class="lineNoCov">          0 :         LBTHROW(</span>
+<span class="lineNum">     524 </span>            :             std::runtime_error( &quot;ReportReaderHDF5: error opening file:&quot;
+<span class="lineNum">     525 </span>            :                              + filename.string( )));
+<span class="lineNum">     526 </span>            :     }
+<span class="lineNum">     527 </span><span class="lineNoCov">          0 :     _files[cellID] = file;</span>
+<a name="528"><span class="lineNum">     528 </span>            : }</a>
+<span class="lineNum">     529 </span>            : 
+<span class="lineNum">     530 </span><span class="lineCov">       1498 : H5::DataSet CompartmentReportHDF5::_openDataset( const H5::H5File&amp; file,</span>
+<span class="lineNum">     531 </span>            :                                                  const uint32_t cellID )
+<span class="lineNum">     532 </span>            : {
+<span class="lineNum">     533 </span><span class="lineCov">       1498 :     std::stringstream cellName;</span>
+<span class="lineNum">     534 </span><span class="lineCov">       1498 :     cellName &lt;&lt; &quot;a&quot; &lt;&lt; cellID;</span>
+<span class="lineNum">     535 </span><span class="lineCov">       4494 :     const std::string datasetName = &quot;/&quot; + cellName.str() + &quot;/&quot; + _reportName +</span>
+<span class="lineNum">     536 </span><span class="lineCov">       4494 :                                     &quot;/&quot; + dataDatasetName;</span>
+<span class="lineNum">     537 </span><span class="lineCov">       1498 :     H5::DataSet dataset;</span>
+<span class="lineNum">     538 </span><span class="lineCov">       1498 :     H5E_BEGIN_TRY</span>
+<span class="lineNum">     539 </span><span class="lineCov">       1498 :         dataset = file.openDataSet( datasetName );</span>
+<span class="lineNum">     540 </span><span class="lineCov">       1498 :     H5E_END_TRY</span>
+<span class="lineNum">     541 </span><span class="lineCov">       1498 :     if( !dataset.getId() )</span>
+<span class="lineNum">     542 </span>            :     {
+<span class="lineNum">     543 </span><span class="lineNoCov">          0 :         LBTHROW(</span>
+<span class="lineNum">     544 </span>            :             std::runtime_error( &quot;ReportReaderHDF5: &quot;
+<span class="lineNum">     545 </span>            :                               &quot;Dataset &quot; + datasetName + &quot; not found &quot;
+<span class="lineNum">     546 </span>            :                               &quot;in file: &quot; + file.getFileName( )));
+<span class="lineNum">     547 </span>            :     }
+<span class="lineNum">     548 </span>            : 
+<span class="lineNum">     549 </span><span class="lineCov">       1498 :     if( dataset.getSpace().getSimpleExtentNdims() != 2 )</span>
+<span class="lineNum">     550 </span>            :     {
+<span class="lineNum">     551 </span><span class="lineNoCov">          0 :         LBTHROW(</span>
+<span class="lineNum">     552 </span>            :             std::runtime_error(&quot;Compartment_Report_HDF5_File_Reader: &quot;
+<span class="lineNum">     553 </span>            :                              &quot;Error, not 2 dimensional array on &quot; +
+<span class="lineNum">     554 </span>            :                              datasetName));
+<span class="lineNum">     555 </span>            :     }
+<span class="lineNum">     556 </span>            : 
+<span class="lineNum">     557 </span><span class="lineCov">       2996 :     return dataset;</span>
+<a name="558"><span class="lineNum">     558 </span>            : }</a>
+<span class="lineNum">     559 </span>            : 
+<span class="lineNum">     560 </span><span class="lineCov">        105 : H5::DataSet CompartmentReportHDF5::_createDataset( const uint32_t gid,</span>
+<span class="lineNum">     561 </span>            :                                                    const size_t compCount )
+<span class="lineNum">     562 </span>            : {
+<span class="lineNum">     563 </span><span class="lineCov">        105 :     LBASSERT( compCount &gt; 0 );</span>
+<span class="lineNum">     564 </span><span class="lineCov">        105 :     LBASSERT( !_reportName.empty( ));</span>
+<span class="lineNum">     565 </span>            : 
+<span class="lineNum">     566 </span><span class="lineCov">        105 :     std::ostringstream neuronName;</span>
+<span class="lineNum">     567 </span><span class="lineCov">        105 :     neuronName &lt;&lt; &quot;a&quot; &lt;&lt; gid;</span>
+<span class="lineNum">     568 </span>            : 
+<span class="lineNum">     569 </span><span class="lineCov">        210 :     H5::Group neuronGroup = _file.createGroup( neuronName.str().c_str( ));</span>
+<span class="lineNum">     570 </span><span class="lineCov">        210 :     H5::Group reportGroup = neuronGroup.createGroup( _reportName );</span>
+<span class="lineNum">     571 </span>            : 
+<span class="lineNum">     572 </span><span class="lineCov">        105 :     const int dims = 2;</span>
+<span class="lineNum">     573 </span><span class="lineCov">        105 :     const size_t numSteps = (getEndTime() - getStartTime()) / getTimestep();</span>
+<span class="lineNum">     574 </span><span class="lineCov">        105 :     const hsize_t mappingDim[dims] = { 1, compCount };</span>
+<span class="lineNum">     575 </span><span class="lineCov">        105 :     const hsize_t dataDim[dims] = { numSteps, compCount };</span>
+<span class="lineNum">     576 </span><span class="lineCov">        105 :     LBASSERT( numSteps &gt; 0 );</span>
+<span class="lineNum">     577 </span>            : 
+<span class="lineNum">     578 </span><span class="lineCov">        210 :     H5::DataSpace mappingDataspace( dims, mappingDim );</span>
+<span class="lineNum">     579 </span><span class="lineCov">        210 :     H5::DataSpace dataDataspace( dims, dataDim );</span>
+<span class="lineNum">     580 </span>            : 
+<span class="lineNum">     581 </span>            :     H5::DataSet mappingDataset = reportGroup.createDataSet(
+<span class="lineNum">     582 </span><span class="lineCov">        105 :              mappingDatasetName, H5::PredType::NATIVE_FLOAT, mappingDataspace );</span>
+<span class="lineNum">     583 </span>            :     H5::DataSet dataDataset = reportGroup.createDataSet( dataDatasetName,
+<span class="lineNum">     584 </span><span class="lineCov">        210 :                                     H5::PredType::NATIVE_FLOAT, dataDataspace );</span>
+<span class="lineNum">     585 </span>            : 
+<span class="lineNum">     586 </span><span class="lineCov">        105 :     _datas[gid] = dataDataset;</span>
+<span class="lineNum">     587 </span>            : 
+<span class="lineNum">     588 </span><span class="lineCov">        105 :     _createMappingAttributes( mappingDataset );</span>
+<span class="lineNum">     589 </span><span class="lineCov">        105 :     _createDataAttributes( dataDataset );</span>
+<span class="lineNum">     590 </span>            : 
+<span class="lineNum">     591 </span><span class="lineCov">        210 :     return mappingDataset;</span>
+<a name="592"><span class="lineNum">     592 </span>            : }</a>
+<span class="lineNum">     593 </span>            : 
+<span class="lineNum">     594 </span><span class="lineCov">      10500 : H5::DataSet&amp; CompartmentReportHDF5::_getDataset( const uint32_t gid )</span>
+<span class="lineNum">     595 </span>            : {
+<span class="lineNum">     596 </span><span class="lineCov">      10500 :     Datasets::iterator it = _datas.find( gid );</span>
+<span class="lineNum">     597 </span><span class="lineCov">      10500 :     if( it == _datas.end( ))</span>
+<span class="lineNum">     598 </span><span class="lineNoCov">          0 :         throw std::runtime_error( &quot;Need mapping before writing data&quot; );</span>
+<span class="lineNum">     599 </span><span class="lineCov">      10500 :     return it-&gt;second;</span>
+<a name="600"><span class="lineNum">     600 </span>            : }</a>
+<span class="lineNum">     601 </span>            : 
+<span class="lineNum">     602 </span><span class="lineCov">          3 : void CompartmentReportHDF5::_createMetaData()</span>
+<span class="lineNum">     603 </span>            : {
+<span class="lineNum">     604 </span><span class="lineCov">          3 :     H5::Group root = _file.openGroup( &quot;/&quot; );</span>
+<span class="lineNum">     605 </span>            : 
+<span class="lineNum">     606 </span><span class="lineCov">          3 :     detail::addStringAttribute( root, &quot;creator&quot;, &quot;Brion&quot; );</span>
+<span class="lineNum">     607 </span>            :     detail::addStringAttribute( root, &quot;software_version&quot;,
+<span class="lineNum">     608 </span><span class="lineCov">          3 :                                 brion::Version::getRevString( ));</span>
+<span class="lineNum">     609 </span>            : 
+<span class="lineNum">     610 </span><span class="lineCov">          3 :     const time_t now = ::time(0);</span>
+<span class="lineNum">     611 </span>            : #ifdef _WIN32
+<span class="lineNum">     612 </span>            :     char* gmtString = ::ctime( &amp;now );
+<span class="lineNum">     613 </span>            : #else
+<span class="lineNum">     614 </span>            :     char gmtString[32];
+<span class="lineNum">     615 </span><span class="lineCov">          3 :     ::ctime_r( &amp;now, gmtString );</span>
+<span class="lineNum">     616 </span>            : #endif
+<span class="lineNum">     617 </span><span class="lineCov">          6 :     std::string creationTimeName = gmtString;</span>
+<span class="lineNum">     618 </span>            :     // ctime_r ends with \n
+<span class="lineNum">     619 </span><span class="lineCov">          3 :     creationTimeName = creationTimeName.substr( 0, creationTimeName.size() -1 );</span>
+<span class="lineNum">     620 </span><span class="lineCov">          6 :     detail::addStringAttribute( root, &quot;creation_time&quot;, creationTimeName );</span>
+<a name="621"><span class="lineNum">     621 </span><span class="lineCov">          3 : }</span></a>
+<span class="lineNum">     622 </span>            : 
+<span class="lineNum">     623 </span><span class="lineCov">        105 : void CompartmentReportHDF5::_createMappingAttributes( H5::DataSet&amp; dataset )</span>
+<span class="lineNum">     624 </span>            : {
+<span class="lineNum">     625 </span>            : //    const std::string type =
+<span class="lineNum">     626 </span>            : //                         boost::lexical_cast&lt; std::string &gt;( _spec.type( ));
+<span class="lineNum">     627 </span><span class="lineCov">        105 :     const std::string type = &quot;1&quot;;   // COMPARTMENT_REPORT</span>
+<span class="lineNum">     628 </span><span class="lineCov">        105 :     detail::addStringAttribute( dataset, mappingAttributes[0], type );</span>
+<span class="lineNum">     629 </span>            :     dataset.createAttribute( mappingAttributes[1], H5::PredType::NATIVE_INT,
+<span class="lineNum">     630 </span><span class="lineCov">        105 :                              H5S_SCALAR );</span>
+<span class="lineNum">     631 </span>            :     dataset.createAttribute( mappingAttributes[2], H5::PredType::NATIVE_INT,
+<span class="lineNum">     632 </span><span class="lineCov">        105 :                              H5S_SCALAR );</span>
+<span class="lineNum">     633 </span>            :     dataset.createAttribute( mappingAttributes[3], H5::PredType::NATIVE_INT,
+<span class="lineNum">     634 </span><span class="lineCov">        105 :                              H5S_SCALAR );</span>
+<span class="lineNum">     635 </span>            :     dataset.createAttribute( mappingAttributes[4], H5::PredType::NATIVE_INT,
+<span class="lineNum">     636 </span><span class="lineCov">        105 :                              H5S_SCALAR );</span>
+<span class="lineNum">     637 </span>            :     dataset.createAttribute( mappingAttributes[5], H5::PredType::NATIVE_INT,
+<span class="lineNum">     638 </span><span class="lineCov">        105 :                              H5S_SCALAR );</span>
+<a name="639"><span class="lineNum">     639 </span><span class="lineCov">        105 : }</span></a>
+<span class="lineNum">     640 </span>            : 
+<span class="lineNum">     641 </span><span class="lineCov">        105 : void CompartmentReportHDF5::_createDataAttributes( H5::DataSet&amp; dataset )</span>
+<span class="lineNum">     642 </span>            : {
+<span class="lineNum">     643 </span><span class="lineCov">        105 :     const int rank = 0;</span>
+<span class="lineNum">     644 </span><span class="lineCov">        105 :     const double startTime = getStartTime();</span>
+<span class="lineNum">     645 </span><span class="lineCov">        105 :     const double endTime = getEndTime();</span>
+<span class="lineNum">     646 </span><span class="lineCov">        105 :     const double timestep = getTimestep();</span>
+<span class="lineNum">     647 </span>            : 
+<span class="lineNum">     648 </span>            :     H5::Attribute rankAttr = dataset.createAttribute( dataAttributes[0],
+<span class="lineNum">     649 </span><span class="lineCov">        105 :                                      H5::PredType::NATIVE_INT, H5S_SCALAR );</span>
+<span class="lineNum">     650 </span>            :     H5::Attribute tstartAttr = dataset.createAttribute( dataAttributes[1],
+<span class="lineNum">     651 </span><span class="lineCov">        210 :                                   H5::PredType::NATIVE_DOUBLE, H5S_SCALAR );</span>
+<span class="lineNum">     652 </span>            :     H5::Attribute tstopAttr = dataset.createAttribute( dataAttributes[2],
+<span class="lineNum">     653 </span><span class="lineCov">        210 :                                   H5::PredType::NATIVE_DOUBLE, H5S_SCALAR );</span>
+<span class="lineNum">     654 </span>            :     H5::Attribute dtAttr = dataset.createAttribute( dataAttributes[3],
+<span class="lineNum">     655 </span><span class="lineCov">        210 :                                   H5::PredType::NATIVE_DOUBLE, H5S_SCALAR );</span>
+<span class="lineNum">     656 </span>            : 
+<span class="lineNum">     657 </span><span class="lineCov">        105 :     rankAttr.write( H5::PredType::NATIVE_INT, &amp;rank );</span>
+<span class="lineNum">     658 </span><span class="lineCov">        105 :     tstartAttr.write( H5::PredType::NATIVE_DOUBLE, &amp;startTime );</span>
+<span class="lineNum">     659 </span><span class="lineCov">        105 :     tstopAttr.write( H5::PredType::NATIVE_DOUBLE, &amp;endTime );</span>
+<span class="lineNum">     660 </span><span class="lineCov">        105 :     dtAttr.write( H5::PredType::NATIVE_DOUBLE, &amp;timestep );</span>
+<span class="lineNum">     661 </span><span class="lineCov">        105 :     detail::addStringAttribute( dataset, dataAttributes[4], _dunit );</span>
+<span class="lineNum">     662 </span><span class="lineCov">        210 :     detail::addStringAttribute( dataset, dataAttributes[5], _tunit );</span>
+<span class="lineNum">     663 </span><span class="lineCov">        105 : }</span>
+<a name="664"><span class="lineNum">     664 </span>            : </a>
+<span class="lineNum">     665 </span>            : }
+<span class="lineNum">     666 </span><span class="lineCov">         36 : }</span>
+</pre>
+      </td>
+    </tr>
+  </table>
+  <br>
+
+  <table width="100%" border=0 cellspacing=0 cellpadding=0>
+    <tr><td class="ruler"><img src="../../glass.png" width=3 height=3 alt=""></td></tr>
+    <tr><td class="versionInfo">Generated by: <a href="http://ltp.sourceforge.net/coverage/lcov.php" target="_parent">LCOV version 1.11</a></td></tr>
+  </table>
+  <br>
+
+</body>
+</html>
