@@ -1,0 +1,343 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+
+<html lang="en">
+
+<head>
+  <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+  <title>LCOV - Livre - lib/uploaders/TextureUploadProcessor.cpp</title>
+  <link rel="stylesheet" type="text/css" href="../../gcov.css">
+</head>
+
+<body>
+
+  <table width="100%" border=0 cellspacing=0 cellpadding=0>
+    <tr><td class="title">LCOV - code coverage report</td></tr>
+    <tr><td class="ruler"><img src="../../glass.png" width=3 height=3 alt=""></td></tr>
+
+    <tr>
+      <td width="100%">
+        <table cellpadding=1 border=0 width="100%">
+          <tr>
+            <td width="10%" class="headerItem">Current view:</td>
+            <td width="35%" class="headerValue"><a href="../../index.html">top level</a> - <a href="index.html">lib/uploaders</a> - TextureUploadProcessor.cpp<span style="font-size: 80%;"> (source / <a href="TextureUploadProcessor.cpp.func-sort-c.html">functions</a>)</span></td>
+            <td width="5%"></td>
+            <td width="15%"></td>
+            <td width="10%" class="headerCovTableHead">Hit</td>
+            <td width="10%" class="headerCovTableHead">Total</td>
+            <td width="15%" class="headerCovTableHead">Coverage</td>
+          </tr>
+          <tr>
+            <td class="headerItem">Test:</td>
+            <td class="headerValue">Livre</td>
+            <td></td>
+            <td class="headerItem">Lines:</td>
+            <td class="headerCovTableEntry">1</td>
+            <td class="headerCovTableEntry">101</td>
+            <td class="headerCovTableEntryLo">1.0 %</td>
+          </tr>
+          <tr>
+            <td class="headerItem">Date:</td>
+            <td class="headerValue">2016-05-24 03:03:04</td>
+            <td></td>
+            <td class="headerItem">Functions:</td>
+            <td class="headerCovTableEntry">2</td>
+            <td class="headerCovTableEntry">22</td>
+            <td class="headerCovTableEntryLo">9.1 %</td>
+          </tr>
+          <tr><td><img src="../../glass.png" width=3 height=3 alt=""></td></tr>
+        </table>
+      </td>
+    </tr>
+
+    <tr><td class="ruler"><img src="../../glass.png" width=3 height=3 alt=""></td></tr>
+  </table>
+
+  <table cellpadding=0 cellspacing=0 border=0>
+    <tr>
+      <td><br></td>
+    </tr>
+    <tr>
+      <td>
+<pre class="sourceHeading">          Line data    Source code</pre>
+<pre class="source">
+<a name="1"><span class="lineNum">       1 </span>            : /* Copyright (c) 2011-2015, EPFL/Blue Brain Project</a>
+<span class="lineNum">       2 </span>            :  *                     Ahmet Bilgili &lt;ahmet.bilgili@epfl.ch&gt;
+<span class="lineNum">       3 </span>            :  *                     Daniel Nachbaur &lt;daniel.nachbaur@epfl.ch&gt;
+<span class="lineNum">       4 </span>            :  *
+<span class="lineNum">       5 </span>            :  * This file is part of Livre &lt;https://github.com/BlueBrain/Livre&gt;
+<span class="lineNum">       6 </span>            :  *
+<span class="lineNum">       7 </span>            :  * This library is free software; you can redistribute it and/or modify it under
+<span class="lineNum">       8 </span>            :  * the terms of the GNU Lesser General Public License version 3.0 as published
+<span class="lineNum">       9 </span>            :  * by the Free Software Foundation.
+<span class="lineNum">      10 </span>            :  *
+<span class="lineNum">      11 </span>            :  * This library is distributed in the hope that it will be useful, but WITHOUT
+<span class="lineNum">      12 </span>            :  * ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS
+<span class="lineNum">      13 </span>            :  * FOR A PARTICULAR PURPOSE.  See the GNU Lesser General Public License for more
+<span class="lineNum">      14 </span>            :  * details.
+<span class="lineNum">      15 </span>            :  *
+<span class="lineNum">      16 </span>            :  * You should have received a copy of the GNU Lesser General Public License
+<span class="lineNum">      17 </span>            :  * along with this library; if not, write to the Free Software Foundation, Inc.,
+<span class="lineNum">      18 </span>            :  * 51 Franklin Street, Fifth Floor, Boston, MA 02110-1301 USA.
+<span class="lineNum">      19 </span>            :  */
+<span class="lineNum">      20 </span>            : 
+<span class="lineNum">      21 </span>            : #include &lt;livre/lib/cache/TextureCache.h&gt;
+<span class="lineNum">      22 </span>            : #include &lt;livre/lib/cache/TextureDataObject.h&gt;
+<span class="lineNum">      23 </span>            : #include &lt;livre/lib/cache/TextureObject.h&gt;
+<span class="lineNum">      24 </span>            : #include &lt;livre/lib/configuration/VolumeRendererParameters.h&gt;
+<span class="lineNum">      25 </span>            : #include &lt;livre/lib/uploaders/TextureUploadProcessor.h&gt;
+<span class="lineNum">      26 </span>            : #include &lt;livre/lib/visitor/DFSTraversal.h&gt;
+<span class="lineNum">      27 </span>            : 
+<span class="lineNum">      28 </span>            : #include &lt;livre/core/visitor/RenderNodeVisitor.h&gt;
+<span class="lineNum">      29 </span>            : #include &lt;livre/core/data/DataSource.h&gt;
+<span class="lineNum">      30 </span>            : #include &lt;livre/core/dash/DashRenderNode.h&gt;
+<span class="lineNum">      31 </span>            : #include &lt;livre/core/dash/DashTree.h&gt;
+<span class="lineNum">      32 </span>            : #include &lt;livre/core/render/GLContext.h&gt;
+<span class="lineNum">      33 </span>            : #include &lt;livre/core/render/Renderer.h&gt;
+<span class="lineNum">      34 </span>            : 
+<span class="lineNum">      35 </span>            : #include &lt;eq/gl.h&gt;
+<span class="lineNum">      36 </span>            : 
+<span class="lineNum">      37 </span>            : namespace livre
+<span class="lineNum">      38 </span>            : {
+<span class="lineNum">      39 </span>            : 
+<span class="lineNum">      40 </span>            : #ifdef _ITT_DEBUG_
+<span class="lineNum">      41 </span>            : #include &quot;ittnotify.h&quot;
+<span class="lineNum">      42 </span>            : __itt_domain* ittTextureLoadDomain = __itt_domain_create(&quot;Texture Loading&quot;);
+<span class="lineNum">      43 </span>            : __itt_string_handle* ittTextureComputationTask =
+<span class="lineNum">      44 </span>            :         __itt_string_handle_create(&quot;Texture loading computation&quot;);
+<span class="lineNum">      45 </span>            : __itt_string_handle* ittTextureLoadTask = __itt_string_handle_create(&quot;Texture loading task&quot;);
+<span class="lineNum">      46 </span>            : #endif // _ITT_DEBUG_
+<span class="lineNum">      47 </span>            : 
+<a name="48"><span class="lineNum">      48 </span>            : </a>
+<span class="lineNum">      49 </span>            : // Dont forget to apply cache policy after each traversal
+<span class="lineNum">      50 </span><span class="lineNoCov">          0 : class TextureLoaderVisitor : public RenderNodeVisitor</span>
+<a name="51"><span class="lineNum">      51 </span>            : {</a>
+<span class="lineNum">      52 </span>            : public:
+<span class="lineNum">      53 </span><span class="lineNoCov">          0 :     TextureLoaderVisitor( DashTree&amp; dashTree,</span>
+<span class="lineNum">      54 </span>            :                           TextureCache&amp; textureCache,
+<span class="lineNum">      55 </span>            :                           ProcessorInputPtr processorInput,
+<span class="lineNum">      56 </span>            :                           ProcessorOutputPtr processorOutput,
+<span class="lineNum">      57 </span>            :                           bool&amp; needRedraw )
+<span class="lineNum">      58 </span>            :         : RenderNodeVisitor( dashTree )
+<span class="lineNum">      59 </span>            :         , _cache( textureCache )
+<span class="lineNum">      60 </span>            :         , _input( processorInput )
+<span class="lineNum">      61 </span>            :         , _output( processorOutput )
+<span class="lineNum">      62 </span>            :         , _allLoaded( true ) // be optimistic; will be set to false on first
+<span class="lineNum">      63 </span>            :                              // non-loaded data during visit
+<span class="lineNum">      64 </span>            :         , _synchronous( false )
+<span class="lineNum">      65 </span><span class="lineNoCov">          0 :         , _needRedraw( needRedraw )</span>
+<span class="lineNum">      66 </span><span class="lineNoCov">          0 :     {}</span>
+<span class="lineNum">      67 </span>            : 
+<a name="68"><span class="lineNum">      68 </span>            :     void visit( DashRenderNode&amp; renderNode, VisitState&amp; state ) final;</a>
+<span class="lineNum">      69 </span>            : 
+<a name="70"><span class="lineNum">      70 </span><span class="lineNoCov">          0 :     bool isAllDataLoaded() const { return _allLoaded; }</span></a>
+<a name="71"><span class="lineNum">      71 </span>            : </a>
+<span class="lineNum">      72 </span><span class="lineNoCov">          0 :     bool isSynchronous() const { return _synchronous; }</span>
+<span class="lineNum">      73 </span><span class="lineNoCov">          0 :     void setSynchronous( const bool synchronous ) { _synchronous = synchronous;}</span>
+<span class="lineNum">      74 </span>            : 
+<span class="lineNum">      75 </span>            : private:
+<span class="lineNum">      76 </span>            :     TextureCache&amp; _cache;
+<span class="lineNum">      77 </span>            :     ProcessorInputPtr _input;
+<span class="lineNum">      78 </span>            :     ProcessorOutputPtr _output;
+<span class="lineNum">      79 </span>            :     bool _allLoaded;
+<span class="lineNum">      80 </span>            :     bool _synchronous;
+<span class="lineNum">      81 </span>            :     bool&amp; _needRedraw;
+<a name="82"><span class="lineNum">      82 </span>            : };</a>
+<span class="lineNum">      83 </span>            : 
+<span class="lineNum">      84 </span><span class="lineNoCov">          0 : class CollectVisiblesVisitor : public RenderNodeVisitor</span>
+<a name="85"><span class="lineNum">      85 </span>            : {</a>
+<span class="lineNum">      86 </span>            : public:
+<span class="lineNum">      87 </span><span class="lineNoCov">          0 :     CollectVisiblesVisitor( DashTree&amp; dashTree )</span>
+<a name="88"><span class="lineNum">      88 </span><span class="lineNoCov">          0 :      : RenderNodeVisitor( dashTree ) {}</span></a>
+<span class="lineNum">      89 </span>            : 
+<span class="lineNum">      90 </span><span class="lineNoCov">          0 :     void visit( DashRenderNode&amp; renderNode, VisitState&amp; state ) final</span>
+<span class="lineNum">      91 </span>            :     {
+<span class="lineNum">      92 </span><span class="lineNoCov">          0 :         if( !renderNode.isInFrustum( ) || renderNode.isLODVisible( ))</span>
+<span class="lineNum">      93 </span><span class="lineNoCov">          0 :              state.setVisitChild( false );</span>
+<span class="lineNum">      94 </span><span class="lineNoCov">          0 :     }</span>
+<a name="95"><span class="lineNum">      95 </span>            : };</a>
+<span class="lineNum">      96 </span>            : 
+<span class="lineNum">      97 </span><span class="lineNoCov">          0 : TextureUploadProcessor::TextureUploadProcessor( DashTree&amp; dashTree,</span>
+<span class="lineNum">      98 </span>            :                                                 GLContextPtr shareContext,
+<span class="lineNum">      99 </span>            :                                                 TextureDataCache&amp; dataCache,
+<span class="lineNum">     100 </span>            :                                                 const VolumeRendererParameters&amp; vrParameters )
+<span class="lineNum">     101 </span>            :     : _dashTree( dashTree )
+<span class="lineNum">     102 </span><span class="lineNoCov">          0 :     , _glContext( shareContext-&gt;clone( ))</span>
+<span class="lineNum">     103 </span>            :     , _sharedContext( shareContext )
+<span class="lineNum">     104 </span>            :     , _currentFrameID( 0 )
+<span class="lineNum">     105 </span>            :     , _threadOp( TO_NONE )
+<span class="lineNum">     106 </span>            :     , _vrParameters( vrParameters )
+<span class="lineNum">     107 </span>            :     , _textureCache( dataCache,
+<span class="lineNum">     108 </span><span class="lineNoCov">          0 :                      _vrParameters.getMaxGPUCacheMemoryMB() * LB_1MB,</span>
+<span class="lineNum">     109 </span>            :                      GL_LUMINANCE8 )
+<span class="lineNum">     110 </span>            :     , _allDataLoaded( false )
+<span class="lineNum">     111 </span><span class="lineNoCov">          0 :     , _needRedraw( false )</span>
+<span class="lineNum">     112 </span>            : {
+<span class="lineNum">     113 </span><span class="lineNoCov">          0 :     setDashContext( dashTree.createContext());</span>
+<a name="114"><span class="lineNum">     114 </span><span class="lineNoCov">          0 : }</span></a>
+<span class="lineNum">     115 </span>            : 
+<span class="lineNum">     116 </span><span class="lineNoCov">          0 : TextureUploadProcessor::~TextureUploadProcessor()</span>
+<span class="lineNum">     117 </span>            : {
+<a name="118"><span class="lineNum">     118 </span><span class="lineNoCov">          0 : }</span></a>
+<span class="lineNum">     119 </span>            : 
+<span class="lineNum">     120 </span><span class="lineNoCov">          0 : const TextureCache&amp; TextureUploadProcessor::getTextureCache() const</span>
+<span class="lineNum">     121 </span>            : {
+<span class="lineNum">     122 </span><span class="lineNoCov">          0 :     return _textureCache;</span>
+<a name="123"><span class="lineNum">     123 </span>            : }</a>
+<span class="lineNum">     124 </span>            : 
+<span class="lineNum">     125 </span><span class="lineNoCov">          0 : bool TextureUploadProcessor::initializeThreadRun_()</span>
+<span class="lineNum">     126 </span>            : {
+<span class="lineNum">     127 </span><span class="lineNoCov">          0 :     setName( &quot;TexUp&quot; );</span>
+<span class="lineNum">     128 </span><span class="lineNoCov">          0 :     LBASSERT( _glContext );</span>
+<span class="lineNum">     129 </span><span class="lineNoCov">          0 :     return DashProcessor::initializeThreadRun_();</span>
+<a name="130"><span class="lineNum">     130 </span>            : }</a>
+<span class="lineNum">     131 </span>            : 
+<span class="lineNum">     132 </span><span class="lineNoCov">          0 : bool TextureUploadProcessor::onPreCommit_( const uint32_t outputConnection LB_UNUSED )</span>
+<span class="lineNum">     133 </span>            : {
+<span class="lineNum">     134 </span><span class="lineNoCov">          0 :     const bool ret = _allDataLoaded;</span>
+<span class="lineNum">     135 </span>            : 
+<span class="lineNum">     136 </span><span class="lineNoCov">          0 :     _allDataLoaded = false;</span>
+<span class="lineNum">     137 </span><span class="lineNoCov">          0 :     return ret;</span>
+<a name="138"><span class="lineNum">     138 </span>            : }</a>
+<span class="lineNum">     139 </span>            : 
+<span class="lineNum">     140 </span><span class="lineNoCov">          0 : void TextureUploadProcessor::_loadData()</span>
+<span class="lineNum">     141 </span>            : {
+<span class="lineNum">     142 </span>            :     TextureLoaderVisitor loadVisitor( _dashTree, _textureCache,
+<span class="lineNum">     143 </span>            :                                       processorInputPtr_, processorOutputPtr_,
+<span class="lineNum">     144 </span><span class="lineNoCov">          0 :                                       _needRedraw );</span>
+<span class="lineNum">     145 </span>            : 
+<span class="lineNum">     146 </span><span class="lineNoCov">          0 :     loadVisitor.setSynchronous( _vrParameters.getSynchronousMode( ));</span>
+<span class="lineNum">     147 </span>            : 
+<span class="lineNum">     148 </span><span class="lineNoCov">          0 :     DFSTraversal traverser;</span>
+<span class="lineNum">     149 </span><span class="lineNoCov">          0 :     const RootNode&amp; rootNode = _dashTree.getDataSource().getVolumeInfo().rootNode;</span>
+<span class="lineNum">     150 </span><span class="lineNoCov">          0 :     traverser.traverse( rootNode, loadVisitor, _currentFrameID );</span>
+<span class="lineNum">     151 </span>            : 
+<span class="lineNum">     152 </span><span class="lineNoCov">          0 :     if(  _vrParameters.getSynchronousMode( ))</span>
+<span class="lineNum">     153 </span><span class="lineNoCov">          0 :         _allDataLoaded = loadVisitor.isAllDataLoaded();</span>
+<span class="lineNum">     154 </span>            :     else
+<span class="lineNum">     155 </span><span class="lineNoCov">          0 :         _allDataLoaded = true;</span>
+<a name="156"><span class="lineNum">     156 </span><span class="lineNoCov">          0 : }</span></a>
+<span class="lineNum">     157 </span>            : 
+<span class="lineNum">     158 </span><span class="lineNoCov">          0 : void TextureUploadProcessor::runLoop_()</span>
+<span class="lineNum">     159 </span>            : {
+<span class="lineNum">     160 </span><span class="lineNoCov">          0 :     _needRedraw = false;</span>
+<span class="lineNum">     161 </span><span class="lineNoCov">          0 :     if( GLContext::getCurrent() != _glContext.get( ))</span>
+<span class="lineNum">     162 </span>            :     {
+<span class="lineNum">     163 </span><span class="lineNoCov">          0 :         _glContext-&gt;share( *_sharedContext );</span>
+<span class="lineNum">     164 </span><span class="lineNoCov">          0 :         _glContext-&gt;makeCurrent();</span>
+<span class="lineNum">     165 </span>            :     }
+<span class="lineNum">     166 </span>            : 
+<span class="lineNum">     167 </span><span class="lineNoCov">          0 :     processorInputPtr_-&gt;applyAll( CONNECTION_ID );</span>
+<span class="lineNum">     168 </span><span class="lineNoCov">          0 :     _checkThreadOperation();</span>
+<span class="lineNum">     169 </span>            : 
+<span class="lineNum">     170 </span>            : #ifdef _ITT_DEBUG_
+<span class="lineNum">     171 </span>            :     __itt_task_begin ( ittTextureLoadDomain, __itt_null, __itt_null, ittTextureComputationTask );
+<span class="lineNum">     172 </span>            : #endif //_ITT_DEBUG_
+<span class="lineNum">     173 </span>            : 
+<span class="lineNum">     174 </span><span class="lineNoCov">          0 :     const DashRenderStatus&amp; renderStatus = _dashTree.getRenderStatus();</span>
+<span class="lineNum">     175 </span><span class="lineNoCov">          0 :     if( renderStatus.getFrameID() != _currentFrameID )</span>
+<span class="lineNum">     176 </span>            :     {
+<span class="lineNum">     177 </span><span class="lineNoCov">          0 :         _protectUnloading.clear();</span>
+<span class="lineNum">     178 </span><span class="lineNoCov">          0 :         CollectVisiblesVisitor collectVisibles( _dashTree );</span>
+<span class="lineNum">     179 </span><span class="lineNoCov">          0 :         DFSTraversal traverser;</span>
+<span class="lineNum">     180 </span>            :         const RootNode&amp; rootNode =
+<span class="lineNum">     181 </span><span class="lineNoCov">          0 :                 _dashTree.getDataSource().getVolumeInfo().rootNode;</span>
+<span class="lineNum">     182 </span><span class="lineNoCov">          0 :         traverser.traverse( rootNode, collectVisibles, renderStatus.getFrameID( ));</span>
+<span class="lineNum">     183 </span><span class="lineNoCov">          0 :         _currentFrameID = renderStatus.getFrameID();</span>
+<span class="lineNum">     184 </span>            :     }
+<span class="lineNum">     185 </span><span class="lineNoCov">          0 :     _loadData();</span>
+<span class="lineNum">     186 </span><span class="lineNoCov">          0 :     processorOutputPtr_-&gt;commit( CONNECTION_ID );</span>
+<span class="lineNum">     187 </span>            : 
+<span class="lineNum">     188 </span>            : #ifdef _ITT_DEBUG_
+<span class="lineNum">     189 </span>            :     __itt_task_end( ittTextureLoadDomain );
+<span class="lineNum">     190 </span>            : #endif //_ITT_DEBUG_
+<a name="191"><span class="lineNum">     191 </span><span class="lineNoCov">          0 : }</span></a>
+<span class="lineNum">     192 </span>            : 
+<span class="lineNum">     193 </span><span class="lineNoCov">          0 : void TextureUploadProcessor::_checkThreadOperation()</span>
+<span class="lineNum">     194 </span>            : {
+<span class="lineNum">     195 </span><span class="lineNoCov">          0 :     DashRenderStatus&amp; renderStatus = _dashTree.getRenderStatus();</span>
+<span class="lineNum">     196 </span><span class="lineNoCov">          0 :     ThreadOperation op = renderStatus.getThreadOp();</span>
+<span class="lineNum">     197 </span><span class="lineNoCov">          0 :     if( op != _threadOp )</span>
+<span class="lineNum">     198 </span>            :     {
+<span class="lineNum">     199 </span><span class="lineNoCov">          0 :         _threadOp = op;</span>
+<span class="lineNum">     200 </span><span class="lineNoCov">          0 :         renderStatus.setThreadOp( op );</span>
+<span class="lineNum">     201 </span><span class="lineNoCov">          0 :         processorOutputPtr_-&gt;commit( CONNECTION_ID );</span>
+<span class="lineNum">     202 </span>            :     }
+<span class="lineNum">     203 </span>            : 
+<span class="lineNum">     204 </span><span class="lineNoCov">          0 :     if( _threadOp == TO_EXIT )</span>
+<span class="lineNum">     205 </span><span class="lineNoCov">          0 :         exit();</span>
+<a name="206"><span class="lineNum">     206 </span><span class="lineNoCov">          0 : }</span></a>
+<span class="lineNum">     207 </span>            : 
+<span class="lineNum">     208 </span><span class="lineNoCov">          0 : void TextureLoaderVisitor::visit( DashRenderNode&amp; renderNode, VisitState&amp; state )</span>
+<span class="lineNum">     209 </span>            : {
+<span class="lineNum">     210 </span><span class="lineNoCov">          0 :     const LODNode&amp; lodNode = renderNode.getLODNode();</span>
+<span class="lineNum">     211 </span><span class="lineNoCov">          0 :     if( !lodNode.isValid( ))</span>
+<span class="lineNum">     212 </span><span class="lineNoCov">          0 :         return;</span>
+<span class="lineNum">     213 </span>            : 
+<span class="lineNum">     214 </span><span class="lineNoCov">          0 :     if( !renderNode.isInFrustum( ))</span>
+<span class="lineNum">     215 </span>            :     {
+<span class="lineNum">     216 </span><span class="lineNoCov">          0 :         state.setVisitChild( false );</span>
+<span class="lineNum">     217 </span><span class="lineNoCov">          0 :         return;</span>
+<span class="lineNum">     218 </span>            :     }
+<span class="lineNum">     219 </span>            : 
+<span class="lineNum">     220 </span><span class="lineNoCov">          0 :     if( !renderNode.isLODVisible( ))</span>
+<span class="lineNum">     221 </span><span class="lineNoCov">          0 :         return;</span>
+<span class="lineNum">     222 </span>            : 
+<span class="lineNum">     223 </span><span class="lineNoCov">          0 :     state.setVisitChild( false );</span>
+<span class="lineNum">     224 </span>            : 
+<span class="lineNum">     225 </span><span class="lineNoCov">          0 :     const ConstCacheObjectPtr texPtr = renderNode.getTextureObject();</span>
+<span class="lineNum">     226 </span><span class="lineNoCov">          0 :     if( texPtr &amp;&amp; texPtr-&gt;isLoaded( ))</span>
+<span class="lineNum">     227 </span><span class="lineNoCov">          0 :         return;</span>
+<span class="lineNum">     228 </span>            : 
+<span class="lineNum">     229 </span><span class="lineNoCov">          0 :     ConstCacheObjectPtr texture = _cache.get( lodNode.getNodeId().getId( ));</span>
+<span class="lineNum">     230 </span><span class="lineNoCov">          0 :     if( texture &amp;&amp; texture-&gt;isLoaded() )</span>
+<span class="lineNum">     231 </span>            :     {
+<span class="lineNum">     232 </span><span class="lineNoCov">          0 :         renderNode.setTextureObject( texture );</span>
+<span class="lineNum">     233 </span><span class="lineNoCov">          0 :         _output-&gt;commit( CONNECTION_ID );</span>
+<span class="lineNum">     234 </span><span class="lineNoCov">          0 :         return;</span>
+<span class="lineNum">     235 </span>            :     }
+<span class="lineNum">     236 </span>            :     else
+<span class="lineNum">     237 </span>            :     {
+<span class="lineNum">     238 </span><span class="lineNoCov">          0 :         const ConstCacheObjectPtr textureData = renderNode.getTextureDataObject();</span>
+<span class="lineNum">     239 </span><span class="lineNoCov">          0 :         if( textureData &amp;&amp; textureData-&gt;isLoaded( ))</span>
+<span class="lineNum">     240 </span>            :         {
+<span class="lineNum">     241 </span>            : #ifdef _ITT_DEBUG_
+<span class="lineNum">     242 </span>            :             __itt_task_begin ( ittTextureLoadDomain, __itt_null, __itt_null,
+<span class="lineNum">     243 </span>            :                                ittTextureLoadTask );
+<span class="lineNum">     244 </span>            : #endif //_ITT_DEBUG_
+<span class="lineNum">     245 </span><span class="lineNoCov">          0 :             CacheObjectPtr lodTexture = _cache.load( lodNode.getNodeId().getId( ));</span>
+<span class="lineNum">     246 </span>            : 
+<span class="lineNum">     247 </span>            : #ifdef _ITT_DEBUG_
+<span class="lineNum">     248 </span>            :             __itt_task_end( ittTextureLoadDomain );
+<span class="lineNum">     249 </span>            : #endif //_ITT_DEBUG_
+<span class="lineNum">     250 </span><span class="lineNoCov">          0 :             renderNode.setTextureObject( lodTexture );</span>
+<span class="lineNum">     251 </span><span class="lineNoCov">          0 :             renderNode.setTextureDataObject( textureData );</span>
+<span class="lineNum">     252 </span><span class="lineNoCov">          0 :             _output-&gt;commit( CONNECTION_ID );</span>
+<span class="lineNum">     253 </span><span class="lineNoCov">          0 :             _needRedraw = true;</span>
+<span class="lineNum">     254 </span>            :         }
+<span class="lineNum">     255 </span>            :         else
+<span class="lineNum">     256 </span>            :         {
+<span class="lineNum">     257 </span><span class="lineNoCov">          0 :             _allLoaded = false;</span>
+<span class="lineNum">     258 </span><span class="lineNoCov">          0 :             LBVERB &lt;&lt; &quot;Texture data not loaded:&quot; &lt;&lt; lodNode.getNodeId() &lt;&lt; std::endl;</span>
+<span class="lineNum">     259 </span><span class="lineNoCov">          0 :         }</span>
+<span class="lineNum">     260 </span>            :     }
+<span class="lineNum">     261 </span>            : 
+<span class="lineNum">     262 </span><span class="lineNoCov">          0 :     if( !isSynchronous( ))</span>
+<span class="lineNum">     263 </span>            :         // only in asynchronous mode
+<span class="lineNum">     264 </span><span class="lineNoCov">          0 :         state.setBreakTraversal( _input-&gt;dataWaitingOnInput( CONNECTION_ID ));</span>
+<a name="265"><span class="lineNum">     265 </span>            : }</a>
+<span class="lineNum">     266 </span>            : 
+<span class="lineNum">     267 </span><span class="lineCov">         30 : }</span>
+</pre>
+      </td>
+    </tr>
+  </table>
+  <br>
+
+  <table width="100%" border=0 cellspacing=0 cellpadding=0>
+    <tr><td class="ruler"><img src="../../glass.png" width=3 height=3 alt=""></td></tr>
+    <tr><td class="versionInfo">Generated by: <a href="http://ltp.sourceforge.net/coverage/lcov.php" target="_parent">LCOV version 1.11</a></td></tr>
+  </table>
+  <br>
+
+</body>
+</html>
