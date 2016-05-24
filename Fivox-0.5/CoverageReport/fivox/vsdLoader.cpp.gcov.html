@@ -1,0 +1,203 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+
+<html lang="en">
+
+<head>
+  <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+  <title>LCOV - Fivox - fivox/vsdLoader.cpp</title>
+  <link rel="stylesheet" type="text/css" href="../gcov.css">
+</head>
+
+<body>
+
+  <table width="100%" border=0 cellspacing=0 cellpadding=0>
+    <tr><td class="title">LCOV - code coverage report</td></tr>
+    <tr><td class="ruler"><img src="../glass.png" width=3 height=3 alt=""></td></tr>
+
+    <tr>
+      <td width="100%">
+        <table cellpadding=1 border=0 width="100%">
+          <tr>
+            <td width="10%" class="headerItem">Current view:</td>
+            <td width="35%" class="headerValue"><a href="../index.html">top level</a> - <a href="index.html">fivox</a> - vsdLoader.cpp<span style="font-size: 80%;"> (source / <a href="vsdLoader.cpp.func-sort-c.html">functions</a>)</span></td>
+            <td width="5%"></td>
+            <td width="15%"></td>
+            <td width="10%" class="headerCovTableHead">Hit</td>
+            <td width="10%" class="headerCovTableHead">Total</td>
+            <td width="15%" class="headerCovTableHead">Coverage</td>
+          </tr>
+          <tr>
+            <td class="headerItem">Test:</td>
+            <td class="headerValue">Fivox</td>
+            <td></td>
+            <td class="headerItem">Lines:</td>
+            <td class="headerCovTableEntry">1</td>
+            <td class="headerCovTableEntry">48</td>
+            <td class="headerCovTableEntryLo">2.1 %</td>
+          </tr>
+          <tr>
+            <td class="headerItem">Date:</td>
+            <td class="headerValue">2016-05-24 05:10:06</td>
+            <td></td>
+            <td class="headerItem">Functions:</td>
+            <td class="headerCovTableEntry">2</td>
+            <td class="headerCovTableEntry">13</td>
+            <td class="headerCovTableEntryLo">15.4 %</td>
+          </tr>
+          <tr><td><img src="../glass.png" width=3 height=3 alt=""></td></tr>
+        </table>
+      </td>
+    </tr>
+
+    <tr><td class="ruler"><img src="../glass.png" width=3 height=3 alt=""></td></tr>
+  </table>
+
+  <table cellpadding=0 cellspacing=0 border=0>
+    <tr>
+      <td><br></td>
+    </tr>
+    <tr>
+      <td>
+<pre class="sourceHeading">          Line data    Source code</pre>
+<pre class="source">
+<a name="1"><span class="lineNum">       1 </span>            : /* Copyright (c) 2015-2016, EPFL/Blue Brain Project</a>
+<span class="lineNum">       2 </span>            :  *                          Stefan.Eilemann@epfl.ch
+<span class="lineNum">       3 </span>            :  *                          Jafet.VillafrancaDiaz@epfl.ch
+<span class="lineNum">       4 </span>            :  *                          Juan Hernando &lt;jhernando@fi.upm.es&gt;
+<span class="lineNum">       5 </span>            :  *                          Daniel.Nachbaur@epfl.ch
+<span class="lineNum">       6 </span>            :  *
+<span class="lineNum">       7 </span>            :  * This file is part of Fivox &lt;https://github.com/BlueBrain/Fivox&gt;
+<span class="lineNum">       8 </span>            :  *
+<span class="lineNum">       9 </span>            :  * This library is free software; you can redistribute it and/or modify it under
+<span class="lineNum">      10 </span>            :  * the terms of the GNU Lesser General Public License version 3.0 as published
+<span class="lineNum">      11 </span>            :  * by the Free Software Foundation.
+<span class="lineNum">      12 </span>            :  *
+<span class="lineNum">      13 </span>            :  * This library is distributed in the hope that it will be useful, but WITHOUT
+<span class="lineNum">      14 </span>            :  * ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS
+<span class="lineNum">      15 </span>            :  * FOR A PARTICULAR PURPOSE.  See the GNU Lesser General Public License for more
+<span class="lineNum">      16 </span>            :  * details.
+<span class="lineNum">      17 </span>            :  *
+<span class="lineNum">      18 </span>            :  * You should have received a copy of the GNU Lesser General Public License
+<span class="lineNum">      19 </span>            :  * along with this library; if not, write to the Free Software Foundation, Inc.,
+<span class="lineNum">      20 </span>            :  * 51 Franklin Street, Fifth Floor, Boston, MA 02110-1301 USA.
+<span class="lineNum">      21 </span>            :  */
+<span class="lineNum">      22 </span>            : 
+<span class="lineNum">      23 </span>            : #include &quot;vsdLoader.h&quot;
+<span class="lineNum">      24 </span>            : 
+<span class="lineNum">      25 </span>            : #include &quot;event.h&quot;
+<span class="lineNum">      26 </span>            : #include &quot;helpers.h&quot;
+<span class="lineNum">      27 </span>            : #include &quot;uriHandler.h&quot;
+<span class="lineNum">      28 </span>            : 
+<span class="lineNum">      29 </span>            : #include &lt;brion/brion.h&gt;
+<span class="lineNum">      30 </span>            : #include &lt;brain/circuit.h&gt;
+<span class="lineNum">      31 </span>            : #include &lt;brain/neuron/morphology.h&gt;
+<span class="lineNum">      32 </span>            : #include &lt;brain/neuron/section.h&gt;
+<span class="lineNum">      33 </span>            : #include &lt;brain/neuron/soma.h&gt;
+<span class="lineNum">      34 </span>            : 
+<span class="lineNum">      35 </span>            : #include &lt;cassert&gt;
+<span class="lineNum">      36 </span>            : 
+<span class="lineNum">      37 </span>            : namespace fivox
+<a name="38"><span class="lineNum">      38 </span>            : {</a>
+<span class="lineNum">      39 </span>            : 
+<span class="lineNum">      40 </span><span class="lineNoCov">          0 : class VSDLoader::Impl</span>
+<a name="41"><span class="lineNum">      41 </span>            : {</a>
+<span class="lineNum">      42 </span>            : public:
+<span class="lineNum">      43 </span><span class="lineNoCov">          0 :     Impl( EventSource&amp; output, const URIHandler&amp; params )</span>
+<span class="lineNum">      44 </span>            :         : _output( output )
+<span class="lineNum">      45 </span><span class="lineNoCov">          0 :         , _voltageReport( params.getConfig().getReportSource( params.getReport( )),</span>
+<span class="lineNum">      46 </span><span class="lineNoCov">          0 :                           brion::MODE_READ, params.getGIDs( ))</span>
+<span class="lineNum">      47 </span><span class="lineNoCov">          0 :         , _areaReport( params.getConfig().getReportSource( &quot;areas&quot; ),</span>
+<span class="lineNum">      48 </span><span class="lineNoCov">          0 :                        brion::MODE_READ, params.getGIDs( ))</span>
+<span class="lineNum">      49 </span>            :     {
+<span class="lineNum">      50 </span><span class="lineNoCov">          0 :         const brain::Circuit circuit( params.getConfig( ));</span>
+<span class="lineNum">      51 </span>            :         const auto morphologies = circuit.loadMorphologies(
+<span class="lineNum">      52 </span><span class="lineNoCov">          0 :             params.getGIDs(), brain::Circuit::COORDINATES_GLOBAL );</span>
+<span class="lineNum">      53 </span>            : 
+<span class="lineNum">      54 </span><span class="lineNoCov">          0 :         _areas = _areaReport.loadFrame( 0.f );</span>
+<span class="lineNum">      55 </span><span class="lineNoCov">          0 :         if( !_areas )</span>
+<span class="lineNum">      56 </span><span class="lineNoCov">          0 :             LBTHROW( std::runtime_error( &quot;Can't load 'areas' vsd report&quot; ));</span>
+<span class="lineNum">      57 </span>            : 
+<span class="lineNum">      58 </span><span class="lineNoCov">          0 :         helpers::addCompartmentEvents( morphologies, _voltageReport, output );</span>
+<span class="lineNum">      59 </span>            : 
+<span class="lineNum">      60 </span><span class="lineNoCov">          0 :         const float thickness = _output.getBoundingBox().getSize()[1];</span>
+<span class="lineNum">      61 </span><span class="lineNoCov">          0 :         setCurve( AttenuationCurve( params.getDyeCurve(), thickness ));</span>
+<a name="62"><span class="lineNum">      62 </span><span class="lineNoCov">          0 :     }</span></a>
+<span class="lineNum">      63 </span>            : 
+<span class="lineNum">      64 </span><span class="lineNoCov">          0 :     ssize_t load( const float time )</span>
+<span class="lineNum">      65 </span>            :     {
+<span class="lineNum">      66 </span><span class="lineNoCov">          0 :         brion::floatsPtr voltages = _voltageReport.loadFrame( time );</span>
+<span class="lineNum">      67 </span><span class="lineNoCov">          0 :         if( !voltages )</span>
+<span class="lineNum">      68 </span><span class="lineNoCov">          0 :             return -1;</span>
+<span class="lineNum">      69 </span>            : 
+<span class="lineNum">      70 </span><span class="lineNoCov">          0 :         const float yMax = _output.getBoundingBox().getMax()[1];</span>
+<span class="lineNum">      71 </span>            : 
+<span class="lineNum">      72 </span><span class="lineNoCov">          0 :         assert( voltages-&gt;size() == _areas-&gt;size( ));</span>
+<span class="lineNum">      73 </span><span class="lineNoCov">          0 :         for( size_t i = 0; i != voltages-&gt;size( ); ++i )</span>
+<span class="lineNum">      74 </span><span class="lineNoCov">          0 :             _updateEventValue( i, ( *voltages )[i], ( *_areas )[i], yMax );</span>
+<span class="lineNum">      75 </span>            : 
+<span class="lineNum">      76 </span><span class="lineNoCov">          0 :         return voltages-&gt;size();</span>
+<a name="77"><span class="lineNum">      77 </span>            :     }</a>
+<span class="lineNum">      78 </span>            : 
+<span class="lineNum">      79 </span><span class="lineNoCov">          0 :     void setCurve( const AttenuationCurve&amp; curve ) { _curve = curve; }</span>
+<span class="lineNum">      80 </span>            : 
+<span class="lineNum">      81 </span>            :     EventSource&amp; _output;
+<span class="lineNum">      82 </span>            : 
+<span class="lineNum">      83 </span>            :     brion::CompartmentReport _voltageReport;
+<span class="lineNum">      84 </span>            :     brion::CompartmentReport _areaReport;
+<span class="lineNum">      85 </span>            :     brion::floatsPtr _areas;
+<span class="lineNum">      86 </span>            : 
+<a name="87"><span class="lineNum">      87 </span>            :     AttenuationCurve _curve;</a>
+<span class="lineNum">      88 </span>            : 
+<span class="lineNum">      89 </span><span class="lineNoCov">          0 :     void _updateEventValue( const size_t index, const float voltage,</span>
+<span class="lineNum">      90 </span>            :                             const float area, const float yMax )
+<span class="lineNum">      91 </span>            :     {
+<span class="lineNum">      92 </span><span class="lineNoCov">          0 :         const Event&amp; event = _output.getEvents()[index];</span>
+<span class="lineNum">      93 </span><span class="lineNoCov">          0 :         const float depth = yMax - event.position[1];</span>
+<span class="lineNum">      94 </span><span class="lineNoCov">          0 :         const float eventValue = voltage * area *</span>
+<span class="lineNum">      95 </span><span class="lineNoCov">          0 :                                  _curve.getAttenuation( depth );</span>
+<span class="lineNum">      96 </span><span class="lineNoCov">          0 :         _output[index].value = eventValue;</span>
+<span class="lineNum">      97 </span><span class="lineNoCov">          0 :     }</span>
+<a name="98"><span class="lineNum">      98 </span>            : };</a>
+<span class="lineNum">      99 </span>            : 
+<span class="lineNum">     100 </span><span class="lineNoCov">          0 : VSDLoader::VSDLoader( const URIHandler&amp; params )</span>
+<span class="lineNum">     101 </span>            :     : EventSource( params )
+<span class="lineNum">     102 </span><span class="lineNoCov">          0 :     , _impl( new VSDLoader::Impl( *this, params ))</span>
+<span class="lineNum">     103 </span>            : {
+<span class="lineNum">     104 </span><span class="lineNoCov">          0 :     if( getDt() &lt; 0.f )</span>
+<span class="lineNum">     105 </span><span class="lineNoCov">          0 :         setDt( _impl-&gt;_voltageReport.getTimestep( ));</span>
+<a name="106"><span class="lineNum">     106 </span><span class="lineNoCov">          0 : }</span></a>
+<span class="lineNum">     107 </span>            : 
+<span class="lineNum">     108 </span><span class="lineNoCov">          0 : VSDLoader::~VSDLoader()</span>
+<a name="109"><span class="lineNum">     109 </span><span class="lineNoCov">          0 : {}</span></a>
+<span class="lineNum">     110 </span>            : 
+<span class="lineNum">     111 </span><span class="lineNoCov">          0 : void VSDLoader::setCurve( const AttenuationCurve&amp; curve )</span>
+<span class="lineNum">     112 </span>            : {
+<span class="lineNum">     113 </span><span class="lineNoCov">          0 :     _impl-&gt;setCurve( curve );</span>
+<a name="114"><span class="lineNum">     114 </span><span class="lineNoCov">          0 : }</span></a>
+<span class="lineNum">     115 </span>            : 
+<span class="lineNum">     116 </span><span class="lineNoCov">          0 : Vector2f VSDLoader::_getTimeRange() const</span>
+<span class="lineNum">     117 </span>            : {
+<span class="lineNum">     118 </span><span class="lineNoCov">          0 :     return Vector2f( _impl-&gt;_voltageReport.getStartTime(),</span>
+<span class="lineNum">     119 </span><span class="lineNoCov">          0 :                      _impl-&gt;_voltageReport.getEndTime( ));</span>
+<a name="120"><span class="lineNum">     120 </span>            : }</a>
+<span class="lineNum">     121 </span>            : 
+<span class="lineNum">     122 </span><span class="lineNoCov">          0 : ssize_t VSDLoader::_load( const float time )</span>
+<span class="lineNum">     123 </span>            : {
+<span class="lineNum">     124 </span><span class="lineNoCov">          0 :     return _impl-&gt;load( time );</span>
+<a name="125"><span class="lineNum">     125 </span>            : }</a>
+<span class="lineNum">     126 </span>            : 
+<span class="lineNum">     127 </span><span class="lineCov">         12 : }</span>
+</pre>
+      </td>
+    </tr>
+  </table>
+  <br>
+
+  <table width="100%" border=0 cellspacing=0 cellpadding=0>
+    <tr><td class="ruler"><img src="../glass.png" width=3 height=3 alt=""></td></tr>
+    <tr><td class="versionInfo">Generated by: <a href="http://ltp.sourceforge.net/coverage/lcov.php" target="_parent">LCOV version 1.11</a></td></tr>
+  </table>
+  <br>
+
+</body>
+</html>
