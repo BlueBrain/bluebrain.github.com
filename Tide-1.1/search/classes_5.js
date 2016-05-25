@@ -1,11 +1,6 @@
 var searchData=
 [
-  ['ffmpegframe',['FFMPEGFrame',['../class_f_f_m_p_e_g_frame.html',1,'']]],
-  ['ffmpegmovie',['FFMPEGMovie',['../class_f_f_m_p_e_g_movie.html',1,'']]],
-  ['ffmpegpicture',['FFMPEGPicture',['../class_f_f_m_p_e_g_picture.html',1,'']]],
-  ['ffmpegvideoframeconverter',['FFMPEGVideoFrameConverter',['../class_f_f_m_p_e_g_video_frame_converter.html',1,'']]],
-  ['ffmpegvideostream',['FFMPEGVideoStream',['../class_f_f_m_p_e_g_video_stream.html',1,'']]],
-  ['filecommandhandler',['FileCommandHandler',['../class_file_command_handler.html',1,'']]],
-  ['folderthumbnailgenerator',['FolderThumbnailGenerator',['../class_folder_thumbnail_generator.html',1,'']]],
-  ['fpscounter',['FpsCounter',['../class_fps_counter.html',1,'']]]
+  ['image',['Image',['../class_image.html',1,'']]],
+  ['imagesynchronizer',['ImageSynchronizer',['../class_image_synchronizer.html',1,'']]],
+  ['imagethumbnailgenerator',['ImageThumbnailGenerator',['../class_image_thumbnail_generator.html',1,'']]]
 ];

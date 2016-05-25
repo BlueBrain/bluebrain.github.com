@@ -12,8 +12,6 @@ var searchData=
   ['displaygrouplistwidget',['DisplayGroupListWidget',['../class_display_group_list_widget.html',1,'DisplayGroupListWidget'],['../class_display_group_list_widget.html#a80c4e4b0a83d25dea87c7ff79029745a',1,'DisplayGroupListWidget::DisplayGroupListWidget()']]],
   ['displaygrouprenderer',['DisplayGroupRenderer',['../class_display_group_renderer.html',1,'DisplayGroupRenderer'],['../class_display_group_renderer.html#a4a2ff328df8cc22d6a8d5e330a498373',1,'DisplayGroupRenderer::DisplayGroupRenderer()']]],
   ['displaygroupview',['DisplayGroupView',['../class_display_group_view.html',1,'DisplayGroupView'],['../class_display_group_view.html#ad2df5ac523506bac5674fc0c2bb31caf',1,'DisplayGroupView::DisplayGroupView()']]],
-  ['dockpixelstreamer',['DockPixelStreamer',['../class_dock_pixel_streamer.html',1,'']]],
-  ['docktoolbar',['DockToolbar',['../class_dock_toolbar.html',1,'DockToolbar'],['../class_dock_toolbar.html#a155b7ec8ba3fc4e3dc2b2d2072ec6651',1,'DockToolbar::DockToolbar()']]],
   ['documentation',['Documentation',['../documentation.html',1,'']]],
   ['doubletap',['doubleTap',['../class_multitouch_area.html#adb8cdf3637fd79b43967ffc5d1faf8f5',1,'MultitouchArea']]],
   ['dynamictexture',['DynamicTexture',['../class_dynamic_texture.html',1,'DynamicTexture'],['../class_dynamic_texture.html#a436ade9e96b7b042660a5fd594dcb0b9',1,'DynamicTexture::DynamicTexture()']]],

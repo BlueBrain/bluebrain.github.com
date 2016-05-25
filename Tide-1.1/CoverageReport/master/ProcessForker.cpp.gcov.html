@@ -32,12 +32,12 @@
             <td></td>
             <td class="headerItem">Lines:</td>
             <td class="headerCovTableEntry">1</td>
-            <td class="headerCovTableEntry">31</td>
-            <td class="headerCovTableEntryLo">3.2 %</td>
+            <td class="headerCovTableEntry">38</td>
+            <td class="headerCovTableEntryLo">2.6 %</td>
           </tr>
           <tr>
             <td class="headerItem">Date:</td>
-            <td class="headerValue">2016-05-21 06:18:16</td>
+            <td class="headerValue">2016-05-25 17:06:41</td>
             <td></td>
             <td class="headerItem">Functions:</td>
             <td class="headerCovTableEntry">2</td>
@@ -134,13 +134,13 @@
 <span class="lineNum">      72 </span><span class="lineNoCov">          0 :             QString string;</span>
 <span class="lineNum">      73 </span><span class="lineNoCov">          0 :             _buffer.deserialize( string );</span>
 <span class="lineNum">      74 </span><span class="lineNoCov">          0 :             QStringList args = string.split( '#' );</span>
-<span class="lineNum">      75 </span><span class="lineNoCov">          0 :             if( args.length() != 2 )</span>
+<span class="lineNum">      75 </span><span class="lineNoCov">          0 :             if( args.length() != 3 )</span>
 <span class="lineNum">      76 </span>            :             {
 <span class="lineNum">      77 </span><span class="lineNoCov">          0 :                 put_flog( LOG_WARN, &quot;Invalid command: '%d'&quot;,</span>
 <span class="lineNum">      78 </span><span class="lineNoCov">          0 :                           string.toLocal8Bit().constData( ));</span>
 <span class="lineNum">      79 </span><span class="lineNoCov">          0 :                 break;</span>
 <span class="lineNum">      80 </span>            :             }
-<span class="lineNum">      81 </span><span class="lineNoCov">          0 :             _launch( args[0], args[1] );</span>
+<span class="lineNum">      81 </span><span class="lineNoCov">          0 :             _launch( args[0], args[1], args[2].split( ';' ));</span>
 <span class="lineNum">      82 </span><span class="lineNoCov">          0 :             break;</span>
 <span class="lineNum">      83 </span>            :         }
 <span class="lineNum">      84 </span>            :         case MPI_MESSAGE_TYPE_QUIT:
@@ -153,12 +153,26 @@
 <span class="lineNum">      91 </span>            :     }
 <a name="92"><span class="lineNum">      92 </span><span class="lineNoCov">          0 : }</span></a>
 <span class="lineNum">      93 </span>            : 
-<span class="lineNum">      94 </span><span class="lineNoCov">          0 : void ProcessForker::_launch( const QString&amp; command, const QString&amp; workingDir )</span>
-<span class="lineNum">      95 </span>            : {
-<span class="lineNum">      96 </span><span class="lineNoCov">          0 :     QProcess* process = new QProcess();</span>
-<a name="97"><span class="lineNum">      97 </span><span class="lineNoCov">          0 :     process-&gt;setWorkingDirectory( workingDir );</span></a>
-<span class="lineNum">      98 </span><span class="lineNoCov">          0 :     process-&gt;startDetached( command );</span>
-<span class="lineNum">      99 </span><span class="lineCov">         51 : }</span>
+<span class="lineNum">      94 </span><span class="lineNoCov">          0 : void ProcessForker::_launch( const QString&amp; command, const QString&amp; workingDir,</span>
+<span class="lineNum">      95 </span>            :                              const QStringList&amp; env )
+<span class="lineNum">      96 </span>            : {
+<span class="lineNum">      97 </span><span class="lineNoCov">          0 :     for( const QString&amp; var : env )</span>
+<span class="lineNum">      98 </span>            :     {
+<span class="lineNum">      99 </span>            :         // Know Qt bug: QProcess::setProcessEnvironment() does not work with
+<span class="lineNum">     100 </span>            :         // startDetached(). Calling qputenv() directly as a workaround.
+<span class="lineNum">     101 </span><span class="lineNoCov">          0 :         const QStringList kv = var.split( &quot;=&quot; );</span>
+<span class="lineNum">     102 </span><span class="lineNoCov">          0 :         if( kv.length() == 2 &amp;&amp; !qputenv( kv[0].toLocal8Bit().constData(),</span>
+<span class="lineNum">     103 </span><span class="lineNoCov">          0 :                                           kv[1].toLocal8Bit( )))</span>
+<span class="lineNum">     104 </span>            :         {
+<span class="lineNum">     105 </span><span class="lineNoCov">          0 :             put_flog( LOG_ERROR, &quot;Setting %s ENV variable failed.&quot;,</span>
+<span class="lineNum">     106 </span><span class="lineNoCov">          0 :                       var.toLocal8Bit().constData( ));</span>
+<span class="lineNum">     107 </span>            :         }
+<span class="lineNum">     108 </span><span class="lineNoCov">          0 :     }</span>
+<span class="lineNum">     109 </span>            : 
+<span class="lineNum">     110 </span><span class="lineNoCov">          0 :     QProcess* process = new QProcess();</span>
+<a name="111"><span class="lineNum">     111 </span><span class="lineNoCov">          0 :     process-&gt;setWorkingDirectory( workingDir );</span></a>
+<span class="lineNum">     112 </span><span class="lineNoCov">          0 :     process-&gt;startDetached( command );</span>
+<span class="lineNum">     113 </span><span class="lineCov">         45 : }</span>
 </pre>
       </td>
     </tr>

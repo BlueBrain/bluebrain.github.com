@@ -1,11 +1,10 @@
 var searchData=
 [
   ['canrequestnewframe',['canRequestNewFrame',['../class_movie_updater.html#ac2ae41e78a4829c30ce5d7c496cf00e9',1,'MovieUpdater']]],
-  ['centerindex',['centerIndex',['../class_picture_flow.html#ab9aae9f93aac2f5428250ca44ffc3264',1,'PictureFlow']]],
   ['check',['check',['../classtide_1_1_version.html#a6db9588b945925020747cffdfc464db7',1,'tide::Version::check()'],['../classtide_1_1_version.html#a6db9588b945925020747cffdfc464db7',1,'tide::Version::check()'],['../classtide_1_1_version.html#a6db9588b945925020747cffdfc464db7',1,'tide::Version::check()']]],
   ['checked',['checked',['../class_content_action.html#a563fe54bba76599da58a0da5d1eaf21e',1,'ContentAction']]],
   ['checkversion',['checkVersion',['../class_wall_to_wall_channel.html#addd62ca5f6199f4ca0c31c23d282066d',1,'WallToWallChannel']]],
-  ['clear',['clear',['../class_display_group.html#a0c10092c41d5dee217dd49f52c7e2302',1,'DisplayGroup::clear()'],['../class_picture_flow.html#a4bba5b7b8b7cabd07a127f59bbacf8cb',1,'PictureFlow::clear()'],['../class_rest_interface.html#a50bdbfca3ff5afa3af1f387616915729',1,'RestInterface::clear()']]],
+  ['clear',['clear',['../class_display_group.html#a0c10092c41d5dee217dd49f52c7e2302',1,'DisplayGroup::clear()'],['../class_rest_interface.html#a50bdbfca3ff5afa3af1f387616915729',1,'RestInterface::clear()']]],
   ['closepixelstreamwindow',['closePixelStreamWindow',['../class_pixel_stream_window_manager.html#a007d2144a767aef3e5e2a1840a58ab0e',1,'PixelStreamWindowManager']]],
   ['commandlineoptions',['CommandLineOptions',['../class_command_line_options.html#ad470c893b63d2f91ebf0b65824473727',1,'CommandLineOptions::CommandLineOptions()'],['../class_command_line_options.html#a2dde83b128fd9b439e8cd9f080e6db30',1,'CommandLineOptions::CommandLineOptions(int &amp;argc, char **argv)']]],
   ['commandlineparameters',['CommandLineParameters',['../class_command_line_parameters.html#a61991864c07ad0a1a01f2186342c5ce3',1,'CommandLineParameters']]],

@@ -4,6 +4,7 @@ var class_configuration =
     [ "~Configuration", "class_configuration.html#a1226f87dc3c27be16eb16e53301eb2f3", null ],
     [ "getAspectRatio", "class_configuration.html#a1031736dbddf1becee943184afb27dda", null ],
     [ "getDouble", "class_configuration.html#a6eb03db6204ebfc4c5d2e02840427bd4", null ],
+    [ "getFilename", "class_configuration.html#ae479e2755c17646c271292b1f101e5da", null ],
     [ "getFullscreen", "class_configuration.html#a3d38c54f965dce34f3839867a508779a", null ],
     [ "getInt", "class_configuration.html#ab06798581a1026b2473e4c1c176e97a3", null ],
     [ "getMullionHeight", "class_configuration.html#aebf3438c6130ea0a50ed85d0ed2bde93", null ],

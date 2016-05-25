@@ -27,13 +27,7 @@ var hierarchy =
       [ "MovieUpdater", "class_movie_updater.html", null ],
       [ "PixelStreamUpdater", "class_pixel_stream_updater.html", null ]
     ] ],
-    [ "AbstractCommandHandler", null, [
-      [ "FileCommandHandler", "class_file_command_handler.html", null ],
-      [ "SessionCommandHandler", "class_session_command_handler.html", null ],
-      [ "WebbrowserCommandHandler", "class_webbrowser_command_handler.html", null ]
-    ] ],
     [ "DisplayGroupController", "class_display_group_controller.html", null ],
-    [ "DockToolbar", "class_dock_toolbar.html", null ],
     [ "ElapsedTimer", "class_elapsed_timer.html", null ],
     [ "FFMPEGMovie", "class_f_f_m_p_e_g_movie.html", null ],
     [ "FFMPEGVideoFrameConverter", "class_f_f_m_p_e_g_video_frame_converter.html", null ],
@@ -73,7 +67,6 @@ var hierarchy =
       [ "MasterWindow", "class_master_window.html", null ]
     ] ],
     [ "QObject", null, [
-      [ "AsyncImageLoader", "class_async_image_loader.html", null ],
       [ "Content", "class_content.html", [
         [ "DynamicTextureContent", "class_dynamic_texture_content.html", null ],
         [ "MovieContent", "class_movie_content.html", null ],
@@ -117,13 +110,11 @@ var hierarchy =
       [ "MasterToWallChannel", "class_master_to_wall_channel.html", null ],
       [ "Options", "class_options.html", null ],
       [ "PixelStreamer", "class_pixel_streamer.html", [
-        [ "DockPixelStreamer", "class_dock_pixel_streamer.html", null ],
         [ "WebkitPixelStreamer", "class_webkit_pixel_streamer.html", null ]
       ] ],
       [ "PixelStreamerLauncher", "class_pixel_streamer_launcher.html", null ],
       [ "PixelStreamUpdater", "class_pixel_stream_updater.html", null ],
       [ "PixelStreamWindowManager", "class_pixel_stream_window_manager.html", null ],
-      [ "QmlControlPanel", "class_qml_control_panel.html", null ],
       [ "QmlWindowRenderer", "class_qml_window_renderer.html", null ],
       [ "QuickRenderer", "class_quick_renderer.html", null ],
       [ "RenderController", "class_render_controller.html", null ],
@@ -133,9 +124,11 @@ var hierarchy =
       [ "WallFromMasterChannel", "class_wall_from_master_channel.html", null ],
       [ "WallToMasterChannel", "class_wall_to_master_channel.html", null ],
       [ "WallToWallChannel", "class_wall_to_wall_channel.html", null ],
-      [ "WebbrowserCommandHandler", "class_webbrowser_command_handler.html", null ],
       [ "WebkitAuthenticationHelper", "class_webkit_authentication_helper.html", null ],
       [ "WebkitHtmlSelectReplacer", "class_webkit_html_select_replacer.html", null ]
+    ] ],
+    [ "QQuickImageProvider", null, [
+      [ "ThumbnailProvider", "class_thumbnail_provider.html", null ]
     ] ],
     [ "QQuickItem", null, [
       [ "MultitouchArea", "class_multitouch_area.html", null ],
@@ -155,9 +148,6 @@ var hierarchy =
     ] ],
     [ "QSGSimpleTextureNode", null, [
       [ "TextureNode", "class_texture_node.html", null ]
-    ] ],
-    [ "QWidget", null, [
-      [ "PictureFlow", "class_picture_flow.html", null ]
     ] ],
     [ "Serializable", null, [
       [ "RestCommand", "class_rest_command.html", null ],
@@ -182,7 +172,6 @@ var hierarchy =
     ] ],
     [ "ThumbnailGeneratorFactory", "class_thumbnail_generator_factory.html", null ],
     [ "tide::Version", "classtide_1_1_version.html", null ],
-    [ "ToolbarButton", "struct_toolbar_button.html", null ],
     [ "VisibilityHelper", "class_visibility_helper.html", null ],
     [ "ZoomHelper", "class_zoom_helper.html", null ]
 ];

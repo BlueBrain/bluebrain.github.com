@@ -1,4 +1,5 @@
 var searchData=
 [
-  ['asyncimageloader',['AsyncImageLoader',['../class_async_image_loader.html',1,'']]]
+  ['backgroundwidget',['BackgroundWidget',['../class_background_widget.html',1,'']]],
+  ['basicsynchronizer',['BasicSynchronizer',['../class_basic_synchronizer.html',1,'']]]
 ];

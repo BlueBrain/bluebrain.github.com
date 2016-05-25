@@ -1,9 +1,7 @@
 var searchData=
 [
-  ['icon',['icon',['../struct_toolbar_button.html#a5bc2b91b85d4cdbf8a194ab340aa4ef1',1,'ToolbarButton']]],
   ['image',['Image',['../class_image.html',1,'']]],
-  ['imageloaded',['imageLoaded',['../class_async_image_loader.html#aee70a4bafde61b7a897d12578b74e09f',1,'AsyncImageLoader::imageLoaded()'],['../class_data_provider.html#a850e56f3c1c0fed4257a03d964c70244',1,'DataProvider::imageLoaded()']]],
-  ['imageloadingfinished',['imageLoadingFinished',['../class_async_image_loader.html#a4740438a2e9d95ae2e8a7c7bd1e729e0',1,'AsyncImageLoader']]],
+  ['imageloaded',['imageLoaded',['../class_data_provider.html#a850e56f3c1c0fed4257a03d964c70244',1,'DataProvider']]],
   ['imagesynchronizer',['ImageSynchronizer',['../class_image_synchronizer.html',1,'ImageSynchronizer'],['../class_image_synchronizer.html#a6b8d0d7d138b9c58738c26acd6bd60c9',1,'ImageSynchronizer::ImageSynchronizer()']]],
   ['imagethumbnailgenerator',['ImageThumbnailGenerator',['../class_image_thumbnail_generator.html',1,'']]],
   ['imageupdated',['imageUpdated',['../class_pixel_streamer.html#ae9f831bd8e004763f4e2fd05b17a21a1',1,'PixelStreamer']]],

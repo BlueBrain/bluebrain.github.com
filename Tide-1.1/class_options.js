@@ -24,6 +24,7 @@ var class_options =
     [ "setShowTouchPoints", "class_options.html#a8df53ba940903e74dd23ece266182235", null ],
     [ "setShowWindowBorders", "class_options.html#a3e04e1898508371ce5f2051554902bd7", null ],
     [ "setShowZoomContext", "class_options.html#ab9168962cdaaa3e7f3657e1f26abcfeb", null ],
+    [ "showClockChanged", "class_options.html#a0be6328c8b9dcf9ed0bec61b5cf6ccc5", null ],
     [ "showControlAreaChanged", "class_options.html#ad256e644ecc37e3f6bbdc2a04b0c3471", null ],
     [ "showWindowBordersChanged", "class_options.html#a28e3cf4c9d8e9a5a4f62409400870783", null ],
     [ "updated", "class_options.html#a3fa6a7dee05582eb932f4fc068575216", null ],

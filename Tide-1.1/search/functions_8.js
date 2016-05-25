@@ -1,7 +1,6 @@
 var searchData=
 [
-  ['imageloaded',['imageLoaded',['../class_async_image_loader.html#aee70a4bafde61b7a897d12578b74e09f',1,'AsyncImageLoader::imageLoaded()'],['../class_data_provider.html#a850e56f3c1c0fed4257a03d964c70244',1,'DataProvider::imageLoaded()']]],
-  ['imageloadingfinished',['imageLoadingFinished',['../class_async_image_loader.html#a4740438a2e9d95ae2e8a7c7bd1e729e0',1,'AsyncImageLoader']]],
+  ['imageloaded',['imageLoaded',['../class_data_provider.html#a850e56f3c1c0fed4257a03d964c70244',1,'DataProvider']]],
   ['imagesynchronizer',['ImageSynchronizer',['../class_image_synchronizer.html#a6b8d0d7d138b9c58738c26acd6bd60c9',1,'ImageSynchronizer']]],
   ['imageupdated',['imageUpdated',['../class_pixel_streamer.html#ae9f831bd8e004763f4e2fd05b17a21a1',1,'PixelStreamer']]],
   ['init',['init',['../class_quick_renderer.html#a510f528b785124da782b83e87e349196',1,'QuickRenderer::init()'],['../class_texture_uploader.html#ac3aa512b3ceabf72f9741a42ae6678e5',1,'TextureUploader::init()']]],
