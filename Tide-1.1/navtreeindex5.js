@@ -1,5 +1,9 @@
 var NAVTREEINDEX5 =
 {
+"functions_func_s.html":[5,3,1,16],
+"functions_func_t.html":[5,3,1,17],
+"functions_func_u.html":[5,3,1,18],
+"functions_func_v.html":[5,3,1,19],
 "functions_func_w.html":[5,3,1,20],
 "functions_func_z.html":[5,3,1,21],
 "functions_func_~.html":[5,3,1,22],
@@ -25,8 +29,8 @@ var NAVTREEINDEX5 =
 "globals.html":[6,1,0],
 "globals_defs.html":[6,1,1],
 "hierarchy.html":[5,2],
-"index.html":[0],
 "index.html":[],
+"index.html":[0],
 "log_8h_source.html":[6,0,50],
 "master_2_qml_type_registration_8h_source.html":[6,0,83],
 "master_2api_8h.html":[6,0,1],
