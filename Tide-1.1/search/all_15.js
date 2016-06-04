@@ -13,7 +13,7 @@ var searchData=
   ['webkitauthenticationhelper',['WebkitAuthenticationHelper',['../class_webkit_authentication_helper.html',1,'WebkitAuthenticationHelper'],['../class_webkit_authentication_helper.html#a4566e282a6780eeb97b84b4d6f88930d',1,'WebkitAuthenticationHelper::WebkitAuthenticationHelper()']]],
   ['webkithtmlselectreplacer',['WebkitHtmlSelectReplacer',['../class_webkit_html_select_replacer.html',1,'WebkitHtmlSelectReplacer'],['../class_webkit_html_select_replacer.html#aeee70417fc142e48bb07331a33963d00',1,'WebkitHtmlSelectReplacer::WebkitHtmlSelectReplacer()']]],
   ['webkitpixelstreamer',['WebkitPixelStreamer',['../class_webkit_pixel_streamer.html',1,'WebkitPixelStreamer'],['../class_webkit_pixel_streamer.html#a45817a0fa98dfa974a04f60105c3e9ba',1,'WebkitPixelStreamer::WebkitPixelStreamer()']]],
-  ['windowborder',['WindowBorder',['../class_content_window.html#a876a893cb724252fea5147b70129e065',1,'ContentWindow']]],
+  ['windowmode',['WindowMode',['../class_content_window.html#afcea3e0f1b83485394b31ae78b2417c8',1,'ContentWindow']]],
   ['windowstate',['WindowState',['../class_content_window.html#ac6b356b22fcdbfced35dfaf511d1f4d4',1,'ContentWindow']]],
   ['windowtype',['WindowType',['../class_content_window.html#a748c74477b6483ca7257bb2dc96e09a7',1,'ContentWindow']]]
 ];

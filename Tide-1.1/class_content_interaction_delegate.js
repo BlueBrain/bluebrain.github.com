@@ -1,6 +1,6 @@
 var class_content_interaction_delegate =
 [
-    [ "ContentInteractionDelegate", "class_content_interaction_delegate.html#aeedd85dffd1e3df1672f73fc65978af6", null ],
+    [ "ContentInteractionDelegate", "class_content_interaction_delegate.html#a71cf944be02e2b4ca86a76273f026616", null ],
     [ "~ContentInteractionDelegate", "class_content_interaction_delegate.html#acb5fa802e1b625e1c24b1f59ee15a784", null ],
     [ "doubleTap", "class_content_interaction_delegate.html#ae6691652465c0094a2f61a962c7eabb4", null ],
     [ "getNormalizedPoint", "class_content_interaction_delegate.html#a3eda51bcf5b5d24ac9ff20f9911307f2", null ],

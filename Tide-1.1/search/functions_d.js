@@ -10,6 +10,8 @@ var searchData=
   ['pdftiler',['PDFTiler',['../class_p_d_f_tiler.html#a050c5f6aaa1b52b10861ca9cbb35e919',1,'PDFTiler']]],
   ['pictureupdated',['pictureUpdated',['../class_pixel_stream_updater.html#a3fb5e7ef6ef99b1edcc1671712501dc9',1,'PixelStreamUpdater']]],
   ['pinch',['pinch',['../class_multitouch_area.html#aae244fdea93c301a57d2c44508a7f0d8',1,'MultitouchArea']]],
+  ['pinchended',['pinchEnded',['../class_multitouch_area.html#abba7bbdd185bc021830935a4874b4bcc',1,'MultitouchArea']]],
+  ['pinchstarted',['pinchStarted',['../class_multitouch_area.html#a9c989dba8fdecc040c302dcc76e53972',1,'MultitouchArea']]],
   ['pixelstreamcontent',['PixelStreamContent',['../class_pixel_stream_content.html#a2a0d5fbde3ac80753ad2e3e42a07327e',1,'PixelStreamContent']]],
   ['pixelstreamer',['PixelStreamer',['../class_pixel_streamer.html#ac397a643a355ec36446edb8a55e52c81',1,'PixelStreamer']]],
   ['pixelstreamerlauncher',['PixelStreamerLauncher',['../class_pixel_streamer_launcher.html#aa6afe5831da8128c53d47b7527c0f332',1,'PixelStreamerLauncher']]],

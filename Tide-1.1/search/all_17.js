@@ -1,6 +1,7 @@
 var searchData=
 [
   ['_7econfiguration',['~Configuration',['../class_configuration.html#a1226f87dc3c27be16eb16e53301eb2f3',1,'Configuration']]],
+  ['_7econtentinteractiondelegate',['~ContentInteractionDelegate',['../class_content_interaction_delegate.html#acb5fa802e1b625e1c24b1f59ee15a784',1,'ContentInteractionDelegate']]],
   ['_7econtentsynchronizer',['~ContentSynchronizer',['../class_content_synchronizer.html#a68aa090a819ade8f4193c6848aa5d7c0',1,'ContentSynchronizer']]],
   ['_7econtentwindow',['~ContentWindow',['../class_content_window.html#a048c11ac7d49072c2655e7adb0737844',1,'ContentWindow']]],
   ['_7edisplaygroup',['~DisplayGroup',['../class_display_group.html#ae621c03bd2408c8ece4a61237efca355',1,'DisplayGroup']]],

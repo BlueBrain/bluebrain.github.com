@@ -2,7 +2,6 @@ var class_pixel_stream_interaction_delegate =
 [
     [ "PixelStreamInteractionDelegate", "class_pixel_stream_interaction_delegate.html#a4fe0211dc870c9fb9ef30e15a55d86dd", null ],
     [ "doubleTap", "class_pixel_stream_interaction_delegate.html#ab26e9be0601819f4be0673bfad46af3a", null ],
-    [ "hasEventReceivers", "class_pixel_stream_interaction_delegate.html#a49459b91055a8b89afe5a5ceeef20f7e", null ],
     [ "keyPress", "class_pixel_stream_interaction_delegate.html#a594560833caa9c212caeba85e37a9a6f", null ],
     [ "keyRelease", "class_pixel_stream_interaction_delegate.html#a009ed76031da7235dc546fe54777d1fe", null ],
     [ "nextPage", "class_pixel_stream_interaction_delegate.html#a9d58a62cdc0b0e7492f25db2e2877bbb", null ],
@@ -10,7 +9,6 @@ var class_pixel_stream_interaction_delegate =
     [ "pan", "class_pixel_stream_interaction_delegate.html#ae08a64bc93ad344de02f76db6662aa81", null ],
     [ "pinch", "class_pixel_stream_interaction_delegate.html#add9405a583307fea5a17d7cb6ea2846e", null ],
     [ "prevPage", "class_pixel_stream_interaction_delegate.html#a5393437a5ab964f3df6bc88c57223a77", null ],
-    [ "registerEventReceiver", "class_pixel_stream_interaction_delegate.html#a9b4e7e24065ec6e1e464ec77ffa7351e", null ],
     [ "swipeDown", "class_pixel_stream_interaction_delegate.html#abed2568335034b569429f0b3442e15f5", null ],
     [ "swipeLeft", "class_pixel_stream_interaction_delegate.html#a6a08723e44734ad0235a71e0d8c8403e", null ],
     [ "swipeRight", "class_pixel_stream_interaction_delegate.html#a2c0a899ca4283652e6b85f73c9e0d0e9", null ],

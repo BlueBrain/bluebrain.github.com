@@ -5,5 +5,6 @@ var searchData=
   ['engine',['engine',['../class_wall_window.html#a6b9c7e14d424167dd53bc7e935c268a4',1,'WallWindow']]],
   ['estimatesurface',['estimateSurface',['../class_display_group_controller.html#aa811e20657983c85b39c4ec682159862',1,'DisplayGroupController']]],
   ['event',['event',['../class_display_group_view.html#a41aa355f4e303424741166f72089fe84',1,'DisplayGroupView']]],
-  ['eventregistrationreply',['eventRegistrationReply',['../class_pixel_stream_window_manager.html#a1b3863d3e2718e80072d2db26004db08',1,'PixelStreamWindowManager']]]
+  ['eventregistrationreply',['eventRegistrationReply',['../class_pixel_stream_window_manager.html#a1b3863d3e2718e80072d2db26004db08',1,'PixelStreamWindowManager']]],
+  ['exitfullscreen',['exitFullscreen',['../class_display_group.html#a168761b0ca9987061a5b200585cadc57',1,'DisplayGroup']]]
 ];

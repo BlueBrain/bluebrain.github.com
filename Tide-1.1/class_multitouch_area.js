@@ -9,6 +9,8 @@ var class_multitouch_area =
     [ "panStarted", "class_multitouch_area.html#a3ab553b0eeb82b0cd74c40da8ceea828", null ],
     [ "panThresholdChanged", "class_multitouch_area.html#aafa90142e4b1783e756ecc8dc852ce07", null ],
     [ "pinch", "class_multitouch_area.html#aae244fdea93c301a57d2c44508a7f0d8", null ],
+    [ "pinchEnded", "class_multitouch_area.html#abba7bbdd185bc021830935a4874b4bcc", null ],
+    [ "pinchStarted", "class_multitouch_area.html#a9c989dba8fdecc040c302dcc76e53972", null ],
     [ "referenceItemChanged", "class_multitouch_area.html#af2695ce0a754dad55985d5ede309e634", null ],
     [ "setPanThreshold", "class_multitouch_area.html#a0f87880710e1e60b36267b1f7ec79d07", null ],
     [ "setReferenceItem", "class_multitouch_area.html#ae8c143b3ef87ea481bc9037cc69dacbd", null ],

@@ -17,7 +17,7 @@ var class_coordinates =
     [ "xChanged", "class_coordinates.html#aec27e3e848457cfa02552ce63d49c084", null ],
     [ "y", "class_coordinates.html#a9d8cdb714499548405305aacd26a9116", null ],
     [ "yChanged", "class_coordinates.html#a2a63754ab648ea517f23528d0865d5bc", null ],
-    [ "coordinates_", "class_coordinates.html#a26cce4fe05122becad5d2206f0f67589", null ],
+    [ "_coordinates", "class_coordinates.html#a226a6260c21d625ec062d91132445b80", null ],
     [ "height", "class_coordinates.html#a5ee303a717602c72c5669bce179b8fa5", null ],
     [ "width", "class_coordinates.html#a025f35fefce4faf0527a67907842d729", null ],
     [ "x", "class_coordinates.html#a4f3f1b50031e1c0703856b7dc9f51f05", null ],
