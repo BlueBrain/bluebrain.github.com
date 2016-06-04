@@ -10,8 +10,7 @@ var NAVTREE =
     ] ],
     [ "Technical Overview", "_technical__overview.html", [
       [ "Table of Contents", "_technical__overview.html#TABLE_OF_CONTENTS_Technical_overview", null ],
-      [ "Technical Features", "_technical__overview.html#Technical_Features", null ],
-      [ "Architecture", "_technical__overview.html#Architecture", [
+      [ "Technical Features", "_technical__overview.html#Technical_Features", [
         [ "Render thread", "_technical__overview.html#Render_Thread", null ],
         [ "GPU upload thread", "_technical__overview.html#GPU_Thread", null ],
         [ "Data thread", "_technical__overview.html#Data_Thread", null ],
