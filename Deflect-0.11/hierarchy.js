@@ -7,7 +7,6 @@ var hierarchy =
     [ "deflect::Frame", "classdeflect_1_1_frame.html", null ],
     [ "deflect::ImageWrapper", "structdeflect_1_1_image_wrapper.html", null ],
     [ "deflect::MTQueue< T >", "classdeflect_1_1_m_t_queue.html", null ],
-    [ "deflect::qt::QmlStreamer", "classdeflect_1_1qt_1_1_qml_streamer.html", null ],
     [ "deflect::Segment", "structdeflect_1_1_segment.html", null ],
     [ "deflect::SegmentParameters", "structdeflect_1_1_segment_parameters.html", null ],
     [ "deflect::SizeHints", "structdeflect_1_1_size_hints.html", null ],
@@ -16,7 +15,8 @@ var hierarchy =
     [ "deflectqt::Version", "classdeflectqt_1_1_version.html", null ],
     [ "QObject", null, [
       [ "deflect::EventReceiver", "classdeflect_1_1_event_receiver.html", null ],
-      [ "deflect::FrameDispatcher", "classdeflect_1_1_frame_dispatcher.html", null ]
+      [ "deflect::FrameDispatcher", "classdeflect_1_1_frame_dispatcher.html", null ],
+      [ "deflect::qt::QmlStreamer", "classdeflect_1_1qt_1_1_qml_streamer.html", null ]
     ] ],
     [ "QTcpServer", null, [
       [ "deflect::Server", "classdeflect_1_1_server.html", null ]
