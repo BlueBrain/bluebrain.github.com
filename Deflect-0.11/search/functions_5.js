@@ -5,6 +5,8 @@ var searchData=
   ['getbytesperpixel',['getBytesPerPixel',['../structdeflect_1_1_image_wrapper.html#a6e1357a7aa3628ddc8f272a6bc340df9',1,'deflect::ImageWrapper']]],
   ['getdescriptor',['getDescriptor',['../classdeflect_1_1_stream.html#a5857ea5f888d3619222f2594cfee6a10',1,'deflect::Stream']]],
   ['getevent',['getEvent',['../classdeflect_1_1_stream.html#a8d891e83326740017b339e01162eeafc',1,'deflect::Stream']]],
+  ['gethost',['getHost',['../classdeflect_1_1_stream.html#a03c95cab2ab9d04e944b6c65457e8f46',1,'deflect::Stream']]],
+  ['getid',['getId',['../classdeflect_1_1_stream.html#abe0550c3b1ace7e363c3f28803dbe4e8',1,'deflect::Stream']]],
   ['getmajor',['getMajor',['../classdeflectqt_1_1_version.html#ad719dcab026548e7fd7ee9d6cca1d077',1,'deflectqt::Version::getMajor()'],['../classdeflect_1_1_version.html#ae5d71acc7fad06dbcb673e37c905e263',1,'deflect::Version::getMajor()']]],
   ['getminor',['getMinor',['../classdeflectqt_1_1_version.html#a6e82575721f6c56f603524abd70a8b9f',1,'deflectqt::Version::getMinor()'],['../classdeflect_1_1_version.html#aa634ce089d675e03f59580e703d2aaa6',1,'deflect::Version::getMinor()']]],
   ['getpatch',['getPatch',['../classdeflectqt_1_1_version.html#a435dcf8e4769d9b65c234ff46c79630a',1,'deflectqt::Version::getPatch()'],['../classdeflect_1_1_version.html#ab2bd448e81b1014087e824efacd8fe91',1,'deflect::Version::getPatch()']]],

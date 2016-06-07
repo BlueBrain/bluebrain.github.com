@@ -17,7 +17,7 @@ var searchData=
   ['sizehints',['SizeHints',['../structdeflect_1_1_size_hints.html',1,'deflect']]],
   ['startdecoding',['startDecoding',['../classdeflect_1_1_segment_decoder.html#ae33a772afaa7890061d16d51576f34e7',1,'deflect::SegmentDecoder']]],
   ['stream',['Stream',['../classdeflect_1_1_stream.html',1,'deflect']]],
-  ['stream',['Stream',['../classdeflect_1_1_stream.html#ae36b1048bb2bc32058cd4f12d518af73',1,'deflect::Stream']]],
+  ['stream',['Stream',['../classdeflect_1_1_stream.html#a5bef22dd831e886429004e86af59c3ad',1,'deflect::Stream::Stream()'],['../classdeflect_1_1_stream.html#a34c51c546f2c9136c5fa4bd0f886e8ff',1,'deflect::Stream::Stream(const std::string &amp;id, const std::string &amp;host, unsigned short port=1701)']]],
   ['streamclosed',['streamClosed',['../classdeflect_1_1qt_1_1_qml_streamer.html#a4a13cac43c74f70aed903e14912904d8',1,'deflect::qt::QmlStreamer']]],
   ['swapyaxis',['swapYAxis',['../structdeflect_1_1_image_wrapper.html#a0259fff8d07a883a02541da59e55de1a',1,'deflect::ImageWrapper']]]
 ];
