@@ -1,6 +1,6 @@
 var class_rest_interface =
 [
-    [ "RestInterface", "class_rest_interface.html#a9beba09b4710bd29e78a3a0fba3bf889", null ],
+    [ "RestInterface", "class_rest_interface.html#ade3270177673fd1cf4f1f2830d131857", null ],
     [ "~RestInterface", "class_rest_interface.html#aeafc0fc94ce9d822611933385bfa9325", null ],
     [ "browse", "class_rest_interface.html#a7ccff908d6bfa278e559007cec31e16b", null ],
     [ "clear", "class_rest_interface.html#a50bdbfca3ff5afa3af1f387616915729", null ],

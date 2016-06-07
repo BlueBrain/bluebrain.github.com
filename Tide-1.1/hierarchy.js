@@ -150,6 +150,7 @@ var hierarchy =
       [ "TextureNode", "class_texture_node.html", null ]
     ] ],
     [ "Serializable", null, [
+      [ "JsonOptions", "class_json_options.html", null ],
       [ "RestCommand", "class_rest_command.html", null ],
       [ "StaticContent", "class_static_content.html", null ]
     ] ],

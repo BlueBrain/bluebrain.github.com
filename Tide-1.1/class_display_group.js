@@ -29,11 +29,9 @@ var class_display_group =
     [ "setContentWindows", "class_display_group.html#aef0625b115fe22908ff5e9d1f1cc4d56", null ],
     [ "setShowWindowTitles", "class_display_group.html#a4dd36607509226c8a2be889c044bd288", null ],
     [ "showFullscreen", "class_display_group.html#a36ab8d22dc17f8e862567193d8138561", null ],
-    [ "showWindowTitlesChanged", "class_display_group.html#adafd5d363d4ae007a281306f1e9c44c8", null ],
     [ "unfocus", "class_display_group.html#af09535f73c71da284b767b32e293d2e8", null ],
     [ "unfocusAll", "class_display_group.html#a7de33cf817c38e2ca511bf2426c6d24a", null ],
     [ "boost::serialization::access", "class_display_group.html#ac98d07dd8f7b70e16ccb9a01abf56b9c", null ],
     [ "hasFocusedWindows", "class_display_group.html#aceecd49371e6d1e7dd02aa4106631213", null ],
-    [ "hasFullscreenWindows", "class_display_group.html#abad1ce28d34b9410b59819d184b6ce38", null ],
-    [ "showWindowTitles", "class_display_group.html#ad5bdcd001c67abde8c563fce05b2dca8", null ]
+    [ "hasFullscreenWindows", "class_display_group.html#abad1ce28d34b9410b59819d184b6ce38", null ]
 ];
