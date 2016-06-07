@@ -168,11 +168,11 @@ $(document).ready(function(){initNavTree('spike_report_8md.html','');});
 <div class="line"><a name="l00056"></a><span class="lineno">   56</span>&#160;access and out-of-core support is complicated at the lower level because</div>
 <div class="line"><a name="l00057"></a><span class="lineno">   57</span>&#160;internal buffering is needed and this can only be implementated efficiently if</div>
 <div class="line"><a name="l00058"></a><span class="lineno">   58</span>&#160;some assumptions about how client code will use the API are made. The most</div>
-<div class="line"><a name="l00059"></a><span class="lineno">   59</span>&#160;important characteristic of the current proposal is that all operations can only</div>
-<div class="line"><a name="l00060"></a><span class="lineno">   60</span>&#160;move forward, so each operation starts where the previous one left over.</div>
-<div class="line"><a name="l00061"></a><span class="lineno">   61</span>&#160;This way there is no need to make any distinction between the file and stream</div>
-<div class="line"><a name="l00062"></a><span class="lineno">   62</span>&#160;based cases. Random access is partially supported by a function that does</div>
-<div class="line"><a name="l00063"></a><span class="lineno">   63</span>&#160;forward skip.</div>
+<div class="line"><a name="l00059"></a><span class="lineno">   59</span>&#160;important characteristic of the current proposal is that read and write</div>
+<div class="line"><a name="l00060"></a><span class="lineno">   60</span>&#160;operations can only move forward, so each operation starts where the previous</div>
+<div class="line"><a name="l00061"></a><span class="lineno">   61</span>&#160;one left over. This way there is no need to make any distinction between the</div>
+<div class="line"><a name="l00062"></a><span class="lineno">   62</span>&#160;file and stream based cases. Random access is partially supported by a</div>
+<div class="line"><a name="l00063"></a><span class="lineno">   63</span>&#160;seek function that for stream based reports will only support forward skip.</div>
 <div class="line"><a name="l00064"></a><span class="lineno">   64</span>&#160;</div>
 <div class="line"><a name="l00065"></a><span class="lineno">   65</span>&#160;The current proposal defers important design decisions to the higher level API,</div>
 <div class="line"><a name="l00066"></a><span class="lineno">   66</span>&#160;but the its benefit is that it provides a relatively simply API for the most</div>
@@ -247,7 +247,7 @@ $(document).ready(function(){initNavTree('spike_report_8md.html','');});
 <div class="line"><a name="l00135"></a><span class="lineno">  135</span>&#160;         * Preconditions:</div>
 <div class="line"><a name="l00136"></a><span class="lineno">  136</span>&#160;         * - r.getState() is OK or ENDED.</div>
 <div class="line"><a name="l00137"></a><span class="lineno">  137</span>&#160;         * - The report was open in read mode.</div>
-<div class="line"><a name="l00138"></a><span class="lineno">  138</span>&#160;         * - There is no previous read or forward operation with a pending</div>
+<div class="line"><a name="l00138"></a><span class="lineno">  138</span>&#160;         * - There is no previous read or seek operation with a pending</div>
 <div class="line"><a name="l00139"></a><span class="lineno">  139</span>&#160;         *   future.</div>
 <div class="line"><a name="l00140"></a><span class="lineno">  140</span>&#160;         * - min &gt;= getCurrentTime() or UNDEFINED_TIMESTAMP.</div>
 <div class="line"><a name="l00141"></a><span class="lineno">  141</span>&#160;         *</div>
@@ -292,151 +292,156 @@ $(document).ready(function(){initNavTree('spike_report_8md.html','');});
 <div class="line"><a name="l00180"></a><span class="lineno">  180</span>&#160;         * Postcondition: If r.getState() == OK, then r.getCurrentTime() == max</div>
 <div class="line"><a name="l00181"></a><span class="lineno">  181</span>&#160;         *</div>
 <div class="line"><a name="l00182"></a><span class="lineno">  182</span>&#160;         * @throw std::runtime_error if the precondition does not hold.</div>
-<div class="line"><a name="l00183"></a><span class="lineno">  183</span>&#160;         * @sa forward()</div>
+<div class="line"><a name="l00183"></a><span class="lineno">  183</span>&#160;         * @sa seek()</div>
 <div class="line"><a name="l00184"></a><span class="lineno">  184</span>&#160;         */</div>
 <div class="line"><a name="l00185"></a><span class="lineno">  185</span>&#160;        boost::future&lt; Spikes &gt; readUntil( float max );</div>
 <div class="line"><a name="l00186"></a><span class="lineno">  186</span>&#160;</div>
 <div class="line"><a name="l00187"></a><span class="lineno">  187</span>&#160;        /**</div>
-<div class="line"><a name="l00188"></a><span class="lineno">  188</span>&#160;         * Forward to a given absolute timestamp.</div>
+<div class="line"><a name="l00188"></a><span class="lineno">  188</span>&#160;         * Seek to a given absolute timestamp.</div>
 <div class="line"><a name="l00189"></a><span class="lineno">  189</span>&#160;         *</div>
-<div class="line"><a name="l00190"></a><span class="lineno">  190</span>&#160;         * In read mode this means skipping data forward until the timestamp</div>
-<div class="line"><a name="l00191"></a><span class="lineno">  191</span>&#160;         * is made current. In write mode for streams, consumers are notified</div>
-<div class="line"><a name="l00192"></a><span class="lineno">  192</span>&#160;         * about the progress.</div>
-<div class="line"><a name="l00193"></a><span class="lineno">  193</span>&#160;         *</div>
-<div class="line"><a name="l00194"></a><span class="lineno">  194</span>&#160;         * Preconditions:</div>
-<div class="line"><a name="l00195"></a><span class="lineno">  195</span>&#160;         * - toTimestamp &gt;= getCurrentTime()</div>
-<div class="line"><a name="l00196"></a><span class="lineno">  196</span>&#160;         *</div>
-<div class="line"><a name="l00197"></a><span class="lineno">  197</span>&#160;         * Postconditions:</div>
-<div class="line"><a name="l00198"></a><span class="lineno">  198</span>&#160;         * Let:</div>
-<div class="line"><a name="l00199"></a><span class="lineno">  199</span>&#160;         *  - r be the SpikeReport</div>
-<div class="line"><a name="l00200"></a><span class="lineno">  200</span>&#160;         *  - f be the returned future by r.forward(toTimestamp)</div>
-<div class="line"><a name="l00201"></a><span class="lineno">  201</span>&#160;         * Then:</div>
-<div class="line"><a name="l00202"></a><span class="lineno">  202</span>&#160;         *  - After f.wait() returns r.getCurrentTime() == toTimestamp.</div>
-<div class="line"><a name="l00203"></a><span class="lineno">  203</span>&#160;         *  - The postconditions of read operations imply that this function</div>
-<div class="line"><a name="l00204"></a><span class="lineno">  204</span>&#160;         *    throws away the data previous to toTimestamp (or avoids reading</div>
-<div class="line"><a name="l00205"></a><span class="lineno">  205</span>&#160;         *    it at all if possible).</div>
-<div class="line"><a name="l00206"></a><span class="lineno">  206</span>&#160;         *</div>
-<div class="line"><a name="l00207"></a><span class="lineno">  207</span>&#160;         * @throw std::runtime_error if a precondition does not hold.</div>
-<div class="line"><a name="l00208"></a><span class="lineno">  208</span>&#160;         */</div>
-<div class="line"><a name="l00209"></a><span class="lineno">  209</span>&#160;        boost::future&lt; void &gt; forward( float toTimestamp );</div>
-<div class="line"><a name="l00210"></a><span class="lineno">  210</span>&#160;</div>
-<div class="line"><a name="l00211"></a><span class="lineno">  211</span>&#160;        enum State { OK = 0, ENDED = 1, FAILED = 2 };</div>
-<div class="line"><a name="l00212"></a><span class="lineno">  212</span>&#160;        /** @return The state after the last completed operation. */</div>
-<div class="line"><a name="l00213"></a><span class="lineno">  213</span>&#160;        State getState() const;</div>
-<div class="line"><a name="l00214"></a><span class="lineno">  214</span>&#160;</div>
-<div class="line"><a name="l00215"></a><span class="lineno">  215</span>&#160;       /**</div>
-<div class="line"><a name="l00216"></a><span class="lineno">  216</span>&#160;         * Write the given spikes to the output.</div>
-<div class="line"><a name="l00217"></a><span class="lineno">  217</span>&#160;         *</div>
-<div class="line"><a name="l00218"></a><span class="lineno">  218</span>&#160;         * Upon return getCurrenTime() is the greatest of all the spike times</div>
-<div class="line"><a name="l00219"></a><span class="lineno">  219</span>&#160;         * plus an epsilon.</div>
-<div class="line"><a name="l00220"></a><span class="lineno">  220</span>&#160;         *</div>
-<div class="line"><a name="l00221"></a><span class="lineno">  221</span>&#160;         * @param spikes A sorted collection of spikes. For every spike, its</div>
-<div class="line"><a name="l00222"></a><span class="lineno">  222</span>&#160;         *        timestamp t must be &gt;= getCurrentTime().</div>
-<div class="line"><a name="l00223"></a><span class="lineno">  223</span>&#160;         */</div>
-<div class="line"><a name="l00224"></a><span class="lineno">  224</span>&#160;        void write( const Spikes&amp; spikes );</div>
-<div class="line"><a name="l00225"></a><span class="lineno">  225</span>&#160;    }</div>
-<div class="line"><a name="l00226"></a><span class="lineno">  226</span>&#160;</div>
-<div class="line"><a name="l00227"></a><span class="lineno">  227</span>&#160;</div>
-<div class="line"><a name="l00228"></a><span class="lineno">  228</span>&#160;## Examples</div>
-<div class="line"><a name="l00229"></a><span class="lineno">  229</span>&#160;</div>
-<div class="line"><a name="l00230"></a><span class="lineno">  230</span>&#160;### Copying a spike report from one URL to another without any timeout.</div>
+<div class="line"><a name="l00190"></a><span class="lineno">  190</span>&#160;         * If toTimestamp &gt;= getCurrentTime() and the report was opening</div>
+<div class="line"><a name="l00191"></a><span class="lineno">  191</span>&#160;         * for reading, data will be skipped forward until the timestamp</div>
+<div class="line"><a name="l00192"></a><span class="lineno">  192</span>&#160;         * is made current. In write mode for streams, consumers are notified</div>
+<div class="line"><a name="l00193"></a><span class="lineno">  193</span>&#160;         * about the progress.</div>
+<div class="line"><a name="l00194"></a><span class="lineno">  194</span>&#160;         *</div>
+<div class="line"><a name="l00195"></a><span class="lineno">  195</span>&#160;         * The case toTimestamp &lt; getCurrentTime() is only supported by file</div>
+<div class="line"><a name="l00196"></a><span class="lineno">  196</span>&#160;         * based reports.</div>
+<div class="line"><a name="l00197"></a><span class="lineno">  197</span>&#160;         *</div>
+<div class="line"><a name="l00198"></a><span class="lineno">  198</span>&#160;         * Preconditions:</div>
+<div class="line"><a name="l00199"></a><span class="lineno">  199</span>&#160;         * - There is no standing read or readUntil operation.</div>
+<div class="line"><a name="l00200"></a><span class="lineno">  200</span>&#160;         *</div>
+<div class="line"><a name="l00201"></a><span class="lineno">  201</span>&#160;         * Postconditions:</div>
+<div class="line"><a name="l00202"></a><span class="lineno">  202</span>&#160;         * Let:</div>
+<div class="line"><a name="l00203"></a><span class="lineno">  203</span>&#160;         *  - r be the SpikeReport</div>
+<div class="line"><a name="l00204"></a><span class="lineno">  204</span>&#160;         *  - f be the returned future by r.seek(toTimestamp)</div>
+<div class="line"><a name="l00205"></a><span class="lineno">  205</span>&#160;         * Then:</div>
+<div class="line"><a name="l00206"></a><span class="lineno">  206</span>&#160;         *  - After f.wait() returns r.getCurrentTime() == toTimestamp.</div>
+<div class="line"><a name="l00207"></a><span class="lineno">  207</span>&#160;         *  - The postconditions of read operations imply that in forward skips</div>
+<div class="line"><a name="l00208"></a><span class="lineno">  208</span>&#160;         *    this function throws away the data previous to toTimestamp (or</div>
+<div class="line"><a name="l00209"></a><span class="lineno">  209</span>&#160;         *    avoids reading it at all if possible).</div>
+<div class="line"><a name="l00210"></a><span class="lineno">  210</span>&#160;         *</div>
+<div class="line"><a name="l00211"></a><span class="lineno">  211</span>&#160;         * @throw std::runtime_error if a precondition does not hold or the</div>
+<div class="line"><a name="l00212"></a><span class="lineno">  212</span>&#160;         *        operation is not supported by the implementation.</div>
+<div class="line"><a name="l00213"></a><span class="lineno">  213</span>&#160;         */</div>
+<div class="line"><a name="l00214"></a><span class="lineno">  214</span>&#160;        boost::future&lt; void &gt; seek( float toTimestamp );</div>
+<div class="line"><a name="l00215"></a><span class="lineno">  215</span>&#160;</div>
+<div class="line"><a name="l00216"></a><span class="lineno">  216</span>&#160;        enum State { OK = 0, ENDED = 1, FAILED = 2 };</div>
+<div class="line"><a name="l00217"></a><span class="lineno">  217</span>&#160;        /** @return The state after the last completed operation. */</div>
+<div class="line"><a name="l00218"></a><span class="lineno">  218</span>&#160;        State getState() const;</div>
+<div class="line"><a name="l00219"></a><span class="lineno">  219</span>&#160;</div>
+<div class="line"><a name="l00220"></a><span class="lineno">  220</span>&#160;       /**</div>
+<div class="line"><a name="l00221"></a><span class="lineno">  221</span>&#160;         * Write the given spikes to the output.</div>
+<div class="line"><a name="l00222"></a><span class="lineno">  222</span>&#160;         *</div>
+<div class="line"><a name="l00223"></a><span class="lineno">  223</span>&#160;         * Upon return getCurrenTime() is the greatest of all the spike times</div>
+<div class="line"><a name="l00224"></a><span class="lineno">  224</span>&#160;         * plus an epsilon.</div>
+<div class="line"><a name="l00225"></a><span class="lineno">  225</span>&#160;         *</div>
+<div class="line"><a name="l00226"></a><span class="lineno">  226</span>&#160;         * @param spikes A sorted collection of spikes. For every spike, its</div>
+<div class="line"><a name="l00227"></a><span class="lineno">  227</span>&#160;         *        timestamp t must be &gt;= getCurrentTime().</div>
+<div class="line"><a name="l00228"></a><span class="lineno">  228</span>&#160;         */</div>
+<div class="line"><a name="l00229"></a><span class="lineno">  229</span>&#160;        void write( const Spikes&amp; spikes );</div>
+<div class="line"><a name="l00230"></a><span class="lineno">  230</span>&#160;    }</div>
 <div class="line"><a name="l00231"></a><span class="lineno">  231</span>&#160;</div>
-<div class="line"><a name="l00232"></a><span class="lineno">  232</span>&#160;    SpikeReport input( &quot;url1&quot;, brion::MODE_READ )</div>
-<div class="line"><a name="l00233"></a><span class="lineno">  233</span>&#160;    SpikeReport output( &quot;url2&quot;, brion::MODE_WRITE )</div>
+<div class="line"><a name="l00232"></a><span class="lineno">  232</span>&#160;</div>
+<div class="line"><a name="l00233"></a><span class="lineno">  233</span>&#160;## Examples</div>
 <div class="line"><a name="l00234"></a><span class="lineno">  234</span>&#160;</div>
-<div class="line"><a name="l00235"></a><span class="lineno">  235</span>&#160;    while( input.getState() == OK )</div>
-<div class="line"><a name="l00236"></a><span class="lineno">  236</span>&#160;        output.write( input.read().get() ))</div>
-<div class="line"><a name="l00237"></a><span class="lineno">  237</span>&#160;</div>
-<div class="line"><a name="l00238"></a><span class="lineno">  238</span>&#160;    if (input .getState() == SpikeReport::FAILED)</div>
-<div class="line"><a name="l00239"></a><span class="lineno">  239</span>&#160;       ... // Report error.</div>
-<div class="line"><a name="l00240"></a><span class="lineno">  240</span>&#160;    // To be strictly correct, the last operation should be output.forward to</div>
-<div class="line"><a name="l00241"></a><span class="lineno">  241</span>&#160;    // advance until the current timestamp.</div>
+<div class="line"><a name="l00235"></a><span class="lineno">  235</span>&#160;### Copying a spike report from one URL to another without any timeout.</div>
+<div class="line"><a name="l00236"></a><span class="lineno">  236</span>&#160;</div>
+<div class="line"><a name="l00237"></a><span class="lineno">  237</span>&#160;    SpikeReport input( &quot;url1&quot;, brion::MODE_READ )</div>
+<div class="line"><a name="l00238"></a><span class="lineno">  238</span>&#160;    SpikeReport output( &quot;url2&quot;, brion::MODE_WRITE )</div>
+<div class="line"><a name="l00239"></a><span class="lineno">  239</span>&#160;</div>
+<div class="line"><a name="l00240"></a><span class="lineno">  240</span>&#160;    while( input.getState() == OK )</div>
+<div class="line"><a name="l00241"></a><span class="lineno">  241</span>&#160;        output.write( input.read().get() ))</div>
 <div class="line"><a name="l00242"></a><span class="lineno">  242</span>&#160;</div>
-<div class="line"><a name="l00243"></a><span class="lineno">  243</span>&#160;### Copying a spike report from one URL to another with a read timeout.</div>
-<div class="line"><a name="l00244"></a><span class="lineno">  244</span>&#160;</div>
-<div class="line"><a name="l00245"></a><span class="lineno">  245</span>&#160;    SpikeReport intput( &quot;url1&quot;, brion::MODE_READ )</div>
-<div class="line"><a name="l00246"></a><span class="lineno">  246</span>&#160;    SpikeReport output( &quot;url2&quot;, brion::MODE_WRITE )</div>
+<div class="line"><a name="l00243"></a><span class="lineno">  243</span>&#160;    if (input .getState() == SpikeReport::FAILED)</div>
+<div class="line"><a name="l00244"></a><span class="lineno">  244</span>&#160;       ... // Report error.</div>
+<div class="line"><a name="l00245"></a><span class="lineno">  245</span>&#160;    // To be strictly correct, the last operation should be output.seek to</div>
+<div class="line"><a name="l00246"></a><span class="lineno">  246</span>&#160;    // advance until the current timestamp.</div>
 <div class="line"><a name="l00247"></a><span class="lineno">  247</span>&#160;</div>
-<div class="line"><a name="l00248"></a><span class="lineno">  248</span>&#160;    while( input.getState() == OK )</div>
-<div class="line"><a name="l00249"></a><span class="lineno">  249</span>&#160;    {</div>
-<div class="line"><a name="l00250"></a><span class="lineno">  250</span>&#160;        auto future = input.read();</div>
-<div class="line"><a name="l00251"></a><span class="lineno">  251</span>&#160;        const auto status =</div>
-<div class="line"><a name="l00252"></a><span class="lineno">  252</span>&#160;            future.wait_for( boost::chrono::milliseconds( 250 ));</div>
-<div class="line"><a name="l00253"></a><span class="lineno">  253</span>&#160;        if( status == boost::future_state::ready )</div>
-<div class="line"><a name="l00254"></a><span class="lineno">  254</span>&#160;            output.write( future.get( ));</div>
-<div class="line"><a name="l00255"></a><span class="lineno">  255</span>&#160;        else</div>
-<div class="line"><a name="l00256"></a><span class="lineno">  256</span>&#160;            ... // Handle timeout</div>
-<div class="line"><a name="l00257"></a><span class="lineno">  257</span>&#160;</div>
-<div class="line"><a name="l00258"></a><span class="lineno">  258</span>&#160;        output.write( spikes );</div>
-<div class="line"><a name="l00259"></a><span class="lineno">  259</span>&#160;        if (output.getState() == SpikeReport::FAILED)</div>
-<div class="line"><a name="l00260"></a><span class="lineno">  260</span>&#160;           ... // Report error.</div>
-<div class="line"><a name="l00261"></a><span class="lineno">  261</span>&#160;    }</div>
-<div class="line"><a name="l00262"></a><span class="lineno">  262</span>&#160;    if (input.getState() == SpikeReport::FAILED)</div>
-<div class="line"><a name="l00263"></a><span class="lineno">  263</span>&#160;       ... // Report error.</div>
-<div class="line"><a name="l00264"></a><span class="lineno">  264</span>&#160;</div>
-<div class="line"><a name="l00265"></a><span class="lineno">  265</span>&#160;### Writing data at regular time intervals</div>
-<div class="line"><a name="l00266"></a><span class="lineno">  266</span>&#160;</div>
-<div class="line"><a name="l00267"></a><span class="lineno">  267</span>&#160;    const float time delta = ...;</div>
-<div class="line"><a name="l00268"></a><span class="lineno">  268</span>&#160;    for( size_t i = 0; ...; ++i )</div>
-<div class="line"><a name="l00269"></a><span class="lineno">  269</span>&#160;    {</div>
-<div class="line"><a name="l00270"></a><span class="lineno">  270</span>&#160;        const start = i * delta;</div>
-<div class="line"><a name="l00271"></a><span class="lineno">  271</span>&#160;        const end = (i + 1) * delta;</div>
-<div class="line"><a name="l00272"></a><span class="lineno">  272</span>&#160;        const Spikes = produceSpikes( start, end );</div>
-<div class="line"><a name="l00273"></a><span class="lineno">  273</span>&#160;        output.write( spikes );</div>
-<div class="line"><a name="l00274"></a><span class="lineno">  274</span>&#160;        output.forward( end ).get();</div>
-<div class="line"><a name="l00275"></a><span class="lineno">  275</span>&#160;    }</div>
-<div class="line"><a name="l00276"></a><span class="lineno">  276</span>&#160;</div>
-<div class="line"><a name="l00277"></a><span class="lineno">  277</span>&#160;</div>
-<div class="line"><a name="l00278"></a><span class="lineno">  278</span>&#160;## Implementation</div>
-<div class="line"><a name="l00279"></a><span class="lineno">  279</span>&#160;</div>
-<div class="line"><a name="l00280"></a><span class="lineno">  280</span>&#160;TODO</div>
+<div class="line"><a name="l00248"></a><span class="lineno">  248</span>&#160;### Copying a spike report from one URL to another with a read timeout.</div>
+<div class="line"><a name="l00249"></a><span class="lineno">  249</span>&#160;</div>
+<div class="line"><a name="l00250"></a><span class="lineno">  250</span>&#160;    SpikeReport intput( &quot;url1&quot;, brion::MODE_READ )</div>
+<div class="line"><a name="l00251"></a><span class="lineno">  251</span>&#160;    SpikeReport output( &quot;url2&quot;, brion::MODE_WRITE )</div>
+<div class="line"><a name="l00252"></a><span class="lineno">  252</span>&#160;</div>
+<div class="line"><a name="l00253"></a><span class="lineno">  253</span>&#160;    while( input.getState() == OK )</div>
+<div class="line"><a name="l00254"></a><span class="lineno">  254</span>&#160;    {</div>
+<div class="line"><a name="l00255"></a><span class="lineno">  255</span>&#160;        auto future = input.read();</div>
+<div class="line"><a name="l00256"></a><span class="lineno">  256</span>&#160;        const auto status =</div>
+<div class="line"><a name="l00257"></a><span class="lineno">  257</span>&#160;            future.wait_for( boost::chrono::milliseconds( 250 ));</div>
+<div class="line"><a name="l00258"></a><span class="lineno">  258</span>&#160;        if( status == boost::future_state::ready )</div>
+<div class="line"><a name="l00259"></a><span class="lineno">  259</span>&#160;            output.write( future.get( ));</div>
+<div class="line"><a name="l00260"></a><span class="lineno">  260</span>&#160;        else</div>
+<div class="line"><a name="l00261"></a><span class="lineno">  261</span>&#160;            ... // Handle timeout</div>
+<div class="line"><a name="l00262"></a><span class="lineno">  262</span>&#160;</div>
+<div class="line"><a name="l00263"></a><span class="lineno">  263</span>&#160;        output.write( spikes );</div>
+<div class="line"><a name="l00264"></a><span class="lineno">  264</span>&#160;        if (output.getState() == SpikeReport::FAILED)</div>
+<div class="line"><a name="l00265"></a><span class="lineno">  265</span>&#160;           ... // Report error.</div>
+<div class="line"><a name="l00266"></a><span class="lineno">  266</span>&#160;    }</div>
+<div class="line"><a name="l00267"></a><span class="lineno">  267</span>&#160;    if (input.getState() == SpikeReport::FAILED)</div>
+<div class="line"><a name="l00268"></a><span class="lineno">  268</span>&#160;       ... // Report error.</div>
+<div class="line"><a name="l00269"></a><span class="lineno">  269</span>&#160;</div>
+<div class="line"><a name="l00270"></a><span class="lineno">  270</span>&#160;### Writing data at regular time intervals</div>
+<div class="line"><a name="l00271"></a><span class="lineno">  271</span>&#160;</div>
+<div class="line"><a name="l00272"></a><span class="lineno">  272</span>&#160;    const float time delta = ...;</div>
+<div class="line"><a name="l00273"></a><span class="lineno">  273</span>&#160;    for( size_t i = 0; ...; ++i )</div>
+<div class="line"><a name="l00274"></a><span class="lineno">  274</span>&#160;    {</div>
+<div class="line"><a name="l00275"></a><span class="lineno">  275</span>&#160;        const start = i * delta;</div>
+<div class="line"><a name="l00276"></a><span class="lineno">  276</span>&#160;        const end = (i + 1) * delta;</div>
+<div class="line"><a name="l00277"></a><span class="lineno">  277</span>&#160;        const Spikes = produceSpikes( start, end );</div>
+<div class="line"><a name="l00278"></a><span class="lineno">  278</span>&#160;        output.write( spikes );</div>
+<div class="line"><a name="l00279"></a><span class="lineno">  279</span>&#160;        output.seek( end ).get();</div>
+<div class="line"><a name="l00280"></a><span class="lineno">  280</span>&#160;    }</div>
 <div class="line"><a name="l00281"></a><span class="lineno">  281</span>&#160;</div>
-<div class="line"><a name="l00282"></a><span class="lineno">  282</span>&#160;## Issues</div>
-<div class="line"><a name="l00283"></a><span class="lineno">  283</span>&#160;</div>
+<div class="line"><a name="l00282"></a><span class="lineno">  282</span>&#160;</div>
+<div class="line"><a name="l00283"></a><span class="lineno">  283</span>&#160;## Implementation</div>
 <div class="line"><a name="l00284"></a><span class="lineno">  284</span>&#160;</div>
-<div class="line"><a name="l00285"></a><span class="lineno">  285</span>&#160;### 1: Do we need a Spikes container?</div>
+<div class="line"><a name="l00285"></a><span class="lineno">  285</span>&#160;TODO</div>
 <div class="line"><a name="l00286"></a><span class="lineno">  286</span>&#160;</div>
-<div class="line"><a name="l00287"></a><span class="lineno">  287</span>&#160;_Resolved: Yes_</div>
+<div class="line"><a name="l00287"></a><span class="lineno">  287</span>&#160;## Issues</div>
 <div class="line"><a name="l00288"></a><span class="lineno">  288</span>&#160;</div>
-<div class="line"><a name="l00289"></a><span class="lineno">  289</span>&#160;Not at this level. A higher level class can could provide a custom container</div>
-<div class="line"><a name="l00290"></a><span class="lineno">  290</span>&#160;if that&#39;s necessary for performance reasons. At this class, the interface is</div>
-<div class="line"><a name="l00291"></a><span class="lineno">  291</span>&#160;designed in a way that the implementation does not need to cache anything under</div>
-<div class="line"><a name="l00292"></a><span class="lineno">  292</span>&#160;normal conditions (no operation times out). This means that the container</div>
-<div class="line"><a name="l00293"></a><span class="lineno">  293</span>&#160;can be handed over to the consumer and rely on RVO and move semantics to</div>
-<div class="line"><a name="l00294"></a><span class="lineno">  294</span>&#160;avoid unnecessary copies.</div>
-<div class="line"><a name="l00295"></a><span class="lineno">  295</span>&#160;</div>
-<div class="line"><a name="l00296"></a><span class="lineno">  296</span>&#160;### 2: Why Spikes::getCurrentTime() returns a time greater than the largest spike time (in the general case)?</div>
-<div class="line"><a name="l00297"></a><span class="lineno">  297</span>&#160;</div>
-<div class="line"><a name="l00298"></a><span class="lineno">  298</span>&#160;_Resolved: Yes_</div>
-<div class="line"><a name="l00299"></a><span class="lineno">  299</span>&#160;</div>
-<div class="line"><a name="l00300"></a><span class="lineno">  300</span>&#160;To ensure consistency with the specification of the time interval from</div>
-<div class="line"><a name="l00301"></a><span class="lineno">  301</span>&#160;SpikeReport::read, which is open on the right. The time of the last spike is</div>
-<div class="line"><a name="l00302"></a><span class="lineno">  302</span>&#160;still easy to recover because it is the last element in the container.</div>
-<div class="line"><a name="l00303"></a><span class="lineno">  303</span>&#160;</div>
-<div class="line"><a name="l00304"></a><span class="lineno">  304</span>&#160;### 3: The return value of read should be boost::future&lt; Spikes&amp; &gt; or boost::future&lt; Spikes &gt;?</div>
-<div class="line"><a name="l00305"></a><span class="lineno">  305</span>&#160;</div>
-<div class="line"><a name="l00306"></a><span class="lineno">  306</span>&#160;_Resolved: No_</div>
-<div class="line"><a name="l00307"></a><span class="lineno">  307</span>&#160;</div>
-<div class="line"><a name="l00308"></a><span class="lineno">  308</span>&#160;It is desirable to avoid the reference and according to</div>
-<div class="line"><a name="l00309"></a><span class="lineno">  309</span>&#160;[this reference](http://en.cppreference.com/w/cpp/thread/future/get), it seems</div>
-<div class="line"><a name="l00310"></a><span class="lineno">  310</span>&#160;that get() returns a meaningful value only the first time is called when</div>
-<div class="line"><a name="l00311"></a><span class="lineno">  311</span>&#160;returning by value (because the implementation uses std::move, but I&#39;m not</div>
-<div class="line"><a name="l00312"></a><span class="lineno">  312</span>&#160;fully sure about this).</div>
-<div class="line"><a name="l00313"></a><span class="lineno">  313</span>&#160;</div>
-<div class="line"><a name="l00314"></a><span class="lineno">  314</span>&#160;### 4: Are the getStartTime() and getEndTime() methods needed?</div>
-<div class="line"><a name="l00315"></a><span class="lineno">  315</span>&#160;</div>
-<div class="line"><a name="l00316"></a><span class="lineno">  316</span>&#160;_Resolved: No_</div>
-<div class="line"><a name="l00317"></a><span class="lineno">  317</span>&#160;</div>
-<div class="line"><a name="l00318"></a><span class="lineno">  318</span>&#160;Seems convenient, but it&#39;s not clear what value should they return when the</div>
-<div class="line"><a name="l00319"></a><span class="lineno">  319</span>&#160;data source is a stream and no data (or metadata) has been received yet.</div>
+<div class="line"><a name="l00289"></a><span class="lineno">  289</span>&#160;</div>
+<div class="line"><a name="l00290"></a><span class="lineno">  290</span>&#160;### 1: Do we need a Spikes container?</div>
+<div class="line"><a name="l00291"></a><span class="lineno">  291</span>&#160;</div>
+<div class="line"><a name="l00292"></a><span class="lineno">  292</span>&#160;_Resolved: Yes_</div>
+<div class="line"><a name="l00293"></a><span class="lineno">  293</span>&#160;</div>
+<div class="line"><a name="l00294"></a><span class="lineno">  294</span>&#160;Not at this level. A higher level class can could provide a custom container</div>
+<div class="line"><a name="l00295"></a><span class="lineno">  295</span>&#160;if that&#39;s necessary for performance reasons. At this class, the interface is</div>
+<div class="line"><a name="l00296"></a><span class="lineno">  296</span>&#160;designed in a way that the implementation does not need to cache anything under</div>
+<div class="line"><a name="l00297"></a><span class="lineno">  297</span>&#160;normal conditions (no operation times out). This means that the container</div>
+<div class="line"><a name="l00298"></a><span class="lineno">  298</span>&#160;can be handed over to the consumer and rely on RVO and move semantics to</div>
+<div class="line"><a name="l00299"></a><span class="lineno">  299</span>&#160;avoid unnecessary copies.</div>
+<div class="line"><a name="l00300"></a><span class="lineno">  300</span>&#160;</div>
+<div class="line"><a name="l00301"></a><span class="lineno">  301</span>&#160;### 2: Why Spikes::getCurrentTime() returns a time greater than the largest spike time (in the general case)?</div>
+<div class="line"><a name="l00302"></a><span class="lineno">  302</span>&#160;</div>
+<div class="line"><a name="l00303"></a><span class="lineno">  303</span>&#160;_Resolved: Yes_</div>
+<div class="line"><a name="l00304"></a><span class="lineno">  304</span>&#160;</div>
+<div class="line"><a name="l00305"></a><span class="lineno">  305</span>&#160;To ensure consistency with the specification of the time interval from</div>
+<div class="line"><a name="l00306"></a><span class="lineno">  306</span>&#160;SpikeReport::read, which is open on the right. The time of the last spike is</div>
+<div class="line"><a name="l00307"></a><span class="lineno">  307</span>&#160;still easy to recover because it is the last element in the container.</div>
+<div class="line"><a name="l00308"></a><span class="lineno">  308</span>&#160;</div>
+<div class="line"><a name="l00309"></a><span class="lineno">  309</span>&#160;### 3: The return value of read should be boost::future&lt; Spikes&amp; &gt; or boost::future&lt; Spikes &gt;?</div>
+<div class="line"><a name="l00310"></a><span class="lineno">  310</span>&#160;</div>
+<div class="line"><a name="l00311"></a><span class="lineno">  311</span>&#160;_Resolved: No_</div>
+<div class="line"><a name="l00312"></a><span class="lineno">  312</span>&#160;</div>
+<div class="line"><a name="l00313"></a><span class="lineno">  313</span>&#160;It is desirable to avoid the reference and according to</div>
+<div class="line"><a name="l00314"></a><span class="lineno">  314</span>&#160;[this reference](http://en.cppreference.com/w/cpp/thread/future/get), it seems</div>
+<div class="line"><a name="l00315"></a><span class="lineno">  315</span>&#160;that get() returns a meaningful value only the first time is called when</div>
+<div class="line"><a name="l00316"></a><span class="lineno">  316</span>&#160;returning by value (because the implementation uses std::move, but I&#39;m not</div>
+<div class="line"><a name="l00317"></a><span class="lineno">  317</span>&#160;fully sure about this).</div>
+<div class="line"><a name="l00318"></a><span class="lineno">  318</span>&#160;</div>
+<div class="line"><a name="l00319"></a><span class="lineno">  319</span>&#160;### 4: Are the getStartTime() and getEndTime() methods needed?</div>
 <div class="line"><a name="l00320"></a><span class="lineno">  320</span>&#160;</div>
+<div class="line"><a name="l00321"></a><span class="lineno">  321</span>&#160;_Resolved: No_</div>
+<div class="line"><a name="l00322"></a><span class="lineno">  322</span>&#160;</div>
+<div class="line"><a name="l00323"></a><span class="lineno">  323</span>&#160;Seems convenient, but it&#39;s not clear what value should they return when the</div>
+<div class="line"><a name="l00324"></a><span class="lineno">  324</span>&#160;data source is a stream and no data (or metadata) has been received yet.</div>
+<div class="line"><a name="l00325"></a><span class="lineno">  325</span>&#160;</div>
 </div><!-- fragment --></div><!-- contents -->
 </div><!-- doc-content -->
 <!-- start footer part -->
 <div id="nav-path" class="navpath"><!-- id is needed for treeview function! -->
   <ul>
     <li class="navelem"><b>spikeReport.md</b></li>
-    <li class="footer">Generated on Sat May 21 2016 06:01:15 for Brion by
+    <li class="footer">Generated on Tue Jun 7 2016 06:02:46 for Brion by
     <a href="http://www.doxygen.org/index.html">
     <img class="footer" src="doxygen.png" alt="doxygen"/></a> 1.8.9.1 </li>
   </ul>

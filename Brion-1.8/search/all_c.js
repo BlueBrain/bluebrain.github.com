@@ -1,7 +1,5 @@
 var searchData=
 [
-  ['parse',['parse',['../classbrion_1_1_target.html#af9dfd3b852d9a457e627d05ffb5bf30c',1,'brion::Target']]],
-  ['parsetarget',['parseTarget',['../classbrion_1_1_blue_config.html#a098c87b49809e5e23d1b40b63e381cbd',1,'brion::BlueConfig']]],
-  ['plugininitdata',['PluginInitData',['../classbrion_1_1_plugin_init_data.html#a2b26dd7348cc1ce830935b97079a97ef',1,'brion::PluginInitData']]],
-  ['plugininitdata',['PluginInitData',['../classbrion_1_1_plugin_init_data.html',1,'brion']]]
+  ['operator_3c_3c',['operator&lt;&lt;',['../classbrion_1_1_blue_config.html#aaf062876e0c67fbb50609662f4edcb6e',1,'brion::BlueConfig::operator&lt;&lt;()'],['../classbrion_1_1_target.html#aea9917cbbc18242f7738a1e57ff70274',1,'brion::Target::operator&lt;&lt;()'],['../namespacebrion.html#ab2e98fe0210aa6815bc153e42a734c37',1,'brion::operator&lt;&lt;(std::ostream &amp;, const BlueConfig &amp;)'],['../namespacebrion.html#a0187c76d308ba70d777e58993ac9ed00',1,'brion::operator&lt;&lt;(std::ostream &amp;, const Target &amp;)']]],
+  ['operator_3d',['operator=',['../classbrion_1_1_target.html#a5ee36b021b1a08f7baf94651822be7fc',1,'brion::Target::operator=()'],['../classbrain_1_1_spikes.html#a0f21f043fccce4845926a0410f29cfcc',1,'brain::Spikes::operator=()'],['../classbrain_1_1_spikes_1_1const__iterator.html#a0e173d35b846a6d2afe32bbbf7e71371',1,'brain::Spikes::const_iterator::operator=()']]]
 ];

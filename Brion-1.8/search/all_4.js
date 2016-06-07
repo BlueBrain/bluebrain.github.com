@@ -1,4 +1,7 @@
 var searchData=
 [
-  ['flush',['flush',['../classbrion_1_1_compartment_report.html#aada18371df36d46de253b2df4495ecb5',1,'brion::CompartmentReport::flush()'],['../classbrion_1_1_compartment_report_plugin.html#a29f488ea011b60d69788eb5f28d39de8',1,'brion::CompartmentReportPlugin::flush()'],['../classbrion_1_1_mesh.html#a268f1c164a98bb286b5ae71e1e84ab7f',1,'brion::Mesh::flush()'],['../classbrion_1_1_morphology.html#a875995889e7e94dbe0959475aec03924',1,'brion::Morphology::flush()'],['../classbrion_1_1_morphology_plugin.html#a7e46021d144fc5dad9faa3e23ea0b20d',1,'brion::MorphologyPlugin::flush()']]]
+  ['empty',['empty',['../classbrain_1_1_spikes.html#abd11e9785ebc0cad3e6d9524fd815d21',1,'brain::Spikes']]],
+  ['end',['end',['../classbrain_1_1_spikes.html#a44fdc7e974acf671452b88bc755dca70',1,'brain::Spikes']]],
+  ['enums',['enums',['../namespaceenums.html',1,'']]],
+  ['enums_2eh',['enums.h',['../enums_8h.html',1,'']]]
 ];

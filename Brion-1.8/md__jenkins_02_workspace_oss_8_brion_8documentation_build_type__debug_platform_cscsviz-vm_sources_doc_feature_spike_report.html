@@ -126,7 +126,7 @@ $(document).ready(function(){initNavTree('md__jenkins_02_workspace_oss_8_brion_8
 <li>When data for a time interval is requested, the time intervals are always closed on the left and open on the right.</li>
 </ul>
 <h2>General remarks</h2>
-<p>It has been agreed that unifying both the file and the stream cases under a stream-like interface (in the sense of std::iostream or POSIX file descriptor IO) seems to be the best abstraction at the lower level. Providing random access and out-of-core support is complicated at the lower level because internal buffering is needed and this can only be implementated efficiently if some assumptions about how client code will use the API are made. The most important characteristic of the current proposal is that all operations can only move forward, so each operation starts where the previous one left over. This way there is no need to make any distinction between the file and stream based cases. Random access is partially supported by a function that does forward skip.</p>
+<p>It has been agreed that unifying both the file and the stream cases under a stream-like interface (in the sense of std::iostream or POSIX file descriptor IO) seems to be the best abstraction at the lower level. Providing random access and out-of-core support is complicated at the lower level because internal buffering is needed and this can only be implementated efficiently if some assumptions about how client code will use the API are made. The most important characteristic of the current proposal is that read and write operations can only move forward, so each operation starts where the previous one left over. This way there is no need to make any distinction between the file and stream based cases. Random access is partially supported by a seek function that for stream based reports will only support forward skip.</p>
 <p>The current proposal defers important design decisions to the higher level API, but the its benefit is that it provides a relatively simply API for the most critical part.</p>
 <h2>API</h2>
 <p>Thread-safey is only guaranteed for const access.</p>
@@ -192,7 +192,7 @@ public:
      * Preconditions:
      * - r.getState() is OK or ENDED.
      * - The report was open in read mode.
-     * - There is no previous read or forward operation with a pending
+     * - There is no previous read or seek operation with a pending
      *   future.
      * - min &gt;= getCurrentTime() or UNDEFINED_TIMESTAMP.
      *
@@ -237,33 +237,38 @@ public:
      * Postcondition: If r.getState() == OK, then r.getCurrentTime() == max
      *
      * @throw std::runtime_error if the precondition does not hold.
-     * @sa forward()
+     * @sa seek()
      */
     boost::future&lt; Spikes &gt; readUntil( float max );
 
     /**
-     * Forward to a given absolute timestamp.
+     * Seek to a given absolute timestamp.
      *
-     * In read mode this means skipping data forward until the timestamp
+     * If toTimestamp &gt;= getCurrentTime() and the report was opening
+     * for reading, data will be skipped forward until the timestamp
      * is made current. In write mode for streams, consumers are notified
      * about the progress.
      *
+     * The case toTimestamp &lt; getCurrentTime() is only supported by file
+     * based reports.
+     *
      * Preconditions:
-     * - toTimestamp &gt;= getCurrentTime()
+     * - There is no standing read or readUntil operation.
      *
      * Postconditions:
      * Let:
      *  - r be the SpikeReport
-     *  - f be the returned future by r.forward(toTimestamp)
+     *  - f be the returned future by r.seek(toTimestamp)
      * Then:
      *  - After f.wait() returns r.getCurrentTime() == toTimestamp.
-     *  - The postconditions of read operations imply that this function
-     *    throws away the data previous to toTimestamp (or avoids reading
-     *    it at all if possible).
+     *  - The postconditions of read operations imply that in forward skips
+     *    this function throws away the data previous to toTimestamp (or
+     *    avoids reading it at all if possible).
      *
-     * @throw std::runtime_error if a precondition does not hold.
+     * @throw std::runtime_error if a precondition does not hold or the
+     *        operation is not supported by the implementation.
      */
-    boost::future&lt; void &gt; forward( float toTimestamp );
+    boost::future&lt; void &gt; seek( float toTimestamp );
 
     enum State { OK = 0, ENDED = 1, FAILED = 2 };
     /** @return The state after the last completed operation. */
@@ -290,7 +295,7 @@ while( input.getState() == OK )
 
 if (input .getState() == SpikeReport::FAILED)
    ... // Report error.
-// To be strictly correct, the last operation should be output.forward to
+// To be strictly correct, the last operation should be output.seek to
 // advance until the current timestamp.
 </pre><h3>Copying a spike report from one URL to another with a read timeout.</h3>
 <pre class="fragment">SpikeReport intput( "url1", brion::MODE_READ )
@@ -320,7 +325,7 @@ for( size_t i = 0; ...; ++i )
     const end = (i + 1) * delta;
     const Spikes = produceSpikes( start, end );
     output.write( spikes );
-    output.forward( end ).get();
+    output.seek( end ).get();
 }
 </pre><h2>Implementation</h2>
 <p>TODO</p>
@@ -342,7 +347,7 @@ for( size_t i = 0; ...; ++i )
 <!-- start footer part -->
 <div id="nav-path" class="navpath"><!-- id is needed for treeview function! -->
   <ul>
-    <li class="footer">Generated on Sat May 21 2016 06:01:15 for Brion by
+    <li class="footer">Generated on Tue Jun 7 2016 06:02:46 for Brion by
     <a href="http://www.doxygen.org/index.html">
     <img class="footer" src="doxygen.png" alt="doxygen"/></a> 1.8.9.1 </li>
   </ul>

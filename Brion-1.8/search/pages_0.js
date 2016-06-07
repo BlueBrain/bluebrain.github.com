@@ -1,5 +1,4 @@
 var searchData=
 [
-  ['changelog',['Changelog',['../_changelog.html',1,'']]],
-  ['compartment_20report_20writing_20from_20mpi_20applications',['Compartment report writing from MPI applications',['../md__jenkins_02_workspace_oss_8_brion_8documentation_build_type__debug_platform_cscsviz-vm_sourceb36c4615b203f34c66af2a917f3aa101.html',1,'']]]
+  ['additions_20to_20compartmentreport_20to_20support_20zeroeq_20streams',['Additions to compartmentReport to support ZeroEQ streams',['../md__jenkins_02_workspace_oss_8_brion_8documentation_build_type__debug_platform_cscsviz-vm_source23b82867a6f79316dc8f69aa2de32217.html',1,'']]]
 ];
