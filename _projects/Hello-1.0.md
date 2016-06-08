@@ -4,7 +4,7 @@ version: "1.0"
 major: 1
 minor: 0
 description: Example project for the Blue Brain Project
-updated: 29/03/16
+updated: 08/06/16
 homepage: https://github.com/BlueBrain/Hello
 repository: https://github.com/BlueBrain/Hello.git
 issuesurl: https://github.com/BlueBrain/Hello/issues
@@ -12,7 +12,7 @@ packageurl:
 license: LGPL;BSD
 maturity: EP
 maintainers: Blue Brain Project (bbp-open-source@googlegroups.com)
-contributors: Ahmet Bilgili; Daniel Nachbaur; Raphael Dumusc; Stefan Eilemann
+contributors: Stefan Eilemann
 readmetype: text/x-markdown
 ---
 # Hello
