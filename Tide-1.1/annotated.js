@@ -39,6 +39,7 @@ var annotated =
     [ "FolderThumbnailGenerator", "class_folder_thumbnail_generator.html", "class_folder_thumbnail_generator" ],
     [ "FpsCounter", "class_fps_counter.html", "class_fps_counter" ],
     [ "Image", "class_image.html", "class_image" ],
+    [ "ImageSource", "class_image_source.html", "class_image_source" ],
     [ "ImageSynchronizer", "class_image_synchronizer.html", "class_image_synchronizer" ],
     [ "ImageThumbnailGenerator", "class_image_thumbnail_generator.html", "class_image_thumbnail_generator" ],
     [ "JsonOptions", "class_json_options.html", "class_json_options" ],

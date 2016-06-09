@@ -44,6 +44,7 @@ var files =
     [ "FolderThumbnailGenerator.h", "_folder_thumbnail_generator_8h_source.html", null ],
     [ "FpsCounter.h", "_fps_counter_8h_source.html", null ],
     [ "Image.h", "_image_8h_source.html", null ],
+    [ "ImageSource.h", "_image_source_8h_source.html", null ],
     [ "ImageSynchronizer.h", "_image_synchronizer_8h_source.html", null ],
     [ "ImageThumbnailGenerator.h", "_image_thumbnail_generator_8h_source.html", null ],
     [ "JsonOptions.h", "_json_options_8h_source.html", null ],

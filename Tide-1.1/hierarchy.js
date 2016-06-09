@@ -19,6 +19,7 @@ var hierarchy =
     [ "DataSource", "class_data_source.html", [
       [ "CachedDataSource", "class_cached_data_source.html", [
         [ "DynamicTexture", "class_dynamic_texture.html", null ],
+        [ "ImageSource", "class_image_source.html", null ],
         [ "LodTiler", "class_lod_tiler.html", [
           [ "PDFTiler", "class_p_d_f_tiler.html", null ],
           [ "SVGTiler", "class_s_v_g_tiler.html", null ]

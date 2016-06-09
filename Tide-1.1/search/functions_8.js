@@ -1,10 +1,12 @@
 var searchData=
 [
   ['imageloaded',['imageLoaded',['../class_data_provider.html#a850e56f3c1c0fed4257a03d964c70244',1,'DataProvider']]],
+  ['imagesource',['ImageSource',['../class_image_source.html#acca0d3d0e1927f39881e365007f9d51c',1,'ImageSource']]],
   ['imagesynchronizer',['ImageSynchronizer',['../class_image_synchronizer.html#a6b8d0d7d138b9c58738c26acd6bd60c9',1,'ImageSynchronizer']]],
   ['imageupdated',['imageUpdated',['../class_pixel_streamer.html#ae9f831bd8e004763f4e2fd05b17a21a1',1,'PixelStreamer']]],
   ['incrementeventreceivercount',['incrementEventReceiverCount',['../class_pixel_stream_content.html#a5109f320daef0181de2110d271cd545c',1,'PixelStreamContent']]],
   ['init',['init',['../class_quick_renderer.html#a510f528b785124da782b83e87e349196',1,'QuickRenderer::init()'],['../class_texture_uploader.html#ac3aa512b3ceabf72f9741a42ae6678e5',1,'TextureUploader::init()']]],
+  ['is32bits',['is32Bits',['../class_qt_image.html#abd7d2845d3a9ec14bc3627c939627570',1,'QtImage']]],
   ['isempty',['isEmpty',['../class_display_group.html#a2bd3c3a118c0a2be043c10bb6ca8c3dd',1,'DisplayGroup']]],
   ['isfocused',['isFocused',['../class_content_window.html#ab81535e0639c5bf3582f4df57e6ec7e2',1,'ContentWindow']]],
   ['isfullscreen',['isFullscreen',['../class_content_window.html#a0425680dc9e71347979a11a3c7a56a67',1,'ContentWindow']]],
