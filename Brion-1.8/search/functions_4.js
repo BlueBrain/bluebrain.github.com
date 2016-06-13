@@ -24,7 +24,7 @@ var searchData=
   ['getmorphologysource',['getMorphologySource',['../classbrion_1_1_blue_config.html#a759864b8fa6bcd76d756e1043eaa107d',1,'brion::BlueConfig']]],
   ['getmorphologyuris',['getMorphologyURIs',['../classbrain_1_1_circuit.html#abb42bce871768bad2f87e328f770700e',1,'brain::Circuit']]],
   ['getnextspiketime',['getNextSpikeTime',['../classbrion_1_1_spike_report.html#a5e366cdface09f9de23b0ef369f7d7fc',1,'brion::SpikeReport::getNextSpikeTime()'],['../classbrion_1_1_spike_report_plugin.html#ab0c9e3bab16d3d4c3c5ef7e321b09102',1,'brion::SpikeReportPlugin::getNextSpikeTime()']]],
-  ['getnumcompartments',['getNumCompartments',['../classbrion_1_1_compartment_report.html#a6ac0b82e37f6ac3851704b48868f4a9a',1,'brion::CompartmentReport::getNumCompartments()'],['../classbrion_1_1_compartment_report_plugin.html#ab0c7ad8edb0fbaf940a8d0f2b5bed494',1,'brion::CompartmentReportPlugin::getNumCompartments()']]],
+  ['getnumcompartments',['getNumCompartments',['../classbrion_1_1_compartment_report.html#ace0923ed2cb001197da414284383ec7b',1,'brion::CompartmentReport::getNumCompartments()'],['../classbrion_1_1_compartment_report_plugin.html#ab0c7ad8edb0fbaf940a8d0f2b5bed494',1,'brion::CompartmentReportPlugin::getNumCompartments()']]],
   ['getnumneurons',['getNumNeurons',['../classbrion_1_1_circuit.html#af7ed47392549f914b7ab7625f493176e',1,'brion::Circuit::getNumNeurons()'],['../classbrain_1_1_circuit.html#a366a38e8b14d48a42127e823ec1a03c8',1,'brain::Circuit::getNumNeurons()']]],
   ['getnumnormals',['getNumNormals',['../classbrion_1_1_mesh.html#a0e2ebd5da50e066a96afe7c971825da7',1,'brion::Mesh']]],
   ['getnumstructures',['getNumStructures',['../classbrion_1_1_mesh.html#a396288b2de57235ad00ffd8a93ac902b',1,'brion::Mesh']]],

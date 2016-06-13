@@ -1,5 +1,6 @@
 var NAVTREEINDEX2 =
 {
+"functions_func_c.html":[9,3,1,1],
 "functions_func_e.html":[9,3,1,2],
 "functions_func_f.html":[9,3,1,3],
 "functions_func_g.html":[9,3,1,4],
@@ -45,8 +46,8 @@ var NAVTREEINDEX2 =
 "namespacebrain.html":[8,0,0],
 "namespacebrain_1_1neuron.html":[8,0,0,0],
 "namespacebrain_1_1neuron.html":[9,0,0,0],
-"namespacebrion.html":[8,0,1],
 "namespacebrion.html":[9,0,1],
+"namespacebrion.html":[8,0,1],
 "namespaceenums.html":[8,0,2],
 "namespacemembers.html":[8,1,0],
 "namespacemembers_func.html":[8,1,1],
