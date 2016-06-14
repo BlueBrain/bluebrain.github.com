@@ -4,7 +4,7 @@ version: "0.5"
 major: 0
 minor: 5
 description: Interactive Supercomputing - Monitoring and Steering for NEST simulations
-updated: 07/06/16
+updated: 15/06/16
 homepage: https://github.com/BlueBrain/Monsteer
 repository: https://github.com/BlueBrain/Monsteer.git
 issuesurl: https://github.com/BlueBrain/Monsteer/issues
@@ -12,7 +12,7 @@ packageurl:
 license: LGPL
 maturity: EP
 maintainers: BBP Visualization Team (bbp-open-source@googlegroups.com)
-contributors: Stefan Eilemann
+contributors: Daniel Nachbaur
 readmetype: text/x-markdown
 ---
 # Monsteer
