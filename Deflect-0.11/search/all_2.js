@@ -3,6 +3,7 @@ var searchData=
   ['data',['data',['../structdeflect_1_1_image_wrapper.html#a36c9098b98a8086e903ed777ebee9a35',1,'deflect::ImageWrapper']]],
   ['decode',['decode',['../classdeflect_1_1_segment_decoder.html#a4894a1c487eee14f898261fe50bca5c4',1,'deflect::SegmentDecoder']]],
   ['defaultportnumber',['defaultPortNumber',['../classdeflect_1_1_server.html#ad9de65318605b69ca87b786d9178bddd',1,'deflect::Server']]],
+  ['defines_2eh',['defines.h',['../defines_8h.html',1,'']]],
   ['deflect_5fversion_5fabi',['DEFLECT_VERSION_ABI',['../version_8h.html#aab0ced3f934c8c127ad7678102776039',1,'version.h']]],
   ['deflect_5fversion_5fge',['DEFLECT_VERSION_GE',['../version_8h.html#aea712840105306381b2796df55f45e2a',1,'version.h']]],
   ['deflect_5fversion_5fgt',['DEFLECT_VERSION_GT',['../version_8h.html#a45d6a7b7b556de87f4bf82f87c2604cd',1,'version.h']]],
