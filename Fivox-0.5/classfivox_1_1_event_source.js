@@ -19,6 +19,5 @@ var classfivox_1_1_event_source =
     [ "load", "classfivox_1_1_event_source.html#a8e9af6242a546992ba1789bbc0432c04", null ],
     [ "load", "classfivox_1_1_event_source.html#a4fcc419924fb5889e21a259fce45bd7a", null ],
     [ "operator[]", "classfivox_1_1_event_source.html#a382a73cc476d311ccace7e3ba19e731b", null ],
-    [ "setCutOffDistance", "classfivox_1_1_event_source.html#a254061a94e36ba1d638f76a6a6b8139d", null ],
     [ "setDt", "classfivox_1_1_event_source.html#a7bc0e2bc80f3536ecea7e865696d1198", null ]
 ];
