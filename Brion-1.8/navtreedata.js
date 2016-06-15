@@ -7,8 +7,8 @@ var NAVTREE =
     [ "Changelog", "_changelog.html", null ],
     [ "Additions to compartmentReport to support ZeroEQ streams", "md__jenkins_02_workspace_oss_8_brion_8documentation_build_type__debug_platform_cscsviz-vm_source23b82867a6f79316dc8f69aa2de32217.html", null ],
     [ "Compartment report writing from MPI applications", "md__jenkins_02_workspace_oss_8_brion_8documentation_build_type__debug_platform_cscsviz-vm_sourceb36c4615b203f34c66af2a917f3aa101.html", null ],
+    [ "Implementing Morphology version 1.1, support for glia cells", "md__jenkins_02_workspace_oss_8_brion_8documentation_build_type__debug_platform_cscsviz-vm_sources_doc_feature_morphology11.html", null ],
     [ "Redesign of the SpikeReport and Spikes container", "md__jenkins_02_workspace_oss_8_brion_8documentation_build_type__debug_platform_cscsviz-vm_sources_doc_feature_spike_report.html", null ],
-    [ "Deprecated List", "deprecated.html", null ],
     [ "Namespaces", null, [
       [ "Namespace List", "namespaces.html", "namespaces" ],
       [ "Namespace Members", "namespacemembers.html", [
@@ -42,8 +42,8 @@ var NAVTREE =
 var NAVTREEINDEX =
 [
 "_changelog.html",
-"classbrion_1_1_mesh.html#ac4ff32aa44c10d0913c74edc94214c27",
-"functions_func_c.html"
+"classbrion_1_1_mesh.html#ae37cce9604ced319d85b6a5a0c14fe90",
+"functions_func_u.html"
 ];
 
 var SYNCONMSG = 'click to disable panel synchronisation';

@@ -4,15 +4,15 @@ var classbrain_1_1_circuit =
       [ "COORDINATES_GLOBAL", "classbrain_1_1_circuit.html#a1f220992f40a8759f34ef96da4041610af46e537cb4b8ae263b6006243935f509", null ],
       [ "COORDINATES_LOCAL", "classbrain_1_1_circuit.html#a1f220992f40a8759f34ef96da4041610a6047d340613ee6abed1cc4a6d722a112", null ]
     ] ],
-    [ "Circuit", "classbrain_1_1_circuit.html#a91a129c5be5227680adb99a33ef1c1f9", null ],
-    [ "Circuit", "classbrain_1_1_circuit.html#a9408dd8a71a27694b681e69fcfb8ffc4", null ],
-    [ "~Circuit", "classbrain_1_1_circuit.html#a2919c0c6250897d74ecce861a375ed25", null ],
-    [ "getGIDs", "classbrain_1_1_circuit.html#a396ebccd7fc3511e7d061cce7fe52f20", null ],
-    [ "getGIDs", "classbrain_1_1_circuit.html#a996373c386f51bbab5be08d9563ed272", null ],
-    [ "getMorphologyURIs", "classbrain_1_1_circuit.html#abb42bce871768bad2f87e328f770700e", null ],
-    [ "getNumNeurons", "classbrain_1_1_circuit.html#a366a38e8b14d48a42127e823ec1a03c8", null ],
-    [ "getPositions", "classbrain_1_1_circuit.html#aebd79fae385839585d95832cbdc79ce5", null ],
-    [ "getRotations", "classbrain_1_1_circuit.html#ab71158db8168e4ad4ded512d8c065285", null ],
-    [ "getTransforms", "classbrain_1_1_circuit.html#abe3f23a02e980cc2b46140fb0052f9f3", null ],
-    [ "loadMorphologies", "classbrain_1_1_circuit.html#ae4adda14065e0f2c399446ddafdba6ca", null ]
+    [ "Circuit", "classbrain_1_1_circuit.html#ad8018f3c4aaf467133ca254295ba53af", null ],
+    [ "Circuit", "classbrain_1_1_circuit.html#aa333684a12851014e36ee5c897599599", null ],
+    [ "~Circuit", "classbrain_1_1_circuit.html#a5f39340d71b68b181d521fcc9e41fcdc", null ],
+    [ "getGIDs", "classbrain_1_1_circuit.html#a36ee80e8f35795978c648acfd79253a5", null ],
+    [ "getGIDs", "classbrain_1_1_circuit.html#a5480f86410d5c4aff618735090f98cf5", null ],
+    [ "getMorphologyURIs", "classbrain_1_1_circuit.html#a2af6cc4a5ae4691771980d15d72a56f6", null ],
+    [ "getNumNeurons", "classbrain_1_1_circuit.html#a69480d5a0edcb1ded3627d618204289c", null ],
+    [ "getPositions", "classbrain_1_1_circuit.html#a1b05989eb2e2a76c477982021d4039a9", null ],
+    [ "getRotations", "classbrain_1_1_circuit.html#a457e6f64353f0b20bb1a6524c88ea3af", null ],
+    [ "getTransforms", "classbrain_1_1_circuit.html#a4e21485b8bce2a643944e51808ee51c1", null ],
+    [ "loadMorphologies", "classbrain_1_1_circuit.html#ad0d46e2775f1aaf8495b384e50e190ee", null ]
 ];

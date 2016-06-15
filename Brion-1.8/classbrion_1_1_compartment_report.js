@@ -1,9 +1,7 @@
 var classbrion_1_1_compartment_report =
 [
     [ "~CompartmentReport", "classbrion_1_1_compartment_report.html#aa062e1099c64f3dcde183766f07524f2", null ],
-    [ "CompartmentReport", "classbrion_1_1_compartment_report.html#ae96d8a5137f610eedac6803e0d6ce114", null ],
-    [ "CompartmentReport", "classbrion_1_1_compartment_report.html#a23f39247dce97c7ec0bf715ee321b470", null ],
-    [ "CompartmentReport", "classbrion_1_1_compartment_report.html#ad4159c878cfe6b04d5941439e35bde20", null ],
+    [ "CompartmentReport", "classbrion_1_1_compartment_report.html#a1068892309907490436a2f5b23e3f252", null ],
     [ "clearBuffer", "classbrion_1_1_compartment_report.html#a30882f15ba7f42ebe56e044d4a956082", null ],
     [ "flush", "classbrion_1_1_compartment_report.html#aada18371df36d46de253b2df4495ecb5", null ],
     [ "getBufferSize", "classbrion_1_1_compartment_report.html#a646267af418b901b2b618e27cf0079ef", null ],

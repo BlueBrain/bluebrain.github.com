@@ -16,15 +16,6 @@ var enums_8h =
       [ "CONFIGSECTION_UNKNOWN", "enums_8h.html#a969f557406a58a03cd42097c6485c3fca1bbd799ed00b231970f85ada911f46b8", null ],
       [ "CONFIGSECTION_ALL", "enums_8h.html#a969f557406a58a03cd42097c6485c3fca6f1a6dcb32b0f1eb564108a35f8c6754", null ]
     ] ],
-    [ "CompartmentReportFormat", "enums_8h.html#a7eac234e4e1e6fa051f52d705abf24ea", [
-      [ "REPORTFORMAT_BINARY", "enums_8h.html#a7eac234e4e1e6fa051f52d705abf24eaa033b4688ba77efe6e4ba88f53bfb396a", null ],
-      [ "REPORTFORMAT_HDF5", "enums_8h.html#a7eac234e4e1e6fa051f52d705abf24eaa5428d8cec5da8d18facc20e4d6067aa0", null ],
-      [ "REPORTFORMAT_STREAM", "enums_8h.html#a7eac234e4e1e6fa051f52d705abf24eaa38da0fd73a115f93ef885d326e7fc8b3", null ],
-      [ "REPORTFORMAT_LEVELDB", "enums_8h.html#a7eac234e4e1e6fa051f52d705abf24eaa944815114b2a06d05751e8a5f82613ce", null ],
-      [ "REPORTFORMAT_SKV", "enums_8h.html#a7eac234e4e1e6fa051f52d705abf24eaa876623cf7e4f0fb95806af06d0631e1c", null ],
-      [ "REPORTFORMAT_NULL", "enums_8h.html#a7eac234e4e1e6fa051f52d705abf24eaa9b9fded7b49ed439b130c5ebd298afcf", null ],
-      [ "REPORTFORMAT_INVALID", "enums_8h.html#a7eac234e4e1e6fa051f52d705abf24eaaf88651bb297df6560627efb7461ac4dd", null ]
-    ] ],
     [ "MeshFormat", "enums_8h.html#a3b3d31e72129af0e61a78a3aa0d03a10", [
       [ "MESHFORMAT_BINARY", "enums_8h.html#a3b3d31e72129af0e61a78a3aa0d03a10a0a2357d10861f5424dbc4d816380fa17", null ],
       [ "MESHFORMAT_HDF5", "enums_8h.html#a3b3d31e72129af0e61a78a3aa0d03a10a13b4f71f7e82ef8a5c06d05bfd6a44db", null ]
@@ -137,7 +128,5 @@ var enums_8h =
       [ "TARGET_COMPARTMENT", "enums_8h.html#a613b2690bb941a22577d0826bae6f5c5a73c6f07c819d83d1e290254fc4d274f2", null ],
       [ "TARGET_ALL", "enums_8h.html#a613b2690bb941a22577d0826bae6f5c5a51c8d9435699cb5d85974a16633a93e2", null ]
     ] ],
-    [ "lexical_cast", "enums_8h.html#a67734765fb1ba189e07c9ec8309c3c84", null ],
-    [ "lexical_cast", "enums_8h.html#a3c01c090baebfe30a83226322f121bc2", null ],
     [ "operator<<", "enums_8h.html#ae7a4cd836afe68a46533496f3b423fe4", null ]
 ];
