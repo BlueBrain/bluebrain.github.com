@@ -3,6 +3,9 @@ var hierarchy =
     [ "noncopyable", null, [
       [ "livre::AllocMemoryUnit", "classlivre_1_1_alloc_memory_unit.html", null ]
     ] ],
+    [ "Distributable", null, [
+      [ "livre::Histogram", "classlivre_1_1_histogram.html", null ]
+    ] ],
     [ "livre::DataSourcePlugin", "classlivre_1_1_data_source_plugin.html", null ],
     [ "livre::DataSourcePluginData", "classlivre_1_1_data_source_plugin_data.html", null ],
     [ "livre::DeleteArray< T >", "structlivre_1_1_delete_array.html", null ],

@@ -2,10 +2,9 @@ var classlivre_1_1_node_id =
 [
     [ "NodeId", "classlivre_1_1_node_id.html#a54ded1e37d499635cbe4bd57457a18aa", null ],
     [ "NodeId", "classlivre_1_1_node_id.html#a4c724b95437fa40b2cbce95a3deb3a45", null ],
-    [ "NodeId", "classlivre_1_1_node_id.html#a2d4543749254b03cacd1dd3fb727ab7d", null ],
+    [ "NodeId", "classlivre_1_1_node_id.html#a05c6f427377aa350c68b949e343ba563", null ],
     [ "getChildren", "classlivre_1_1_node_id.html#a64bb86d3874465371e389891bd941b5e", null ],
     [ "getChildrenAtLevel", "classlivre_1_1_node_id.html#a4369285250135c7c3c4c426d5b6f2f9a", null ],
-    [ "getFrame", "classlivre_1_1_node_id.html#a16e3041adcf37f9417a6745af30545ce", null ],
     [ "getId", "classlivre_1_1_node_id.html#a85a26b30ff6de94a69ab8cbd989ee605", null ],
     [ "getLevel", "classlivre_1_1_node_id.html#a55a71a3b1fa35f1a0b564c1e9b11cd0b", null ],
     [ "getParent", "classlivre_1_1_node_id.html#aa79c4414cd868e0bf2cfe8f1c79c329e", null ],
@@ -14,6 +13,7 @@ var classlivre_1_1_node_id =
     [ "getRange", "classlivre_1_1_node_id.html#a87683b620df1af7d8318d395daa03dc0", null ],
     [ "getRoot", "classlivre_1_1_node_id.html#a90bfb5a7f074b640774af27ebcfee8cf", null ],
     [ "getSiblings", "classlivre_1_1_node_id.html#a65e34a7b5a233e68e8324b3d7798d736", null ],
+    [ "getTimeStep", "classlivre_1_1_node_id.html#aade941df3202b1552d5d35f953a0da2d", null ],
     [ "isChild", "classlivre_1_1_node_id.html#a0f9b7337250e5c80ef39a50a7b68e640", null ],
     [ "isParent", "classlivre_1_1_node_id.html#addb8721d58196b914b6fea2ebc11971b", null ],
     [ "isRoot", "classlivre_1_1_node_id.html#a498a467e132c1a8938d80ecc5540ab7d", null ],
@@ -27,7 +27,7 @@ var classlivre_1_1_node_id =
     [ "_blockPosX", "classlivre_1_1_node_id.html#a5c446ad04c0dbebdd6443c028213e52b", null ],
     [ "_blockPosY", "classlivre_1_1_node_id.html#add94c6b9544b1a750404ce471fa2b5b2", null ],
     [ "_blockPosZ", "classlivre_1_1_node_id.html#ab659704dd17c498c6a8e49e3c88fe20e", null ],
-    [ "_frame", "classlivre_1_1_node_id.html#af73dcc0d86929cceca7f20f304744f7d", null ],
     [ "_id", "classlivre_1_1_node_id.html#a91a08e63b7c3781b3a7c91d4b8891992", null ],
-    [ "_level", "classlivre_1_1_node_id.html#a9b079ada89ff0b9effa98fd06b7c81bd", null ]
+    [ "_level", "classlivre_1_1_node_id.html#a9b079ada89ff0b9effa98fd06b7c81bd", null ],
+    [ "_timeStep", "classlivre_1_1_node_id.html#a764d3ac976961d3b9cbdac488fd8cb8f", null ]
 ];

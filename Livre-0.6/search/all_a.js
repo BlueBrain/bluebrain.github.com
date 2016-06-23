@@ -1,6 +1,8 @@
 var searchData=
 [
-  ['nodeid',['NodeId',['../classlivre_1_1_node_id.html',1,'livre']]],
-  ['nodeid',['NodeId',['../classlivre_1_1_node_id.html#a54ded1e37d499635cbe4bd57457a18aa',1,'livre::NodeId::NodeId()'],['../classlivre_1_1_node_id.html#a4c724b95437fa40b2cbce95a3deb3a45',1,'livre::NodeId::NodeId(const Identifier &amp;identifier)'],['../classlivre_1_1_node_id.html#a2d4543749254b03cacd1dd3fb727ab7d',1,'livre::NodeId::NodeId(const uint32_t level, const Vector3ui &amp;position, const uint32_t frame=0)']]],
-  ['nomemoryunit',['NoMemoryUnit',['../classlivre_1_1_no_memory_unit.html',1,'livre']]]
+  ['makecurrent',['makeCurrent',['../classlivre_1_1_g_l_context.html#a19ff075882cba25a29393a8af8e024c4',1,'livre::GLContext']]],
+  ['maximumblocksize',['maximumBlockSize',['../structlivre_1_1_volume_information.html#a7f58df57b66e81d07df72c398c1b9dfd',1,'livre::VolumeInformation']]],
+  ['maxpos',['maxPos',['../structlivre_1_1_volume_information.html#a86e55a8e1dda4a5d3b1405860959c72a',1,'livre::VolumeInformation']]],
+  ['memoryunit',['MemoryUnit',['../classlivre_1_1_memory_unit.html',1,'livre']]],
+  ['minpos',['minPos',['../structlivre_1_1_volume_information.html#a836aaca1c5f0132e037e49d2b28f16b7',1,'livre::VolumeInformation']]]
 ];
