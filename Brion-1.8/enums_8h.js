@@ -16,6 +16,10 @@ var enums_8h =
       [ "CONFIGSECTION_UNKNOWN", "enums_8h.html#a969f557406a58a03cd42097c6485c3fca1bbd799ed00b231970f85ada911f46b8", null ],
       [ "CONFIGSECTION_ALL", "enums_8h.html#a969f557406a58a03cd42097c6485c3fca6f1a6dcb32b0f1eb564108a35f8c6754", null ]
     ] ],
+    [ "CellFamily", "enums_8h.html#a8bbad79a506997aec2cc5553e927e03e", [
+      [ "FAMILY_NEURON", "enums_8h.html#a8bbad79a506997aec2cc5553e927e03ead35728e631d5744a9d7e8fe4e4ac6ab5", null ],
+      [ "FAMILY_GLIA", "enums_8h.html#a8bbad79a506997aec2cc5553e927e03ead67d89611e90a428391f820e921f3580", null ]
+    ] ],
     [ "MeshFormat", "enums_8h.html#a3b3d31e72129af0e61a78a3aa0d03a10", [
       [ "MESHFORMAT_BINARY", "enums_8h.html#a3b3d31e72129af0e61a78a3aa0d03a10a0a2357d10861f5424dbc4d816380fa17", null ],
       [ "MESHFORMAT_HDF5", "enums_8h.html#a3b3d31e72129af0e61a78a3aa0d03a10a13b4f71f7e82ef8a5c06d05bfd6a44db", null ]
@@ -39,10 +43,9 @@ var enums_8h =
       [ "MORPHOLOGY_UNDEFINED", "enums_8h.html#af30f09c59879fca22002ccbaacf226eba96299999a88998af6f41ae748048629c", null ]
     ] ],
     [ "MorphologyVersion", "enums_8h.html#ac6b91c84e67b858148e505a43b9884b0", [
-      [ "MORPHOLOGY_VERSION_1", "enums_8h.html#ac6b91c84e67b858148e505a43b9884b0abd08a83665c456a64d9e1e12c9df63b1", null ],
-      [ "MORPHOLOGY_VERSION_2", "enums_8h.html#ac6b91c84e67b858148e505a43b9884b0aa9ed1a894be2822a18edf9e96018cf41", null ],
       [ "MORPHOLOGY_VERSION_H5_1", "enums_8h.html#ac6b91c84e67b858148e505a43b9884b0aedffb4f827d3dbe41731082ad97cefd1", null ],
       [ "MORPHOLOGY_VERSION_H5_2", "enums_8h.html#ac6b91c84e67b858148e505a43b9884b0a4c459d101445e3535338527d6b8dcd19", null ],
+      [ "MORPHOLOGY_VERSION_H5_1_1", "enums_8h.html#ac6b91c84e67b858148e505a43b9884b0af38e0bc98c5c33d398763b739165c8d0", null ],
       [ "MORPHOLOGY_VERSION_SWC_1", "enums_8h.html#ac6b91c84e67b858148e505a43b9884b0a2165242fa5d39702ee6f8157b57acf73", null ],
       [ "MORPHOLOGY_VERSION_UNDEFINED", "enums_8h.html#ac6b91c84e67b858148e505a43b9884b0ad02f24bab4faab477ae8562bfa29393c", null ]
     ] ],
@@ -75,7 +78,8 @@ var enums_8h =
       [ "SECTION_AXON", "enums_8h.html#adbb154f3c78c0209ce2f3d33b628b5a1a2c5305eb64575d8a0e7bc9d1e71a471e", null ],
       [ "SECTION_DENDRITE", "enums_8h.html#adbb154f3c78c0209ce2f3d33b628b5a1add1dc7730c5982d2440438a7ce81f320", null ],
       [ "SECTION_APICAL_DENDRITE", "enums_8h.html#adbb154f3c78c0209ce2f3d33b628b5a1a5148c4e4922ea7417a2cbc4caa96bbfb", null ],
-      [ "SECTION_ALL", "enums_8h.html#adbb154f3c78c0209ce2f3d33b628b5a1a1edf2d6f9dd8c5179731be7d14be8323", null ]
+      [ "SECTION_GLIA_PROCESS", "enums_8h.html#adbb154f3c78c0209ce2f3d33b628b5a1acb53ba526d8fff6eee7ab8f1a5a79ad2", null ],
+      [ "SECTION_GLIA_ENDFOOT", "enums_8h.html#adbb154f3c78c0209ce2f3d33b628b5a1af58b15c034491ba7ec4d33ec8e93f0bb", null ]
     ] ],
     [ "SynapseAttributes", "enums_8h.html#ad023e746676d235c53853a69c9c1c454", [
       [ "SYNAPSE_CONNECTED_NEURON", "enums_8h.html#ad023e746676d235c53853a69c9c1c454a0bcc937eb407a55c8341df0108f3bcf2", null ],
