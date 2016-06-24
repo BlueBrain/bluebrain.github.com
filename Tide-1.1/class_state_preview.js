@@ -7,6 +7,6 @@ var class_state_preview =
     [ "loadFromFile", "class_state_preview.html#adb7ad5d66ab2b54eb66e5912aa827c9a", null ],
     [ "previewFilename", "class_state_preview.html#a8a924439f578fccf82116b5949d1388b", null ],
     [ "saveToFile", "class_state_preview.html#ab9451a422ef3233febfffae46eb82b91", null ],
-    [ "dcxFileName_", "class_state_preview.html#a4bfed8810d5a19fe42360d9c236dfe1e", null ],
-    [ "previewImage_", "class_state_preview.html#ad0a651bff279694bbd558c705723f49b", null ]
+    [ "_dcxFileName", "class_state_preview.html#a294ad69b5e9b5ad05991faa22e426ad5", null ],
+    [ "_previewImage", "class_state_preview.html#a69f911780b16ab66d2883a668b134ae3", null ]
 ];

@@ -106,6 +106,7 @@ var hierarchy =
       ] ],
       [ "DataProvider", "class_data_provider.html", null ],
       [ "DisplayGroupRenderer", "class_display_group_renderer.html", null ],
+      [ "LoggingUtility", "class_logging_utility.html", null ],
       [ "MasterFromWallChannel", "class_master_from_wall_channel.html", null ],
       [ "MasterToForkerChannel", "class_master_to_forker_channel.html", null ],
       [ "MasterToWallChannel", "class_master_to_wall_channel.html", null ],
@@ -153,6 +154,7 @@ var hierarchy =
     [ "Serializable", null, [
       [ "JsonOptions", "class_json_options.html", null ],
       [ "RestCommand", "class_rest_command.html", null ],
+      [ "RestLogger", "class_rest_logger.html", null ],
       [ "StaticContent", "class_static_content.html", null ]
     ] ],
     [ "State", "class_state.html", null ],

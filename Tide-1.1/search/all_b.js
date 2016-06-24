@@ -9,5 +9,6 @@ var searchData=
   ['loadfromfile',['loadFromFile',['../class_state_preview.html#adb7ad5d66ab2b54eb66e5912aa827c9a',1,'StatePreview']]],
   ['lodsynchronizer',['LodSynchronizer',['../class_lod_synchronizer.html',1,'LodSynchronizer'],['../class_lod_synchronizer.html#ae58845a6fc6e41b1d5ed769e0529ca08',1,'LodSynchronizer::LodSynchronizer()']]],
   ['lodtiler',['LodTiler',['../class_lod_tiler.html',1,'LodTiler'],['../class_lod_tiler.html#a6fb20a5bd71ee276d60d95f57a197517',1,'LodTiler::LodTiler()']]],
-  ['lodtools',['LodTools',['../class_lod_tools.html',1,'LodTools'],['../class_lod_tools.html#a31ca10c2a26eca743f63827cdd7d7b15',1,'LodTools::LodTools()']]]
+  ['lodtools',['LodTools',['../class_lod_tools.html',1,'LodTools'],['../class_lod_tools.html#a31ca10c2a26eca743f63827cdd7d7b15',1,'LodTools::LodTools()']]],
+  ['loggingutility',['LoggingUtility',['../class_logging_utility.html',1,'']]]
 ];
