@@ -21,6 +21,7 @@ var searchData=
   ['requesttileupdate',['requestTileUpdate',['../class_content_synchronizer.html#aa8eaddb3ad37209eb3df6cac7dc68db8',1,'ContentSynchronizer']]],
   ['resettime',['resetTime',['../class_elapsed_timer.html#a6559cc2f39064382de5ead5a9673e8e8',1,'ElapsedTimer']]],
   ['resetzoom',['resetZoom',['../class_content.html#ad5094c72f8c6d7ec5390108534804c1f',1,'Content']]],
+  ['reshape',['reshape',['../class_display_group_controller.html#a7a1d92a21f52d11526f4f145e865fc9d',1,'DisplayGroupController']]],
   ['resize',['resize',['../class_content_window_controller.html#a0069301d97e2ab70db7abffb74f6d15d',1,'ContentWindowController']]],
   ['resizerelative',['resizeRelative',['../class_content_window_controller.html#a3a20b4c22eb64fa0c094a44df766c138',1,'ContentWindowController']]],
   ['restcommand',['RestCommand',['../class_rest_command.html#a50a835b10e9fd4692a1cc24f7af3d236',1,'RestCommand']]],

@@ -38,9 +38,9 @@ var NAVTREEINDEX =
 [
 ".html",
 "class_content_action.html#a6175d61035324d21174fea5bf5c54b34",
-"class_display_group.html#aef0625b115fe22908ff5e9d1f1cc4d56",
-"class_master_to_wall_channel.html#a576ef4ee2d2b6bff8bb514b6079e234e",
-"class_quad_line_node.html#a8ce53446c0218021d8d52666cb4fcf00",
+"class_display_group.html#ae621c03bd2408c8ece4a61237efca355",
+"class_master_to_wall_channel.html#a14f4b381b5a30ceb29d5bc24a977878f",
+"class_quad_line_node.html#a19f9f3248c339ab0c2ed6fd3184ce51d",
 "classtide_1_1_version.html#a5ac34234a70f79244282a4ddb09a2ac9"
 ];
 
