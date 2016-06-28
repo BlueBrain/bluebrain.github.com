@@ -96,6 +96,7 @@ var files =
     [ "RestCommand.h", "_rest_command_8h_source.html", null ],
     [ "RestInterface.h", "_rest_interface_8h_source.html", null ],
     [ "RestLogger.h", "_rest_logger_8h_source.html", null ],
+    [ "SerializeBuffer.h", "_serialize_buffer_8h_source.html", null ],
     [ "State.h", "_state_8h_source.html", null ],
     [ "StatePreview.h", "_state_preview_8h_source.html", null ],
     [ "StateSerializationHelper.h", "_state_serialization_helper_8h_source.html", null ],

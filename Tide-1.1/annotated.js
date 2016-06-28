@@ -85,6 +85,7 @@ var annotated =
     [ "RestCommand", "class_rest_command.html", "class_rest_command" ],
     [ "RestInterface", "class_rest_interface.html", "class_rest_interface" ],
     [ "RestLogger", "class_rest_logger.html", "class_rest_logger" ],
+    [ "SerializeBuffer", "class_serialize_buffer.html", "class_serialize_buffer" ],
     [ "State", "class_state.html", "class_state" ],
     [ "StatePreview", "class_state_preview.html", "class_state_preview" ],
     [ "StateSerializationHelper", "class_state_serialization_helper.html", "class_state_serialization_helper" ],

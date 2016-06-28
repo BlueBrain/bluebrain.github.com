@@ -6,7 +6,8 @@ var hierarchy =
       [ "Options", "class_options.html", null ]
     ] ],
     [ "noncopyable", null, [
-      [ "MPIContext", "class_m_p_i_context.html", null ]
+      [ "MPIContext", "class_m_p_i_context.html", null ],
+      [ "SerializeBuffer", "class_serialize_buffer.html", null ]
     ] ],
     [ "CommandLineOptions", "class_command_line_options.html", null ],
     [ "CommandLineParameters", "class_command_line_parameters.html", null ],

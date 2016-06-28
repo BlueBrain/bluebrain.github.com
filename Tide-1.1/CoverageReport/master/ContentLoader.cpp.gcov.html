@@ -32,17 +32,17 @@
             <td></td>
             <td class="headerItem">Lines:</td>
             <td class="headerCovTableEntry">1</td>
-            <td class="headerCovTableEntry">21</td>
-            <td class="headerCovTableEntryLo">4.8 %</td>
+            <td class="headerCovTableEntry">30</td>
+            <td class="headerCovTableEntryLo">3.3 %</td>
           </tr>
           <tr>
             <td class="headerItem">Date:</td>
-            <td class="headerValue">2016-06-25 06:18:32</td>
+            <td class="headerValue">2016-06-28 06:18:29</td>
             <td></td>
             <td class="headerItem">Functions:</td>
             <td class="headerCovTableEntry">2</td>
-            <td class="headerCovTableEntry">4</td>
-            <td class="headerCovTableEntryMed">50.0 %</td>
+            <td class="headerCovTableEntry">5</td>
+            <td class="headerCovTableEntryMed">40.0 %</td>
           </tr>
           <tr><td><img src="../glass.png" width=3 height=3 alt=""></td></tr>
         </table>
@@ -61,7 +61,7 @@
 <pre class="sourceHeading">          Line data    Source code</pre>
 <pre class="source">
 <a name="1"><span class="lineNum">       1 </span>            : /*********************************************************************/</a>
-<span class="lineNum">       2 </span>            : /* Copyright (c) 2013, EPFL/Blue Brain Project                       */
+<span class="lineNum">       2 </span>            : /* Copyright (c) 2013-2016, EPFL/Blue Brain Project                  */
 <span class="lineNum">       3 </span>            : /*                     Raphael Dumusc &lt;raphael.dumusc@epfl.ch&gt;       */
 <span class="lineNum">       4 </span>            : /* All rights reserved.                                              */
 <span class="lineNum">       5 </span>            : /*                                                                   */
@@ -108,7 +108,7 @@
 <a name="46"><span class="lineNum">      46 </span>            : #include &quot;log.h&quot;</a>
 <span class="lineNum">      47 </span>            : 
 <span class="lineNum">      48 </span><span class="lineNoCov">          0 : ContentLoader::ContentLoader( DisplayGroupPtr displayGroup )</span>
-<span class="lineNum">      49 </span><span class="lineNoCov">          0 :     : displayGroup_( displayGroup )</span>
+<span class="lineNum">      49 </span><span class="lineNoCov">          0 :     : _displayGroup( displayGroup )</span>
 <span class="lineNum">      50 </span>            : {
 <a name="51"><span class="lineNum">      51 </span><span class="lineNoCov">          0 : }</span></a>
 <span class="lineNum">      52 </span>            : 
@@ -118,31 +118,48 @@
 <span class="lineNum">      56 </span>            : {
 <span class="lineNum">      57 </span><span class="lineNoCov">          0 :     put_flog( LOG_INFO, &quot;opening: '%s'&quot;, filename.toLocal8Bit().constData( ));</span>
 <span class="lineNum">      58 </span>            : 
-<span class="lineNum">      59 </span><span class="lineNoCov">          0 :     ContentPtr content = ContentFactory::getContent( filename );</span>
-<span class="lineNum">      60 </span><span class="lineNoCov">          0 :     if( !content )</span>
-<span class="lineNum">      61 </span>            :     {
-<span class="lineNum">      62 </span><span class="lineNoCov">          0 :         put_flog( LOG_WARN, &quot;ignoring unsupported file: '%s'&quot;,</span>
-<span class="lineNum">      63 </span><span class="lineNoCov">          0 :                   filename.toLocal8Bit().constData( ));</span>
-<span class="lineNum">      64 </span><span class="lineNoCov">          0 :         return false;</span>
-<span class="lineNum">      65 </span>            :     }
-<span class="lineNum">      66 </span>            : 
-<span class="lineNum">      67 </span><span class="lineNoCov">          0 :     ContentWindowPtr contentWindow( new ContentWindow( content ));</span>
-<span class="lineNum">      68 </span><span class="lineNoCov">          0 :     ContentWindowController controller( *contentWindow, *displayGroup_ );</span>
-<span class="lineNum">      69 </span>            : 
-<span class="lineNum">      70 </span><span class="lineNoCov">          0 :     if( windowSize.isValid( ))</span>
-<span class="lineNum">      71 </span><span class="lineNoCov">          0 :         controller.resize( windowSize );</span>
-<span class="lineNum">      72 </span>            :     else
-<span class="lineNum">      73 </span><span class="lineNoCov">          0 :         controller.adjustSize( SIZE_1TO1_FITTING );</span>
-<span class="lineNum">      74 </span>            : 
-<span class="lineNum">      75 </span><span class="lineNoCov">          0 :     if( windowCenterPosition.isNull( ))</span>
-<span class="lineNum">      76 </span><span class="lineNoCov">          0 :         controller.moveCenterTo( displayGroup_-&gt;getCoordinates().center( ));</span>
-<span class="lineNum">      77 </span>            :     else
-<span class="lineNum">      78 </span><span class="lineNoCov">          0 :         controller.moveCenterTo( windowCenterPosition );</span>
-<span class="lineNum">      79 </span>            : 
-<span class="lineNum">      80 </span><span class="lineNoCov">          0 :     displayGroup_-&gt;addContentWindow( contentWindow );</span>
-<a name="81"><span class="lineNum">      81 </span>            : </a>
-<span class="lineNum">      82 </span><span class="lineNoCov">          0 :     return true;</span>
-<span class="lineNum">      83 </span><span class="lineCov">         54 : }</span>
+<span class="lineNum">      59 </span><span class="lineNoCov">          0 :     if( isAlreadyOpen( filename ))</span>
+<span class="lineNum">      60 </span>            :     {
+<span class="lineNum">      61 </span><span class="lineNoCov">          0 :         put_flog( LOG_INFO, &quot;file already opened: '%s'&quot;,</span>
+<span class="lineNum">      62 </span><span class="lineNoCov">          0 :                   filename.toLocal8Bit().constData( ));</span>
+<span class="lineNum">      63 </span><span class="lineNoCov">          0 :         return false;</span>
+<span class="lineNum">      64 </span>            :     }
+<span class="lineNum">      65 </span>            : 
+<span class="lineNum">      66 </span><span class="lineNoCov">          0 :     ContentPtr content = ContentFactory::getContent( filename );</span>
+<span class="lineNum">      67 </span><span class="lineNoCov">          0 :     if( !content )</span>
+<span class="lineNum">      68 </span>            :     {
+<span class="lineNum">      69 </span><span class="lineNoCov">          0 :         put_flog( LOG_WARN, &quot;ignoring unsupported file: '%s'&quot;,</span>
+<span class="lineNum">      70 </span><span class="lineNoCov">          0 :                   filename.toLocal8Bit().constData( ));</span>
+<span class="lineNum">      71 </span><span class="lineNoCov">          0 :         return false;</span>
+<span class="lineNum">      72 </span>            :     }
+<span class="lineNum">      73 </span>            : 
+<span class="lineNum">      74 </span><span class="lineNoCov">          0 :     ContentWindowPtr contentWindow( new ContentWindow( content ));</span>
+<span class="lineNum">      75 </span><span class="lineNoCov">          0 :     ContentWindowController controller( *contentWindow, *_displayGroup );</span>
+<span class="lineNum">      76 </span>            : 
+<span class="lineNum">      77 </span><span class="lineNoCov">          0 :     if( windowSize.isValid( ))</span>
+<span class="lineNum">      78 </span><span class="lineNoCov">          0 :         controller.resize( windowSize );</span>
+<span class="lineNum">      79 </span>            :     else
+<span class="lineNum">      80 </span><span class="lineNoCov">          0 :         controller.adjustSize( SIZE_1TO1_FITTING );</span>
+<span class="lineNum">      81 </span>            : 
+<span class="lineNum">      82 </span><span class="lineNoCov">          0 :     if( windowCenterPosition.isNull( ))</span>
+<span class="lineNum">      83 </span><span class="lineNoCov">          0 :         controller.moveCenterTo( _displayGroup-&gt;getCoordinates().center( ));</span>
+<span class="lineNum">      84 </span>            :     else
+<span class="lineNum">      85 </span><span class="lineNoCov">          0 :         controller.moveCenterTo( windowCenterPosition );</span>
+<span class="lineNum">      86 </span>            : 
+<span class="lineNum">      87 </span><span class="lineNoCov">          0 :     _displayGroup-&gt;addContentWindow( contentWindow );</span>
+<span class="lineNum">      88 </span>            : 
+<span class="lineNum">      89 </span><span class="lineNoCov">          0 :     return true;</span>
+<a name="90"><span class="lineNum">      90 </span>            : }</a>
+<span class="lineNum">      91 </span>            : 
+<span class="lineNum">      92 </span><span class="lineNoCov">          0 : bool ContentLoader::isAlreadyOpen( const QString&amp; filename ) const</span>
+<span class="lineNum">      93 </span>            : {
+<span class="lineNum">      94 </span><span class="lineNoCov">          0 :     for( const ContentWindowPtr&amp; window : _displayGroup-&gt;getContentWindows( ))</span>
+<span class="lineNum">      95 </span>            :     {
+<span class="lineNum">      96 </span><span class="lineNoCov">          0 :         if( window-&gt;getContent()-&gt;getURI() == filename )</span>
+<span class="lineNum">      97 </span><span class="lineNoCov">          0 :             return true;</span>
+<a name="98"><span class="lineNum">      98 </span>            :     }</a>
+<span class="lineNum">      99 </span><span class="lineNoCov">          0 :     return false;</span>
+<span class="lineNum">     100 </span><span class="lineCov">         54 : }</span>
 </pre>
       </td>
     </tr>
