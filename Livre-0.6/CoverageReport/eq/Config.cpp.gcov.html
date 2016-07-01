@@ -37,7 +37,7 @@
           </tr>
           <tr>
             <td class="headerItem">Date:</td>
-            <td class="headerValue">2016-06-28 03:04:15</td>
+            <td class="headerValue">2016-07-01 03:02:26</td>
             <td></td>
             <td class="headerItem">Functions:</td>
             <td class="headerCovTableEntry">2</td>
@@ -95,533 +95,532 @@
 <span class="lineNum">      33 </span>            : #include &lt;livre/lib/configuration/VolumeRendererParameters.h&gt;
 <span class="lineNum">      34 </span>            : 
 <span class="lineNum">      35 </span>            : #include &lt;livre/core/events/EventMapper.h&gt;
-<span class="lineNum">      36 </span>            : #include &lt;livre/core/maths/maths.h&gt;
-<span class="lineNum">      37 </span>            : #include &lt;livre/core/data/Histogram.h&gt;
-<span class="lineNum">      38 </span>            : #include &lt;livre/core/util/FrameUtils.h&gt;
-<span class="lineNum">      39 </span>            : 
-<span class="lineNum">      40 </span>            : #include &lt;lexis/render/imageJPEG.h&gt;
-<span class="lineNum">      41 </span>            : 
-<span class="lineNum">      42 </span>            : #ifdef LIVRE_USE_ZEROEQ
-<span class="lineNum">      43 </span>            : #  include &lt;livre/eq/zeroeq/communicator.h&gt;
-<span class="lineNum">      44 </span>            : #endif
-<span class="lineNum">      45 </span>            : 
-<span class="lineNum">      46 </span>            : #include &lt;eq/eq.h&gt;
-<span class="lineNum">      47 </span>            : 
-<span class="lineNum">      48 </span>            : #include &lt;deque&gt;
-<span class="lineNum">      49 </span>            : 
-<span class="lineNum">      50 </span>            : namespace livre
-<span class="lineNum">      51 </span>            : {
-<span class="lineNum">      52 </span>            : namespace
-<span class="lineNum">      53 </span>            : {
-<span class="lineNum">      54 </span>            : const uint32_t histogramLatency = 5;
-<a name="55"><span class="lineNum">      55 </span>            : }</a>
-<span class="lineNum">      56 </span>            : 
-<span class="lineNum">      57 </span><span class="lineNoCov">          0 : class Config::Impl</span>
-<span class="lineNum">      58 </span>            : {
-<span class="lineNum">      59 </span>            : public:
-<a name="60"><span class="lineNum">      60 </span>            : </a>
-<span class="lineNum">      61 </span>            : 
-<a name="62"><span class="lineNum">      62 </span><span class="lineNoCov">          0 :     struct ViewHistogram</span></a>
-<span class="lineNum">      63 </span>            :     {
-<span class="lineNum">      64 </span><span class="lineNoCov">          0 :         ViewHistogram( const Histogram&amp; histogram_, const float area_, const uint32_t id_ )</span>
-<span class="lineNum">      65 </span>            :             : histogram( histogram_ )
-<span class="lineNum">      66 </span>            :             , area( area_ )
-<span class="lineNum">      67 </span><span class="lineNoCov">          0 :             , id( id_ )</span>
-<a name="68"><span class="lineNum">      68 </span><span class="lineNoCov">          0 :         {}</span></a>
-<span class="lineNum">      69 </span>            : 
-<span class="lineNum">      70 </span><span class="lineNoCov">          0 :         ViewHistogram&amp; operator+=( const ViewHistogram&amp; hist )</span>
-<span class="lineNum">      71 </span>            :         {
-<span class="lineNum">      72 </span><span class="lineNoCov">          0 :             histogram += hist.histogram;</span>
-<span class="lineNum">      73 </span><span class="lineNoCov">          0 :             area += hist.area;</span>
-<span class="lineNum">      74 </span><span class="lineNoCov">          0 :             return *this;</span>
-<a name="75"><span class="lineNum">      75 </span>            :         }</a>
-<span class="lineNum">      76 </span>            : 
-<span class="lineNum">      77 </span><span class="lineNoCov">          0 :         bool isComplete() const</span>
-<span class="lineNum">      78 </span>            :         {
-<span class="lineNum">      79 </span><span class="lineNoCov">          0 :             const float eps = 0.0001f;</span>
-<span class="lineNum">      80 </span><span class="lineNoCov">          0 :             return std::abs( 1.0f - area ) &lt;= eps;</span>
-<span class="lineNum">      81 </span>            :         }
-<span class="lineNum">      82 </span>            : 
-<span class="lineNum">      83 </span>            :         Histogram histogram;
-<span class="lineNum">      84 </span>            :         float area;
-<span class="lineNum">      85 </span>            :         uint32_t id;
-<span class="lineNum">      86 </span>            :     };
-<span class="lineNum">      87 </span>            : 
-<a name="88"><span class="lineNum">      88 </span>            :     typedef std::deque&lt; ViewHistogram &gt; ViewHistogramQueue;</a>
-<span class="lineNum">      89 </span>            : 
-<span class="lineNum">      90 </span><span class="lineNoCov">          0 :     explicit Impl( Config* config_ )</span>
-<span class="lineNum">      91 </span>            :         : config( config_ )
-<span class="lineNum">      92 </span>            :         , defaultLatency( 0 )
-<span class="lineNum">      93 </span>            :         , currentCanvas( 0 )
-<span class="lineNum">      94 </span><span class="lineNoCov">          0 :         , eventMapper( EventHandlerFactoryPtr( new EqEventHandlerFactory ))</span>
-<span class="lineNum">      95 </span>            :         , volumeBBox( Boxf::makeUnitBox( ))
-<span class="lineNum">      96 </span>            :         , redraw( true )
-<span class="lineNum">      97 </span><span class="lineNoCov">          0 :         , dataFrameRange( INVALID_FRAME_RANGE )</span>
-<a name="98"><span class="lineNum">      98 </span><span class="lineNoCov">          0 :     {}</span></a>
-<span class="lineNum">      99 </span>            : 
-<span class="lineNum">     100 </span><span class="lineNoCov">          0 :     void gatherHistogram( const Histogram&amp; histogram, const float area, const uint32_t currentId )</span>
-<span class="lineNum">     101 </span>            :     {
-<span class="lineNum">     102 </span>            :       // If we get a very old frame skip it
-<span class="lineNum">     103 </span><span class="lineNoCov">          0 :         if( !histogramQueue.empty() &amp;&amp; currentId &lt; histogramQueue.back().id )</span>
-<span class="lineNum">     104 </span><span class="lineNoCov">          0 :             return;</span>
-<span class="lineNum">     105 </span>            : 
-<span class="lineNum">     106 </span><span class="lineNoCov">          0 :         const ViewHistogram viewHistogram( histogram, area, currentId );</span>
-<span class="lineNum">     107 </span><span class="lineNoCov">          0 :         auto it = histogramQueue.begin();</span>
-<span class="lineNum">     108 </span><span class="lineNoCov">          0 :         while( it != histogramQueue.end( ))</span>
-<span class="lineNum">     109 </span>            :         {
-<span class="lineNum">     110 </span><span class="lineNoCov">          0 :             auto&amp; data = *it;</span>
-<span class="lineNum">     111 </span><span class="lineNoCov">          0 :             bool dataMerged = false;</span>
-<span class="lineNum">     112 </span>            : 
-<span class="lineNum">     113 </span><span class="lineNoCov">          0 :             if( currentId == data.id )</span>
-<span class="lineNum">     114 </span>            :             {
-<span class="lineNum">     115 </span><span class="lineNoCov">          0 :                 dataMerged = true;</span>
-<span class="lineNum">     116 </span><span class="lineNoCov">          0 :                 data += viewHistogram;</span>
-<span class="lineNum">     117 </span>            :             }
-<span class="lineNum">     118 </span><span class="lineNoCov">          0 :             else if( currentId &gt; data.id )</span>
-<span class="lineNum">     119 </span>            :             {
-<span class="lineNum">     120 </span><span class="lineNoCov">          0 :                 dataMerged = true;</span>
-<span class="lineNum">     121 </span><span class="lineNoCov">          0 :                 it = histogramQueue.emplace( it, viewHistogram );</span>
-<span class="lineNum">     122 </span>            :             }
-<span class="lineNum">     123 </span>            : 
-<span class="lineNum">     124 </span><span class="lineNoCov">          0 :             if( (*it).isComplete( )) // Send histogram &amp; remove all old ones</span>
-<span class="lineNum">     125 </span>            :             {
-<span class="lineNum">     126 </span>            : #ifdef LIVRE_USE_ZEROEQ
-<span class="lineNum">     127 </span><span class="lineNoCov">          0 :                 communicator-&gt;publishHistogram( (*it ).histogram );</span>
-<span class="lineNum">     128 </span>            : #endif
-<span class="lineNum">     129 </span><span class="lineNoCov">          0 :                 histogramQueue.erase( it, histogramQueue.end( ));</span>
-<span class="lineNum">     130 </span><span class="lineNoCov">          0 :                 return;</span>
-<span class="lineNum">     131 </span>            :             }
-<span class="lineNum">     132 </span>            : 
-<span class="lineNum">     133 </span><span class="lineNoCov">          0 :             if( dataMerged )</span>
-<span class="lineNum">     134 </span><span class="lineNoCov">          0 :                 break;</span>
-<span class="lineNum">     135 </span><span class="lineNoCov">          0 :             ++it;</span>
-<span class="lineNum">     136 </span>            :         }
-<span class="lineNum">     137 </span>            : 
-<span class="lineNum">     138 </span><span class="lineNoCov">          0 :        if( histogramQueue.empty() &amp;&amp; !viewHistogram.isComplete( ))</span>
-<span class="lineNum">     139 </span>            :         {
-<span class="lineNum">     140 </span><span class="lineNoCov">          0 :             histogramQueue.push_back( viewHistogram );</span>
-<span class="lineNum">     141 </span><span class="lineNoCov">          0 :             return;</span>
-<span class="lineNum">     142 </span>            :         }
-<span class="lineNum">     143 </span>            : 
-<span class="lineNum">     144 </span><span class="lineNoCov">          0 :         if( viewHistogram.isComplete( ))</span>
-<span class="lineNum">     145 </span>            :         {
-<span class="lineNum">     146 </span>            : #ifdef LIVRE_USE_ZEROEQ
-<span class="lineNum">     147 </span><span class="lineNoCov">          0 :             communicator-&gt;publishHistogram( viewHistogram.histogram );</span>
-<span class="lineNum">     148 </span>            : #endif
-<span class="lineNum">     149 </span><span class="lineNoCov">          0 :             return;</span>
-<span class="lineNum">     150 </span>            :         }
-<span class="lineNum">     151 </span>            : 
-<span class="lineNum">     152 </span><span class="lineNoCov">          0 :         if( histogramQueue.size() &gt; histogramLatency )</span>
-<span class="lineNum">     153 </span><span class="lineNoCov">          0 :             histogramQueue.pop_back();</span>
-<span class="lineNum">     154 </span>            :     }
-<span class="lineNum">     155 </span>            : 
-<span class="lineNum">     156 </span>            :     Config* config;
-<span class="lineNum">     157 </span>            :     uint32_t defaultLatency;
-<span class="lineNum">     158 </span>            :     eq::Canvas* currentCanvas;
-<span class="lineNum">     159 </span>            :     EventMapper eventMapper;
-<span class="lineNum">     160 </span>            :     FrameData framedata;
-<span class="lineNum">     161 </span>            :     Boxf volumeBBox;
-<span class="lineNum">     162 </span>            : #ifdef LIVRE_USE_ZEROEQ
-<span class="lineNum">     163 </span>            :     std::unique_ptr&lt; zeroeq::Communicator &gt; communicator;
-<span class="lineNum">     164 </span>            : #endif
-<span class="lineNum">     165 </span>            :     bool redraw;
-<span class="lineNum">     166 </span>            :     Vector2ui dataFrameRange;
-<span class="lineNum">     167 </span>            :     ViewHistogramQueue histogramQueue;
-<a name="168"><span class="lineNum">     168 </span>            : };</a>
-<span class="lineNum">     169 </span>            : 
-<span class="lineNum">     170 </span><span class="lineNoCov">          0 : Config::Config( eq::ServerPtr parent )</span>
-<span class="lineNum">     171 </span>            :     : eq::Config( parent )
-<span class="lineNum">     172 </span><span class="lineNoCov">          0 :     , _impl( new Impl( this ))</span>
-<span class="lineNum">     173 </span>            : {
-<span class="lineNum">     174 </span><span class="lineNoCov">          0 :     _impl-&gt;framedata.initialize( this );</span>
-<a name="175"><span class="lineNum">     175 </span><span class="lineNoCov">          0 : }</span></a>
-<span class="lineNum">     176 </span>            : 
-<span class="lineNum">     177 </span><span class="lineNoCov">          0 : Config::~Config()</span>
-<span class="lineNum">     178 </span>            : {
-<a name="179"><span class="lineNum">     179 </span><span class="lineNoCov">          0 : }</span></a>
-<span class="lineNum">     180 </span>            : 
-<span class="lineNum">     181 </span><span class="lineNoCov">          0 : FrameData&amp; Config::getFrameData()</span>
-<span class="lineNum">     182 </span>            : {
-<span class="lineNum">     183 </span><span class="lineNoCov">          0 :     return _impl-&gt;framedata;</span>
-<a name="184"><span class="lineNum">     184 </span>            : }</a>
-<span class="lineNum">     185 </span>            : 
-<span class="lineNum">     186 </span><span class="lineNoCov">          0 : const FrameData&amp; Config::getFrameData() const</span>
-<span class="lineNum">     187 </span>            : {
-<span class="lineNum">     188 </span><span class="lineNoCov">          0 :     return _impl-&gt;framedata;</span>
-<a name="189"><span class="lineNum">     189 </span>            : }</a>
-<span class="lineNum">     190 </span>            : 
-<span class="lineNum">     191 </span><span class="lineNoCov">          0 : std::string Config::renderJPEG()</span>
-<span class="lineNum">     192 </span>            : {
-<span class="lineNum">     193 </span><span class="lineNoCov">          0 :     getFrameData().getFrameSettings().setGrabFrame( true );</span>
-<span class="lineNum">     194 </span><span class="lineNoCov">          0 :     frame();</span>
-<span class="lineNum">     195 </span>            : 
-<span class="lineNum">     196 </span>            :     for( ;; )
-<span class="lineNum">     197 </span>            :     {
-<span class="lineNum">     198 </span><span class="lineNoCov">          0 :         eq::EventICommand event = getNextEvent();</span>
-<span class="lineNum">     199 </span><span class="lineNoCov">          0 :         if( !event.isValid( ))</span>
-<span class="lineNum">     200 </span><span class="lineNoCov">          0 :             continue;</span>
-<span class="lineNum">     201 </span>            : 
-<span class="lineNum">     202 </span><span class="lineNoCov">          0 :         if( event.getEventType() == GRAB_IMAGE )</span>
-<span class="lineNum">     203 </span>            :         {
-<span class="lineNum">     204 </span><span class="lineNoCov">          0 :             const uint64_t dataSize = event.read&lt; uint64_t &gt;();</span>
-<span class="lineNum">     205 </span>            :             const uint8_t* dataPtr =
-<span class="lineNum">     206 </span><span class="lineNoCov">          0 :                 reinterpret_cast&lt; const uint8_t* &gt;( event.getRemainingBuffer( dataSize ) );</span>
-<span class="lineNum">     207 </span>            : 
-<span class="lineNum">     208 </span><span class="lineNoCov">          0 :             ::lexis::render::ImageJPEG imageJPEG;</span>
-<span class="lineNum">     209 </span><span class="lineNoCov">          0 :             imageJPEG.setData( dataPtr, dataSize );</span>
-<span class="lineNum">     210 </span><span class="lineNoCov">          0 :             return imageJPEG.toJSON();</span>
-<span class="lineNum">     211 </span>            :         }
-<span class="lineNum">     212 </span>            : 
-<span class="lineNum">     213 </span><span class="lineNoCov">          0 :         handleEvent( event );</span>
-<span class="lineNum">     214 </span><span class="lineNoCov">          0 :     }</span>
-<span class="lineNum">     215 </span>            :     return &quot;&quot;;
-<a name="216"><span class="lineNum">     216 </span>            : }</a>
-<span class="lineNum">     217 </span>            : 
-<span class="lineNum">     218 </span><span class="lineNoCov">          0 : const ApplicationParameters&amp; Config::getApplicationParameters() const</span>
-<span class="lineNum">     219 </span>            : {
-<span class="lineNum">     220 </span><span class="lineNoCov">          0 :     return static_cast&lt;const Client&amp;&gt;( *getClient()).getApplicationParameters();</span>
-<a name="221"><span class="lineNum">     221 </span>            : }</a>
-<span class="lineNum">     222 </span>            : 
-<span class="lineNum">     223 </span><span class="lineNoCov">          0 : ApplicationParameters&amp; Config::getApplicationParameters()</span>
-<span class="lineNum">     224 </span>            : {
-<span class="lineNum">     225 </span><span class="lineNoCov">          0 :     return static_cast&lt; Client&amp; &gt;( *getClient()).getApplicationParameters();</span>
-<a name="226"><span class="lineNum">     226 </span>            : }</a>
-<span class="lineNum">     227 </span>            : 
-<span class="lineNum">     228 </span><span class="lineNoCov">          0 : void Config::mapFrameData( const eq::uint128_t&amp; initId )</span>
-<span class="lineNum">     229 </span>            : {
-<span class="lineNum">     230 </span><span class="lineNoCov">          0 :     _impl-&gt;framedata.map( this, initId );</span>
-<span class="lineNum">     231 </span><span class="lineNoCov">          0 :     _impl-&gt;framedata.mapObjects( );</span>
-<a name="232"><span class="lineNum">     232 </span><span class="lineNoCov">          0 : }</span></a>
-<span class="lineNum">     233 </span>            : 
-<span class="lineNum">     234 </span><span class="lineNoCov">          0 : void Config::unmapFrameData()</span>
-<span class="lineNum">     235 </span>            : {
-<span class="lineNum">     236 </span><span class="lineNoCov">          0 :     _impl-&gt;framedata.unmapObjects( );</span>
-<span class="lineNum">     237 </span><span class="lineNoCov">          0 :     _impl-&gt;framedata.unmap( this );</span>
-<a name="238"><span class="lineNum">     238 </span><span class="lineNoCov">          0 : }</span></a>
-<span class="lineNum">     239 </span>            : 
-<span class="lineNum">     240 </span><span class="lineNoCov">          0 : void Config::resetCamera()</span>
-<span class="lineNum">     241 </span>            : {
-<span class="lineNum">     242 </span><span class="lineNoCov">          0 :     _impl-&gt;framedata.getCameraSettings().setCameraPosition(</span>
-<span class="lineNum">     243 </span><span class="lineNoCov">          0 :         getApplicationParameters().cameraPosition );</span>
-<span class="lineNum">     244 </span><span class="lineNoCov">          0 :     _impl-&gt;framedata.getCameraSettings().setCameraLookAt(</span>
-<span class="lineNum">     245 </span><span class="lineNoCov">          0 :         getApplicationParameters().cameraLookAt );</span>
-<span class="lineNum">     246 </span>            : #ifdef LIVRE_USE_ZEROEQ
-<span class="lineNum">     247 </span><span class="lineNoCov">          0 :     _impl-&gt;communicator-&gt;publishCamera();</span>
-<span class="lineNum">     248 </span>            : #endif
-<a name="249"><span class="lineNum">     249 </span><span class="lineNoCov">          0 : }</span></a>
-<span class="lineNum">     250 </span>            : 
-<span class="lineNum">     251 </span><span class="lineNoCov">          0 : bool Config::init( const int argc LB_UNUSED, char** argv LB_UNUSED )</span>
-<span class="lineNum">     252 </span>            : {
-<span class="lineNum">     253 </span>            : #ifdef LIVRE_USE_ZEROEQ
-<span class="lineNum">     254 </span><span class="lineNoCov">          0 :     _impl-&gt;communicator.reset( new zeroeq::Communicator( *this, argc, argv ));</span>
-<span class="lineNum">     255 </span>            : #endif
-<span class="lineNum">     256 </span>            : 
-<span class="lineNum">     257 </span><span class="lineNoCov">          0 :     resetCamera();</span>
-<span class="lineNum">     258 </span><span class="lineNoCov">          0 :     _initEvents();</span>
-<span class="lineNum">     259 </span><span class="lineNoCov">          0 :     FrameData&amp; framedata = _impl-&gt;framedata;</span>
-<span class="lineNum">     260 </span><span class="lineNoCov">          0 :     FrameSettings&amp; frameSettings = framedata.getFrameSettings();</span>
-<span class="lineNum">     261 </span><span class="lineNoCov">          0 :     const ApplicationParameters&amp; params = getApplicationParameters();</span>
-<span class="lineNum">     262 </span><span class="lineNoCov">          0 :     frameSettings.setFrameNumber( params.frames.x( ));</span>
-<span class="lineNum">     263 </span>            : 
-<span class="lineNum">     264 </span><span class="lineNoCov">          0 :     RenderSettings&amp; renderSettings = framedata.getRenderSettings();</span>
-<span class="lineNum">     265 </span><span class="lineNoCov">          0 :     const TransferFunction1D tf( params.transferFunction );</span>
-<span class="lineNum">     266 </span><span class="lineNoCov">          0 :     renderSettings.setTransferFunction( tf );</span>
-<span class="lineNum">     267 </span>            : 
-<span class="lineNum">     268 </span><span class="lineNoCov">          0 :     _impl-&gt;framedata.registerObjects();</span>
-<span class="lineNum">     269 </span>            : 
-<span class="lineNum">     270 </span><span class="lineNoCov">          0 :     if( !_registerFrameData( ))</span>
-<span class="lineNum">     271 </span><span class="lineNoCov">          0 :         return false;</span>
-<span class="lineNum">     272 </span>            : 
-<span class="lineNum">     273 </span><span class="lineNoCov">          0 :     const VolumeRendererParameters&amp; vrParameters = framedata.getVRParameters();</span>
-<span class="lineNum">     274 </span><span class="lineNoCov">          0 :     if( vrParameters.getSynchronousMode( ))</span>
-<span class="lineNum">     275 </span><span class="lineNoCov">          0 :         setLatency( 0 );</span>
-<span class="lineNum">     276 </span>            : 
-<span class="lineNum">     277 </span><span class="lineNoCov">          0 :     if( !eq::Config::init( _impl-&gt;framedata.getID( )))</span>
-<span class="lineNum">     278 </span>            :     {
-<span class="lineNum">     279 </span><span class="lineNoCov">          0 :         _impl-&gt;framedata.deregisterObjects();</span>
-<span class="lineNum">     280 </span><span class="lineNoCov">          0 :         _deregisterFrameData();</span>
-<span class="lineNum">     281 </span><span class="lineNoCov">          0 :         return false;</span>
-<span class="lineNum">     282 </span>            :     }
-<span class="lineNum">     283 </span>            : 
-<span class="lineNum">     284 </span><span class="lineNoCov">          0 :     _impl-&gt;defaultLatency = getLatency();</span>
-<span class="lineNum">     285 </span>            : 
-<span class="lineNum">     286 </span><span class="lineNoCov">          0 :     const eq::Canvases&amp; canvases = getCanvases();</span>
-<span class="lineNum">     287 </span><span class="lineNoCov">          0 :     _impl-&gt;currentCanvas = canvases.empty() ? 0 : canvases.front();</span>
-<span class="lineNum">     288 </span><span class="lineNoCov">          0 :     return true;</span>
-<a name="289"><span class="lineNum">     289 </span>            : }</a>
-<span class="lineNum">     290 </span>            : 
-<span class="lineNum">     291 </span><span class="lineNoCov">          0 : bool Config::frame()</span>
-<span class="lineNum">     292 </span>            : {
-<span class="lineNum">     293 </span><span class="lineNoCov">          0 :     if( _impl-&gt;dataFrameRange == INVALID_FRAME_RANGE )</span>
-<span class="lineNum">     294 </span><span class="lineNoCov">          0 :         return false;</span>
-<span class="lineNum">     295 </span>            : 
-<span class="lineNum">     296 </span><span class="lineNoCov">          0 :     ApplicationParameters&amp; params = getApplicationParameters();</span>
-<span class="lineNum">     297 </span><span class="lineNoCov">          0 :     FrameSettings&amp; frameSettings = _impl-&gt;framedata.getFrameSettings();</span>
-<span class="lineNum">     298 </span>            : 
-<span class="lineNum">     299 </span><span class="lineNoCov">          0 :     const FrameUtils frameUtils( params.frames, _impl-&gt;dataFrameRange );</span>
-<span class="lineNum">     300 </span><span class="lineNoCov">          0 :     params.frames = frameUtils.getFrameRange();</span>
-<span class="lineNum">     301 </span>            : 
-<span class="lineNum">     302 </span>            :     // Set current frame (start/end may have changed)
-<span class="lineNum">     303 </span><span class="lineNoCov">          0 :     const bool keepToLatest = params.animation == LATEST_FRAME;</span>
-<span class="lineNum">     304 </span>            :     const uint32_t current =
-<span class="lineNum">     305 </span><span class="lineNoCov">          0 :             frameUtils.getCurrent( frameSettings.getFrameNumber(), keepToLatest );</span>
-<span class="lineNum">     306 </span>            : 
-<span class="lineNum">     307 </span><span class="lineNoCov">          0 :     frameSettings.setFrameNumber( current );</span>
-<span class="lineNum">     308 </span><span class="lineNoCov">          0 :     const eq::uint128_t&amp; version = _impl-&gt;framedata.commit();</span>
-<span class="lineNum">     309 </span>            : 
-<span class="lineNum">     310 </span><span class="lineNoCov">          0 :     if( _impl-&gt;framedata.getVRParameters().getSynchronousMode( ))</span>
-<span class="lineNum">     311 </span><span class="lineNoCov">          0 :         setLatency( 0 );</span>
-<span class="lineNum">     312 </span>            :     else
-<span class="lineNum">     313 </span><span class="lineNoCov">          0 :         setLatency( _impl-&gt;defaultLatency );</span>
-<span class="lineNum">     314 </span>            : 
-<span class="lineNum">     315 </span>            :     // reset data and advance current frame
-<span class="lineNum">     316 </span><span class="lineNoCov">          0 :     frameSettings.setGrabFrame( false );</span>
-<span class="lineNum">     317 </span>            : 
-<span class="lineNum">     318 </span><span class="lineNoCov">          0 :     if( !keepToLatest )</span>
-<span class="lineNum">     319 </span>            :         frameSettings.setFrameNumber( frameUtils.getNext( current,
-<span class="lineNum">     320 </span><span class="lineNoCov">          0 :                                                           params.animation ));</span>
-<span class="lineNum">     321 </span><span class="lineNoCov">          0 :     _impl-&gt;redraw = false;</span>
-<span class="lineNum">     322 </span>            : 
-<span class="lineNum">     323 </span>            : #ifdef LIVRE_USE_ZEROEQ
-<span class="lineNum">     324 </span><span class="lineNoCov">          0 :     _impl-&gt;communicator-&gt;publishFrame();</span>
-<span class="lineNum">     325 </span>            : #endif
-<span class="lineNum">     326 </span>            : 
-<span class="lineNum">     327 </span><span class="lineNoCov">          0 :     eq::Config::startFrame( version );</span>
-<span class="lineNum">     328 </span><span class="lineNoCov">          0 :     eq::Config::finishFrame();</span>
-<span class="lineNum">     329 </span><span class="lineNoCov">          0 :     return true;</span>
-<a name="330"><span class="lineNum">     330 </span>            : }</a>
-<span class="lineNum">     331 </span>            : 
-<span class="lineNum">     332 </span><span class="lineNoCov">          0 : uint32_t Config::getDataFrameCount() const</span>
-<span class="lineNum">     333 </span>            : {
-<span class="lineNum">     334 </span><span class="lineNoCov">          0 :     const Vector2ui&amp; range = _impl-&gt;dataFrameRange;</span>
-<span class="lineNum">     335 </span><span class="lineNoCov">          0 :     return range[1] &gt; range[0] ? range[1] - range[0] : 0;</span>
-<a name="336"><span class="lineNum">     336 </span>            : }</a>
-<span class="lineNum">     337 </span>            : 
-<span class="lineNum">     338 </span><span class="lineNoCov">          0 : bool Config::needRedraw()</span>
-<span class="lineNum">     339 </span>            : {
-<span class="lineNum">     340 </span><span class="lineNoCov">          0 :     return _impl-&gt;redraw || getApplicationParameters().animation != 0;</span>
-<a name="341"><span class="lineNum">     341 </span>            : }</a>
-<span class="lineNum">     342 </span>            : 
-<span class="lineNum">     343 </span><span class="lineNoCov">          0 : bool Config::exit()</span>
-<span class="lineNum">     344 </span>            : {
-<span class="lineNum">     345 </span><span class="lineNoCov">          0 :     bool ret = eq::Config::exit(); // cppcheck-suppress unreachableCode</span>
-<span class="lineNum">     346 </span><span class="lineNoCov">          0 :     _impl-&gt;framedata.deregisterObjects();</span>
-<span class="lineNum">     347 </span><span class="lineNoCov">          0 :     if( !_deregisterFrameData() )</span>
-<span class="lineNum">     348 </span><span class="lineNoCov">          0 :         ret = false;</span>
-<span class="lineNum">     349 </span><span class="lineNoCov">          0 :     return ret;</span>
-<a name="350"><span class="lineNum">     350 </span>            : }</a>
-<span class="lineNum">     351 </span>            : 
-<span class="lineNum">     352 </span><span class="lineNoCov">          0 : bool Config::switchCanvas()</span>
-<span class="lineNum">     353 </span>            : {
-<span class="lineNum">     354 </span><span class="lineNoCov">          0 :     const eq::Canvases&amp; canvases = getCanvases();</span>
-<span class="lineNum">     355 </span><span class="lineNoCov">          0 :     if( canvases.empty( ))</span>
-<span class="lineNum">     356 </span><span class="lineNoCov">          0 :         return true;</span>
-<span class="lineNum">     357 </span>            : 
-<span class="lineNum">     358 </span><span class="lineNoCov">          0 :     FrameSettings&amp; frameSettings = _impl-&gt;framedata.getFrameSettings();</span>
-<span class="lineNum">     359 </span><span class="lineNoCov">          0 :     frameSettings.setCurrentViewId( lunchbox::uint128_t( 0 ) );</span>
-<span class="lineNum">     360 </span>            : 
-<span class="lineNum">     361 </span><span class="lineNoCov">          0 :     if( !_impl-&gt;currentCanvas )</span>
-<span class="lineNum">     362 </span>            :     {
-<span class="lineNum">     363 </span><span class="lineNoCov">          0 :         _impl-&gt;currentCanvas = canvases.front();</span>
-<span class="lineNum">     364 </span><span class="lineNoCov">          0 :         return true;</span>
-<span class="lineNum">     365 </span>            :     }
-<span class="lineNum">     366 </span>            : 
-<span class="lineNum">     367 </span>            :     eq::Canvases::const_iterator i = std::find( canvases.begin(),
-<span class="lineNum">     368 </span>            :                                                 canvases.end(),
-<span class="lineNum">     369 </span><span class="lineNoCov">          0 :                                                 _impl-&gt;currentCanvas );</span>
-<span class="lineNum">     370 </span><span class="lineNoCov">          0 :     LBASSERT( i != canvases.end( ));</span>
-<span class="lineNum">     371 </span>            : 
-<span class="lineNum">     372 </span><span class="lineNoCov">          0 :     ++i;</span>
-<span class="lineNum">     373 </span><span class="lineNoCov">          0 :     if( i == canvases.end( ))</span>
-<span class="lineNum">     374 </span><span class="lineNoCov">          0 :         _impl-&gt;currentCanvas = canvases.front();</span>
-<span class="lineNum">     375 </span>            :     else
-<span class="lineNum">     376 </span><span class="lineNoCov">          0 :         _impl-&gt;currentCanvas = *i;</span>
-<span class="lineNum">     377 </span>            : 
-<span class="lineNum">     378 </span><span class="lineNoCov">          0 :     return true;</span>
-<a name="379"><span class="lineNum">     379 </span>            : }</a>
-<span class="lineNum">     380 </span>            : 
-<span class="lineNum">     381 </span><span class="lineNoCov">          0 : bool Config::switchView()</span>
-<span class="lineNum">     382 </span>            : {
-<span class="lineNum">     383 </span><span class="lineNoCov">          0 :     const eq::Canvases&amp; canvases = getCanvases();</span>
-<span class="lineNum">     384 </span><span class="lineNoCov">          0 :     if( !_impl-&gt;currentCanvas &amp;&amp; !canvases.empty( ) )</span>
-<span class="lineNum">     385 </span><span class="lineNoCov">          0 :         _impl-&gt;currentCanvas = canvases.front();</span>
-<span class="lineNum">     386 </span>            : 
-<span class="lineNum">     387 </span><span class="lineNoCov">          0 :     if( !_impl-&gt;currentCanvas )</span>
-<span class="lineNum">     388 </span><span class="lineNoCov">          0 :         return true;</span>
-<span class="lineNum">     389 </span>            : 
-<span class="lineNum">     390 </span><span class="lineNoCov">          0 :     const eq::Layout* layout = _impl-&gt;currentCanvas-&gt;getActiveLayout();</span>
-<span class="lineNum">     391 </span><span class="lineNoCov">          0 :     if( !layout )</span>
-<span class="lineNum">     392 </span><span class="lineNoCov">          0 :         return true;</span>
-<span class="lineNum">     393 </span>            : 
-<span class="lineNum">     394 </span><span class="lineNoCov">          0 :     FrameSettings&amp; frameSettings = _impl-&gt;framedata.getFrameSettings();</span>
-<span class="lineNum">     395 </span><span class="lineNoCov">          0 :     const eq::View* current = find&lt; eq::View &gt;( frameSettings.getCurrentViewId( ));</span>
-<span class="lineNum">     396 </span>            : 
-<span class="lineNum">     397 </span><span class="lineNoCov">          0 :     const eq::Views&amp; views = layout-&gt;getViews();</span>
-<span class="lineNum">     398 </span><span class="lineNoCov">          0 :     LBASSERT( !views.empty( ))</span>
-<span class="lineNum">     399 </span>            : 
-<span class="lineNum">     400 </span><span class="lineNoCov">          0 :     if( !current )</span>
-<span class="lineNum">     401 </span>            :     {
-<span class="lineNum">     402 </span><span class="lineNoCov">          0 :         frameSettings.setCurrentViewId( views.front()-&gt;getID( ));</span>
-<span class="lineNum">     403 </span><span class="lineNoCov">          0 :         return true;</span>
-<span class="lineNum">     404 </span>            :     }
-<span class="lineNum">     405 </span>            : 
-<span class="lineNum">     406 </span>            :     eq::Views::const_iterator i = std::find( views.begin(), views.end(),
-<span class="lineNum">     407 </span><span class="lineNoCov">          0 :                                              current );</span>
-<span class="lineNum">     408 </span><span class="lineNoCov">          0 :     LBASSERT( i != views.end( ));</span>
-<span class="lineNum">     409 </span>            : 
-<span class="lineNum">     410 </span><span class="lineNoCov">          0 :     ++i;</span>
-<span class="lineNum">     411 </span><span class="lineNoCov">          0 :     if( i == views.end( ))</span>
-<span class="lineNum">     412 </span><span class="lineNoCov">          0 :         frameSettings.setCurrentViewId( lunchbox::uint128_t( 0 ) );</span>
-<span class="lineNum">     413 </span>            :     else
-<span class="lineNum">     414 </span><span class="lineNoCov">          0 :         frameSettings.setCurrentViewId( (*i)-&gt;getID( ));</span>
-<span class="lineNum">     415 </span>            : 
-<span class="lineNum">     416 </span><span class="lineNoCov">          0 :     return true;</span>
-<a name="417"><span class="lineNum">     417 </span>            : }</a>
-<span class="lineNum">     418 </span>            : 
-<span class="lineNum">     419 </span><span class="lineNoCov">          0 : bool Config::switchToViewCanvas( const eq::uint128_t&amp; viewID )</span>
-<span class="lineNum">     420 </span>            : {
-<span class="lineNum">     421 </span><span class="lineNoCov">          0 :     FrameSettings&amp; frameSettings = _impl-&gt;framedata.getFrameSettings();</span>
-<span class="lineNum">     422 </span><span class="lineNoCov">          0 :     frameSettings.setCurrentViewId( viewID );</span>
-<span class="lineNum">     423 </span>            : 
-<span class="lineNum">     424 </span><span class="lineNoCov">          0 :     if( viewID == 0 )</span>
-<span class="lineNum">     425 </span>            :     {
-<span class="lineNum">     426 </span><span class="lineNoCov">          0 :         _impl-&gt;currentCanvas = 0;</span>
-<span class="lineNum">     427 </span><span class="lineNoCov">          0 :         return false;</span>
-<span class="lineNum">     428 </span>            :     }
-<span class="lineNum">     429 </span>            : 
-<span class="lineNum">     430 </span><span class="lineNoCov">          0 :     const eq::View* view = find&lt; eq::View &gt;( viewID );</span>
-<span class="lineNum">     431 </span><span class="lineNoCov">          0 :     const eq::Layout* layout = view-&gt;getLayout();</span>
-<span class="lineNum">     432 </span><span class="lineNoCov">          0 :     const eq::Canvases&amp; canvases = getCanvases();</span>
-<span class="lineNum">     433 </span><span class="lineNoCov">          0 :     for( eq::CanvasesCIter i = canvases.begin();</span>
-<span class="lineNum">     434 </span><span class="lineNoCov">          0 :          i != canvases.end(); ++i )</span>
-<span class="lineNum">     435 </span>            :     {
-<span class="lineNum">     436 </span><span class="lineNoCov">          0 :         eq::Canvas* canvas = *i;</span>
-<span class="lineNum">     437 </span><span class="lineNoCov">          0 :         const eq::Layout* canvasLayout = canvas-&gt;getActiveLayout();</span>
-<span class="lineNum">     438 </span>            : 
-<span class="lineNum">     439 </span><span class="lineNoCov">          0 :         if( canvasLayout == layout )</span>
-<span class="lineNum">     440 </span>            :         {
-<span class="lineNum">     441 </span><span class="lineNoCov">          0 :             _impl-&gt;currentCanvas = canvas;</span>
-<span class="lineNum">     442 </span><span class="lineNoCov">          0 :             return true;</span>
-<span class="lineNum">     443 </span>            :         }
-<span class="lineNum">     444 </span>            :     }
-<span class="lineNum">     445 </span><span class="lineNoCov">          0 :     return true;</span>
-<a name="446"><span class="lineNum">     446 </span>            : }</a>
-<span class="lineNum">     447 </span>            : 
-<span class="lineNum">     448 </span><span class="lineNoCov">          0 : void Config::handleNetworkEvents()</span>
-<span class="lineNum">     449 </span>            : {
-<span class="lineNum">     450 </span>            : #ifdef LIVRE_USE_ZEROEQ
-<span class="lineNum">     451 </span><span class="lineNoCov">          0 :     _impl-&gt;communicator-&gt;handleEvents();</span>
-<span class="lineNum">     452 </span>            : #endif
-<a name="453"><span class="lineNum">     453 </span><span class="lineNoCov">          0 : }</span></a>
-<span class="lineNum">     454 </span>            : 
-<span class="lineNum">     455 </span><span class="lineNoCov">          0 : bool Config::handleEvent( const eq::ConfigEvent* event )</span>
-<span class="lineNum">     456 </span>            : {
-<span class="lineNum">     457 </span>            : #ifdef LIVRE_USE_ZEROEQ
-<span class="lineNum">     458 </span><span class="lineNoCov">          0 :     CameraSettings cameraSettings = _impl-&gt;framedata.getCameraSettings();</span>
-<span class="lineNum">     459 </span>            : #endif
-<span class="lineNum">     460 </span>            : 
-<span class="lineNum">     461 </span><span class="lineNoCov">          0 :     EqEventInfo eventInfo( this, event );</span>
-<span class="lineNum">     462 </span><span class="lineNoCov">          0 :     bool hasEvent = false;</span>
-<span class="lineNum">     463 </span>            : 
-<span class="lineNum">     464 </span><span class="lineNoCov">          0 :     switch( event-&gt;data.type )</span>
-<span class="lineNum">     465 </span>            :     {
-<span class="lineNum">     466 </span>            :     case eq::Event::KEY_PRESS:
-<span class="lineNum">     467 </span>            :     {
-<span class="lineNum">     468 </span><span class="lineNoCov">          0 :         if( _impl-&gt;eventMapper.handleEvent( EVENT_KEYBOARD, eventInfo ))</span>
-<span class="lineNum">     469 </span><span class="lineNoCov">          0 :             hasEvent = true;</span>
-<span class="lineNum">     470 </span><span class="lineNoCov">          0 :         break;</span>
-<span class="lineNum">     471 </span>            :     }
-<span class="lineNum">     472 </span>            :     case eq::Event::CHANNEL_POINTER_BUTTON_PRESS:
-<span class="lineNum">     473 </span>            :     case eq::Event::CHANNEL_POINTER_BUTTON_RELEASE:
-<span class="lineNum">     474 </span>            :     case eq::Event::CHANNEL_POINTER_MOTION:
-<span class="lineNum">     475 </span>            :     case eq::Event::CHANNEL_POINTER_WHEEL:
-<span class="lineNum">     476 </span>            :     {
-<span class="lineNum">     477 </span><span class="lineNoCov">          0 :         if( _impl-&gt;eventMapper.handleEvent( EVENT_CHANNEL_POINTER, eventInfo ))</span>
-<span class="lineNum">     478 </span><span class="lineNoCov">          0 :             hasEvent = true;</span>
-<span class="lineNum">     479 </span><span class="lineNoCov">          0 :         break;</span>
-<span class="lineNum">     480 </span>            :     }
-<span class="lineNum">     481 </span>            :     default:
-<span class="lineNum">     482 </span><span class="lineNoCov">          0 :         break;</span>
-<span class="lineNum">     483 </span>            :     }
-<span class="lineNum">     484 </span>            : 
-<span class="lineNum">     485 </span><span class="lineNoCov">          0 :     if( hasEvent )</span>
-<span class="lineNum">     486 </span>            :     {
-<span class="lineNum">     487 </span>            : #ifdef LIVRE_USE_ZEROEQ
-<span class="lineNum">     488 </span><span class="lineNoCov">          0 :         if( _impl-&gt;framedata.getCameraSettings() != cameraSettings )</span>
-<span class="lineNum">     489 </span><span class="lineNoCov">          0 :             _impl-&gt;communicator-&gt;publishCamera();</span>
-<span class="lineNum">     490 </span>            : #endif
-<span class="lineNum">     491 </span><span class="lineNoCov">          0 :         _impl-&gt;redraw = true;</span>
-<span class="lineNum">     492 </span><span class="lineNoCov">          0 :         return true;</span>
-<span class="lineNum">     493 </span>            :     }
-<span class="lineNum">     494 </span>            : 
-<span class="lineNum">     495 </span><span class="lineNoCov">          0 :     _impl-&gt;redraw |= eq::Config::handleEvent( event );</span>
-<span class="lineNum">     496 </span><span class="lineNoCov">          0 :     return _impl-&gt;redraw;</span>
-<a name="497"><span class="lineNum">     497 </span>            : }</a>
-<span class="lineNum">     498 </span>            : 
-<span class="lineNum">     499 </span><span class="lineNoCov">          0 : bool Config::handleEvent( eq::EventICommand command )</span>
-<span class="lineNum">     500 </span>            : {
-<span class="lineNum">     501 </span><span class="lineNoCov">          0 :     switch( command.getEventType( ))</span>
-<span class="lineNum">     502 </span>            :     {
-<span class="lineNum">     503 </span>            :     case VOLUME_BOUNDING_BOX:
-<span class="lineNum">     504 </span><span class="lineNoCov">          0 :         _impl-&gt;volumeBBox = command.read&lt; Boxf &gt;();</span>
-<span class="lineNum">     505 </span><span class="lineNoCov">          0 :         return false;</span>
-<span class="lineNum">     506 </span>            : 
-<span class="lineNum">     507 </span>            :     case VOLUME_FRAME_RANGE:
-<span class="lineNum">     508 </span>            :     {
-<span class="lineNum">     509 </span><span class="lineNoCov">          0 :         _impl-&gt;dataFrameRange = command.read&lt; Vector2ui &gt;();</span>
-<span class="lineNum">     510 </span><span class="lineNoCov">          0 :         return false;</span>
-<span class="lineNum">     511 </span>            :     }
-<span class="lineNum">     512 </span>            : #ifdef LIVRE_USE_ZEROEQ
-<span class="lineNum">     513 </span>            :     case HISTOGRAM_DATA:
-<span class="lineNum">     514 </span>            :     {
-<span class="lineNum">     515 </span><span class="lineNoCov">          0 :         const Histogram&amp; histogram = command.read&lt; Histogram &gt;();</span>
-<span class="lineNum">     516 </span><span class="lineNoCov">          0 :         const float area = command.read&lt; float &gt;();</span>
-<span class="lineNum">     517 </span><span class="lineNoCov">          0 :         const uint32_t id = command.read&lt; uint32_t&gt;();</span>
-<span class="lineNum">     518 </span><span class="lineNoCov">          0 :         _impl-&gt;gatherHistogram( histogram, area, id );</span>
-<span class="lineNum">     519 </span><span class="lineNoCov">          0 :         return false;</span>
-<span class="lineNum">     520 </span>            :     }
-<span class="lineNum">     521 </span>            : #endif
-<span class="lineNum">     522 </span>            :     case REDRAW:
-<span class="lineNum">     523 </span><span class="lineNoCov">          0 :         _impl-&gt;redraw = true;</span>
-<span class="lineNum">     524 </span><span class="lineNoCov">          0 :         return true;</span>
-<span class="lineNum">     525 </span>            :     }
-<span class="lineNum">     526 </span>            : 
-<span class="lineNum">     527 </span><span class="lineNoCov">          0 :     _impl-&gt;redraw |= eq::Config::handleEvent( command );</span>
-<span class="lineNum">     528 </span><span class="lineNoCov">          0 :     return _impl-&gt;redraw;</span>
-<a name="529"><span class="lineNum">     529 </span>            : }</a>
-<span class="lineNum">     530 </span>            : 
-<span class="lineNum">     531 </span><span class="lineNoCov">          0 : bool Config::_registerFrameData()</span>
-<span class="lineNum">     532 </span>            : {
-<span class="lineNum">     533 </span><span class="lineNoCov">          0 :     return _impl-&gt;framedata.registerToConfig_( this );</span>
-<a name="534"><span class="lineNum">     534 </span>            : }</a>
-<span class="lineNum">     535 </span>            : 
-<span class="lineNum">     536 </span><span class="lineNoCov">          0 : bool Config::_deregisterFrameData()</span>
-<span class="lineNum">     537 </span>            : {
-<span class="lineNum">     538 </span><span class="lineNoCov">          0 :     return _impl-&gt;framedata.deregisterFromConfig_( this );</span>
-<a name="539"><span class="lineNum">     539 </span>            : }</a>
-<span class="lineNum">     540 </span>            : 
-<span class="lineNum">     541 </span><span class="lineNoCov">          0 : void Config::_initEvents()</span>
-<span class="lineNum">     542 </span>            : {
-<span class="lineNum">     543 </span><span class="lineNoCov">          0 :     _impl-&gt;eventMapper.registerEvent( EVENT_CHANNEL_POINTER );</span>
-<span class="lineNum">     544 </span><span class="lineNoCov">          0 :     _impl-&gt;eventMapper.registerEvent( EVENT_KEYBOARD );</span>
-<a name="545"><span class="lineNum">     545 </span><span class="lineNoCov">          0 : }</span></a>
-<span class="lineNum">     546 </span>            : 
-<span class="lineNum">     547 </span><span class="lineNoCov">          0 : void Config::switchLayout( const int32_t increment )</span>
-<span class="lineNum">     548 </span>            : {
-<span class="lineNum">     549 </span><span class="lineNoCov">          0 :     if( !_impl-&gt;currentCanvas )</span>
-<span class="lineNum">     550 </span><span class="lineNoCov">          0 :         return;</span>
-<span class="lineNum">     551 </span>            : 
-<span class="lineNum">     552 </span><span class="lineNoCov">          0 :     _impl-&gt;framedata.getFrameSettings().setCurrentViewId( lunchbox::uint128_t(0));</span>
-<span class="lineNum">     553 </span>            : 
-<span class="lineNum">     554 </span><span class="lineNoCov">          0 :     size_t index = _impl-&gt;currentCanvas-&gt;getActiveLayoutIndex() + increment;</span>
-<span class="lineNum">     555 </span><span class="lineNoCov">          0 :     const eq::Layouts&amp; layouts = _impl-&gt;currentCanvas-&gt;getLayouts();</span>
-<span class="lineNum">     556 </span><span class="lineNoCov">          0 :     LBASSERT( !layouts.empty( ));</span>
-<span class="lineNum">     557 </span>            : 
-<span class="lineNum">     558 </span><span class="lineNoCov">          0 :     index = ( index % layouts.size( ) );</span>
-<span class="lineNum">     559 </span><span class="lineNoCov">          0 :     _impl-&gt;currentCanvas-&gt;useLayout( uint32_t( index ) );</span>
-<a name="560"><span class="lineNum">     560 </span>            : }</a>
-<span class="lineNum">     561 </span>            : 
-<span class="lineNum">     562 </span><span class="lineCov">         33 : }</span>
+<span class="lineNum">      36 </span>            : #include &lt;livre/core/data/Histogram.h&gt;
+<span class="lineNum">      37 </span>            : #include &lt;livre/core/util/FrameUtils.h&gt;
+<span class="lineNum">      38 </span>            : 
+<span class="lineNum">      39 </span>            : #include &lt;lexis/render/imageJPEG.h&gt;
+<span class="lineNum">      40 </span>            : 
+<span class="lineNum">      41 </span>            : #ifdef LIVRE_USE_ZEROEQ
+<span class="lineNum">      42 </span>            : #  include &lt;livre/eq/zeroeq/communicator.h&gt;
+<span class="lineNum">      43 </span>            : #endif
+<span class="lineNum">      44 </span>            : 
+<span class="lineNum">      45 </span>            : #include &lt;eq/eq.h&gt;
+<span class="lineNum">      46 </span>            : 
+<span class="lineNum">      47 </span>            : #include &lt;deque&gt;
+<span class="lineNum">      48 </span>            : 
+<span class="lineNum">      49 </span>            : namespace livre
+<span class="lineNum">      50 </span>            : {
+<span class="lineNum">      51 </span>            : namespace
+<span class="lineNum">      52 </span>            : {
+<span class="lineNum">      53 </span>            : const uint32_t histogramLatency = 5;
+<a name="54"><span class="lineNum">      54 </span>            : }</a>
+<span class="lineNum">      55 </span>            : 
+<span class="lineNum">      56 </span><span class="lineNoCov">          0 : class Config::Impl</span>
+<span class="lineNum">      57 </span>            : {
+<span class="lineNum">      58 </span>            : public:
+<a name="59"><span class="lineNum">      59 </span>            : </a>
+<span class="lineNum">      60 </span>            : 
+<a name="61"><span class="lineNum">      61 </span><span class="lineNoCov">          0 :     struct ViewHistogram</span></a>
+<span class="lineNum">      62 </span>            :     {
+<span class="lineNum">      63 </span><span class="lineNoCov">          0 :         ViewHistogram( const Histogram&amp; histogram_, const float area_, const uint32_t id_ )</span>
+<span class="lineNum">      64 </span>            :             : histogram( histogram_ )
+<span class="lineNum">      65 </span>            :             , area( area_ )
+<span class="lineNum">      66 </span><span class="lineNoCov">          0 :             , id( id_ )</span>
+<a name="67"><span class="lineNum">      67 </span><span class="lineNoCov">          0 :         {}</span></a>
+<span class="lineNum">      68 </span>            : 
+<span class="lineNum">      69 </span><span class="lineNoCov">          0 :         ViewHistogram&amp; operator+=( const ViewHistogram&amp; hist )</span>
+<span class="lineNum">      70 </span>            :         {
+<span class="lineNum">      71 </span><span class="lineNoCov">          0 :             histogram += hist.histogram;</span>
+<span class="lineNum">      72 </span><span class="lineNoCov">          0 :             area += hist.area;</span>
+<span class="lineNum">      73 </span><span class="lineNoCov">          0 :             return *this;</span>
+<a name="74"><span class="lineNum">      74 </span>            :         }</a>
+<span class="lineNum">      75 </span>            : 
+<span class="lineNum">      76 </span><span class="lineNoCov">          0 :         bool isComplete() const</span>
+<span class="lineNum">      77 </span>            :         {
+<span class="lineNum">      78 </span><span class="lineNoCov">          0 :             const float eps = 0.0001f;</span>
+<span class="lineNum">      79 </span><span class="lineNoCov">          0 :             return std::abs( 1.0f - area ) &lt;= eps;</span>
+<span class="lineNum">      80 </span>            :         }
+<span class="lineNum">      81 </span>            : 
+<span class="lineNum">      82 </span>            :         Histogram histogram;
+<span class="lineNum">      83 </span>            :         float area;
+<span class="lineNum">      84 </span>            :         uint32_t id;
+<span class="lineNum">      85 </span>            :     };
+<span class="lineNum">      86 </span>            : 
+<a name="87"><span class="lineNum">      87 </span>            :     typedef std::deque&lt; ViewHistogram &gt; ViewHistogramQueue;</a>
+<span class="lineNum">      88 </span>            : 
+<span class="lineNum">      89 </span><span class="lineNoCov">          0 :     explicit Impl( Config* config_ )</span>
+<span class="lineNum">      90 </span>            :         : config( config_ )
+<span class="lineNum">      91 </span>            :         , defaultLatency( 0 )
+<span class="lineNum">      92 </span>            :         , currentCanvas( 0 )
+<span class="lineNum">      93 </span><span class="lineNoCov">          0 :         , eventMapper( EventHandlerFactoryPtr( new EqEventHandlerFactory ))</span>
+<span class="lineNum">      94 </span>            :         , volumeBBox( Boxf::makeUnitBox( ))
+<span class="lineNum">      95 </span>            :         , redraw( true )
+<span class="lineNum">      96 </span><span class="lineNoCov">          0 :         , dataFrameRange( INVALID_FRAME_RANGE )</span>
+<a name="97"><span class="lineNum">      97 </span><span class="lineNoCov">          0 :     {}</span></a>
+<span class="lineNum">      98 </span>            : 
+<span class="lineNum">      99 </span><span class="lineNoCov">          0 :     void gatherHistogram( const Histogram&amp; histogram, const float area, const uint32_t currentId )</span>
+<span class="lineNum">     100 </span>            :     {
+<span class="lineNum">     101 </span>            :       // If we get a very old frame skip it
+<span class="lineNum">     102 </span><span class="lineNoCov">          0 :         if( !histogramQueue.empty() &amp;&amp; currentId &lt; histogramQueue.back().id )</span>
+<span class="lineNum">     103 </span><span class="lineNoCov">          0 :             return;</span>
+<span class="lineNum">     104 </span>            : 
+<span class="lineNum">     105 </span><span class="lineNoCov">          0 :         const ViewHistogram viewHistogram( histogram, area, currentId );</span>
+<span class="lineNum">     106 </span><span class="lineNoCov">          0 :         auto it = histogramQueue.begin();</span>
+<span class="lineNum">     107 </span><span class="lineNoCov">          0 :         while( it != histogramQueue.end( ))</span>
+<span class="lineNum">     108 </span>            :         {
+<span class="lineNum">     109 </span><span class="lineNoCov">          0 :             auto&amp; data = *it;</span>
+<span class="lineNum">     110 </span><span class="lineNoCov">          0 :             bool dataMerged = false;</span>
+<span class="lineNum">     111 </span>            : 
+<span class="lineNum">     112 </span><span class="lineNoCov">          0 :             if( currentId == data.id )</span>
+<span class="lineNum">     113 </span>            :             {
+<span class="lineNum">     114 </span><span class="lineNoCov">          0 :                 dataMerged = true;</span>
+<span class="lineNum">     115 </span><span class="lineNoCov">          0 :                 data += viewHistogram;</span>
+<span class="lineNum">     116 </span>            :             }
+<span class="lineNum">     117 </span><span class="lineNoCov">          0 :             else if( currentId &gt; data.id )</span>
+<span class="lineNum">     118 </span>            :             {
+<span class="lineNum">     119 </span><span class="lineNoCov">          0 :                 dataMerged = true;</span>
+<span class="lineNum">     120 </span><span class="lineNoCov">          0 :                 it = histogramQueue.emplace( it, viewHistogram );</span>
+<span class="lineNum">     121 </span>            :             }
+<span class="lineNum">     122 </span>            : 
+<span class="lineNum">     123 </span><span class="lineNoCov">          0 :             if( (*it).isComplete( )) // Send histogram &amp; remove all old ones</span>
+<span class="lineNum">     124 </span>            :             {
+<span class="lineNum">     125 </span>            : #ifdef LIVRE_USE_ZEROEQ
+<span class="lineNum">     126 </span><span class="lineNoCov">          0 :                 communicator-&gt;publishHistogram( (*it ).histogram );</span>
+<span class="lineNum">     127 </span>            : #endif
+<span class="lineNum">     128 </span><span class="lineNoCov">          0 :                 histogramQueue.erase( it, histogramQueue.end( ));</span>
+<span class="lineNum">     129 </span><span class="lineNoCov">          0 :                 return;</span>
+<span class="lineNum">     130 </span>            :             }
+<span class="lineNum">     131 </span>            : 
+<span class="lineNum">     132 </span><span class="lineNoCov">          0 :             if( dataMerged )</span>
+<span class="lineNum">     133 </span><span class="lineNoCov">          0 :                 break;</span>
+<span class="lineNum">     134 </span><span class="lineNoCov">          0 :             ++it;</span>
+<span class="lineNum">     135 </span>            :         }
+<span class="lineNum">     136 </span>            : 
+<span class="lineNum">     137 </span><span class="lineNoCov">          0 :        if( histogramQueue.empty() &amp;&amp; !viewHistogram.isComplete( ))</span>
+<span class="lineNum">     138 </span>            :         {
+<span class="lineNum">     139 </span><span class="lineNoCov">          0 :             histogramQueue.push_back( viewHistogram );</span>
+<span class="lineNum">     140 </span><span class="lineNoCov">          0 :             return;</span>
+<span class="lineNum">     141 </span>            :         }
+<span class="lineNum">     142 </span>            : 
+<span class="lineNum">     143 </span><span class="lineNoCov">          0 :         if( viewHistogram.isComplete( ))</span>
+<span class="lineNum">     144 </span>            :         {
+<span class="lineNum">     145 </span>            : #ifdef LIVRE_USE_ZEROEQ
+<span class="lineNum">     146 </span><span class="lineNoCov">          0 :             communicator-&gt;publishHistogram( viewHistogram.histogram );</span>
+<span class="lineNum">     147 </span>            : #endif
+<span class="lineNum">     148 </span><span class="lineNoCov">          0 :             return;</span>
+<span class="lineNum">     149 </span>            :         }
+<span class="lineNum">     150 </span>            : 
+<span class="lineNum">     151 </span><span class="lineNoCov">          0 :         if( histogramQueue.size() &gt; histogramLatency )</span>
+<span class="lineNum">     152 </span><span class="lineNoCov">          0 :             histogramQueue.pop_back();</span>
+<span class="lineNum">     153 </span>            :     }
+<span class="lineNum">     154 </span>            : 
+<span class="lineNum">     155 </span>            :     Config* config;
+<span class="lineNum">     156 </span>            :     uint32_t defaultLatency;
+<span class="lineNum">     157 </span>            :     eq::Canvas* currentCanvas;
+<span class="lineNum">     158 </span>            :     EventMapper eventMapper;
+<span class="lineNum">     159 </span>            :     FrameData framedata;
+<span class="lineNum">     160 </span>            :     Boxf volumeBBox;
+<span class="lineNum">     161 </span>            : #ifdef LIVRE_USE_ZEROEQ
+<span class="lineNum">     162 </span>            :     std::unique_ptr&lt; zeroeq::Communicator &gt; communicator;
+<span class="lineNum">     163 </span>            : #endif
+<span class="lineNum">     164 </span>            :     bool redraw;
+<span class="lineNum">     165 </span>            :     Vector2ui dataFrameRange;
+<span class="lineNum">     166 </span>            :     ViewHistogramQueue histogramQueue;
+<a name="167"><span class="lineNum">     167 </span>            : };</a>
+<span class="lineNum">     168 </span>            : 
+<span class="lineNum">     169 </span><span class="lineNoCov">          0 : Config::Config( eq::ServerPtr parent )</span>
+<span class="lineNum">     170 </span>            :     : eq::Config( parent )
+<span class="lineNum">     171 </span><span class="lineNoCov">          0 :     , _impl( new Impl( this ))</span>
+<span class="lineNum">     172 </span>            : {
+<span class="lineNum">     173 </span><span class="lineNoCov">          0 :     _impl-&gt;framedata.initialize( this );</span>
+<a name="174"><span class="lineNum">     174 </span><span class="lineNoCov">          0 : }</span></a>
+<span class="lineNum">     175 </span>            : 
+<span class="lineNum">     176 </span><span class="lineNoCov">          0 : Config::~Config()</span>
+<span class="lineNum">     177 </span>            : {
+<a name="178"><span class="lineNum">     178 </span><span class="lineNoCov">          0 : }</span></a>
+<span class="lineNum">     179 </span>            : 
+<span class="lineNum">     180 </span><span class="lineNoCov">          0 : FrameData&amp; Config::getFrameData()</span>
+<span class="lineNum">     181 </span>            : {
+<span class="lineNum">     182 </span><span class="lineNoCov">          0 :     return _impl-&gt;framedata;</span>
+<a name="183"><span class="lineNum">     183 </span>            : }</a>
+<span class="lineNum">     184 </span>            : 
+<span class="lineNum">     185 </span><span class="lineNoCov">          0 : const FrameData&amp; Config::getFrameData() const</span>
+<span class="lineNum">     186 </span>            : {
+<span class="lineNum">     187 </span><span class="lineNoCov">          0 :     return _impl-&gt;framedata;</span>
+<a name="188"><span class="lineNum">     188 </span>            : }</a>
+<span class="lineNum">     189 </span>            : 
+<span class="lineNum">     190 </span><span class="lineNoCov">          0 : std::string Config::renderJPEG()</span>
+<span class="lineNum">     191 </span>            : {
+<span class="lineNum">     192 </span><span class="lineNoCov">          0 :     getFrameData().getFrameSettings().setGrabFrame( true );</span>
+<span class="lineNum">     193 </span><span class="lineNoCov">          0 :     frame();</span>
+<span class="lineNum">     194 </span>            : 
+<span class="lineNum">     195 </span>            :     for( ;; )
+<span class="lineNum">     196 </span>            :     {
+<span class="lineNum">     197 </span><span class="lineNoCov">          0 :         eq::EventICommand event = getNextEvent();</span>
+<span class="lineNum">     198 </span><span class="lineNoCov">          0 :         if( !event.isValid( ))</span>
+<span class="lineNum">     199 </span><span class="lineNoCov">          0 :             continue;</span>
+<span class="lineNum">     200 </span>            : 
+<span class="lineNum">     201 </span><span class="lineNoCov">          0 :         if( event.getEventType() == GRAB_IMAGE )</span>
+<span class="lineNum">     202 </span>            :         {
+<span class="lineNum">     203 </span><span class="lineNoCov">          0 :             const uint64_t dataSize = event.read&lt; uint64_t &gt;();</span>
+<span class="lineNum">     204 </span>            :             const uint8_t* dataPtr =
+<span class="lineNum">     205 </span><span class="lineNoCov">          0 :                 reinterpret_cast&lt; const uint8_t* &gt;( event.getRemainingBuffer( dataSize ) );</span>
+<span class="lineNum">     206 </span>            : 
+<span class="lineNum">     207 </span><span class="lineNoCov">          0 :             ::lexis::render::ImageJPEG imageJPEG;</span>
+<span class="lineNum">     208 </span><span class="lineNoCov">          0 :             imageJPEG.setData( dataPtr, dataSize );</span>
+<span class="lineNum">     209 </span><span class="lineNoCov">          0 :             return imageJPEG.toJSON();</span>
+<span class="lineNum">     210 </span>            :         }
+<span class="lineNum">     211 </span>            : 
+<span class="lineNum">     212 </span><span class="lineNoCov">          0 :         handleEvent( event );</span>
+<span class="lineNum">     213 </span><span class="lineNoCov">          0 :     }</span>
+<span class="lineNum">     214 </span>            :     return &quot;&quot;;
+<a name="215"><span class="lineNum">     215 </span>            : }</a>
+<span class="lineNum">     216 </span>            : 
+<span class="lineNum">     217 </span><span class="lineNoCov">          0 : const ApplicationParameters&amp; Config::getApplicationParameters() const</span>
+<span class="lineNum">     218 </span>            : {
+<span class="lineNum">     219 </span><span class="lineNoCov">          0 :     return static_cast&lt;const Client&amp;&gt;( *getClient()).getApplicationParameters();</span>
+<a name="220"><span class="lineNum">     220 </span>            : }</a>
+<span class="lineNum">     221 </span>            : 
+<span class="lineNum">     222 </span><span class="lineNoCov">          0 : ApplicationParameters&amp; Config::getApplicationParameters()</span>
+<span class="lineNum">     223 </span>            : {
+<span class="lineNum">     224 </span><span class="lineNoCov">          0 :     return static_cast&lt; Client&amp; &gt;( *getClient()).getApplicationParameters();</span>
+<a name="225"><span class="lineNum">     225 </span>            : }</a>
+<span class="lineNum">     226 </span>            : 
+<span class="lineNum">     227 </span><span class="lineNoCov">          0 : void Config::mapFrameData( const eq::uint128_t&amp; initId )</span>
+<span class="lineNum">     228 </span>            : {
+<span class="lineNum">     229 </span><span class="lineNoCov">          0 :     _impl-&gt;framedata.map( this, initId );</span>
+<span class="lineNum">     230 </span><span class="lineNoCov">          0 :     _impl-&gt;framedata.mapObjects( );</span>
+<a name="231"><span class="lineNum">     231 </span><span class="lineNoCov">          0 : }</span></a>
+<span class="lineNum">     232 </span>            : 
+<span class="lineNum">     233 </span><span class="lineNoCov">          0 : void Config::unmapFrameData()</span>
+<span class="lineNum">     234 </span>            : {
+<span class="lineNum">     235 </span><span class="lineNoCov">          0 :     _impl-&gt;framedata.unmapObjects( );</span>
+<span class="lineNum">     236 </span><span class="lineNoCov">          0 :     _impl-&gt;framedata.unmap( this );</span>
+<a name="237"><span class="lineNum">     237 </span><span class="lineNoCov">          0 : }</span></a>
+<span class="lineNum">     238 </span>            : 
+<span class="lineNum">     239 </span><span class="lineNoCov">          0 : void Config::resetCamera()</span>
+<span class="lineNum">     240 </span>            : {
+<span class="lineNum">     241 </span><span class="lineNoCov">          0 :     _impl-&gt;framedata.getCameraSettings().setCameraPosition(</span>
+<span class="lineNum">     242 </span><span class="lineNoCov">          0 :         getApplicationParameters().cameraPosition );</span>
+<span class="lineNum">     243 </span><span class="lineNoCov">          0 :     _impl-&gt;framedata.getCameraSettings().setCameraLookAt(</span>
+<span class="lineNum">     244 </span><span class="lineNoCov">          0 :         getApplicationParameters().cameraLookAt );</span>
+<span class="lineNum">     245 </span>            : #ifdef LIVRE_USE_ZEROEQ
+<span class="lineNum">     246 </span><span class="lineNoCov">          0 :     _impl-&gt;communicator-&gt;publishCamera();</span>
+<span class="lineNum">     247 </span>            : #endif
+<a name="248"><span class="lineNum">     248 </span><span class="lineNoCov">          0 : }</span></a>
+<span class="lineNum">     249 </span>            : 
+<span class="lineNum">     250 </span><span class="lineNoCov">          0 : bool Config::init( const int argc LB_UNUSED, char** argv LB_UNUSED )</span>
+<span class="lineNum">     251 </span>            : {
+<span class="lineNum">     252 </span>            : #ifdef LIVRE_USE_ZEROEQ
+<span class="lineNum">     253 </span><span class="lineNoCov">          0 :     _impl-&gt;communicator.reset( new zeroeq::Communicator( *this, argc, argv ));</span>
+<span class="lineNum">     254 </span>            : #endif
+<span class="lineNum">     255 </span>            : 
+<span class="lineNum">     256 </span><span class="lineNoCov">          0 :     resetCamera();</span>
+<span class="lineNum">     257 </span><span class="lineNoCov">          0 :     _initEvents();</span>
+<span class="lineNum">     258 </span><span class="lineNoCov">          0 :     FrameData&amp; framedata = _impl-&gt;framedata;</span>
+<span class="lineNum">     259 </span><span class="lineNoCov">          0 :     FrameSettings&amp; frameSettings = framedata.getFrameSettings();</span>
+<span class="lineNum">     260 </span><span class="lineNoCov">          0 :     const ApplicationParameters&amp; params = getApplicationParameters();</span>
+<span class="lineNum">     261 </span><span class="lineNoCov">          0 :     frameSettings.setFrameNumber( params.frames.x( ));</span>
+<span class="lineNum">     262 </span>            : 
+<span class="lineNum">     263 </span><span class="lineNoCov">          0 :     RenderSettings&amp; renderSettings = framedata.getRenderSettings();</span>
+<span class="lineNum">     264 </span><span class="lineNoCov">          0 :     const TransferFunction1D tf( params.transferFunction );</span>
+<span class="lineNum">     265 </span><span class="lineNoCov">          0 :     renderSettings.setTransferFunction( tf );</span>
+<span class="lineNum">     266 </span>            : 
+<span class="lineNum">     267 </span><span class="lineNoCov">          0 :     _impl-&gt;framedata.registerObjects();</span>
+<span class="lineNum">     268 </span>            : 
+<span class="lineNum">     269 </span><span class="lineNoCov">          0 :     if( !_registerFrameData( ))</span>
+<span class="lineNum">     270 </span><span class="lineNoCov">          0 :         return false;</span>
+<span class="lineNum">     271 </span>            : 
+<span class="lineNum">     272 </span><span class="lineNoCov">          0 :     const VolumeRendererParameters&amp; vrParameters = framedata.getVRParameters();</span>
+<span class="lineNum">     273 </span><span class="lineNoCov">          0 :     if( vrParameters.getSynchronousMode( ))</span>
+<span class="lineNum">     274 </span><span class="lineNoCov">          0 :         setLatency( 0 );</span>
+<span class="lineNum">     275 </span>            : 
+<span class="lineNum">     276 </span><span class="lineNoCov">          0 :     if( !eq::Config::init( _impl-&gt;framedata.getID( )))</span>
+<span class="lineNum">     277 </span>            :     {
+<span class="lineNum">     278 </span><span class="lineNoCov">          0 :         _impl-&gt;framedata.deregisterObjects();</span>
+<span class="lineNum">     279 </span><span class="lineNoCov">          0 :         _deregisterFrameData();</span>
+<span class="lineNum">     280 </span><span class="lineNoCov">          0 :         return false;</span>
+<span class="lineNum">     281 </span>            :     }
+<span class="lineNum">     282 </span>            : 
+<span class="lineNum">     283 </span><span class="lineNoCov">          0 :     _impl-&gt;defaultLatency = getLatency();</span>
+<span class="lineNum">     284 </span>            : 
+<span class="lineNum">     285 </span><span class="lineNoCov">          0 :     const eq::Canvases&amp; canvases = getCanvases();</span>
+<span class="lineNum">     286 </span><span class="lineNoCov">          0 :     _impl-&gt;currentCanvas = canvases.empty() ? 0 : canvases.front();</span>
+<span class="lineNum">     287 </span><span class="lineNoCov">          0 :     return true;</span>
+<a name="288"><span class="lineNum">     288 </span>            : }</a>
+<span class="lineNum">     289 </span>            : 
+<span class="lineNum">     290 </span><span class="lineNoCov">          0 : bool Config::frame()</span>
+<span class="lineNum">     291 </span>            : {
+<span class="lineNum">     292 </span><span class="lineNoCov">          0 :     if( _impl-&gt;dataFrameRange == INVALID_FRAME_RANGE )</span>
+<span class="lineNum">     293 </span><span class="lineNoCov">          0 :         return false;</span>
+<span class="lineNum">     294 </span>            : 
+<span class="lineNum">     295 </span><span class="lineNoCov">          0 :     ApplicationParameters&amp; params = getApplicationParameters();</span>
+<span class="lineNum">     296 </span><span class="lineNoCov">          0 :     FrameSettings&amp; frameSettings = _impl-&gt;framedata.getFrameSettings();</span>
+<span class="lineNum">     297 </span>            : 
+<span class="lineNum">     298 </span><span class="lineNoCov">          0 :     const FrameUtils frameUtils( params.frames, _impl-&gt;dataFrameRange );</span>
+<span class="lineNum">     299 </span><span class="lineNoCov">          0 :     params.frames = frameUtils.getFrameRange();</span>
+<span class="lineNum">     300 </span>            : 
+<span class="lineNum">     301 </span>            :     // Set current frame (start/end may have changed)
+<span class="lineNum">     302 </span><span class="lineNoCov">          0 :     const bool keepToLatest = params.animation == LATEST_FRAME;</span>
+<span class="lineNum">     303 </span>            :     const uint32_t current =
+<span class="lineNum">     304 </span><span class="lineNoCov">          0 :             frameUtils.getCurrent( frameSettings.getFrameNumber(), keepToLatest );</span>
+<span class="lineNum">     305 </span>            : 
+<span class="lineNum">     306 </span><span class="lineNoCov">          0 :     frameSettings.setFrameNumber( current );</span>
+<span class="lineNum">     307 </span><span class="lineNoCov">          0 :     const eq::uint128_t&amp; version = _impl-&gt;framedata.commit();</span>
+<span class="lineNum">     308 </span>            : 
+<span class="lineNum">     309 </span><span class="lineNoCov">          0 :     if( _impl-&gt;framedata.getVRParameters().getSynchronousMode( ))</span>
+<span class="lineNum">     310 </span><span class="lineNoCov">          0 :         setLatency( 0 );</span>
+<span class="lineNum">     311 </span>            :     else
+<span class="lineNum">     312 </span><span class="lineNoCov">          0 :         setLatency( _impl-&gt;defaultLatency );</span>
+<span class="lineNum">     313 </span>            : 
+<span class="lineNum">     314 </span>            :     // reset data and advance current frame
+<span class="lineNum">     315 </span><span class="lineNoCov">          0 :     frameSettings.setGrabFrame( false );</span>
+<span class="lineNum">     316 </span>            : 
+<span class="lineNum">     317 </span><span class="lineNoCov">          0 :     if( !keepToLatest )</span>
+<span class="lineNum">     318 </span>            :         frameSettings.setFrameNumber( frameUtils.getNext( current,
+<span class="lineNum">     319 </span><span class="lineNoCov">          0 :                                                           params.animation ));</span>
+<span class="lineNum">     320 </span><span class="lineNoCov">          0 :     _impl-&gt;redraw = false;</span>
+<span class="lineNum">     321 </span>            : 
+<span class="lineNum">     322 </span>            : #ifdef LIVRE_USE_ZEROEQ
+<span class="lineNum">     323 </span><span class="lineNoCov">          0 :     _impl-&gt;communicator-&gt;publishFrame();</span>
+<span class="lineNum">     324 </span>            : #endif
+<span class="lineNum">     325 </span>            : 
+<span class="lineNum">     326 </span><span class="lineNoCov">          0 :     eq::Config::startFrame( version );</span>
+<span class="lineNum">     327 </span><span class="lineNoCov">          0 :     eq::Config::finishFrame();</span>
+<span class="lineNum">     328 </span><span class="lineNoCov">          0 :     return true;</span>
+<a name="329"><span class="lineNum">     329 </span>            : }</a>
+<span class="lineNum">     330 </span>            : 
+<span class="lineNum">     331 </span><span class="lineNoCov">          0 : uint32_t Config::getDataFrameCount() const</span>
+<span class="lineNum">     332 </span>            : {
+<span class="lineNum">     333 </span><span class="lineNoCov">          0 :     const Vector2ui&amp; range = _impl-&gt;dataFrameRange;</span>
+<span class="lineNum">     334 </span><span class="lineNoCov">          0 :     return range[1] &gt; range[0] ? range[1] - range[0] : 0;</span>
+<a name="335"><span class="lineNum">     335 </span>            : }</a>
+<span class="lineNum">     336 </span>            : 
+<span class="lineNum">     337 </span><span class="lineNoCov">          0 : bool Config::needRedraw()</span>
+<span class="lineNum">     338 </span>            : {
+<span class="lineNum">     339 </span><span class="lineNoCov">          0 :     return _impl-&gt;redraw || getApplicationParameters().animation != 0;</span>
+<a name="340"><span class="lineNum">     340 </span>            : }</a>
+<span class="lineNum">     341 </span>            : 
+<span class="lineNum">     342 </span><span class="lineNoCov">          0 : bool Config::exit()</span>
+<span class="lineNum">     343 </span>            : {
+<span class="lineNum">     344 </span><span class="lineNoCov">          0 :     bool ret = eq::Config::exit(); // cppcheck-suppress unreachableCode</span>
+<span class="lineNum">     345 </span><span class="lineNoCov">          0 :     _impl-&gt;framedata.deregisterObjects();</span>
+<span class="lineNum">     346 </span><span class="lineNoCov">          0 :     if( !_deregisterFrameData() )</span>
+<span class="lineNum">     347 </span><span class="lineNoCov">          0 :         ret = false;</span>
+<span class="lineNum">     348 </span><span class="lineNoCov">          0 :     return ret;</span>
+<a name="349"><span class="lineNum">     349 </span>            : }</a>
+<span class="lineNum">     350 </span>            : 
+<span class="lineNum">     351 </span><span class="lineNoCov">          0 : bool Config::switchCanvas()</span>
+<span class="lineNum">     352 </span>            : {
+<span class="lineNum">     353 </span><span class="lineNoCov">          0 :     const eq::Canvases&amp; canvases = getCanvases();</span>
+<span class="lineNum">     354 </span><span class="lineNoCov">          0 :     if( canvases.empty( ))</span>
+<span class="lineNum">     355 </span><span class="lineNoCov">          0 :         return true;</span>
+<span class="lineNum">     356 </span>            : 
+<span class="lineNum">     357 </span><span class="lineNoCov">          0 :     FrameSettings&amp; frameSettings = _impl-&gt;framedata.getFrameSettings();</span>
+<span class="lineNum">     358 </span><span class="lineNoCov">          0 :     frameSettings.setCurrentViewId( lunchbox::uint128_t( 0 ) );</span>
+<span class="lineNum">     359 </span>            : 
+<span class="lineNum">     360 </span><span class="lineNoCov">          0 :     if( !_impl-&gt;currentCanvas )</span>
+<span class="lineNum">     361 </span>            :     {
+<span class="lineNum">     362 </span><span class="lineNoCov">          0 :         _impl-&gt;currentCanvas = canvases.front();</span>
+<span class="lineNum">     363 </span><span class="lineNoCov">          0 :         return true;</span>
+<span class="lineNum">     364 </span>            :     }
+<span class="lineNum">     365 </span>            : 
+<span class="lineNum">     366 </span>            :     eq::Canvases::const_iterator i = std::find( canvases.begin(),
+<span class="lineNum">     367 </span>            :                                                 canvases.end(),
+<span class="lineNum">     368 </span><span class="lineNoCov">          0 :                                                 _impl-&gt;currentCanvas );</span>
+<span class="lineNum">     369 </span><span class="lineNoCov">          0 :     LBASSERT( i != canvases.end( ));</span>
+<span class="lineNum">     370 </span>            : 
+<span class="lineNum">     371 </span><span class="lineNoCov">          0 :     ++i;</span>
+<span class="lineNum">     372 </span><span class="lineNoCov">          0 :     if( i == canvases.end( ))</span>
+<span class="lineNum">     373 </span><span class="lineNoCov">          0 :         _impl-&gt;currentCanvas = canvases.front();</span>
+<span class="lineNum">     374 </span>            :     else
+<span class="lineNum">     375 </span><span class="lineNoCov">          0 :         _impl-&gt;currentCanvas = *i;</span>
+<span class="lineNum">     376 </span>            : 
+<span class="lineNum">     377 </span><span class="lineNoCov">          0 :     return true;</span>
+<a name="378"><span class="lineNum">     378 </span>            : }</a>
+<span class="lineNum">     379 </span>            : 
+<span class="lineNum">     380 </span><span class="lineNoCov">          0 : bool Config::switchView()</span>
+<span class="lineNum">     381 </span>            : {
+<span class="lineNum">     382 </span><span class="lineNoCov">          0 :     const eq::Canvases&amp; canvases = getCanvases();</span>
+<span class="lineNum">     383 </span><span class="lineNoCov">          0 :     if( !_impl-&gt;currentCanvas &amp;&amp; !canvases.empty( ) )</span>
+<span class="lineNum">     384 </span><span class="lineNoCov">          0 :         _impl-&gt;currentCanvas = canvases.front();</span>
+<span class="lineNum">     385 </span>            : 
+<span class="lineNum">     386 </span><span class="lineNoCov">          0 :     if( !_impl-&gt;currentCanvas )</span>
+<span class="lineNum">     387 </span><span class="lineNoCov">          0 :         return true;</span>
+<span class="lineNum">     388 </span>            : 
+<span class="lineNum">     389 </span><span class="lineNoCov">          0 :     const eq::Layout* layout = _impl-&gt;currentCanvas-&gt;getActiveLayout();</span>
+<span class="lineNum">     390 </span><span class="lineNoCov">          0 :     if( !layout )</span>
+<span class="lineNum">     391 </span><span class="lineNoCov">          0 :         return true;</span>
+<span class="lineNum">     392 </span>            : 
+<span class="lineNum">     393 </span><span class="lineNoCov">          0 :     FrameSettings&amp; frameSettings = _impl-&gt;framedata.getFrameSettings();</span>
+<span class="lineNum">     394 </span><span class="lineNoCov">          0 :     const eq::View* current = find&lt; eq::View &gt;( frameSettings.getCurrentViewId( ));</span>
+<span class="lineNum">     395 </span>            : 
+<span class="lineNum">     396 </span><span class="lineNoCov">          0 :     const eq::Views&amp; views = layout-&gt;getViews();</span>
+<span class="lineNum">     397 </span><span class="lineNoCov">          0 :     LBASSERT( !views.empty( ))</span>
+<span class="lineNum">     398 </span>            : 
+<span class="lineNum">     399 </span><span class="lineNoCov">          0 :     if( !current )</span>
+<span class="lineNum">     400 </span>            :     {
+<span class="lineNum">     401 </span><span class="lineNoCov">          0 :         frameSettings.setCurrentViewId( views.front()-&gt;getID( ));</span>
+<span class="lineNum">     402 </span><span class="lineNoCov">          0 :         return true;</span>
+<span class="lineNum">     403 </span>            :     }
+<span class="lineNum">     404 </span>            : 
+<span class="lineNum">     405 </span>            :     eq::Views::const_iterator i = std::find( views.begin(), views.end(),
+<span class="lineNum">     406 </span><span class="lineNoCov">          0 :                                              current );</span>
+<span class="lineNum">     407 </span><span class="lineNoCov">          0 :     LBASSERT( i != views.end( ));</span>
+<span class="lineNum">     408 </span>            : 
+<span class="lineNum">     409 </span><span class="lineNoCov">          0 :     ++i;</span>
+<span class="lineNum">     410 </span><span class="lineNoCov">          0 :     if( i == views.end( ))</span>
+<span class="lineNum">     411 </span><span class="lineNoCov">          0 :         frameSettings.setCurrentViewId( lunchbox::uint128_t( 0 ) );</span>
+<span class="lineNum">     412 </span>            :     else
+<span class="lineNum">     413 </span><span class="lineNoCov">          0 :         frameSettings.setCurrentViewId( (*i)-&gt;getID( ));</span>
+<span class="lineNum">     414 </span>            : 
+<span class="lineNum">     415 </span><span class="lineNoCov">          0 :     return true;</span>
+<a name="416"><span class="lineNum">     416 </span>            : }</a>
+<span class="lineNum">     417 </span>            : 
+<span class="lineNum">     418 </span><span class="lineNoCov">          0 : bool Config::switchToViewCanvas( const eq::uint128_t&amp; viewID )</span>
+<span class="lineNum">     419 </span>            : {
+<span class="lineNum">     420 </span><span class="lineNoCov">          0 :     FrameSettings&amp; frameSettings = _impl-&gt;framedata.getFrameSettings();</span>
+<span class="lineNum">     421 </span><span class="lineNoCov">          0 :     frameSettings.setCurrentViewId( viewID );</span>
+<span class="lineNum">     422 </span>            : 
+<span class="lineNum">     423 </span><span class="lineNoCov">          0 :     if( viewID == 0 )</span>
+<span class="lineNum">     424 </span>            :     {
+<span class="lineNum">     425 </span><span class="lineNoCov">          0 :         _impl-&gt;currentCanvas = 0;</span>
+<span class="lineNum">     426 </span><span class="lineNoCov">          0 :         return false;</span>
+<span class="lineNum">     427 </span>            :     }
+<span class="lineNum">     428 </span>            : 
+<span class="lineNum">     429 </span><span class="lineNoCov">          0 :     const eq::View* view = find&lt; eq::View &gt;( viewID );</span>
+<span class="lineNum">     430 </span><span class="lineNoCov">          0 :     const eq::Layout* layout = view-&gt;getLayout();</span>
+<span class="lineNum">     431 </span><span class="lineNoCov">          0 :     const eq::Canvases&amp; canvases = getCanvases();</span>
+<span class="lineNum">     432 </span><span class="lineNoCov">          0 :     for( eq::CanvasesCIter i = canvases.begin();</span>
+<span class="lineNum">     433 </span><span class="lineNoCov">          0 :          i != canvases.end(); ++i )</span>
+<span class="lineNum">     434 </span>            :     {
+<span class="lineNum">     435 </span><span class="lineNoCov">          0 :         eq::Canvas* canvas = *i;</span>
+<span class="lineNum">     436 </span><span class="lineNoCov">          0 :         const eq::Layout* canvasLayout = canvas-&gt;getActiveLayout();</span>
+<span class="lineNum">     437 </span>            : 
+<span class="lineNum">     438 </span><span class="lineNoCov">          0 :         if( canvasLayout == layout )</span>
+<span class="lineNum">     439 </span>            :         {
+<span class="lineNum">     440 </span><span class="lineNoCov">          0 :             _impl-&gt;currentCanvas = canvas;</span>
+<span class="lineNum">     441 </span><span class="lineNoCov">          0 :             return true;</span>
+<span class="lineNum">     442 </span>            :         }
+<span class="lineNum">     443 </span>            :     }
+<span class="lineNum">     444 </span><span class="lineNoCov">          0 :     return true;</span>
+<a name="445"><span class="lineNum">     445 </span>            : }</a>
+<span class="lineNum">     446 </span>            : 
+<span class="lineNum">     447 </span><span class="lineNoCov">          0 : void Config::handleNetworkEvents()</span>
+<span class="lineNum">     448 </span>            : {
+<span class="lineNum">     449 </span>            : #ifdef LIVRE_USE_ZEROEQ
+<span class="lineNum">     450 </span><span class="lineNoCov">          0 :     _impl-&gt;communicator-&gt;handleEvents();</span>
+<span class="lineNum">     451 </span>            : #endif
+<a name="452"><span class="lineNum">     452 </span><span class="lineNoCov">          0 : }</span></a>
+<span class="lineNum">     453 </span>            : 
+<span class="lineNum">     454 </span><span class="lineNoCov">          0 : bool Config::handleEvent( const eq::ConfigEvent* event )</span>
+<span class="lineNum">     455 </span>            : {
+<span class="lineNum">     456 </span>            : #ifdef LIVRE_USE_ZEROEQ
+<span class="lineNum">     457 </span><span class="lineNoCov">          0 :     CameraSettings cameraSettings = _impl-&gt;framedata.getCameraSettings();</span>
+<span class="lineNum">     458 </span>            : #endif
+<span class="lineNum">     459 </span>            : 
+<span class="lineNum">     460 </span><span class="lineNoCov">          0 :     EqEventInfo eventInfo( this, event );</span>
+<span class="lineNum">     461 </span><span class="lineNoCov">          0 :     bool hasEvent = false;</span>
+<span class="lineNum">     462 </span>            : 
+<span class="lineNum">     463 </span><span class="lineNoCov">          0 :     switch( event-&gt;data.type )</span>
+<span class="lineNum">     464 </span>            :     {
+<span class="lineNum">     465 </span>            :     case eq::Event::KEY_PRESS:
+<span class="lineNum">     466 </span>            :     {
+<span class="lineNum">     467 </span><span class="lineNoCov">          0 :         if( _impl-&gt;eventMapper.handleEvent( EVENT_KEYBOARD, eventInfo ))</span>
+<span class="lineNum">     468 </span><span class="lineNoCov">          0 :             hasEvent = true;</span>
+<span class="lineNum">     469 </span><span class="lineNoCov">          0 :         break;</span>
+<span class="lineNum">     470 </span>            :     }
+<span class="lineNum">     471 </span>            :     case eq::Event::CHANNEL_POINTER_BUTTON_PRESS:
+<span class="lineNum">     472 </span>            :     case eq::Event::CHANNEL_POINTER_BUTTON_RELEASE:
+<span class="lineNum">     473 </span>            :     case eq::Event::CHANNEL_POINTER_MOTION:
+<span class="lineNum">     474 </span>            :     case eq::Event::CHANNEL_POINTER_WHEEL:
+<span class="lineNum">     475 </span>            :     {
+<span class="lineNum">     476 </span><span class="lineNoCov">          0 :         if( _impl-&gt;eventMapper.handleEvent( EVENT_CHANNEL_POINTER, eventInfo ))</span>
+<span class="lineNum">     477 </span><span class="lineNoCov">          0 :             hasEvent = true;</span>
+<span class="lineNum">     478 </span><span class="lineNoCov">          0 :         break;</span>
+<span class="lineNum">     479 </span>            :     }
+<span class="lineNum">     480 </span>            :     default:
+<span class="lineNum">     481 </span><span class="lineNoCov">          0 :         break;</span>
+<span class="lineNum">     482 </span>            :     }
+<span class="lineNum">     483 </span>            : 
+<span class="lineNum">     484 </span><span class="lineNoCov">          0 :     if( hasEvent )</span>
+<span class="lineNum">     485 </span>            :     {
+<span class="lineNum">     486 </span>            : #ifdef LIVRE_USE_ZEROEQ
+<span class="lineNum">     487 </span><span class="lineNoCov">          0 :         if( _impl-&gt;framedata.getCameraSettings() != cameraSettings )</span>
+<span class="lineNum">     488 </span><span class="lineNoCov">          0 :             _impl-&gt;communicator-&gt;publishCamera();</span>
+<span class="lineNum">     489 </span>            : #endif
+<span class="lineNum">     490 </span><span class="lineNoCov">          0 :         _impl-&gt;redraw = true;</span>
+<span class="lineNum">     491 </span><span class="lineNoCov">          0 :         return true;</span>
+<span class="lineNum">     492 </span>            :     }
+<span class="lineNum">     493 </span>            : 
+<span class="lineNum">     494 </span><span class="lineNoCov">          0 :     _impl-&gt;redraw |= eq::Config::handleEvent( event );</span>
+<span class="lineNum">     495 </span><span class="lineNoCov">          0 :     return _impl-&gt;redraw;</span>
+<a name="496"><span class="lineNum">     496 </span>            : }</a>
+<span class="lineNum">     497 </span>            : 
+<span class="lineNum">     498 </span><span class="lineNoCov">          0 : bool Config::handleEvent( eq::EventICommand command )</span>
+<span class="lineNum">     499 </span>            : {
+<span class="lineNum">     500 </span><span class="lineNoCov">          0 :     switch( command.getEventType( ))</span>
+<span class="lineNum">     501 </span>            :     {
+<span class="lineNum">     502 </span>            :     case VOLUME_BOUNDING_BOX:
+<span class="lineNum">     503 </span><span class="lineNoCov">          0 :         _impl-&gt;volumeBBox = command.read&lt; Boxf &gt;();</span>
+<span class="lineNum">     504 </span><span class="lineNoCov">          0 :         return false;</span>
+<span class="lineNum">     505 </span>            : 
+<span class="lineNum">     506 </span>            :     case VOLUME_FRAME_RANGE:
+<span class="lineNum">     507 </span>            :     {
+<span class="lineNum">     508 </span><span class="lineNoCov">          0 :         _impl-&gt;dataFrameRange = command.read&lt; Vector2ui &gt;();</span>
+<span class="lineNum">     509 </span><span class="lineNoCov">          0 :         return false;</span>
+<span class="lineNum">     510 </span>            :     }
+<span class="lineNum">     511 </span>            : #ifdef LIVRE_USE_ZEROEQ
+<span class="lineNum">     512 </span>            :     case HISTOGRAM_DATA:
+<span class="lineNum">     513 </span>            :     {
+<span class="lineNum">     514 </span><span class="lineNoCov">          0 :         const Histogram&amp; histogram = command.read&lt; Histogram &gt;();</span>
+<span class="lineNum">     515 </span><span class="lineNoCov">          0 :         const float area = command.read&lt; float &gt;();</span>
+<span class="lineNum">     516 </span><span class="lineNoCov">          0 :         const uint32_t id = command.read&lt; uint32_t&gt;();</span>
+<span class="lineNum">     517 </span><span class="lineNoCov">          0 :         _impl-&gt;gatherHistogram( histogram, area, id );</span>
+<span class="lineNum">     518 </span><span class="lineNoCov">          0 :         return false;</span>
+<span class="lineNum">     519 </span>            :     }
+<span class="lineNum">     520 </span>            : #endif
+<span class="lineNum">     521 </span>            :     case REDRAW:
+<span class="lineNum">     522 </span><span class="lineNoCov">          0 :         _impl-&gt;redraw = true;</span>
+<span class="lineNum">     523 </span><span class="lineNoCov">          0 :         return true;</span>
+<span class="lineNum">     524 </span>            :     }
+<span class="lineNum">     525 </span>            : 
+<span class="lineNum">     526 </span><span class="lineNoCov">          0 :     _impl-&gt;redraw |= eq::Config::handleEvent( command );</span>
+<span class="lineNum">     527 </span><span class="lineNoCov">          0 :     return _impl-&gt;redraw;</span>
+<a name="528"><span class="lineNum">     528 </span>            : }</a>
+<span class="lineNum">     529 </span>            : 
+<span class="lineNum">     530 </span><span class="lineNoCov">          0 : bool Config::_registerFrameData()</span>
+<span class="lineNum">     531 </span>            : {
+<span class="lineNum">     532 </span><span class="lineNoCov">          0 :     return _impl-&gt;framedata.registerToConfig_( this );</span>
+<a name="533"><span class="lineNum">     533 </span>            : }</a>
+<span class="lineNum">     534 </span>            : 
+<span class="lineNum">     535 </span><span class="lineNoCov">          0 : bool Config::_deregisterFrameData()</span>
+<span class="lineNum">     536 </span>            : {
+<span class="lineNum">     537 </span><span class="lineNoCov">          0 :     return _impl-&gt;framedata.deregisterFromConfig_( this );</span>
+<a name="538"><span class="lineNum">     538 </span>            : }</a>
+<span class="lineNum">     539 </span>            : 
+<span class="lineNum">     540 </span><span class="lineNoCov">          0 : void Config::_initEvents()</span>
+<span class="lineNum">     541 </span>            : {
+<span class="lineNum">     542 </span><span class="lineNoCov">          0 :     _impl-&gt;eventMapper.registerEvent( EVENT_CHANNEL_POINTER );</span>
+<span class="lineNum">     543 </span><span class="lineNoCov">          0 :     _impl-&gt;eventMapper.registerEvent( EVENT_KEYBOARD );</span>
+<a name="544"><span class="lineNum">     544 </span><span class="lineNoCov">          0 : }</span></a>
+<span class="lineNum">     545 </span>            : 
+<span class="lineNum">     546 </span><span class="lineNoCov">          0 : void Config::switchLayout( const int32_t increment )</span>
+<span class="lineNum">     547 </span>            : {
+<span class="lineNum">     548 </span><span class="lineNoCov">          0 :     if( !_impl-&gt;currentCanvas )</span>
+<span class="lineNum">     549 </span><span class="lineNoCov">          0 :         return;</span>
+<span class="lineNum">     550 </span>            : 
+<span class="lineNum">     551 </span><span class="lineNoCov">          0 :     _impl-&gt;framedata.getFrameSettings().setCurrentViewId( lunchbox::uint128_t(0));</span>
+<span class="lineNum">     552 </span>            : 
+<span class="lineNum">     553 </span><span class="lineNoCov">          0 :     size_t index = _impl-&gt;currentCanvas-&gt;getActiveLayoutIndex() + increment;</span>
+<span class="lineNum">     554 </span><span class="lineNoCov">          0 :     const eq::Layouts&amp; layouts = _impl-&gt;currentCanvas-&gt;getLayouts();</span>
+<span class="lineNum">     555 </span><span class="lineNoCov">          0 :     LBASSERT( !layouts.empty( ));</span>
+<span class="lineNum">     556 </span>            : 
+<span class="lineNum">     557 </span><span class="lineNoCov">          0 :     index = ( index % layouts.size( ) );</span>
+<span class="lineNum">     558 </span><span class="lineNoCov">          0 :     _impl-&gt;currentCanvas-&gt;useLayout( uint32_t( index ) );</span>
+<a name="559"><span class="lineNum">     559 </span>            : }</a>
+<span class="lineNum">     560 </span>            : 
+<span class="lineNum">     561 </span><span class="lineCov">         33 : }</span>
 </pre>
       </td>
     </tr>

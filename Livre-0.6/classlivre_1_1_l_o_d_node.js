@@ -12,6 +12,5 @@ var classlivre_1_1_l_o_d_node =
     [ "getWorldBox", "classlivre_1_1_l_o_d_node.html#af0c1b5a3d325729b76953d482b652d95", null ],
     [ "isParent", "classlivre_1_1_l_o_d_node.html#adb82e5c1d29ae1f6e370b85be6ec826e", null ],
     [ "isValid", "classlivre_1_1_l_o_d_node.html#af49d77ed9d87141aa5c4fc8bdf140c49", null ],
-    [ "operator==", "classlivre_1_1_l_o_d_node.html#a20d3d51080be16e06b13f8aab9a4155f", null ],
-    [ "empty", "classlivre_1_1_l_o_d_node.html#afe6016bac121d189fd085a9897330563", null ]
+    [ "operator==", "classlivre_1_1_l_o_d_node.html#a20d3d51080be16e06b13f8aab9a4155f", null ]
 ];

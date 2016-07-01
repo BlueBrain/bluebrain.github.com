@@ -1,4 +1,4 @@
 var searchData=
 [
-  ['rootnode',['rootNode',['../structlivre_1_1_volume_information.html#a3afc8abaf0803c82c837604d3b45cfcc',1,'livre::VolumeInformation']]]
+  ['voxels',['voxels',['../structlivre_1_1_volume_information.html#ad633acafd86040a13e9cccc05b899c44',1,'livre::VolumeInformation']]]
 ];

@@ -37,7 +37,7 @@
           </tr>
           <tr>
             <td class="headerItem">Date:</td>
-            <td class="headerValue">2016-06-28 03:04:15</td>
+            <td class="headerValue">2016-07-01 03:02:26</td>
             <td></td>
             <td class="headerItem">Functions:</td>
             <td class="headerCovTableEntry">2</td>
@@ -81,107 +81,109 @@
 <span class="lineNum">      19 </span>            : 
 <span class="lineNum">      20 </span>            : #include &lt;livre/lib/pipeline/VisibleSetGeneratorFilter.h&gt;
 <span class="lineNum">      21 </span>            : #include &lt;livre/lib/cache/TextureCache.h&gt;
-<span class="lineNum">      22 </span>            : #include &lt;livre/core/pipeline/InputPort.h&gt;
-<span class="lineNum">      23 </span>            : #include &lt;livre/core/pipeline/Workers.h&gt;
-<span class="lineNum">      24 </span>            : #include &lt;livre/core/render/SelectVisibles.h&gt;
-<span class="lineNum">      25 </span>            : #include &lt;livre/core/pipeline/PortData.h&gt;
-<span class="lineNum">      26 </span>            : #include &lt;livre/core/data/DataSource.h&gt;
-<span class="lineNum">      27 </span>            : #include &lt;livre/core/visitor/DFSTraversal.h&gt;
-<span class="lineNum">      28 </span>            : 
-<span class="lineNum">      29 </span>            : namespace livre
-<span class="lineNum">      30 </span>            : {
-<span class="lineNum">      31 </span>            : 
-<a name="32"><span class="lineNum">      32 </span>            : struct VisibleSetGeneratorFilter::Impl</a>
-<span class="lineNum">      33 </span>            : {
-<span class="lineNum">      34 </span><span class="lineNoCov">          0 :     explicit Impl( const DataSource&amp; dataSource )</span>
-<span class="lineNum">      35 </span><span class="lineNoCov">          0 :         : _dataSource( dataSource )</span>
-<a name="36"><span class="lineNum">      36 </span><span class="lineNoCov">          0 :     {}</span></a>
-<span class="lineNum">      37 </span>            : 
-<span class="lineNum">      38 </span><span class="lineNoCov">          0 :     void execute( const FutureMap&amp; input,</span>
-<span class="lineNum">      39 </span>            :                   PromiseMap&amp; output ) const
-<span class="lineNum">      40 </span>            :     {
-<span class="lineNum">      41 </span><span class="lineNoCov">          0 :         const UniqueFutureMap uniqueInputs( input.getFutures( ));</span>
-<span class="lineNum">      42 </span>            : 
-<span class="lineNum">      43 </span><span class="lineNoCov">          0 :         const auto&amp; frustum = uniqueInputs.get&lt; Frustum &gt;( &quot;Frustum&quot; );</span>
-<span class="lineNum">      44 </span><span class="lineNoCov">          0 :         const auto&amp; frame =  uniqueInputs.get&lt; uint32_t &gt;( &quot;Frame&quot; );</span>
-<span class="lineNum">      45 </span><span class="lineNoCov">          0 :         const auto&amp; range = uniqueInputs.get&lt; Range &gt;( &quot;DataRange&quot; );</span>
-<span class="lineNum">      46 </span><span class="lineNoCov">          0 :         const auto&amp; params = uniqueInputs.get&lt; VolumeRendererParameters &gt;( &quot;Params&quot; );</span>
-<span class="lineNum">      47 </span><span class="lineNoCov">          0 :         const auto&amp; vp = uniqueInputs.get&lt; PixelViewport &gt;( &quot;Viewport&quot; );</span>
-<span class="lineNum">      48 </span>            : 
-<span class="lineNum">      49 </span><span class="lineNoCov">          0 :         const uint32_t windowHeight = vp[ 3 ];</span>
-<span class="lineNum">      50 </span><span class="lineNoCov">          0 :         const float sse = params.getSSE();</span>
-<span class="lineNum">      51 </span><span class="lineNoCov">          0 :         const uint32_t minLOD = params.getMinLOD();</span>
-<span class="lineNum">      52 </span><span class="lineNoCov">          0 :         const uint32_t maxLOD = params.getMaxLOD();</span>
-<span class="lineNum">      53 </span>            : 
-<span class="lineNum">      54 </span>            :         SelectVisibles visitor( _dataSource,
-<span class="lineNum">      55 </span>            :                                 frustum,
-<span class="lineNum">      56 </span>            :                                 windowHeight,
-<span class="lineNum">      57 </span>            :                                 sse,
-<span class="lineNum">      58 </span>            :                                 minLOD,
-<span class="lineNum">      59 </span>            :                                 maxLOD,
-<span class="lineNum">      60 </span><span class="lineNoCov">          0 :                                 range );</span>
-<span class="lineNum">      61 </span>            : 
-<span class="lineNum">      62 </span><span class="lineNoCov">          0 :         DFSTraversal traverser;</span>
-<span class="lineNum">      63 </span><span class="lineNoCov">          0 :         traverser.traverse( _dataSource.getVolumeInfo().rootNode,</span>
-<span class="lineNum">      64 </span>            :                             visitor,
-<span class="lineNum">      65 </span><span class="lineNoCov">          0 :                             frame );</span>
-<span class="lineNum">      66 </span>            : 
-<span class="lineNum">      67 </span><span class="lineNoCov">          0 :         output.set( &quot;VisibleNodes&quot;, visitor.getVisibles( ));</span>
-<span class="lineNum">      68 </span><span class="lineNoCov">          0 :         output.set( &quot;Params&quot;, params );</span>
-<a name="69"><span class="lineNum">      69 </span><span class="lineNoCov">          0 :     }</span></a>
-<span class="lineNum">      70 </span>            : 
-<span class="lineNum">      71 </span><span class="lineNoCov">          0 :     DataInfos getInputDataInfos() const</span>
-<span class="lineNum">      72 </span>            :     {
-<span class="lineNum">      73 </span>            :         return {
-<span class="lineNum">      74 </span>            :             { &quot;Frustum&quot; ,getType&lt; Frustum &gt;() },
-<span class="lineNum">      75 </span>            :             { &quot;Frame&quot; ,getType&lt; uint32_t &gt;() },
-<span class="lineNum">      76 </span>            :             { &quot;DataRange&quot; ,getType&lt; Range &gt;() },
-<span class="lineNum">      77 </span>            :             { &quot;Params&quot; ,getType&lt; VolumeRendererParameters &gt;() },
-<span class="lineNum">      78 </span>            :             { &quot;Viewport&quot; ,getType&lt; PixelViewport &gt;() }
-<span class="lineNum">      79 </span><span class="lineNoCov">          0 :         };</span>
-<a name="80"><span class="lineNum">      80 </span>            :     }</a>
-<span class="lineNum">      81 </span>            : 
-<span class="lineNum">      82 </span><span class="lineNoCov">          0 :     DataInfos getOutputDataInfos() const</span>
-<span class="lineNum">      83 </span>            :     {
-<span class="lineNum">      84 </span>            :         return
-<span class="lineNum">      85 </span>            :         {
-<span class="lineNum">      86 </span>            :             { &quot;VisibleNodes&quot; ,getType&lt; NodeIds &gt;( )},
-<span class="lineNum">      87 </span>            :             { &quot;Params&quot; ,getType&lt; VolumeRendererParameters &gt;() }
-<span class="lineNum">      88 </span><span class="lineNoCov">          0 :         };</span>
-<span class="lineNum">      89 </span>            :     }
-<span class="lineNum">      90 </span>            : 
-<span class="lineNum">      91 </span>            :     const DataSource&amp; _dataSource;
-<a name="92"><span class="lineNum">      92 </span>            : };</a>
-<span class="lineNum">      93 </span>            : 
-<span class="lineNum">      94 </span><span class="lineNoCov">          0 : VisibleSetGeneratorFilter::VisibleSetGeneratorFilter( const DataSource&amp; dataSource )</span>
-<span class="lineNum">      95 </span><span class="lineNoCov">          0 :     : _impl( new VisibleSetGeneratorFilter::Impl( dataSource ))</span>
-<span class="lineNum">      96 </span>            : {
-<a name="97"><span class="lineNum">      97 </span><span class="lineNoCov">          0 : }</span></a>
-<span class="lineNum">      98 </span>            : 
-<span class="lineNum">      99 </span><span class="lineNoCov">          0 : VisibleSetGeneratorFilter::~VisibleSetGeneratorFilter()</span>
-<span class="lineNum">     100 </span>            : {
-<span class="lineNum">     101 </span>            : 
-<a name="102"><span class="lineNum">     102 </span><span class="lineNoCov">          0 : }</span></a>
+<span class="lineNum">      22 </span>            : #include &lt;livre/lib/configuration/VolumeRendererParameters.h&gt;
+<span class="lineNum">      23 </span>            : 
+<span class="lineNum">      24 </span>            : #include &lt;livre/core/pipeline/InputPort.h&gt;
+<span class="lineNum">      25 </span>            : #include &lt;livre/core/pipeline/Workers.h&gt;
+<span class="lineNum">      26 </span>            : #include &lt;livre/core/render/SelectVisibles.h&gt;
+<span class="lineNum">      27 </span>            : #include &lt;livre/core/pipeline/PortData.h&gt;
+<span class="lineNum">      28 </span>            : #include &lt;livre/core/data/DataSource.h&gt;
+<span class="lineNum">      29 </span>            : #include &lt;livre/core/visitor/DFSTraversal.h&gt;
+<span class="lineNum">      30 </span>            : 
+<span class="lineNum">      31 </span>            : namespace livre
+<span class="lineNum">      32 </span>            : {
+<span class="lineNum">      33 </span>            : 
+<a name="34"><span class="lineNum">      34 </span>            : struct VisibleSetGeneratorFilter::Impl</a>
+<span class="lineNum">      35 </span>            : {
+<span class="lineNum">      36 </span><span class="lineNoCov">          0 :     explicit Impl( const DataSource&amp; dataSource )</span>
+<span class="lineNum">      37 </span><span class="lineNoCov">          0 :         : _dataSource( dataSource )</span>
+<a name="38"><span class="lineNum">      38 </span><span class="lineNoCov">          0 :     {}</span></a>
+<span class="lineNum">      39 </span>            : 
+<span class="lineNum">      40 </span><span class="lineNoCov">          0 :     void execute( const FutureMap&amp; input,</span>
+<span class="lineNum">      41 </span>            :                   PromiseMap&amp; output ) const
+<span class="lineNum">      42 </span>            :     {
+<span class="lineNum">      43 </span><span class="lineNoCov">          0 :         const UniqueFutureMap uniqueInputs( input.getFutures( ));</span>
+<span class="lineNum">      44 </span>            : 
+<span class="lineNum">      45 </span><span class="lineNoCov">          0 :         const auto&amp; frustum = uniqueInputs.get&lt; Frustum &gt;( &quot;Frustum&quot; );</span>
+<span class="lineNum">      46 </span><span class="lineNoCov">          0 :         const auto&amp; frame =  uniqueInputs.get&lt; uint32_t &gt;( &quot;Frame&quot; );</span>
+<span class="lineNum">      47 </span><span class="lineNoCov">          0 :         const auto&amp; range = uniqueInputs.get&lt; Range &gt;( &quot;DataRange&quot; );</span>
+<span class="lineNum">      48 </span><span class="lineNoCov">          0 :         const auto&amp; params = uniqueInputs.get&lt; VolumeRendererParameters &gt;( &quot;Params&quot; );</span>
+<span class="lineNum">      49 </span><span class="lineNoCov">          0 :         const auto&amp; vp = uniqueInputs.get&lt; PixelViewport &gt;( &quot;Viewport&quot; );</span>
+<span class="lineNum">      50 </span>            : 
+<span class="lineNum">      51 </span><span class="lineNoCov">          0 :         const uint32_t windowHeight = vp[ 3 ];</span>
+<span class="lineNum">      52 </span><span class="lineNoCov">          0 :         const float sse = params.getSSE();</span>
+<span class="lineNum">      53 </span><span class="lineNoCov">          0 :         const uint32_t minLOD = params.getMinLOD();</span>
+<span class="lineNum">      54 </span><span class="lineNoCov">          0 :         const uint32_t maxLOD = params.getMaxLOD();</span>
+<span class="lineNum">      55 </span>            : 
+<span class="lineNum">      56 </span>            :         SelectVisibles visitor( _dataSource,
+<span class="lineNum">      57 </span>            :                                 frustum,
+<span class="lineNum">      58 </span>            :                                 windowHeight,
+<span class="lineNum">      59 </span>            :                                 sse,
+<span class="lineNum">      60 </span>            :                                 minLOD,
+<span class="lineNum">      61 </span>            :                                 maxLOD,
+<span class="lineNum">      62 </span><span class="lineNoCov">          0 :                                 range );</span>
+<span class="lineNum">      63 </span>            : 
+<span class="lineNum">      64 </span><span class="lineNoCov">          0 :         DFSTraversal traverser;</span>
+<span class="lineNum">      65 </span><span class="lineNoCov">          0 :         traverser.traverse( _dataSource.getVolumeInfo().rootNode,</span>
+<span class="lineNum">      66 </span>            :                             visitor,
+<span class="lineNum">      67 </span><span class="lineNoCov">          0 :                             frame );</span>
+<span class="lineNum">      68 </span>            : 
+<span class="lineNum">      69 </span><span class="lineNoCov">          0 :         output.set( &quot;VisibleNodes&quot;, visitor.getVisibles( ));</span>
+<span class="lineNum">      70 </span><span class="lineNoCov">          0 :         output.set( &quot;Params&quot;, params );</span>
+<a name="71"><span class="lineNum">      71 </span><span class="lineNoCov">          0 :     }</span></a>
+<span class="lineNum">      72 </span>            : 
+<span class="lineNum">      73 </span><span class="lineNoCov">          0 :     DataInfos getInputDataInfos() const</span>
+<span class="lineNum">      74 </span>            :     {
+<span class="lineNum">      75 </span>            :         return {
+<span class="lineNum">      76 </span>            :             { &quot;Frustum&quot; ,getType&lt; Frustum &gt;() },
+<span class="lineNum">      77 </span>            :             { &quot;Frame&quot; ,getType&lt; uint32_t &gt;() },
+<span class="lineNum">      78 </span>            :             { &quot;DataRange&quot; ,getType&lt; Range &gt;() },
+<span class="lineNum">      79 </span>            :             { &quot;Params&quot; ,getType&lt; VolumeRendererParameters &gt;() },
+<span class="lineNum">      80 </span>            :             { &quot;Viewport&quot; ,getType&lt; PixelViewport &gt;() }
+<span class="lineNum">      81 </span><span class="lineNoCov">          0 :         };</span>
+<a name="82"><span class="lineNum">      82 </span>            :     }</a>
+<span class="lineNum">      83 </span>            : 
+<span class="lineNum">      84 </span><span class="lineNoCov">          0 :     DataInfos getOutputDataInfos() const</span>
+<span class="lineNum">      85 </span>            :     {
+<span class="lineNum">      86 </span>            :         return
+<span class="lineNum">      87 </span>            :         {
+<span class="lineNum">      88 </span>            :             { &quot;VisibleNodes&quot; ,getType&lt; NodeIds &gt;( )},
+<span class="lineNum">      89 </span>            :             { &quot;Params&quot; ,getType&lt; VolumeRendererParameters &gt;() }
+<span class="lineNum">      90 </span><span class="lineNoCov">          0 :         };</span>
+<span class="lineNum">      91 </span>            :     }
+<span class="lineNum">      92 </span>            : 
+<span class="lineNum">      93 </span>            :     const DataSource&amp; _dataSource;
+<a name="94"><span class="lineNum">      94 </span>            : };</a>
+<span class="lineNum">      95 </span>            : 
+<span class="lineNum">      96 </span><span class="lineNoCov">          0 : VisibleSetGeneratorFilter::VisibleSetGeneratorFilter( const DataSource&amp; dataSource )</span>
+<span class="lineNum">      97 </span><span class="lineNoCov">          0 :     : _impl( new VisibleSetGeneratorFilter::Impl( dataSource ))</span>
+<span class="lineNum">      98 </span>            : {
+<a name="99"><span class="lineNum">      99 </span><span class="lineNoCov">          0 : }</span></a>
+<span class="lineNum">     100 </span>            : 
+<span class="lineNum">     101 </span><span class="lineNoCov">          0 : VisibleSetGeneratorFilter::~VisibleSetGeneratorFilter()</span>
+<span class="lineNum">     102 </span>            : {
 <span class="lineNum">     103 </span>            : 
-<span class="lineNum">     104 </span><span class="lineNoCov">          0 : void VisibleSetGeneratorFilter::execute( const FutureMap&amp; input,</span>
-<span class="lineNum">     105 </span>            :                                          PromiseMap&amp; output ) const
-<span class="lineNum">     106 </span>            : {
-<span class="lineNum">     107 </span><span class="lineNoCov">          0 :     _impl-&gt;execute( input, output );</span>
-<a name="108"><span class="lineNum">     108 </span><span class="lineNoCov">          0 : }</span></a>
-<span class="lineNum">     109 </span>            : 
-<span class="lineNum">     110 </span><span class="lineNoCov">          0 : DataInfos VisibleSetGeneratorFilter::getInputDataInfos() const</span>
-<span class="lineNum">     111 </span>            : {
-<span class="lineNum">     112 </span><span class="lineNoCov">          0 :     return _impl-&gt;getInputDataInfos();</span>
-<a name="113"><span class="lineNum">     113 </span>            : }</a>
-<span class="lineNum">     114 </span>            : 
-<span class="lineNum">     115 </span><span class="lineNoCov">          0 : DataInfos VisibleSetGeneratorFilter::getOutputDataInfos() const</span>
-<span class="lineNum">     116 </span>            : {
-<span class="lineNum">     117 </span><span class="lineNoCov">          0 :     return _impl-&gt;getOutputDataInfos();</span>
-<span class="lineNum">     118 </span>            : }
-<span class="lineNum">     119 </span>            : 
-<a name="120"><span class="lineNum">     120 </span>            : </a>
+<a name="104"><span class="lineNum">     104 </span><span class="lineNoCov">          0 : }</span></a>
+<span class="lineNum">     105 </span>            : 
+<span class="lineNum">     106 </span><span class="lineNoCov">          0 : void VisibleSetGeneratorFilter::execute( const FutureMap&amp; input,</span>
+<span class="lineNum">     107 </span>            :                                          PromiseMap&amp; output ) const
+<span class="lineNum">     108 </span>            : {
+<span class="lineNum">     109 </span><span class="lineNoCov">          0 :     _impl-&gt;execute( input, output );</span>
+<a name="110"><span class="lineNum">     110 </span><span class="lineNoCov">          0 : }</span></a>
+<span class="lineNum">     111 </span>            : 
+<span class="lineNum">     112 </span><span class="lineNoCov">          0 : DataInfos VisibleSetGeneratorFilter::getInputDataInfos() const</span>
+<span class="lineNum">     113 </span>            : {
+<span class="lineNum">     114 </span><span class="lineNoCov">          0 :     return _impl-&gt;getInputDataInfos();</span>
+<a name="115"><span class="lineNum">     115 </span>            : }</a>
+<span class="lineNum">     116 </span>            : 
+<span class="lineNum">     117 </span><span class="lineNoCov">          0 : DataInfos VisibleSetGeneratorFilter::getOutputDataInfos() const</span>
+<span class="lineNum">     118 </span>            : {
+<span class="lineNum">     119 </span><span class="lineNoCov">          0 :     return _impl-&gt;getOutputDataInfos();</span>
+<span class="lineNum">     120 </span>            : }
 <span class="lineNum">     121 </span>            : 
-<span class="lineNum">     122 </span><span class="lineCov">         33 : }</span>
+<a name="122"><span class="lineNum">     122 </span>            : </a>
+<span class="lineNum">     123 </span>            : 
+<span class="lineNum">     124 </span><span class="lineCov">         33 : }</span>
 </pre>
       </td>
     </tr>

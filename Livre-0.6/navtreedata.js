@@ -2,18 +2,15 @@ var NAVTREE =
 [
   [ "Livre", "index.html", [
     [ "Changelog", "_changelog.html", [
-      [ "master", "_changelog.html#master", null ],
-      [ "Release 0.5 (2016-04-06)", "_changelog.html#Release050", null ],
-      [ "Release 0.4 (2015-11-09)", "_changelog.html#Release040", null ],
-      [ "Release 0.3 (2015-07-07)", "_changelog.html#Release030", null ],
-      [ "Release 0.2 (2014-10-15)", "_changelog.html#Release020", null ]
+      [ "master", "_changelog.html#master", null ]
     ] ],
     [ "Technical Overview", "_technical__overview.html", [
       [ "Table of Contents", "_technical__overview.html#TABLE_OF_CONTENTS_Technical_overview", null ],
-      [ "Technical Features", "_technical__overview.html#Technical_Features", [
+      [ "Technical Features", "_technical__overview.html#Technical_Features", null ],
+      [ "Architecture", "_technical__overview.html#Architecture", [
         [ "Render thread", "_technical__overview.html#Render_Thread", null ],
-        [ "GPU upload thread", "_technical__overview.html#GPU_Thread", null ],
-        [ "Data thread", "_technical__overview.html#Data_Thread", null ],
+        [ "Upload threads", "_technical__overview.html#Upload_Threads", null ],
+        [ "Compute threads", "_technical__overview.html#Compute_Threads", null ],
         [ "Livre library", "_technical__overview.html#Livre_Library", null ]
       ] ],
       [ "References", "_technical__overview.html#References", null ]

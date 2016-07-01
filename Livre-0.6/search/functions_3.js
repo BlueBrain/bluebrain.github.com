@@ -3,7 +3,7 @@ var searchData=
   ['getabi',['getABI',['../classlivrecore_1_1_version.html#ae2daf23c2851ed1f1e1f260d123f3b09',1,'livrecore::Version']]],
   ['getabsoluteposition',['getAbsolutePosition',['../classlivre_1_1_l_o_d_node.html#a7485ed533fe911e1337fdc04883d1611',1,'livre::LODNode']]],
   ['getallocsize',['getAllocSize',['../classlivre_1_1_memory_unit.html#a1259dfa6564ccf9848d2501b16e025ec',1,'livre::MemoryUnit::getAllocSize()'],['../classlivre_1_1_no_memory_unit.html#afdb2adc01b9b1d28a236be926f07511d',1,'livre::NoMemoryUnit::getAllocSize()'],['../classlivre_1_1_const_memory_unit.html#a6c184226100fcd8a78edc5c3de78f086',1,'livre::ConstMemoryUnit::getAllocSize()'],['../classlivre_1_1_alloc_memory_unit.html#a835e96f85895131e87d9f80eb8165c2d',1,'livre::AllocMemoryUnit::getAllocSize()']]],
-  ['getblocksize',['getBlockSize',['../classlivre_1_1_root_node.html#a1b30503d8f9d992b8570d983b3ffa85d',1,'livre::RootNode']]],
+  ['getblocksize',['getBlockSize',['../classlivre_1_1_l_o_d_node.html#acbb0375e0458d74fc22d2edbc71ed8d4',1,'livre::LODNode::getBlockSize()'],['../classlivre_1_1_root_node.html#a1b30503d8f9d992b8570d983b3ffa85d',1,'livre::RootNode::getBlockSize()']]],
   ['getbytespervoxel',['getBytesPerVoxel',['../structlivre_1_1_volume_information.html#aba6f9b7e2797e9f52f5a9767fa6aee59',1,'livre::VolumeInformation']]],
   ['getchildren',['getChildren',['../classlivre_1_1_node_id.html#a64bb86d3874465371e389891bd941b5e',1,'livre::NodeId']]],
   ['getcurrent',['getCurrent',['../classlivre_1_1_g_l_context.html#ab8c3f4a7a2888ae8096e984abe03fa71',1,'livre::GLContext']]],
