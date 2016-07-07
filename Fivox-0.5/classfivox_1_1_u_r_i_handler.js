@@ -7,6 +7,7 @@ var classfivox_1_1_u_r_i_handler =
     [ "getDt", "classfivox_1_1_u_r_i_handler.html#a0cf08598c30cf1df02634b4a4a2aa776", null ],
     [ "getDuration", "classfivox_1_1_u_r_i_handler.html#acae4cf6c1736a55ec44a119eb4f89a97", null ],
     [ "getDyeCurve", "classfivox_1_1_u_r_i_handler.html#af3392e9096cea586d758b44ba8bc194e", null ],
+    [ "getExtendDistance", "classfivox_1_1_u_r_i_handler.html#a03c056ea9813556d5e49492f894811ce", null ],
     [ "getFunctorType", "classfivox_1_1_u_r_i_handler.html#aebf008427ee3f0db8977d93777b80b6b", null ],
     [ "getGIDs", "classfivox_1_1_u_r_i_handler.html#a7d33cf6c62be950ad8ef15cb78ea6ad5", null ],
     [ "getInputRange", "classfivox_1_1_u_r_i_handler.html#aed19b5142e333bf6c7a49d8484d7ffd6", null ],

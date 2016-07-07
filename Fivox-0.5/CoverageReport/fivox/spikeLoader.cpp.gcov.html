@@ -37,7 +37,7 @@
           </tr>
           <tr>
             <td class="headerItem">Date:</td>
-            <td class="headerValue">2016-07-01 05:13:00</td>
+            <td class="headerValue">2016-07-07 05:12:07</td>
             <td></td>
             <td class="headerItem">Functions:</td>
             <td class="headerCovTableEntry">14</td>
@@ -113,204 +113,205 @@
 <span class="lineNum">      51 </span><span class="lineCov">          4 :         const brion::Vector3fs&amp; positions = circuit.getPositions( gids );</span>
 <span class="lineNum">      52 </span>            : 
 <span class="lineNum">      53 </span><span class="lineCov">          2 :         size_t i = 0;</span>
-<span class="lineNum">      54 </span><span class="lineCov">          2 :         _gidIndex.resize( *gids.rbegin() + 1 );</span>
-<span class="lineNum">      55 </span><span class="lineCov">       2002 :         for( const uint32_t gid: gids )</span>
-<span class="lineNum">      56 </span>            :         {
-<span class="lineNum">      57 </span><span class="lineCov">       2000 :             _output.add( Event( positions[ i ], VALUE_UNSET ));</span>
-<span class="lineNum">      58 </span><span class="lineCov">       2000 :             _gidIndex[gid] = i++;</span>
-<span class="lineNum">      59 </span>            :         }
-<span class="lineNum">      60 </span><span class="lineCov">          2 :         _spikesPerNeuron.resize( gids.size( ));</span>
-<span class="lineNum">      61 </span><span class="lineCov">          4 :         const std::string&amp; spikePath = params.getSpikes();</span>
-<span class="lineNum">      62 </span><span class="lineCov">          4 :         _loadSpikes( spikePath.empty() ? params.getConfig().getSpikeSource() :</span>
-<span class="lineNum">      63 </span><span class="lineCov">          6 :                                          brion::URI( spikePath ));</span>
-<span class="lineNum">      64 </span>            : 
-<a name="65"><span class="lineNum">      65 </span><span class="lineCov">          2 :     }</span></a>
+<span class="lineNum">      54 </span><span class="lineCov">          2 :         _output.resize( gids.size( ));</span>
+<span class="lineNum">      55 </span><span class="lineCov">          2 :         _spikesPerNeuron.resize( gids.size( ));</span>
+<span class="lineNum">      56 </span><span class="lineCov">          2 :         _gidIndex.resize( *gids.rbegin() + 1 );</span>
+<span class="lineNum">      57 </span><span class="lineCov">       2002 :         for( const uint32_t gid: gids )</span>
+<span class="lineNum">      58 </span>            :         {
+<span class="lineNum">      59 </span><span class="lineCov">       2000 :             _output.update( i, positions[i], /*radius*/ 0.f );</span>
+<span class="lineNum">      60 </span><span class="lineCov">       2000 :             _gidIndex[gid] = i++;</span>
+<span class="lineNum">      61 </span>            :         }
+<span class="lineNum">      62 </span>            : 
+<span class="lineNum">      63 </span><span class="lineCov">          4 :         const std::string&amp; spikePath = params.getSpikes();</span>
+<span class="lineNum">      64 </span><span class="lineCov">          4 :         _loadSpikes( spikePath.empty() ? params.getConfig().getSpikeSource()</span>
+<span class="lineNum">      65 </span><span class="lineCov">          6 :                                        : brion::URI( spikePath ));</span>
 <span class="lineNum">      66 </span>            : 
-<span class="lineNum">      67 </span><span class="lineCov">          2 :     void updateTimeRange()</span>
-<span class="lineNum">      68 </span>            :     {
-<span class="lineNum">      69 </span>            :         // Streaming in progress; Only report fully finished frames.
-<span class="lineNum">      70 </span><span class="lineCov">          2 :         if( _spikesReader &amp;&amp; !_spikesReader-&gt;hasEnded( ))</span>
-<span class="lineNum">      71 </span>            :         {
-<span class="lineNum">      72 </span><span class="lineNoCov">          0 :             lunchbox::ScopedWrite mutex( _getSpikesLock );</span>
-<span class="lineNum">      73 </span><span class="lineNoCov">          0 :             const brain::Spikes&amp; spikes = _spikesReader-&gt;getSpikes();</span>
-<span class="lineNum">      74 </span><span class="lineNoCov">          0 :             if( !spikes.empty( ))</span>
-<span class="lineNum">      75 </span>            :                 // don't update _spikesStart to calculate absolute frame numbers
-<span class="lineNum">      76 </span>            :                 // see https://bbpcode.epfl.ch/code/#/c/19337
-<span class="lineNum">      77 </span><span class="lineNoCov">          0 :                 _spikesEnd = spikes.getEndTime();</span>
-<span class="lineNum">      78 </span>            :         }
-<a name="79"><span class="lineNum">      79 </span><span class="lineCov">          2 :     }</span></a>
-<span class="lineNum">      80 </span>            : 
-<span class="lineNum">      81 </span><span class="lineCov">          2 :     void _loadSpikes( const brion::URI&amp; spikes )</span>
-<span class="lineNum">      82 </span>            :     {
-<span class="lineNum">      83 </span><span class="lineCov">          2 :         if( _loadBinarySpikes( spikes.getPath( )))</span>
-<span class="lineNum">      84 </span><span class="lineCov">          2 :             return;</span>
-<span class="lineNum">      85 </span>            : 
-<span class="lineNum">      86 </span><span class="lineCov">          6 :         LBINFO &lt;&lt; &quot;No valid binary .spikes file found, loading from .dat...&quot;</span>
-<span class="lineNum">      87 </span><span class="lineCov">          6 :                &lt;&lt; std::endl;</span>
-<span class="lineNum">      88 </span><span class="lineCov">          2 :         _spikesReader.reset( new brain::SpikeReportReader( spikes ));</span>
-<span class="lineNum">      89 </span><span class="lineCov">          2 :         _spikesStart = _spikesReader-&gt;isStream() ? 0.f :</span>
-<span class="lineNum">      90 </span><span class="lineCov">          2 :                                                 _spikesReader-&gt;getStartTime();</span>
-<span class="lineNum">      91 </span><span class="lineCov">          2 :         _spikesEnd = _spikesReader-&gt;isStream() ? 0.f :</span>
-<span class="lineNum">      92 </span><span class="lineCov">          2 :                                                 _spikesReader-&gt;getEndTime();</span>
-<a name="93"><span class="lineNum">      93 </span>            :     }</a>
-<span class="lineNum">      94 </span>            : 
-<span class="lineNum">      95 </span><span class="lineCov">          2 :     bool _loadBinarySpikes( const std::string&amp; spikes )</span>
-<span class="lineNum">      96 </span>            :     {
-<span class="lineNum">      97 </span>            :         std::unique_ptr&lt; lunchbox::MemoryMap &gt; spikesFile
-<span class="lineNum">      98 </span><span class="lineCov">          2 :                 ( new lunchbox::MemoryMap( spikes ));</span>
-<span class="lineNum">      99 </span><span class="lineCov">          2 :         const size_t size = spikesFile-&gt;getSize();</span>
-<span class="lineNum">     100 </span><span class="lineCov">          2 :         if(( size % sizeof( uint32_t )) != 0 )</span>
-<span class="lineNum">     101 </span><span class="lineCov">          2 :             return false;</span>
-<span class="lineNum">     102 </span><span class="lineNoCov">          0 :         const size_t nElems = size / sizeof( uint32_t );</span>
-<span class="lineNum">     103 </span><span class="lineNoCov">          0 :         const uint32_t* iData = spikesFile-&gt;getAddress&lt; uint32_t &gt;();</span>
-<span class="lineNum">     104 </span><span class="lineNoCov">          0 :         size_t index = 0;</span>
-<span class="lineNum">     105 </span>            : 
-<span class="lineNum">     106 </span><span class="lineNoCov">          0 :         const uint32_t magic = 0xf0a;</span>
-<span class="lineNum">     107 </span><span class="lineNoCov">          0 :         const uint32_t version = 1;</span>
-<span class="lineNum">     108 </span><span class="lineNoCov">          0 :         if( index &gt;= nElems || iData[ index++ ] != magic )</span>
-<span class="lineNum">     109 </span><span class="lineNoCov">          0 :             return false;</span>
-<span class="lineNum">     110 </span><span class="lineNoCov">          0 :         if( index &gt;= nElems || iData[ index++ ] != version )</span>
+<a name="67"><span class="lineNum">      67 </span><span class="lineCov">          2 :     }</span></a>
+<span class="lineNum">      68 </span>            : 
+<span class="lineNum">      69 </span><span class="lineCov">          2 :     void updateTimeRange()</span>
+<span class="lineNum">      70 </span>            :     {
+<span class="lineNum">      71 </span>            :         // Streaming in progress; Only report fully finished frames.
+<span class="lineNum">      72 </span><span class="lineCov">          2 :         if( _spikesReader &amp;&amp; !_spikesReader-&gt;hasEnded( ))</span>
+<span class="lineNum">      73 </span>            :         {
+<span class="lineNum">      74 </span><span class="lineNoCov">          0 :             lunchbox::ScopedWrite mutex( _getSpikesLock );</span>
+<span class="lineNum">      75 </span><span class="lineNoCov">          0 :             const brain::Spikes&amp; spikes = _spikesReader-&gt;getSpikes();</span>
+<span class="lineNum">      76 </span><span class="lineNoCov">          0 :             if( !spikes.empty( ))</span>
+<span class="lineNum">      77 </span>            :                 // don't update _spikesStart to calculate absolute frame numbers
+<span class="lineNum">      78 </span>            :                 // see https://bbpcode.epfl.ch/code/#/c/19337
+<span class="lineNum">      79 </span><span class="lineNoCov">          0 :                 _spikesEnd = spikes.getEndTime();</span>
+<span class="lineNum">      80 </span>            :         }
+<a name="81"><span class="lineNum">      81 </span><span class="lineCov">          2 :     }</span></a>
+<span class="lineNum">      82 </span>            : 
+<span class="lineNum">      83 </span><span class="lineCov">          2 :     void _loadSpikes( const brion::URI&amp; spikes )</span>
+<span class="lineNum">      84 </span>            :     {
+<span class="lineNum">      85 </span><span class="lineCov">          2 :         if( _loadBinarySpikes( spikes.getPath( )))</span>
+<span class="lineNum">      86 </span><span class="lineCov">          2 :             return;</span>
+<span class="lineNum">      87 </span>            : 
+<span class="lineNum">      88 </span><span class="lineCov">          6 :         LBINFO &lt;&lt; &quot;No valid binary .spikes file found, loading from .dat...&quot;</span>
+<span class="lineNum">      89 </span><span class="lineCov">          6 :                &lt;&lt; std::endl;</span>
+<span class="lineNum">      90 </span><span class="lineCov">          2 :         _spikesReader.reset( new brain::SpikeReportReader( spikes ));</span>
+<span class="lineNum">      91 </span><span class="lineCov">          2 :         _spikesStart = _spikesReader-&gt;isStream() ? 0.f :</span>
+<span class="lineNum">      92 </span><span class="lineCov">          2 :                                                 _spikesReader-&gt;getStartTime();</span>
+<span class="lineNum">      93 </span><span class="lineCov">          2 :         _spikesEnd = _spikesReader-&gt;isStream() ? 0.f :</span>
+<span class="lineNum">      94 </span><span class="lineCov">          2 :                                                 _spikesReader-&gt;getEndTime();</span>
+<a name="95"><span class="lineNum">      95 </span>            :     }</a>
+<span class="lineNum">      96 </span>            : 
+<span class="lineNum">      97 </span><span class="lineCov">          2 :     bool _loadBinarySpikes( const std::string&amp; spikes )</span>
+<span class="lineNum">      98 </span>            :     {
+<span class="lineNum">      99 </span>            :         std::unique_ptr&lt; lunchbox::MemoryMap &gt; spikesFile
+<span class="lineNum">     100 </span><span class="lineCov">          2 :                 ( new lunchbox::MemoryMap( spikes ));</span>
+<span class="lineNum">     101 </span><span class="lineCov">          2 :         const size_t size = spikesFile-&gt;getSize();</span>
+<span class="lineNum">     102 </span><span class="lineCov">          2 :         if(( size % sizeof( uint32_t )) != 0 )</span>
+<span class="lineNum">     103 </span><span class="lineCov">          2 :             return false;</span>
+<span class="lineNum">     104 </span><span class="lineNoCov">          0 :         const size_t nElems = size / sizeof( uint32_t );</span>
+<span class="lineNum">     105 </span><span class="lineNoCov">          0 :         const uint32_t* iData = spikesFile-&gt;getAddress&lt; uint32_t &gt;();</span>
+<span class="lineNum">     106 </span><span class="lineNoCov">          0 :         size_t index = 0;</span>
+<span class="lineNum">     107 </span>            : 
+<span class="lineNum">     108 </span><span class="lineNoCov">          0 :         const uint32_t magic = 0xf0a;</span>
+<span class="lineNum">     109 </span><span class="lineNoCov">          0 :         const uint32_t version = 1;</span>
+<span class="lineNum">     110 </span><span class="lineNoCov">          0 :         if( index &gt;= nElems || iData[ index++ ] != magic )</span>
 <span class="lineNum">     111 </span><span class="lineNoCov">          0 :             return false;</span>
-<span class="lineNum">     112 </span>            : 
-<span class="lineNum">     113 </span><span class="lineNoCov">          0 :         _spikesFile = std::move( spikesFile );</span>
-<span class="lineNum">     114 </span><span class="lineNoCov">          0 :         const float* fData = _spikesFile-&gt;getAddress&lt; float &gt;();</span>
-<span class="lineNum">     115 </span><span class="lineNoCov">          0 :         _spikesStart = fData[index]; // first spike timestamp after header</span>
-<span class="lineNum">     116 </span><span class="lineNoCov">          0 :         _spikesEnd = fData[nElems - 2]; // last spike timestamp</span>
-<span class="lineNum">     117 </span><span class="lineNoCov">          0 :         return true;</span>
-<a name="118"><span class="lineNum">     118 </span>            :     }</a>
-<span class="lineNum">     119 </span>            : 
-<span class="lineNum">     120 </span><span class="lineCov">          2 :     ssize_t load( const float start )</span>
-<span class="lineNum">     121 </span>            :     {
-<span class="lineNum">     122 </span><span class="lineCov">          2 :         lunchbox::setZero( _spikesPerNeuron.data(),</span>
-<span class="lineNum">     123 </span><span class="lineCov">          4 :                            _spikesPerNeuron.size() * sizeof(size_t));</span>
-<span class="lineNum">     124 </span>            : 
-<span class="lineNum">     125 </span><span class="lineCov">          2 :         const float end = start + _duration;</span>
-<span class="lineNum">     126 </span>            :         const size_t numSpikes = _spikesFile ? _loadSpikesFast( start, end )
-<span class="lineNum">     127 </span><span class="lineCov">          2 :                                              : _loadSpikesSlow( start, end );</span>
-<span class="lineNum">     128 </span>            : 
-<span class="lineNum">     129 </span><span class="lineCov">       2002 :         for( size_t i = 0; i &lt; _spikesPerNeuron.size(); ++i )</span>
-<span class="lineNum">     130 </span><span class="lineCov">       2006 :             _output[i].value = _spikesPerNeuron[i] ? _spikesPerNeuron[i]</span>
-<span class="lineNum">     131 </span><span class="lineCov">       2006 :                                                    : VALUE_UNSET;</span>
-<span class="lineNum">     132 </span>            : 
-<span class="lineNum">     133 </span><span class="lineCov">          2 :         return numSpikes;</span>
-<span class="lineNum">     134 </span>            :     }
-<span class="lineNum">     135 </span>            : 
-<a name="136"><span class="lineNum">     136 </span>            :     // OPT: directly iterate on binary spike file; saves loading all spikes</a>
-<span class="lineNum">     137 </span>            :     // a priori and slow access in multimap (brion::Spikes)
-<span class="lineNum">     138 </span><span class="lineNoCov">          0 :     size_t _loadSpikesFast( const float start, const float end )</span>
-<span class="lineNum">     139 </span>            :     {
-<span class="lineNum">     140 </span><span class="lineNoCov">          0 :         const size_t size = _spikesFile-&gt;getSize();</span>
-<span class="lineNum">     141 </span><span class="lineNoCov">          0 :         const size_t nElems = size / sizeof( uint32_t );</span>
-<span class="lineNum">     142 </span><span class="lineNoCov">          0 :         const uint32_t* iData = _spikesFile-&gt;getAddress&lt; uint32_t &gt;();</span>
-<span class="lineNum">     143 </span><span class="lineNoCov">          0 :         const float* fData = _spikesFile-&gt;getAddress&lt; float &gt;();</span>
-<span class="lineNum">     144 </span>            : 
-<span class="lineNum">     145 </span><span class="lineNoCov">          0 :         if( start &lt; _previousStart.first )</span>
-<span class="lineNum">     146 </span><span class="lineNoCov">          0 :             _previousStart.second = 2; // start over, first spike after header</span>
-<span class="lineNum">     147 </span>            : 
-<span class="lineNum">     148 </span><span class="lineNoCov">          0 :         size_t numSpikes = 0;</span>
-<span class="lineNum">     149 </span><span class="lineNoCov">          0 :         bool once = true;</span>
-<span class="lineNum">     150 </span><span class="lineNoCov">          0 :         for( size_t i = _previousStart.second; i+1 &lt; nElems; i += 2 )</span>
-<span class="lineNum">     151 </span>            :         {
-<span class="lineNum">     152 </span><span class="lineNoCov">          0 :             const float time = fData[ i ];</span>
-<span class="lineNum">     153 </span><span class="lineNoCov">          0 :             if( time &lt; start )</span>
-<span class="lineNum">     154 </span><span class="lineNoCov">          0 :                 continue;</span>
-<span class="lineNum">     155 </span><span class="lineNoCov">          0 :             if( once )</span>
-<span class="lineNum">     156 </span>            :             {
-<span class="lineNum">     157 </span>            :                 // remember this time for next start that might come after
-<span class="lineNum">     158 </span><span class="lineNoCov">          0 :                 _previousStart = std::make_pair( start, i );</span>
-<span class="lineNum">     159 </span><span class="lineNoCov">          0 :                 once = false;</span>
-<span class="lineNum">     160 </span>            :             }
-<span class="lineNum">     161 </span>            : 
-<span class="lineNum">     162 </span><span class="lineNoCov">          0 :             if( time &gt;= end )</span>
-<span class="lineNum">     163 </span><span class="lineNoCov">          0 :                 break;</span>
-<span class="lineNum">     164 </span>            : 
-<span class="lineNum">     165 </span><span class="lineNoCov">          0 :             const uint32_t gid = iData[ i + 1 ];</span>
-<span class="lineNum">     166 </span><span class="lineNoCov">          0 :             if( gid &gt;= _gidIndex.size( ))</span>
-<span class="lineNum">     167 </span><span class="lineNoCov">          0 :                 continue;</span>
-<span class="lineNum">     168 </span>            : 
-<span class="lineNum">     169 </span><span class="lineNoCov">          0 :             ++_spikesPerNeuron[_gidIndex[gid]];</span>
-<span class="lineNum">     170 </span><span class="lineNoCov">          0 :             ++numSpikes;</span>
-<span class="lineNum">     171 </span>            :         }
-<span class="lineNum">     172 </span><span class="lineNoCov">          0 :         return numSpikes;</span>
-<span class="lineNum">     173 </span>            :     }
-<a name="174"><span class="lineNum">     174 </span>            : </a>
-<span class="lineNum">     175 </span>            :     // for ~5 mio spikes, this is ~200ms slower than _loadSpikesFast
-<span class="lineNum">     176 </span><span class="lineCov">          2 :     size_t _loadSpikesSlow( const float start, const float end )</span>
-<span class="lineNum">     177 </span>            :     {
-<span class="lineNum">     178 </span><span class="lineCov">          2 :         size_t numSpikes = 0;</span>
-<span class="lineNum">     179 </span><span class="lineCov">          2 :         lunchbox::ScopedWrite mutex( _getSpikesLock );</span>
-<span class="lineNum">     180 </span><span class="lineCov">          4 :         const brain::Spikes&amp; spikes = _spikesReader-&gt;getSpikes( start, end );</span>
-<span class="lineNum">     181 </span><span class="lineCov">          8 :         for( const brion::Spike&amp; spike : spikes )</span>
-<span class="lineNum">     182 </span>            :         {
-<span class="lineNum">     183 </span><span class="lineCov">          6 :             if( spike.second &gt;= _gidIndex.size( ))</span>
-<span class="lineNum">     184 </span><span class="lineNoCov">          0 :                 continue;</span>
-<span class="lineNum">     185 </span>            : 
-<span class="lineNum">     186 </span><span class="lineCov">          6 :             ++_spikesPerNeuron[_gidIndex[spike.second]];</span>
-<span class="lineNum">     187 </span><span class="lineCov">          6 :             ++numSpikes;</span>
-<span class="lineNum">     188 </span><span class="lineCov">          2 :         }</span>
-<span class="lineNum">     189 </span>            : 
-<span class="lineNum">     190 </span><span class="lineCov">          4 :         return numSpikes;</span>
-<span class="lineNum">     191 </span>            :     }
-<span class="lineNum">     192 </span>            : 
-<span class="lineNum">     193 </span>            :     EventSource&amp; _output;
-<span class="lineNum">     194 </span>            :     const float _duration;
-<span class="lineNum">     195 </span>            :     float _spikesStart;
-<span class="lineNum">     196 </span>            :     float _spikesEnd;
-<span class="lineNum">     197 </span>            : 
-<span class="lineNum">     198 </span>            :     // maps GID to its index in the target
-<span class="lineNum">     199 </span>            :     // OPT: no (unordered)map because of constant lookup but 'wastes' memory
-<span class="lineNum">     200 </span>            :     // (container.size() is number of GIDs)
-<span class="lineNum">     201 </span>            :     brion::size_ts _gidIndex;
-<span class="lineNum">     202 </span>            : 
-<span class="lineNum">     203 </span>            :     // aggregates spikes for each neuron in interval
-<span class="lineNum">     204 </span>            :     // OPT: no (unordered)map because of constant lookup but 'wastes' memory
-<span class="lineNum">     205 </span>            :     // (container.size() is number of GIDs)
-<span class="lineNum">     206 </span>            :     brion::size_ts _spikesPerNeuron;
-<span class="lineNum">     207 </span>            : 
-<span class="lineNum">     208 </span>            :     // for _loadSpikesFast
-<span class="lineNum">     209 </span>            :     std::unique_ptr&lt; lunchbox::MemoryMap &gt; _spikesFile;
-<span class="lineNum">     210 </span>            :     std::pair&lt; float, size_t &gt; _previousStart;
-<span class="lineNum">     211 </span>            : 
-<span class="lineNum">     212 </span>            :     // for _loadSpikesSlow
-<span class="lineNum">     213 </span>            :     std::unique_ptr&lt; brain::SpikeReportReader &gt; _spikesReader;
-<span class="lineNum">     214 </span>            :     mutable lunchbox::Lock _getSpikesLock;
-<a name="215"><span class="lineNum">     215 </span>            : };</a>
-<span class="lineNum">     216 </span>            : 
-<span class="lineNum">     217 </span><span class="lineCov">          2 : SpikeLoader::SpikeLoader( const URIHandler&amp; params )</span>
-<span class="lineNum">     218 </span>            :     : EventSource( params )
-<span class="lineNum">     219 </span><span class="lineCov">          2 :     , _impl( new Impl( *this, params ))</span>
-<span class="lineNum">     220 </span>            : {
-<span class="lineNum">     221 </span><span class="lineCov">          2 :     if( getDt() &lt; 0.f )</span>
-<span class="lineNum">     222 </span><span class="lineNoCov">          0 :         setDt( params.getConfig().getTimestep( ));</span>
-<a name="223"><span class="lineNum">     223 </span><span class="lineCov">          2 : }</span></a>
-<span class="lineNum">     224 </span>            : 
-<span class="lineNum">     225 </span><span class="lineCov">          2 : SpikeLoader::~SpikeLoader()</span>
-<a name="226"><span class="lineNum">     226 </span><span class="lineCov">          2 : {}</span></a>
-<span class="lineNum">     227 </span>            : 
-<span class="lineNum">     228 </span><span class="lineCov">          2 : Vector2f SpikeLoader::_getTimeRange() const</span>
-<span class="lineNum">     229 </span>            : {
-<span class="lineNum">     230 </span><span class="lineCov">          2 :     _impl-&gt;updateTimeRange();</span>
-<span class="lineNum">     231 </span>            : 
-<span class="lineNum">     232 </span>            :     // The duration of the frame needs to be considered,
-<span class="lineNum">     233 </span>            :     // in order to not go over the available range.
-<span class="lineNum">     234 </span><span class="lineCov">          2 :     const float spikesEnd = _impl-&gt;_spikesEnd - _impl-&gt;_duration;</span>
-<span class="lineNum">     235 </span><span class="lineCov">          2 :     if( spikesEnd &lt; _impl-&gt;_spikesStart )</span>
-<span class="lineNum">     236 </span><span class="lineNoCov">          0 :         return Vector2f( 0.f, 0.f );</span>
-<span class="lineNum">     237 </span>            : 
-<span class="lineNum">     238 </span><span class="lineCov">          2 :     return Vector2f( _impl-&gt;_spikesStart, spikesEnd );</span>
-<a name="239"><span class="lineNum">     239 </span>            : }</a>
-<span class="lineNum">     240 </span>            : 
-<span class="lineNum">     241 </span><span class="lineCov">          2 : ssize_t SpikeLoader::_load( const float time )</span>
-<span class="lineNum">     242 </span>            : {
-<span class="lineNum">     243 </span><span class="lineCov">          2 :     return _impl-&gt;load( time );</span>
-<a name="244"><span class="lineNum">     244 </span>            : }</a>
-<span class="lineNum">     245 </span>            : 
-<span class="lineNum">     246 </span><span class="lineCov">          2 : bool SpikeLoader::_hasEnded() const</span>
-<span class="lineNum">     247 </span>            : {
-<span class="lineNum">     248 </span><span class="lineCov">          2 :     return _impl-&gt;_spikesReader ? _impl-&gt;_spikesReader-&gt;hasEnded() : true;</span>
-<a name="249"><span class="lineNum">     249 </span>            : }</a>
-<span class="lineNum">     250 </span>            : 
-<span class="lineNum">     251 </span><span class="lineCov">         15 : }</span>
+<span class="lineNum">     112 </span><span class="lineNoCov">          0 :         if( index &gt;= nElems || iData[ index++ ] != version )</span>
+<span class="lineNum">     113 </span><span class="lineNoCov">          0 :             return false;</span>
+<span class="lineNum">     114 </span>            : 
+<span class="lineNum">     115 </span><span class="lineNoCov">          0 :         _spikesFile = std::move( spikesFile );</span>
+<span class="lineNum">     116 </span><span class="lineNoCov">          0 :         const float* fData = _spikesFile-&gt;getAddress&lt; float &gt;();</span>
+<span class="lineNum">     117 </span><span class="lineNoCov">          0 :         _spikesStart = fData[index]; // first spike timestamp after header</span>
+<span class="lineNum">     118 </span><span class="lineNoCov">          0 :         _spikesEnd = fData[nElems - 2]; // last spike timestamp</span>
+<span class="lineNum">     119 </span><span class="lineNoCov">          0 :         return true;</span>
+<a name="120"><span class="lineNum">     120 </span>            :     }</a>
+<span class="lineNum">     121 </span>            : 
+<span class="lineNum">     122 </span><span class="lineCov">          2 :     ssize_t load( const float start )</span>
+<span class="lineNum">     123 </span>            :     {
+<span class="lineNum">     124 </span><span class="lineCov">          2 :         lunchbox::setZero( _spikesPerNeuron.data(),</span>
+<span class="lineNum">     125 </span><span class="lineCov">          4 :                            _spikesPerNeuron.size() * sizeof(size_t));</span>
+<span class="lineNum">     126 </span>            : 
+<span class="lineNum">     127 </span><span class="lineCov">          2 :         const float end = start + _duration;</span>
+<span class="lineNum">     128 </span>            :         const size_t numSpikes = _spikesFile ? _loadSpikesFast( start, end )
+<span class="lineNum">     129 </span><span class="lineCov">          2 :                                              : _loadSpikesSlow( start, end );</span>
+<span class="lineNum">     130 </span>            : 
+<span class="lineNum">     131 </span><span class="lineCov">       2002 :         for( size_t i = 0; i &lt; _spikesPerNeuron.size(); ++i )</span>
+<span class="lineNum">     132 </span><span class="lineCov">       2000 :             _output[i] = _spikesPerNeuron[i];</span>
+<span class="lineNum">     133 </span>            : 
+<span class="lineNum">     134 </span><span class="lineCov">          2 :         return numSpikes;</span>
+<span class="lineNum">     135 </span>            :     }
+<span class="lineNum">     136 </span>            : 
+<a name="137"><span class="lineNum">     137 </span>            :     // OPT: directly iterate on binary spike file; saves loading all spikes</a>
+<span class="lineNum">     138 </span>            :     // a priori and slow access in multimap (brion::Spikes)
+<span class="lineNum">     139 </span><span class="lineNoCov">          0 :     size_t _loadSpikesFast( const float start, const float end )</span>
+<span class="lineNum">     140 </span>            :     {
+<span class="lineNum">     141 </span><span class="lineNoCov">          0 :         const size_t size = _spikesFile-&gt;getSize();</span>
+<span class="lineNum">     142 </span><span class="lineNoCov">          0 :         const size_t nElems = size / sizeof( uint32_t );</span>
+<span class="lineNum">     143 </span><span class="lineNoCov">          0 :         const uint32_t* iData = _spikesFile-&gt;getAddress&lt; uint32_t &gt;();</span>
+<span class="lineNum">     144 </span><span class="lineNoCov">          0 :         const float* fData = _spikesFile-&gt;getAddress&lt; float &gt;();</span>
+<span class="lineNum">     145 </span>            : 
+<span class="lineNum">     146 </span><span class="lineNoCov">          0 :         if( start &lt; _previousStart.first )</span>
+<span class="lineNum">     147 </span><span class="lineNoCov">          0 :             _previousStart.second = 2; // start over, first spike after header</span>
+<span class="lineNum">     148 </span>            : 
+<span class="lineNum">     149 </span><span class="lineNoCov">          0 :         size_t numSpikes = 0;</span>
+<span class="lineNum">     150 </span><span class="lineNoCov">          0 :         bool once = true;</span>
+<span class="lineNum">     151 </span><span class="lineNoCov">          0 :         for( size_t i = _previousStart.second; i+1 &lt; nElems; i += 2 )</span>
+<span class="lineNum">     152 </span>            :         {
+<span class="lineNum">     153 </span><span class="lineNoCov">          0 :             const float time = fData[ i ];</span>
+<span class="lineNum">     154 </span><span class="lineNoCov">          0 :             if( time &lt; start )</span>
+<span class="lineNum">     155 </span><span class="lineNoCov">          0 :                 continue;</span>
+<span class="lineNum">     156 </span><span class="lineNoCov">          0 :             if( once )</span>
+<span class="lineNum">     157 </span>            :             {
+<span class="lineNum">     158 </span>            :                 // remember this time for next start that might come after
+<span class="lineNum">     159 </span><span class="lineNoCov">          0 :                 _previousStart = std::make_pair( start, i );</span>
+<span class="lineNum">     160 </span><span class="lineNoCov">          0 :                 once = false;</span>
+<span class="lineNum">     161 </span>            :             }
+<span class="lineNum">     162 </span>            : 
+<span class="lineNum">     163 </span><span class="lineNoCov">          0 :             if( time &gt;= end )</span>
+<span class="lineNum">     164 </span><span class="lineNoCov">          0 :                 break;</span>
+<span class="lineNum">     165 </span>            : 
+<span class="lineNum">     166 </span><span class="lineNoCov">          0 :             const uint32_t gid = iData[ i + 1 ];</span>
+<span class="lineNum">     167 </span><span class="lineNoCov">          0 :             if( gid &gt;= _gidIndex.size( ))</span>
+<span class="lineNum">     168 </span><span class="lineNoCov">          0 :                 continue;</span>
+<span class="lineNum">     169 </span>            : 
+<span class="lineNum">     170 </span><span class="lineNoCov">          0 :             ++_spikesPerNeuron[_gidIndex[gid]];</span>
+<span class="lineNum">     171 </span><span class="lineNoCov">          0 :             ++numSpikes;</span>
+<span class="lineNum">     172 </span>            :         }
+<span class="lineNum">     173 </span><span class="lineNoCov">          0 :         return numSpikes;</span>
+<span class="lineNum">     174 </span>            :     }
+<a name="175"><span class="lineNum">     175 </span>            : </a>
+<span class="lineNum">     176 </span>            :     // for ~5 mio spikes, this is ~200ms slower than _loadSpikesFast
+<span class="lineNum">     177 </span><span class="lineCov">          2 :     size_t _loadSpikesSlow( const float start, const float end )</span>
+<span class="lineNum">     178 </span>            :     {
+<span class="lineNum">     179 </span><span class="lineCov">          2 :         size_t numSpikes = 0;</span>
+<span class="lineNum">     180 </span><span class="lineCov">          2 :         lunchbox::ScopedWrite mutex( _getSpikesLock );</span>
+<span class="lineNum">     181 </span><span class="lineCov">          4 :         const brain::Spikes&amp; spikes = _spikesReader-&gt;getSpikes( start, end );</span>
+<span class="lineNum">     182 </span><span class="lineCov">          8 :         for( const brion::Spike&amp; spike : spikes )</span>
+<span class="lineNum">     183 </span>            :         {
+<span class="lineNum">     184 </span><span class="lineCov">          6 :             if( spike.second &gt;= _gidIndex.size( ))</span>
+<span class="lineNum">     185 </span><span class="lineNoCov">          0 :                 continue;</span>
+<span class="lineNum">     186 </span>            : 
+<span class="lineNum">     187 </span><span class="lineCov">          6 :             ++_spikesPerNeuron[_gidIndex[spike.second]];</span>
+<span class="lineNum">     188 </span><span class="lineCov">          6 :             ++numSpikes;</span>
+<span class="lineNum">     189 </span><span class="lineCov">          2 :         }</span>
+<span class="lineNum">     190 </span>            : 
+<span class="lineNum">     191 </span><span class="lineCov">          4 :         return numSpikes;</span>
+<span class="lineNum">     192 </span>            :     }
+<span class="lineNum">     193 </span>            : 
+<span class="lineNum">     194 </span>            :     EventSource&amp; _output;
+<span class="lineNum">     195 </span>            :     const float _duration;
+<span class="lineNum">     196 </span>            :     float _spikesStart;
+<span class="lineNum">     197 </span>            :     float _spikesEnd;
+<span class="lineNum">     198 </span>            : 
+<span class="lineNum">     199 </span>            :     // maps GID to its index in the target
+<span class="lineNum">     200 </span>            :     // OPT: no (unordered)map because of constant lookup but 'wastes' memory
+<span class="lineNum">     201 </span>            :     // (container.size() is number of GIDs)
+<span class="lineNum">     202 </span>            :     brion::size_ts _gidIndex;
+<span class="lineNum">     203 </span>            : 
+<span class="lineNum">     204 </span>            :     // aggregates spikes for each neuron in interval
+<span class="lineNum">     205 </span>            :     // OPT: no (unordered)map because of constant lookup but 'wastes' memory
+<span class="lineNum">     206 </span>            :     // (container.size() is number of GIDs)
+<span class="lineNum">     207 </span>            :     brion::size_ts _spikesPerNeuron;
+<span class="lineNum">     208 </span>            : 
+<span class="lineNum">     209 </span>            :     // for _loadSpikesFast
+<span class="lineNum">     210 </span>            :     std::unique_ptr&lt; lunchbox::MemoryMap &gt; _spikesFile;
+<span class="lineNum">     211 </span>            :     std::pair&lt; float, size_t &gt; _previousStart;
+<span class="lineNum">     212 </span>            : 
+<span class="lineNum">     213 </span>            :     // for _loadSpikesSlow
+<span class="lineNum">     214 </span>            :     std::unique_ptr&lt; brain::SpikeReportReader &gt; _spikesReader;
+<span class="lineNum">     215 </span>            :     mutable lunchbox::Lock _getSpikesLock;
+<a name="216"><span class="lineNum">     216 </span>            : };</a>
+<span class="lineNum">     217 </span>            : 
+<span class="lineNum">     218 </span><span class="lineCov">          2 : SpikeLoader::SpikeLoader( const URIHandler&amp; params )</span>
+<span class="lineNum">     219 </span>            :     : EventSource( params )
+<span class="lineNum">     220 </span><span class="lineCov">          2 :     , _impl( new Impl( *this, params ))</span>
+<span class="lineNum">     221 </span>            : {
+<span class="lineNum">     222 </span><span class="lineCov">          2 :     if( getDt() &lt; 0.f )</span>
+<span class="lineNum">     223 </span><span class="lineNoCov">          0 :         setDt( params.getConfig().getTimestep( ));</span>
+<a name="224"><span class="lineNum">     224 </span><span class="lineCov">          2 : }</span></a>
+<span class="lineNum">     225 </span>            : 
+<span class="lineNum">     226 </span><span class="lineCov">          2 : SpikeLoader::~SpikeLoader()</span>
+<a name="227"><span class="lineNum">     227 </span><span class="lineCov">          2 : {}</span></a>
+<span class="lineNum">     228 </span>            : 
+<span class="lineNum">     229 </span><span class="lineCov">          2 : Vector2f SpikeLoader::_getTimeRange() const</span>
+<span class="lineNum">     230 </span>            : {
+<span class="lineNum">     231 </span><span class="lineCov">          2 :     _impl-&gt;updateTimeRange();</span>
+<span class="lineNum">     232 </span>            : 
+<span class="lineNum">     233 </span>            :     // The duration of the frame needs to be considered,
+<span class="lineNum">     234 </span>            :     // in order to not go over the available range.
+<span class="lineNum">     235 </span><span class="lineCov">          2 :     const float spikesEnd = _impl-&gt;_spikesEnd - _impl-&gt;_duration;</span>
+<span class="lineNum">     236 </span><span class="lineCov">          2 :     if( spikesEnd &lt; _impl-&gt;_spikesStart )</span>
+<span class="lineNum">     237 </span><span class="lineNoCov">          0 :         return Vector2f( 0.f, 0.f );</span>
+<span class="lineNum">     238 </span>            : 
+<span class="lineNum">     239 </span><span class="lineCov">          2 :     return Vector2f( _impl-&gt;_spikesStart, spikesEnd );</span>
+<a name="240"><span class="lineNum">     240 </span>            : }</a>
+<span class="lineNum">     241 </span>            : 
+<span class="lineNum">     242 </span><span class="lineCov">          2 : ssize_t SpikeLoader::_load( const float time )</span>
+<span class="lineNum">     243 </span>            : {
+<span class="lineNum">     244 </span><span class="lineCov">          2 :     return _impl-&gt;load( time );</span>
+<a name="245"><span class="lineNum">     245 </span>            : }</a>
+<span class="lineNum">     246 </span>            : 
+<span class="lineNum">     247 </span><span class="lineCov">          2 : bool SpikeLoader::_hasEnded() const</span>
+<span class="lineNum">     248 </span>            : {
+<span class="lineNum">     249 </span><span class="lineCov">          2 :     return _impl-&gt;_spikesReader ? _impl-&gt;_spikesReader-&gt;hasEnded() : true;</span>
+<a name="250"><span class="lineNum">     250 </span>            : }</a>
+<span class="lineNum">     251 </span>            : 
+<span class="lineNum">     252 </span><span class="lineCov">         15 : }</span>
 </pre>
       </td>
     </tr>

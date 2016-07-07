@@ -31,13 +31,13 @@
             <td class="headerValue">Fivox</td>
             <td></td>
             <td class="headerItem">Lines:</td>
-            <td class="headerCovTableEntry">36</td>
-            <td class="headerCovTableEntry">37</td>
-            <td class="headerCovTableEntryHi">97.3 %</td>
+            <td class="headerCovTableEntry">42</td>
+            <td class="headerCovTableEntry">44</td>
+            <td class="headerCovTableEntryHi">95.5 %</td>
           </tr>
           <tr>
             <td class="headerItem">Date:</td>
-            <td class="headerValue">2016-07-01 05:13:00</td>
+            <td class="headerValue">2016-07-07 05:12:07</td>
             <td></td>
             <td class="headerItem">Functions:</td>
             <td class="headerCovTableEntry">2</td>
@@ -159,52 +159,70 @@
 <span class="lineNum">      97 </span>            :     const brion::CompartmentReport&amp; report, EventSource&amp; output,
 <span class="lineNum">      98 </span>            :     const bool somasOnly = false )
 <span class="lineNum">      99 </span>            : {
-<span class="lineNum">     100 </span><span class="lineCov">          6 :     const auto&amp; mapping = computeInverseMapping( report );</span>
-<span class="lineNum">     101 </span><span class="lineCov">      20654 :     for( const auto&amp; i : mapping )</span>
-<span class="lineNum">     102 </span>            :     {
-<span class="lineNum">     103 </span>            :         size_t offset;
-<span class="lineNum">     104 </span>            :         uint32_t cellIndex;
-<span class="lineNum">     105 </span>            :         uint32_t sectionId;
-<span class="lineNum">     106 </span>            :         uint16_t compartments;
-<span class="lineNum">     107 </span><span class="lineCov">      20648 :         std::tie( offset, cellIndex, sectionId, compartments ) = i;</span>
-<span class="lineNum">     108 </span>            : 
-<span class="lineNum">     109 </span><span class="lineCov">      20648 :         const auto&amp; morphology = *morphologies[cellIndex];</span>
+<span class="lineNum">     100 </span><span class="lineCov">          6 :     size_t size = 0;</span>
+<span class="lineNum">     101 </span><span class="lineCov">          6 :     const auto&amp; mapping = computeInverseMapping( report );</span>
+<span class="lineNum">     102 </span>            :     // first loop over the mapping to compute the number of elements
+<span class="lineNum">     103 </span><span class="lineCov">      20654 :     for( const auto&amp; i : mapping )</span>
+<span class="lineNum">     104 </span>            :     {
+<span class="lineNum">     105 </span>            :         size_t offset;
+<span class="lineNum">     106 </span>            :         uint32_t cellIndex;
+<span class="lineNum">     107 </span>            :         uint32_t sectionId;
+<span class="lineNum">     108 </span>            :         uint16_t compartments;
+<span class="lineNum">     109 </span><span class="lineCov">      20648 :         std::tie( offset, cellIndex, sectionId, compartments ) = i;</span>
 <span class="lineNum">     110 </span>            : 
-<span class="lineNum">     111 </span><span class="lineCov">      20648 :         if( sectionId == 0 )</span>
-<span class="lineNum">     112 </span>            :         {
-<span class="lineNum">     113 </span><span class="lineCov">        300 :             const auto&amp; soma = morphology.getSoma();</span>
-<span class="lineNum">     114 </span>            :             const auto event = Event( soma.getCentroid(), VALUE_UNSET,
-<span class="lineNum">     115 </span><span class="lineCov">        300 :                                       soma.getMeanRadius( ));</span>
-<span class="lineNum">     116 </span><span class="lineCov">        600 :             for( size_t k = 0; k != compartments; ++k )</span>
-<span class="lineNum">     117 </span><span class="lineCov">        300 :                 output.add( event );</span>
-<span class="lineNum">     118 </span><span class="lineCov">        300 :             continue;</span>
-<span class="lineNum">     119 </span>            :         }
-<span class="lineNum">     120 </span>            : 
-<span class="lineNum">     121 </span><span class="lineCov">      20348 :         if( somasOnly )</span>
-<span class="lineNum">     122 </span><span class="lineNoCov">          0 :             continue;</span>
-<span class="lineNum">     123 </span>            : 
-<span class="lineNum">     124 </span><span class="lineCov">      20348 :         brion::floats samples;</span>
-<span class="lineNum">     125 </span><span class="lineCov">      20348 :         samples.reserve( compartments );</span>
-<span class="lineNum">     126 </span>            :         // normalized compartment length
-<span class="lineNum">     127 </span><span class="lineCov">      20348 :         const float normLength = 1.f / float( compartments );</span>
-<span class="lineNum">     128 </span><span class="lineCov">      86360 :         for( float k = normLength * .5f; k &lt; 1.0; k += normLength )</span>
-<span class="lineNum">     129 </span><span class="lineCov">      66012 :             samples.push_back( k );</span>
-<span class="lineNum">     130 </span>            : 
-<span class="lineNum">     131 </span><span class="lineCov">      40696 :         const auto&amp; neuronSection = morphology.getSection( sectionId );</span>
-<span class="lineNum">     132 </span>            : 
-<span class="lineNum">     133 </span>            :         // actual compartment length
-<span class="lineNum">     134 </span><span class="lineCov">      20348 :         const float compartmentLength = normLength * neuronSection.getLength();</span>
-<span class="lineNum">     135 </span>            : 
-<span class="lineNum">     136 </span><span class="lineCov">      40696 :         const auto&amp; points = neuronSection.getSamples( samples );</span>
-<span class="lineNum">     137 </span><span class="lineCov">      86360 :         for( const auto&amp; point : points )</span>
-<span class="lineNum">     138 </span>            :             output.add( Event( point.get_sub_vector&lt; 3, 0 &gt;(), VALUE_UNSET,
-<span class="lineNum">     139 </span><span class="lineCov">      66012 :                                compartmentLength * .2f ));</span>
-<span class="lineNum">     140 </span><span class="lineCov">      20354 :     }</span>
-<span class="lineNum">     141 </span><span class="lineCov">          6 : }</span>
-<span class="lineNum">     142 </span>            : 
-<span class="lineNum">     143 </span>            : }
-<span class="lineNum">     144 </span>            : }
-<span class="lineNum">     145 </span>            : #endif
+<span class="lineNum">     111 </span><span class="lineCov">      20648 :         if( somasOnly &amp;&amp; sectionId != 0 )</span>
+<span class="lineNum">     112 </span><span class="lineNoCov">          0 :             continue;</span>
+<span class="lineNum">     113 </span>            : 
+<span class="lineNum">     114 </span><span class="lineCov">      20648 :         size += compartments;</span>
+<span class="lineNum">     115 </span>            :     }
+<span class="lineNum">     116 </span><span class="lineCov">          6 :     output.resize( size );</span>
+<span class="lineNum">     117 </span>            : 
+<span class="lineNum">     118 </span><span class="lineCov">          6 :     size_t index = 0;</span>
+<span class="lineNum">     119 </span>            :     // second loop to add the actual events
+<span class="lineNum">     120 </span><span class="lineCov">      20654 :     for( const auto&amp; i : mapping )</span>
+<span class="lineNum">     121 </span>            :     {
+<span class="lineNum">     122 </span>            :         size_t offset;
+<span class="lineNum">     123 </span>            :         uint32_t cellIndex;
+<span class="lineNum">     124 </span>            :         uint32_t sectionId;
+<span class="lineNum">     125 </span>            :         uint16_t compartments;
+<span class="lineNum">     126 </span><span class="lineCov">      20648 :         std::tie( offset, cellIndex, sectionId, compartments ) = i;</span>
+<span class="lineNum">     127 </span>            : 
+<span class="lineNum">     128 </span><span class="lineCov">      20648 :         const auto&amp; morphology = *morphologies[cellIndex];</span>
+<span class="lineNum">     129 </span>            : 
+<span class="lineNum">     130 </span><span class="lineCov">      20648 :         if( sectionId == 0 )</span>
+<span class="lineNum">     131 </span>            :         {
+<span class="lineNum">     132 </span><span class="lineCov">        300 :             const auto&amp; soma = morphology.getSoma();</span>
+<span class="lineNum">     133 </span><span class="lineCov">        600 :             for( size_t k = 0; k != compartments; ++k )</span>
+<span class="lineNum">     134 </span>            :                 output.update( index++, soma.getCentroid(),
+<span class="lineNum">     135 </span><span class="lineCov">        300 :                                soma.getMeanRadius( ));</span>
+<span class="lineNum">     136 </span><span class="lineCov">        300 :             continue;</span>
+<span class="lineNum">     137 </span>            :         }
+<span class="lineNum">     138 </span>            : 
+<span class="lineNum">     139 </span><span class="lineCov">      20348 :         if( somasOnly )</span>
+<span class="lineNum">     140 </span><span class="lineNoCov">          0 :             continue;</span>
+<span class="lineNum">     141 </span>            : 
+<span class="lineNum">     142 </span><span class="lineCov">      20348 :         brion::floats samples;</span>
+<span class="lineNum">     143 </span><span class="lineCov">      20348 :         samples.reserve( compartments );</span>
+<span class="lineNum">     144 </span>            :         // normalized compartment length
+<span class="lineNum">     145 </span><span class="lineCov">      20348 :         const float normLength = 1.f / float( compartments );</span>
+<span class="lineNum">     146 </span><span class="lineCov">      86360 :         for( float k = normLength * .5f; k &lt; 1.0; k += normLength )</span>
+<span class="lineNum">     147 </span><span class="lineCov">      66012 :             samples.push_back( k );</span>
+<span class="lineNum">     148 </span>            : 
+<span class="lineNum">     149 </span><span class="lineCov">      40696 :         const auto&amp; neuronSection = morphology.getSection( sectionId );</span>
+<span class="lineNum">     150 </span>            : 
+<span class="lineNum">     151 </span>            :         // actual compartment length
+<span class="lineNum">     152 </span><span class="lineCov">      20348 :         const float compartmentLength = normLength * neuronSection.getLength();</span>
+<span class="lineNum">     153 </span>            : 
+<span class="lineNum">     154 </span><span class="lineCov">      40696 :         const auto&amp; points = neuronSection.getSamples( samples );</span>
+<span class="lineNum">     155 </span><span class="lineCov">      86360 :         for( const auto&amp; point : points )</span>
+<span class="lineNum">     156 </span>            :             output.update( index++, point.get_sub_vector&lt; 3, 0 &gt;(),
+<span class="lineNum">     157 </span><span class="lineCov">      66012 :                            compartmentLength * .2f );</span>
+<span class="lineNum">     158 </span><span class="lineCov">      20354 :     }</span>
+<span class="lineNum">     159 </span><span class="lineCov">          6 : }</span>
+<span class="lineNum">     160 </span>            : 
+<span class="lineNum">     161 </span>            : }
+<span class="lineNum">     162 </span>            : }
+<span class="lineNum">     163 </span>            : #endif
 </pre>
       </td>
     </tr>

@@ -31,18 +31,18 @@
             <td class="headerValue">Fivox</td>
             <td></td>
             <td class="headerItem">Lines:</td>
-            <td class="headerCovTableEntry">90</td>
-            <td class="headerCovTableEntry">107</td>
-            <td class="headerCovTableEntryHi">84.1 %</td>
+            <td class="headerCovTableEntry">124</td>
+            <td class="headerCovTableEntry">143</td>
+            <td class="headerCovTableEntryHi">86.7 %</td>
           </tr>
           <tr>
             <td class="headerItem">Date:</td>
-            <td class="headerValue">2016-07-01 05:13:00</td>
+            <td class="headerValue">2016-07-07 05:12:07</td>
             <td></td>
             <td class="headerItem">Functions:</td>
-            <td class="headerCovTableEntry">20</td>
-            <td class="headerCovTableEntry">22</td>
-            <td class="headerCovTableEntryHi">90.9 %</td>
+            <td class="headerCovTableEntry">32</td>
+            <td class="headerCovTableEntry">33</td>
+            <td class="headerCovTableEntryHi">97.0 %</td>
           </tr>
           <tr><td><img src="../glass.png" width=3 height=3 alt=""></td></tr>
         </table>
@@ -108,211 +108,304 @@
 <span class="lineNum">      46 </span>            : static const size_t minElemInNode = 16;
 <span class="lineNum">      47 </span>            : #endif
 <span class="lineNum">      48 </span>            : 
-<a name="49"><span class="lineNum">      49 </span>            : namespace fivox</a>
-<span class="lineNum">      50 </span>            : {
-<span class="lineNum">      51 </span><span class="lineCov">         11 : class EventSource::Impl</span>
-<a name="52"><span class="lineNum">      52 </span>            : {</a>
-<span class="lineNum">      53 </span>            : public:
-<span class="lineNum">      54 </span><span class="lineCov">         11 :     Impl( const URIHandler&amp; params )</span>
-<span class="lineNum">      55 </span><span class="lineCov">         11 :         : dt( params.getDt( ))</span>
-<span class="lineNum">      56 </span>            :         , currentTime( -1.f )
-<span class="lineNum">      57 </span><span class="lineCov">         11 :         , cutOffDistance( params.getCutoffDistance( ))</span>
-<span class="lineNum">      58 </span><span class="lineCov">         11 :     {}</span>
-<span class="lineNum">      59 </span>            : 
-<span class="lineNum">      60 </span>            :     float dt;
-<span class="lineNum">      61 </span>            :     float currentTime;
-<span class="lineNum">      62 </span>            :     float cutOffDistance;
-<span class="lineNum">      63 </span>            :     Events events;
-<span class="lineNum">      64 </span>            :     AABBf boundingBox;
-<span class="lineNum">      65 </span>            : #ifdef USE_BOOST_GEOMETRY
-<span class="lineNum">      66 </span>            :     typedef bgi::rtree&lt; Value, bgi::rstar&lt; maxElemInNode, minElemInNode &gt; &gt; RTree;
-<a name="67"><span class="lineNum">      67 </span>            :     RTree rtree;</a>
-<span class="lineNum">      68 </span>            : 
-<span class="lineNum">      69 </span><span class="lineCov">         11 :     void rebuildRTree()</span>
-<span class="lineNum">      70 </span>            :     {
-<span class="lineNum">      71 </span><span class="lineCov">         11 :         if( !rtree.empty( ))</span>
-<span class="lineNum">      72 </span><span class="lineCov">         11 :             return;</span>
-<span class="lineNum">      73 </span>            : 
-<span class="lineNum">      74 </span><span class="lineCov">         33 :         LBINFO &lt;&lt; &quot;Building rtree for &quot; &lt;&lt; events.size() &lt;&lt; &quot; events&quot;</span>
-<span class="lineNum">      75 </span><span class="lineCov">         33 :                &lt;&lt; std::endl;</span>
-<span class="lineNum">      76 </span><span class="lineCov">         11 :         Values values;</span>
-<span class="lineNum">      77 </span><span class="lineCov">         11 :         values.reserve( events.size( ));</span>
-<span class="lineNum">      78 </span>            : 
-<span class="lineNum">      79 </span><span class="lineCov">         11 :         size_t i = 0;</span>
-<span class="lineNum">      80 </span><span class="lineCov">     558244 :         for( const Event&amp; event : events )</span>
-<span class="lineNum">      81 </span>            :         {
-<span class="lineNum">      82 </span><span class="lineCov">     558233 :             const Point point( event.position[0], event.position[1],</span>
-<span class="lineNum">      83 </span><span class="lineCov">    1116466 :                                event.position[2] );</span>
-<span class="lineNum">      84 </span><span class="lineCov">     558233 :             values.push_back( std::make_pair( point, i++ ));</span>
+<span class="lineNum">      49 </span>            : namespace fivox
+<a name="50"><span class="lineNum">      50 </span>            : {</a>
+<span class="lineNum">      51 </span>            : 
+<span class="lineNum">      52 </span><span class="lineCov">         11 : class EventSource::Impl</span>
+<span class="lineNum">      53 </span>            : {
+<span class="lineNum">      54 </span>            : public:
+<span class="lineNum">      55 </span>            :     enum EventOffsets
+<span class="lineNum">      56 </span>            :     {
+<span class="lineNum">      57 </span>            :         POSX = 0,
+<span class="lineNum">      58 </span>            :         POSY,
+<span class="lineNum">      59 </span>            :         POSZ,
+<span class="lineNum">      60 </span>            :         RADIUS,
+<span class="lineNum">      61 </span>            :         VALUE,
+<span class="lineNum">      62 </span>            :         NUM_OFFSETS
+<a name="63"><span class="lineNum">      63 </span>            :     };</a>
+<span class="lineNum">      64 </span>            : 
+<span class="lineNum">      65 </span><span class="lineCov">         11 :     explicit Impl( const URIHandler&amp; params )</span>
+<span class="lineNum">      66 </span><span class="lineCov">         11 :         : dt( params.getDt( ))</span>
+<span class="lineNum">      67 </span>            :         , currentTime( -1.f )
+<span class="lineNum">      68 </span><span class="lineCov">         11 :         , cutOffDistance( params.getCutoffDistance( ))</span>
+<span class="lineNum">      69 </span>            :         , alignBoundary( 32 )
+<span class="lineNum">      70 </span><span class="lineCov">         22 :         , numEvents( 0 )</span>
+<a name="71"><span class="lineNum">      71 </span><span class="lineCov">         11 :     {}</span></a>
+<span class="lineNum">      72 </span>            : 
+<span class="lineNum">      73 </span><span class="lineCov">         11 :     void resize( const size_t numEvents_ )</span>
+<span class="lineNum">      74 </span>            :     {
+<span class="lineNum">      75 </span><span class="lineCov">         11 :         numEvents = numEvents_;</span>
+<span class="lineNum">      76 </span><span class="lineCov">         11 :         const size_t size = numEvents * EventOffsets::NUM_OFFSETS;</span>
+<span class="lineNum">      77 </span>            :         void* ptr;
+<span class="lineNum">      78 </span><span class="lineCov">         11 :         if( posix_memalign( &amp;ptr, alignBoundary, size * sizeof(float) ))</span>
+<span class="lineNum">      79 </span>            :         {
+<span class="lineNum">      80 </span><span class="lineNoCov">          0 :             LBWARN &lt;&lt; &quot;Memory alignment failed. &quot;</span>
+<span class="lineNum">      81 </span><span class="lineNoCov">          0 :                    &lt;&lt; &quot;Trying normal allocation&quot; &lt;&lt; std::endl;</span>
+<span class="lineNum">      82 </span><span class="lineNoCov">          0 :             ptr = calloc( size, sizeof(float) );</span>
+<span class="lineNum">      83 </span><span class="lineNoCov">          0 :             if( !ptr )</span>
+<span class="lineNum">      84 </span><span class="lineNoCov">          0 :                 LBTHROW( std::bad_alloc( ));</span>
 <span class="lineNum">      85 </span>            :         }
-<span class="lineNum">      86 </span>            : 
-<span class="lineNum">      87 </span><span class="lineCov">         22 :         RTree rt( values.begin(), values.end( ));</span>
-<span class="lineNum">      88 </span><span class="lineCov">         11 :         rtree = boost::move( rt );</span>
-<span class="lineNum">      89 </span><span class="lineCov">         22 :         LBINFO &lt;&lt; &quot; done&quot; &lt;&lt; std::endl;</span>
-<span class="lineNum">      90 </span>            :     }
-<span class="lineNum">      91 </span>            : #endif
-<a name="92"><span class="lineNum">      92 </span>            : };</a>
+<span class="lineNum">      86 </span><span class="lineCov">         11 :         events.reset((float*) ptr );</span>
+<a name="87"><span class="lineNum">      87 </span><span class="lineCov">         11 :     }</span></a>
+<span class="lineNum">      88 </span>            : 
+<span class="lineNum">      89 </span><span class="lineCov">    8823117 :     const float* getPositionsX() const</span>
+<span class="lineNum">      90 </span>            :     {
+<span class="lineNum">      91 </span><span class="lineCov">    8823117 :         return events.get() + numEvents * EventOffsets::POSX;</span>
+<a name="92"><span class="lineNum">      92 </span>            :     }</a>
 <span class="lineNum">      93 </span>            : 
-<span class="lineNum">      94 </span><span class="lineCov">         11 : EventSource::EventSource( const URIHandler&amp; params )</span>
-<span class="lineNum">      95 </span><span class="lineCov">         11 :     : _impl( new EventSource::Impl( params ))</span>
-<a name="96"><span class="lineNum">      96 </span><span class="lineCov">         11 : {}</span></a>
-<span class="lineNum">      97 </span>            : 
-<span class="lineNum">      98 </span><span class="lineCov">         11 : EventSource::~EventSource()</span>
-<a name="99"><span class="lineNum">      99 </span><span class="lineCov">         11 : {}</span></a>
-<span class="lineNum">     100 </span>            : 
-<span class="lineNum">     101 </span><span class="lineCov">         12 : const Events&amp; EventSource::getEvents() const</span>
-<span class="lineNum">     102 </span>            : {
-<span class="lineNum">     103 </span><span class="lineCov">         12 :     return _impl-&gt;events;</span>
-<a name="104"><span class="lineNum">     104 </span>            : }</a>
-<span class="lineNum">     105 </span>            : 
-<span class="lineNum">     106 </span><span class="lineCov">      68319 : Event&amp; EventSource::operator[]( const size_t index )</span>
-<span class="lineNum">     107 </span>            : {
-<span class="lineNum">     108 </span><span class="lineCov">      68319 :     assert( index &lt; _impl-&gt;events.size( ));</span>
-<span class="lineNum">     109 </span><span class="lineCov">      68319 :     return _impl-&gt;events[index];</span>
-<a name="110"><span class="lineNum">     110 </span>            : }</a>
-<span class="lineNum">     111 </span>            : 
-<span class="lineNum">     112 </span><span class="lineCov">    9836696 : Events EventSource::findEvents( const AABBf&amp; area LB_UNUSED ) const</span>
-<span class="lineNum">     113 </span>            : {
-<span class="lineNum">     114 </span>            : #ifdef USE_BOOST_GEOMETRY
-<span class="lineNum">     115 </span><span class="lineCov">    9836696 :     if( !_impl-&gt;rtree.empty( ))</span>
-<span class="lineNum">     116 </span>            :     {
-<span class="lineNum">     117 </span><span class="lineCov">    9888590 :         const Vector3f&amp; p1 = area.getMin();</span>
-<span class="lineNum">     118 </span><span class="lineCov">    9875941 :         const Vector3f&amp; p2 = area.getMax();</span>
-<span class="lineNum">     119 </span><span class="lineCov">    9876869 :         const Box query( Point( p1[0], p1[1], p1[2] ),</span>
-<span class="lineNum">     120 </span><span class="lineCov">   19710131 :                          Point( p2[0], p2[1], p2[2] ));</span>
-<span class="lineNum">     121 </span>            : 
-<span class="lineNum">     122 </span><span class="lineCov">    9789764 :         static lunchbox::a_ssize_t maxHits( 0 );</span>
-<span class="lineNum">     123 </span><span class="lineCov">    9789764 :         std::vector&lt; Value &gt; hits;</span>
-<span class="lineNum">     124 </span><span class="lineCov">    9834093 :         hits.reserve( maxHits );</span>
-<span class="lineNum">     125 </span><span class="lineCov">    9959632 :         _impl-&gt;rtree.query( bgi::intersects( query ), std::back_inserter( hits ));</span>
-<span class="lineNum">     126 </span><span class="lineCov">    9843313 :         maxHits = std::max( size_t(maxHits), hits.size( ));</span>
-<span class="lineNum">     127 </span>            : 
-<span class="lineNum">     128 </span><span class="lineCov">   19964659 :         Events events;</span>
-<span class="lineNum">     129 </span><span class="lineCov">    9994756 :         events.reserve( hits.size( ));</span>
-<span class="lineNum">     130 </span><span class="lineCov">   63718348 :         for( const Value&amp; value : hits )</span>
-<span class="lineNum">     131 </span>            :         {
-<span class="lineNum">     132 </span><span class="lineCov">   53857511 :             const Event&amp; val = _impl-&gt;events[ value.second ];</span>
-<span class="lineNum">     133 </span><span class="lineCov">   55258927 :             if( val.value != VALUE_UNSET )</span>
-<span class="lineNum">     134 </span><span class="lineCov">   55548092 :                 events.push_back( val );</span>
-<span class="lineNum">     135 </span>            :         }
-<span class="lineNum">     136 </span><span class="lineCov">   19845457 :         return events;</span>
-<span class="lineNum">     137 </span>            :     }
-<span class="lineNum">     138 </span>            : #endif
-<span class="lineNum">     139 </span>            : 
-<span class="lineNum">     140 </span>            :     static bool first = true;
-<span class="lineNum">     141 </span><span class="lineNoCov">          0 :     if( first )</span>
-<span class="lineNum">     142 </span>            :     {
-<span class="lineNum">     143 </span><span class="lineNoCov">          0 :         LBWARN &lt;&lt; &quot;slow path: rtree acceleration not available for findEvents&quot;</span>
-<span class="lineNum">     144 </span><span class="lineNoCov">          0 :                &lt;&lt; std::endl;</span>
-<span class="lineNum">     145 </span><span class="lineNoCov">          0 :         first = false;</span>
-<span class="lineNum">     146 </span>            :     }
-<span class="lineNum">     147 </span><span class="lineNoCov">          0 :     return _impl-&gt;events;</span>
-<a name="148"><span class="lineNum">     148 </span>            : }</a>
-<span class="lineNum">     149 </span>            : 
-<span class="lineNum">     150 </span><span class="lineCov">         11 : const AABBf&amp; EventSource::getBoundingBox() const</span>
-<span class="lineNum">     151 </span>            : {
-<span class="lineNum">     152 </span><span class="lineCov">         11 :     return _impl-&gt;boundingBox;</span>
-<a name="153"><span class="lineNum">     153 </span>            : }</a>
+<span class="lineNum">      94 </span><span class="lineCov">    9103087 :     const float* getPositionsY() const</span>
+<span class="lineNum">      95 </span>            :     {
+<span class="lineNum">      96 </span><span class="lineCov">    9103087 :         return events.get() + numEvents * EventOffsets::POSY;</span>
+<a name="97"><span class="lineNum">      97 </span>            :     }</a>
+<span class="lineNum">      98 </span>            : 
+<span class="lineNum">      99 </span><span class="lineCov">    9181708 :     const float* getPositionsZ() const</span>
+<span class="lineNum">     100 </span>            :     {
+<span class="lineNum">     101 </span><span class="lineCov">    9181708 :         return events.get() + numEvents * EventOffsets::POSZ;</span>
+<a name="102"><span class="lineNum">     102 </span>            :     }</a>
+<span class="lineNum">     103 </span>            : 
+<span class="lineNum">     104 </span><span class="lineCov">    8676404 :     const float* getRadii() const</span>
+<span class="lineNum">     105 </span>            :     {
+<span class="lineNum">     106 </span><span class="lineCov">    8676404 :         return events.get() + numEvents * EventOffsets::RADIUS;</span>
+<a name="107"><span class="lineNum">     107 </span>            :     }</a>
+<span class="lineNum">     108 </span>            : 
+<span class="lineNum">     109 </span><span class="lineCov">    9197944 :     const float* getValues() const</span>
+<span class="lineNum">     110 </span>            :     {
+<span class="lineNum">     111 </span><span class="lineCov">    9197944 :         return events.get() + numEvents * EventOffsets::VALUE;</span>
+<span class="lineNum">     112 </span>            :     }
+<span class="lineNum">     113 </span>            : 
+<span class="lineNum">     114 </span>            :     float dt;
+<span class="lineNum">     115 </span>            :     float currentTime;
+<span class="lineNum">     116 </span>            :     float cutOffDistance;
+<span class="lineNum">     117 </span>            : 
+<span class="lineNum">     118 </span>            :     const size_t alignBoundary;
+<span class="lineNum">     119 </span>            :     size_t numEvents;
+<span class="lineNum">     120 </span>            :     Events events;
+<span class="lineNum">     121 </span>            :     AABBf boundingBox;
+<span class="lineNum">     122 </span>            : 
+<span class="lineNum">     123 </span>            : #ifdef USE_BOOST_GEOMETRY
+<span class="lineNum">     124 </span>            :     typedef bgi::rtree&lt; Value, bgi::rstar&lt; maxElemInNode, minElemInNode &gt; &gt; RTree;
+<a name="125"><span class="lineNum">     125 </span>            :     RTree rtree;</a>
+<span class="lineNum">     126 </span>            : 
+<span class="lineNum">     127 </span><span class="lineCov">          4 :     void buildRTree()</span>
+<span class="lineNum">     128 </span>            :     {
+<span class="lineNum">     129 </span><span class="lineCov">          4 :         rtree.clear();</span>
+<span class="lineNum">     130 </span>            : 
+<span class="lineNum">     131 </span><span class="lineCov">         12 :         LBINFO &lt;&lt; &quot;Building rtree for &quot; &lt;&lt; numEvents &lt;&lt; &quot; events&quot;</span>
+<span class="lineNum">     132 </span><span class="lineCov">         12 :                &lt;&lt; std::endl;</span>
+<span class="lineNum">     133 </span><span class="lineCov">          4 :         Values positions;</span>
+<span class="lineNum">     134 </span><span class="lineCov">          4 :         positions.reserve( numEvents );</span>
+<span class="lineNum">     135 </span>            : 
+<span class="lineNum">     136 </span><span class="lineCov">     491918 :         for( size_t i = 0; i &lt; numEvents; i++ )</span>
+<span class="lineNum">     137 </span>            :         {
+<span class="lineNum">     138 </span><span class="lineCov">     983828 :             const Point point( getPositionsX()[i],</span>
+<span class="lineNum">     139 </span><span class="lineCov">     983828 :                                getPositionsY()[i],</span>
+<span class="lineNum">     140 </span><span class="lineCov">    1967656 :                                getPositionsZ()[i] );</span>
+<span class="lineNum">     141 </span><span class="lineCov">     491914 :             positions.push_back( std::make_pair( point, i ));</span>
+<span class="lineNum">     142 </span>            :         }
+<span class="lineNum">     143 </span>            : 
+<span class="lineNum">     144 </span><span class="lineCov">          8 :         RTree rt( positions.begin(), positions.end( ));</span>
+<span class="lineNum">     145 </span><span class="lineCov">          4 :         rtree = boost::move( rt );</span>
+<span class="lineNum">     146 </span><span class="lineCov">          8 :         LBINFO &lt;&lt; &quot; done&quot; &lt;&lt; std::endl;</span>
+<span class="lineNum">     147 </span><span class="lineCov">          4 :     }</span>
+<span class="lineNum">     148 </span>            : #endif
+<a name="149"><span class="lineNum">     149 </span>            : };</a>
+<span class="lineNum">     150 </span>            : 
+<span class="lineNum">     151 </span><span class="lineCov">         11 : EventSource::EventSource( const URIHandler&amp; params )</span>
+<span class="lineNum">     152 </span><span class="lineCov">         11 :     : _impl( new EventSource::Impl( params ))</span>
+<a name="153"><span class="lineNum">     153 </span><span class="lineCov">         11 : {}</span></a>
 <span class="lineNum">     154 </span>            : 
-<span class="lineNum">     155 </span><span class="lineCov">    9848377 : float EventSource::getCutOffDistance() const</span>
-<span class="lineNum">     156 </span>            : {
-<span class="lineNum">     157 </span><span class="lineCov">    9848377 :     return _impl-&gt;cutOffDistance;</span>
-<a name="158"><span class="lineNum">     158 </span>            : }</a>
-<span class="lineNum">     159 </span>            : 
-<span class="lineNum">     160 </span><span class="lineNoCov">          0 : void EventSource::clear()</span>
-<span class="lineNum">     161 </span>            : {
-<span class="lineNum">     162 </span><span class="lineNoCov">          0 :     _impl-&gt;events.clear();</span>
-<span class="lineNum">     163 </span><span class="lineNoCov">          0 :     _impl-&gt;boundingBox.reset();</span>
-<a name="164"><span class="lineNum">     164 </span><span class="lineNoCov">          0 : }</span></a>
-<span class="lineNum">     165 </span>            : 
-<span class="lineNum">     166 </span><span class="lineCov">     558233 : void EventSource::add( const Event&amp; event )</span>
-<span class="lineNum">     167 </span>            : {
-<span class="lineNum">     168 </span>            : #ifdef USE_BOOST_GEOMETRY
-<span class="lineNum">     169 </span><span class="lineCov">     558233 :     _impl-&gt;rtree.clear();</span>
-<span class="lineNum">     170 </span>            : #endif
-<span class="lineNum">     171 </span>            : 
-<span class="lineNum">     172 </span><span class="lineCov">     558233 :     _impl-&gt;boundingBox.merge( event.position );</span>
-<span class="lineNum">     173 </span><span class="lineCov">     558233 :     _impl-&gt;events.push_back( event );</span>
-<a name="174"><span class="lineNum">     174 </span><span class="lineCov">     558233 : }</span></a>
-<span class="lineNum">     175 </span>            : 
-<span class="lineNum">     176 </span><span class="lineCov">         11 : void EventSource::beforeGenerate()</span>
-<span class="lineNum">     177 </span>            : {
-<span class="lineNum">     178 </span>            : #ifdef USE_BOOST_GEOMETRY
-<span class="lineNum">     179 </span><span class="lineCov">         11 :     _impl-&gt;rebuildRTree();</span>
-<span class="lineNum">     180 </span>            : #endif
-<a name="181"><span class="lineNum">     181 </span><span class="lineCov">         11 : }</span></a>
-<span class="lineNum">     182 </span>            : 
-<span class="lineNum">     183 </span><span class="lineCov">          1 : bool EventSource::load( const uint32_t frame )</span>
-<span class="lineNum">     184 </span>            : {
-<span class="lineNum">     185 </span><span class="lineCov">          1 :     if( !isInFrameRange( frame ))</span>
-<span class="lineNum">     186 </span><span class="lineNoCov">          0 :         return false;</span>
-<span class="lineNum">     187 </span>            : 
-<span class="lineNum">     188 </span><span class="lineCov">          1 :     const float time  = _getTimeRange().x() + getDt() * frame;</span>
-<span class="lineNum">     189 </span><span class="lineCov">          1 :     return load( time );</span>
-<a name="190"><span class="lineNum">     190 </span>            : }</a>
-<span class="lineNum">     191 </span>            : 
-<span class="lineNum">     192 </span><span class="lineCov">         11 : bool EventSource::load( const float time )</span>
-<span class="lineNum">     193 </span>            : {
-<span class="lineNum">     194 </span><span class="lineCov">         11 :     if( time == _impl-&gt;currentTime )</span>
-<span class="lineNum">     195 </span><span class="lineNoCov">          0 :         return true;</span>
-<span class="lineNum">     196 </span>            : 
-<span class="lineNum">     197 </span><span class="lineCov">         11 :     const ssize_t updatedEvents = _load( time );</span>
-<span class="lineNum">     198 </span><span class="lineCov">         11 :     if( updatedEvents &lt; 0 )</span>
+<span class="lineNum">     155 </span><span class="lineCov">         11 : EventSource::~EventSource()</span>
+<a name="156"><span class="lineNum">     156 </span><span class="lineCov">         11 : {}</span></a>
+<span class="lineNum">     157 </span>            : 
+<span class="lineNum">     158 </span><span class="lineCov">      68319 : float&amp; EventSource::operator[]( const size_t index )</span>
+<span class="lineNum">     159 </span>            : {
+<span class="lineNum">     160 </span><span class="lineCov">      68319 :     return _impl-&gt;events.get()[ _impl-&gt;numEvents * Impl::EventOffsets::VALUE +</span>
+<span class="lineNum">     161 </span><span class="lineCov">      68319 :                                 index ];</span>
+<a name="162"><span class="lineNum">     162 </span>            : }</a>
+<span class="lineNum">     163 </span>            : 
+<span class="lineNum">     164 </span><span class="lineCov">    8882813 : size_t EventSource::getNumEvents() const</span>
+<span class="lineNum">     165 </span>            : {
+<span class="lineNum">     166 </span><span class="lineCov">    8882813 :     return _impl-&gt;numEvents;</span>
+<a name="167"><span class="lineNum">     167 </span>            : }</a>
+<span class="lineNum">     168 </span>            : 
+<span class="lineNum">     169 </span><span class="lineCov">    8324016 : const float* EventSource::getPositionsX() const</span>
+<span class="lineNum">     170 </span>            : {
+<span class="lineNum">     171 </span><span class="lineCov">    8324016 :     return _impl-&gt;getPositionsX();</span>
+<a name="172"><span class="lineNum">     172 </span>            : }</a>
+<span class="lineNum">     173 </span>            : 
+<span class="lineNum">     174 </span><span class="lineCov">    8644813 : const float* EventSource::getPositionsY() const</span>
+<span class="lineNum">     175 </span>            : {
+<span class="lineNum">     176 </span><span class="lineCov">    8644813 :     return _impl-&gt;getPositionsY();</span>
+<a name="177"><span class="lineNum">     177 </span>            : }</a>
+<span class="lineNum">     178 </span>            : 
+<span class="lineNum">     179 </span><span class="lineCov">    8686980 : const float* EventSource::getPositionsZ() const</span>
+<span class="lineNum">     180 </span>            : {
+<span class="lineNum">     181 </span><span class="lineCov">    8686980 :     return _impl-&gt;getPositionsZ();</span>
+<a name="182"><span class="lineNum">     182 </span>            : }</a>
+<span class="lineNum">     183 </span>            : 
+<span class="lineNum">     184 </span><span class="lineCov">    8751330 : const float* EventSource::getRadii() const</span>
+<span class="lineNum">     185 </span>            : {
+<span class="lineNum">     186 </span><span class="lineCov">    8751330 :     return _impl-&gt;getRadii();</span>
+<a name="187"><span class="lineNum">     187 </span>            : }</a>
+<span class="lineNum">     188 </span>            : 
+<span class="lineNum">     189 </span><span class="lineCov">    9329766 : const float* EventSource::getValues() const</span>
+<span class="lineNum">     190 </span>            : {
+<span class="lineNum">     191 </span><span class="lineCov">    9329766 :     return _impl-&gt;getValues();</span>
+<a name="192"><span class="lineNum">     192 </span>            : }</a>
+<span class="lineNum">     193 </span>            : 
+<span class="lineNum">     194 </span><span class="lineCov">       1759 : EventValues EventSource::findEvents( const AABBf&amp; area LB_UNUSED ) const</span>
+<span class="lineNum">     195 </span>            : {
+<span class="lineNum">     196 </span><span class="lineCov">       1759 :     EventValues eventValues;</span>
+<span class="lineNum">     197 </span>            : #ifdef USE_BOOST_GEOMETRY
+<span class="lineNum">     198 </span><span class="lineCov">       2036 :     if( !_impl-&gt;rtree.empty( ))</span>
 <span class="lineNum">     199 </span>            :     {
-<span class="lineNum">     200 </span><span class="lineNoCov">          0 :         LBERROR &lt;&lt; &quot;Timestamp &quot; &lt;&lt; time &lt;&lt; &quot;ms not loaded, no data or events&quot;</span>
-<span class="lineNum">     201 </span><span class="lineNoCov">          0 :                 &lt;&lt; std::endl;</span>
-<span class="lineNum">     202 </span><span class="lineNoCov">          0 :         return false;</span>
-<span class="lineNum">     203 </span>            :     }
+<span class="lineNum">     200 </span><span class="lineCov">       2038 :         const Vector3f&amp; p1 = area.getMin();</span>
+<span class="lineNum">     201 </span><span class="lineCov">       2036 :         const Vector3f&amp; p2 = area.getMax();</span>
+<span class="lineNum">     202 </span><span class="lineCov">       2037 :         const Box query( Point( p1[0], p1[1], p1[2] ),</span>
+<span class="lineNum">     203 </span><span class="lineCov">       4072 :                          Point( p2[0], p2[1], p2[2] ));</span>
 <span class="lineNum">     204 </span>            : 
-<span class="lineNum">     205 </span><span class="lineCov">         33 :     LBINFO &lt;&lt; &quot;Timestamp &quot; &lt;&lt; time &lt;&lt; &quot;ms loaded, updated &quot; &lt;&lt; updatedEvents</span>
-<span class="lineNum">     206 </span><span class="lineCov">         33 :            &lt;&lt; &quot; event(s)&quot; &lt;&lt; std::endl;</span>
-<span class="lineNum">     207 </span>            : 
-<span class="lineNum">     208 </span><span class="lineCov">         11 :     _impl-&gt;currentTime = time;</span>
-<span class="lineNum">     209 </span><span class="lineCov">         11 :     return true;</span>
-<a name="210"><span class="lineNum">     210 </span>            : }</a>
-<span class="lineNum">     211 </span>            : 
-<span class="lineNum">     212 </span><span class="lineCov">         11 : Vector2ui EventSource::getFrameRange() const</span>
-<span class="lineNum">     213 </span>            : {
-<span class="lineNum">     214 </span><span class="lineCov">         11 :     const Vector2f&amp; interval = _getTimeRange();</span>
-<span class="lineNum">     215 </span><span class="lineCov">         11 :     switch( _getType( ))</span>
-<span class="lineNum">     216 </span>            :     {
-<span class="lineNum">     217 </span>            :     case SOURCE_EVENT:
-<span class="lineNum">     218 </span><span class="lineCov">          2 :         if( _hasEnded( ))</span>
-<span class="lineNum">     219 </span>            :         {
-<span class="lineNum">     220 </span><span class="lineCov">          2 :             if( interval.x() == interval.y() &amp;&amp; _impl-&gt;events.empty( ))</span>
-<span class="lineNum">     221 </span>            :                 // Do not return (0, 1) for empty sources.
-<span class="lineNum">     222 </span><span class="lineNoCov">          0 :                 return Vector2ui( 0, 0 );</span>
-<span class="lineNum">     223 </span><span class="lineCov">          2 :             return Vector2ui( std::floor( interval.x() / getDt( )),</span>
-<span class="lineNum">     224 </span><span class="lineCov">          4 :                               std::floor( interval.y() / getDt() + 1 ));</span>
+<span class="lineNum">     205 </span><span class="lineCov">       2034 :         static lunchbox::a_ssize_t maxHits( 0 );</span>
+<span class="lineNum">     206 </span><span class="lineCov">       2034 :         std::vector&lt; Value &gt; hits;</span>
+<span class="lineNum">     207 </span><span class="lineCov">       2035 :         hits.reserve( maxHits );</span>
+<span class="lineNum">     208 </span><span class="lineCov">       2045 :         _impl-&gt;rtree.query( bgi::intersects( query ), std::back_inserter( hits ));</span>
+<span class="lineNum">     209 </span><span class="lineCov">       2034 :         maxHits = std::max( size_t(maxHits), hits.size( ));</span>
+<span class="lineNum">     210 </span>            : 
+<span class="lineNum">     211 </span><span class="lineCov">       2048 :         eventValues.reserve( hits.size( ));</span>
+<span class="lineNum">     212 </span><span class="lineCov">     462591 :         for( const Value&amp; value : hits )</span>
+<span class="lineNum">     213 </span><span class="lineCov">     462558 :             eventValues.push_back( getValues()[value.second] );</span>
+<span class="lineNum">     214 </span>            :     }
+<span class="lineNum">     215 </span>            :     else
+<span class="lineNum">     216 </span>            : #endif
+<span class="lineNum">     217 </span>            :     // return empty
+<span class="lineNum">     218 </span>            :     {
+<span class="lineNum">     219 </span>            :         static bool first = true;
+<span class="lineNum">     220 </span><span class="lineNoCov">          0 :         if( first )</span>
+<span class="lineNum">     221 </span>            :         {
+<span class="lineNum">     222 </span><span class="lineNoCov">          0 :             LBWARN &lt;&lt; &quot;RTree not available for findEvents. &quot;</span>
+<span class="lineNum">     223 </span><span class="lineNoCov">          0 :                    &lt;&lt; &quot;No events will be returned&quot; &lt;&lt; std::endl;</span>
+<span class="lineNum">     224 </span><span class="lineNoCov">          0 :             first = false;</span>
 <span class="lineNum">     225 </span>            :         }
-<span class="lineNum">     226 </span>            :         else
-<span class="lineNum">     227 </span>            :             // Return only full frames [t, t+dt)
-<span class="lineNum">     228 </span><span class="lineNoCov">          0 :             return Vector2ui( std::floor( interval.x() / getDt( )),</span>
-<span class="lineNum">     229 </span><span class="lineNoCov">          0 :                               std::floor( interval.y() / getDt( )));</span>
-<span class="lineNum">     230 </span>            :     case SOURCE_FRAME:
-<span class="lineNum">     231 </span>            :     default:
-<span class="lineNum">     232 </span><span class="lineCov">          9 :         return Vector2ui( std::floor( interval.x() / getDt( )),</span>
-<span class="lineNum">     233 </span><span class="lineCov">         18 :                           std::ceil( interval.y() / getDt( )));</span>
-<span class="lineNum">     234 </span>            :     }
-<a name="235"><span class="lineNum">     235 </span>            : }</a>
-<span class="lineNum">     236 </span>            : 
-<span class="lineNum">     237 </span><span class="lineCov">          1 : bool EventSource::isInFrameRange( uint32_t frame )</span>
-<span class="lineNum">     238 </span>            : {
-<span class="lineNum">     239 </span><span class="lineCov">          1 :     const Vector2ui&amp; frameRange = getFrameRange();</span>
-<span class="lineNum">     240 </span><span class="lineCov">          1 :     return frame &gt;= frameRange[0] &amp;&amp; frame &lt; frameRange[1];</span>
-<a name="241"><span class="lineNum">     241 </span>            : }</a>
-<span class="lineNum">     242 </span>            : 
-<span class="lineNum">     243 </span><span class="lineCov">         43 : float EventSource::getDt() const</span>
-<span class="lineNum">     244 </span>            : {
-<span class="lineNum">     245 </span><span class="lineCov">         43 :     return _impl-&gt;dt;</span>
-<a name="246"><span class="lineNum">     246 </span>            : }</a>
-<span class="lineNum">     247 </span>            : 
-<span class="lineNum">     248 </span><span class="lineCov">          9 : void EventSource::setDt( const float dt )</span>
-<span class="lineNum">     249 </span>            : {
-<span class="lineNum">     250 </span><span class="lineCov">          9 :     _impl-&gt;dt = dt;</span>
-<a name="251"><span class="lineNum">     251 </span><span class="lineCov">          9 : }</span></a>
-<span class="lineNum">     252 </span>            : 
-<span class="lineNum">     253 </span><span class="lineCov">         15 : }</span>
+<span class="lineNum">     226 </span>            :     }
+<span class="lineNum">     227 </span><span class="lineCov">       2047 :     return eventValues;</span>
+<a name="228"><span class="lineNum">     228 </span>            : }</a>
+<span class="lineNum">     229 </span>            : 
+<span class="lineNum">     230 </span><span class="lineCov">         11 : const AABBf&amp; EventSource::getBoundingBox() const</span>
+<span class="lineNum">     231 </span>            : {
+<span class="lineNum">     232 </span><span class="lineCov">         11 :     return _impl-&gt;boundingBox;</span>
+<a name="233"><span class="lineNum">     233 </span>            : }</a>
+<span class="lineNum">     234 </span>            : 
+<span class="lineNum">     235 </span><span class="lineCov">    8288163 : float EventSource::getCutOffDistance() const</span>
+<span class="lineNum">     236 </span>            : {
+<span class="lineNum">     237 </span><span class="lineCov">    8288163 :     return _impl-&gt;cutOffDistance;</span>
+<a name="238"><span class="lineNum">     238 </span>            : }</a>
+<span class="lineNum">     239 </span>            : 
+<span class="lineNum">     240 </span><span class="lineCov">         11 : void EventSource::resize( const size_t size )</span>
+<span class="lineNum">     241 </span>            : {
+<span class="lineNum">     242 </span><span class="lineCov">         11 :     _impl-&gt;resize( size );</span>
+<a name="243"><span class="lineNum">     243 </span><span class="lineCov">         11 : }</span></a>
+<span class="lineNum">     244 </span>            : 
+<span class="lineNum">     245 </span><span class="lineCov">     558233 : void EventSource::update( const size_t i, const Vector3f&amp; pos,</span>
+<span class="lineNum">     246 </span>            :                           const float rad, const float val )
+<span class="lineNum">     247 </span>            : {
+<span class="lineNum">     248 </span><span class="lineCov">     558233 :     const size_t size( getNumEvents( ));</span>
+<span class="lineNum">     249 </span><span class="lineCov">     558233 :     if( size &lt;= i )</span>
+<span class="lineNum">     250 </span>            :     {
+<span class="lineNum">     251 </span><span class="lineNoCov">          0 :         LBWARN &lt;&lt; &quot;The specified index is not valid. Event not added&quot;</span>
+<span class="lineNum">     252 </span><span class="lineNoCov">          0 :                &lt;&lt; std::endl;</span>
+<span class="lineNum">     253 </span><span class="lineCov">     558233 :         return;</span>
+<span class="lineNum">     254 </span>            :     }
+<span class="lineNum">     255 </span>            : 
+<span class="lineNum">     256 </span><span class="lineCov">     558233 :     _impl-&gt;boundingBox.merge( pos );</span>
+<span class="lineNum">     257 </span><span class="lineCov">     558233 :     _impl-&gt;events.get()[ i + size * Impl::EventOffsets::POSX ] = pos[0];</span>
+<span class="lineNum">     258 </span><span class="lineCov">     558233 :     _impl-&gt;events.get()[ i + size * Impl::EventOffsets::POSY ] = pos[1];</span>
+<span class="lineNum">     259 </span><span class="lineCov">     558233 :     _impl-&gt;events.get()[ i + size * Impl::EventOffsets::POSZ ] = pos[2];</span>
+<span class="lineNum">     260 </span>            : 
+<span class="lineNum">     261 </span>            :     // radius is inverted to improve performance at computing time
+<span class="lineNum">     262 </span>            :     // e.g. LFP functor
+<span class="lineNum">     263 </span><span class="lineCov">     558233 :     if( std::abs( rad ) &gt; std::numeric_limits&lt; float &gt;::epsilon( )) // rad != 0</span>
+<span class="lineNum">     264 </span><span class="lineCov">      66319 :         _impl-&gt;events.get()[i + size * Impl::EventOffsets::RADIUS] =  1.f / rad;</span>
+<span class="lineNum">     265 </span>            : 
+<span class="lineNum">     266 </span><span class="lineCov">     558233 :     _impl-&gt;events.get()[ i + size * Impl::EventOffsets::VALUE ] = val;</span>
+<a name="267"><span class="lineNum">     267 </span>            : }</a>
+<span class="lineNum">     268 </span>            : 
+<span class="lineNum">     269 </span><span class="lineCov">          4 : void EventSource::buildRTree()</span>
+<span class="lineNum">     270 </span>            : {
+<span class="lineNum">     271 </span>            : #ifdef USE_BOOST_GEOMETRY
+<span class="lineNum">     272 </span><span class="lineCov">          4 :     _impl-&gt;buildRTree();</span>
+<span class="lineNum">     273 </span>            : #endif
+<a name="274"><span class="lineNum">     274 </span><span class="lineCov">          4 : }</span></a>
+<span class="lineNum">     275 </span>            : 
+<span class="lineNum">     276 </span><span class="lineCov">          1 : bool EventSource::load( const uint32_t frame )</span>
+<span class="lineNum">     277 </span>            : {
+<span class="lineNum">     278 </span><span class="lineCov">          1 :     if( !isInFrameRange( frame ))</span>
+<span class="lineNum">     279 </span><span class="lineNoCov">          0 :         return false;</span>
+<span class="lineNum">     280 </span>            : 
+<span class="lineNum">     281 </span><span class="lineCov">          1 :     const float time  = _getTimeRange().x() + getDt() * frame;</span>
+<span class="lineNum">     282 </span><span class="lineCov">          1 :     return load( time );</span>
+<a name="283"><span class="lineNum">     283 </span>            : }</a>
+<span class="lineNum">     284 </span>            : 
+<span class="lineNum">     285 </span><span class="lineCov">         11 : bool EventSource::load( const float time )</span>
+<span class="lineNum">     286 </span>            : {
+<span class="lineNum">     287 </span><span class="lineCov">         11 :     if( time == _impl-&gt;currentTime )</span>
+<span class="lineNum">     288 </span><span class="lineNoCov">          0 :         return true;</span>
+<span class="lineNum">     289 </span>            : 
+<span class="lineNum">     290 </span><span class="lineCov">         11 :     const ssize_t updatedEvents = _load( time );</span>
+<span class="lineNum">     291 </span><span class="lineCov">         11 :     if( updatedEvents &lt; 0 )</span>
+<span class="lineNum">     292 </span>            :     {
+<span class="lineNum">     293 </span><span class="lineNoCov">          0 :         LBERROR &lt;&lt; &quot;Timestamp &quot; &lt;&lt; time &lt;&lt; &quot;ms not loaded, no data or events&quot;</span>
+<span class="lineNum">     294 </span><span class="lineNoCov">          0 :                 &lt;&lt; std::endl;</span>
+<span class="lineNum">     295 </span><span class="lineNoCov">          0 :         return false;</span>
+<span class="lineNum">     296 </span>            :     }
+<span class="lineNum">     297 </span>            : 
+<span class="lineNum">     298 </span><span class="lineCov">         33 :     LBINFO &lt;&lt; &quot;Timestamp &quot; &lt;&lt; time &lt;&lt; &quot;ms loaded, updated &quot; &lt;&lt; updatedEvents</span>
+<span class="lineNum">     299 </span><span class="lineCov">         33 :            &lt;&lt; &quot; event(s)&quot; &lt;&lt; std::endl;</span>
+<span class="lineNum">     300 </span>            : 
+<span class="lineNum">     301 </span><span class="lineCov">         11 :     _impl-&gt;currentTime = time;</span>
+<span class="lineNum">     302 </span><span class="lineCov">         11 :     return true;</span>
+<a name="303"><span class="lineNum">     303 </span>            : }</a>
+<span class="lineNum">     304 </span>            : 
+<span class="lineNum">     305 </span><span class="lineCov">         11 : Vector2ui EventSource::getFrameRange() const</span>
+<span class="lineNum">     306 </span>            : {
+<span class="lineNum">     307 </span><span class="lineCov">         11 :     const Vector2f&amp; interval = _getTimeRange();</span>
+<span class="lineNum">     308 </span><span class="lineCov">         11 :     switch( _getType( ))</span>
+<span class="lineNum">     309 </span>            :     {
+<span class="lineNum">     310 </span>            :     case SOURCE_EVENT:
+<span class="lineNum">     311 </span><span class="lineCov">          2 :         if( _hasEnded( ))</span>
+<span class="lineNum">     312 </span>            :         {
+<span class="lineNum">     313 </span><span class="lineCov">          2 :             if( interval.x() == interval.y() &amp;&amp; _impl-&gt;numEvents == 0 )</span>
+<span class="lineNum">     314 </span>            :                 // Do not return (0, 1) for empty sources.
+<span class="lineNum">     315 </span><span class="lineNoCov">          0 :                 return Vector2ui( 0, 0 );</span>
+<span class="lineNum">     316 </span><span class="lineCov">          2 :             return Vector2ui( std::floor( interval.x() / getDt( )),</span>
+<span class="lineNum">     317 </span><span class="lineCov">          4 :                               std::floor( interval.y() / getDt() + 1 ));</span>
+<span class="lineNum">     318 </span>            :         }
+<span class="lineNum">     319 </span>            :         else
+<span class="lineNum">     320 </span>            :             // Return only full frames [t, t+dt)
+<span class="lineNum">     321 </span><span class="lineNoCov">          0 :             return Vector2ui( std::floor( interval.x() / getDt( )),</span>
+<span class="lineNum">     322 </span><span class="lineNoCov">          0 :                               std::floor( interval.y() / getDt( )));</span>
+<span class="lineNum">     323 </span>            :     case SOURCE_FRAME:
+<span class="lineNum">     324 </span>            :     default:
+<span class="lineNum">     325 </span><span class="lineCov">          9 :         return Vector2ui( std::floor( interval.x() / getDt( )),</span>
+<span class="lineNum">     326 </span><span class="lineCov">         18 :                           std::ceil( interval.y() / getDt( )));</span>
+<span class="lineNum">     327 </span>            :     }
+<a name="328"><span class="lineNum">     328 </span>            : }</a>
+<span class="lineNum">     329 </span>            : 
+<span class="lineNum">     330 </span><span class="lineCov">          1 : bool EventSource::isInFrameRange( uint32_t frame )</span>
+<span class="lineNum">     331 </span>            : {
+<span class="lineNum">     332 </span><span class="lineCov">          1 :     const Vector2ui&amp; frameRange = getFrameRange();</span>
+<span class="lineNum">     333 </span><span class="lineCov">          1 :     return frame &gt;= frameRange[0] &amp;&amp; frame &lt; frameRange[1];</span>
+<a name="334"><span class="lineNum">     334 </span>            : }</a>
+<span class="lineNum">     335 </span>            : 
+<span class="lineNum">     336 </span><span class="lineCov">         43 : float EventSource::getDt() const</span>
+<span class="lineNum">     337 </span>            : {
+<span class="lineNum">     338 </span><span class="lineCov">         43 :     return _impl-&gt;dt;</span>
+<a name="339"><span class="lineNum">     339 </span>            : }</a>
+<span class="lineNum">     340 </span>            : 
+<span class="lineNum">     341 </span><span class="lineCov">          9 : void EventSource::setDt( const float dt )</span>
+<span class="lineNum">     342 </span>            : {
+<span class="lineNum">     343 </span><span class="lineCov">          9 :     _impl-&gt;dt = dt;</span>
+<a name="344"><span class="lineNum">     344 </span><span class="lineCov">          9 : }</span></a>
+<span class="lineNum">     345 </span>            : 
+<span class="lineNum">     346 </span><span class="lineCov">         15 : }</span>
 </pre>
       </td>
     </tr>
