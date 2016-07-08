@@ -4,6 +4,7 @@ var NAVTREE =
     [ "Introduction", "index.html#Introduction", null ],
     [ "Features", "index.html#Features", null ],
     [ "Building", "index.html#Building", null ],
+    [ "Caching support", "md__jenkins_02_workspace_oss_8_brion_8documentation_build_type__debug_platform_cscsviz-vm_sources_doc_caching.html", null ],
     [ "Changelog", "_changelog.html", null ],
     [ "Additions to compartmentReport to support ZeroEQ streams", "md__jenkins_02_workspace_oss_8_brion_8documentation_build_type__debug_platform_cscsviz-vm_source23b82867a6f79316dc8f69aa2de32217.html", null ],
     [ "Compartment report writing from MPI applications", "md__jenkins_02_workspace_oss_8_brion_8documentation_build_type__debug_platform_cscsviz-vm_sourceb36c4615b203f34c66af2a917f3aa101.html", null ],
@@ -43,8 +44,8 @@ var NAVTREE =
 var NAVTREEINDEX =
 [
 "_changelog.html",
-"classbrion_1_1_mesh.html#aaabe742fe4f8fb784928e1b178f02d80",
-"functions_e.html"
+"classbrion_1_1_mesh.html#aa812af0661e5f85c24956581776d0535",
+"functions_c.html"
 ];
 
 var SYNCONMSG = 'click to disable panel synchronisation';

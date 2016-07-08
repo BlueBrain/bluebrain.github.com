@@ -18,5 +18,6 @@ var searchData=
   ['const_5fiterator',['const_iterator',['../classbrain_1_1_spikes_1_1const__iterator.html#ab9da3bf11b39762352fa03d019d6693b',1,'brain::Spikes::const_iterator::const_iterator()'],['../classbrain_1_1_spikes_1_1const__iterator.html#a07366218e13f964dfcc6792999dd8b3f',1,'brain::Spikes::const_iterator::const_iterator(const const_iterator &amp;rhs)']]],
   ['contains',['contains',['../classbrion_1_1_target.html#aa58924378a7389ae2a44867ce5e8be20',1,'brion::Target']]],
   ['coordinates',['Coordinates',['../classbrain_1_1_circuit.html#a1f220992f40a8759f34ef96da4041610',1,'brain::Circuit']]],
+  ['caching_20support',['Caching support',['../md__jenkins_02_workspace_oss_8_brion_8documentation_build_type__debug_platform_cscsviz-vm_sources_doc_caching.html',1,'']]],
   ['compartment_20report_20writing_20from_20mpi_20applications',['Compartment report writing from MPI applications',['../md__jenkins_02_workspace_oss_8_brion_8documentation_build_type__debug_platform_cscsviz-vm_sourceb36c4615b203f34c66af2a917f3aa101.html',1,'']]]
 ];

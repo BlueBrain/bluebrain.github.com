@@ -14,5 +14,6 @@ var classbrain_1_1neuron_1_1_morphology =
     [ "getSections", "classbrain_1_1neuron_1_1_morphology.html#a5f7434645c61ded7b7e24129e6f5946d", null ],
     [ "getSectionTypes", "classbrain_1_1neuron_1_1_morphology.html#aa73946933a24ddce7ce6d1da36c41d50", null ],
     [ "getSoma", "classbrain_1_1neuron_1_1_morphology.html#a5a39426d02be2db103f6f485f641129d", null ],
-    [ "getTransformation", "classbrain_1_1neuron_1_1_morphology.html#af58a9add66624770aa386286d7b85239", null ]
+    [ "getTransformation", "classbrain_1_1neuron_1_1_morphology.html#af58a9add66624770aa386286d7b85239", null ],
+    [ "brain::Circuit", "classbrain_1_1neuron_1_1_morphology.html#a2226817d4d0befe6f2dac238442d502a", null ]
 ];
