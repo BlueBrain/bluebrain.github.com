@@ -7,6 +7,9 @@ var class_display_group_view =
     [ "event", "class_display_group_view.html#a41aa355f4e303424741166f72089fe84", null ],
     [ "launcherControlPressed", "class_display_group_view.html#abddda5fe611ba5d9e0a797a70d21036a", null ],
     [ "mapToWallPos", "class_display_group_view.html#a8d0b47b243973fa5f6d64d436c9c3245", null ],
+    [ "mouseMoved", "class_display_group_view.html#a69a3ae35c565f027c9374ebcf573deaf", null ],
+    [ "mousePressed", "class_display_group_view.html#a7551179e3694fc7c15a35043736f7a78", null ],
+    [ "mouseReleased", "class_display_group_view.html#aceaa20e596c65e21bf1e575b02bacd91", null ],
     [ "setDataModel", "class_display_group_view.html#a217ec2c8ba202c74db38262038ccd8c3", null ],
     [ "settingsControlsPressed", "class_display_group_view.html#a30728a285bda55b37927e194820a9ff4", null ]
 ];

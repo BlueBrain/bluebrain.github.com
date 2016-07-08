@@ -53,6 +53,7 @@ var class_content_window =
     [ "getMode", "class_content_window.html#ab2e3fba6cc9bb40a86132cf1283c0bca", null ],
     [ "getResizePolicy", "class_content_window.html#a766bb6acd0544c0c69814ae1a44a13de", null ],
     [ "getState", "class_content_window.html#abf8ec51962379b4bd3fb6837ee04ba0b", null ],
+    [ "hiddenChanged", "class_content_window.html#adc7cc20f3fd12023c3e2d6175dd65c8d", null ],
     [ "isFocused", "class_content_window.html#ab81535e0639c5bf3582f4df57e6ec7e2", null ],
     [ "isFullscreen", "class_content_window.html#a0425680dc9e71347979a11a3c7a56a67", null ],
     [ "isHidden", "class_content_window.html#a5d8a2935e14cb43f890e776a1c9f2315", null ],
