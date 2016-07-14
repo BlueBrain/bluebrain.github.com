@@ -48,6 +48,7 @@ var files =
     [ "ImageSynchronizer.h", "_image_synchronizer_8h_source.html", null ],
     [ "ImageThumbnailGenerator.h", "_image_thumbnail_generator_8h_source.html", null ],
     [ "JsonOptions.h", "_json_options_8h_source.html", null ],
+    [ "KeyboardState.h", "_keyboard_state_8h_source.html", null ],
     [ "LayoutEngine.h", "_layout_engine_8h_source.html", null ],
     [ "LodSynchronizer.h", "_lod_synchronizer_8h_source.html", null ],
     [ "LodTiler.h", "_lod_tiler_8h_source.html", null ],

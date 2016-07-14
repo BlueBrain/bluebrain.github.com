@@ -43,6 +43,7 @@ var annotated =
     [ "ImageSynchronizer", "class_image_synchronizer.html", "class_image_synchronizer" ],
     [ "ImageThumbnailGenerator", "class_image_thumbnail_generator.html", "class_image_thumbnail_generator" ],
     [ "JsonOptions", "class_json_options.html", "class_json_options" ],
+    [ "KeyboardState", "class_keyboard_state.html", "class_keyboard_state" ],
     [ "LayoutEngine", "class_layout_engine.html", "class_layout_engine" ],
     [ "LodSynchronizer", "class_lod_synchronizer.html", "class_lod_synchronizer" ],
     [ "LodTiler", "class_lod_tiler.html", "class_lod_tiler" ],

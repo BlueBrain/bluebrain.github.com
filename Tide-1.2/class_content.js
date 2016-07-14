@@ -14,6 +14,7 @@ var class_content =
     [ "getCaptureInteraction", "class_content.html#a7e7c36edf987322675eea81f27e8017d", null ],
     [ "getDimensions", "class_content.html#aa4681ca97acea99fbe88e20f0e664bc0", null ],
     [ "getInteractionPolicy", "class_content.html#a2dea2403b7d96fad93fae78ca4986197", null ],
+    [ "getKeyboardState", "class_content.html#a0e10f71c92fe8434a9b40183cb7239a0", null ],
     [ "getMaxDimensions", "class_content.html#a70fbc6b9c9dfd95c426819a1c14464f9", null ],
     [ "getMaxScale", "class_content.html#a04642ff3171681aa5fd2c8c8291a7949", null ],
     [ "getMinDimensions", "class_content.html#a8cf06fbd623453fd2aa349d91ebbca3b", null ],
@@ -38,6 +39,7 @@ var class_content =
     [ "boost::serialization::access", "class_content.html#ac98d07dd8f7b70e16ccb9a01abf56b9c", null ],
     [ "_actions", "class_content.html#acecc4dd9197d1d4f3bc0f6ae6a3c954f", null ],
     [ "_captureInteraction", "class_content.html#ae26125035f5d7ab57e700c2b784de5fc", null ],
+    [ "_keyboardState", "class_content.html#a3c8df42b6254fe11cff5a7d0fc8f7d10", null ],
     [ "_maxScale", "class_content.html#af136813ace63660f76f873772f04b6d5", null ],
     [ "_size", "class_content.html#ad1f5c3af37e911c88ea863329900e1a1", null ],
     [ "_sizeHints", "class_content.html#a8f7c059c706b77ed5ef3e12d080e9f21", null ],
@@ -48,6 +50,7 @@ var class_content =
     [ "captureInteraction", "class_content.html#a90615682c0d265327d6d37d6c397d2a6", null ],
     [ "hasFixedAspectRatio", "class_content.html#ad1066ba29aa2771542a3a1ea39b05081", null ],
     [ "interactionPolicy", "class_content.html#ada84bcec0a2ecb96647e841a604c7cb6", null ],
+    [ "keyboard", "class_content.html#aded8c9d6721e9c52f57204937dfa0cf5", null ],
     [ "size", "class_content.html#a5c8292dbaab045c65cc9a6f1821f8efd", null ],
     [ "zoomRect", "class_content.html#ade1377306703c28f2977e0d308b3c09a", null ]
 ];
