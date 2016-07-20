@@ -31,13 +31,13 @@
             <td class="headerValue">Deflect</td>
             <td></td>
             <td class="headerItem">Lines:</td>
-            <td class="headerCovTableEntry">32</td>
-            <td class="headerCovTableEntry">42</td>
-            <td class="headerCovTableEntryMed">76.2 %</td>
+            <td class="headerCovTableEntry">36</td>
+            <td class="headerCovTableEntry">46</td>
+            <td class="headerCovTableEntryMed">78.3 %</td>
           </tr>
           <tr>
             <td class="headerItem">Date:</td>
-            <td class="headerValue">2016-07-07 02:18:44</td>
+            <td class="headerValue">2016-07-20 02:17:23</td>
             <td></td>
             <td class="headerItem">Functions:</td>
             <td class="headerCovTableEntry">8</td>
@@ -150,72 +150,81 @@
 <span class="lineNum">      88 </span>            : 
 <span class="lineNum">      89 </span><span class="lineCov">          6 : Server::~Server()</span>
 <span class="lineNum">      90 </span>            : {
-<span class="lineNum">      91 </span><span class="lineCov">          2 :     delete _impl;</span>
-<a name="92"><span class="lineNum">      92 </span><span class="lineCov">          4 : }</span></a>
-<span class="lineNum">      93 </span>            : 
-<span class="lineNum">      94 </span><span class="lineNoCov">          0 : FrameDispatcher&amp; Server::getPixelStreamDispatcher()</span>
-<span class="lineNum">      95 </span>            : {
-<span class="lineNum">      96 </span><span class="lineNoCov">          0 :     return _impl-&gt;pixelStreamDispatcher;</span>
-<a name="97"><span class="lineNum">      97 </span>            : }</a>
-<span class="lineNum">      98 </span>            : 
-<span class="lineNum">      99 </span><span class="lineNoCov">          0 : void Server::onPixelStreamerClosed( const QString uri )</span>
-<span class="lineNum">     100 </span>            : {
-<span class="lineNum">     101 </span><span class="lineNoCov">          0 :     emit _pixelStreamerClosed( uri );</span>
-<a name="102"><span class="lineNum">     102 </span><span class="lineNoCov">          0 : }</span></a>
-<span class="lineNum">     103 </span>            : 
-<span class="lineNum">     104 </span><span class="lineNoCov">          0 : void Server::onEventRegistrationReply( const QString uri, const bool success )</span>
-<span class="lineNum">     105 </span>            : {
-<span class="lineNum">     106 </span><span class="lineNoCov">          0 :     emit _eventRegistrationReply( uri, success );</span>
-<a name="107"><span class="lineNum">     107 </span><span class="lineNoCov">          0 : }</span></a>
-<span class="lineNum">     108 </span>            : 
-<span class="lineNum">     109 </span><span class="lineCov">          2 : void Server::incomingConnection( const qintptr socketHandle )</span>
-<span class="lineNum">     110 </span>            : {
-<span class="lineNum">     111 </span><span class="lineCov">          2 :     QThread* workerThread = new QThread( this );</span>
-<span class="lineNum">     112 </span><span class="lineCov">          2 :     ServerWorker* worker = new ServerWorker( socketHandle );</span>
-<span class="lineNum">     113 </span>            : 
-<span class="lineNum">     114 </span><span class="lineCov">          2 :     worker-&gt;moveToThread( workerThread );</span>
-<span class="lineNum">     115 </span>            : 
-<span class="lineNum">     116 </span>            :     connect( workerThread, &amp;QThread::started,
-<span class="lineNum">     117 </span><span class="lineCov">          2 :              worker, &amp;ServerWorker::initConnection );</span>
-<span class="lineNum">     118 </span>            :     connect( worker, &amp;ServerWorker::connectionClosed,
-<span class="lineNum">     119 </span><span class="lineCov">          2 :              workerThread, &amp;QThread::quit );</span>
-<span class="lineNum">     120 </span>            : 
-<span class="lineNum">     121 </span>            :     // Make sure the thread will be deleted
-<span class="lineNum">     122 </span>            :     connect( workerThread, &amp;QThread::finished,
-<span class="lineNum">     123 </span><span class="lineCov">          2 :              worker, &amp;ServerWorker::deleteLater );</span>
-<span class="lineNum">     124 </span>            :     connect( workerThread, &amp;QThread::finished,
-<span class="lineNum">     125 </span><span class="lineCov">          2 :              workerThread, &amp;QThread::deleteLater );</span>
-<span class="lineNum">     126 </span>            : 
-<span class="lineNum">     127 </span>            :     // public signals/slots, forwarding from/to worker
-<span class="lineNum">     128 </span>            :     connect( worker, &amp;ServerWorker::registerToEvents,
-<span class="lineNum">     129 </span><span class="lineCov">          2 :              this, &amp;Server::registerToEvents );</span>
-<span class="lineNum">     130 </span>            :     connect( worker, &amp;ServerWorker::receivedSizeHints,
-<span class="lineNum">     131 </span><span class="lineCov">          2 :              this, &amp;Server::receivedSizeHints );</span>
-<span class="lineNum">     132 </span>            :     connect( this, &amp;Server::_pixelStreamerClosed,
-<span class="lineNum">     133 </span><span class="lineCov">          2 :              worker, &amp;ServerWorker::closeConnection );</span>
-<span class="lineNum">     134 </span>            :     connect( this, &amp;Server::_eventRegistrationReply,
-<span class="lineNum">     135 </span><span class="lineCov">          2 :              worker, &amp;ServerWorker::replyToEventRegistration );</span>
-<span class="lineNum">     136 </span>            : 
-<span class="lineNum">     137 </span>            :     // PixelStreamDispatcher
-<span class="lineNum">     138 </span>            :     connect( worker, &amp;ServerWorker::addStreamSource,
-<span class="lineNum">     139 </span><span class="lineCov">          2 :              &amp;_impl-&gt;pixelStreamDispatcher, &amp;FrameDispatcher::addSource );</span>
-<span class="lineNum">     140 </span>            :     connect( worker,
-<span class="lineNum">     141 </span>            :              &amp;ServerWorker::receivedSegment,
-<span class="lineNum">     142 </span>            :              &amp;_impl-&gt;pixelStreamDispatcher,
-<span class="lineNum">     143 </span><span class="lineCov">          2 :              &amp;FrameDispatcher::processSegment );</span>
-<span class="lineNum">     144 </span>            :     connect( worker,
-<span class="lineNum">     145 </span>            :              &amp;ServerWorker::receivedFrameFinished,
-<span class="lineNum">     146 </span>            :              &amp;_impl-&gt;pixelStreamDispatcher,
-<span class="lineNum">     147 </span><span class="lineCov">          2 :              &amp;FrameDispatcher::processFrameFinished );</span>
-<span class="lineNum">     148 </span>            :     connect( worker,
-<span class="lineNum">     149 </span>            :              &amp;ServerWorker::removeStreamSource,
-<span class="lineNum">     150 </span>            :              &amp;_impl-&gt;pixelStreamDispatcher,
-<span class="lineNum">     151 </span><span class="lineCov">          2 :              &amp;FrameDispatcher::removeSource );</span>
-<span class="lineNum">     152 </span>            : 
-<span class="lineNum">     153 </span><span class="lineCov">          2 :     workerThread-&gt;start();</span>
-<a name="154"><span class="lineNum">     154 </span><span class="lineCov">          2 : }</span></a>
-<span class="lineNum">     155 </span>            : 
-<span class="lineNum">     156 </span><span class="lineCov">         27 : }</span>
+<span class="lineNum">      91 </span><span class="lineCov">          5 :     for( QObject* child : children())</span>
+<span class="lineNum">      92 </span>            :     {
+<span class="lineNum">      93 </span><span class="lineCov">          3 :         if( QThread* workerThread = qobject_cast&lt;QThread*&gt;( child ))</span>
+<span class="lineNum">      94 </span>            :         {
+<span class="lineNum">      95 </span><span class="lineCov">          1 :             workerThread-&gt;quit();</span>
+<span class="lineNum">      96 </span><span class="lineCov">          1 :             workerThread-&gt;wait();</span>
+<span class="lineNum">      97 </span>            :         }
+<span class="lineNum">      98 </span>            :     }
+<span class="lineNum">      99 </span>            : 
+<span class="lineNum">     100 </span><span class="lineCov">          2 :     delete _impl;</span>
+<a name="101"><span class="lineNum">     101 </span><span class="lineCov">          4 : }</span></a>
+<span class="lineNum">     102 </span>            : 
+<span class="lineNum">     103 </span><span class="lineNoCov">          0 : FrameDispatcher&amp; Server::getPixelStreamDispatcher()</span>
+<span class="lineNum">     104 </span>            : {
+<span class="lineNum">     105 </span><span class="lineNoCov">          0 :     return _impl-&gt;pixelStreamDispatcher;</span>
+<a name="106"><span class="lineNum">     106 </span>            : }</a>
+<span class="lineNum">     107 </span>            : 
+<span class="lineNum">     108 </span><span class="lineNoCov">          0 : void Server::onPixelStreamerClosed( const QString uri )</span>
+<span class="lineNum">     109 </span>            : {
+<span class="lineNum">     110 </span><span class="lineNoCov">          0 :     emit _pixelStreamerClosed( uri );</span>
+<a name="111"><span class="lineNum">     111 </span><span class="lineNoCov">          0 : }</span></a>
+<span class="lineNum">     112 </span>            : 
+<span class="lineNum">     113 </span><span class="lineNoCov">          0 : void Server::onEventRegistrationReply( const QString uri, const bool success )</span>
+<span class="lineNum">     114 </span>            : {
+<span class="lineNum">     115 </span><span class="lineNoCov">          0 :     emit _eventRegistrationReply( uri, success );</span>
+<a name="116"><span class="lineNum">     116 </span><span class="lineNoCov">          0 : }</span></a>
+<span class="lineNum">     117 </span>            : 
+<span class="lineNum">     118 </span><span class="lineCov">          2 : void Server::incomingConnection( const qintptr socketHandle )</span>
+<span class="lineNum">     119 </span>            : {
+<span class="lineNum">     120 </span><span class="lineCov">          2 :     QThread* workerThread = new QThread( this );</span>
+<span class="lineNum">     121 </span><span class="lineCov">          2 :     ServerWorker* worker = new ServerWorker( socketHandle );</span>
+<span class="lineNum">     122 </span>            : 
+<span class="lineNum">     123 </span><span class="lineCov">          2 :     worker-&gt;moveToThread( workerThread );</span>
+<span class="lineNum">     124 </span>            : 
+<span class="lineNum">     125 </span>            :     connect( workerThread, &amp;QThread::started,
+<span class="lineNum">     126 </span><span class="lineCov">          2 :              worker, &amp;ServerWorker::initConnection );</span>
+<span class="lineNum">     127 </span>            :     connect( worker, &amp;ServerWorker::connectionClosed,
+<span class="lineNum">     128 </span><span class="lineCov">          2 :              workerThread, &amp;QThread::quit );</span>
+<span class="lineNum">     129 </span>            : 
+<span class="lineNum">     130 </span>            :     // Make sure the thread will be deleted
+<span class="lineNum">     131 </span>            :     connect( workerThread, &amp;QThread::finished,
+<span class="lineNum">     132 </span><span class="lineCov">          2 :              worker, &amp;ServerWorker::deleteLater );</span>
+<span class="lineNum">     133 </span>            :     connect( workerThread, &amp;QThread::finished,
+<span class="lineNum">     134 </span><span class="lineCov">          2 :              workerThread, &amp;QThread::deleteLater );</span>
+<span class="lineNum">     135 </span>            : 
+<span class="lineNum">     136 </span>            :     // public signals/slots, forwarding from/to worker
+<span class="lineNum">     137 </span>            :     connect( worker, &amp;ServerWorker::registerToEvents,
+<span class="lineNum">     138 </span><span class="lineCov">          2 :              this, &amp;Server::registerToEvents );</span>
+<span class="lineNum">     139 </span>            :     connect( worker, &amp;ServerWorker::receivedSizeHints,
+<span class="lineNum">     140 </span><span class="lineCov">          2 :              this, &amp;Server::receivedSizeHints );</span>
+<span class="lineNum">     141 </span>            :     connect( this, &amp;Server::_pixelStreamerClosed,
+<span class="lineNum">     142 </span><span class="lineCov">          2 :              worker, &amp;ServerWorker::closeConnection );</span>
+<span class="lineNum">     143 </span>            :     connect( this, &amp;Server::_eventRegistrationReply,
+<span class="lineNum">     144 </span><span class="lineCov">          2 :              worker, &amp;ServerWorker::replyToEventRegistration );</span>
+<span class="lineNum">     145 </span>            : 
+<span class="lineNum">     146 </span>            :     // PixelStreamDispatcher
+<span class="lineNum">     147 </span>            :     connect( worker, &amp;ServerWorker::addStreamSource,
+<span class="lineNum">     148 </span><span class="lineCov">          2 :              &amp;_impl-&gt;pixelStreamDispatcher, &amp;FrameDispatcher::addSource );</span>
+<span class="lineNum">     149 </span>            :     connect( worker,
+<span class="lineNum">     150 </span>            :              &amp;ServerWorker::receivedSegment,
+<span class="lineNum">     151 </span>            :              &amp;_impl-&gt;pixelStreamDispatcher,
+<span class="lineNum">     152 </span><span class="lineCov">          2 :              &amp;FrameDispatcher::processSegment );</span>
+<span class="lineNum">     153 </span>            :     connect( worker,
+<span class="lineNum">     154 </span>            :              &amp;ServerWorker::receivedFrameFinished,
+<span class="lineNum">     155 </span>            :              &amp;_impl-&gt;pixelStreamDispatcher,
+<span class="lineNum">     156 </span><span class="lineCov">          2 :              &amp;FrameDispatcher::processFrameFinished );</span>
+<span class="lineNum">     157 </span>            :     connect( worker,
+<span class="lineNum">     158 </span>            :              &amp;ServerWorker::removeStreamSource,
+<span class="lineNum">     159 </span>            :              &amp;_impl-&gt;pixelStreamDispatcher,
+<span class="lineNum">     160 </span><span class="lineCov">          2 :              &amp;FrameDispatcher::removeSource );</span>
+<span class="lineNum">     161 </span>            : 
+<span class="lineNum">     162 </span><span class="lineCov">          2 :     workerThread-&gt;start();</span>
+<a name="163"><span class="lineNum">     163 </span><span class="lineCov">          2 : }</span></a>
+<span class="lineNum">     164 </span>            : 
+<span class="lineNum">     165 </span><span class="lineCov">         27 : }</span>
 </pre>
       </td>
     </tr>
