@@ -4,7 +4,7 @@ version: "0.5"
 major: 0
 minor: 5
 description: ITK library to sample events into regular volumes
-updated: 07/07/16
+updated: 23/07/16
 homepage: https://github.com/BlueBrain/Fivox
 repository: https://github.com/BlueBrain/Fivox.git
 issuesurl: https://github.com/BlueBrain/Fivox/issues
@@ -35,6 +35,11 @@ Livre, launch Livre with one of the URIs used by the voxelize command line tool
 as the volume parameter. The fivox data source will be loaded
 automatically and selected through one of the volume URI schemes.
 
+The sample-point command line tool can be used to extract the time series at a
+specific 3D point. The output file can be then used as the input for the
+plot2D.py python tool to generate a 2D graph showing the evolution of the data
+over time.
+
 To use the ImageSource programmatically, please refer to the @ref fivox
 namespace documentation and voxelize command line tool.
 
@@ -49,6 +54,7 @@ Fivox provides the following major features:
 * Converting spike reports densities to volumetric data
 * Converting compartment and surface area reports to volumetric data
 * Time and animation support
+* Extract the time series at a specific point
 
 # Installation
 
@@ -63,9 +69,17 @@ make
 
 # Usage
 
-The voxelize command line tool supports the following parameters:
+All command line applications support the following parameters:
 
-@snippet apps/voxelize/voxelize.cpp Parameters
+@snippet apps/commandLineApplication.h AppParameters
+
+The voxelize command line tool also supports:
+
+@snippet apps/voxelize/voxelize.cpp VoxelizeParameters
+
+The sample-point command line tool also supports:
+
+@snippet apps/samplePoint/sample-point.cpp SamplePointParameters
 
 # About
 

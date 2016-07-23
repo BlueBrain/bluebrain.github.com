@@ -3,7 +3,6 @@ var namespacefivox =
     [ "AttenuationCurve", "classfivox_1_1_attenuation_curve.html", "classfivox_1_1_attenuation_curve" ],
     [ "CompartmentLoader", "classfivox_1_1_compartment_loader.html", "classfivox_1_1_compartment_loader" ],
     [ "DensityFunctor", "classfivox_1_1_density_functor.html", "classfivox_1_1_density_functor" ],
-    [ "Event", "structfivox_1_1_event.html", "structfivox_1_1_event" ],
     [ "EventFunctor", "classfivox_1_1_event_functor.html", "classfivox_1_1_event_functor" ],
     [ "EventSource", "classfivox_1_1_event_source.html", "classfivox_1_1_event_source" ],
     [ "FieldFunctor", "classfivox_1_1_field_functor.html", "classfivox_1_1_field_functor" ],

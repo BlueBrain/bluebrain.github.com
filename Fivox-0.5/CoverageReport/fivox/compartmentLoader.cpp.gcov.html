@@ -37,7 +37,7 @@
           </tr>
           <tr>
             <td class="headerItem">Date:</td>
-            <td class="headerValue">2016-07-07 05:12:07</td>
+            <td class="headerValue">2016-07-23 05:10:38</td>
             <td></td>
             <td class="headerItem">Functions:</td>
             <td class="headerCovTableEntry">9</td>
@@ -84,77 +84,76 @@
 <span class="lineNum">      22 </span>            : 
 <span class="lineNum">      23 </span>            : #include &quot;compartmentLoader.h&quot;
 <span class="lineNum">      24 </span>            : 
-<span class="lineNum">      25 </span>            : #include &quot;event.h&quot;
-<span class="lineNum">      26 </span>            : #include &quot;helpers.h&quot;
-<span class="lineNum">      27 </span>            : #include &quot;uriHandler.h&quot;
-<span class="lineNum">      28 </span>            : 
-<span class="lineNum">      29 </span>            : #include &lt;brion/brion.h&gt;
-<span class="lineNum">      30 </span>            : #include &lt;brain/circuit.h&gt;
-<span class="lineNum">      31 </span>            : #include &lt;brain/neuron/morphology.h&gt;
-<span class="lineNum">      32 </span>            : #include &lt;brain/neuron/section.h&gt;
-<span class="lineNum">      33 </span>            : #include &lt;brain/neuron/soma.h&gt;
-<span class="lineNum">      34 </span>            : 
-<span class="lineNum">      35 </span>            : #ifndef NDEBUG
-<span class="lineNum">      36 </span>            : # define DEBUG_INVERSE_MAPPING
-<span class="lineNum">      37 </span>            : #endif
-<span class="lineNum">      38 </span>            : 
-<span class="lineNum">      39 </span>            : namespace fivox
-<a name="40"><span class="lineNum">      40 </span>            : {</a>
-<span class="lineNum">      41 </span>            : 
-<span class="lineNum">      42 </span><span class="lineCov">          4 : class CompartmentLoader::Impl</span>
-<a name="43"><span class="lineNum">      43 </span>            : {</a>
-<span class="lineNum">      44 </span>            : public:
-<span class="lineNum">      45 </span><span class="lineCov">          4 :     Impl( EventSource&amp; output, const URIHandler&amp; params )</span>
-<span class="lineNum">      46 </span>            :         : _output( output )
-<span class="lineNum">      47 </span><span class="lineCov">          4 :         , _report( params.getConfig().getReportSource( params.getReport( )),</span>
-<span class="lineNum">      48 </span><span class="lineCov">          8 :                    brion::MODE_READ, params.getGIDs( ))</span>
-<span class="lineNum">      49 </span>            :     {
-<span class="lineNum">      50 </span><span class="lineCov">          4 :         const brain::Circuit circuit( params.getConfig( ));</span>
-<span class="lineNum">      51 </span>            :         const auto morphologies = circuit.loadMorphologies(
-<span class="lineNum">      52 </span><span class="lineCov">          8 :             params.getGIDs(), brain::Circuit::COORDINATES_GLOBAL );</span>
-<span class="lineNum">      53 </span>            : 
-<span class="lineNum">      54 </span><span class="lineCov">          8 :         helpers::addCompartmentEvents( morphologies, _report, output );</span>
-<a name="55"><span class="lineNum">      55 </span><span class="lineCov">          4 :     }</span></a>
-<span class="lineNum">      56 </span>            : 
-<span class="lineNum">      57 </span><span class="lineCov">          4 :     ssize_t load( const float time )</span>
-<span class="lineNum">      58 </span>            :     {
-<span class="lineNum">      59 </span><span class="lineCov">          4 :         const brion::floatsPtr values = _report.loadFrame( time );</span>
-<span class="lineNum">      60 </span><span class="lineCov">          4 :         if( !values )</span>
-<span class="lineNum">      61 </span><span class="lineNoCov">          0 :             return -1;</span>
-<span class="lineNum">      62 </span>            : 
-<span class="lineNum">      63 </span><span class="lineCov">      66216 :         for( size_t i = 0; i != values-&gt;size(); ++i )</span>
-<span class="lineNum">      64 </span><span class="lineCov">      66212 :             _output[i] = ( *values )[i];</span>
-<span class="lineNum">      65 </span>            : 
-<span class="lineNum">      66 </span><span class="lineCov">          4 :         return values-&gt;size();</span>
-<span class="lineNum">      67 </span>            :     }
-<span class="lineNum">      68 </span>            : 
-<span class="lineNum">      69 </span>            :     EventSource&amp; _output;
-<span class="lineNum">      70 </span>            :     brion::CompartmentReport _report;
-<a name="71"><span class="lineNum">      71 </span>            : };</a>
-<span class="lineNum">      72 </span>            : 
-<span class="lineNum">      73 </span><span class="lineCov">          4 : CompartmentLoader::CompartmentLoader( const URIHandler&amp; params )</span>
-<span class="lineNum">      74 </span>            :     : EventSource( params )
-<span class="lineNum">      75 </span><span class="lineCov">          4 :     , _impl( new CompartmentLoader::Impl( *this, params ))</span>
-<span class="lineNum">      76 </span>            : {
-<span class="lineNum">      77 </span><span class="lineCov">          4 :     if( getDt() &lt; 0.f )</span>
-<span class="lineNum">      78 </span><span class="lineCov">          4 :         setDt( _impl-&gt;_report.getTimestep( ));</span>
-<a name="79"><span class="lineNum">      79 </span><span class="lineCov">          4 : }</span></a>
-<span class="lineNum">      80 </span>            : 
-<span class="lineNum">      81 </span><span class="lineCov">          4 : CompartmentLoader::~CompartmentLoader()</span>
-<a name="82"><span class="lineNum">      82 </span><span class="lineCov">          4 : {}</span></a>
-<span class="lineNum">      83 </span>            : 
-<span class="lineNum">      84 </span><span class="lineCov">          4 : Vector2f CompartmentLoader::_getTimeRange() const</span>
-<span class="lineNum">      85 </span>            : {
-<span class="lineNum">      86 </span><span class="lineCov">          4 :     return Vector2f( _impl-&gt;_report.getStartTime(),</span>
-<span class="lineNum">      87 </span><span class="lineCov">          8 :                      _impl-&gt;_report.getEndTime( ));</span>
-<a name="88"><span class="lineNum">      88 </span>            : }</a>
-<span class="lineNum">      89 </span>            : 
-<span class="lineNum">      90 </span><span class="lineCov">          4 : ssize_t CompartmentLoader::_load( const float time )</span>
-<span class="lineNum">      91 </span>            : {
-<span class="lineNum">      92 </span><span class="lineCov">          4 :     return _impl-&gt;load( time );</span>
-<a name="93"><span class="lineNum">      93 </span>            : }</a>
-<span class="lineNum">      94 </span>            : 
-<span class="lineNum">      95 </span><span class="lineCov">         15 : }</span>
+<span class="lineNum">      25 </span>            : #include &quot;helpers.h&quot;
+<span class="lineNum">      26 </span>            : #include &quot;uriHandler.h&quot;
+<span class="lineNum">      27 </span>            : 
+<span class="lineNum">      28 </span>            : #include &lt;brion/brion.h&gt;
+<span class="lineNum">      29 </span>            : #include &lt;brain/circuit.h&gt;
+<span class="lineNum">      30 </span>            : #include &lt;brain/neuron/morphology.h&gt;
+<span class="lineNum">      31 </span>            : #include &lt;brain/neuron/section.h&gt;
+<span class="lineNum">      32 </span>            : #include &lt;brain/neuron/soma.h&gt;
+<span class="lineNum">      33 </span>            : 
+<span class="lineNum">      34 </span>            : #ifndef NDEBUG
+<span class="lineNum">      35 </span>            : # define DEBUG_INVERSE_MAPPING
+<span class="lineNum">      36 </span>            : #endif
+<span class="lineNum">      37 </span>            : 
+<span class="lineNum">      38 </span>            : namespace fivox
+<a name="39"><span class="lineNum">      39 </span>            : {</a>
+<span class="lineNum">      40 </span>            : 
+<span class="lineNum">      41 </span><span class="lineCov">          4 : class CompartmentLoader::Impl</span>
+<a name="42"><span class="lineNum">      42 </span>            : {</a>
+<span class="lineNum">      43 </span>            : public:
+<span class="lineNum">      44 </span><span class="lineCov">          4 :     Impl( EventSource&amp; output, const URIHandler&amp; params )</span>
+<span class="lineNum">      45 </span>            :         : _output( output )
+<span class="lineNum">      46 </span><span class="lineCov">          4 :         , _report( params.getConfig().getReportSource( params.getReport( )),</span>
+<span class="lineNum">      47 </span><span class="lineCov">          8 :                    brion::MODE_READ, params.getGIDs( ))</span>
+<span class="lineNum">      48 </span>            :     {
+<span class="lineNum">      49 </span><span class="lineCov">          4 :         const brain::Circuit circuit( params.getConfig( ));</span>
+<span class="lineNum">      50 </span>            :         const auto morphologies = circuit.loadMorphologies(
+<span class="lineNum">      51 </span><span class="lineCov">          8 :             params.getGIDs(), brain::Circuit::COORDINATES_GLOBAL );</span>
+<span class="lineNum">      52 </span>            : 
+<span class="lineNum">      53 </span><span class="lineCov">          8 :         helpers::addCompartmentEvents( morphologies, _report, output );</span>
+<a name="54"><span class="lineNum">      54 </span><span class="lineCov">          4 :     }</span></a>
+<span class="lineNum">      55 </span>            : 
+<span class="lineNum">      56 </span><span class="lineCov">          4 :     ssize_t load( const float time )</span>
+<span class="lineNum">      57 </span>            :     {
+<span class="lineNum">      58 </span><span class="lineCov">          4 :         const brion::floatsPtr values = _report.loadFrame( time );</span>
+<span class="lineNum">      59 </span><span class="lineCov">          4 :         if( !values )</span>
+<span class="lineNum">      60 </span><span class="lineNoCov">          0 :             return -1;</span>
+<span class="lineNum">      61 </span>            : 
+<span class="lineNum">      62 </span><span class="lineCov">      66216 :         for( size_t i = 0; i != values-&gt;size(); ++i )</span>
+<span class="lineNum">      63 </span><span class="lineCov">      66212 :             _output[i] = ( *values )[i];</span>
+<span class="lineNum">      64 </span>            : 
+<span class="lineNum">      65 </span><span class="lineCov">          4 :         return values-&gt;size();</span>
+<span class="lineNum">      66 </span>            :     }
+<span class="lineNum">      67 </span>            : 
+<span class="lineNum">      68 </span>            :     EventSource&amp; _output;
+<span class="lineNum">      69 </span>            :     brion::CompartmentReport _report;
+<a name="70"><span class="lineNum">      70 </span>            : };</a>
+<span class="lineNum">      71 </span>            : 
+<span class="lineNum">      72 </span><span class="lineCov">          4 : CompartmentLoader::CompartmentLoader( const URIHandler&amp; params )</span>
+<span class="lineNum">      73 </span>            :     : EventSource( params )
+<span class="lineNum">      74 </span><span class="lineCov">          4 :     , _impl( new CompartmentLoader::Impl( *this, params ))</span>
+<span class="lineNum">      75 </span>            : {
+<span class="lineNum">      76 </span><span class="lineCov">          4 :     if( getDt() &lt; 0.f )</span>
+<span class="lineNum">      77 </span><span class="lineCov">          4 :         setDt( _impl-&gt;_report.getTimestep( ));</span>
+<a name="78"><span class="lineNum">      78 </span><span class="lineCov">          4 : }</span></a>
+<span class="lineNum">      79 </span>            : 
+<span class="lineNum">      80 </span><span class="lineCov">          4 : CompartmentLoader::~CompartmentLoader()</span>
+<a name="81"><span class="lineNum">      81 </span><span class="lineCov">          4 : {}</span></a>
+<span class="lineNum">      82 </span>            : 
+<span class="lineNum">      83 </span><span class="lineCov">          4 : Vector2f CompartmentLoader::_getTimeRange() const</span>
+<span class="lineNum">      84 </span>            : {
+<span class="lineNum">      85 </span><span class="lineCov">          4 :     return Vector2f( _impl-&gt;_report.getStartTime(),</span>
+<span class="lineNum">      86 </span><span class="lineCov">          8 :                      _impl-&gt;_report.getEndTime( ));</span>
+<a name="87"><span class="lineNum">      87 </span>            : }</a>
+<span class="lineNum">      88 </span>            : 
+<span class="lineNum">      89 </span><span class="lineCov">          4 : ssize_t CompartmentLoader::_load( const float time )</span>
+<span class="lineNum">      90 </span>            : {
+<span class="lineNum">      91 </span><span class="lineCov">          4 :     return _impl-&gt;load( time );</span>
+<a name="92"><span class="lineNum">      92 </span>            : }</a>
+<span class="lineNum">      93 </span>            : 
+<span class="lineNum">      94 </span><span class="lineCov">         15 : }</span>
 </pre>
       </td>
     </tr>

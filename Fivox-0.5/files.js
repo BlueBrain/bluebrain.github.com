@@ -5,7 +5,6 @@ var files =
     [ "compartmentLoader.h", "compartment_loader_8h_source.html", null ],
     [ "defines.h", "defines_8h_source.html", null ],
     [ "densityFunctor.h", "density_functor_8h_source.html", null ],
-    [ "event.h", "event_8h_source.html", null ],
     [ "eventFunctor.h", "event_functor_8h_source.html", null ],
     [ "eventSource.h", "event_source_8h_source.html", null ],
     [ "fieldFunctor.h", "field_functor_8h_source.html", null ],

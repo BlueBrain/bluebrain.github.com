@@ -1,7 +1,6 @@
 var hierarchy =
 [
     [ "fivox::AttenuationCurve", "classfivox_1_1_attenuation_curve.html", null ],
-    [ "fivox::Event", "structfivox_1_1_event.html", null ],
     [ "fivox::EventFunctor< TImage >", "classfivox_1_1_event_functor.html", [
       [ "fivox::DensityFunctor< TImage >", "classfivox_1_1_density_functor.html", null ],
       [ "fivox::FieldFunctor< TImage >", "classfivox_1_1_field_functor.html", null ],
