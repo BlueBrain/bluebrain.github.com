@@ -1,4 +1,4 @@
 var searchData=
 [
-  ['usage',['usage',['../classbrayns_1_1_abstract_parameters.html#aea979c57e60d5cdb9569dc154382af58',1,'brayns::AbstractParameters']]]
+  ['tostring',['toString',['../structbrayns_1_1_proximity_renderer.html#a8913afa2bde0a0a81cd8215beebef08b',1,'brayns::ProximityRenderer']]]
 ];

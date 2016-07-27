@@ -15,9 +15,13 @@ var hierarchy =
     [ "brayns::Camera", "classbrayns_1_1_camera.html", [
       [ "brayns::OSPRayCamera", "classbrayns_1_1_o_s_p_ray_camera.html", null ]
     ] ],
+    [ "brayns::Engine", "classbrayns_1_1_engine.html", [
+      [ "brayns::OSPRayEngine", "classbrayns_1_1_o_s_p_ray_engine.html", null ]
+    ] ],
+    [ "brayns::EngineFactory", "classbrayns_1_1_engine_factory.html", null ],
     [ "brayns::ExtensionPlugin", "classbrayns_1_1_extension_plugin.html", [
       [ "brayns::DeflectPlugin", "classbrayns_1_1_deflect_plugin.html", null ],
-      [ "brayns::ZeroBufPlugin", "classbrayns_1_1_zero_buf_plugin.html", null ]
+      [ "brayns::ZeroEQPlugin", "classbrayns_1_1_zero_e_q_plugin.html", null ]
     ] ],
     [ "brayns::ExtensionPluginFactory", "classbrayns_1_1_extension_plugin_factory.html", null ],
     [ "brayns::FPSCounter", "structbrayns_1_1_f_p_s_counter.html", null ],

@@ -1,8 +1,4 @@
 var searchData=
 [
-  ['ospimpl',['ospImpl',['../classbrayns_1_1_o_s_p_ray_camera.html#aa1b7190d4414395b081675b8ad5c8c22',1,'brayns::OSPRayCamera']]],
-  ['ospraycamera',['OSPRayCamera',['../classbrayns_1_1_o_s_p_ray_camera.html',1,'brayns']]],
-  ['osprayframebuffer',['OSPRayFrameBuffer',['../classbrayns_1_1_o_s_p_ray_frame_buffer.html',1,'brayns']]],
-  ['osprayrenderer',['OSPRayRenderer',['../classbrayns_1_1_o_s_p_ray_renderer.html',1,'brayns']]],
-  ['osprayscene',['OSPRayScene',['../classbrayns_1_1_o_s_p_ray_scene.html',1,'brayns']]]
+  ['name',['name',['../classbrayns_1_1_engine.html#af2759d54ac5a0f0a1b84332e474a1f5c',1,'brayns::Engine::name()'],['../classbrayns_1_1_o_s_p_ray_engine.html#a92e667aedf57a766c6109eda0a53892b',1,'brayns::OSPRayEngine::name()']]]
 ];

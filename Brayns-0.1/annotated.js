@@ -15,6 +15,8 @@ var annotated =
       [ "Cylinder", "classbrayns_1_1_cylinder.html", "classbrayns_1_1_cylinder" ],
       [ "DeflectPlugin", "classbrayns_1_1_deflect_plugin.html", "classbrayns_1_1_deflect_plugin" ],
       [ "DirectionalLight", "classbrayns_1_1_directional_light.html", "classbrayns_1_1_directional_light" ],
+      [ "Engine", "classbrayns_1_1_engine.html", "classbrayns_1_1_engine" ],
+      [ "EngineFactory", "classbrayns_1_1_engine_factory.html", "classbrayns_1_1_engine_factory" ],
       [ "Exception", "classbrayns_1_1_exception.html", "classbrayns_1_1_exception" ],
       [ "ExtendedCones", "structbrayns_1_1_extended_cones.html", "structbrayns_1_1_extended_cones" ],
       [ "ExtendedCylinders", "structbrayns_1_1_extended_cylinders.html", "structbrayns_1_1_extended_cylinders" ],
@@ -35,6 +37,7 @@ var annotated =
       [ "MorphologyLayout", "structbrayns_1_1_morphology_layout.html", "structbrayns_1_1_morphology_layout" ],
       [ "MorphologyLoader", "classbrayns_1_1_morphology_loader.html", "classbrayns_1_1_morphology_loader" ],
       [ "OSPRayCamera", "classbrayns_1_1_o_s_p_ray_camera.html", "classbrayns_1_1_o_s_p_ray_camera" ],
+      [ "OSPRayEngine", "classbrayns_1_1_o_s_p_ray_engine.html", "classbrayns_1_1_o_s_p_ray_engine" ],
       [ "OSPRayFrameBuffer", "classbrayns_1_1_o_s_p_ray_frame_buffer.html", "classbrayns_1_1_o_s_p_ray_frame_buffer" ],
       [ "OSPRayRenderer", "classbrayns_1_1_o_s_p_ray_renderer.html", "classbrayns_1_1_o_s_p_ray_renderer" ],
       [ "OSPRayScene", "classbrayns_1_1_o_s_p_ray_scene.html", "classbrayns_1_1_o_s_p_ray_scene" ],
@@ -58,6 +61,6 @@ var annotated =
       [ "TrianglesMesh", "classbrayns_1_1_triangles_mesh.html", "classbrayns_1_1_triangles_mesh" ],
       [ "Version", "classbrayns_1_1_version.html", "classbrayns_1_1_version" ],
       [ "Viewport", "classbrayns_1_1_viewport.html", "classbrayns_1_1_viewport" ],
-      [ "ZeroBufPlugin", "classbrayns_1_1_zero_buf_plugin.html", "classbrayns_1_1_zero_buf_plugin" ]
+      [ "ZeroEQPlugin", "classbrayns_1_1_zero_e_q_plugin.html", "classbrayns_1_1_zero_e_q_plugin" ]
     ] ]
 ];

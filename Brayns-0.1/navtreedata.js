@@ -2,6 +2,7 @@ var NAVTREE =
 [
   [ "Brayns", "index.html", [
     [ "Changelog", "_changelog.html", [
+      [ "master", "_changelog.html#master", null ],
       [ "Release 0.1 (2016-06-16)", "_changelog.html#Release010", null ]
     ] ],
     [ "Todo List", "todo.html", null ],
@@ -29,9 +30,9 @@ var NAVTREE =
 var NAVTREEINDEX =
 [
 ".html",
-"classbrayns_1_1_flying_mode_manipulator.html#ac471e9443421947513fa48082676740d",
-"classbrayns_1_1_scene.html#aa0cca6536dd4bcf637400573d63e863a",
-"structbrayns_1_1obj_1_1_extended_o_b_j_material.html#aa751a568ed6aa42d9d5938ae59a3acb0"
+"classbrayns_1_1_engine.html#ae6f992cfccbc58674ecf7193d2bb5232",
+"classbrayns_1_1_rendering_parameters.html#aa00ac300694d6ee5cb52a4e2f636b7c1",
+"structbrayns_1_1_simulation_renderer.html#a941a4ac2580f7fe1273eba83f3b31032"
 ];
 
 var SYNCONMSG = 'click to disable panel synchronisation';
