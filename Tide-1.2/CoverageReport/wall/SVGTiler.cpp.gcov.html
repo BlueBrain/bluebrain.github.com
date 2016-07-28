@@ -32,12 +32,12 @@
             <td></td>
             <td class="headerItem">Lines:</td>
             <td class="headerCovTableEntry">1</td>
-            <td class="headerCovTableEntry">9</td>
-            <td class="headerCovTableEntryLo">11.1 %</td>
+            <td class="headerCovTableEntry">10</td>
+            <td class="headerCovTableEntryLo">10.0 %</td>
           </tr>
           <tr>
             <td class="headerItem">Date:</td>
-            <td class="headerValue">2016-07-20 06:19:09</td>
+            <td class="headerValue">2016-07-28 06:19:25</td>
             <td></td>
             <td class="headerItem">Functions:</td>
             <td class="headerCovTableEntry">2</td>
@@ -101,23 +101,41 @@
 <span class="lineNum">      39 </span>            : 
 <span class="lineNum">      40 </span>            : #include &quot;SVGTiler.h&quot;
 <span class="lineNum">      41 </span>            : 
-<span class="lineNum">      42 </span>            : namespace
-<span class="lineNum">      43 </span>            : {
-<span class="lineNum">      44 </span>            : const uint tileSize = 512;
-<a name="45"><span class="lineNum">      45 </span>            : }</a>
-<span class="lineNum">      46 </span>            : 
-<span class="lineNum">      47 </span><span class="lineNoCov">          0 : SVGTiler::SVGTiler( SVGTextureFactoryPtr factory )</span>
-<span class="lineNum">      48 </span><span class="lineNoCov">          0 :     : LodTiler( factory-&gt;getMaxSize(), tileSize )</span>
-<span class="lineNum">      49 </span><span class="lineNoCov">          0 :     , _factory( std::move( factory ))</span>
-<a name="50"><span class="lineNum">      50 </span><span class="lineNoCov">          0 : {}</span></a>
-<span class="lineNum">      51 </span>            : 
-<span class="lineNum">      52 </span><span class="lineNoCov">          0 : QImage SVGTiler::getCachableTileImage( const uint tileId ) const</span>
-<span class="lineNum">      53 </span>            : {
-<span class="lineNum">      54 </span><span class="lineNoCov">          0 :     const QRect imageRect = getTileRect( tileId );</span>
-<span class="lineNum">      55 </span><span class="lineNoCov">          0 :     const QRectF zoomRect = getNormalizedTileRect( tileId );</span>
-<a name="56"><span class="lineNum">      56 </span>            : </a>
-<span class="lineNum">      57 </span><span class="lineNoCov">          0 :     return _factory-&gt;createTexture( imageRect.size(), zoomRect );</span>
-<span class="lineNum">      58 </span><span class="lineCov">         54 : }</span>
+<span class="lineNum">      42 </span>            : #include &quot;VectorialContent.h&quot;
+<span class="lineNum">      43 </span>            : 
+<span class="lineNum">      44 </span>            : #include &lt;QThread&gt;
+<span class="lineNum">      45 </span>            : 
+<span class="lineNum">      46 </span>            : namespace
+<span class="lineNum">      47 </span>            : {
+<span class="lineNum">      48 </span>            : const uint tileSize = 1024;
+<a name="49"><span class="lineNum">      49 </span>            : }</a>
+<span class="lineNum">      50 </span>            : 
+<span class="lineNum">      51 </span><span class="lineNoCov">          0 : SVGTiler::SVGTiler( SVG&amp; svg )</span>
+<span class="lineNum">      52 </span><span class="lineNoCov">          0 :     : LodTiler( svg.getSize() * VectorialContent::getMaxScale(), tileSize )</span>
+<span class="lineNum">      53 </span><span class="lineNoCov">          0 :     , _svg( svg )</span>
+<a name="54"><span class="lineNum">      54 </span><span class="lineNoCov">          0 : {}</span></a>
+<span class="lineNum">      55 </span>            : 
+<span class="lineNum">      56 </span><span class="lineNoCov">          0 : QImage SVGTiler::getCachableTileImage( const uint tileId ) const</span>
+<span class="lineNum">      57 </span>            : {
+<span class="lineNum">      58 </span><span class="lineNoCov">          0 :     const QRect imageRect = getTileRect( tileId );</span>
+<span class="lineNum">      59 </span><span class="lineNoCov">          0 :     const QRectF zoomRect = getNormalizedTileRect( tileId );</span>
+<span class="lineNum">      60 </span>            : 
+<span class="lineNum">      61 </span>            : #if TIDE_USE_CAIRO &amp;&amp; TIDE_USE_RSVG
+<span class="lineNum">      62 </span>            :     // The SvgCairoRSVGBackend is called from multiple threads
+<span class="lineNum">      63 </span>            :     SVG* svg = nullptr;
+<span class="lineNum">      64 </span>            :     {
+<span class="lineNum">      65 </span>            :         const auto id = QThread::currentThreadId();
+<span class="lineNum">      66 </span>            :         const QMutexLocker lock( &amp;_threadMapMutex );
+<span class="lineNum">      67 </span>            :         if( !_perThreadSVG.count( id ))
+<span class="lineNum">      68 </span>            :             _perThreadSVG[id] = make_unique&lt;SVG&gt;( _svg.getData( ));
+<span class="lineNum">      69 </span>            :         svg = _perThreadSVG[id].get();
+<span class="lineNum">      70 </span>            :     }
+<span class="lineNum">      71 </span>            : #else
+<span class="lineNum">      72 </span>            :     // The SvgQtGpuBackend is always called from the GPU thread
+<span class="lineNum">      73 </span><span class="lineNoCov">          0 :     SVG* svg = &amp;_svg;</span>
+<a name="74"><span class="lineNum">      74 </span>            : #endif</a>
+<span class="lineNum">      75 </span><span class="lineNoCov">          0 :     return svg-&gt;renderToImage( imageRect.size(), zoomRect );</span>
+<span class="lineNum">      76 </span><span class="lineCov">         51 : }</span>
 </pre>
       </td>
     </tr>

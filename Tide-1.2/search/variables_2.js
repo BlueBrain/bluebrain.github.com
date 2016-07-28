@@ -1,5 +1,5 @@
 var searchData=
 [
-  ['pyramidfileextension',['pyramidFileExtension',['../class_dynamic_texture.html#af74abe9e07c976642bb60a60ca0c5cc4',1,'DynamicTexture']]],
-  ['pyramidfoldersuffix',['pyramidFolderSuffix',['../class_dynamic_texture.html#a15d1b98be5671aa2b56ea62f99b36d65',1,'DynamicTexture']]]
+  ['size',['size',['../struct_probe_result.html#a431ed1636026488911b1d35e0b97ac78',1,'ProbeResult']]],
+  ['src',['src',['../struct_probe_result.html#a1bf3e57be475361e7541e26f977aa0a6',1,'ProbeResult']]]
 ];

@@ -7,6 +7,7 @@ var searchData=
   ['thumbnailgenerator',['ThumbnailGenerator',['../class_thumbnail_generator.html',1,'']]],
   ['thumbnailgeneratorfactory',['ThumbnailGeneratorFactory',['../class_thumbnail_generator_factory.html',1,'']]],
   ['thumbnailprovider',['ThumbnailProvider',['../class_thumbnail_provider.html',1,'']]],
+  ['tiffpyramidreader',['TiffPyramidReader',['../class_tiff_pyramid_reader.html',1,'']]],
   ['tile',['Tile',['../class_tile.html',1,'']]],
   ['tiledsynchronizer',['TiledSynchronizer',['../class_tiled_synchronizer.html',1,'']]],
   ['tileindex',['TileIndex',['../struct_lod_tools_1_1_tile_index.html',1,'LodTools']]],

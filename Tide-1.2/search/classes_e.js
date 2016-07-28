@@ -7,8 +7,11 @@ var searchData=
   ['statethumbnailgenerator',['StateThumbnailGenerator',['../class_state_thumbnail_generator.html',1,'']]],
   ['staticcontent',['StaticContent',['../class_static_content.html',1,'']]],
   ['streamimage',['StreamImage',['../class_stream_image.html',1,'']]],
+  ['svg',['SVG',['../class_s_v_g.html',1,'']]],
+  ['svgbackend',['SVGBackend',['../class_s_v_g_backend.html',1,'']]],
   ['svgcontent',['SVGContent',['../class_s_v_g_content.html',1,'']]],
+  ['svggpuimage',['SVGGpuImage',['../class_s_v_g_gpu_image.html',1,'']]],
+  ['svgqtgpubackend',['SVGQtGpuBackend',['../class_s_v_g_qt_gpu_backend.html',1,'']]],
   ['svgsynchronizer',['SVGSynchronizer',['../class_s_v_g_synchronizer.html',1,'']]],
-  ['svgtexturefactory',['SVGTextureFactory',['../class_s_v_g_texture_factory.html',1,'']]],
   ['svgtiler',['SVGTiler',['../class_s_v_g_tiler.html',1,'']]]
 ];

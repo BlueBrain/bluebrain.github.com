@@ -11,8 +11,5 @@ var searchData=
   ['displaygrouplistwidget',['DisplayGroupListWidget',['../class_display_group_list_widget.html#a80c4e4b0a83d25dea87c7ff79029745a',1,'DisplayGroupListWidget']]],
   ['displaygrouprenderer',['DisplayGroupRenderer',['../class_display_group_renderer.html#a4a2ff328df8cc22d6a8d5e330a498373',1,'DisplayGroupRenderer']]],
   ['displaygroupview',['DisplayGroupView',['../class_display_group_view.html#ad2df5ac523506bac5674fc0c2bb31caf',1,'DisplayGroupView']]],
-  ['doubletap',['doubleTap',['../class_multitouch_area.html#adb8cdf3637fd79b43967ffc5d1faf8f5',1,'MultitouchArea']]],
-  ['dynamictexture',['DynamicTexture',['../class_dynamic_texture.html#a436ade9e96b7b042660a5fd594dcb0b9',1,'DynamicTexture']]],
-  ['dynamictexturecontent',['DynamicTextureContent',['../class_dynamic_texture_content.html#a1ce069ea636880f9785dbd3c74aec486',1,'DynamicTextureContent']]],
-  ['dynamictexturesynchronizer',['DynamicTextureSynchronizer',['../class_dynamic_texture_synchronizer.html#a3aace378fbc62992dc4b524bb9bf4a3c',1,'DynamicTextureSynchronizer']]]
+  ['doubletap',['doubleTap',['../class_multitouch_area.html#adb8cdf3637fd79b43967ffc5d1faf8f5',1,'MultitouchArea']]]
 ];

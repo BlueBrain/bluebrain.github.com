@@ -9,6 +9,8 @@ var hierarchy =
       [ "MPIContext", "class_m_p_i_context.html", null ],
       [ "SerializeBuffer", "class_serialize_buffer.html", null ]
     ] ],
+    [ "CairoDeleter", "struct_cairo_deleter.html", null ],
+    [ "CairoSurfaceDeleter", "struct_cairo_surface_deleter.html", null ],
     [ "CommandLineOptions", "class_command_line_options.html", null ],
     [ "CommandLineParameters", "class_command_line_parameters.html", null ],
     [ "Configuration", "class_configuration.html", [
@@ -19,9 +21,9 @@ var hierarchy =
     [ "ContentLoader", "class_content_loader.html", null ],
     [ "DataSource", "class_data_source.html", [
       [ "CachedDataSource", "class_cached_data_source.html", [
-        [ "DynamicTexture", "class_dynamic_texture.html", null ],
         [ "ImageSource", "class_image_source.html", null ],
         [ "LodTiler", "class_lod_tiler.html", [
+          [ "ImagePyramidDataSource", "class_image_pyramid_data_source.html", null ],
           [ "PDFTiler", "class_p_d_f_tiler.html", null ],
           [ "SVGTiler", "class_s_v_g_tiler.html", null ]
         ] ]
@@ -40,13 +42,17 @@ var hierarchy =
         [ "FFMPEGPicture", "class_f_f_m_p_e_g_picture.html", null ]
       ] ],
       [ "QtImage", "class_qt_image.html", null ],
-      [ "StreamImage", "class_stream_image.html", null ]
+      [ "StreamImage", "class_stream_image.html", null ],
+      [ "SVGGpuImage", "class_s_v_g_gpu_image.html", null ]
     ] ],
     [ "LayoutEngine", "class_layout_engine.html", null ],
     [ "LodTools", "class_lod_tools.html", null ],
     [ "LodTools::TileIndex", "struct_lod_tools_1_1_tile_index.html", null ],
     [ "LodTools::TileInfo", "struct_lod_tools_1_1_tile_info.html", null ],
     [ "MPIChannel", "class_m_p_i_channel.html", null ],
+    [ "PDFBackend", "class_p_d_f_backend.html", [
+      [ "PDFPopplerCairoBackend", "class_p_d_f_poppler_cairo_backend.html", null ]
+    ] ],
     [ "PixelStreamerFactory", "class_pixel_streamer_factory.html", null ],
     [ "ProbeResult", "struct_probe_result.html", null ],
     [ "ProcessForker", "class_process_forker.html", null ],
@@ -71,6 +77,7 @@ var hierarchy =
     [ "QObject", null, [
       [ "Content", "class_content.html", [
         [ "DynamicTextureContent", "class_dynamic_texture_content.html", null ],
+        [ "ImagePyramidContent", "class_image_pyramid_content.html", null ],
         [ "MovieContent", "class_movie_content.html", null ],
         [ "PixelStreamContent", "class_pixel_stream_content.html", [
           [ "WebbrowserContent", "class_webbrowser_content.html", null ]
@@ -93,7 +100,7 @@ var hierarchy =
         [ "MovieSynchronizer", "class_movie_synchronizer.html", null ],
         [ "TiledSynchronizer", "class_tiled_synchronizer.html", [
           [ "LodSynchronizer", "class_lod_synchronizer.html", [
-            [ "DynamicTextureSynchronizer", "class_dynamic_texture_synchronizer.html", null ],
+            [ "ImagePyramidSynchronizer", "class_image_pyramid_synchronizer.html", null ],
             [ "PDFSynchronizer", "class_p_d_f_synchronizer.html", null ],
             [ "SVGSynchronizer", "class_s_v_g_synchronizer.html", null ]
           ] ],
@@ -164,20 +171,23 @@ var hierarchy =
     [ "StateSerializationHelper", "class_state_serialization_helper.html", null ],
     [ "enable_shared_from_this", null, [
       [ "ContentSynchronizer", "class_content_synchronizer.html", null ],
-      [ "DynamicTexture", "class_dynamic_texture.html", null ],
       [ "Tile", "class_tile.html", null ]
     ] ],
-    [ "SVGTextureFactory", "class_s_v_g_texture_factory.html", null ],
+    [ "SVG", "class_s_v_g.html", null ],
+    [ "SVGBackend", "class_s_v_g_backend.html", [
+      [ "SVGQtGpuBackend", "class_s_v_g_qt_gpu_backend.html", null ]
+    ] ],
     [ "ThumbnailGenerator", "class_thumbnail_generator.html", [
       [ "DefaultThumbnailGenerator", "class_default_thumbnail_generator.html", null ],
       [ "FolderThumbnailGenerator", "class_folder_thumbnail_generator.html", null ],
+      [ "ImagePyramidThumbnailGenerator", "class_image_pyramid_thumbnail_generator.html", null ],
       [ "ImageThumbnailGenerator", "class_image_thumbnail_generator.html", null ],
       [ "MovieThumbnailGenerator", "class_movie_thumbnail_generator.html", null ],
-      [ "PyramidThumbnailGenerator", "class_pyramid_thumbnail_generator.html", null ],
       [ "StateThumbnailGenerator", "class_state_thumbnail_generator.html", null ]
     ] ],
     [ "ThumbnailGeneratorFactory", "class_thumbnail_generator_factory.html", null ],
     [ "tide::Version", "classtide_1_1_version.html", null ],
+    [ "TiffPyramidReader", "class_tiff_pyramid_reader.html", null ],
     [ "VisibilityHelper", "class_visibility_helper.html", null ],
     [ "ZoomHelper", "class_zoom_helper.html", null ]
 ];

@@ -7,6 +7,7 @@ var searchData=
   ['textureready',['textureReady',['../class_tile.html#af4a65319df0b8bf8f04deb7188376b16',1,'Tile']]],
   ['textureupdated',['textureUpdated',['../class_tile.html#abae1e7053ffc4d4f2ae9f8352bbe7011',1,'Tile']]],
   ['textureuploader',['TextureUploader',['../class_texture_uploader.html#a9eebced66394a5caef7cb265843a8c06',1,'TextureUploader']]],
+  ['tiffpyramidreader',['TiffPyramidReader',['../class_tiff_pyramid_reader.html#a638f589e9402e9fe6eb08e0e0a5a47ec',1,'TiffPyramidReader']]],
   ['tile',['Tile',['../class_tile.html#a41ea6d041ad065dfc8c85fb75980d636',1,'Tile']]],
   ['tiledsynchronizer',['TiledSynchronizer',['../class_tiled_synchronizer.html#a70ae3f4171110fc5308407e870044fcd',1,'TiledSynchronizer']]],
   ['tilesareachanged',['tilesAreaChanged',['../class_content_synchronizer.html#aac807a9cb073a52d88a80ceca93b34a3',1,'ContentSynchronizer']]],

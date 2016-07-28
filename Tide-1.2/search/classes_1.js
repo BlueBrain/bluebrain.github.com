@@ -1,6 +1,8 @@
 var searchData=
 [
   ['cacheddatasource',['CachedDataSource',['../class_cached_data_source.html',1,'']]],
+  ['cairodeleter',['CairoDeleter',['../struct_cairo_deleter.html',1,'']]],
+  ['cairosurfacedeleter',['CairoSurfaceDeleter',['../struct_cairo_surface_deleter.html',1,'']]],
   ['commandlineoptions',['CommandLineOptions',['../class_command_line_options.html',1,'']]],
   ['commandlineparameters',['CommandLineParameters',['../class_command_line_parameters.html',1,'']]],
   ['configuration',['Configuration',['../class_configuration.html',1,'']]],

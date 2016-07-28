@@ -7,6 +7,7 @@ var NAVTREE =
     [ "User Guide", "_user_guide.html", [
       [ "Usage", "_user_guide.html#usage", [
         [ "Configuration file", "_user_guide.html#xmlconfig", null ],
+        [ "TIFF image pyramids", "_user_guide.html#tiffimagepyramids", null ],
         [ "Open ports", "_user_guide.html#openports", null ],
         [ "OSX notes", "_user_guide.html#osxnotes", null ]
       ] ]
@@ -37,11 +38,11 @@ var NAVTREE =
 var NAVTREEINDEX =
 [
 ".html",
-"class_content_action.html#a4cdd3fcf0f270b34a1a30d526fbee7dc",
-"class_display_group.html#abe8c0ccc90732fa127118db09877e000",
-"class_markers.html#ad869f2cc23ff3b375148ab23f48636ce",
-"class_pixel_streamer_launcher.html",
-"class_webbrowser_content.html#a61edc8f3e2f42254abdb24287fd90448"
+"class_content.html#af14b7b5ebc756686ecde73dc09b57c56",
+"class_display_group.html#a779255c3aa959085ad613850286dd43d",
+"class_markers.html#a9758d9926d9fbf5c556820114bacedeea83eee584d5149ba9beaff74fe649f9cd",
+"class_pixel_stream_window_manager.html#a3f878a4364c8e4d9a8cb43ca20519126",
+"class_wall_from_master_channel.html#a32ac04eade034a8cd78c198a1b6decfd"
 ];
 
 var SYNCONMSG = 'click to disable panel synchronisation';
