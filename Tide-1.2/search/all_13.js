@@ -43,7 +43,7 @@ var searchData=
   ['setmipmapfiltering',['setMipmapFiltering',['../class_texture_node.html#ac7826da8d3fb368fd69ab3906829035a',1,'TextureNode']]],
   ['setmode',['setMode',['../class_content_window.html#aa4596875ce3ce01a07ad63c097249a30',1,'ContentWindow']]],
   ['setnewframe',['setNewFrame',['../class_data_provider.html#a78d4bb1be6e4cfb61c54e6fd1bf20363',1,'DataProvider']]],
-  ['setpage',['setPage',['../class_p_d_f_backend.html#a7b9125ff67c23db98c1c250ce332b252',1,'PDFBackend::setPage()'],['../class_p_d_f_poppler_cairo_backend.html#a86ac769aeacb49906c2378c40b7663fe',1,'PDFPopplerCairoBackend::setPage()']]],
+  ['setpage',['setPage',['../class_p_d_f_backend.html#a7b9125ff67c23db98c1c250ce332b252',1,'PDFBackend::setPage()'],['../class_p_d_f_poppler_qt_backend.html#ab31e13f95731115b36054c34dec64a05',1,'PDFPopplerQtBackend::setPage()']]],
   ['setrect',['setRect',['../class_quad_line_node.html#ad0422ea5f0d04a3a93de1236f810e34f',1,'QuadLineNode']]],
   ['setrenderingoptions',['setRenderingOptions',['../class_display_group_renderer.html#ada0e93d084100854df430f175abb0b92',1,'DisplayGroupRenderer']]],
   ['setrenderoptions',['setRenderOptions',['../class_wall_window.html#ad5f47bfad5bbab58dec6e0d951d8d16c',1,'WallWindow']]],

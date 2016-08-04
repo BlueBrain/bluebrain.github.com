@@ -51,7 +51,7 @@ var hierarchy =
     [ "LodTools::TileInfo", "struct_lod_tools_1_1_tile_info.html", null ],
     [ "MPIChannel", "class_m_p_i_channel.html", null ],
     [ "PDFBackend", "class_p_d_f_backend.html", [
-      [ "PDFPopplerCairoBackend", "class_p_d_f_poppler_cairo_backend.html", null ]
+      [ "PDFPopplerQtBackend", "class_p_d_f_poppler_qt_backend.html", null ]
     ] ],
     [ "PixelStreamerFactory", "class_pixel_streamer_factory.html", null ],
     [ "ProbeResult", "struct_probe_result.html", null ],

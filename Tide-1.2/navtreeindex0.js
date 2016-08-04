@@ -70,7 +70,7 @@ var NAVTREEINDEX0 =
 "_options_8h_source.html":[6,0,73],
 "_p_d_f_backend_8h_source.html":[6,0,74],
 "_p_d_f_content_8h_source.html":[6,0,75],
-"_p_d_f_poppler_cairo_backend_8h_source.html":[6,0,76],
+"_p_d_f_poppler_qt_backend_8h_source.html":[6,0,76],
 "_p_d_f_synchronizer_8h_source.html":[6,0,77],
 "_p_d_f_tiler_8h_source.html":[6,0,78],
 "_pixel_stream_content_8h_source.html":[6,0,79],

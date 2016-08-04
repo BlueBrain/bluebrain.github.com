@@ -2,7 +2,7 @@ var searchData=
 [
   ['pdfbackend',['PDFBackend',['../class_p_d_f_backend.html',1,'']]],
   ['pdfcontent',['PDFContent',['../class_p_d_f_content.html',1,'']]],
-  ['pdfpopplercairobackend',['PDFPopplerCairoBackend',['../class_p_d_f_poppler_cairo_backend.html',1,'']]],
+  ['pdfpopplerqtbackend',['PDFPopplerQtBackend',['../class_p_d_f_poppler_qt_backend.html',1,'']]],
   ['pdfsynchronizer',['PDFSynchronizer',['../class_p_d_f_synchronizer.html',1,'']]],
   ['pdftiler',['PDFTiler',['../class_p_d_f_tiler.html',1,'']]],
   ['pixelstreamcontent',['PixelStreamContent',['../class_pixel_stream_content.html',1,'']]],

@@ -19,7 +19,7 @@ var class_multitouch_area =
     [ "swipeRight", "class_multitouch_area.html#ab7a38b99b679b3c669908dd75dea0b20", null ],
     [ "swipeUp", "class_multitouch_area.html#aca86b7d783c0f2db38665328608fada8", null ],
     [ "tap", "class_multitouch_area.html#a4a7f521ad8c5eb0c7756f737134fb4e0", null ],
-    [ "tapAndHold", "class_multitouch_area.html#a9fa57731dec1ccec0e551e9039840afe", null ],
+    [ "tapAndHold", "class_multitouch_area.html#a968c008c352f09cb24486ed8257b0968", null ],
     [ "touchEnded", "class_multitouch_area.html#a6e02038540cd46754d22afa699377624", null ],
     [ "touchStarted", "class_multitouch_area.html#a9930406bdbbcb1a9ad99f10d691e2313", null ],
     [ "panThreshold", "class_multitouch_area.html#a8c09c39e97a782bbedafd33d6563e8a5", null ],

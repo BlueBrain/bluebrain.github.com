@@ -70,7 +70,7 @@ var annotated =
     [ "Options", "class_options.html", "class_options" ],
     [ "PDFBackend", "class_p_d_f_backend.html", "class_p_d_f_backend" ],
     [ "PDFContent", "class_p_d_f_content.html", "class_p_d_f_content" ],
-    [ "PDFPopplerCairoBackend", "class_p_d_f_poppler_cairo_backend.html", "class_p_d_f_poppler_cairo_backend" ],
+    [ "PDFPopplerQtBackend", "class_p_d_f_poppler_qt_backend.html", "class_p_d_f_poppler_qt_backend" ],
     [ "PDFSynchronizer", "class_p_d_f_synchronizer.html", "class_p_d_f_synchronizer" ],
     [ "PDFTiler", "class_p_d_f_tiler.html", "class_p_d_f_tiler" ],
     [ "PixelStreamContent", "class_pixel_stream_content.html", "class_pixel_stream_content" ],

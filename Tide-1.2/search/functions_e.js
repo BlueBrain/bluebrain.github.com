@@ -6,7 +6,7 @@ var searchData=
   ['panended',['panEnded',['../class_multitouch_area.html#a84b90afb21f9a1a305db11bf5655df09',1,'MultitouchArea']]],
   ['panstarted',['panStarted',['../class_multitouch_area.html#a3ab553b0eeb82b0cd74c40da8ceea828',1,'MultitouchArea']]],
   ['pdfcontent',['PDFContent',['../class_p_d_f_content.html#a4ae008684cb13c9a6bd52ed35f827781',1,'PDFContent']]],
-  ['pdfpopplercairobackend',['PDFPopplerCairoBackend',['../class_p_d_f_poppler_cairo_backend.html#a739b264e83b82eed747682e136a17cbc',1,'PDFPopplerCairoBackend']]],
+  ['pdfpopplerqtbackend',['PDFPopplerQtBackend',['../class_p_d_f_poppler_qt_backend.html#af85d60a6df140b5852a319e591c07212',1,'PDFPopplerQtBackend']]],
   ['pdfsynchronizer',['PDFSynchronizer',['../class_p_d_f_synchronizer.html#a3cf58b8bf0d1a4c333b6d892a8236737',1,'PDFSynchronizer']]],
   ['pdftiler',['PDFTiler',['../class_p_d_f_tiler.html#a050c5f6aaa1b52b10861ca9cbb35e919',1,'PDFTiler']]],
   ['pictureupdated',['pictureUpdated',['../class_pixel_stream_updater.html#a3fb5e7ef6ef99b1edcc1671712501dc9',1,'PixelStreamUpdater']]],

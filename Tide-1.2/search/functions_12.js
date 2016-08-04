@@ -1,7 +1,7 @@
 var searchData=
 [
   ['tap',['tap',['../class_multitouch_area.html#a4a7f521ad8c5eb0c7756f737134fb4e0',1,'MultitouchArea']]],
-  ['tapandhold',['tapAndHold',['../class_multitouch_area.html#a9fa57731dec1ccec0e551e9039840afe',1,'MultitouchArea']]],
+  ['tapandhold',['tapAndHold',['../class_multitouch_area.html#a968c008c352f09cb24486ed8257b0968',1,'MultitouchArea']]],
   ['testpattern',['TestPattern',['../class_test_pattern.html#a0d3c3504086d1a78f7631c65af92a9ac',1,'TestPattern']]],
   ['texturecontent',['TextureContent',['../class_texture_content.html#a34ede22c00496d1f2309d56c0bfcf70b',1,'TextureContent']]],
   ['textureready',['textureReady',['../class_tile.html#af4a65319df0b8bf8f04deb7188376b16',1,'Tile']]],

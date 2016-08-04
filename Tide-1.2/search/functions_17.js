@@ -17,7 +17,7 @@ var searchData=
   ['_7empichannel',['~MPIChannel',['../class_m_p_i_channel.html#a58250252d6b686e1d11d4144b40ca951',1,'MPIChannel']]],
   ['_7empicontext',['~MPIContext',['../class_m_p_i_context.html#a3399b4521ba34fbe6977cc8c5358046b',1,'MPIContext']]],
   ['_7epdfbackend',['~PDFBackend',['../class_p_d_f_backend.html#aa210c01b3297241fd5740ebaa23c2cd4',1,'PDFBackend']]],
-  ['_7epdfpopplercairobackend',['~PDFPopplerCairoBackend',['../class_p_d_f_poppler_cairo_backend.html#a66cf756db6168fed42ef6f34f38601e1',1,'PDFPopplerCairoBackend']]],
+  ['_7epdfpopplerqtbackend',['~PDFPopplerQtBackend',['../class_p_d_f_poppler_qt_backend.html#af21b0b8a9b2163bad7f9c68a2fca57eb',1,'PDFPopplerQtBackend']]],
   ['_7epixelstreamer',['~PixelStreamer',['../class_pixel_streamer.html#ac9d996a5dadc05b54dcfa0824eb1a573',1,'PixelStreamer']]],
   ['_7eqmlwindowrenderer',['~QmlWindowRenderer',['../class_qml_window_renderer.html#a64b49a4fef3f1bd26e2f2b1a6fa4db3c',1,'QmlWindowRenderer']]],
   ['_7erestinterface',['~RestInterface',['../class_rest_interface.html#aeafc0fc94ce9d822611933385bfa9325',1,'RestInterface']]],

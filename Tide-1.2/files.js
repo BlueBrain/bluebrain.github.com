@@ -76,7 +76,7 @@ var files =
     [ "Options.h", "_options_8h_source.html", null ],
     [ "PDFBackend.h", "_p_d_f_backend_8h_source.html", null ],
     [ "PDFContent.h", "_p_d_f_content_8h_source.html", null ],
-    [ "PDFPopplerCairoBackend.h", "_p_d_f_poppler_cairo_backend_8h_source.html", null ],
+    [ "PDFPopplerQtBackend.h", "_p_d_f_poppler_qt_backend_8h_source.html", null ],
     [ "PDFSynchronizer.h", "_p_d_f_synchronizer_8h_source.html", null ],
     [ "PDFTiler.h", "_p_d_f_tiler_8h_source.html", null ],
     [ "PixelStreamContent.h", "_pixel_stream_content_8h_source.html", null ],
