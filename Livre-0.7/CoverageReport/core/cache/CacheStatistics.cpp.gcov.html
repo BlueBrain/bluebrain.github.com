@@ -1,0 +1,224 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+
+<html lang="en">
+
+<head>
+  <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+  <title>LCOV - Livre - core/cache/CacheStatistics.cpp</title>
+  <link rel="stylesheet" type="text/css" href="../../gcov.css">
+</head>
+
+<body>
+
+  <table width="100%" border=0 cellspacing=0 cellpadding=0>
+    <tr><td class="title">LCOV - code coverage report</td></tr>
+    <tr><td class="ruler"><img src="../../glass.png" width=3 height=3 alt=""></td></tr>
+
+    <tr>
+      <td width="100%">
+        <table cellpadding=1 border=0 width="100%">
+          <tr>
+            <td width="10%" class="headerItem">Current view:</td>
+            <td width="35%" class="headerValue"><a href="../../index.html">top level</a> - <a href="index.html">core/cache</a> - CacheStatistics.cpp<span style="font-size: 80%;"> (source / <a href="CacheStatistics.cpp.func-sort-c.html">functions</a>)</span></td>
+            <td width="5%"></td>
+            <td width="15%"></td>
+            <td width="10%" class="headerCovTableHead">Hit</td>
+            <td width="10%" class="headerCovTableHead">Total</td>
+            <td width="15%" class="headerCovTableHead">Coverage</td>
+          </tr>
+          <tr>
+            <td class="headerItem">Test:</td>
+            <td class="headerValue">Livre</td>
+            <td></td>
+            <td class="headerItem">Lines:</td>
+            <td class="headerCovTableEntry">39</td>
+            <td class="headerCovTableEntry">56</td>
+            <td class="headerCovTableEntryMed">69.6 %</td>
+          </tr>
+          <tr>
+            <td class="headerItem">Date:</td>
+            <td class="headerValue">2016-08-05 03:04:45</td>
+            <td></td>
+            <td class="headerItem">Functions:</td>
+            <td class="headerCovTableEntry">8</td>
+            <td class="headerCovTableEntry">9</td>
+            <td class="headerCovTableEntryHi">88.9 %</td>
+          </tr>
+          <tr><td><img src="../../glass.png" width=3 height=3 alt=""></td></tr>
+        </table>
+      </td>
+    </tr>
+
+    <tr><td class="ruler"><img src="../../glass.png" width=3 height=3 alt=""></td></tr>
+  </table>
+
+  <table cellpadding=0 cellspacing=0 border=0>
+    <tr>
+      <td><br></td>
+    </tr>
+    <tr>
+      <td>
+<pre class="sourceHeading">          Line data    Source code</pre>
+<pre class="source">
+<a name="1"><span class="lineNum">       1 </span>            : /* Copyright (c) 2011-2015, EPFL/Blue Brain Project</a>
+<span class="lineNum">       2 </span>            :  *                     Ahmet Bilgili &lt;ahmet.bilgili@epfl.ch&gt;
+<span class="lineNum">       3 </span>            :  *                     Daniel Nachbaur &lt;daniel.nachbaur@epfl.ch&gt;
+<span class="lineNum">       4 </span>            :  *
+<span class="lineNum">       5 </span>            :  * This file is part of Livre &lt;https://github.com/BlueBrain/Livre&gt;
+<span class="lineNum">       6 </span>            :  *
+<span class="lineNum">       7 </span>            :  * This library is free software; you can redistribute it and/or modify it under
+<span class="lineNum">       8 </span>            :  * the terms of the GNU Lesser General Public License version 3.0 as published
+<span class="lineNum">       9 </span>            :  * by the Free Software Foundation.
+<span class="lineNum">      10 </span>            :  *
+<span class="lineNum">      11 </span>            :  * This library is distributed in the hope that it will be useful, but WITHOUT
+<span class="lineNum">      12 </span>            :  * ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS
+<span class="lineNum">      13 </span>            :  * FOR A PARTICULAR PURPOSE.  See the GNU Lesser General Public License for more
+<span class="lineNum">      14 </span>            :  * details.
+<span class="lineNum">      15 </span>            :  *
+<span class="lineNum">      16 </span>            :  * You should have received a copy of the GNU Lesser General Public License
+<span class="lineNum">      17 </span>            :  * along with this library; if not, write to the Free Software Foundation, Inc.,
+<span class="lineNum">      18 </span>            :  * 51 Franklin Street, Fifth Floor, Boston, MA 02110-1301 USA.
+<span class="lineNum">      19 </span>            :  */
+<span class="lineNum">      20 </span>            : 
+<span class="lineNum">      21 </span>            : #include &lt;livre/core/cache/CacheStatistics.h&gt;
+<span class="lineNum">      22 </span>            : #include &lt;livre/core/cache/CacheObject.h&gt;
+<span class="lineNum">      23 </span>            : #include &lt;livre/core/util/ThreadClock.h&gt;
+<span class="lineNum">      24 </span>            : 
+<span class="lineNum">      25 </span>            : namespace livre
+<span class="lineNum">      26 </span>            : {
+<span class="lineNum">      27 </span>            : 
+<span class="lineNum">      28 </span>            : struct CacheStatistics::LoadInfo
+<span class="lineNum">      29 </span>            : {
+<span class="lineNum">      30 </span>            :     enum Operation
+<span class="lineNum">      31 </span>            :     {
+<span class="lineNum">      32 </span>            :         OP_LOAD,
+<span class="lineNum">      33 </span>            :         OP_UNLOAD
+<a name="34"><span class="lineNum">      34 </span>            :     };</a>
+<span class="lineNum">      35 </span>            : 
+<span class="lineNum">      36 </span><span class="lineCov">          3 :     LoadInfo( )</span>
+<span class="lineNum">      37 </span>            :         : op( OP_LOAD ),
+<span class="lineNum">      38 </span>            :           cacheSize( 0 ),
+<span class="lineNum">      39 </span>            :           cumulativeCacheSize( 0 ),
+<span class="lineNum">      40 </span><span class="lineCov">          3 :           cumulativeNbNodes( 0 )</span>
+<span class="lineNum">      41 </span>            :     {
+<span class="lineNum">      42 </span><span class="lineCov">          3 :         time = ThreadClock::getClock().getTimed();</span>
+<a name="43"><span class="lineNum">      43 </span><span class="lineCov">          3 :     }</span></a>
+<span class="lineNum">      44 </span>            : 
+<span class="lineNum">      45 </span><span class="lineCov">          8 :     LoadInfo(  const LoadInfo&amp; previous,</span>
+<span class="lineNum">      46 </span>            :                Operation operation,
+<span class="lineNum">      47 </span>            :                const size_t cSize )
+<span class="lineNum">      48 </span><span class="lineCov">          8 :         : op( operation ), cacheSize( cSize )</span>
+<span class="lineNum">      49 </span>            :     {
+<span class="lineNum">      50 </span><span class="lineCov">          8 :         time = ThreadClock::getClock().getTimed();</span>
+<span class="lineNum">      51 </span><span class="lineCov">          8 :         switch( op )</span>
+<span class="lineNum">      52 </span>            :         {
+<span class="lineNum">      53 </span>            :         case OP_LOAD:
+<span class="lineNum">      54 </span><span class="lineCov">          5 :             cumulativeCacheSize = previous.cumulativeCacheSize + cacheSize;</span>
+<span class="lineNum">      55 </span><span class="lineCov">          5 :             cumulativeNbNodes = previous.cumulativeNbNodes + 1;</span>
+<span class="lineNum">      56 </span><span class="lineCov">          5 :             break;</span>
+<span class="lineNum">      57 </span>            :         case OP_UNLOAD:
+<span class="lineNum">      58 </span><span class="lineCov">          3 :             cumulativeCacheSize = previous.cumulativeCacheSize - cacheSize;</span>
+<span class="lineNum">      59 </span><span class="lineCov">          3 :             cumulativeNbNodes = previous.cumulativeNbNodes - 1;</span>
+<span class="lineNum">      60 </span><span class="lineCov">          3 :             break;</span>
+<span class="lineNum">      61 </span>            :         }
+<span class="lineNum">      62 </span><span class="lineCov">          8 :     }</span>
+<span class="lineNum">      63 </span>            : 
+<span class="lineNum">      64 </span>            :     friend std::ostream&amp; operator&lt;&lt;( std::ostream&amp; stream, const LoadInfo&amp; loadInfo )
+<span class="lineNum">      65 </span>            :     {
+<span class="lineNum">      66 </span>            :         stream &lt;&lt; &quot;Time: &quot; &lt;&lt; loadInfo.time
+<span class="lineNum">      67 </span>            :                &lt;&lt; &quot; Cumulative Nodes: &quot; &lt;&lt; loadInfo.cumulativeNbNodes
+<span class="lineNum">      68 </span>            :                &lt;&lt; &quot; Cumulative Size: &quot; &lt;&lt; loadInfo.cumulativeCacheSize;
+<span class="lineNum">      69 </span>            :         return stream;
+<span class="lineNum">      70 </span>            :     }
+<span class="lineNum">      71 </span>            : 
+<span class="lineNum">      72 </span>            :     Operation op;
+<span class="lineNum">      73 </span>            :     double time;
+<span class="lineNum">      74 </span>            :     size_t cacheSize;
+<span class="lineNum">      75 </span>            :     size_t cumulativeCacheSize;
+<span class="lineNum">      76 </span>            :     size_t cumulativeNbNodes;
+<span class="lineNum">      77 </span>            :     double loadTime;
+<a name="78"><span class="lineNum">      78 </span>            : };</a>
+<span class="lineNum">      79 </span>            : 
+<span class="lineNum">      80 </span><span class="lineCov">          3 : CacheStatistics::CacheStatistics( const std::string&amp; name,</span>
+<span class="lineNum">      81 </span>            :                                   const size_t maxMemBytes,
+<span class="lineNum">      82 </span>            :                                   const size_t queueSize /* = CACHE_LOG_SIZE */ )
+<span class="lineNum">      83 </span>            :     : _name( name )
+<span class="lineNum">      84 </span>            :     , _usedMemBytes( 0 )
+<span class="lineNum">      85 </span>            :     , _maxMemBytes( maxMemBytes )
+<span class="lineNum">      86 </span>            :     , _objCount( 0 )
+<span class="lineNum">      87 </span>            :     , _cacheHit( 0 )
+<span class="lineNum">      88 </span>            :     , _cacheMiss( 0 )
+<span class="lineNum">      89 </span><span class="lineCov">          3 :     , _queueSize( queueSize )</span>
+<span class="lineNum">      90 </span>            : {
+<a name="91"><span class="lineNum">      91 </span><span class="lineCov">          3 : }</span></a>
+<span class="lineNum">      92 </span>            : 
+<span class="lineNum">      93 </span><span class="lineCov">          5 : void CacheStatistics::notifyLoaded( const CacheObject&amp; cacheObject )</span>
+<span class="lineNum">      94 </span>            : {
+<span class="lineNum">      95 </span><span class="lineCov">          5 :    ++_objCount;</span>
+<span class="lineNum">      96 </span><span class="lineCov">          5 :    _usedMemBytes += cacheObject.getSize();</span>
+<span class="lineNum">      97 </span>            : 
+<span class="lineNum">      98 </span><span class="lineCov">          5 :    if( _ioQueue.empty() )</span>
+<span class="lineNum">      99 </span><span class="lineCov">          3 :        _ioQueue.push( LoadInfoPtr( new LoadInfo()) );</span>
+<span class="lineNum">     100 </span>            : 
+<span class="lineNum">     101 </span><span class="lineCov">          5 :    if( _ioQueue.getSize() == _queueSize )</span>
+<span class="lineNum">     102 </span><span class="lineNoCov">          0 :        _ioQueue.pop( );</span>
+<span class="lineNum">     103 </span>            : 
+<span class="lineNum">     104 </span><span class="lineCov">          5 :    LoadInfoPtr previous;</span>
+<span class="lineNum">     105 </span><span class="lineCov">          5 :    _ioQueue.getBack( previous );</span>
+<span class="lineNum">     106 </span>            :    _ioQueue.push( LoadInfoPtr( new LoadInfo( *previous, LoadInfo::OP_LOAD,
+<span class="lineNum">     107 </span><span class="lineCov">          5 :                                              cacheObject.getSize( ))));</span>
+<a name="108"><span class="lineNum">     108 </span><span class="lineCov">          5 : }</span></a>
+<span class="lineNum">     109 </span>            : 
+<span class="lineNum">     110 </span><span class="lineCov">          3 : void CacheStatistics::notifyUnloaded( const CacheObject&amp; cacheObject )</span>
+<span class="lineNum">     111 </span>            : {
+<span class="lineNum">     112 </span><span class="lineCov">          3 :     --_objCount;</span>
+<span class="lineNum">     113 </span><span class="lineCov">          3 :     _usedMemBytes -= cacheObject.getSize();</span>
+<span class="lineNum">     114 </span>            : 
+<span class="lineNum">     115 </span><span class="lineCov">          3 :     if( _ioQueue.getSize() == _queueSize )</span>
+<span class="lineNum">     116 </span><span class="lineNoCov">          0 :         _ioQueue.pop( );</span>
+<span class="lineNum">     117 </span>            : 
+<span class="lineNum">     118 </span><span class="lineCov">          3 :     LoadInfoPtr previous;</span>
+<span class="lineNum">     119 </span><span class="lineCov">          3 :     _ioQueue.getBack( previous );</span>
+<span class="lineNum">     120 </span>            :     _ioQueue.push( LoadInfoPtr( new LoadInfo( *previous, LoadInfo::OP_UNLOAD,
+<span class="lineNum">     121 </span><span class="lineCov">          3 :                                               cacheObject.getSize( ))));</span>
+<a name="122"><span class="lineNum">     122 </span><span class="lineCov">          3 : }</span></a>
+<span class="lineNum">     123 </span>            : 
+<span class="lineNum">     124 </span><span class="lineNoCov">          0 : std::ostream&amp; operator&lt;&lt;( std::ostream&amp; stream,</span>
+<span class="lineNum">     125 </span>            :                           const CacheStatistics&amp; statistics )
+<span class="lineNum">     126 </span>            : {
+<span class="lineNum">     127 </span>            :     const int hits = int(
+<span class="lineNum">     128 </span><span class="lineNoCov">          0 :         100.f * float( statistics._cacheHit ) /</span>
+<span class="lineNum">     129 </span><span class="lineNoCov">          0 :         float( statistics._cacheHit + statistics._cacheMiss ));</span>
+<span class="lineNum">     130 </span><span class="lineNoCov">          0 :     stream &lt;&lt; statistics._name &lt;&lt; std::endl;</span>
+<span class="lineNum">     131 </span><span class="lineNoCov">          0 :     stream &lt;&lt; &quot;  Used Memory: &quot;</span>
+<span class="lineNum">     132 </span><span class="lineNoCov">          0 :            &lt;&lt; (statistics._usedMemBytes + LB_1MB - 1) / LB_1MB &lt;&lt; &quot;/&quot;</span>
+<span class="lineNum">     133 </span><span class="lineNoCov">          0 :            &lt;&lt; (statistics._maxMemBytes + LB_1MB - 1) / LB_1MB &lt;&lt; &quot;MB&quot;</span>
+<span class="lineNum">     134 </span><span class="lineNoCov">          0 :            &lt;&lt; std::endl;</span>
+<span class="lineNum">     135 </span><span class="lineNoCov">          0 :     stream &lt;&lt; &quot;  Block Count: &quot;</span>
+<span class="lineNum">     136 </span><span class="lineNoCov">          0 :            &lt;&lt; statistics._objCount &lt;&lt; std::endl;</span>
+<span class="lineNum">     137 </span><span class="lineNoCov">          0 :     stream &lt;&lt; &quot;  Cache hits: &quot;</span>
+<span class="lineNum">     138 </span><span class="lineNoCov">          0 :            &lt;&lt; statistics._cacheHit &lt;&lt; &quot; (&quot; &lt;&lt; hits &lt;&lt; &quot;%)&quot; &lt;&lt; std::endl;</span>
+<span class="lineNum">     139 </span><span class="lineNoCov">          0 :     stream &lt;&lt; &quot;  Cache misses: &quot;</span>
+<span class="lineNum">     140 </span><span class="lineNoCov">          0 :            &lt;&lt; statistics._cacheMiss &lt;&lt; std::endl;</span>
+<span class="lineNum">     141 </span>            : 
+<span class="lineNum">     142 </span><span class="lineNoCov">          0 :     return stream;</span>
+<a name="143"><span class="lineNum">     143 </span>            : }</a>
+<span class="lineNum">     144 </span>            : 
+<span class="lineNum">     145 </span><span class="lineCov">          3 : CacheStatistics::~CacheStatistics()</span>
+<a name="146"><span class="lineNum">     146 </span><span class="lineCov">          3 : {}</span></a>
+<span class="lineNum">     147 </span>            : 
+<span class="lineNum">     148 </span><span class="lineCov">         36 : }</span>
+</pre>
+      </td>
+    </tr>
+  </table>
+  <br>
+
+  <table width="100%" border=0 cellspacing=0 cellpadding=0>
+    <tr><td class="ruler"><img src="../../glass.png" width=3 height=3 alt=""></td></tr>
+    <tr><td class="versionInfo">Generated by: <a href="http://ltp.sourceforge.net/coverage/lcov.php" target="_parent">LCOV version 1.11</a></td></tr>
+  </table>
+  <br>
+
+</body>
+</html>
