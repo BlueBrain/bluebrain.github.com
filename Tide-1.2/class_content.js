@@ -19,6 +19,7 @@ var class_content =
     [ "getMaxScale", "class_content.html#a04642ff3171681aa5fd2c8c8291a7949", null ],
     [ "getMinDimensions", "class_content.html#a8cf06fbd623453fd2aa349d91ebbca3b", null ],
     [ "getPreferredDimensions", "class_content.html#a508b7f5c09ffa4f5a1a7f3e89cbec489", null ],
+    [ "getQmlControls", "class_content.html#af64c08ff1aafa0206bf178a6e4bfa634", null ],
     [ "getType", "class_content.html#af9e369355bb2be4ab07ed23f0f82113d", null ],
     [ "getURI", "class_content.html#a887d2b952cd824d70f64106ae048a5f8", null ],
     [ "getZoomRect", "class_content.html#a461bb62d3989d0eb5b4d1f824e7a66c0", null ],
@@ -51,6 +52,7 @@ var class_content =
     [ "hasFixedAspectRatio", "class_content.html#ad1066ba29aa2771542a3a1ea39b05081", null ],
     [ "interactionPolicy", "class_content.html#ada84bcec0a2ecb96647e841a604c7cb6", null ],
     [ "keyboard", "class_content.html#aded8c9d6721e9c52f57204937dfa0cf5", null ],
+    [ "qmlControls", "class_content.html#af3540e434752288a35efd670186e127f", null ],
     [ "size", "class_content.html#a5c8292dbaab045c65cc9a6f1821f8efd", null ],
     [ "zoomRect", "class_content.html#ade1377306703c28f2977e0d308b3c09a", null ]
 ];
