@@ -16,7 +16,8 @@ var structdeflect_1_1_event =
       [ "EVT_KEY_PRESS", "structdeflect_1_1_event.html#a8f86848d715aee8f5bdff4de30d9fb2ba8b8a1415bf366f6706e2010558fe163f", null ],
       [ "EVT_KEY_RELEASE", "structdeflect_1_1_event.html#a8f86848d715aee8f5bdff4de30d9fb2ba293d7ae59518db30fc92564b6a0b46ac", null ],
       [ "EVT_VIEW_SIZE_CHANGED", "structdeflect_1_1_event.html#a8f86848d715aee8f5bdff4de30d9fb2bacdd4127244f4f6cf5ac95c49a47cac25", null ],
-      [ "EVT_TAP_AND_HOLD", "structdeflect_1_1_event.html#a8f86848d715aee8f5bdff4de30d9fb2ba56ed3e1e6c19087d7c209173ac128464", null ]
+      [ "EVT_TAP_AND_HOLD", "structdeflect_1_1_event.html#a8f86848d715aee8f5bdff4de30d9fb2ba56ed3e1e6c19087d7c209173ac128464", null ],
+      [ "EVT_PAN", "structdeflect_1_1_event.html#a8f86848d715aee8f5bdff4de30d9fb2baae8c307b98f1e655e3a971ad444b31d1", null ]
     ] ],
     [ "Event", "structdeflect_1_1_event.html#a8212fb4013179eff56a621ed7f5a40ca", null ],
     [ "dx", "structdeflect_1_1_event.html#a16b046b14e8d6f66685cc3db5f669f7d", null ],
