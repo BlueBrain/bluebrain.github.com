@@ -2,9 +2,9 @@ var searchData=
 [
   ['pagechanged',['pageChanged',['../class_p_d_f_content.html#a817129d408c9907e2081ab588659d8a4',1,'PDFContent']]],
   ['paint',['paint',['../class_test_pattern.html#a7ad9a56b63b91c661dd198a23935b3a7',1,'TestPattern']]],
-  ['pan',['pan',['../class_multitouch_area.html#ac6fff56a3bf42cb747428eae5aa484ad',1,'MultitouchArea']]],
+  ['pan',['pan',['../class_multitouch_area.html#aa8c67585684186f2c15c531699b80e3f',1,'MultitouchArea']]],
   ['panended',['panEnded',['../class_multitouch_area.html#a84b90afb21f9a1a305db11bf5655df09',1,'MultitouchArea']]],
-  ['panstarted',['panStarted',['../class_multitouch_area.html#a3ab553b0eeb82b0cd74c40da8ceea828',1,'MultitouchArea']]],
+  ['panstarted',['panStarted',['../class_multitouch_area.html#aa293ed637d9f6be952d767de2f24e6ca',1,'MultitouchArea']]],
   ['panthreshold',['panThreshold',['../class_multitouch_area.html#a8c09c39e97a782bbedafd33d6563e8a5',1,'MultitouchArea']]],
   ['pdfbackend',['PDFBackend',['../class_p_d_f_backend.html',1,'']]],
   ['pdfcontent',['PDFContent',['../class_p_d_f_content.html',1,'PDFContent'],['../class_p_d_f_content.html#a4ae008684cb13c9a6bd52ed35f827781',1,'PDFContent::PDFContent()']]],
