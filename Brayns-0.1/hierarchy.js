@@ -55,9 +55,11 @@ var hierarchy =
     [ "brayns::Scene", "classbrayns_1_1_scene.html", [
       [ "brayns::OSPRayScene", "classbrayns_1_1_o_s_p_ray_scene.html", null ]
     ] ],
-    [ "brayns::SimulationData", "structbrayns_1_1_simulation_data.html", null ],
+    [ "brayns::SimulationInformation", "structbrayns_1_1_simulation_information.html", null ],
     [ "brayns::Texture2D", "classbrayns_1_1_texture2_d.html", null ],
     [ "brayns::TextureLoader", "classbrayns_1_1_texture_loader.html", null ],
+    [ "brayns::TransferFunction", "classbrayns_1_1_transfer_function.html", null ],
+    [ "brayns::TransferFunctionLoader", "classbrayns_1_1_transfer_function_loader.html", null ],
     [ "brayns::Version", "classbrayns_1_1_version.html", null ],
     [ "brayns::Viewport", "classbrayns_1_1_viewport.html", null ],
     [ "Camera", null, [
@@ -72,9 +74,11 @@ var hierarchy =
       [ "brayns::obj::ExtendedOBJMaterial", "structbrayns_1_1obj_1_1_extended_o_b_j_material.html", null ]
     ] ],
     [ "Renderer", null, [
-      [ "brayns::ExtendedOBJRenderer", "structbrayns_1_1_extended_o_b_j_renderer.html", null ],
-      [ "brayns::ProximityRenderer", "structbrayns_1_1_proximity_renderer.html", null ],
-      [ "brayns::SimulationRenderer", "structbrayns_1_1_simulation_renderer.html", null ]
+      [ "brayns::AbstractRenderer", "classbrayns_1_1_abstract_renderer.html", [
+        [ "brayns::ExtendedOBJRenderer", "classbrayns_1_1_extended_o_b_j_renderer.html", null ],
+        [ "brayns::ProximityRenderer", "classbrayns_1_1_proximity_renderer.html", null ],
+        [ "brayns::SimulationRenderer", "classbrayns_1_1_simulation_renderer.html", null ]
+      ] ]
     ] ],
     [ "std::exception", null, [
       [ "brayns::Exception", "classbrayns_1_1_exception.html", [

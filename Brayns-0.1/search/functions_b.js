@@ -1,4 +1,4 @@
 var searchData=
 [
-  ['ospimpl',['ospImpl',['../classbrayns_1_1_o_s_p_ray_camera.html#aa1b7190d4414395b081675b8ad5c8c22',1,'brayns::OSPRayCamera']]]
+  ['name',['name',['../classbrayns_1_1_engine.html#af2759d54ac5a0f0a1b84332e474a1f5c',1,'brayns::Engine::name()'],['../classbrayns_1_1_o_s_p_ray_engine.html#a92e667aedf57a766c6109eda0a53892b',1,'brayns::OSPRayEngine::name()']]]
 ];

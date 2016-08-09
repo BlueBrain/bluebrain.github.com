@@ -8,6 +8,7 @@ var searchData=
   ['renderingparameters',['RenderingParameters',['../classbrayns_1_1_rendering_parameters.html',1,'brayns']]],
   ['renderinput',['RenderInput',['../structbrayns_1_1_render_input.html',1,'brayns']]],
   ['renderoutput',['RenderOutput',['../structbrayns_1_1_render_output.html',1,'brayns']]],
+  ['resample',['resample',['../classbrayns_1_1_transfer_function.html#a5623845c93420fc5ba47991580cb8a52',1,'brayns::TransferFunction']]],
   ['reset',['reset',['../classbrayns_1_1_camera.html#a0378b8d85d011a5b524746f4e23e34e6',1,'brayns::Camera']]],
   ['reshape',['reshape',['../classbrayns_1_1_brayns.html#a999879af1acfdad5a0558a319d4deb35',1,'brayns::Brayns']]],
   ['run',['run',['../classbrayns_1_1_deflect_plugin.html#a13f6d1c433fc985416bfef49c110fd6f',1,'brayns::DeflectPlugin::run()'],['../classbrayns_1_1_extension_plugin.html#a99fdcc5eb29e84c43518ed54941aad4c',1,'brayns::ExtensionPlugin::run()'],['../classbrayns_1_1_zero_e_q_plugin.html#a0d66c2b00e9eb1447136081cf2b6dd3c',1,'brayns::ZeroEQPlugin::run()']]]

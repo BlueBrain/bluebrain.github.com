@@ -1,6 +1,6 @@
 var classbrayns_1_1_o_s_p_ray_frame_buffer =
 [
-    [ "OSPRayFrameBuffer", "classbrayns_1_1_o_s_p_ray_frame_buffer.html#a9be2380099b2a37c97c1de179739ce25", null ],
+    [ "OSPRayFrameBuffer", "classbrayns_1_1_o_s_p_ray_frame_buffer.html#ae4d2157306347abde3df8068aea876ca", null ],
     [ "~OSPRayFrameBuffer", "classbrayns_1_1_o_s_p_ray_frame_buffer.html#ae5860c1cf3bc84a71a86cac02c9acd9f", null ],
     [ "clear", "classbrayns_1_1_o_s_p_ray_frame_buffer.html#a23825f1c02046006457e3a8158cf90ce", null ],
     [ "getColorBuffer", "classbrayns_1_1_o_s_p_ray_frame_buffer.html#acb0d6eba323f9bda529d87ad22ec1faa", null ],

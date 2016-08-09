@@ -1,4 +1,4 @@
 var searchData=
 [
-  ['motion',['motion',['../classbrayns_1_1_abstract_manipulator.html#ae2cdbab64ca9854470e29a83574941fb',1,'brayns::AbstractManipulator']]]
+  ['loadfromfile',['loadFromFile',['../classbrayns_1_1_transfer_function_loader.html#aafdb88e5621a705836678f6d352eaf1b',1,'brayns::TransferFunctionLoader']]]
 ];

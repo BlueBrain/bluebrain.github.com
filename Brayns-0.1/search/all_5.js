@@ -9,7 +9,7 @@ var searchData=
   ['extendedcones',['ExtendedCones',['../structbrayns_1_1_extended_cones.html',1,'brayns']]],
   ['extendedcylinders',['ExtendedCylinders',['../structbrayns_1_1_extended_cylinders.html',1,'brayns']]],
   ['extendedobjmaterial',['ExtendedOBJMaterial',['../structbrayns_1_1obj_1_1_extended_o_b_j_material.html',1,'brayns::obj']]],
-  ['extendedobjrenderer',['ExtendedOBJRenderer',['../structbrayns_1_1_extended_o_b_j_renderer.html',1,'brayns']]],
+  ['extendedobjrenderer',['ExtendedOBJRenderer',['../classbrayns_1_1_extended_o_b_j_renderer.html',1,'brayns']]],
   ['extendedspheres',['ExtendedSpheres',['../structbrayns_1_1_extended_spheres.html',1,'brayns']]],
   ['extensionplugin',['ExtensionPlugin',['../classbrayns_1_1_extension_plugin.html',1,'brayns']]],
   ['extensionpluginfactory',['ExtensionPluginFactory',['../classbrayns_1_1_extension_plugin_factory.html#a7af941dd75dd7757c33ee149165ab4b9',1,'brayns::ExtensionPluginFactory']]],

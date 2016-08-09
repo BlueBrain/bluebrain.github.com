@@ -31,18 +31,18 @@
             <td class="headerValue">Brayns</td>
             <td></td>
             <td class="headerItem">Lines:</td>
-            <td class="headerCovTableEntry">131</td>
-            <td class="headerCovTableEntry">261</td>
-            <td class="headerCovTableEntryMed">50.2 %</td>
+            <td class="headerCovTableEntry">155</td>
+            <td class="headerCovTableEntry">285</td>
+            <td class="headerCovTableEntryMed">54.4 %</td>
           </tr>
           <tr>
             <td class="headerItem">Date:</td>
-            <td class="headerValue">2016-07-28 01:09:18</td>
+            <td class="headerValue">2016-08-10 01:09:37</td>
             <td></td>
             <td class="headerItem">Functions:</td>
-            <td class="headerCovTableEntry">22</td>
-            <td class="headerCovTableEntry">33</td>
-            <td class="headerCovTableEntryMed">66.7 %</td>
+            <td class="headerCovTableEntry">26</td>
+            <td class="headerCovTableEntry">35</td>
+            <td class="headerCovTableEntryMed">74.3 %</td>
           </tr>
           <tr><td><img src="../glass.png" width=3 height=3 alt=""></td></tr>
         </table>
@@ -96,486 +96,526 @@
 <span class="lineNum">      34 </span>            : #include &lt;brayns/io/MorphologyLoader.h&gt;
 <span class="lineNum">      35 </span>            : #include &lt;brayns/io/ProteinLoader.h&gt;
 <span class="lineNum">      36 </span>            : #include &lt;brayns/io/MeshLoader.h&gt;
-<span class="lineNum">      37 </span>            : 
-<span class="lineNum">      38 </span>            : #include &lt;boost/filesystem.hpp&gt;
-<span class="lineNum">      39 </span>            : #include &lt;servus/uri.h&gt;
-<span class="lineNum">      40 </span>            : 
-<span class="lineNum">      41 </span>            : namespace brayns
-<span class="lineNum">      42 </span>            : {
-<span class="lineNum">      43 </span>            : 
-<a name="44"><span class="lineNum">      44 </span>            : struct Brayns::Impl</a>
-<span class="lineNum">      45 </span>            : {
-<span class="lineNum">      46 </span><span class="lineCov">          6 :     Impl( int argc, const char **argv )</span>
-<span class="lineNum">      47 </span><span class="lineCov">          6 :     {</span>
-<span class="lineNum">      48 </span><span class="lineCov">          6 :         BRAYNS_INFO &lt;&lt; &quot;Parsing command line options&quot; &lt;&lt; std::endl;</span>
-<span class="lineNum">      49 </span><span class="lineCov">          6 :         _parametersManager.reset( new ParametersManager( ));</span>
-<span class="lineNum">      50 </span><span class="lineCov">          6 :         _parametersManager-&gt;parse( argc, argv );</span>
-<span class="lineNum">      51 </span><span class="lineCov">          6 :         _parametersManager-&gt;print( );</span>
-<span class="lineNum">      52 </span>            : 
-<span class="lineNum">      53 </span>            :         // Get rendering engine
-<span class="lineNum">      54 </span><span class="lineCov">          6 :         EngineFactory engineFactory( argc, argv, _parametersManager );</span>
-<span class="lineNum">      55 </span>            :         std::string engineName =
-<span class="lineNum">      56 </span><span class="lineCov">         12 :             _parametersManager-&gt;getRenderingParameters( ).getEngine();</span>
-<span class="lineNum">      57 </span><span class="lineCov">          6 :         _engine = engineFactory.get( engineName );</span>
-<span class="lineNum">      58 </span><span class="lineCov">          6 :         if( !_engine )</span>
-<span class="lineNum">      59 </span><span class="lineNoCov">          0 :             throw std::runtime_error( &quot;Unsupported engine: &quot; + engineName );</span>
-<span class="lineNum">      60 </span>            : 
-<span class="lineNum">      61 </span>            :         // set HDRI skybox if applicable
-<span class="lineNum">      62 </span>            :         const std::string&amp; hdri =
-<span class="lineNum">      63 </span><span class="lineCov">          6 :             _parametersManager-&gt;getRenderingParameters().getHDRI();</span>
-<span class="lineNum">      64 </span><span class="lineCov">         12 :         ScenePtr scene = _engine-&gt;getScene();</span>
-<span class="lineNum">      65 </span><span class="lineCov">          6 :         if( !hdri.empty() )</span>
-<span class="lineNum">      66 </span><span class="lineNoCov">          0 :             scene-&gt;getMaterial(MATERIAL_SKYBOX)-&gt;setTexture(TT_DIFFUSE, hdri);</span>
-<span class="lineNum">      67 </span>            : 
-<span class="lineNum">      68 </span>            :         // Default sun light
-<span class="lineNum">      69 </span>            :         DirectionalLightPtr sunLight( new DirectionalLight(
-<span class="lineNum">      70 </span><span class="lineCov">         12 :             Vector3f( 0.f, 0.f, 1.f ), Vector3f( 1.f, 1.f, 1.f ), 1.f ));</span>
-<span class="lineNum">      71 </span><span class="lineCov">          6 :         scene-&gt;addLight( sunLight );</span>
-<span class="lineNum">      72 </span>            : 
-<span class="lineNum">      73 </span>            :         // Build geometry
-<span class="lineNum">      74 </span><span class="lineCov">          6 :         loadData( );</span>
-<span class="lineNum">      75 </span><span class="lineCov">          6 :         scene-&gt;buildEnvironment( );</span>
-<span class="lineNum">      76 </span><span class="lineCov">          6 :         scene-&gt;buildGeometry( );</span>
-<span class="lineNum">      77 </span><span class="lineCov">          6 :         scene-&gt;commit( );</span>
+<span class="lineNum">      37 </span>            : #include &lt;brayns/io/TransferFunctionLoader.h&gt;
+<span class="lineNum">      38 </span>            : 
+<span class="lineNum">      39 </span>            : #include &lt;boost/filesystem.hpp&gt;
+<span class="lineNum">      40 </span>            : #include &lt;servus/uri.h&gt;
+<span class="lineNum">      41 </span>            : 
+<span class="lineNum">      42 </span>            : namespace brayns
+<span class="lineNum">      43 </span>            : {
+<span class="lineNum">      44 </span>            : 
+<a name="45"><span class="lineNum">      45 </span>            : struct Brayns::Impl</a>
+<span class="lineNum">      46 </span>            : {
+<span class="lineNum">      47 </span><span class="lineCov">          8 :     Impl( int argc, const char **argv )</span>
+<span class="lineNum">      48 </span><span class="lineCov">          8 :     {</span>
+<span class="lineNum">      49 </span><span class="lineCov">          8 :         BRAYNS_INFO &lt;&lt; &quot;Parsing command line options&quot; &lt;&lt; std::endl;</span>
+<span class="lineNum">      50 </span><span class="lineCov">          8 :         _parametersManager.reset( new ParametersManager( ));</span>
+<span class="lineNum">      51 </span><span class="lineCov">          8 :         _parametersManager-&gt;parse( argc, argv );</span>
+<span class="lineNum">      52 </span><span class="lineCov">          8 :         _parametersManager-&gt;print( );</span>
+<span class="lineNum">      53 </span>            : 
+<span class="lineNum">      54 </span>            :         // Get rendering engine
+<span class="lineNum">      55 </span><span class="lineCov">          8 :         EngineFactory engineFactory( argc, argv, _parametersManager );</span>
+<span class="lineNum">      56 </span>            :         std::string engineName =
+<span class="lineNum">      57 </span><span class="lineCov">         16 :             _parametersManager-&gt;getRenderingParameters( ).getEngine();</span>
+<span class="lineNum">      58 </span><span class="lineCov">          8 :         _engine = engineFactory.get( engineName );</span>
+<span class="lineNum">      59 </span><span class="lineCov">          8 :         if( !_engine )</span>
+<span class="lineNum">      60 </span><span class="lineNoCov">          0 :             throw std::runtime_error( &quot;Unsupported engine: &quot; + engineName );</span>
+<span class="lineNum">      61 </span>            : 
+<span class="lineNum">      62 </span>            :         // set HDRI skybox if applicable
+<span class="lineNum">      63 </span>            :         const std::string&amp; hdri =
+<span class="lineNum">      64 </span><span class="lineCov">          8 :             _parametersManager-&gt;getRenderingParameters().getHDRI();</span>
+<span class="lineNum">      65 </span><span class="lineCov">         16 :         ScenePtr scene = _engine-&gt;getScene();</span>
+<span class="lineNum">      66 </span><span class="lineCov">          8 :         if( !hdri.empty() )</span>
+<span class="lineNum">      67 </span><span class="lineNoCov">          0 :             scene-&gt;getMaterial(MATERIAL_SKYBOX)-&gt;setTexture(TT_DIFFUSE, hdri);</span>
+<span class="lineNum">      68 </span>            : 
+<span class="lineNum">      69 </span>            :         // Default sun light
+<span class="lineNum">      70 </span>            :         DirectionalLightPtr sunLight( new DirectionalLight(
+<span class="lineNum">      71 </span><span class="lineCov">         16 :             DEFAULT_SUN_DIRECTION, DEFAULT_SUN_COLOR, DEFAULT_SUN_INTENSITY ));</span>
+<span class="lineNum">      72 </span><span class="lineCov">          8 :         scene-&gt;addLight( sunLight );</span>
+<span class="lineNum">      73 </span>            : 
+<span class="lineNum">      74 </span>            :         // Build geometry
+<span class="lineNum">      75 </span><span class="lineCov">          8 :         loadData( );</span>
+<span class="lineNum">      76 </span><span class="lineCov">          8 :         scene-&gt;buildEnvironment( );</span>
+<span class="lineNum">      77 </span><span class="lineCov">          8 :         scene-&gt;buildGeometry( );</span>
 <span class="lineNum">      78 </span>            : 
-<span class="lineNum">      79 </span>            :         // Set default camera according to scene bounding box
-<span class="lineNum">      80 </span><span class="lineCov">          6 :         _setDefaultCamera( );</span>
+<span class="lineNum">      79 </span><span class="lineCov">          8 :         if( scene-&gt;isEmpty() )</span>
+<span class="lineNum">      80 </span><span class="lineCov">          5 :             _buildDefaultScene();</span>
 <span class="lineNum">      81 </span>            : 
-<span class="lineNum">      82 </span>            :         // Commit changes to the rendering engine
-<span class="lineNum">      83 </span><span class="lineCov">         12 :         _engine-&gt;commit();</span>
-<a name="84"><span class="lineNum">      84 </span><span class="lineCov">          6 :     }</span></a>
-<span class="lineNum">      85 </span>            : 
-<span class="lineNum">      86 </span><span class="lineCov">          6 :     ~Impl( )</span>
-<span class="lineNum">      87 </span><span class="lineCov">          6 :     {</span>
-<a name="88"><span class="lineNum">      88 </span><span class="lineCov">          6 :     }</span></a>
+<span class="lineNum">      82 </span><span class="lineCov">          8 :         scene-&gt;commit( );</span>
+<span class="lineNum">      83 </span>            : 
+<span class="lineNum">      84 </span>            :         // Set default camera according to scene bounding box
+<span class="lineNum">      85 </span><span class="lineCov">          8 :         _setDefaultCamera( );</span>
+<span class="lineNum">      86 </span>            : 
+<span class="lineNum">      87 </span>            :         // Set default epsilon according to scene bounding box
+<span class="lineNum">      88 </span><span class="lineCov">          8 :         _setDefaultEpsilon( );</span>
 <span class="lineNum">      89 </span>            : 
-<span class="lineNum">      90 </span><span class="lineCov">          6 :     void loadData()</span>
-<span class="lineNum">      91 </span>            :     {
-<span class="lineNum">      92 </span>            :         GeometryParameters&amp; geometryParameters =
-<span class="lineNum">      93 </span><span class="lineCov">          6 :             _parametersManager-&gt;getGeometryParameters();</span>
-<span class="lineNum">      94 </span><span class="lineCov">          6 :         if(!geometryParameters.getMorphologyFolder().empty())</span>
-<span class="lineNum">      95 </span><span class="lineNoCov">          0 :             _loadMorphologyFolder();</span>
-<span class="lineNum">      96 </span>            : 
-<span class="lineNum">      97 </span><span class="lineCov">          6 :         if(!geometryParameters.getPDBFile().empty())</span>
-<span class="lineNum">      98 </span><span class="lineCov">          2 :             _loadPDBFile();</span>
-<span class="lineNum">      99 </span>            : 
-<span class="lineNum">     100 </span><span class="lineCov">          6 :         if(!geometryParameters.getMeshFolder().empty())</span>
-<span class="lineNum">     101 </span><span class="lineNoCov">          0 :             _loadMeshFolder();</span>
-<span class="lineNum">     102 </span>            : 
-<span class="lineNum">     103 </span><span class="lineCov">          6 :         if(!geometryParameters.getReport().empty())</span>
-<span class="lineNum">     104 </span><span class="lineNoCov">          0 :             _loadCompartmentReport();</span>
-<span class="lineNum">     105 </span>            : 
-<span class="lineNum">     106 </span><span class="lineCov">         14 :         if(!geometryParameters.getCircuitConfiguration().empty() &amp;&amp;</span>
-<span class="lineNum">     107 </span><span class="lineCov">          8 :             geometryParameters.getLoadCacheFile().empty())</span>
-<span class="lineNum">     108 </span><span class="lineCov">          1 :             _loadCircuitConfiguration();</span>
-<a name="109"><span class="lineNum">     109 </span><span class="lineCov">          6 :     }</span></a>
+<span class="lineNum">      90 </span>            :         // Commit changes to the rendering engine
+<span class="lineNum">      91 </span><span class="lineCov">         16 :         _engine-&gt;commit();</span>
+<a name="92"><span class="lineNum">      92 </span><span class="lineCov">          8 :     }</span></a>
+<span class="lineNum">      93 </span>            : 
+<span class="lineNum">      94 </span><span class="lineCov">          8 :     ~Impl( )</span>
+<span class="lineNum">      95 </span><span class="lineCov">          8 :     {</span>
+<a name="96"><span class="lineNum">      96 </span><span class="lineCov">          8 :     }</span></a>
+<span class="lineNum">      97 </span>            : 
+<span class="lineNum">      98 </span><span class="lineCov">          8 :     void loadData()</span>
+<span class="lineNum">      99 </span>            :     {
+<span class="lineNum">     100 </span>            :         GeometryParameters&amp; geometryParameters =
+<span class="lineNum">     101 </span><span class="lineCov">          8 :             _parametersManager-&gt;getGeometryParameters();</span>
+<span class="lineNum">     102 </span><span class="lineCov">          8 :         if(!geometryParameters.getMorphologyFolder().empty())</span>
+<span class="lineNum">     103 </span><span class="lineNoCov">          0 :             _loadMorphologyFolder();</span>
+<span class="lineNum">     104 </span>            : 
+<span class="lineNum">     105 </span><span class="lineCov">          8 :         if(!geometryParameters.getPDBFile().empty())</span>
+<span class="lineNum">     106 </span><span class="lineCov">          2 :             _loadPDBFile();</span>
+<span class="lineNum">     107 </span>            : 
+<span class="lineNum">     108 </span><span class="lineCov">          8 :         if(!geometryParameters.getMeshFolder().empty())</span>
+<span class="lineNum">     109 </span><span class="lineNoCov">          0 :             _loadMeshFolder();</span>
 <span class="lineNum">     110 </span>            : 
-<span class="lineNum">     111 </span><span class="lineNoCov">          0 :     void render( const RenderInput&amp; renderInput,</span>
-<span class="lineNum">     112 </span>            :                  RenderOutput&amp; renderOutput )
-<span class="lineNum">     113 </span>            :     {
-<span class="lineNum">     114 </span><span class="lineNoCov">          0 :         reshape( renderInput.windowSize );</span>
-<span class="lineNum">     115 </span>            : 
-<span class="lineNum">     116 </span><span class="lineNoCov">          0 :         _engine-&gt;preRender();</span>
-<span class="lineNum">     117 </span>            : 
-<span class="lineNum">     118 </span><span class="lineNoCov">          0 :         _engine-&gt;getCamera()-&gt;set(</span>
-<span class="lineNum">     119 </span><span class="lineNoCov">          0 :             renderInput.position, renderInput.target, renderInput.up );</span>
-<span class="lineNum">     120 </span>            : 
-<span class="lineNum">     121 </span>            : #if(BRAYNS_USE_DEFLECT || BRAYNS_USE_REST)
-<span class="lineNum">     122 </span><span class="lineNoCov">          0 :         if( !_extensionPluginFactory )</span>
-<span class="lineNum">     123 </span><span class="lineNoCov">          0 :             _intializeExtensionPluginFactory( );</span>
-<span class="lineNum">     124 </span><span class="lineNoCov">          0 :         _extensionPluginFactory-&gt;execute( );</span>
-<span class="lineNum">     125 </span>            : #endif
-<span class="lineNum">     126 </span>            : 
-<span class="lineNum">     127 </span><span class="lineNoCov">          0 :         ScenePtr scene = _engine-&gt;getScene();</span>
-<span class="lineNum">     128 </span><span class="lineNoCov">          0 :         CameraPtr camera = _engine-&gt;getCamera();</span>
-<span class="lineNum">     129 </span><span class="lineNoCov">          0 :         FrameBufferPtr frameBuffer = _engine-&gt;getFrameBuffer();</span>
-<span class="lineNum">     130 </span><span class="lineNoCov">          0 :         const Vector2i&amp; frameSize = frameBuffer-&gt;getSize();</span>
-<span class="lineNum">     131 </span>            : 
-<span class="lineNum">     132 </span><span class="lineNoCov">          0 :         if( _parametersManager-&gt;getRenderingParameters().getSunOnCamera() )</span>
-<span class="lineNum">     133 </span>            :         {
-<span class="lineNum">     134 </span><span class="lineNoCov">          0 :             LightPtr sunLight = scene-&gt;getLight( 0 );</span>
-<span class="lineNum">     135 </span>            :             DirectionalLight* sun =
-<span class="lineNum">     136 </span><span class="lineNoCov">          0 :                 dynamic_cast&lt; DirectionalLight* &gt; ( sunLight.get() );</span>
-<span class="lineNum">     137 </span><span class="lineNoCov">          0 :             if( sun )</span>
-<span class="lineNum">     138 </span>            :             {
-<span class="lineNum">     139 </span><span class="lineNoCov">          0 :                 sun-&gt;setDirection( camera-&gt;getTarget() - camera-&gt;getPosition() );</span>
-<span class="lineNum">     140 </span><span class="lineNoCov">          0 :                 scene-&gt;commitLights();</span>
-<span class="lineNum">     141 </span><span class="lineNoCov">          0 :             }</span>
-<span class="lineNum">     142 </span>            :         }
-<span class="lineNum">     143 </span>            : 
-<span class="lineNum">     144 </span><span class="lineNoCov">          0 :         camera-&gt;commit();</span>
-<span class="lineNum">     145 </span><span class="lineNoCov">          0 :         _render( );</span>
-<span class="lineNum">     146 </span>            : 
-<span class="lineNum">     147 </span><span class="lineNoCov">          0 :         uint8_t* colorBuffer = frameBuffer-&gt;getColorBuffer( );</span>
-<span class="lineNum">     148 </span>            :         size_t size =
-<span class="lineNum">     149 </span><span class="lineNoCov">          0 :             frameSize.x( ) * frameSize.y( ) * frameBuffer-&gt;getColorDepth( );</span>
-<span class="lineNum">     150 </span><span class="lineNoCov">          0 :         renderOutput.colorBuffer.assign( colorBuffer, colorBuffer + size );</span>
+<span class="lineNum">     111 </span><span class="lineCov">          8 :         if(!geometryParameters.getReport().empty())</span>
+<span class="lineNum">     112 </span><span class="lineNoCov">          0 :             _loadCompartmentReport();</span>
+<span class="lineNum">     113 </span>            : 
+<span class="lineNum">     114 </span><span class="lineCov">         18 :         if(!geometryParameters.getCircuitConfiguration().empty() &amp;&amp;</span>
+<span class="lineNum">     115 </span><span class="lineCov">         10 :             geometryParameters.getLoadCacheFile().empty())</span>
+<span class="lineNum">     116 </span><span class="lineCov">          1 :             _loadCircuitConfiguration();</span>
+<a name="117"><span class="lineNum">     117 </span><span class="lineCov">          8 :     }</span></a>
+<span class="lineNum">     118 </span>            : 
+<span class="lineNum">     119 </span><span class="lineNoCov">          0 :     void render( const RenderInput&amp; renderInput,</span>
+<span class="lineNum">     120 </span>            :                  RenderOutput&amp; renderOutput )
+<span class="lineNum">     121 </span>            :     {
+<span class="lineNum">     122 </span><span class="lineNoCov">          0 :         reshape( renderInput.windowSize );</span>
+<span class="lineNum">     123 </span>            : 
+<span class="lineNum">     124 </span><span class="lineNoCov">          0 :         _engine-&gt;preRender();</span>
+<span class="lineNum">     125 </span>            : 
+<span class="lineNum">     126 </span><span class="lineNoCov">          0 :         _engine-&gt;getCamera()-&gt;set(</span>
+<span class="lineNum">     127 </span><span class="lineNoCov">          0 :             renderInput.position, renderInput.target, renderInput.up );</span>
+<span class="lineNum">     128 </span>            : 
+<span class="lineNum">     129 </span>            : #if(BRAYNS_USE_DEFLECT || BRAYNS_USE_REST)
+<span class="lineNum">     130 </span><span class="lineNoCov">          0 :         if( !_extensionPluginFactory )</span>
+<span class="lineNum">     131 </span><span class="lineNoCov">          0 :             _intializeExtensionPluginFactory( );</span>
+<span class="lineNum">     132 </span><span class="lineNoCov">          0 :         _extensionPluginFactory-&gt;execute( );</span>
+<span class="lineNum">     133 </span>            : #endif
+<span class="lineNum">     134 </span>            : 
+<span class="lineNum">     135 </span><span class="lineNoCov">          0 :         ScenePtr scene = _engine-&gt;getScene();</span>
+<span class="lineNum">     136 </span><span class="lineNoCov">          0 :         CameraPtr camera = _engine-&gt;getCamera();</span>
+<span class="lineNum">     137 </span><span class="lineNoCov">          0 :         FrameBufferPtr frameBuffer = _engine-&gt;getFrameBuffer();</span>
+<span class="lineNum">     138 </span><span class="lineNoCov">          0 :         const Vector2i&amp; frameSize = frameBuffer-&gt;getSize();</span>
+<span class="lineNum">     139 </span>            : 
+<span class="lineNum">     140 </span><span class="lineNoCov">          0 :         if( _parametersManager-&gt;getRenderingParameters().getSunOnCamera() )</span>
+<span class="lineNum">     141 </span>            :         {
+<span class="lineNum">     142 </span><span class="lineNoCov">          0 :             LightPtr sunLight = scene-&gt;getLight( 0 );</span>
+<span class="lineNum">     143 </span>            :             DirectionalLight* sun =
+<span class="lineNum">     144 </span><span class="lineNoCov">          0 :                 dynamic_cast&lt; DirectionalLight* &gt; ( sunLight.get() );</span>
+<span class="lineNum">     145 </span><span class="lineNoCov">          0 :             if( sun )</span>
+<span class="lineNum">     146 </span>            :             {
+<span class="lineNum">     147 </span><span class="lineNoCov">          0 :                 sun-&gt;setDirection( camera-&gt;getTarget() - camera-&gt;getPosition() );</span>
+<span class="lineNum">     148 </span><span class="lineNoCov">          0 :                 scene-&gt;commitLights();</span>
+<span class="lineNum">     149 </span><span class="lineNoCov">          0 :             }</span>
+<span class="lineNum">     150 </span>            :         }
 <span class="lineNum">     151 </span>            : 
-<span class="lineNum">     152 </span><span class="lineNoCov">          0 :         float* depthBuffer = frameBuffer-&gt;getDepthBuffer( );</span>
-<span class="lineNum">     153 </span><span class="lineNoCov">          0 :         size = frameSize.x( ) * frameSize.y( );</span>
-<span class="lineNum">     154 </span><span class="lineNoCov">          0 :         renderOutput.depthBuffer.assign( depthBuffer, depthBuffer + size );</span>
-<span class="lineNum">     155 </span>            : 
-<span class="lineNum">     156 </span><span class="lineNoCov">          0 :         _engine-&gt;postRender();</span>
-<a name="157"><span class="lineNum">     157 </span><span class="lineNoCov">          0 :     }</span></a>
-<span class="lineNum">     158 </span>            : 
-<span class="lineNum">     159 </span><span class="lineCov">          5 :     void render()</span>
-<span class="lineNum">     160 </span>            :     {
-<span class="lineNum">     161 </span><span class="lineCov">          5 :         ScenePtr scene = _engine-&gt;getScene();</span>
-<span class="lineNum">     162 </span><span class="lineCov">         10 :         CameraPtr camera = _engine-&gt;getCamera();</span>
-<span class="lineNum">     163 </span><span class="lineCov">         10 :         FrameBufferPtr frameBuffer = _engine-&gt;getFrameBuffer();</span>
-<span class="lineNum">     164 </span><span class="lineCov">          5 :         const Vector2i&amp; frameSize = frameBuffer-&gt;getSize();</span>
-<span class="lineNum">     165 </span>            : 
-<span class="lineNum">     166 </span><span class="lineCov">          5 :         _engine-&gt;preRender();</span>
-<span class="lineNum">     167 </span>            : 
-<span class="lineNum">     168 </span>            : #if(BRAYNS_USE_DEFLECT || BRAYNS_USE_REST)
-<span class="lineNum">     169 </span><span class="lineCov">          5 :         if( !_extensionPluginFactory )</span>
-<span class="lineNum">     170 </span><span class="lineCov">          4 :             _intializeExtensionPluginFactory( );</span>
-<span class="lineNum">     171 </span><span class="lineCov">          5 :         _extensionPluginFactory-&gt;execute( );</span>
-<span class="lineNum">     172 </span>            : #endif
-<span class="lineNum">     173 </span><span class="lineCov">          5 :         if( _parametersManager-&gt;getRenderingParameters().getSunOnCamera() )</span>
-<span class="lineNum">     174 </span>            :         {
-<span class="lineNum">     175 </span><span class="lineNoCov">          0 :             LightPtr sunLight = scene-&gt;getLight( 0 );</span>
-<span class="lineNum">     176 </span>            :             DirectionalLight* sun =
-<span class="lineNum">     177 </span><span class="lineNoCov">          0 :                 dynamic_cast&lt; DirectionalLight* &gt; ( sunLight.get() );</span>
-<span class="lineNum">     178 </span><span class="lineNoCov">          0 :             if( sun )</span>
-<span class="lineNum">     179 </span>            :             {
-<span class="lineNum">     180 </span><span class="lineNoCov">          0 :                 sun-&gt;setDirection( camera-&gt;getTarget() - camera-&gt;getPosition() );</span>
-<span class="lineNum">     181 </span><span class="lineNoCov">          0 :                 scene-&gt;commitLights();</span>
-<span class="lineNum">     182 </span><span class="lineNoCov">          0 :             }</span>
-<span class="lineNum">     183 </span>            :         }
-<span class="lineNum">     184 </span>            : 
-<span class="lineNum">     185 </span><span class="lineCov">          5 :         camera-&gt;commit();</span>
-<span class="lineNum">     186 </span><span class="lineCov">          5 :         _render( );</span>
-<span class="lineNum">     187 </span>            : 
-<span class="lineNum">     188 </span><span class="lineCov">          5 :         _engine-&gt;postRender();</span>
-<span class="lineNum">     189 </span>            : 
-<span class="lineNum">     190 </span>            :         const Vector2ui windowSize = _parametersManager
-<span class="lineNum">     191 </span><span class="lineCov">          5 :             -&gt;getApplicationParameters()</span>
-<span class="lineNum">     192 </span><span class="lineCov">          5 :             .getWindowSize();</span>
-<span class="lineNum">     193 </span><span class="lineCov">          5 :         if( windowSize != frameSize )</span>
-<span class="lineNum">     194 </span><span class="lineCov">          5 :             reshape(windowSize);</span>
-<span class="lineNum">     195 </span><span class="lineCov">          5 :     }</span>
-<a name="196"><span class="lineNum">     196 </span>            : </a>
-<span class="lineNum">     197 </span>            : #if(BRAYNS_USE_DEFLECT || BRAYNS_USE_REST)
-<span class="lineNum">     198 </span><span class="lineCov">          4 :     void _intializeExtensionPluginFactory( )</span>
-<span class="lineNum">     199 </span>            :     {
-<span class="lineNum">     200 </span><span class="lineCov">          4 :         _extensionParameters.parametersManager = _parametersManager;</span>
-<span class="lineNum">     201 </span><span class="lineCov">          4 :         _extensionParameters.engine = _engine;</span>
-<span class="lineNum">     202 </span>            : 
-<span class="lineNum">     203 </span>            :         _extensionPluginFactory.reset( new ExtensionPluginFactory(
-<span class="lineNum">     204 </span><span class="lineCov">          4 :             _parametersManager-&gt;getApplicationParameters( ),</span>
-<span class="lineNum">     205 </span><span class="lineCov">          4 :             _extensionParameters ));</span>
-<span class="lineNum">     206 </span><span class="lineCov">          4 :     }</span>
-<a name="207"><span class="lineNum">     207 </span>            : #endif</a>
-<span class="lineNum">     208 </span>            : 
-<span class="lineNum">     209 </span><span class="lineNoCov">          0 :     void reshape( const Vector2ui&amp; frameSize )</span>
-<span class="lineNum">     210 </span>            :     {
-<span class="lineNum">     211 </span><span class="lineNoCov">          0 :         CameraPtr camera = _engine-&gt;getCamera();</span>
-<span class="lineNum">     212 </span><span class="lineNoCov">          0 :         FrameBufferPtr frameBuffer = _engine-&gt;getFrameBuffer();</span>
-<span class="lineNum">     213 </span>            : 
-<span class="lineNum">     214 </span><span class="lineNoCov">          0 :         if( frameBuffer-&gt;getSize() == frameSize )</span>
-<span class="lineNum">     215 </span><span class="lineNoCov">          0 :             return;</span>
+<span class="lineNum">     152 </span><span class="lineNoCov">          0 :         camera-&gt;commit();</span>
+<span class="lineNum">     153 </span><span class="lineNoCov">          0 :         _render( );</span>
+<span class="lineNum">     154 </span>            : 
+<span class="lineNum">     155 </span><span class="lineNoCov">          0 :         uint8_t* colorBuffer = frameBuffer-&gt;getColorBuffer( );</span>
+<span class="lineNum">     156 </span>            :         size_t size =
+<span class="lineNum">     157 </span><span class="lineNoCov">          0 :             frameSize.x( ) * frameSize.y( ) * frameBuffer-&gt;getColorDepth( );</span>
+<span class="lineNum">     158 </span><span class="lineNoCov">          0 :         renderOutput.colorBuffer.assign( colorBuffer, colorBuffer + size );</span>
+<span class="lineNum">     159 </span>            : 
+<span class="lineNum">     160 </span><span class="lineNoCov">          0 :         float* depthBuffer = frameBuffer-&gt;getDepthBuffer( );</span>
+<span class="lineNum">     161 </span><span class="lineNoCov">          0 :         size = frameSize.x( ) * frameSize.y( );</span>
+<span class="lineNum">     162 </span><span class="lineNoCov">          0 :         renderOutput.depthBuffer.assign( depthBuffer, depthBuffer + size );</span>
+<span class="lineNum">     163 </span>            : 
+<span class="lineNum">     164 </span><span class="lineNoCov">          0 :         _engine-&gt;postRender();</span>
+<a name="165"><span class="lineNum">     165 </span><span class="lineNoCov">          0 :     }</span></a>
+<span class="lineNum">     166 </span>            : 
+<span class="lineNum">     167 </span><span class="lineCov">         10 :     void render()</span>
+<span class="lineNum">     168 </span>            :     {
+<span class="lineNum">     169 </span><span class="lineCov">         10 :         ScenePtr scene = _engine-&gt;getScene();</span>
+<span class="lineNum">     170 </span><span class="lineCov">         20 :         CameraPtr camera = _engine-&gt;getCamera();</span>
+<span class="lineNum">     171 </span><span class="lineCov">         20 :         FrameBufferPtr frameBuffer = _engine-&gt;getFrameBuffer();</span>
+<span class="lineNum">     172 </span><span class="lineCov">         10 :         const Vector2i&amp; frameSize = frameBuffer-&gt;getSize();</span>
+<span class="lineNum">     173 </span>            : 
+<span class="lineNum">     174 </span><span class="lineCov">         10 :         _engine-&gt;preRender();</span>
+<span class="lineNum">     175 </span>            : 
+<span class="lineNum">     176 </span>            : #if(BRAYNS_USE_DEFLECT || BRAYNS_USE_REST)
+<span class="lineNum">     177 </span><span class="lineCov">         10 :         if( !_extensionPluginFactory )</span>
+<span class="lineNum">     178 </span><span class="lineCov">          5 :             _intializeExtensionPluginFactory( );</span>
+<span class="lineNum">     179 </span><span class="lineCov">         10 :         _extensionPluginFactory-&gt;execute( );</span>
+<span class="lineNum">     180 </span>            : #endif
+<span class="lineNum">     181 </span><span class="lineCov">         10 :         if( _parametersManager-&gt;getRenderingParameters().getSunOnCamera() )</span>
+<span class="lineNum">     182 </span>            :         {
+<span class="lineNum">     183 </span><span class="lineNoCov">          0 :             LightPtr sunLight = scene-&gt;getLight( 0 );</span>
+<span class="lineNum">     184 </span>            :             DirectionalLight* sun =
+<span class="lineNum">     185 </span><span class="lineNoCov">          0 :                 dynamic_cast&lt; DirectionalLight* &gt; ( sunLight.get() );</span>
+<span class="lineNum">     186 </span><span class="lineNoCov">          0 :             if( sun )</span>
+<span class="lineNum">     187 </span>            :             {
+<span class="lineNum">     188 </span><span class="lineNoCov">          0 :                 sun-&gt;setDirection( camera-&gt;getTarget() - camera-&gt;getPosition() );</span>
+<span class="lineNum">     189 </span><span class="lineNoCov">          0 :                 scene-&gt;commitLights();</span>
+<span class="lineNum">     190 </span><span class="lineNoCov">          0 :             }</span>
+<span class="lineNum">     191 </span>            :         }
+<span class="lineNum">     192 </span>            : 
+<span class="lineNum">     193 </span><span class="lineCov">         10 :         camera-&gt;commit();</span>
+<span class="lineNum">     194 </span><span class="lineCov">         10 :         _render( );</span>
+<span class="lineNum">     195 </span>            : 
+<span class="lineNum">     196 </span><span class="lineCov">         10 :         _engine-&gt;postRender();</span>
+<span class="lineNum">     197 </span>            : 
+<span class="lineNum">     198 </span>            :         const Vector2ui windowSize = _parametersManager
+<span class="lineNum">     199 </span><span class="lineCov">         10 :             -&gt;getApplicationParameters()</span>
+<span class="lineNum">     200 </span><span class="lineCov">         10 :             .getWindowSize();</span>
+<span class="lineNum">     201 </span><span class="lineCov">         10 :         if( windowSize != frameSize )</span>
+<span class="lineNum">     202 </span><span class="lineCov">         10 :             reshape(windowSize);</span>
+<span class="lineNum">     203 </span><span class="lineCov">         10 :     }</span>
+<a name="204"><span class="lineNum">     204 </span>            : </a>
+<span class="lineNum">     205 </span>            : #if(BRAYNS_USE_DEFLECT || BRAYNS_USE_REST)
+<span class="lineNum">     206 </span><span class="lineCov">          5 :     void _intializeExtensionPluginFactory( )</span>
+<span class="lineNum">     207 </span>            :     {
+<span class="lineNum">     208 </span><span class="lineCov">          5 :         _extensionParameters.parametersManager = _parametersManager;</span>
+<span class="lineNum">     209 </span><span class="lineCov">          5 :         _extensionParameters.engine = _engine;</span>
+<span class="lineNum">     210 </span>            : 
+<span class="lineNum">     211 </span>            :         _extensionPluginFactory.reset( new ExtensionPluginFactory(
+<span class="lineNum">     212 </span><span class="lineCov">          5 :             _parametersManager-&gt;getApplicationParameters( ),</span>
+<span class="lineNum">     213 </span><span class="lineCov">          5 :             _extensionParameters ));</span>
+<span class="lineNum">     214 </span><span class="lineCov">          5 :     }</span>
+<a name="215"><span class="lineNum">     215 </span>            : #endif</a>
 <span class="lineNum">     216 </span>            : 
-<span class="lineNum">     217 </span><span class="lineNoCov">          0 :         frameBuffer-&gt;resize( frameSize );</span>
-<span class="lineNum">     218 </span>            :         camera-&gt;setAspectRatio(
-<span class="lineNum">     219 </span><span class="lineNoCov">          0 :             static_cast&lt; float &gt;( frameSize.x()) /</span>
-<span class="lineNum">     220 </span><span class="lineNoCov">          0 :             static_cast&lt; float &gt;( frameSize.y()));</span>
-<a name="221"><span class="lineNum">     221 </span>            :     }</a>
-<span class="lineNum">     222 </span>            : 
-<span class="lineNum">     223 </span><span class="lineNoCov">          0 :     void setMaterials(</span>
-<span class="lineNum">     224 </span>            :         const MaterialType materialType,
-<span class="lineNum">     225 </span>            :         const size_t nbMaterials )
-<span class="lineNum">     226 </span>            :     {
-<span class="lineNum">     227 </span><span class="lineNoCov">          0 :         ScenePtr scene = _engine-&gt;getScene();</span>
-<span class="lineNum">     228 </span><span class="lineNoCov">          0 :         scene-&gt;setMaterials( materialType, nbMaterials );</span>
-<span class="lineNum">     229 </span><span class="lineNoCov">          0 :         scene-&gt;commit( );</span>
-<a name="230"><span class="lineNum">     230 </span><span class="lineNoCov">          0 :     }</span></a>
-<span class="lineNum">     231 </span>            : 
-<span class="lineNum">     232 </span><span class="lineNoCov">          0 :     void commit( )</span>
-<span class="lineNum">     233 </span>            :     {
-<span class="lineNum">     234 </span><span class="lineNoCov">          0 :         _engine-&gt;getFrameBuffer()-&gt;clear();</span>
-<span class="lineNum">     235 </span><span class="lineNoCov">          0 :         _engine-&gt;commit();</span>
-<a name="236"><span class="lineNum">     236 </span><span class="lineNoCov">          0 :     }</span></a>
-<span class="lineNum">     237 </span>            : 
-<span class="lineNum">     238 </span><span class="lineCov">          1 :     ParametersManager&amp; getParametersManager( )</span>
-<span class="lineNum">     239 </span>            :     {
-<span class="lineNum">     240 </span><span class="lineCov">          1 :         return *_parametersManager;</span>
-<a name="241"><span class="lineNum">     241 </span>            :     }</a>
-<span class="lineNum">     242 </span>            : 
-<span class="lineNum">     243 </span><span class="lineCov">          1 :     Scene&amp; getScene( )</span>
-<span class="lineNum">     244 </span>            :     {
-<span class="lineNum">     245 </span><span class="lineCov">          1 :         return *_engine-&gt;getScene();</span>
-<a name="246"><span class="lineNum">     246 </span>            :     }</a>
-<span class="lineNum">     247 </span>            : 
-<span class="lineNum">     248 </span><span class="lineCov">          1 :     Camera&amp; getCamera( )</span>
-<span class="lineNum">     249 </span>            :     {
-<span class="lineNum">     250 </span><span class="lineCov">          1 :         return *_engine-&gt;getCamera();</span>
-<a name="251"><span class="lineNum">     251 </span>            :     }</a>
-<span class="lineNum">     252 </span>            : 
-<span class="lineNum">     253 </span><span class="lineCov">          5 :     FrameBuffer&amp; getFrameBuffer( )</span>
-<span class="lineNum">     254 </span>            :     {
-<span class="lineNum">     255 </span><span class="lineCov">          5 :         return *_engine-&gt;getFrameBuffer();</span>
-<span class="lineNum">     256 </span>            :     }
-<a name="257"><span class="lineNum">     257 </span>            : </a>
-<span class="lineNum">     258 </span>            : private:
-<span class="lineNum">     259 </span><span class="lineCov">          5 :     void _render( )</span>
-<span class="lineNum">     260 </span>            :     {
-<span class="lineNum">     261 </span>            : 
-<span class="lineNum">     262 </span>            :         _engine-&gt;setActiveRenderer(
-<span class="lineNum">     263 </span><span class="lineCov">          5 :             _parametersManager-&gt;getRenderingParameters().getRenderer());</span>
-<span class="lineNum">     264 </span><span class="lineCov">          5 :         _engine-&gt;render();</span>
-<a name="265"><span class="lineNum">     265 </span><span class="lineCov">          5 :     }</span></a>
-<span class="lineNum">     266 </span>            : 
-<span class="lineNum">     267 </span><span class="lineCov">          6 :     void _setDefaultCamera()</span>
+<span class="lineNum">     217 </span><span class="lineNoCov">          0 :     void reshape( const Vector2ui&amp; frameSize )</span>
+<span class="lineNum">     218 </span>            :     {
+<span class="lineNum">     219 </span><span class="lineNoCov">          0 :         CameraPtr camera = _engine-&gt;getCamera();</span>
+<span class="lineNum">     220 </span><span class="lineNoCov">          0 :         FrameBufferPtr frameBuffer = _engine-&gt;getFrameBuffer();</span>
+<span class="lineNum">     221 </span>            : 
+<span class="lineNum">     222 </span><span class="lineNoCov">          0 :         if( frameBuffer-&gt;getSize() == frameSize )</span>
+<span class="lineNum">     223 </span><span class="lineNoCov">          0 :             return;</span>
+<span class="lineNum">     224 </span>            : 
+<span class="lineNum">     225 </span><span class="lineNoCov">          0 :         frameBuffer-&gt;resize( frameSize );</span>
+<span class="lineNum">     226 </span>            :         camera-&gt;setAspectRatio(
+<span class="lineNum">     227 </span><span class="lineNoCov">          0 :             static_cast&lt; float &gt;( frameSize.x()) /</span>
+<span class="lineNum">     228 </span><span class="lineNoCov">          0 :             static_cast&lt; float &gt;( frameSize.y()));</span>
+<a name="229"><span class="lineNum">     229 </span>            :     }</a>
+<span class="lineNum">     230 </span>            : 
+<span class="lineNum">     231 </span><span class="lineNoCov">          0 :     void setMaterials(</span>
+<span class="lineNum">     232 </span>            :         const MaterialType materialType,
+<span class="lineNum">     233 </span>            :         const size_t nbMaterials )
+<span class="lineNum">     234 </span>            :     {
+<span class="lineNum">     235 </span><span class="lineNoCov">          0 :         ScenePtr scene = _engine-&gt;getScene();</span>
+<span class="lineNum">     236 </span><span class="lineNoCov">          0 :         scene-&gt;setMaterials( materialType, nbMaterials );</span>
+<span class="lineNum">     237 </span><span class="lineNoCov">          0 :         scene-&gt;commit( );</span>
+<a name="238"><span class="lineNum">     238 </span><span class="lineNoCov">          0 :     }</span></a>
+<span class="lineNum">     239 </span>            : 
+<span class="lineNum">     240 </span><span class="lineCov">          5 :     void commit( )</span>
+<span class="lineNum">     241 </span>            :     {
+<span class="lineNum">     242 </span><span class="lineCov">          5 :         _engine-&gt;getFrameBuffer()-&gt;clear();</span>
+<span class="lineNum">     243 </span><span class="lineCov">          5 :         _engine-&gt;commit();</span>
+<a name="244"><span class="lineNum">     244 </span><span class="lineCov">          5 :     }</span></a>
+<span class="lineNum">     245 </span>            : 
+<span class="lineNum">     246 </span><span class="lineCov">          2 :     ParametersManager&amp; getParametersManager( )</span>
+<span class="lineNum">     247 </span>            :     {
+<span class="lineNum">     248 </span><span class="lineCov">          2 :         return *_parametersManager;</span>
+<a name="249"><span class="lineNum">     249 </span>            :     }</a>
+<span class="lineNum">     250 </span>            : 
+<span class="lineNum">     251 </span><span class="lineCov">          2 :     Scene&amp; getScene( )</span>
+<span class="lineNum">     252 </span>            :     {
+<span class="lineNum">     253 </span><span class="lineCov">          2 :         return *_engine-&gt;getScene();</span>
+<a name="254"><span class="lineNum">     254 </span>            :     }</a>
+<span class="lineNum">     255 </span>            : 
+<span class="lineNum">     256 </span><span class="lineCov">          1 :     Camera&amp; getCamera( )</span>
+<span class="lineNum">     257 </span>            :     {
+<span class="lineNum">     258 </span><span class="lineCov">          1 :         return *_engine-&gt;getCamera();</span>
+<a name="259"><span class="lineNum">     259 </span>            :     }</a>
+<span class="lineNum">     260 </span>            : 
+<span class="lineNum">     261 </span><span class="lineCov">          5 :     FrameBuffer&amp; getFrameBuffer( )</span>
+<span class="lineNum">     262 </span>            :     {
+<span class="lineNum">     263 </span><span class="lineCov">          5 :         return *_engine-&gt;getFrameBuffer();</span>
+<span class="lineNum">     264 </span>            :     }
+<a name="265"><span class="lineNum">     265 </span>            : </a>
+<span class="lineNum">     266 </span>            : private:
+<span class="lineNum">     267 </span><span class="lineCov">         10 :     void _render( )</span>
 <span class="lineNum">     268 </span>            :     {
-<span class="lineNum">     269 </span><span class="lineCov">          6 :         ScenePtr scene = _engine-&gt;getScene();</span>
-<span class="lineNum">     270 </span><span class="lineCov">         12 :         CameraPtr camera = _engine-&gt;getCamera();</span>
-<span class="lineNum">     271 </span><span class="lineCov">         12 :         FrameBufferPtr frameBuffer = _engine-&gt;getFrameBuffer();</span>
-<span class="lineNum">     272 </span><span class="lineCov">          6 :         const Vector2i&amp; frameSize = frameBuffer-&gt;getSize();</span>
-<span class="lineNum">     273 </span>            : 
-<span class="lineNum">     274 </span><span class="lineCov">          6 :         const Boxf&amp; worldBounds = scene-&gt;getWorldBounds();</span>
-<span class="lineNum">     275 </span><span class="lineCov">          6 :         const Vector3f&amp; target = worldBounds.getCenter();</span>
-<span class="lineNum">     276 </span><span class="lineCov">          6 :         const Vector3f&amp; diag = worldBounds.getSize();</span>
-<span class="lineNum">     277 </span><span class="lineCov">          6 :         Vector3f position = target;</span>
-<span class="lineNum">     278 </span><span class="lineCov">          6 :         position.z() -= diag.z();</span>
-<span class="lineNum">     279 </span>            : 
-<span class="lineNum">     280 </span><span class="lineCov">          6 :         const Vector3f up = Vector3f( 0.f, 1.f, 0.f );</span>
-<span class="lineNum">     281 </span><span class="lineCov">          6 :         camera-&gt;setInitialState( position, target, up );</span>
-<span class="lineNum">     282 </span>            :         camera-&gt;setAspectRatio(
-<span class="lineNum">     283 </span><span class="lineCov">          6 :             static_cast&lt; float &gt;( frameSize.x()) /</span>
-<span class="lineNum">     284 </span><span class="lineCov">         12 :             static_cast&lt; float &gt;( frameSize.y()));</span>
-<span class="lineNum">     285 </span><span class="lineCov">          6 :     }</span>
-<span class="lineNum">     286 </span>            : 
-<span class="lineNum">     287 </span>            :     /**
-<span class="lineNum">     288 </span>            :         Loads data from SWC and H5 files located in the folder specified in the
-<a name="289"><span class="lineNum">     289 </span>            :         geometry parameters (command line parameter --morphology-folder)</a>
-<span class="lineNum">     290 </span>            :     */
-<span class="lineNum">     291 </span><span class="lineNoCov">          0 :     void _loadMorphologyFolder()</span>
-<span class="lineNum">     292 </span>            :     {
-<span class="lineNum">     293 </span>            :         GeometryParameters&amp; geometryParameters =
-<span class="lineNum">     294 </span><span class="lineNoCov">          0 :             _parametersManager-&gt;getGeometryParameters();</span>
-<span class="lineNum">     295 </span>            :         const boost::filesystem::path&amp; folder =
-<span class="lineNum">     296 </span><span class="lineNoCov">          0 :             geometryParameters.getMorphologyFolder( );</span>
-<span class="lineNum">     297 </span><span class="lineNoCov">          0 :         BRAYNS_INFO &lt;&lt; &quot;Loading morphologies from &quot; &lt;&lt; folder &lt;&lt; std::endl;</span>
-<span class="lineNum">     298 </span><span class="lineNoCov">          0 :         MorphologyLoader morphologyLoader( geometryParameters );</span>
-<span class="lineNum">     299 </span>            : 
-<span class="lineNum">     300 </span><span class="lineNoCov">          0 :         size_t fileIndex = 0;</span>
-<span class="lineNum">     301 </span><span class="lineNoCov">          0 :         boost::filesystem::directory_iterator endIter;</span>
-<span class="lineNum">     302 </span><span class="lineNoCov">          0 :         if( boost::filesystem::exists(folder) &amp;&amp;</span>
-<span class="lineNum">     303 </span><span class="lineNoCov">          0 :             boost::filesystem::is_directory(folder))</span>
-<span class="lineNum">     304 </span>            :         {
-<span class="lineNum">     305 </span><span class="lineNoCov">          0 :             for( boost::filesystem::directory_iterator dirIter( folder );</span>
-<span class="lineNum">     306 </span>            :                  dirIter != endIter; ++dirIter )
-<span class="lineNum">     307 </span>            :             {
-<span class="lineNum">     308 </span><span class="lineNoCov">          0 :                 if( boost::filesystem::is_regular_file(dirIter-&gt;status( )))</span>
-<span class="lineNum">     309 </span>            :                 {
-<span class="lineNum">     310 </span>            :                     boost::filesystem::path fileExtension =
-<span class="lineNum">     311 </span><span class="lineNoCov">          0 :                         dirIter-&gt;path( ).extension( );</span>
-<span class="lineNum">     312 </span><span class="lineNoCov">          0 :                     if( fileExtension==&quot;.swc&quot; || fileExtension==&quot;.h5&quot; )</span>
-<span class="lineNum">     313 </span>            :                     {
-<span class="lineNum">     314 </span><span class="lineNoCov">          0 :                         const std::string&amp; filename = dirIter-&gt;path( ).string( );</span>
-<span class="lineNum">     315 </span><span class="lineNoCov">          0 :                         servus::URI uri( filename );</span>
-<span class="lineNum">     316 </span><span class="lineNoCov">          0 :                         if( !morphologyLoader.importMorphology(</span>
-<span class="lineNum">     317 </span><span class="lineNoCov">          0 :                             uri, fileIndex++, *_engine-&gt;getScene()))</span>
-<span class="lineNum">     318 </span>            :                         {
-<span class="lineNum">     319 </span><span class="lineNoCov">          0 :                             BRAYNS_ERROR &lt;&lt; &quot;Failed to import &quot; &lt;&lt;</span>
-<span class="lineNum">     320 </span><span class="lineNoCov">          0 :                                 filename &lt;&lt; std::endl;</span>
-<span class="lineNum">     321 </span><span class="lineNoCov">          0 :                         }</span>
-<span class="lineNum">     322 </span><span class="lineNoCov">          0 :                     }</span>
-<span class="lineNum">     323 </span>            :                 }
-<span class="lineNum">     324 </span><span class="lineNoCov">          0 :             }</span>
-<span class="lineNum">     325 </span><span class="lineNoCov">          0 :         }</span>
-<span class="lineNum">     326 </span><span class="lineNoCov">          0 :     }</span>
-<span class="lineNum">     327 </span>            : 
-<span class="lineNum">     328 </span>            :     /**
-<a name="329"><span class="lineNum">     329 </span>            :         Loads data from a PDB file (command line parameter --pdb-file)</a>
-<span class="lineNum">     330 </span>            :     */
-<span class="lineNum">     331 </span><span class="lineCov">          2 :     void _loadPDBFile()</span>
-<span class="lineNum">     332 </span>            :     {
-<span class="lineNum">     333 </span>            :         // Load PDB File
-<span class="lineNum">     334 </span>            :         GeometryParameters&amp; geometryParameters =
-<span class="lineNum">     335 </span><span class="lineCov">          2 :             _parametersManager-&gt;getGeometryParameters();</span>
-<span class="lineNum">     336 </span><span class="lineCov">          4 :         BRAYNS_INFO &lt;&lt; &quot;Loading PDB file &quot; &lt;&lt; geometryParameters.getPDBFile()</span>
-<span class="lineNum">     337 </span><span class="lineCov">          2 :                     &lt;&lt; std::endl;</span>
-<span class="lineNum">     338 </span><span class="lineCov">          2 :         ProteinLoader proteinLoader( geometryParameters );</span>
-<span class="lineNum">     339 </span><span class="lineCov">          4 :         if( !proteinLoader.importPDBFile( geometryParameters.getPDBFile(),</span>
-<span class="lineNum">     340 </span>            :                                           Vector3f( 0, 0, 0 ), 0,
-<span class="lineNum">     341 </span><span class="lineCov">          4 :                                           *_engine-&gt;getScene()))</span>
-<span class="lineNum">     342 </span>            :         {
-<span class="lineNum">     343 </span><span class="lineNoCov">          0 :             BRAYNS_ERROR &lt;&lt; &quot;Failed to import &quot;</span>
-<span class="lineNum">     344 </span><span class="lineNoCov">          0 :                          &lt;&lt; geometryParameters.getPDBFile() &lt;&lt; std::endl;</span>
-<span class="lineNum">     345 </span>            :         }
-<span class="lineNum">     346 </span>            : 
-<span class="lineNum">     347 </span><span class="lineCov">          4 :         ScenePtr scene = _engine-&gt;getScene();</span>
-<span class="lineNum">     348 </span><span class="lineCov">        402 :         for( size_t i = 0; i &lt; scene-&gt;getMaterials().size( ); ++i )</span>
-<span class="lineNum">     349 </span>            :         {
-<span class="lineNum">     350 </span>            :             float r,g,b;
-<span class="lineNum">     351 </span><span class="lineCov">        400 :             proteinLoader.getMaterialKd( i, r, g, b );</span>
-<span class="lineNum">     352 </span><span class="lineCov">        400 :             MaterialPtr material = scene-&gt;getMaterials()[i];</span>
-<span class="lineNum">     353 </span><span class="lineCov">        400 :             material-&gt;setColor( Vector3f( r, g, b ));</span>
-<span class="lineNum">     354 </span><span class="lineCov">        402 :         }</span>
-<span class="lineNum">     355 </span><span class="lineCov">          2 :     }</span>
-<span class="lineNum">     356 </span>            : 
-<span class="lineNum">     357 </span>            :     /**
-<span class="lineNum">     358 </span>            :         Loads data from mesh files located in the folder specified in the
-<a name="359"><span class="lineNum">     359 </span>            :         geometry parameters (command line parameter --mesh-folder)</a>
-<span class="lineNum">     360 </span>            :     */
-<span class="lineNum">     361 </span><span class="lineNoCov">          0 :     void _loadMeshFolder()</span>
-<span class="lineNum">     362 </span>            :     {
-<span class="lineNum">     363 </span>            : #ifdef BRAYNS_USE_ASSIMP
-<span class="lineNum">     364 </span>            :         GeometryParameters&amp; geometryParameters =
-<span class="lineNum">     365 </span><span class="lineNoCov">          0 :             _parametersManager-&gt;getGeometryParameters();</span>
-<span class="lineNum">     366 </span>            :         const boost::filesystem::path&amp; folder =
-<span class="lineNum">     367 </span><span class="lineNoCov">          0 :             geometryParameters.getMeshFolder( );</span>
-<span class="lineNum">     368 </span><span class="lineNoCov">          0 :         BRAYNS_INFO &lt;&lt; &quot;Loading meshes from &quot; &lt;&lt; folder &lt;&lt; std::endl;</span>
-<span class="lineNum">     369 </span><span class="lineNoCov">          0 :         MeshLoader meshLoader;</span>
-<span class="lineNum">     370 </span><span class="lineNoCov">          0 :         size_t meshIndex = 0;</span>
-<span class="lineNum">     371 </span>            : 
-<span class="lineNum">     372 </span><span class="lineNoCov">          0 :         boost::filesystem::directory_iterator endIter;</span>
-<span class="lineNum">     373 </span><span class="lineNoCov">          0 :         if( boost::filesystem::exists(folder) &amp;&amp;</span>
-<span class="lineNum">     374 </span><span class="lineNoCov">          0 :             boost::filesystem::is_directory(folder))</span>
-<span class="lineNum">     375 </span>            :         {
-<span class="lineNum">     376 </span><span class="lineNoCov">          0 :             for( boost::filesystem::directory_iterator dirIter( folder );</span>
-<span class="lineNum">     377 </span>            :                  dirIter != endIter; ++dirIter )
-<span class="lineNum">     378 </span>            :             {
-<span class="lineNum">     379 </span><span class="lineNoCov">          0 :                 if( boost::filesystem::is_regular_file(dirIter-&gt;status( )))</span>
-<span class="lineNum">     380 </span>            :                 {
-<span class="lineNum">     381 </span><span class="lineNoCov">          0 :                     const std::string&amp; filename = dirIter-&gt;path( ).string( );</span>
-<span class="lineNum">     382 </span><span class="lineNoCov">          0 :                     BRAYNS_INFO &lt;&lt; &quot;- &quot; &lt;&lt; filename &lt;&lt; std::endl;</span>
-<span class="lineNum">     383 </span><span class="lineNoCov">          0 :                     ScenePtr scene = _engine-&gt;getScene();</span>
-<span class="lineNum">     384 </span>            :                     MeshContainer MeshContainer =
-<span class="lineNum">     385 </span>            :                     {
-<span class="lineNum">     386 </span><span class="lineNoCov">          0 :                         scene-&gt;getTriangleMeshes(), scene-&gt;getMaterials(),</span>
-<span class="lineNum">     387 </span><span class="lineNoCov">          0 :                         scene-&gt;getWorldBounds()</span>
-<span class="lineNum">     388 </span><span class="lineNoCov">          0 :                     };</span>
-<span class="lineNum">     389 </span><span class="lineNoCov">          0 :                     if(!meshLoader.importMeshFromFile(</span>
-<span class="lineNum">     390 </span><span class="lineNoCov">          0 :                         filename, MeshContainer, MQ_FAST, NO_MATERIAL ))</span>
-<span class="lineNum">     391 </span>            :                     {
-<span class="lineNum">     392 </span><span class="lineNoCov">          0 :                         BRAYNS_ERROR &lt;&lt; &quot;Failed to import &quot; &lt;&lt;</span>
-<span class="lineNum">     393 </span><span class="lineNoCov">          0 :                         filename &lt;&lt; std::endl;</span>
-<span class="lineNum">     394 </span>            :                     }
-<span class="lineNum">     395 </span><span class="lineNoCov">          0 :                     ++meshIndex;</span>
-<span class="lineNum">     396 </span>            :                 }
-<span class="lineNum">     397 </span><span class="lineNoCov">          0 :             }</span>
-<span class="lineNum">     398 </span><span class="lineNoCov">          0 :         }</span>
-<span class="lineNum">     399 </span>            : #endif
-<span class="lineNum">     400 </span><span class="lineNoCov">          0 :     }</span>
-<span class="lineNum">     401 </span>            : 
-<span class="lineNum">     402 </span>            :     /**
-<span class="lineNum">     403 </span>            :         Loads morphologies from circuit configuration (command line parameter
-<a name="404"><span class="lineNum">     404 </span>            :         --circuit-configuration)</a>
-<span class="lineNum">     405 </span>            :     */
-<span class="lineNum">     406 </span><span class="lineCov">          1 :     void _loadCircuitConfiguration()</span>
-<span class="lineNum">     407 </span>            :     {
-<span class="lineNum">     408 </span>            :         GeometryParameters&amp; geometryParameters =
-<span class="lineNum">     409 </span><span class="lineCov">          1 :             _parametersManager-&gt;getGeometryParameters();</span>
-<span class="lineNum">     410 </span>            :         const std::string&amp; filename =
-<span class="lineNum">     411 </span><span class="lineCov">          1 :             geometryParameters.getCircuitConfiguration( );</span>
-<span class="lineNum">     412 </span>            :         const std::string&amp; target =
-<span class="lineNum">     413 </span><span class="lineCov">          2 :             geometryParameters.getTarget( );</span>
-<span class="lineNum">     414 </span><span class="lineCov">          1 :         BRAYNS_INFO &lt;&lt; &quot;Loading circuit configuration from &quot; &lt;&lt;</span>
-<span class="lineNum">     415 </span><span class="lineCov">          1 :             filename &lt;&lt; std::endl;</span>
-<span class="lineNum">     416 </span>            :         const std::string&amp; report =
-<span class="lineNum">     417 </span><span class="lineCov">          2 :             geometryParameters.getReport( );</span>
-<span class="lineNum">     418 </span><span class="lineCov">          2 :         MorphologyLoader morphologyLoader( geometryParameters );</span>
-<span class="lineNum">     419 </span><span class="lineCov">          2 :         const servus::URI uri( filename );</span>
-<span class="lineNum">     420 </span><span class="lineCov">          1 :         if( report.empty() )</span>
-<span class="lineNum">     421 </span><span class="lineCov">          1 :             morphologyLoader.importCircuit( uri, target, *_engine-&gt;getScene());</span>
-<span class="lineNum">     422 </span>            :         else
-<span class="lineNum">     423 </span>            :             morphologyLoader.importCircuit(
-<span class="lineNum">     424 </span><span class="lineCov">          1 :                 uri, target, report, *_engine-&gt;getScene());</span>
-<span class="lineNum">     425 </span><span class="lineCov">          1 :     }</span>
-<span class="lineNum">     426 </span>            : 
-<span class="lineNum">     427 </span>            :     /**
-<span class="lineNum">     428 </span>            :         Loads compartment report from circuit configuration (command line
-<span class="lineNum">     429 </span>            :         parameter --report)
-<a name="430"><span class="lineNum">     430 </span>            :         @return the number of simulation frames loaded</a>
-<span class="lineNum">     431 </span>            :     */
-<span class="lineNum">     432 </span><span class="lineNoCov">          0 :     size_t _loadCompartmentReport()</span>
-<span class="lineNum">     433 </span>            :     {
-<span class="lineNum">     434 </span>            :         GeometryParameters&amp; geometryParameters =
-<span class="lineNum">     435 </span><span class="lineNoCov">          0 :             _parametersManager-&gt;getGeometryParameters();</span>
-<span class="lineNum">     436 </span>            :         const std::string&amp; filename =
-<span class="lineNum">     437 </span><span class="lineNoCov">          0 :             geometryParameters.getCircuitConfiguration( );</span>
-<span class="lineNum">     438 </span>            :         const std::string&amp; target =
-<span class="lineNum">     439 </span><span class="lineNoCov">          0 :             geometryParameters.getTarget( );</span>
-<span class="lineNum">     440 </span>            :         const std::string&amp; report =
-<span class="lineNum">     441 </span><span class="lineNoCov">          0 :             geometryParameters.getReport( );</span>
-<span class="lineNum">     442 </span><span class="lineNoCov">          0 :         BRAYNS_INFO &lt;&lt; &quot;Loading compartment report from &quot; &lt;&lt;</span>
-<span class="lineNum">     443 </span><span class="lineNoCov">          0 :             filename &lt;&lt; std::endl;</span>
-<span class="lineNum">     444 </span><span class="lineNoCov">          0 :         MorphologyLoader morphologyLoader( geometryParameters );</span>
-<span class="lineNum">     445 </span><span class="lineNoCov">          0 :         const servus::URI uri( filename );</span>
-<span class="lineNum">     446 </span>            :         return morphologyLoader.importSimulationIntoTexture(
-<span class="lineNum">     447 </span><span class="lineNoCov">          0 :             uri, target, report, *_engine-&gt;getScene());</span>
-<span class="lineNum">     448 </span>            :     }
-<span class="lineNum">     449 </span>            : 
-<span class="lineNum">     450 </span>            :     ParametersManagerPtr _parametersManager;
-<span class="lineNum">     451 </span>            :     EnginePtr _engine;
-<span class="lineNum">     452 </span>            : 
-<span class="lineNum">     453 </span>            : #if(BRAYNS_USE_DEFLECT || BRAYNS_USE_REST)
-<span class="lineNum">     454 </span>            :     ExtensionPluginFactoryPtr _extensionPluginFactory;
-<span class="lineNum">     455 </span>            :     ExtensionParameters _extensionParameters;
-<span class="lineNum">     456 </span>            : #endif
-<span class="lineNum">     457 </span>            : };
-<span class="lineNum">     458 </span>            : 
-<a name="459"><span class="lineNum">     459 </span>            : // -------------------------------------------------------------------------------------------------</a>
-<span class="lineNum">     460 </span>            : 
-<span class="lineNum">     461 </span><span class="lineCov">          6 : Brayns::Brayns( int argc, const char **argv )</span>
-<span class="lineNum">     462 </span><span class="lineCov">          6 :     : _impl( new Impl( argc, argv ))</span>
-<a name="463"><span class="lineNum">     463 </span><span class="lineCov">          6 : {}</span></a>
-<span class="lineNum">     464 </span>            : 
-<span class="lineNum">     465 </span><span class="lineCov">          6 : Brayns::~Brayns( )</span>
-<a name="466"><span class="lineNum">     466 </span><span class="lineCov">          6 : {}</span></a>
-<span class="lineNum">     467 </span>            : 
-<span class="lineNum">     468 </span><span class="lineNoCov">          0 : void Brayns::render( const RenderInput&amp; renderInput,</span>
-<span class="lineNum">     469 </span>            :                      RenderOutput&amp; renderOutput )
-<span class="lineNum">     470 </span>            : {
-<span class="lineNum">     471 </span><span class="lineNoCov">          0 :     _impl-&gt;render( renderInput, renderOutput );</span>
-<a name="472"><span class="lineNum">     472 </span><span class="lineNoCov">          0 : }</span></a>
-<span class="lineNum">     473 </span>            : 
-<span class="lineNum">     474 </span><span class="lineCov">          5 : void Brayns::render()</span>
-<span class="lineNum">     475 </span>            : {
-<span class="lineNum">     476 </span><span class="lineCov">          5 :     _impl-&gt;render();</span>
-<a name="477"><span class="lineNum">     477 </span><span class="lineCov">          5 : }</span></a>
-<span class="lineNum">     478 </span>            : 
-<span class="lineNum">     479 </span><span class="lineNoCov">          0 : void Brayns::reshape( const Vector2ui&amp; size )</span>
-<span class="lineNum">     480 </span>            : {
-<span class="lineNum">     481 </span><span class="lineNoCov">          0 :     _impl-&gt;reshape( size );</span>
-<a name="482"><span class="lineNum">     482 </span><span class="lineNoCov">          0 : }</span></a>
-<span class="lineNum">     483 </span>            : 
-<span class="lineNum">     484 </span><span class="lineNoCov">          0 : void Brayns::commit( )</span>
-<span class="lineNum">     485 </span>            : {
-<span class="lineNum">     486 </span><span class="lineNoCov">          0 :     _impl-&gt;commit( );</span>
-<a name="487"><span class="lineNum">     487 </span><span class="lineNoCov">          0 : }</span></a>
-<span class="lineNum">     488 </span>            : 
-<span class="lineNum">     489 </span><span class="lineCov">          1 : ParametersManager&amp; Brayns::getParametersManager( )</span>
-<span class="lineNum">     490 </span>            : {
-<span class="lineNum">     491 </span><span class="lineCov">          1 :     return _impl-&gt;getParametersManager( );</span>
-<a name="492"><span class="lineNum">     492 </span>            : }</a>
-<span class="lineNum">     493 </span>            : 
-<span class="lineNum">     494 </span><span class="lineNoCov">          0 : void Brayns::setMaterials(</span>
-<span class="lineNum">     495 </span>            :     const MaterialType materialType,
-<span class="lineNum">     496 </span>            :     const size_t nbMaterials )
-<span class="lineNum">     497 </span>            : {
-<span class="lineNum">     498 </span><span class="lineNoCov">          0 :     _impl-&gt;setMaterials( materialType, nbMaterials );</span>
-<a name="499"><span class="lineNum">     499 </span><span class="lineNoCov">          0 : }</span></a>
+<span class="lineNum">     269 </span>            : 
+<span class="lineNum">     270 </span>            :         _engine-&gt;setActiveRenderer(
+<span class="lineNum">     271 </span><span class="lineCov">         10 :             _parametersManager-&gt;getRenderingParameters().getRenderer());</span>
+<span class="lineNum">     272 </span><span class="lineCov">         10 :         _engine-&gt;render();</span>
+<a name="273"><span class="lineNum">     273 </span><span class="lineCov">         10 :     }</span></a>
+<span class="lineNum">     274 </span>            : 
+<span class="lineNum">     275 </span><span class="lineCov">          8 :     void _setDefaultCamera()</span>
+<span class="lineNum">     276 </span>            :     {
+<span class="lineNum">     277 </span><span class="lineCov">          8 :         ScenePtr scene = _engine-&gt;getScene();</span>
+<span class="lineNum">     278 </span><span class="lineCov">         16 :         CameraPtr camera = _engine-&gt;getCamera();</span>
+<span class="lineNum">     279 </span><span class="lineCov">         16 :         FrameBufferPtr frameBuffer = _engine-&gt;getFrameBuffer();</span>
+<span class="lineNum">     280 </span><span class="lineCov">          8 :         const Vector2i&amp; frameSize = frameBuffer-&gt;getSize();</span>
+<span class="lineNum">     281 </span>            : 
+<span class="lineNum">     282 </span><span class="lineCov">          8 :         const Boxf&amp; worldBounds = scene-&gt;getWorldBounds();</span>
+<span class="lineNum">     283 </span><span class="lineCov">          8 :         const Vector3f&amp; target = worldBounds.getCenter();</span>
+<span class="lineNum">     284 </span><span class="lineCov">          8 :         const Vector3f&amp; diag = worldBounds.getSize();</span>
+<span class="lineNum">     285 </span><span class="lineCov">          8 :         Vector3f position = target;</span>
+<span class="lineNum">     286 </span><span class="lineCov">          8 :         position.z() -= diag.z();</span>
+<span class="lineNum">     287 </span>            : 
+<span class="lineNum">     288 </span><span class="lineCov">          8 :         const Vector3f up = Vector3f( 0.f, 1.f, 0.f );</span>
+<span class="lineNum">     289 </span><span class="lineCov">          8 :         camera-&gt;setInitialState( position, target, up );</span>
+<span class="lineNum">     290 </span>            :         camera-&gt;setAspectRatio(
+<span class="lineNum">     291 </span><span class="lineCov">          8 :             static_cast&lt; float &gt;( frameSize.x()) /</span>
+<span class="lineNum">     292 </span><span class="lineCov">         16 :             static_cast&lt; float &gt;( frameSize.y()));</span>
+<a name="293"><span class="lineNum">     293 </span><span class="lineCov">          8 :     }</span></a>
+<span class="lineNum">     294 </span>            : 
+<span class="lineNum">     295 </span><span class="lineCov">          8 :     void _setDefaultEpsilon()</span>
+<span class="lineNum">     296 </span>            :     {
+<span class="lineNum">     297 </span><span class="lineCov">          8 :         float epsilon = _parametersManager-&gt;getRenderingParameters().getEpsilon();</span>
+<span class="lineNum">     298 </span><span class="lineCov">          8 :         if( epsilon == 0.f )</span>
+<span class="lineNum">     299 </span>            :         {
+<span class="lineNum">     300 </span><span class="lineCov">          8 :             ScenePtr scene = _engine-&gt;getScene();</span>
+<span class="lineNum">     301 </span><span class="lineCov">          8 :             const Vector3f&amp; worldBoundsSize = scene-&gt;getWorldBounds().getSize();</span>
+<span class="lineNum">     302 </span><span class="lineCov">          8 :             epsilon = worldBoundsSize.length() / 1e6f;</span>
+<span class="lineNum">     303 </span><span class="lineCov">          8 :             BRAYNS_INFO &lt;&lt; &quot;Default epsilon: &quot; &lt;&lt; epsilon &lt;&lt; std::endl;</span>
+<span class="lineNum">     304 </span><span class="lineCov">          8 :             _parametersManager-&gt;getRenderingParameters().setEpsilon( epsilon );</span>
+<span class="lineNum">     305 </span>            :         }
+<span class="lineNum">     306 </span><span class="lineCov">          8 :     }</span>
+<span class="lineNum">     307 </span>            : 
+<span class="lineNum">     308 </span>            :     /**
+<span class="lineNum">     309 </span>            :         Loads data from SWC and H5 files located in the folder specified in the
+<a name="310"><span class="lineNum">     310 </span>            :         geometry parameters (command line parameter --morphology-folder)</a>
+<span class="lineNum">     311 </span>            :     */
+<span class="lineNum">     312 </span><span class="lineNoCov">          0 :     void _loadMorphologyFolder()</span>
+<span class="lineNum">     313 </span>            :     {
+<span class="lineNum">     314 </span>            :         GeometryParameters&amp; geometryParameters =
+<span class="lineNum">     315 </span><span class="lineNoCov">          0 :             _parametersManager-&gt;getGeometryParameters();</span>
+<span class="lineNum">     316 </span>            :         const boost::filesystem::path&amp; folder =
+<span class="lineNum">     317 </span><span class="lineNoCov">          0 :             geometryParameters.getMorphologyFolder( );</span>
+<span class="lineNum">     318 </span><span class="lineNoCov">          0 :         BRAYNS_INFO &lt;&lt; &quot;Loading morphologies from &quot; &lt;&lt; folder &lt;&lt; std::endl;</span>
+<span class="lineNum">     319 </span><span class="lineNoCov">          0 :         MorphologyLoader morphologyLoader( geometryParameters );</span>
+<span class="lineNum">     320 </span>            : 
+<span class="lineNum">     321 </span><span class="lineNoCov">          0 :         size_t fileIndex = 0;</span>
+<span class="lineNum">     322 </span><span class="lineNoCov">          0 :         boost::filesystem::directory_iterator endIter;</span>
+<span class="lineNum">     323 </span><span class="lineNoCov">          0 :         if( boost::filesystem::exists(folder) &amp;&amp;</span>
+<span class="lineNum">     324 </span><span class="lineNoCov">          0 :             boost::filesystem::is_directory(folder))</span>
+<span class="lineNum">     325 </span>            :         {
+<span class="lineNum">     326 </span><span class="lineNoCov">          0 :             for( boost::filesystem::directory_iterator dirIter( folder );</span>
+<span class="lineNum">     327 </span>            :                  dirIter != endIter; ++dirIter )
+<span class="lineNum">     328 </span>            :             {
+<span class="lineNum">     329 </span><span class="lineNoCov">          0 :                 if( boost::filesystem::is_regular_file(dirIter-&gt;status( )))</span>
+<span class="lineNum">     330 </span>            :                 {
+<span class="lineNum">     331 </span>            :                     boost::filesystem::path fileExtension =
+<span class="lineNum">     332 </span><span class="lineNoCov">          0 :                         dirIter-&gt;path( ).extension( );</span>
+<span class="lineNum">     333 </span><span class="lineNoCov">          0 :                     if( fileExtension==&quot;.swc&quot; || fileExtension==&quot;.h5&quot; )</span>
+<span class="lineNum">     334 </span>            :                     {
+<span class="lineNum">     335 </span><span class="lineNoCov">          0 :                         const std::string&amp; filename = dirIter-&gt;path( ).string( );</span>
+<span class="lineNum">     336 </span><span class="lineNoCov">          0 :                         servus::URI uri( filename );</span>
+<span class="lineNum">     337 </span><span class="lineNoCov">          0 :                         if( !morphologyLoader.importMorphology(</span>
+<span class="lineNum">     338 </span><span class="lineNoCov">          0 :                             uri, fileIndex++, *_engine-&gt;getScene()))</span>
+<span class="lineNum">     339 </span>            :                         {
+<span class="lineNum">     340 </span><span class="lineNoCov">          0 :                             BRAYNS_ERROR &lt;&lt; &quot;Failed to import &quot; &lt;&lt;</span>
+<span class="lineNum">     341 </span><span class="lineNoCov">          0 :                                 filename &lt;&lt; std::endl;</span>
+<span class="lineNum">     342 </span><span class="lineNoCov">          0 :                         }</span>
+<span class="lineNum">     343 </span><span class="lineNoCov">          0 :                     }</span>
+<span class="lineNum">     344 </span>            :                 }
+<span class="lineNum">     345 </span><span class="lineNoCov">          0 :             }</span>
+<span class="lineNum">     346 </span><span class="lineNoCov">          0 :         }</span>
+<span class="lineNum">     347 </span><span class="lineNoCov">          0 :     }</span>
+<span class="lineNum">     348 </span>            : 
+<span class="lineNum">     349 </span>            :     /**
+<a name="350"><span class="lineNum">     350 </span>            :         Loads data from a PDB file (command line parameter --pdb-file)</a>
+<span class="lineNum">     351 </span>            :     */
+<span class="lineNum">     352 </span><span class="lineCov">          2 :     void _loadPDBFile()</span>
+<span class="lineNum">     353 </span>            :     {
+<span class="lineNum">     354 </span>            :         // Load PDB File
+<span class="lineNum">     355 </span>            :         GeometryParameters&amp; geometryParameters =
+<span class="lineNum">     356 </span><span class="lineCov">          2 :             _parametersManager-&gt;getGeometryParameters();</span>
+<span class="lineNum">     357 </span><span class="lineCov">          4 :         BRAYNS_INFO &lt;&lt; &quot;Loading PDB file &quot; &lt;&lt; geometryParameters.getPDBFile()</span>
+<span class="lineNum">     358 </span><span class="lineCov">          2 :                     &lt;&lt; std::endl;</span>
+<span class="lineNum">     359 </span><span class="lineCov">          2 :         ProteinLoader proteinLoader( geometryParameters );</span>
+<span class="lineNum">     360 </span><span class="lineCov">          4 :         if( !proteinLoader.importPDBFile( geometryParameters.getPDBFile(),</span>
+<span class="lineNum">     361 </span>            :                                           Vector3f( 0, 0, 0 ), 0,
+<span class="lineNum">     362 </span><span class="lineCov">          4 :                                           *_engine-&gt;getScene()))</span>
+<span class="lineNum">     363 </span>            :         {
+<span class="lineNum">     364 </span><span class="lineNoCov">          0 :             BRAYNS_ERROR &lt;&lt; &quot;Failed to import &quot;</span>
+<span class="lineNum">     365 </span><span class="lineNoCov">          0 :                          &lt;&lt; geometryParameters.getPDBFile() &lt;&lt; std::endl;</span>
+<span class="lineNum">     366 </span>            :         }
+<span class="lineNum">     367 </span>            : 
+<span class="lineNum">     368 </span><span class="lineCov">          4 :         ScenePtr scene = _engine-&gt;getScene();</span>
+<span class="lineNum">     369 </span><span class="lineCov">        402 :         for( size_t i = 0; i &lt; scene-&gt;getMaterials().size( ); ++i )</span>
+<span class="lineNum">     370 </span>            :         {
+<span class="lineNum">     371 </span>            :             float r,g,b;
+<span class="lineNum">     372 </span><span class="lineCov">        400 :             proteinLoader.getMaterialKd( i, r, g, b );</span>
+<span class="lineNum">     373 </span><span class="lineCov">        400 :             MaterialPtr material = scene-&gt;getMaterials()[i];</span>
+<span class="lineNum">     374 </span><span class="lineCov">        400 :             material-&gt;setColor( Vector3f( r, g, b ));</span>
+<span class="lineNum">     375 </span><span class="lineCov">        402 :         }</span>
+<span class="lineNum">     376 </span><span class="lineCov">          2 :     }</span>
+<span class="lineNum">     377 </span>            : 
+<span class="lineNum">     378 </span>            :     /**
+<span class="lineNum">     379 </span>            :         Loads data from mesh files located in the folder specified in the
+<a name="380"><span class="lineNum">     380 </span>            :         geometry parameters (command line parameter --mesh-folder)</a>
+<span class="lineNum">     381 </span>            :     */
+<span class="lineNum">     382 </span><span class="lineNoCov">          0 :     void _loadMeshFolder()</span>
+<span class="lineNum">     383 </span>            :     {
+<span class="lineNum">     384 </span>            : #ifdef BRAYNS_USE_ASSIMP
+<span class="lineNum">     385 </span>            :         GeometryParameters&amp; geometryParameters =
+<span class="lineNum">     386 </span><span class="lineNoCov">          0 :             _parametersManager-&gt;getGeometryParameters();</span>
+<span class="lineNum">     387 </span>            :         const boost::filesystem::path&amp; folder =
+<span class="lineNum">     388 </span><span class="lineNoCov">          0 :             geometryParameters.getMeshFolder( );</span>
+<span class="lineNum">     389 </span><span class="lineNoCov">          0 :         BRAYNS_INFO &lt;&lt; &quot;Loading meshes from &quot; &lt;&lt; folder &lt;&lt; std::endl;</span>
+<span class="lineNum">     390 </span><span class="lineNoCov">          0 :         MeshLoader meshLoader;</span>
+<span class="lineNum">     391 </span><span class="lineNoCov">          0 :         size_t meshIndex = 0;</span>
+<span class="lineNum">     392 </span>            : 
+<span class="lineNum">     393 </span><span class="lineNoCov">          0 :         boost::filesystem::directory_iterator endIter;</span>
+<span class="lineNum">     394 </span><span class="lineNoCov">          0 :         if( boost::filesystem::exists(folder) &amp;&amp;</span>
+<span class="lineNum">     395 </span><span class="lineNoCov">          0 :             boost::filesystem::is_directory(folder))</span>
+<span class="lineNum">     396 </span>            :         {
+<span class="lineNum">     397 </span><span class="lineNoCov">          0 :             for( boost::filesystem::directory_iterator dirIter( folder );</span>
+<span class="lineNum">     398 </span>            :                  dirIter != endIter; ++dirIter )
+<span class="lineNum">     399 </span>            :             {
+<span class="lineNum">     400 </span><span class="lineNoCov">          0 :                 if( boost::filesystem::is_regular_file(dirIter-&gt;status( )))</span>
+<span class="lineNum">     401 </span>            :                 {
+<span class="lineNum">     402 </span><span class="lineNoCov">          0 :                     const std::string&amp; filename = dirIter-&gt;path( ).string( );</span>
+<span class="lineNum">     403 </span><span class="lineNoCov">          0 :                     BRAYNS_INFO &lt;&lt; &quot;- &quot; &lt;&lt; filename &lt;&lt; std::endl;</span>
+<span class="lineNum">     404 </span><span class="lineNoCov">          0 :                     ScenePtr scene = _engine-&gt;getScene();</span>
+<span class="lineNum">     405 </span>            :                     MeshContainer MeshContainer =
+<span class="lineNum">     406 </span>            :                     {
+<span class="lineNum">     407 </span><span class="lineNoCov">          0 :                         scene-&gt;getTriangleMeshes(), scene-&gt;getMaterials(),</span>
+<span class="lineNum">     408 </span><span class="lineNoCov">          0 :                         scene-&gt;getWorldBounds()</span>
+<span class="lineNum">     409 </span><span class="lineNoCov">          0 :                     };</span>
+<span class="lineNum">     410 </span><span class="lineNoCov">          0 :                     if(!meshLoader.importMeshFromFile(</span>
+<span class="lineNum">     411 </span><span class="lineNoCov">          0 :                         filename, MeshContainer, MQ_MAX_QUALITY, NO_MATERIAL ))</span>
+<span class="lineNum">     412 </span>            :                     {
+<span class="lineNum">     413 </span><span class="lineNoCov">          0 :                         BRAYNS_ERROR &lt;&lt; &quot;Failed to import &quot; &lt;&lt;</span>
+<span class="lineNum">     414 </span><span class="lineNoCov">          0 :                         filename &lt;&lt; std::endl;</span>
+<span class="lineNum">     415 </span>            :                     }
+<span class="lineNum">     416 </span><span class="lineNoCov">          0 :                     ++meshIndex;</span>
+<span class="lineNum">     417 </span>            :                 }
+<span class="lineNum">     418 </span><span class="lineNoCov">          0 :             }</span>
+<span class="lineNum">     419 </span><span class="lineNoCov">          0 :         }</span>
+<span class="lineNum">     420 </span>            : #endif
+<span class="lineNum">     421 </span><span class="lineNoCov">          0 :     }</span>
+<span class="lineNum">     422 </span>            : 
+<span class="lineNum">     423 </span>            :     /**
+<span class="lineNum">     424 </span>            :         Loads morphologies from circuit configuration (command line parameter
+<a name="425"><span class="lineNum">     425 </span>            :         --circuit-configuration)</a>
+<span class="lineNum">     426 </span>            :     */
+<span class="lineNum">     427 </span><span class="lineCov">          1 :     void _loadCircuitConfiguration()</span>
+<span class="lineNum">     428 </span>            :     {
+<span class="lineNum">     429 </span>            :         GeometryParameters&amp; geometryParameters =
+<span class="lineNum">     430 </span><span class="lineCov">          1 :             _parametersManager-&gt;getGeometryParameters();</span>
+<span class="lineNum">     431 </span>            :         const std::string&amp; filename =
+<span class="lineNum">     432 </span><span class="lineCov">          1 :             geometryParameters.getCircuitConfiguration( );</span>
+<span class="lineNum">     433 </span>            :         const std::string&amp; target =
+<span class="lineNum">     434 </span><span class="lineCov">          2 :             geometryParameters.getTarget( );</span>
+<span class="lineNum">     435 </span>            : 
+<span class="lineNum">     436 </span><span class="lineCov">          1 :         BRAYNS_INFO &lt;&lt; &quot;Loading circuit configuration from &quot; &lt;&lt;</span>
+<span class="lineNum">     437 </span><span class="lineCov">          1 :             filename &lt;&lt; std::endl;</span>
+<span class="lineNum">     438 </span>            :         const std::string&amp; report =
+<span class="lineNum">     439 </span><span class="lineCov">          2 :             geometryParameters.getReport( );</span>
+<span class="lineNum">     440 </span><span class="lineCov">          2 :         MorphologyLoader morphologyLoader( geometryParameters );</span>
+<span class="lineNum">     441 </span><span class="lineCov">          2 :         const servus::URI uri( filename );</span>
+<span class="lineNum">     442 </span><span class="lineCov">          1 :         if( report.empty() )</span>
+<span class="lineNum">     443 </span><span class="lineCov">          1 :             morphologyLoader.importCircuit( uri, target, *_engine-&gt;getScene());</span>
+<span class="lineNum">     444 </span>            :         else
+<span class="lineNum">     445 </span>            :             morphologyLoader.importCircuit(
+<span class="lineNum">     446 </span><span class="lineCov">          1 :                 uri, target, report, *_engine-&gt;getScene());</span>
+<span class="lineNum">     447 </span><span class="lineCov">          1 :     }</span>
+<span class="lineNum">     448 </span>            : 
+<span class="lineNum">     449 </span>            :     /**
+<span class="lineNum">     450 </span>            :         Loads compartment report from circuit configuration (command line
+<span class="lineNum">     451 </span>            :         parameter --report)
+<a name="452"><span class="lineNum">     452 </span>            :         @return the number of simulation frames loaded</a>
+<span class="lineNum">     453 </span>            :     */
+<span class="lineNum">     454 </span><span class="lineNoCov">          0 :     void _loadCompartmentReport()</span>
+<span class="lineNum">     455 </span>            :     {
+<span class="lineNum">     456 </span>            :         GeometryParameters&amp; geometryParameters =
+<span class="lineNum">     457 </span><span class="lineNoCov">          0 :             _parametersManager-&gt;getGeometryParameters();</span>
+<span class="lineNum">     458 </span>            :         const std::string&amp; filename =
+<span class="lineNum">     459 </span><span class="lineNoCov">          0 :             geometryParameters.getCircuitConfiguration( );</span>
+<span class="lineNum">     460 </span>            :         const std::string&amp; target =
+<span class="lineNum">     461 </span><span class="lineNoCov">          0 :             geometryParameters.getTarget( );</span>
+<span class="lineNum">     462 </span>            :         const std::string&amp; report =
+<span class="lineNum">     463 </span><span class="lineNoCov">          0 :             geometryParameters.getReport( );</span>
+<span class="lineNum">     464 </span><span class="lineNoCov">          0 :         BRAYNS_INFO &lt;&lt; &quot;Loading compartment report from &quot; &lt;&lt; filename &lt;&lt; std::endl;</span>
+<span class="lineNum">     465 </span><span class="lineNoCov">          0 :         MorphologyLoader morphologyLoader( geometryParameters );</span>
+<span class="lineNum">     466 </span><span class="lineNoCov">          0 :         const servus::URI uri( filename );</span>
+<span class="lineNum">     467 </span><span class="lineNoCov">          0 :         if( morphologyLoader.importSimulationData( uri, target, report, *_engine-&gt;getScene()))</span>
+<span class="lineNum">     468 </span>            :         {
+<span class="lineNum">     469 </span>            :             SceneParameters&amp; sceneParameters =
+<span class="lineNum">     470 </span><span class="lineNoCov">          0 :                 _parametersManager-&gt;getSceneParameters();</span>
+<span class="lineNum">     471 </span>            :             const std::string&amp; transferFunctionFilename =
+<span class="lineNum">     472 </span><span class="lineNoCov">          0 :                 sceneParameters.getTransferFunctionFilename();</span>
+<span class="lineNum">     473 </span><span class="lineNoCov">          0 :             if( !transferFunctionFilename.empty() )</span>
+<span class="lineNum">     474 </span>            :             {
+<span class="lineNum">     475 </span><span class="lineNoCov">          0 :                 TransferFunctionLoader transferFunctionLoader;</span>
+<span class="lineNum">     476 </span>            :                 transferFunctionLoader.loadFromFile(
+<span class="lineNum">     477 </span><span class="lineNoCov">          0 :                     transferFunctionFilename, *_engine-&gt;getScene() );</span>
+<span class="lineNum">     478 </span>            :             }
+<span class="lineNum">     479 </span><span class="lineNoCov">          0 :             _engine-&gt;getScene()-&gt;commitSimulationData();</span>
+<span class="lineNum">     480 </span><span class="lineNoCov">          0 :         }</span>
+<a name="481"><span class="lineNum">     481 </span><span class="lineNoCov">          0 :     }</span></a>
+<span class="lineNum">     482 </span>            : 
+<span class="lineNum">     483 </span><span class="lineCov">          5 :     void _buildDefaultScene()</span>
+<span class="lineNum">     484 </span>            :     {
+<span class="lineNum">     485 </span><span class="lineCov">          5 :         ScenePtr scene = _engine-&gt;getScene();</span>
+<span class="lineNum">     486 </span><span class="lineCov">          5 :         scene-&gt;buildDefault();</span>
+<span class="lineNum">     487 </span><span class="lineCov">          5 :         scene-&gt;buildGeometry();</span>
+<span class="lineNum">     488 </span><span class="lineCov">          5 :     }</span>
+<span class="lineNum">     489 </span>            : 
+<span class="lineNum">     490 </span>            :     ParametersManagerPtr _parametersManager;
+<span class="lineNum">     491 </span>            :     EnginePtr _engine;
+<span class="lineNum">     492 </span>            : 
+<span class="lineNum">     493 </span>            : #if(BRAYNS_USE_DEFLECT || BRAYNS_USE_REST)
+<span class="lineNum">     494 </span>            :     ExtensionPluginFactoryPtr _extensionPluginFactory;
+<span class="lineNum">     495 </span>            :     ExtensionParameters _extensionParameters;
+<span class="lineNum">     496 </span>            : #endif
+<span class="lineNum">     497 </span>            : };
+<span class="lineNum">     498 </span>            : 
+<a name="499"><span class="lineNum">     499 </span>            : // -------------------------------------------------------------------------------------------------</a>
 <span class="lineNum">     500 </span>            : 
-<span class="lineNum">     501 </span><span class="lineCov">          1 : Scene&amp; Brayns::getScene( )</span>
-<span class="lineNum">     502 </span>            : {
-<span class="lineNum">     503 </span><span class="lineCov">          1 :     return _impl-&gt;getScene( );</span>
-<a name="504"><span class="lineNum">     504 </span>            : }</a>
-<span class="lineNum">     505 </span>            : 
-<span class="lineNum">     506 </span><span class="lineCov">          1 : Camera&amp; Brayns::getCamera( )</span>
-<span class="lineNum">     507 </span>            : {
-<span class="lineNum">     508 </span><span class="lineCov">          1 :     return _impl-&gt;getCamera( );</span>
-<a name="509"><span class="lineNum">     509 </span>            : }</a>
-<span class="lineNum">     510 </span>            : 
-<span class="lineNum">     511 </span><span class="lineCov">          5 : FrameBuffer&amp; Brayns::getFrameBuffer( )</span>
-<span class="lineNum">     512 </span>            : {
-<span class="lineNum">     513 </span><span class="lineCov">          5 :     return _impl-&gt;getFrameBuffer( );</span>
-<a name="514"><span class="lineNum">     514 </span>            : }</a>
-<span class="lineNum">     515 </span>            : 
-<span class="lineNum">     516 </span><span class="lineCov">          6 : }</span>
+<span class="lineNum">     501 </span><span class="lineCov">          8 : Brayns::Brayns( int argc, const char **argv )</span>
+<span class="lineNum">     502 </span><span class="lineCov">          8 :     : _impl( new Impl( argc, argv ))</span>
+<a name="503"><span class="lineNum">     503 </span><span class="lineCov">          8 : {}</span></a>
+<span class="lineNum">     504 </span>            : 
+<span class="lineNum">     505 </span><span class="lineCov">          8 : Brayns::~Brayns( )</span>
+<a name="506"><span class="lineNum">     506 </span><span class="lineCov">          8 : {}</span></a>
+<span class="lineNum">     507 </span>            : 
+<span class="lineNum">     508 </span><span class="lineNoCov">          0 : void Brayns::render( const RenderInput&amp; renderInput,</span>
+<span class="lineNum">     509 </span>            :                      RenderOutput&amp; renderOutput )
+<span class="lineNum">     510 </span>            : {
+<span class="lineNum">     511 </span><span class="lineNoCov">          0 :     _impl-&gt;render( renderInput, renderOutput );</span>
+<a name="512"><span class="lineNum">     512 </span><span class="lineNoCov">          0 : }</span></a>
+<span class="lineNum">     513 </span>            : 
+<span class="lineNum">     514 </span><span class="lineCov">         10 : void Brayns::render()</span>
+<span class="lineNum">     515 </span>            : {
+<span class="lineNum">     516 </span><span class="lineCov">         10 :     _impl-&gt;render();</span>
+<a name="517"><span class="lineNum">     517 </span><span class="lineCov">         10 : }</span></a>
+<span class="lineNum">     518 </span>            : 
+<span class="lineNum">     519 </span><span class="lineNoCov">          0 : void Brayns::reshape( const Vector2ui&amp; size )</span>
+<span class="lineNum">     520 </span>            : {
+<span class="lineNum">     521 </span><span class="lineNoCov">          0 :     _impl-&gt;reshape( size );</span>
+<a name="522"><span class="lineNum">     522 </span><span class="lineNoCov">          0 : }</span></a>
+<span class="lineNum">     523 </span>            : 
+<span class="lineNum">     524 </span><span class="lineCov">          5 : void Brayns::commit( )</span>
+<span class="lineNum">     525 </span>            : {
+<span class="lineNum">     526 </span><span class="lineCov">          5 :     _impl-&gt;commit( );</span>
+<a name="527"><span class="lineNum">     527 </span><span class="lineCov">          5 : }</span></a>
+<span class="lineNum">     528 </span>            : 
+<span class="lineNum">     529 </span><span class="lineCov">          2 : ParametersManager&amp; Brayns::getParametersManager( )</span>
+<span class="lineNum">     530 </span>            : {
+<span class="lineNum">     531 </span><span class="lineCov">          2 :     return _impl-&gt;getParametersManager( );</span>
+<a name="532"><span class="lineNum">     532 </span>            : }</a>
+<span class="lineNum">     533 </span>            : 
+<span class="lineNum">     534 </span><span class="lineNoCov">          0 : void Brayns::setMaterials(</span>
+<span class="lineNum">     535 </span>            :     const MaterialType materialType,
+<span class="lineNum">     536 </span>            :     const size_t nbMaterials )
+<span class="lineNum">     537 </span>            : {
+<span class="lineNum">     538 </span><span class="lineNoCov">          0 :     _impl-&gt;setMaterials( materialType, nbMaterials );</span>
+<a name="539"><span class="lineNum">     539 </span><span class="lineNoCov">          0 : }</span></a>
+<span class="lineNum">     540 </span>            : 
+<span class="lineNum">     541 </span><span class="lineCov">          2 : Scene&amp; Brayns::getScene( )</span>
+<span class="lineNum">     542 </span>            : {
+<span class="lineNum">     543 </span><span class="lineCov">          2 :     return _impl-&gt;getScene( );</span>
+<a name="544"><span class="lineNum">     544 </span>            : }</a>
+<span class="lineNum">     545 </span>            : 
+<span class="lineNum">     546 </span><span class="lineCov">          1 : Camera&amp; Brayns::getCamera( )</span>
+<span class="lineNum">     547 </span>            : {
+<span class="lineNum">     548 </span><span class="lineCov">          1 :     return _impl-&gt;getCamera( );</span>
+<a name="549"><span class="lineNum">     549 </span>            : }</a>
+<span class="lineNum">     550 </span>            : 
+<span class="lineNum">     551 </span><span class="lineCov">          5 : FrameBuffer&amp; Brayns::getFrameBuffer( )</span>
+<span class="lineNum">     552 </span>            : {
+<span class="lineNum">     553 </span><span class="lineCov">          5 :     return _impl-&gt;getFrameBuffer( );</span>
+<a name="554"><span class="lineNum">     554 </span>            : }</a>
+<span class="lineNum">     555 </span>            : 
+<span class="lineNum">     556 </span><span class="lineCov">          6 : }</span>
 </pre>
       </td>
     </tr>

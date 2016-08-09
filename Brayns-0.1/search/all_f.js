@@ -22,8 +22,8 @@ var searchData=
   ['settitle',['setTitle',['../classbrayns_1_1_base_window.html#a8f917d5d11eb4d7dc70cb49b6d808920',1,'brayns::BaseWindow::setTitle(const char *title)'],['../classbrayns_1_1_base_window.html#a3e56ecff8226f4585ea9cf0b79e1a198',1,'brayns::BaseWindow::setTitle(const std::string &amp;title)']]],
   ['setupvector',['setUpVector',['../classbrayns_1_1_camera.html#a4325b007e87c888b9f14f229bb3bdcf7',1,'brayns::Camera']]],
   ['setviewport',['setViewPort',['../classbrayns_1_1_base_window.html#a36dee963394afbbcaf581ce7b1ab770c',1,'brayns::BaseWindow']]],
-  ['simulationdata',['SimulationData',['../structbrayns_1_1_simulation_data.html',1,'brayns']]],
-  ['simulationrenderer',['SimulationRenderer',['../structbrayns_1_1_simulation_renderer.html',1,'brayns']]],
+  ['simulationinformation',['SimulationInformation',['../structbrayns_1_1_simulation_information.html',1,'brayns']]],
+  ['simulationrenderer',['SimulationRenderer',['../classbrayns_1_1_simulation_renderer.html',1,'brayns']]],
   ['sphere',['Sphere',['../classbrayns_1_1_sphere.html',1,'brayns']]],
   ['stereocamera',['StereoCamera',['../structbrayns_1_1_stereo_camera.html',1,'brayns']]]
 ];

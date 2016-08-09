@@ -2,6 +2,7 @@ var files =
 [
     [ "AbstractManipulator.h", "_abstract_manipulator_8h_source.html", null ],
     [ "AbstractParameters.h", "_abstract_parameters_8h_source.html", null ],
+    [ "AbstractRenderer.h", "_abstract_renderer_8h_source.html", null ],
     [ "api.h", "api_8h.html", "api_8h" ],
     [ "ApplicationParameters.h", "_application_parameters_8h_source.html", null ],
     [ "BaseWindow.h", "_base_window_8h_source.html", null ],
@@ -53,6 +54,8 @@ var files =
     [ "StereoCamera.h", "_stereo_camera_8h_source.html", null ],
     [ "Texture2D.h", "_texture2_d_8h_source.html", null ],
     [ "TextureLoader.h", "_texture_loader_8h_source.html", null ],
+    [ "TransferFunction.h", "_transfer_function_8h_source.html", null ],
+    [ "TransferFunctionLoader.h", "_transfer_function_loader_8h_source.html", null ],
     [ "TrianglesMesh.h", "_triangles_mesh_8h_source.html", null ],
     [ "version.h", "version_8h.html", "version_8h" ],
     [ "Viewport.h", "_viewport_8h_source.html", null ],
