@@ -30,6 +30,7 @@ var searchData=
   ['restcommand',['RestCommand',['../class_rest_command.html#a50a835b10e9fd4692a1cc24f7af3d236',1,'RestCommand']]],
   ['restinterface',['RestInterface',['../class_rest_interface.html#ade3270177673fd1cf4f1f2830d131857',1,'RestInterface']]],
   ['restlogger',['RestLogger',['../class_rest_logger.html#ad2e6c051aa957c45b134db1204d248a5',1,'RestLogger']]],
+  ['restserver',['RestServer',['../class_rest_server.html#a688fd7a30878aea6036b459cfebf657c',1,'RestServer::RestServer()'],['../class_rest_server.html#a80e2ccc03376986de0e597f1ddd0ee5b',1,'RestServer::RestServer(int port)']]],
   ['rootobject',['rootObject',['../class_wall_window.html#ab8e15dff962c214995e15e9952b47d3f',1,'WallWindow']]],
   ['run',['run',['../class_process_forker.html#ad1528d488d2aa41dec482bbadb431cd3',1,'ProcessForker']]]
 ];

@@ -90,7 +90,9 @@ var hierarchy =
       ] ],
       [ "ContentAction", "class_content_action.html", null ],
       [ "ContentInteractionDelegate", "class_content_interaction_delegate.html", [
-        [ "PixelStreamInteractionDelegate", "class_pixel_stream_interaction_delegate.html", null ],
+        [ "PixelStreamInteractionDelegate", "class_pixel_stream_interaction_delegate.html", [
+          [ "WebbrowserInteractionDelegate", "class_webbrowser_interaction_delegate.html", null ]
+        ] ],
         [ "ZoomInteractionDelegate", "class_zoom_interaction_delegate.html", null ]
       ] ],
       [ "ContentSynchronizer", "class_content_synchronizer.html", [
@@ -160,6 +162,8 @@ var hierarchy =
     [ "QSGSimpleTextureNode", null, [
       [ "TextureNode", "class_texture_node.html", null ]
     ] ],
+    [ "RestServer", "class_rest_server.html", null ],
+    [ "SerializeUtils", "struct_serialize_utils.html", null ],
     [ "Serializable", null, [
       [ "JsonOptions", "class_json_options.html", null ],
       [ "RestCommand", "class_rest_command.html", null ],
@@ -189,5 +193,6 @@ var hierarchy =
     [ "tide::Version", "classtide_1_1_version.html", null ],
     [ "TiffPyramidReader", "class_tiff_pyramid_reader.html", null ],
     [ "VisibilityHelper", "class_visibility_helper.html", null ],
+    [ "WebbrowserHistory", "class_webbrowser_history.html", null ],
     [ "ZoomHelper", "class_zoom_helper.html", null ]
 ];

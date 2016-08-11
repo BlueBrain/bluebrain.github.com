@@ -1,5 +1,9 @@
 var NAVTREEINDEX3 =
 {
+"class_markers.html#a0ffb026053d84d05a157adc9a5a0a3c2":[5,0,51,7],
+"class_markers.html#a3932715d3ac4bc865bc303007fcac5cc":[5,0,51,4],
+"class_markers.html#a704997f33b96a475b29167a92cd68ab3":[5,0,51,3],
+"class_markers.html#a8274924d49d7d6f1ed3ce3489ea98739":[5,0,51,1],
 "class_markers.html#a9758d9926d9fbf5c556820114bacedee":[5,0,51,0],
 "class_markers.html#a9758d9926d9fbf5c556820114bacedeea4e434fb5794d8d6f31d910833c9ed6d4":[5,0,51,0,1],
 "class_markers.html#a9758d9926d9fbf5c556820114bacedeea83eee584d5149ba9beaff74fe649f9cd":[5,0,51,0,0],
@@ -221,10 +225,11 @@ var NAVTREEINDEX3 =
 "class_pixel_stream_content.html#a1da19d9ae276ac73c4a966a7b2505b34":[5,0,71,3],
 "class_pixel_stream_content.html#a2a0d5fbde3ac80753ad2e3e42a07327e":[5,0,71,0],
 "class_pixel_stream_content.html#a5109f320daef0181de2110d271cd545c":[5,0,71,5],
-"class_pixel_stream_content.html#ac98d07dd8f7b70e16ccb9a01abf56b9c":[5,0,71,7],
+"class_pixel_stream_content.html#aaeecac84283680ea0ead807c2006e1d7":[5,0,71,6],
+"class_pixel_stream_content.html#ac98d07dd8f7b70e16ccb9a01abf56b9c":[5,0,71,8],
 "class_pixel_stream_content.html#ad9c2f1c69fded0c63eecf35a9bdabd84":[5,0,71,2],
 "class_pixel_stream_content.html#adaafb5c36d58bbf114c2736dd382a4a6":[5,0,71,1],
-"class_pixel_stream_content.html#af1fde82b270db2ed217ec6542924c3e4":[5,0,71,6],
+"class_pixel_stream_content.html#af1fde82b270db2ed217ec6542924c3e4":[5,0,71,7],
 "class_pixel_stream_interaction_delegate.html":[5,0,75],
 "class_pixel_stream_interaction_delegate.html#a009ed76031da7235dc546fe54777d1fe":[5,0,75,3],
 "class_pixel_stream_interaction_delegate.html#a04e1401adba27f261c4ae6dcc57f81c6":[5,0,75,12],
@@ -244,10 +249,5 @@ var NAVTREEINDEX3 =
 "class_pixel_stream_interaction_delegate.html#add9405a583307fea5a17d7cb6ea2846e":[5,0,75,7],
 "class_pixel_stream_interaction_delegate.html#afb4f6a22da6e068ca8a7017be460dc53":[5,0,75,16],
 "class_pixel_stream_synchronizer.html":[5,0,76],
-"class_pixel_stream_synchronizer.html#a12666d81a8a86b90e41dd750027f2373":[5,0,76,0],
-"class_pixel_stream_synchronizer.html#a6b0ae9339e04bd1e1972ebb3eab6ebef":[5,0,76,1],
-"class_pixel_stream_synchronizer.html#a850f91c504e2e240b3edeb5a58f6804d":[5,0,76,2],
-"class_pixel_stream_synchronizer.html#aa32e353578381044b7b30f5e4bbc9b16":[5,0,76,6],
-"class_pixel_stream_synchronizer.html#ae3616b7a06a7e809772d127f8a10dc08":[5,0,76,3],
-"class_pixel_stream_synchronizer.html#ae674b7e55539e08c3211261890d6d5ad":[5,0,76,4]
+"class_pixel_stream_synchronizer.html#a12666d81a8a86b90e41dd750027f2373":[5,0,76,0]
 };

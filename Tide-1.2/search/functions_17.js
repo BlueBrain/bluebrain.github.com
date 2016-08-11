@@ -21,6 +21,7 @@ var searchData=
   ['_7epixelstreamer',['~PixelStreamer',['../class_pixel_streamer.html#ac9d996a5dadc05b54dcfa0824eb1a573',1,'PixelStreamer']]],
   ['_7eqmlwindowrenderer',['~QmlWindowRenderer',['../class_qml_window_renderer.html#a64b49a4fef3f1bd26e2f2b1a6fa4db3c',1,'QmlWindowRenderer']]],
   ['_7erestinterface',['~RestInterface',['../class_rest_interface.html#aeafc0fc94ce9d822611933385bfa9325',1,'RestInterface']]],
+  ['_7erestserver',['~RestServer',['../class_rest_server.html#a77cdfc5fd29b0c314ff39f7e0cd7780e',1,'RestServer']]],
   ['_7esvg',['~SVG',['../class_s_v_g.html#ad34298f0fb0cc7bf208c5667b26dd21b',1,'SVG']]],
   ['_7esvgbackend',['~SVGBackend',['../class_s_v_g_backend.html#a54c3fe3bbb119d468dab5bfe875894ad',1,'SVGBackend']]],
   ['_7esvgsynchronizer',['~SVGSynchronizer',['../class_s_v_g_synchronizer.html#aa05d79048efff7633966cf1c8cfed078',1,'SVGSynchronizer']]],

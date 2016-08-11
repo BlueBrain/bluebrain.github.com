@@ -10,6 +10,7 @@ var class_pixel_stream_window_manager =
     [ "openWindow", "class_pixel_stream_window_manager.html#a3f878a4364c8e4d9a8cb43ca20519126", null ],
     [ "pixelStreamWindowClosed", "class_pixel_stream_window_manager.html#a84442417ad4ed329a06ac08051e7266a", null ],
     [ "registerEventReceiver", "class_pixel_stream_window_manager.html#aa4317964b249dffd8ad5bc9fa4f49e6f", null ],
+    [ "sendDataToWindow", "class_pixel_stream_window_manager.html#ae7b8614c9a975ea862e93ebe52668ecd", null ],
     [ "setAutoFocusNewWindows", "class_pixel_stream_window_manager.html#a84dc3f67f094ed3f01d9d2f558d2bcb3", null ],
     [ "showWindow", "class_pixel_stream_window_manager.html#a6e68e2ca3ba0213a872e22acd082b468", null ],
     [ "updateSizeHints", "class_pixel_stream_window_manager.html#a8f0622d497aa3a47157912dc9f59fbfe", null ],
