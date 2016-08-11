@@ -15,6 +15,7 @@ var classdeflect_1_1_stream =
     [ "isRegisteredForEvents", "classdeflect_1_1_stream.html#a3ca77e7708fc30bc084a3093158456a7", null ],
     [ "registerForEvents", "classdeflect_1_1_stream.html#ac41c7f5a1389da41e2778b677138a870", null ],
     [ "send", "classdeflect_1_1_stream.html#a31fd6e85be950b8799f557be71ef787d", null ],
+    [ "sendData", "classdeflect_1_1_stream.html#ad4d57fc018a327a553c985ec7de390dc", null ],
     [ "sendSizeHints", "classdeflect_1_1_stream.html#ae580afe8ed6e374789be1b088667e1d9", null ],
     [ "::Application", "classdeflect_1_1_stream.html#ab2d6819b36f0e9174889b0db0ab35a59", null ],
     [ "disconnected", "classdeflect_1_1_stream.html#a1021de00de42059139af3808905a54d9", null ]
