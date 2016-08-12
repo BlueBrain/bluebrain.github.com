@@ -7,6 +7,7 @@ var hierarchy =
       [ "fivox::FrequencyFunctor< TImage >", "classfivox_1_1_frequency_functor.html", null ],
       [ "fivox::LFPFunctor< TImage >", "classfivox_1_1_l_f_p_functor.html", null ]
     ] ],
+    [ "fivox::EventsDeleter", "structfivox_1_1_events_deleter.html", null ],
     [ "fivox::EventSource", "classfivox_1_1_event_source.html", [
       [ "fivox::CompartmentLoader", "classfivox_1_1_compartment_loader.html", null ],
       [ "fivox::SomaLoader", "classfivox_1_1_soma_loader.html", null ],

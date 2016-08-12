@@ -4,6 +4,7 @@ var namespacefivox =
     [ "CompartmentLoader", "classfivox_1_1_compartment_loader.html", "classfivox_1_1_compartment_loader" ],
     [ "DensityFunctor", "classfivox_1_1_density_functor.html", "classfivox_1_1_density_functor" ],
     [ "EventFunctor", "classfivox_1_1_event_functor.html", "classfivox_1_1_event_functor" ],
+    [ "EventsDeleter", "structfivox_1_1_events_deleter.html", "structfivox_1_1_events_deleter" ],
     [ "EventSource", "classfivox_1_1_event_source.html", "classfivox_1_1_event_source" ],
     [ "FieldFunctor", "classfivox_1_1_field_functor.html", "classfivox_1_1_field_functor" ],
     [ "FrequencyFunctor", "classfivox_1_1_frequency_functor.html", "classfivox_1_1_frequency_functor" ],
