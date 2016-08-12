@@ -1,0 +1,433 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+
+<html lang="en">
+
+<head>
+  <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+  <title>LCOV - Livre - lib/data/nrrd/nrrd.hxx</title>
+  <link rel="stylesheet" type="text/css" href="../../../gcov.css">
+</head>
+
+<body>
+
+  <table width="100%" border=0 cellspacing=0 cellpadding=0>
+    <tr><td class="title">LCOV - code coverage report</td></tr>
+    <tr><td class="ruler"><img src="../../../glass.png" width=3 height=3 alt=""></td></tr>
+
+    <tr>
+      <td width="100%">
+        <table cellpadding=1 border=0 width="100%">
+          <tr>
+            <td width="10%" class="headerItem">Current view:</td>
+            <td width="35%" class="headerValue"><a href="../../../index.html">top level</a> - <a href="index.html">lib/data/nrrd</a> - nrrd.hxx<span style="font-size: 80%;"> (source / <a href="nrrd.hxx.func-sort-c.html">functions</a>)</span></td>
+            <td width="5%"></td>
+            <td width="15%"></td>
+            <td width="10%" class="headerCovTableHead">Hit</td>
+            <td width="10%" class="headerCovTableHead">Total</td>
+            <td width="15%" class="headerCovTableHead">Coverage</td>
+          </tr>
+          <tr>
+            <td class="headerItem">Test:</td>
+            <td class="headerValue">Livre</td>
+            <td></td>
+            <td class="headerItem">Lines:</td>
+            <td class="headerCovTableEntry">38</td>
+            <td class="headerCovTableEntry">49</td>
+            <td class="headerCovTableEntryMed">77.6 %</td>
+          </tr>
+          <tr>
+            <td class="headerItem">Date:</td>
+            <td class="headerValue">2016-08-12 03:04:41</td>
+            <td></td>
+            <td class="headerItem">Functions:</td>
+            <td class="headerCovTableEntry">1</td>
+            <td class="headerCovTableEntry">1</td>
+            <td class="headerCovTableEntryHi">100.0 %</td>
+          </tr>
+          <tr><td><img src="../../../glass.png" width=3 height=3 alt=""></td></tr>
+        </table>
+      </td>
+    </tr>
+
+    <tr><td class="ruler"><img src="../../../glass.png" width=3 height=3 alt=""></td></tr>
+  </table>
+
+  <table cellpadding=0 cellspacing=0 border=0>
+    <tr>
+      <td><br></td>
+    </tr>
+    <tr>
+      <td>
+<pre class="sourceHeading">          Line data    Source code</pre>
+<pre class="source">
+<a name="1"><span class="lineNum">       1 </span>            : // Created by A. Aichert in Aug 2013</a>
+<span class="lineNum">       2 </span>            : #ifndef __NRRD_HXX
+<span class="lineNum">       3 </span>            : #define __NRRD_HXX
+<span class="lineNum">       4 </span>            : 
+<span class="lineNum">       5 </span>            : // Simple header-only implementation of the NRRD file format
+<span class="lineNum">       6 </span>            : // Does not implement:  line skip, byte skip, orientations, encodings other than raw, kinds other than domain.
+<span class="lineNum">       7 </span>            : // Converts all type strings to C-type equivalent i.e. &quot;uint8&quot; to &quot;unsigned char&quot;
+<span class="lineNum">       8 </span>            : // Always writes &quot;endian&quot; tag (required for FIJI/ImageJ loading)
+<span class="lineNum">       9 </span>            : // Can open files of Big and little endian but saves files only in native format.
+<span class="lineNum">      10 </span>            : 
+<span class="lineNum">      11 </span>            : #include &quot;StringUtil.hxx&quot;
+<span class="lineNum">      12 </span>            : #include &quot;TypeString.hxx&quot;
+<span class="lineNum">      13 </span>            : 
+<span class="lineNum">      14 </span>            : #include &lt;map&gt;
+<span class="lineNum">      15 </span>            : #include &lt;string&gt;
+<span class="lineNum">      16 </span>            : #include &lt;fstream&gt;
+<span class="lineNum">      17 </span>            : #include &lt;sstream&gt;
+<span class="lineNum">      18 </span>            : 
+<span class="lineNum">      19 </span>            : #ifdef NRRD
+<span class="lineNum">      20 </span>            : #undef NRRD
+<span class="lineNum">      21 </span>            : #endif
+<span class="lineNum">      22 </span>            : 
+<span class="lineNum">      23 </span>            : // Important Functions:
+<span class="lineNum">      24 </span>            : //
+<span class="lineNum">      25 </span>            : //template &lt;typename T&gt;
+<span class="lineNum">      26 </span>            : //bool NRRD::save(const std::string&amp; file, const T* data, int n, const int *size,
+<span class="lineNum">      27 </span>            : //      std::map&lt;std::string,std::string&gt; hdr_keys=std::map&lt;std::string,std::string&gt;,
+<span class="lineNum">      28 </span>            : //      std::map&lt;std::string,std::string&gt; hdr_fields=std::map&lt;std::string,std::string&gt;)
+<span class="lineNum">      29 </span>            : //
+<span class="lineNum">      30 </span>            : //template &lt;typename T&gt;
+<span class="lineNum">      31 </span>            : //bool NRRD::load(const std::string&amp; file, T** data, std::vector&lt;int&gt;* size,
+<span class="lineNum">      32 </span>            : //      std::map&lt;std::string,std::string&gt;* hdr_keys=0x0,
+<span class="lineNum">      33 </span>            : //      std::map&lt;std::string,std::string&gt;* hdr_fields=0x0)
+<span class="lineNum">      34 </span>            : //
+<span class="lineNum">      35 </span>            : // Advanced:
+<span class="lineNum">      36 </span>            : //
+<span class="lineNum">      37 </span>            : //inline std::string NRRD::getDataType(const std::string&amp; file)
+<span class="lineNum">      38 </span>            : //
+<span class="lineNum">      39 </span>            : //inline int NRRD::parseHeader(const std::string&amp; path,
+<span class="lineNum">      40 </span>            : //      std::map&lt;std::string,std::string&gt;&amp; hdr_fields,
+<span class="lineNum">      41 </span>            : //      std::map&lt;std::string,std::string&gt;* hdr_keys=0x0)
+<span class="lineNum">      42 </span>            : //
+<span class="lineNum">      43 </span>            : // Simpler interface for 3D data:
+<span class="lineNum">      44 </span>            : //
+<span class="lineNum">      45 </span>            : //template &lt;typename T&gt;
+<span class="lineNum">      46 </span>            : //std::map&lt;std::string,std::string&gt; NRRD::load3D(const std::string&amp; file, T** data,
+<span class="lineNum">      47 </span>            : //      int *nx, int *ny, int *nz=0x0, // size in voxels
+<span class="lineNum">      48 </span>            : //      double *sx=0x0, double *sy=0x0, double *sz=0x0) // spacing
+<span class="lineNum">      49 </span>            : //
+<span class="lineNum">      50 </span>            : //template &lt;typename T&gt;
+<span class="lineNum">      51 </span>            : //inline bool NRRD::save3D(const std::string&amp; file, const T* data, int w, int h, int d, std::map&lt;std::string,std::string&gt; hdr=std::map&lt;std::string,std::string&gt;())
+<span class="lineNum">      52 </span>            : //
+<span class="lineNum">      53 </span>            : 
+<span class="lineNum">      54 </span>            : namespace NRRD
+<span class="lineNum">      55 </span>            : {
+<span class="lineNum">      56 </span>            : 
+<span class="lineNum">      57 </span>            :     /// Endian conversion is not fully implemented. But it is at least asserted.
+<span class="lineNum">      58 </span>            :     inline bool is_cpu_BIG_endian()
+<span class="lineNum">      59 </span>            :     {
+<span class="lineNum">      60 </span>            :        unsigned int u=255;
+<span class="lineNum">      61 </span>            :        unsigned char *c=(unsigned char*)&amp;u;
+<span class="lineNum">      62 </span>            :        return 0!=(*(c+3));
+<span class="lineNum">      63 </span>            :     }
+<span class="lineNum">      64 </span>            : 
+<span class="lineNum">      65 </span>            :     // Template for endian conversion of one element
+<span class="lineNum">      66 </span>            :     template &lt;int N&gt; inline void swapBytes(void* v) {}
+<span class="lineNum">      67 </span>            : 
+<span class="lineNum">      68 </span>            :     /// swap 2 bytes (convert short endian)
+<span class="lineNum">      69 </span>            :     template &lt;&gt; inline void swapBytes&lt;2&gt;(void* v) {
+<span class="lineNum">      70 </span>            :         char *d=(char*)v;
+<span class="lineNum">      71 </span>            :         std::swap(d[0],d[1]);
+<span class="lineNum">      72 </span>            :     }
+<span class="lineNum">      73 </span>            : 
+<span class="lineNum">      74 </span>            :     /// swap 4 bytes (convert int or float endian)
+<span class="lineNum">      75 </span>            :     template &lt;&gt; inline void swapBytes&lt;4&gt;(void* v) {
+<span class="lineNum">      76 </span>            :         short *d=(short*)v;
+<span class="lineNum">      77 </span>            :         std::swap(d[0],d[1]);
+<span class="lineNum">      78 </span>            :         swapBytes&lt;2&gt;(d);
+<span class="lineNum">      79 </span>            :         swapBytes&lt;2&gt;(d+1);
+<span class="lineNum">      80 </span>            :     }
+<span class="lineNum">      81 </span>            : 
+<span class="lineNum">      82 </span>            :     /// swap 8 bytes (convert double endian)
+<span class="lineNum">      83 </span>            :     template &lt;&gt; inline void swapBytes&lt;8&gt;(void* v) {
+<span class="lineNum">      84 </span>            :         int *d=(int*)v;
+<span class="lineNum">      85 </span>            :         std::swap(d[0],d[1]);
+<span class="lineNum">      86 </span>            :         swapBytes&lt;4&gt;(d);
+<span class="lineNum">      87 </span>            :         swapBytes&lt;4&gt;(d+1);
+<span class="lineNum">      88 </span>            :     }
+<span class="lineNum">      89 </span>            : 
+<span class="lineNum">      90 </span>            :     // Template for endian conversion
+<span class="lineNum">      91 </span>            :     template &lt;typename T&gt; inline void convertEndian(T&amp; v) {
+<span class="lineNum">      92 </span>            :         swapBytes&lt;sizeof(v)&gt;((void*)&amp;v);
+<span class="lineNum">      93 </span>            :     }
+<span class="lineNum">      94 </span>            : 
+<span class="lineNum">      95 </span>            :     /// Helper function to allocate an array of a specific type and fill it with values from an array of a different type
+<span class="lineNum">      96 </span>            :     template &lt;typename S, typename T&gt;
+<span class="lineNum">      97 </span>            :     T* convert(S* src, int n)
+<span class="lineNum">      98 </span>            :     {
+<span class="lineNum">      99 </span>            :         T* tgt=new T[n];
+<span class="lineNum">     100 </span>            :         for (int i=0;i&lt;n;i++)
+<span class="lineNum">     101 </span>            :             tgt[i]=(T)src[i];
+<span class="lineNum">     102 </span>            :         return tgt;
+<span class="lineNum">     103 </span>            :     }
+<span class="lineNum">     104 </span>            : 
+<span class="lineNum">     105 </span>            :         /// Save raw data in NRRD file.
+<span class="lineNum">     106 </span>            :         template &lt;typename T&gt;
+<span class="lineNum">     107 </span>            :         bool save(const std::string&amp; file, const T* data, int n, const int *size,
+<span class="lineNum">     108 </span>            :                 std::map&lt;std::string,std::string&gt; hdr_keys=std::map&lt;std::string,std::string&gt;(),
+<span class="lineNum">     109 </span>            :                 std::map&lt;std::string,std::string&gt; hdr_fields=std::map&lt;std::string,std::string&gt;())
+<span class="lineNum">     110 </span>            :         {
+<span class="lineNum">     111 </span>            :                 std::ofstream nrrd(file.c_str(),std::ios::binary);
+<span class="lineNum">     112 </span>            :                 if (!nrrd||!nrrd.good())
+<span class="lineNum">     113 </span>            :                         return false;
+<span class="lineNum">     114 </span>            :                 // Magic number v.4
+<span class="lineNum">     115 </span>            :                 nrrd &lt;&lt; &quot;NRRD0004\n&quot;;
+<span class="lineNum">     116 </span>            :                 // Type. special case: char maps to int8.
+<span class="lineNum">     117 </span>            :                 hdr_fields[&quot;type&quot;]=typeName&lt;T&gt;();
+<span class="lineNum">     118 </span>            :                 if (hdr_fields[&quot;type&quot;]==&quot;char&quot;)
+<span class="lineNum">     119 </span>            :                         hdr_fields[&quot;type&quot;]=&quot;int8&quot;;
+<span class="lineNum">     120 </span>            :                 if (hdr_fields[&quot;type&quot;]==&quot;unsigned&quot;||hdr_fields[&quot;type&quot;]==&quot;unsigned int&quot;)
+<span class="lineNum">     121 </span>            :                         hdr_fields[&quot;type&quot;]=std::string(&quot;uint&quot;)+toString(sizeof(T)*8);
+<span class="lineNum">     122 </span>            :                 // Dimension and size
+<span class="lineNum">     123 </span>            :                 hdr_fields[&quot;dimension&quot;]=toString(n);
+<span class="lineNum">     124 </span>            :                 hdr_fields[&quot;sizes&quot;]=toString(size[0]);
+<span class="lineNum">     125 </span>            :                 for (int i=1;i&lt;n;i++)
+<span class="lineNum">     126 </span>            :                         hdr_fields[&quot;sizes&quot;]=hdr_fields[&quot;sizes&quot;]+&quot; &quot;+toString(size[i]);
+<span class="lineNum">     127 </span>            :                 // Encoding
+<span class="lineNum">     128 </span>            :                 hdr_fields[&quot;encoding&quot;]=&quot;raw&quot;;
+<span class="lineNum">     129 </span>            :                 if (is_cpu_BIG_endian()) hdr_fields[&quot;endian&quot;]=&quot;big&quot;;
+<span class="lineNum">     130 </span>            :                 else hdr_fields[&quot;endian&quot;]=&quot;little&quot;;
+<span class="lineNum">     131 </span>            :                 // Standard fields defined by NRRD format
+<span class="lineNum">     132 </span>            :                 for (auto it=hdr_fields.begin();it!=hdr_fields.end();++it)
+<span class="lineNum">     133 </span>            :                         nrrd &lt;&lt; it-&gt;first &lt;&lt; &quot;: &quot; &lt;&lt; it-&gt;second &lt;&lt; std::endl;
+<span class="lineNum">     134 </span>            :                 // User defined Key/Value pairs
+<span class="lineNum">     135 </span>            :                 int ignored=0;
+<span class="lineNum">     136 </span>            :                 for (auto it=hdr_keys.begin();it!=hdr_keys.end();++it)
+<span class="lineNum">     137 </span>            :                         if (it-&gt;second.find('\n') == std::string::npos)
+<span class="lineNum">     138 </span>            :                                 nrrd &lt;&lt; it-&gt;first &lt;&lt; &quot;:=&quot; &lt;&lt; it-&gt;second &lt;&lt; std::endl;
+<span class="lineNum">     139 </span>            :                         else ignored++;
+<span class="lineNum">     140 </span>            :                 if (ignored) std::cerr &lt;&lt;  &quot;NRRD::save&lt;T&gt;(...): Ignored &quot; &lt;&lt; ignored &lt;&lt; &quot; keys in meta info because of invalid characters (e.g. line breaks)\n&quot;;
+<span class="lineNum">     141 </span>            :                 // Finally, add a comment to allow a used to read the ascii header and manually load raw data
+<span class="lineNum">     142 </span>            :                 nrrd &lt;&lt; &quot;# Offset to raw data: &quot;;
+<span class="lineNum">     143 </span>            :                 std::string raw_read_info_end=&quot; bytes.\n\n&quot;;
+<span class="lineNum">     144 </span>            :                 int offset=(int)nrrd.tellp();
+<span class="lineNum">     145 </span>            :                 offset+=(int)raw_read_info_end.length()+8;
+<span class="lineNum">     146 </span>            :                 nrrd &lt;&lt; toString(offset,8,' ')+raw_read_info_end;
+<span class="lineNum">     147 </span>            :                 int ne=1;
+<span class="lineNum">     148 </span>            :                 for (int i=0;i&lt;n;i++) ne*=size[i];
+<span class="lineNum">     149 </span>            :                 nrrd.write((char*)data,sizeof(T)*ne);
+<span class="lineNum">     150 </span>            :                 return true;
+<span class="lineNum">     151 </span>            :         }
+<span class="lineNum">     152 </span>            : 
+<span class="lineNum">     153 </span>            :         /// Parse header of NRRD file. Returns number of bytes in header (beginning of raw data)
+<a name="154"><span class="lineNum">     154 </span>            :         /// Type strings are converted to match C-types. Null is returned on error.</a>
+<span class="lineNum">     155 </span>            :         /// Note the order of fields / keys / comments versus keys / fields in all other functions.
+<span class="lineNum">     156 </span><span class="lineCov">          1 :         inline int parseHeader(const std::string&amp; path,</span>
+<span class="lineNum">     157 </span>            :                 std::map&lt;std::string,std::string&gt;&amp; hdr_fields,
+<span class="lineNum">     158 </span>            :                 std::map&lt;std::string,std::string&gt;* hdr_keys=0x0)
+<span class="lineNum">     159 </span>            :         {
+<span class="lineNum">     160 </span><span class="lineCov">          1 :                 int header_offset=0;</span>
+<span class="lineNum">     161 </span><span class="lineCov">          1 :                 std::ifstream file(path.c_str(), std::ios::binary);</span>
+<span class="lineNum">     162 </span><span class="lineCov">          1 :                 if (!file || !file.good())</span>
+<span class="lineNum">     163 </span>            :                 {
+<span class="lineNum">     164 </span><span class="lineNoCov">          0 :                         std::cerr &lt;&lt; &quot;NRRD::parseHeader&lt;T&gt;(...): File access error.\n&quot;;</span>
+<span class="lineNum">     165 </span><span class="lineNoCov">          0 :                         return 0;</span>
+<span class="lineNum">     166 </span>            :                 }
+<span class="lineNum">     167 </span>            :                 // 2do: check magic number
+<span class="lineNum">     168 </span><span class="lineCov">          1 :                 file.ignore(1000,'\n');// ignore first line, hopefully &quot;NRRD000X&quot; X&gt;1</span>
+<span class="lineNum">     169 </span><span class="lineCov">          1 :                 int line_num=-1;</span>
+<span class="lineNum">     170 </span><span class="lineCov">          9 :                 while (!file.eof() &amp;&amp; file.good())</span>
+<span class="lineNum">     171 </span>            :                 {
+<span class="lineNum">     172 </span><span class="lineCov">          8 :                         line_num++;</span>
+<span class="lineNum">     173 </span><span class="lineCov">         15 :                         std::string line, key,value;</span>
+<span class="lineNum">     174 </span><span class="lineCov">          8 :                         std::getline(file,line);</span>
+<span class="lineNum">     175 </span><span class="lineCov">          8 :             if( (int)file.tellg() != -1 )</span>
+<span class="lineNum">     176 </span><span class="lineCov">          7 :                 header_offset=(int)file.tellg();</span>
+<span class="lineNum">     177 </span><span class="lineCov">          8 :                         if (line.empty()) // beginning of data chunk</span>
+<span class="lineNum">     178 </span><span class="lineCov">          1 :                                 break;</span>
+<span class="lineNum">     179 </span><span class="lineCov">          7 :                         if (line[0]=='#') // comment</span>
+<span class="lineNum">     180 </span><span class="lineNoCov">          0 :                                 continue;</span>
+<span class="lineNum">     181 </span><span class="lineCov">         14 :                         std::istringstream strstr(line);</span>
+<span class="lineNum">     182 </span><span class="lineCov">          7 :                         std::getline(strstr,key,':');</span>
+<span class="lineNum">     183 </span><span class="lineCov">          7 :                         char eqsp=0;</span>
+<span class="lineNum">     184 </span><span class="lineCov">          7 :                         strstr.get(eqsp);</span>
+<span class="lineNum">     185 </span><span class="lineCov">          7 :                         std::getline(strstr,value,'\n');</span>
+<span class="lineNum">     186 </span>            :                         // key or field?
+<span class="lineNum">     187 </span><span class="lineCov">          7 :                         if (eqsp==' ')</span>
+<span class="lineNum">     188 </span><span class="lineCov">          7 :                                 hdr_fields[key]=value;</span>
+<span class="lineNum">     189 </span><span class="lineNoCov">          0 :                         else if (eqsp=='=')</span>
+<span class="lineNum">     190 </span>            :                         {
+<span class="lineNum">     191 </span><span class="lineNoCov">          0 :                                 if (hdr_keys)</span>
+<span class="lineNum">     192 </span><span class="lineNoCov">          0 :                                         (*hdr_keys)[key]=value;</span>
+<span class="lineNum">     193 </span>            :                         }
+<span class="lineNum">     194 </span>            :                         else
+<span class="lineNum">     195 </span>            :                         {
+<span class="lineNum">     196 </span><span class="lineNoCov">          0 :                                 if (line.length()&gt;1000) line=&quot;&lt;too many characters&gt;&quot;;</span>
+<span class="lineNum">     197 </span><span class="lineNoCov">          0 :                                 std::cerr &lt;&lt; &quot;NRRD::parseHeader&lt;T&gt;(...): Error parsing line &quot;&lt;&lt; line_num &lt;&lt; &quot;:\n&quot; &lt;&lt; line &lt;&lt; std::endl;</span>
+<span class="lineNum">     198 </span><span class="lineNoCov">          0 :                                 return 1;</span>
+<span class="lineNum">     199 </span>            :                         }
+<span class="lineNum">     200 </span><span class="lineCov">          7 :                 }</span>
+<span class="lineNum">     201 </span><span class="lineCov">          1 :                 file.close();</span>
+<span class="lineNum">     202 </span>            :                 // Map all possible NRRD-types to the corresponding C-type to avoid confusion.
+<span class="lineNum">     203 </span><span class="lineCov">          1 :                 static std::map&lt;std::string,std::string&gt; types;</span>
+<span class="lineNum">     204 </span><span class="lineCov">          1 :                 if (types.empty())</span>
+<span class="lineNum">     205 </span>            :                 {
+<span class="lineNum">     206 </span>            :                         // Supports non-standard type name &quot;char&quot; for loading but always writes &quot;int8&quot;.
+<span class="lineNum">     207 </span><span class="lineCov">          1 :                         types[&quot;int8_t&quot;]=types[&quot;int8&quot;]=types[&quot;signed char&quot;]=types[&quot;char&quot;]=&quot;char&quot;;</span>
+<span class="lineNum">     208 </span><span class="lineCov">          1 :                         types[&quot;uchar&quot;]=types[&quot;uint8_t&quot;]=types[&quot;uint8&quot;]=types[&quot;unsigned char&quot;]= &quot;unsigned char&quot;;</span>
+<span class="lineNum">     209 </span><span class="lineCov">          1 :                         types[&quot;int16_t&quot;]=types[&quot;int16&quot;]=types[&quot;signed short int&quot;]=types[&quot;signed signed&quot;]=types[&quot;short int&quot;]=types[&quot;short&quot;]=&quot;short&quot;;</span>
+<span class="lineNum">     210 </span><span class="lineCov">          1 :                         types[&quot;ushort&quot;]=types[&quot;uint16_t&quot;]=types[&quot;uint16&quot;]=types[&quot;unsigned short int&quot;]=types[&quot;unsigned short&quot;]=&quot;unsigned short&quot;;</span>
+<span class="lineNum">     211 </span><span class="lineCov">          1 :                         types[&quot;int32_t&quot;]=types[&quot;int32&quot;]=types[&quot;signed int&quot;]=types[&quot;int&quot;]=&quot;int&quot;;</span>
+<span class="lineNum">     212 </span><span class="lineCov">          1 :                         types[&quot;uint32_t&quot;]=types[&quot;uint32&quot;]=types[&quot;uint&quot;]=types[&quot;unsigned int&quot;]=&quot;unsigned int&quot;;</span>
+<span class="lineNum">     213 </span><span class="lineCov">          1 :                         types[&quot;float&quot;]=&quot;float&quot;;</span>
+<span class="lineNum">     214 </span><span class="lineCov">          1 :                         types[&quot;double&quot;]=&quot;double&quot;;</span>
+<span class="lineNum">     215 </span>            :                 }
+<span class="lineNum">     216 </span><span class="lineCov">          1 :                 auto t=types.find(hdr_fields[&quot;type&quot;]);</span>
+<span class="lineNum">     217 </span><span class="lineCov">          1 :                 if (t==types.end())</span>
+<span class="lineNum">     218 </span>            :                 {
+<span class="lineNum">     219 </span><span class="lineNoCov">          0 :                         std::cerr &lt;&lt; &quot;NRRD::parseHeader&lt;T&gt;(...): Unsopported type: &quot; &lt;&lt; hdr_fields[&quot;type&quot;] &lt;&lt; std::endl;</span>
+<span class="lineNum">     220 </span><span class="lineNoCov">          0 :                         return 0;</span>
+<span class="lineNum">     221 </span>            :                 }
+<span class="lineNum">     222 </span><span class="lineCov">          1 :                 hdr_fields[&quot;type&quot;]=t-&gt;second;</span>
+<span class="lineNum">     223 </span><span class="lineCov">          1 :                 return header_offset;</span>
+<span class="lineNum">     224 </span>            :         }
+<span class="lineNum">     225 </span>            : 
+<span class="lineNum">     226 </span>            :         /// Try to load raw data from file and convert to T. Use getHeader(...) and check for data type if you want to avoid conversion.
+<span class="lineNum">     227 </span>            :         template &lt;typename T&gt;
+<span class="lineNum">     228 </span>            :         bool load(const std::string&amp; file, T** data, std::vector&lt;int&gt;* size,
+<span class="lineNum">     229 </span>            :                 std::map&lt;std::string,std::string&gt;* hdr_keys=0x0,
+<span class="lineNum">     230 </span>            :                 std::map&lt;std::string,std::string&gt;* hdr_fields=0x0)
+<span class="lineNum">     231 </span>            :         {
+<span class="lineNum">     232 </span>            :                 // Parse ascii header
+<span class="lineNum">     233 </span>            :                 std::map&lt;std::string,std::string&gt; h_fields;
+<span class="lineNum">     234 </span>            :                 if (!hdr_fields) hdr_fields=&amp;h_fields;
+<span class="lineNum">     235 </span>            :                 int header_offset=parseHeader(file, *hdr_fields, hdr_keys);
+<span class="lineNum">     236 </span>            :                 if (header_offset&lt;=0) return false;
+<span class="lineNum">     237 </span>            : 
+<span class="lineNum">     238 </span>            :                 // Make sure the data is uncompressed
+<span class="lineNum">     239 </span>            :                 if ((*hdr_fields)[&quot;encoding&quot;]!=&quot;raw&quot;)
+<span class="lineNum">     240 </span>            :                 {
+<span class="lineNum">     241 </span>            :                         std::cerr &lt;&lt; &quot;NDDR::load&lt;T&gt;(...): File encoding not supported\n&quot;;
+<span class="lineNum">     242 </span>            :                         return false;
+<span class="lineNum">     243 </span>            :                 }
+<span class="lineNum">     244 </span>            : 
+<span class="lineNum">     245 </span>            :                 // Make sure the endian matches
+<span class="lineNum">     246 </span>            :                 // (this is against the standard: we always have the &quot;endian&quot; tag, because Fiji needs it.)
+<span class="lineNum">     247 </span>            :                 if ((*hdr_fields)[&quot;endian&quot;]==&quot;&quot;) (*hdr_fields)[&quot;endian&quot;]=&quot;little&quot;;
+<span class="lineNum">     248 </span>            :                 bool endian_file=(*hdr_fields)[&quot;endian&quot;]!=&quot;little&quot;;
+<span class="lineNum">     249 </span>            :                 bool endian_machine=is_cpu_BIG_endian();
+<span class="lineNum">     250 </span>            : 
+<span class="lineNum">     251 </span>            :                 // Make sure the file type matches 
+<span class="lineNum">     252 </span>            :                 if ((*hdr_fields)[&quot;type&quot;]!=typeName&lt;T&gt;())
+<span class="lineNum">     253 </span>            :                 {
+<span class="lineNum">     254 </span>            :                         int n=1;
+<span class="lineNum">     255 </span>            :                         if ((*hdr_fields)[&quot;type&quot;]==&quot;&quot;)
+<span class="lineNum">     256 </span>            :                         {
+<span class="lineNum">     257 </span>            :                                 std::cerr &lt;&lt; &quot;NDDR::load&lt;T&gt;(...): Unknown type.\n&quot;;
+<span class="lineNum">     258 </span>            :                                 return false;
+<span class="lineNum">     259 </span>            :                         }
+<span class="lineNum">     260 </span>            :                         if (false) 0;
+<span class="lineNum">     261 </span>            :                         #define _DEFINE_TYPE(X)                                                                                         \
+<span class="lineNum">     262 </span>            :                                 else if ((*hdr_fields)[&quot;type&quot;]==#X) {                                                 \
+<span class="lineNum">     263 </span>            :                                         X* tmp=0x0;                                                                                                     \
+<span class="lineNum">     264 </span>            :                                         if(!load&lt;X&gt;(file,&amp;tmp,size,hdr_keys, hdr_fields)) {                   \
+<span class="lineNum">     265 </span>            :                                                 std::cerr &lt;&lt; &quot;NDDR::load&lt;T&gt;(...): Conversion failed.&quot;;    \
+<span class="lineNum">     266 </span>            :                                                 return false;}                                                                                  \
+<span class="lineNum">     267 </span>            :                                         for (int i=0;i&lt;(int)size-&gt;size();i++)                                             \
+<span class="lineNum">     268 </span>            :                                                 n*=(*size)[i];                                                                                  \
+<span class="lineNum">     269 </span>            :                                         *data=convert&lt;X,T&gt;(tmp, n);                                                                       \
+<span class="lineNum">     270 </span>            :                                         delete [] tmp; }
+<span class="lineNum">     271 </span>            :                         #define _DEFINE_TYPE_NO_BOOL
+<span class="lineNum">     272 </span>            :             #include &quot;BaseTypes.hxx&quot;
+<span class="lineNum">     273 </span>            :                         #undef _DEFINE_TYPE
+<span class="lineNum">     274 </span>            :                 }
+<span class="lineNum">     275 </span>            :                 else
+<span class="lineNum">     276 </span>            :                 {
+<span class="lineNum">     277 </span>            :                         // Get number of dimensions and size
+<span class="lineNum">     278 </span>            :                         int n=stringTo&lt;int&gt;((*hdr_fields)[&quot;dimension&quot;]);
+<span class="lineNum">     279 </span>            :                         *size=stringToVector&lt;int&gt;((*hdr_fields)[&quot;sizes&quot;]);
+<span class="lineNum">     280 </span>            :                         if (n&lt;=0 || n&gt;10 || (int)size-&gt;size()!=n)
+<span class="lineNum">     281 </span>            :                         {
+<span class="lineNum">     282 </span>            :                                 std::cerr &lt;&lt; &quot;NDDR::load&lt;T&gt;(...): Bad dimension/size.\n&quot;;
+<span class="lineNum">     283 </span>            :                                 return false;
+<span class="lineNum">     284 </span>            :                         }
+<span class="lineNum">     285 </span>            : 
+<span class="lineNum">     286 </span>            :                         // Allocate data
+<span class="lineNum">     287 </span>            :                         n=1;
+<span class="lineNum">     288 </span>            :                         for (int i=0;i&lt;(int)size-&gt;size();i++)
+<span class="lineNum">     289 </span>            :                                 n*=(*size)[i];
+<span class="lineNum">     290 </span>            :                         *data=new T[n];
+<span class="lineNum">     291 </span>            : 
+<span class="lineNum">     292 </span>            :                         // Read data after first blank line
+<span class="lineNum">     293 </span>            :                         std::ifstream raw(file.c_str(),std::ios::binary);
+<span class="lineNum">     294 </span>            :                         raw.seekg(header_offset,std::ios::beg);
+<span class="lineNum">     295 </span>            :                         raw.read((char*)*data,n*sizeof(T));
+<span class="lineNum">     296 </span>            :                         int nbytes=(int)(n*sizeof(T)-raw.gcount());
+<span class="lineNum">     297 </span>            :                         if (!raw || nbytes)
+<span class="lineNum">     298 </span>            :                         {
+<span class="lineNum">     299 </span>            :                                 std::cerr &lt;&lt; &quot;NDDR::load&lt;T&gt;(...): Failed to read complete image chunk. (&quot; &lt;&lt; nbytes &lt;&lt; &quot;)\n&quot;;
+<span class="lineNum">     300 </span>            :                                 return false;
+<span class="lineNum">     301 </span>            :                         }
+<span class="lineNum">     302 </span>            :                         // Convert endian if we have to.
+<span class="lineNum">     303 </span>            :                         if (endian_file!=endian_machine)
+<span class="lineNum">     304 </span>            :                                 for (int i=0;i&lt;n;i++)
+<span class="lineNum">     305 </span>            :                                         convertEndian((*data)[i]);
+<span class="lineNum">     306 </span>            :                 }
+<span class="lineNum">     307 </span>            :                 return true;
+<span class="lineNum">     308 </span>            :         }
+<span class="lineNum">     309 </span>            : 
+<span class="lineNum">     310 </span>            :         /// Parse the NRRD header for the &quot;type&quot; field. Always returns C-style type string eg. &quot;int&quot; and neither &quot;int32&quot; nor &quot;signed int&quot;
+<span class="lineNum">     311 </span>            :         inline std::string getDataType(const std::string&amp; file)
+<span class="lineNum">     312 </span>            :         {
+<span class="lineNum">     313 </span>            :                 std::map&lt;std::string,std::string&gt; h_fields;
+<span class="lineNum">     314 </span>            :                 parseHeader(file, h_fields);
+<span class="lineNum">     315 </span>            :                 return h_fields[&quot;type&quot;];
+<span class="lineNum">     316 </span>            :         }
+<span class="lineNum">     317 </span>            : 
+<span class="lineNum">     318 </span>            :     /// Load 3D NRRD data, size and spacing. Can also be used for 2D. Higher dimensional data use the other overload.
+<span class="lineNum">     319 </span>            :         template &lt;typename T&gt;
+<span class="lineNum">     320 </span>            :         std::map&lt;std::string,std::string&gt; load3D(const std::string&amp; file, T** data,
+<span class="lineNum">     321 </span>            :                 int *nx, int *ny, int *nz=0x0,
+<span class="lineNum">     322 </span>            :                 double *sx=0x0, double *sy=0x0, double *sz=0x0)
+<span class="lineNum">     323 </span>            :         {
+<span class="lineNum">     324 </span>            :                 std::vector&lt;int&gt; size;
+<span class="lineNum">     325 </span>            :                 std::map&lt;std::string,std::string&gt; hdr_keys;
+<span class="lineNum">     326 </span>            :                 std::map&lt;std::string,std::string&gt; hdr_fields;
+<span class="lineNum">     327 </span>            :                 NRRD::load(file,data,&amp;size,&amp;hdr_keys,&amp;hdr_fields);
+<span class="lineNum">     328 </span>            :                 if (!data || size.size()&lt;2 || size.size()&gt;3 || hdr_fields.empty())
+<span class="lineNum">     329 </span>            :                 {
+<span class="lineNum">     330 </span>            :                         hdr_keys.clear();
+<span class="lineNum">     331 </span>            :                         return hdr_keys;
+<span class="lineNum">     332 </span>            :                 }
+<span class="lineNum">     333 </span>            :                 *nx=size[0];
+<span class="lineNum">     334 </span>            :                 *ny=size[1];
+<span class="lineNum">     335 </span>            :                 if (nz &amp;&amp; size.size()==3)
+<span class="lineNum">     336 </span>            :                         *nz=size[2];
+<span class="lineNum">     337 </span>            :                 else if(nz) *nz=1;
+<span class="lineNum">     338 </span>            : 
+<span class="lineNum">     339 </span>            :                 std::istringstream sp(hdr_fields[&quot;spacing&quot;]);
+<span class="lineNum">     340 </span>            :                 if (sx) {*sx=1; sp &gt;&gt; *sx;}
+<span class="lineNum">     341 </span>            :                 if (sy) {*sy=1; sp &gt;&gt; *sy;}
+<span class="lineNum">     342 </span>            :                 if (sz) {*sz=1; sp &gt;&gt; *sz;}
+<span class="lineNum">     343 </span>            : 
+<span class="lineNum">     344 </span>            :                 return hdr_keys;
+<span class="lineNum">     345 </span>            :         }
+<span class="lineNum">     346 </span>            : 
+<span class="lineNum">     347 </span>            :     /// Overload 3D data. Higher dimensional data and 2D use the other overload.
+<span class="lineNum">     348 </span>            :         template &lt;typename T&gt;
+<span class="lineNum">     349 </span>            :         inline bool save3D(const std::string&amp; file, const T* data, int w, int h, int d, std::map&lt;std::string,std::string&gt; hdr=std::map&lt;std::string,std::string&gt;())
+<span class="lineNum">     350 </span>            :         {
+<span class="lineNum">     351 </span>            :                 int size[]={w,h,d};
+<span class="lineNum">     352 </span>            :                 return save(file,data,3,size,hdr);
+<span class="lineNum">     353 </span>            :         }
+<span class="lineNum">     354 </span>            : } // namespace NRRD
+<span class="lineNum">     355 </span>            : 
+<span class="lineNum">     356 </span>            : 
+<span class="lineNum">     357 </span>            : #endif // __NRRD_HXX
+</pre>
+      </td>
+    </tr>
+  </table>
+  <br>
+
+  <table width="100%" border=0 cellspacing=0 cellpadding=0>
+    <tr><td class="ruler"><img src="../../../glass.png" width=3 height=3 alt=""></td></tr>
+    <tr><td class="versionInfo">Generated by: <a href="http://ltp.sourceforge.net/coverage/lcov.php" target="_parent">LCOV version 1.11</a></td></tr>
+  </table>
+  <br>
+
+</body>
+</html>
