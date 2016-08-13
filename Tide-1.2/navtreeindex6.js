@@ -1,5 +1,6 @@
 var NAVTREEINDEX6 =
 {
+"functions_q.html":[5,3,0,16],
 "functions_r.html":[5,3,0,17],
 "functions_s.html":[5,3,0,18],
 "functions_t.html":[5,3,0,19],
@@ -12,8 +13,8 @@ var NAVTREEINDEX6 =
 "globals.html":[6,1,0],
 "globals_defs.html":[6,1,1],
 "hierarchy.html":[5,2],
-"index.html":[0],
 "index.html":[],
+"index.html":[0],
 "log_8h_source.html":[6,0,55],
 "master_2_qml_type_registration_8h_source.html":[6,0,90],
 "master_2api_8h.html":[6,0,1],
