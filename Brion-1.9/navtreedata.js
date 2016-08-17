@@ -10,6 +10,8 @@ var NAVTREE =
     [ "Compartment report writing from MPI applications", "md__jenkins_02_workspace_oss_8_brion_8documentation_build_type__debug_platform_cscsviz-vm_sourceb36c4615b203f34c66af2a917f3aa101.html", null ],
     [ "Implementing Morphology version 1.1, support for glia cells", "md__jenkins_02_workspace_oss_8_brion_8documentation_build_type__debug_platform_cscsviz-vm_sources_doc_feature_morphology11.html", null ],
     [ "Redesign of the SpikeReport and Spikes container", "md__jenkins_02_workspace_oss_8_brion_8documentation_build_type__debug_platform_cscsviz-vm_sources_doc_feature_spike_report.html", null ],
+    [ "Synapse support in Brain", "md__jenkins_02_workspace_oss_8_brion_8documentation_build_type__debug_platform_cscsviz-vm_sources_doc_feature_synapses.html", null ],
+    [ "Environment Variables", "env.html", null ],
     [ "Deprecated List", "deprecated.html", null ],
     [ "Namespaces", null, [
       [ "Namespace List", "namespaces.html", "namespaces" ],
@@ -44,8 +46,8 @@ var NAVTREE =
 var NAVTREEINDEX =
 [
 "_changelog.html",
-"classbrion_1_1_mesh.html#aa812af0661e5f85c24956581776d0535",
-"functions_c.html"
+"classbrion_1_1_mesh.html#a9369029be5c50db3851b02159f9da018",
+"files.html"
 ];
 
 var SYNCONMSG = 'click to disable panel synchronisation';

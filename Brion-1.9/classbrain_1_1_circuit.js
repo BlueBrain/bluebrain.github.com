@@ -16,6 +16,8 @@ var classbrain_1_1_circuit =
     [ "getMorphologyURIs", "classbrain_1_1_circuit.html#a2af6cc4a5ae4691771980d15d72a56f6", null ],
     [ "getNumNeurons", "classbrain_1_1_circuit.html#a69480d5a0edcb1ded3627d618204289c", null ],
     [ "getPositions", "classbrain_1_1_circuit.html#a1b05989eb2e2a76c477982021d4039a9", null ],
+    [ "getRandomGIDs", "classbrain_1_1_circuit.html#a6780629e47b81063a4893f7b7cd5e415", null ],
+    [ "getRandomGIDs", "classbrain_1_1_circuit.html#aa822f3a660884ad01a8e1622c7dbd860", null ],
     [ "getRotations", "classbrain_1_1_circuit.html#a457e6f64353f0b20bb1a6524c88ea3af", null ],
     [ "getTransforms", "classbrain_1_1_circuit.html#a4e21485b8bce2a643944e51808ee51c1", null ],
     [ "loadMorphologies", "classbrain_1_1_circuit.html#ad0d46e2775f1aaf8495b384e50e190ee", null ]

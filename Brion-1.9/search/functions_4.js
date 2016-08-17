@@ -42,6 +42,7 @@ var searchData=
   ['getpoints',['getPoints',['../classbrain_1_1neuron_1_1_morphology.html#a3b95d896d5f8d5a39c96f308a1dea5ae',1,'brain::neuron::Morphology']]],
   ['getpositions',['getPositions',['../classbrain_1_1_circuit.html#a1b05989eb2e2a76c477982021d4039a9',1,'brain::Circuit']]],
   ['getprofilepoints',['getProfilePoints',['../classbrain_1_1neuron_1_1_soma.html#a4afc335bd476f8e9992359740ee49715',1,'brain::neuron::Soma']]],
+  ['getrandomgids',['getRandomGIDs',['../classbrain_1_1_circuit.html#a6780629e47b81063a4893f7b7cd5e415',1,'brain::Circuit::getRandomGIDs(float fraction, const std::string &amp;target) const '],['../classbrain_1_1_circuit.html#aa822f3a660884ad01a8e1622c7dbd860',1,'brain::Circuit::getRandomGIDs(float fraction) const ']]],
   ['getreadmode',['getReadMode',['../classbrion_1_1_spike_report.html#a6fa614522cbaa72578637baf4f60bfee',1,'brion::SpikeReport::getReadMode()'],['../classbrion_1_1_spike_report_plugin.html#af685b14b98ad2d97e7da5e38e68253fe',1,'brion::SpikeReportPlugin::getReadMode()']]],
   ['getreportsource',['getReportSource',['../classbrion_1_1_blue_config.html#a30f64c0386fc846429a3dda70b5214cb',1,'brion::BlueConfig']]],
   ['getrevision',['getRevision',['../classbrion_1_1_version.html#a6f481c7090688eeb4742a22a53982c14',1,'brion::Version::getRevision()'],['../classbrain_1_1_version.html#acd963337a677b3a381fecdfdbf16872f',1,'brain::Version::getRevision()']]],

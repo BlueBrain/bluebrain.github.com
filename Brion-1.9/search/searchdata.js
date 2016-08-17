@@ -10,7 +10,7 @@ var indexSectionsWithContent =
   7: "cr",
   8: "os",
   9: "b",
-  10: "acdir"
+  10: "acdeirs"
 };
 
 var indexSectionNames =

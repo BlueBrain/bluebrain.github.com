@@ -1,5 +1,6 @@
 var searchData=
 [
+  ['synapse_20support_20in_20brain',['Synapse support in Brain',['../md__jenkins_02_workspace_oss_8_brion_8documentation_build_type__debug_platform_cscsviz-vm_sources_doc_feature_synapses.html',1,'']]],
   ['section',['Section',['../classbrain_1_1neuron_1_1_section.html',1,'brain::neuron']]],
   ['sectionoffsets',['SectionOffsets',['../namespacebrion.html#ac06093ac5c7a805bfa44af444188a2a8',1,'brion']]],
   ['setbuffersize',['setBufferSize',['../classbrion_1_1_compartment_report.html#a8721d04fa5ef8d8b1c69b8865fcb0917',1,'brion::CompartmentReport::setBufferSize()'],['../classbrion_1_1_compartment_report_plugin.html#afd8862671b3a459bb0d891e96ff1ee24',1,'brion::CompartmentReportPlugin::setBufferSize()']]],
