@@ -7,7 +7,7 @@ var searchData=
   ['segmentparameters',['SegmentParameters',['../structdeflect_1_1_segment_parameters.html',1,'deflect']]],
   ['segments',['segments',['../classdeflect_1_1_frame.html#a443833619529fbdde2ed613810e5e189',1,'deflect::Frame']]],
   ['send',['send',['../classdeflect_1_1_stream.html#a31fd6e85be950b8799f557be71ef787d',1,'deflect::Stream']]],
-  ['senddata',['sendData',['../classdeflect_1_1_stream.html#ad4d57fc018a327a553c985ec7de390dc',1,'deflect::Stream']]],
+  ['senddata',['sendData',['../classdeflect_1_1qt_1_1_qml_streamer.html#a47eace10c1740c5b82ea9ff468495456',1,'deflect::qt::QmlStreamer::sendData()'],['../classdeflect_1_1_stream.html#ad4d57fc018a327a553c985ec7de390dc',1,'deflect::Stream::sendData()']]],
   ['sendframe',['sendFrame',['../classdeflect_1_1_frame_dispatcher.html#a28c789e275fb5a72451d2a52e3f781af',1,'deflect::FrameDispatcher']]],
   ['sendsizehints',['sendSizeHints',['../classdeflect_1_1_stream.html#ae580afe8ed6e374789be1b088667e1d9',1,'deflect::Stream']]],
   ['serializedsize',['serializedSize',['../structdeflect_1_1_event.html#a5938de50a58544e35146cd7746e9ddd9',1,'deflect::Event']]],
