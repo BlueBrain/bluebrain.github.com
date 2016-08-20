@@ -31,13 +31,13 @@
             <td class="headerValue">Livre</td>
             <td></td>
             <td class="headerItem">Lines:</td>
-            <td class="headerCovTableEntry">55</td>
-            <td class="headerCovTableEntry">70</td>
-            <td class="headerCovTableEntryMed">78.6 %</td>
+            <td class="headerCovTableEntry">54</td>
+            <td class="headerCovTableEntry">68</td>
+            <td class="headerCovTableEntryMed">79.4 %</td>
           </tr>
           <tr>
             <td class="headerItem">Date:</td>
-            <td class="headerValue">2016-08-18 03:03:40</td>
+            <td class="headerValue">2016-08-20 03:04:12</td>
             <td></td>
             <td class="headerItem">Functions:</td>
             <td class="headerCovTableEntry">12</td>
@@ -80,164 +80,158 @@
 <span class="lineNum">      18 </span>            :  */
 <span class="lineNum">      19 </span>            : 
 <span class="lineNum">      20 </span>            : #include &lt;livre/lib/cache/HistogramObject.h&gt;
-<span class="lineNum">      21 </span>            : #include &lt;livre/lib/cache/HistogramCache.h&gt;
-<span class="lineNum">      22 </span>            : #include &lt;livre/lib/cache/DataCache.h&gt;
-<span class="lineNum">      23 </span>            : #include &lt;livre/lib/cache/DataObject.h&gt;
-<span class="lineNum">      24 </span>            : 
-<span class="lineNum">      25 </span>            : #include &lt;livre/core/data/LODNode.h&gt;
-<span class="lineNum">      26 </span>            : #include &lt;livre/core/data/MemoryUnit.h&gt;
-<span class="lineNum">      27 </span>            : #include &lt;livre/core/data/Histogram.h&gt;
-<span class="lineNum">      28 </span>            : #include &lt;livre/core/data/DataSource.h&gt;
-<span class="lineNum">      29 </span>            : 
-<span class="lineNum">      30 </span>            : #include &lt;eq/gl.h&gt;
-<span class="lineNum">      31 </span>            : 
-<span class="lineNum">      32 </span>            : namespace livre
-<a name="33"><span class="lineNum">      33 </span>            : {</a>
-<span class="lineNum">      34 </span>            : 
-<span class="lineNum">      35 </span><span class="lineCov">          1 : struct HistogramObject::Impl</span>
-<span class="lineNum">      36 </span>            : {
-<a name="37"><span class="lineNum">      37 </span>            : public:</a>
-<span class="lineNum">      38 </span>            : 
-<span class="lineNum">      39 </span><span class="lineCov">          1 :     Impl( const HistogramObject&amp; histogramObject,</span>
-<span class="lineNum">      40 </span>            :           const DataCache&amp; dataCache )
-<span class="lineNum">      41 </span>            :         : _histogramObject( histogramObject )
-<span class="lineNum">      42 </span><span class="lineCov">          1 :         , _dataCache( dataCache )</span>
-<span class="lineNum">      43 </span>            :     {
-<span class="lineNum">      44 </span><span class="lineCov">          1 :         if( !load( ))</span>
-<span class="lineNum">      45 </span>            :         {
-<span class="lineNum">      46 </span><span class="lineNoCov">          0 :             LBTHROW( CacheLoadException( histogramObject.getId(),</span>
-<span class="lineNum">      47 </span>            :                                          &quot;Unable to construct histogram cache object&quot; ));
-<span class="lineNum">      48 </span>            :         }
-<a name="49"><span class="lineNum">      49 </span><span class="lineCov">          1 :     }</span></a>
-<span class="lineNum">      50 </span>            : 
-<span class="lineNum">      51 </span><span class="lineCov">          2 :     size_t getSize() const</span>
-<span class="lineNum">      52 </span>            :     {
-<span class="lineNum">      53 </span><span class="lineCov">          2 :         return _histogram.get() ? sizeof( uint64_t ) * _histogram-&gt;getBinsSize() : 0;</span>
-<span class="lineNum">      54 </span>            :     }
-<a name="55"><span class="lineNum">      55 </span>            : </a>
-<span class="lineNum">      56 </span>            :     template&lt; class SRC_TYPE &gt;
-<span class="lineNum">      57 </span><span class="lineCov">          1 :     void binData( const SRC_TYPE* rawData,</span>
-<span class="lineNum">      58 </span>            :                   const Vector3ui&amp; blockSize,
-<span class="lineNum">      59 </span>            :                   const Vector3ui&amp; padding,
-<span class="lineNum">      60 </span>            :                   const size_t compCount,
-<span class="lineNum">      61 </span>            :                   const uint64_t scaleFactor ) const
-<span class="lineNum">      62 </span>            :     {
-<span class="lineNum">      63 </span><span class="lineCov">          1 :         uint64_t* bins = _histogram-&gt;getBins();</span>
-<span class="lineNum">      64 </span><span class="lineCov">          1 :         const double binCount = _histogram-&gt;getBinsSize();</span>
-<span class="lineNum">      65 </span><span class="lineCov">          1 :         const double minVal = std::numeric_limits&lt; SRC_TYPE &gt;::min();</span>
-<span class="lineNum">      66 </span><span class="lineCov">          1 :         const double maxVal = std::numeric_limits&lt; SRC_TYPE &gt;::max();</span>
-<span class="lineNum">      67 </span><span class="lineCov">          1 :         const double range = maxVal - minVal;</span>
-<span class="lineNum">      68 </span>            : 
-<span class="lineNum">      69 </span><span class="lineCov">          1 :         const Vector3ui dataBlockSize = blockSize + padding * 2;</span>
-<span class="lineNum">      70 </span><span class="lineCov">         33 :         for( size_t i = padding.x(); i &lt; dataBlockSize.x() - padding.x(); ++i )</span>
-<span class="lineNum">      71 </span><span class="lineCov">       1056 :             for( size_t j = padding.y(); j &lt; dataBlockSize.y() - padding.y(); ++j )</span>
-<span class="lineNum">      72 </span><span class="lineCov">      33792 :                 for( size_t k = padding.z(); k &lt; dataBlockSize.z() - padding.z(); ++k )</span>
-<span class="lineNum">      73 </span><span class="lineCov">      65536 :                     for( size_t c = 0; c &lt; compCount; ++c )</span>
-<span class="lineNum">      74 </span>            :                     {
-<span class="lineNum">      75 </span><span class="lineCov">      65536 :                         const size_t index = compCount * i * dataBlockSize.y() * dataBlockSize.z() +</span>
-<span class="lineNum">      76 </span><span class="lineCov">      32768 :                                              compCount * j * dataBlockSize.z() +</span>
-<span class="lineNum">      77 </span><span class="lineCov">     131072 :                                              compCount * k + c;</span>
-<span class="lineNum">      78 </span><span class="lineCov">      32768 :                         const double data = rawData[ index ];</span>
-<span class="lineNum">      79 </span>            :                         const size_t binIndex =
-<span class="lineNum">      80 </span>            :                                 std::is_unsigned&lt; SRC_TYPE &gt;::value ?
-<span class="lineNum">      81 </span>            :                                 ( data - minVal ) / range * ( binCount - 1 ):
-<span class="lineNum">      82 </span><span class="lineCov">      32768 :                                 (( data / range ) + 0.5f ) * ( binCount - 1 );</span>
-<span class="lineNum">      83 </span><span class="lineCov">      32768 :                         bins[ binIndex ] += scaleFactor;</span>
-<span class="lineNum">      84 </span>            :                     }
-<a name="85"><span class="lineNum">      85 </span><span class="lineCov">          1 :     }</span></a>
+<span class="lineNum">      21 </span>            : #include &lt;livre/lib/cache/DataObject.h&gt;
+<span class="lineNum">      22 </span>            : 
+<span class="lineNum">      23 </span>            : #include &lt;livre/core/cache/Cache.h&gt;
+<span class="lineNum">      24 </span>            : #include &lt;livre/core/data/LODNode.h&gt;
+<span class="lineNum">      25 </span>            : #include &lt;livre/core/data/MemoryUnit.h&gt;
+<span class="lineNum">      26 </span>            : #include &lt;livre/core/data/Histogram.h&gt;
+<span class="lineNum">      27 </span>            : #include &lt;livre/core/data/DataSource.h&gt;
+<span class="lineNum">      28 </span>            : 
+<span class="lineNum">      29 </span>            : #include &lt;eq/gl.h&gt;
+<span class="lineNum">      30 </span>            : 
+<span class="lineNum">      31 </span>            : namespace livre
+<span class="lineNum">      32 </span>            : {
+<span class="lineNum">      33 </span>            : namespace
+<a name="34"><span class="lineNum">      34 </span>            : {</a>
+<span class="lineNum">      35 </span>            : template&lt; class SRC_TYPE &gt;
+<span class="lineNum">      36 </span><span class="lineCov">          1 : void binData( const SRC_TYPE* rawData,</span>
+<span class="lineNum">      37 </span>            :               Histogram&amp; histogram,
+<span class="lineNum">      38 </span>            :               const Vector3ui&amp; blockSize,
+<span class="lineNum">      39 </span>            :               const Vector3ui&amp; padding,
+<span class="lineNum">      40 </span>            :               const size_t compCount,
+<span class="lineNum">      41 </span>            :               const uint64_t scaleFactor )
+<span class="lineNum">      42 </span>            : {
+<span class="lineNum">      43 </span><span class="lineCov">          1 :     const Vector2f dataSourceRange( std::numeric_limits&lt; SRC_TYPE &gt;::min(),</span>
+<span class="lineNum">      44 </span><span class="lineCov">          2 :                                     std::numeric_limits&lt; SRC_TYPE &gt;::max());</span>
+<span class="lineNum">      45 </span><span class="lineCov">          1 :     const double binCount = histogram.getBinsSize();</span>
+<span class="lineNum">      46 </span><span class="lineCov">          1 :     const double minVal = dataSourceRange[ 0 ];</span>
+<span class="lineNum">      47 </span><span class="lineCov">          1 :     const double maxVal = dataSourceRange[ 1 ];</span>
+<span class="lineNum">      48 </span><span class="lineCov">          1 :     const double range = maxVal - minVal;</span>
+<span class="lineNum">      49 </span>            : 
+<span class="lineNum">      50 </span><span class="lineCov">          1 :     uint64_t* dstData = histogram.getBins();</span>
+<span class="lineNum">      51 </span><span class="lineCov">          1 :     const Vector3ui dataBlockSize = blockSize + padding * 2;</span>
+<span class="lineNum">      52 </span><span class="lineCov">         33 :     for( size_t i = padding.x(); i &lt; dataBlockSize.x() - padding.x(); ++i )</span>
+<span class="lineNum">      53 </span><span class="lineCov">       1056 :         for( size_t j = padding.y(); j &lt; dataBlockSize.y() - padding.y(); ++j )</span>
+<span class="lineNum">      54 </span><span class="lineCov">      33792 :             for( size_t k = padding.z(); k &lt; dataBlockSize.z() - padding.z(); ++k )</span>
+<span class="lineNum">      55 </span><span class="lineCov">      65536 :                 for( size_t c = 0; c &lt; compCount; ++c )</span>
+<span class="lineNum">      56 </span>            :                 {
+<span class="lineNum">      57 </span><span class="lineCov">      65536 :                     const size_t index = compCount * i * dataBlockSize.y() * dataBlockSize.z() +</span>
+<span class="lineNum">      58 </span><span class="lineCov">      32768 :                                          compCount * j * dataBlockSize.z() +</span>
+<span class="lineNum">      59 </span><span class="lineCov">     131072 :                                          compCount * k + c;</span>
+<span class="lineNum">      60 </span><span class="lineCov">      32768 :                     const double data = rawData[ index ];</span>
+<span class="lineNum">      61 </span>            :                     const size_t binIndex =
+<span class="lineNum">      62 </span>            :                             std::is_unsigned&lt; SRC_TYPE &gt;::value ?
+<span class="lineNum">      63 </span>            :                             ( data - minVal ) / range * ( binCount - 1 ):
+<span class="lineNum">      64 </span><span class="lineCov">      32768 :                             (( data / range ) + 0.5f ) * ( binCount - 1 );</span>
+<span class="lineNum">      65 </span><span class="lineCov">      32768 :                     dstData[ binIndex ] += scaleFactor;</span>
+<span class="lineNum">      66 </span>            :                 }
+<span class="lineNum">      67 </span><span class="lineCov">          1 : }</span>
+<a name="68"><span class="lineNum">      68 </span>            : }</a>
+<span class="lineNum">      69 </span>            : 
+<span class="lineNum">      70 </span><span class="lineCov">          1 : struct HistogramObject::Impl</span>
+<span class="lineNum">      71 </span>            : {
+<a name="72"><span class="lineNum">      72 </span>            : public:</a>
+<span class="lineNum">      73 </span>            : 
+<span class="lineNum">      74 </span><span class="lineCov">          1 :     Impl( const CacheId&amp; cacheId,</span>
+<span class="lineNum">      75 </span>            :           const Cache&amp; dataCache,
+<span class="lineNum">      76 </span>            :           const DataSource&amp; dataSource )
+<span class="lineNum">      77 </span><span class="lineCov">          1 :     {</span>
+<span class="lineNum">      78 </span><span class="lineCov">          1 :         if( !load( cacheId, dataCache, dataSource ))</span>
+<span class="lineNum">      79 </span><span class="lineNoCov">          0 :             LBTHROW( CacheLoadException( cacheId, &quot;Unable to construct histogram cache object&quot; ));</span>
+<a name="80"><span class="lineNum">      80 </span><span class="lineCov">          1 :     }</span></a>
+<span class="lineNum">      81 </span>            : 
+<span class="lineNum">      82 </span><span class="lineCov">          1 :     size_t getSize() const</span>
+<span class="lineNum">      83 </span>            :     {
+<span class="lineNum">      84 </span><span class="lineCov">          1 :         return sizeof( uint64_t ) * _histogram.getBinsSize();</span>
+<a name="85"><span class="lineNum">      85 </span>            :     }</a>
 <span class="lineNum">      86 </span>            : 
-<span class="lineNum">      87 </span><span class="lineCov">          1 :     bool load()</span>
-<span class="lineNum">      88 </span>            :     {
-<span class="lineNum">      89 </span><span class="lineCov">          1 :         const VolumeInformation&amp; volumeInfo = _dataCache.getDataSource().getVolumeInfo();</span>
-<span class="lineNum">      90 </span><span class="lineCov">          1 :         const size_t compCount = volumeInfo.compCount;</span>
-<span class="lineNum">      91 </span>            : 
-<span class="lineNum">      92 </span><span class="lineCov">          1 :         if( compCount &gt; 1 )</span>
-<span class="lineNum">      93 </span><span class="lineNoCov">          0 :             LBTHROW( std::runtime_error( &quot;Multiple channels are not supported &quot;));</span>
-<span class="lineNum">      94 </span>            : 
-<span class="lineNum">      95 </span>            :         ConstDataObjectPtr data =
-<span class="lineNum">      96 </span>            :                 std::static_pointer_cast&lt; const DataObject &gt;(
-<span class="lineNum">      97 </span><span class="lineCov">          1 :                     _dataCache.get( _histogramObject.getId( )));</span>
+<span class="lineNum">      87 </span><span class="lineCov">          1 :     bool load( const CacheId&amp; cacheId,</span>
+<span class="lineNum">      88 </span>            :                const Cache&amp; dataCache,
+<span class="lineNum">      89 </span>            :                const DataSource&amp; dataSource )
+<span class="lineNum">      90 </span>            :     {
+<span class="lineNum">      91 </span><span class="lineCov">          1 :         const VolumeInformation&amp; volumeInfo = dataSource.getVolumeInfo();</span>
+<span class="lineNum">      92 </span><span class="lineCov">          1 :         const size_t compCount = volumeInfo.compCount;</span>
+<span class="lineNum">      93 </span>            : 
+<span class="lineNum">      94 </span><span class="lineCov">          1 :         if( compCount &gt; 1 )</span>
+<span class="lineNum">      95 </span><span class="lineNoCov">          0 :             LBTHROW( std::runtime_error( &quot;Multiple channels are not supported &quot;));</span>
+<span class="lineNum">      96 </span>            : 
+<span class="lineNum">      97 </span><span class="lineCov">          1 :         ConstDataObjectPtr data = dataCache.get&lt; DataObject &gt;( cacheId );</span>
 <span class="lineNum">      98 </span>            : 
 <span class="lineNum">      99 </span><span class="lineCov">          1 :         if( !data )</span>
 <span class="lineNum">     100 </span><span class="lineNoCov">          0 :             return false;</span>
 <span class="lineNum">     101 </span>            : 
 <span class="lineNum">     102 </span><span class="lineCov">          1 :         const void* rawData = data-&gt;getDataPtr();</span>
-<span class="lineNum">     103 </span><span class="lineCov">          1 :         const LODNode&amp; lodNode = _dataCache.getDataSource().getNode(</span>
-<span class="lineNum">     104 </span><span class="lineCov">          2 :                     NodeId( _histogramObject.getId( )));</span>
-<span class="lineNum">     105 </span><span class="lineCov">          1 :         const Vector3ui&amp; voxelBox = lodNode.getVoxelBox().getSize();</span>
-<span class="lineNum">     106 </span><span class="lineCov">          1 :         const Vector3ui&amp; padding = volumeInfo.overlap;</span>
-<span class="lineNum">     107 </span>            : 
-<span class="lineNum">     108 </span>            :         const uint64_t scaleFactor1d =
-<span class="lineNum">     109 </span><span class="lineCov">          1 :                 1 &lt;&lt; ( volumeInfo.rootNode.getDepth() - lodNode.getRefLevel() - 1 );</span>
-<span class="lineNum">     110 </span>            : 
-<span class="lineNum">     111 </span><span class="lineCov">          1 :         const uint64_t scaleFactor = scaleFactor1d * scaleFactor1d * scaleFactor1d;</span>
-<span class="lineNum">     112 </span>            : 
-<span class="lineNum">     113 </span><span class="lineCov">          1 :         const DataType dataType = volumeInfo.dataType;</span>
-<span class="lineNum">     114 </span><span class="lineCov">          1 :         _histogram.reset( new Histogram );</span>
-<span class="lineNum">     115 </span><span class="lineCov">          1 :         switch( dataType )</span>
-<span class="lineNum">     116 </span>            :         {
-<span class="lineNum">     117 </span>            :            case DT_UINT8:
-<span class="lineNum">     118 </span>            :                 binData&lt; uint8_t &gt;( static_cast&lt; const uint8_t* &gt;( rawData ),
-<span class="lineNum">     119 </span><span class="lineCov">          1 :                             voxelBox, padding, compCount, scaleFactor );</span>
-<span class="lineNum">     120 </span><span class="lineCov">          1 :                 break;</span>
-<span class="lineNum">     121 </span>            :            case DT_UINT16:
-<span class="lineNum">     122 </span>            :                 binData&lt; uint16_t &gt;( static_cast&lt; const uint16_t* &gt;( rawData ),
-<span class="lineNum">     123 </span><span class="lineNoCov">          0 :                                      voxelBox, padding, compCount, scaleFactor );</span>
-<span class="lineNum">     124 </span><span class="lineNoCov">          0 :                 break;</span>
-<span class="lineNum">     125 </span>            :            case DT_UINT32:
-<span class="lineNum">     126 </span>            :                 binData&lt; uint32_t &gt;( static_cast&lt; const uint32_t* &gt;( rawData ),
-<span class="lineNum">     127 </span><span class="lineNoCov">          0 :                                      voxelBox, padding, compCount, scaleFactor );</span>
-<span class="lineNum">     128 </span><span class="lineNoCov">          0 :                 break;</span>
-<span class="lineNum">     129 </span>            :            case DT_INT8:
-<span class="lineNum">     130 </span>            :                 binData&lt; int8_t &gt;( static_cast&lt; const int8_t* &gt;( rawData ),
-<span class="lineNum">     131 </span><span class="lineNoCov">          0 :                          voxelBox, padding, compCount, scaleFactor );</span>
-<span class="lineNum">     132 </span><span class="lineNoCov">          0 :                 break;</span>
-<span class="lineNum">     133 </span>            :            case DT_INT16:
-<span class="lineNum">     134 </span>            :                 binData&lt; int16_t &gt;( static_cast&lt; const int16_t* &gt;( rawData ),
-<span class="lineNum">     135 </span><span class="lineNoCov">          0 :                                     voxelBox, padding, compCount, scaleFactor );</span>
-<span class="lineNum">     136 </span><span class="lineNoCov">          0 :                 break;</span>
-<span class="lineNum">     137 </span>            :            case DT_INT32:
-<span class="lineNum">     138 </span>            :                 binData&lt; int32_t &gt;( static_cast&lt; const int32_t* &gt;( rawData ),
-<span class="lineNum">     139 </span><span class="lineNoCov">          0 :                                     voxelBox, padding, compCount, scaleFactor );</span>
-<span class="lineNum">     140 </span><span class="lineNoCov">          0 :                 break;</span>
-<span class="lineNum">     141 </span>            :            case DT_FLOAT:
-<span class="lineNum">     142 </span>            :            case DT_UNDEFINED:
-<span class="lineNum">     143 </span>            :            default:
-<span class="lineNum">     144 </span>            :            {
-<span class="lineNum">     145 </span><span class="lineNoCov">          0 :                 LBTHROW( std::runtime_error( &quot;Unimplemented data type.&quot; ));</span>
-<span class="lineNum">     146 </span>            :            }
-<span class="lineNum">     147 </span>            :         }
-<span class="lineNum">     148 </span><span class="lineCov">          1 :         return true;</span>
-<span class="lineNum">     149 </span>            :     }
-<span class="lineNum">     150 </span>            : 
-<span class="lineNum">     151 </span>            :     const HistogramObject&amp; _histogramObject;
-<span class="lineNum">     152 </span>            :     const DataCache&amp; _dataCache;
-<span class="lineNum">     153 </span>            :     std::unique_ptr&lt; Histogram &gt; _histogram;
-<a name="154"><span class="lineNum">     154 </span>            : };</a>
-<span class="lineNum">     155 </span>            : 
-<span class="lineNum">     156 </span><span class="lineCov">          1 : HistogramObject::HistogramObject( const CacheId&amp; cacheId,</span>
-<span class="lineNum">     157 </span>            :                                   const DataCache&amp; cache )
-<span class="lineNum">     158 </span>            :     : CacheObject( cacheId )
-<span class="lineNum">     159 </span><span class="lineCov">          1 :     , _impl( new Impl( *this, cache ))</span>
-<a name="160"><span class="lineNum">     160 </span><span class="lineCov">          1 : {}</span></a>
+<span class="lineNum">     103 </span><span class="lineCov">          1 :         const LODNode&amp; lodNode = dataSource.getNode( NodeId( cacheId ));</span>
+<span class="lineNum">     104 </span><span class="lineCov">          1 :         const Vector3ui&amp; voxelBox = lodNode.getVoxelBox().getSize();</span>
+<span class="lineNum">     105 </span><span class="lineCov">          1 :         const Vector3ui&amp; padding = volumeInfo.overlap;</span>
+<span class="lineNum">     106 </span>            : 
+<span class="lineNum">     107 </span>            :         const uint64_t scaleFactor1d =
+<span class="lineNum">     108 </span><span class="lineCov">          1 :                 1 &lt;&lt; ( volumeInfo.rootNode.getDepth() - lodNode.getRefLevel() - 1 );</span>
+<span class="lineNum">     109 </span>            : 
+<span class="lineNum">     110 </span><span class="lineCov">          1 :         const uint64_t scaleFactor = scaleFactor1d * scaleFactor1d * scaleFactor1d;</span>
+<span class="lineNum">     111 </span>            : 
+<span class="lineNum">     112 </span><span class="lineCov">          1 :         const DataType dataType = volumeInfo.dataType;</span>
+<span class="lineNum">     113 </span><span class="lineCov">          1 :         switch( dataType )</span>
+<span class="lineNum">     114 </span>            :         {
+<span class="lineNum">     115 </span>            :            case DT_UINT8:
+<span class="lineNum">     116 </span>            :                 binData( static_cast&lt; const uint8_t* &gt;( rawData ),
+<span class="lineNum">     117 </span><span class="lineCov">          1 :                          _histogram, voxelBox, padding, compCount, scaleFactor );</span>
+<span class="lineNum">     118 </span><span class="lineCov">          1 :                 break;</span>
+<span class="lineNum">     119 </span>            :            case DT_UINT16:
+<span class="lineNum">     120 </span>            :                 binData( static_cast&lt; const uint16_t* &gt;( rawData ),
+<span class="lineNum">     121 </span><span class="lineNoCov">          0 :                          _histogram, voxelBox, padding, compCount, scaleFactor );</span>
+<span class="lineNum">     122 </span><span class="lineNoCov">          0 :                 break;</span>
+<span class="lineNum">     123 </span>            :            case DT_UINT32:
+<span class="lineNum">     124 </span>            :                 binData( static_cast&lt; const uint32_t* &gt;( rawData ),
+<span class="lineNum">     125 </span><span class="lineNoCov">          0 :                          _histogram, voxelBox, padding, compCount, scaleFactor );</span>
+<span class="lineNum">     126 </span><span class="lineNoCov">          0 :                 break;</span>
+<span class="lineNum">     127 </span>            :            case DT_INT8:
+<span class="lineNum">     128 </span>            :                 binData( static_cast&lt; const int8_t* &gt;( rawData ),
+<span class="lineNum">     129 </span><span class="lineNoCov">          0 :                          _histogram, voxelBox, padding, compCount, scaleFactor );</span>
+<span class="lineNum">     130 </span><span class="lineNoCov">          0 :                 break;</span>
+<span class="lineNum">     131 </span>            :            case DT_INT16:
+<span class="lineNum">     132 </span>            :                 binData( static_cast&lt; const int16_t* &gt;( rawData ),
+<span class="lineNum">     133 </span><span class="lineNoCov">          0 :                          _histogram, voxelBox, padding, compCount, scaleFactor );</span>
+<span class="lineNum">     134 </span><span class="lineNoCov">          0 :                 break;</span>
+<span class="lineNum">     135 </span>            :            case DT_INT32:
+<span class="lineNum">     136 </span>            :                 binData( static_cast&lt; const int32_t* &gt;( rawData ),
+<span class="lineNum">     137 </span><span class="lineNoCov">          0 :                          _histogram, voxelBox, padding, compCount, scaleFactor );</span>
+<span class="lineNum">     138 </span><span class="lineNoCov">          0 :                 break;</span>
+<span class="lineNum">     139 </span>            :            case DT_FLOAT:
+<span class="lineNum">     140 </span>            :            case DT_UNDEFINED:
+<span class="lineNum">     141 </span>            :            default:
+<span class="lineNum">     142 </span>            :            {
+<span class="lineNum">     143 </span><span class="lineNoCov">          0 :                 LBTHROW( std::runtime_error( &quot;Unimplemented data type.&quot; ));</span>
+<span class="lineNum">     144 </span>            :            }
+<span class="lineNum">     145 </span>            :         }
+<span class="lineNum">     146 </span><span class="lineCov">          1 :         return true;</span>
+<span class="lineNum">     147 </span>            :     }
+<span class="lineNum">     148 </span>            : 
+<span class="lineNum">     149 </span>            :     Histogram _histogram;
+<a name="150"><span class="lineNum">     150 </span>            : };</a>
+<span class="lineNum">     151 </span>            : 
+<span class="lineNum">     152 </span><span class="lineCov">          1 : HistogramObject::HistogramObject( const CacheId&amp; cacheId,</span>
+<span class="lineNum">     153 </span>            :                                   const Cache&amp; dataCache,
+<span class="lineNum">     154 </span>            :                                   const DataSource&amp; dataSource )
+<span class="lineNum">     155 </span>            :     : CacheObject( cacheId )
+<span class="lineNum">     156 </span><span class="lineCov">          1 :     , _impl( new Impl( cacheId, dataCache, dataSource ))</span>
+<a name="157"><span class="lineNum">     157 </span><span class="lineCov">          1 : {}</span></a>
+<span class="lineNum">     158 </span>            : 
+<span class="lineNum">     159 </span><span class="lineCov">          2 : HistogramObject::~HistogramObject()</span>
+<a name="160"><span class="lineNum">     160 </span><span class="lineCov">          2 : {}</span></a>
 <span class="lineNum">     161 </span>            : 
-<span class="lineNum">     162 </span><span class="lineCov">          2 : HistogramObject::~HistogramObject()</span>
-<a name="163"><span class="lineNum">     163 </span><span class="lineCov">          2 : {}</span></a>
-<span class="lineNum">     164 </span>            : 
-<span class="lineNum">     165 </span><span class="lineCov">          2 : size_t HistogramObject::_getSize() const</span>
-<span class="lineNum">     166 </span>            : {
-<span class="lineNum">     167 </span><span class="lineCov">          2 :     return _impl-&gt;getSize();</span>
-<a name="168"><span class="lineNum">     168 </span>            : }</a>
-<span class="lineNum">     169 </span>            : 
-<span class="lineNum">     170 </span><span class="lineCov">          1 : Histogram HistogramObject::getHistogram() const</span>
-<span class="lineNum">     171 </span>            : {
-<span class="lineNum">     172 </span><span class="lineCov">          1 :     if( !_impl-&gt;_histogram.get( ))</span>
-<span class="lineNum">     173 </span><span class="lineNoCov">          0 :         return Histogram();</span>
-<span class="lineNum">     174 </span>            : 
-<span class="lineNum">     175 </span><span class="lineCov">          1 :     return *_impl-&gt;_histogram;</span>
-<a name="176"><span class="lineNum">     176 </span>            : }</a>
-<span class="lineNum">     177 </span>            : 
-<span class="lineNum">     178 </span><span class="lineCov">         39 : }</span>
+<span class="lineNum">     162 </span><span class="lineCov">          1 : size_t HistogramObject::getSize() const</span>
+<span class="lineNum">     163 </span>            : {
+<span class="lineNum">     164 </span><span class="lineCov">          1 :     return _impl-&gt;getSize();</span>
+<a name="165"><span class="lineNum">     165 </span>            : }</a>
+<span class="lineNum">     166 </span>            : 
+<span class="lineNum">     167 </span><span class="lineCov">          1 : Histogram HistogramObject::getHistogram() const</span>
+<span class="lineNum">     168 </span>            : {
+<span class="lineNum">     169 </span><span class="lineCov">          1 :     return _impl-&gt;_histogram;</span>
+<a name="170"><span class="lineNum">     170 </span>            : }</a>
+<span class="lineNum">     171 </span>            : 
+<span class="lineNum">     172 </span><span class="lineCov">         39 : }</span>
 </pre>
       </td>
     </tr>

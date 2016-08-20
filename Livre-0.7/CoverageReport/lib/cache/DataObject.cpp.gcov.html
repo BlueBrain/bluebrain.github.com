@@ -31,18 +31,18 @@
             <td class="headerValue">Livre</td>
             <td></td>
             <td class="headerItem">Lines:</td>
-            <td class="headerCovTableEntry">41</td>
-            <td class="headerCovTableEntry">53</td>
-            <td class="headerCovTableEntryMed">77.4 %</td>
+            <td class="headerCovTableEntry">39</td>
+            <td class="headerCovTableEntry">50</td>
+            <td class="headerCovTableEntryMed">78.0 %</td>
           </tr>
           <tr>
             <td class="headerItem">Date:</td>
-            <td class="headerValue">2016-08-18 03:03:40</td>
+            <td class="headerValue">2016-08-20 03:04:12</td>
             <td></td>
             <td class="headerItem">Functions:</td>
-            <td class="headerCovTableEntry">14</td>
-            <td class="headerCovTableEntry">20</td>
-            <td class="headerCovTableEntryMed">70.0 %</td>
+            <td class="headerCovTableEntry">13</td>
+            <td class="headerCovTableEntry">19</td>
+            <td class="headerCovTableEntryMed">68.4 %</td>
           </tr>
           <tr><td><img src="../../glass.png" width=3 height=3 alt=""></td></tr>
         </table>
@@ -81,8 +81,8 @@
 <span class="lineNum">      19 </span>            :  */
 <span class="lineNum">      20 </span>            : 
 <span class="lineNum">      21 </span>            : #include &lt;livre/lib/cache/DataObject.h&gt;
-<span class="lineNum">      22 </span>            : #include &lt;livre/lib/cache/DataCache.h&gt;
-<span class="lineNum">      23 </span>            : 
+<span class="lineNum">      22 </span>            : 
+<span class="lineNum">      23 </span>            : #include &lt;livre/core/cache/Cache.h&gt;
 <span class="lineNum">      24 </span>            : #include &lt;livre/core/data/LODNode.h&gt;
 <span class="lineNum">      25 </span>            : #include &lt;livre/core/data/MemoryUnit.h&gt;
 <span class="lineNum">      26 </span>            : #include &lt;livre/core/data/DataSource.h&gt;
@@ -92,124 +92,106 @@
 <span class="lineNum">      30 </span>            : 
 <span class="lineNum">      31 </span>            : namespace livre
 <span class="lineNum">      32 </span>            : {
-<span class="lineNum">      33 </span>            : 
-<span class="lineNum">      34 </span>            : struct DataObject::Impl
-<span class="lineNum">      35 </span>            : {
-<a name="36"><span class="lineNum">      36 </span>            : public:</a>
-<span class="lineNum">      37 </span>            : 
-<span class="lineNum">      38 </span><span class="lineCov">          1 :     Impl( DataObject&amp; dataObject,</span>
-<span class="lineNum">      39 </span>            :           DataCache&amp; dataCache )
-<span class="lineNum">      40 </span><span class="lineNoCov">          0 :         : _data( new AllocMemoryUnit( ))</span>
-<span class="lineNum">      41 </span>            :         , _dataObject( dataObject )
-<span class="lineNum">      42 </span>            :         , _dataCache( dataCache )
-<span class="lineNum">      43 </span><span class="lineCov">          1 :         , _dataSource( dataCache.getDataSource( ))</span>
-<span class="lineNum">      44 </span>            :     {
-<span class="lineNum">      45 </span><span class="lineCov">          1 :         if( !load())</span>
-<span class="lineNum">      46 </span>            :         {
-<span class="lineNum">      47 </span><span class="lineNoCov">          0 :             LBTHROW( CacheLoadException( dataObject.getId(),</span>
-<span class="lineNum">      48 </span>            :                                          &quot;Unable to construct data cache object&quot; ));
-<span class="lineNum">      49 </span>            :         }
-<a name="50"><span class="lineNum">      50 </span><span class="lineCov">          1 :     }</span></a>
+<a name="33"><span class="lineNum">      33 </span>            : namespace</a>
+<span class="lineNum">      34 </span>            : {
+<span class="lineNum">      35 </span><span class="lineCov">          1 : size_t getDataSize( const CacheId&amp; cacheId, DataSource&amp; dataSource )</span>
+<span class="lineNum">      36 </span>            : {
+<span class="lineNum">      37 </span><span class="lineCov">          1 :     const LODNode&amp; lodNode = dataSource.getNode( NodeId( cacheId ));</span>
+<span class="lineNum">      38 </span><span class="lineCov">          1 :     const VolumeInformation&amp; volInfo = dataSource.getVolumeInfo();</span>
+<span class="lineNum">      39 </span>            : 
+<span class="lineNum">      40 </span><span class="lineCov">          1 :     const Vector3ui&amp; overlap = volInfo.overlap;</span>
+<span class="lineNum">      41 </span><span class="lineCov">          1 :     const size_t elemSize = volInfo.getBytesPerVoxel();</span>
+<span class="lineNum">      42 </span><span class="lineCov">          1 :     const uint32_t compCount = volInfo.compCount;</span>
+<span class="lineNum">      43 </span><span class="lineCov">          1 :     const Vector3ui blockSize = lodNode.getBlockSize() + overlap * 2;</span>
+<span class="lineNum">      44 </span><span class="lineCov">          1 :     return blockSize.product() * elemSize * compCount;</span>
+<span class="lineNum">      45 </span>            : }
+<span class="lineNum">      46 </span>            : }
+<span class="lineNum">      47 </span>            : 
+<span class="lineNum">      48 </span>            : struct DataObject::Impl
+<span class="lineNum">      49 </span>            : {
+<a name="50"><span class="lineNum">      50 </span>            : public:</a>
 <span class="lineNum">      51 </span>            : 
-<span class="lineNum">      52 </span><span class="lineCov">          1 :     ~Impl()</span>
-<span class="lineNum">      53 </span><span class="lineCov">          1 :     {</span>
-<span class="lineNum">      54 </span><span class="lineCov">          1 :         _data-&gt;release();</span>
-<a name="55"><span class="lineNum">      55 </span><span class="lineCov">          1 :     }</span></a>
-<span class="lineNum">      56 </span>            : 
-<span class="lineNum">      57 </span><span class="lineCov">          4 :     size_t getDataSize() const</span>
-<span class="lineNum">      58 </span>            :     {
-<span class="lineNum">      59 </span>            :         const LODNode&amp; lodNode =
-<span class="lineNum">      60 </span><span class="lineCov">          4 :                 _dataSource.getNode( NodeId( _dataObject.getId( )));</span>
+<span class="lineNum">      52 </span><span class="lineCov">          1 :     Impl( const CacheId&amp; cacheId, DataSource&amp; dataSource )</span>
+<span class="lineNum">      53 </span><span class="lineNoCov">          0 :         : _data( new AllocMemoryUnit( ))</span>
+<span class="lineNum">      54 </span><span class="lineCov">          1 :         , _dataSize( getDataSize( cacheId, dataSource ))</span>
+<span class="lineNum">      55 </span>            :     {
+<span class="lineNum">      56 </span><span class="lineCov">          1 :         if( !load( cacheId, dataSource ))</span>
+<span class="lineNum">      57 </span>            :         {
+<span class="lineNum">      58 </span><span class="lineNoCov">          0 :             LBTHROW( CacheLoadException( cacheId, &quot;Unable to construct data cache object&quot; ));</span>
+<span class="lineNum">      59 </span>            :         }
+<a name="60"><span class="lineNum">      60 </span><span class="lineCov">          1 :     }</span></a>
 <span class="lineNum">      61 </span>            : 
-<span class="lineNum">      62 </span>            :         const Vector3ui&amp; overlap =
-<span class="lineNum">      63 </span><span class="lineCov">          4 :                     _dataSource.getVolumeInfo().overlap;</span>
-<span class="lineNum">      64 </span>            :         const size_t elemSize =
-<span class="lineNum">      65 </span><span class="lineCov">          4 :                     _dataSource.getVolumeInfo().getBytesPerVoxel();</span>
-<span class="lineNum">      66 </span>            :         const uint32_t compCount =
-<span class="lineNum">      67 </span><span class="lineCov">          4 :                     _dataSource.getVolumeInfo().compCount;</span>
-<span class="lineNum">      68 </span>            :         const Vector3ui blockSize =
-<span class="lineNum">      69 </span><span class="lineCov">          4 :                     lodNode.getBlockSize() + overlap * 2;</span>
-<span class="lineNum">      70 </span><span class="lineCov">          4 :         return blockSize.product() * elemSize * compCount;</span>
-<a name="71"><span class="lineNum">      71 </span>            :     }</a>
-<span class="lineNum">      72 </span>            : 
-<span class="lineNum">      73 </span><span class="lineCov">          3 :     size_t getSize() const</span>
+<span class="lineNum">      62 </span><span class="lineCov">          1 :     ~Impl()</span>
+<span class="lineNum">      63 </span><span class="lineCov">          1 :     {</span>
+<span class="lineNum">      64 </span><span class="lineCov">          1 :         _data-&gt;release();</span>
+<a name="65"><span class="lineNum">      65 </span><span class="lineCov">          1 :     }</span></a>
+<span class="lineNum">      66 </span>            : 
+<span class="lineNum">      67 </span><span class="lineCov">          2 :     const void* getDataPtr() const</span>
+<span class="lineNum">      68 </span>            :     {
+<span class="lineNum">      69 </span><span class="lineCov">          2 :         return _data-&gt;getData&lt; void &gt;();</span>
+<span class="lineNum">      70 </span>            :     }
+<a name="71"><span class="lineNum">      71 </span>            : </a>
+<span class="lineNum">      72 </span>            :     template&lt; class DEST_TYPE &gt;
+<span class="lineNum">      73 </span><span class="lineCov">          1 :     bool readTextureData( const CacheId&amp; cacheId, DataSource&amp; dataSource )</span>
 <span class="lineNum">      74 </span>            :     {
-<span class="lineNum">      75 </span><span class="lineCov">          3 :         return getDataSize();</span>
-<a name="76"><span class="lineNum">      76 </span>            :     }</a>
-<span class="lineNum">      77 </span>            : 
-<span class="lineNum">      78 </span><span class="lineCov">          2 :     const void* getDataPtr() const</span>
-<span class="lineNum">      79 </span>            :     {
-<span class="lineNum">      80 </span><span class="lineCov">          2 :         return _data-&gt;getData&lt; void &gt;();</span>
-<span class="lineNum">      81 </span>            :     }
-<a name="82"><span class="lineNum">      82 </span>            : </a>
-<span class="lineNum">      83 </span>            :     template&lt; class DEST_TYPE &gt;
-<span class="lineNum">      84 </span><span class="lineCov">          1 :     bool readTextureData()</span>
-<span class="lineNum">      85 </span>            :     {
-<span class="lineNum">      86 </span><span class="lineCov">          1 :         const NodeId nodeId( _dataObject.getId( ));</span>
-<span class="lineNum">      87 </span><span class="lineCov">          1 :         ConstMemoryUnitPtr data = _dataSource.getData( nodeId );</span>
-<span class="lineNum">      88 </span><span class="lineCov">          1 :         if( !data )</span>
-<span class="lineNum">      89 </span><span class="lineNoCov">          0 :             return false;</span>
-<span class="lineNum">      90 </span>            : 
-<span class="lineNum">      91 </span><span class="lineCov">          1 :         const void* rawData = data-&gt;getData&lt; void &gt;();</span>
-<span class="lineNum">      92 </span><span class="lineCov">          1 :         _data-&gt;allocAndSetData( rawData, getDataSize( ));</span>
-<span class="lineNum">      93 </span>            : 
-<span class="lineNum">      94 </span><span class="lineCov">          1 :         return true;</span>
-<a name="95"><span class="lineNum">      95 </span>            :     }</a>
-<span class="lineNum">      96 </span>            : 
-<span class="lineNum">      97 </span><span class="lineCov">          1 :     bool load()</span>
-<span class="lineNum">      98 </span>            :     {
-<span class="lineNum">      99 </span><span class="lineCov">          1 :         const DataType dataType = _dataSource.getVolumeInfo().dataType;</span>
-<span class="lineNum">     100 </span><span class="lineCov">          1 :         switch( dataType )</span>
-<span class="lineNum">     101 </span>            :         {
-<span class="lineNum">     102 </span>            :             case DT_UINT8:
-<span class="lineNum">     103 </span><span class="lineCov">          1 :                 return readTextureData&lt; uint8_t &gt;();</span>
-<span class="lineNum">     104 </span>            :             case DT_UINT16:
-<span class="lineNum">     105 </span><span class="lineNoCov">          0 :                 return readTextureData&lt; uint16_t &gt;();</span>
-<span class="lineNum">     106 </span>            :             case DT_UINT32:
-<span class="lineNum">     107 </span><span class="lineNoCov">          0 :                 return readTextureData&lt; uint32_t &gt;();</span>
-<span class="lineNum">     108 </span>            :             case DT_INT8:
-<span class="lineNum">     109 </span><span class="lineNoCov">          0 :                 return readTextureData&lt; int8_t &gt;();</span>
-<span class="lineNum">     110 </span>            :             case DT_INT16:
-<span class="lineNum">     111 </span><span class="lineNoCov">          0 :                 return readTextureData&lt; int16_t &gt;();</span>
-<span class="lineNum">     112 </span>            :             case DT_INT32:
-<span class="lineNum">     113 </span><span class="lineNoCov">          0 :                 return readTextureData&lt; int32_t &gt;();</span>
-<span class="lineNum">     114 </span>            :             case DT_FLOAT:
-<span class="lineNum">     115 </span><span class="lineNoCov">          0 :                 return readTextureData&lt; float &gt;();</span>
-<span class="lineNum">     116 </span>            :             case DT_UNDEFINED:
-<span class="lineNum">     117 </span><span class="lineNoCov">          0 :                 LBTHROW( std::runtime_error( &quot;Undefined data type&quot; ));</span>
-<span class="lineNum">     118 </span>            :         }
-<span class="lineNum">     119 </span><span class="lineNoCov">          0 :         return false;</span>
-<span class="lineNum">     120 </span>            :     }
+<span class="lineNum">      75 </span><span class="lineCov">          1 :         const NodeId nodeId( cacheId );</span>
+<span class="lineNum">      76 </span><span class="lineCov">          1 :         ConstMemoryUnitPtr data = dataSource.getData( nodeId );</span>
+<span class="lineNum">      77 </span><span class="lineCov">          1 :         if( !data )</span>
+<span class="lineNum">      78 </span><span class="lineNoCov">          0 :             return false;</span>
+<span class="lineNum">      79 </span>            : 
+<span class="lineNum">      80 </span><span class="lineCov">          1 :         const void* rawData = data-&gt;getData&lt; void &gt;();</span>
+<span class="lineNum">      81 </span><span class="lineCov">          1 :         _data-&gt;allocAndSetData( rawData, _dataSize );</span>
+<span class="lineNum">      82 </span><span class="lineCov">          1 :         return true;</span>
+<a name="83"><span class="lineNum">      83 </span>            :     }</a>
+<span class="lineNum">      84 </span>            : 
+<span class="lineNum">      85 </span><span class="lineCov">          1 :     bool load( const CacheId&amp; cacheId, DataSource&amp; dataSource )</span>
+<span class="lineNum">      86 </span>            :     {
+<span class="lineNum">      87 </span><span class="lineCov">          1 :         const DataType dataType = dataSource.getVolumeInfo().dataType;</span>
+<span class="lineNum">      88 </span><span class="lineCov">          1 :         switch( dataType )</span>
+<span class="lineNum">      89 </span>            :         {
+<span class="lineNum">      90 </span>            :             case DT_UINT8:
+<span class="lineNum">      91 </span><span class="lineCov">          1 :                 return readTextureData&lt; uint8_t &gt;( cacheId, dataSource );</span>
+<span class="lineNum">      92 </span>            :             case DT_UINT16:
+<span class="lineNum">      93 </span><span class="lineNoCov">          0 :                 return readTextureData&lt; uint16_t &gt;( cacheId, dataSource );</span>
+<span class="lineNum">      94 </span>            :             case DT_UINT32:
+<span class="lineNum">      95 </span><span class="lineNoCov">          0 :                 return readTextureData&lt; uint32_t &gt;( cacheId, dataSource );</span>
+<span class="lineNum">      96 </span>            :             case DT_INT8:
+<span class="lineNum">      97 </span><span class="lineNoCov">          0 :                 return readTextureData&lt; int8_t &gt;( cacheId, dataSource );</span>
+<span class="lineNum">      98 </span>            :             case DT_INT16:
+<span class="lineNum">      99 </span><span class="lineNoCov">          0 :                 return readTextureData&lt; int16_t &gt;( cacheId, dataSource );</span>
+<span class="lineNum">     100 </span>            :             case DT_INT32:
+<span class="lineNum">     101 </span><span class="lineNoCov">          0 :                 return readTextureData&lt; int32_t &gt;( cacheId, dataSource );</span>
+<span class="lineNum">     102 </span>            :             case DT_FLOAT:
+<span class="lineNum">     103 </span><span class="lineNoCov">          0 :                 return readTextureData&lt; float &gt;( cacheId, dataSource );</span>
+<span class="lineNum">     104 </span>            :             case DT_UNDEFINED:
+<span class="lineNum">     105 </span><span class="lineNoCov">          0 :                 LBTHROW( std::runtime_error( &quot;Undefined data type&quot; ));</span>
+<span class="lineNum">     106 </span>            :         }
+<span class="lineNum">     107 </span><span class="lineNoCov">          0 :         return false;</span>
+<span class="lineNum">     108 </span>            :     }
+<span class="lineNum">     109 </span>            : 
+<span class="lineNum">     110 </span>            :     AllocMemoryUnitPtr _data;
+<span class="lineNum">     111 </span>            :     size_t _dataSize;
+<a name="112"><span class="lineNum">     112 </span>            : };</a>
+<span class="lineNum">     113 </span>            : 
+<span class="lineNum">     114 </span><span class="lineCov">          1 : DataObject::DataObject( const CacheId&amp; cacheId, DataSource&amp; dataSource )</span>
+<span class="lineNum">     115 </span>            :     : CacheObject( cacheId )
+<span class="lineNum">     116 </span><span class="lineCov">          1 :     , _impl( new Impl( cacheId, dataSource ))</span>
+<a name="117"><span class="lineNum">     117 </span><span class="lineCov">          1 : {}</span></a>
+<span class="lineNum">     118 </span>            : 
+<span class="lineNum">     119 </span><span class="lineCov">          2 : DataObject::~DataObject()</span>
+<a name="120"><span class="lineNum">     120 </span><span class="lineCov">          2 : {}</span></a>
 <span class="lineNum">     121 </span>            : 
-<span class="lineNum">     122 </span>            :     AllocMemoryUnitPtr _data;
-<span class="lineNum">     123 </span>            :     DataObject&amp; _dataObject;
-<span class="lineNum">     124 </span>            :     DataCache&amp; _dataCache;
-<span class="lineNum">     125 </span>            :     DataSource&amp; _dataSource;
-<a name="126"><span class="lineNum">     126 </span>            : };</a>
-<span class="lineNum">     127 </span>            : 
-<span class="lineNum">     128 </span><span class="lineCov">          1 : DataObject::DataObject( const CacheId&amp; cacheId,</span>
-<span class="lineNum">     129 </span>            :                         DataCache&amp; dataCache )
-<span class="lineNum">     130 </span>            :     : CacheObject( cacheId )
-<span class="lineNum">     131 </span><span class="lineCov">          1 :     , _impl( new Impl( *this, dataCache ))</span>
-<a name="132"><span class="lineNum">     132 </span><span class="lineCov">          1 : {}</span></a>
-<span class="lineNum">     133 </span>            : 
-<span class="lineNum">     134 </span><span class="lineCov">          2 : DataObject::~DataObject()</span>
-<a name="135"><span class="lineNum">     135 </span><span class="lineCov">          2 : {}</span></a>
-<span class="lineNum">     136 </span>            : 
-<span class="lineNum">     137 </span><span class="lineCov">          3 : size_t DataObject::_getSize() const</span>
-<span class="lineNum">     138 </span>            : {
-<span class="lineNum">     139 </span><span class="lineCov">          3 :     if( !_isValid( ))</span>
-<span class="lineNum">     140 </span><span class="lineNoCov">          0 :         return 0;</span>
-<span class="lineNum">     141 </span>            : 
-<span class="lineNum">     142 </span><span class="lineCov">          3 :     return _impl-&gt;getSize();</span>
-<a name="143"><span class="lineNum">     143 </span>            : }</a>
-<span class="lineNum">     144 </span>            : 
-<span class="lineNum">     145 </span><span class="lineCov">          2 : const void* DataObject::getDataPtr() const</span>
-<span class="lineNum">     146 </span>            : {
-<span class="lineNum">     147 </span><span class="lineCov">          2 :     return _impl-&gt;getDataPtr();</span>
-<a name="148"><span class="lineNum">     148 </span>            : }</a>
-<span class="lineNum">     149 </span>            : 
-<span class="lineNum">     150 </span><span class="lineCov">         39 : }</span>
+<span class="lineNum">     122 </span><span class="lineCov">          2 : size_t DataObject::getSize() const</span>
+<span class="lineNum">     123 </span>            : {
+<span class="lineNum">     124 </span><span class="lineCov">          2 :     return _impl-&gt;_dataSize;</span>
+<a name="125"><span class="lineNum">     125 </span>            : }</a>
+<span class="lineNum">     126 </span>            : 
+<span class="lineNum">     127 </span><span class="lineCov">          2 : const void* DataObject::getDataPtr() const</span>
+<span class="lineNum">     128 </span>            : {
+<span class="lineNum">     129 </span><span class="lineCov">          2 :     return _impl-&gt;getDataPtr();</span>
+<a name="130"><span class="lineNum">     130 </span>            : }</a>
+<span class="lineNum">     131 </span>            : 
+<span class="lineNum">     132 </span><span class="lineCov">         39 : }</span>
 </pre>
       </td>
     </tr>
