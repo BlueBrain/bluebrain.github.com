@@ -7,6 +7,7 @@ var searchData=
   ['close',['close',['../classbrion_1_1_spike_report.html#a5610cfd2b4f663e5c9e6393af63a472c',1,'brion::SpikeReport::close()'],['../classbrion_1_1_spike_report_plugin.html#a972c34269c7b114a27f01d13363bddad',1,'brion::SpikeReportPlugin::close()'],['../classbrain_1_1_spike_report_reader.html#aefb0598576af03e0470ee99cdf74d23f',1,'brain::SpikeReportReader::close()'],['../classbrain_1_1_spike_report_writer.html#a490d30db02568611990cfff67b4adb5d',1,'brain::SpikeReportWriter::close()']]],
   ['compartmentreport',['CompartmentReport',['../classbrion_1_1_compartment_report.html#a1068892309907490436a2f5b23e3f252',1,'brion::CompartmentReport']]],
   ['compartmentreportinitdata',['CompartmentReportInitData',['../classbrion_1_1_compartment_report_init_data.html#a268487758574e1da6febf4666a235d6b',1,'brion::CompartmentReportInitData']]],
+  ['conductance',['conductance',['../classbrain_1_1_synapses.html#aaa938f68fa95a68305bb3a8ebb6128db',1,'brain::Synapses']]],
   ['const_5fiterator',['const_iterator',['../classbrain_1_1_spikes_1_1const__iterator.html#ab9da3bf11b39762352fa03d019d6693b',1,'brain::Spikes::const_iterator::const_iterator()'],['../classbrain_1_1_spikes_1_1const__iterator.html#a07366218e13f964dfcc6792999dd8b3f',1,'brain::Spikes::const_iterator::const_iterator(const const_iterator &amp;rhs)']]],
   ['contains',['contains',['../classbrion_1_1_target.html#aa58924378a7389ae2a44867ce5e8be20',1,'brion::Target']]]
 ];

@@ -1,5 +1,5 @@
 var searchData=
 [
-  ['loadframe',['loadFrame',['../classbrion_1_1_compartment_report.html#ac20d74941bf0b7f61480efbeffabc619',1,'brion::CompartmentReport::loadFrame()'],['../classbrion_1_1_compartment_report_plugin.html#a718d93da31bc390be4cf86df7468afdb',1,'brion::CompartmentReportPlugin::loadFrame()']]],
-  ['loadmorphologies',['loadMorphologies',['../classbrain_1_1_circuit.html#ad0d46e2775f1aaf8495b384e50e190ee',1,'brain::Circuit']]]
+  ['index',['index',['../classbrain_1_1_synapses.html#a4ee381c010d6874282a89cdbaf41cf7c',1,'brain::Synapses']]],
+  ['isstream',['isStream',['../classbrain_1_1_spike_report_reader.html#a692ee194032bf17f2286fc8456639be7',1,'brain::SpikeReportReader']]]
 ];

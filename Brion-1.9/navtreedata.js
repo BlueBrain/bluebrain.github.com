@@ -46,8 +46,8 @@ var NAVTREE =
 var NAVTREEINDEX =
 [
 "_changelog.html",
-"classbrion_1_1_mesh.html#a9369029be5c50db3851b02159f9da018",
-"files.html"
+"classbrain_1_1_synapse.html#aa391148484d130ffc24a449a7b40e189",
+"classbrion_1_1_morphology_init_data.html#ad1743cef6e038285db620cf3ad947e3f"
 ];
 
 var SYNCONMSG = 'click to disable panel synchronisation';

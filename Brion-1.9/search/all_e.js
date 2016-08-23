@@ -1,7 +1,7 @@
 var searchData=
 [
   ['redesign_20of_20the_20spikereport_20and_20spikes_20container',['Redesign of the SpikeReport and Spikes container',['../md__jenkins_02_workspace_oss_8_brion_8documentation_build_type__debug_platform_cscsviz-vm_sources_doc_feature_spike_report.html',1,'']]],
-  ['read',['read',['../classbrion_1_1_synapse.html#a62371ecb873ea2ff7be426306fb5d6db',1,'brion::Synapse::read()'],['../classbrion_1_1_synapse_summary.html#a1761a2a8a94c76762ce5312076568c90',1,'brion::SynapseSummary::read()']]],
+  ['read',['read',['../classbrion_1_1_synapse.html#a62371ecb873ea2ff7be426306fb5d6db',1,'brion::Synapse::read()'],['../classbrion_1_1_synapse_summary.html#a267ab334b59f7bda02f91c259ed7767b',1,'brion::SynapseSummary::read()'],['../classbrain_1_1_synapses_stream.html#a5fc152fe2eb7b5751082edd8529f4380',1,'brain::SynapsesStream::read()']]],
   ['readapicals',['readApicals',['../classbrion_1_1_morphology.html#a8bc8172057581f9e03b72ab1da560eb7',1,'brion::Morphology::readApicals()'],['../classbrion_1_1_morphology_plugin.html#ad33e4fa8fc3e5b55613a958b82327d6f',1,'brion::MorphologyPlugin::readApicals()']]],
   ['readmode',['ReadMode',['../classbrion_1_1_spike_report.html#ad9af81cd27062d7bc7e88f262829ce3e',1,'brion::SpikeReport']]],
   ['readnormals',['readNormals',['../classbrion_1_1_mesh.html#a9369029be5c50db3851b02159f9da018',1,'brion::Mesh']]],

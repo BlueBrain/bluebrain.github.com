@@ -8,5 +8,9 @@ var searchData=
   ['spikereportwriter',['SpikeReportWriter',['../classbrain_1_1_spike_report_writer.html',1,'brain']]],
   ['spikes',['Spikes',['../classbrain_1_1_spikes.html',1,'brain']]],
   ['synapse',['Synapse',['../classbrion_1_1_synapse.html',1,'brion']]],
+  ['synapse',['Synapse',['../classbrain_1_1_synapse.html',1,'brain']]],
+  ['synapses',['Synapses',['../classbrain_1_1_synapses.html',1,'brain']]],
+  ['synapsesiterator',['SynapsesIterator',['../classbrain_1_1_synapses_iterator.html',1,'brain']]],
+  ['synapsesstream',['SynapsesStream',['../classbrain_1_1_synapses_stream.html',1,'brain']]],
   ['synapsesummary',['SynapseSummary',['../classbrion_1_1_synapse_summary.html',1,'brion']]]
 ];

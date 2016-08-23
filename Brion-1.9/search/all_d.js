@@ -2,6 +2,26 @@ var searchData=
 [
   ['parse',['parse',['../classbrion_1_1_target.html#af9dfd3b852d9a457e627d05ffb5bf30c',1,'brion::Target']]],
   ['parsetarget',['parseTarget',['../classbrion_1_1_blue_config.html#a098c87b49809e5e23d1b40b63e381cbd',1,'brion::BlueConfig']]],
+  ['plugininitdata',['PluginInitData',['../classbrion_1_1_plugin_init_data.html',1,'brion']]],
   ['plugininitdata',['PluginInitData',['../classbrion_1_1_plugin_init_data.html#a2b26dd7348cc1ce830935b97079a97ef',1,'brion::PluginInitData']]],
-  ['plugininitdata',['PluginInitData',['../classbrion_1_1_plugin_init_data.html',1,'brion']]]
+  ['postcenterpositionx',['postCenterPositionX',['../classbrain_1_1_synapses.html#ab6ffd5ae4be47ae22dc869ba71aaa4ae',1,'brain::Synapses']]],
+  ['postcenterpositiony',['postCenterPositionY',['../classbrain_1_1_synapses.html#acab9b1f9a3ac6ba2625d04a75204acc7',1,'brain::Synapses']]],
+  ['postcenterpositionz',['postCenterPositionZ',['../classbrain_1_1_synapses.html#a824be33c43d52f0378b28f80b6c68369',1,'brain::Synapses']]],
+  ['postdistance',['postDistance',['../classbrain_1_1_synapses.html#a5cd2f4022483181ac9664b52d7aabf25',1,'brain::Synapses']]],
+  ['postgid',['postGID',['../classbrain_1_1_synapses.html#a8739b56dd8d2d072c01f05ab8d484d3a',1,'brain::Synapses']]],
+  ['postsectionid',['postSectionID',['../classbrain_1_1_synapses.html#aeb3fd4e569ca37fd0cc454fe11f40a93',1,'brain::Synapses']]],
+  ['postsegmentid',['postSegmentID',['../classbrain_1_1_synapses.html#af3fbc4a445b7128a29386c737575cfa1',1,'brain::Synapses']]],
+  ['postsurfacepositionx',['postSurfacePositionX',['../classbrain_1_1_synapses.html#a7035989fc393f8a09b682feafaf828f4',1,'brain::Synapses']]],
+  ['postsurfacepositiony',['postSurfacePositionY',['../classbrain_1_1_synapses.html#a6a8aca846c2e0ebcd8ddbf2703298b6b',1,'brain::Synapses']]],
+  ['postsurfacepositionz',['postSurfacePositionZ',['../classbrain_1_1_synapses.html#a739542451692b4d6b6877f610f046597',1,'brain::Synapses']]],
+  ['precenterpositionx',['preCenterPositionX',['../classbrain_1_1_synapses.html#a04d72540a3e36169e894b93806bc3887',1,'brain::Synapses']]],
+  ['precenterpositiony',['preCenterPositionY',['../classbrain_1_1_synapses.html#aacc551db52e40024e6a2b21bafe79fe7',1,'brain::Synapses']]],
+  ['precenterpositionz',['preCenterPositionZ',['../classbrain_1_1_synapses.html#a8ebd6be7f7eb15cdc39d8e55c3a7c187',1,'brain::Synapses']]],
+  ['predistance',['preDistance',['../classbrain_1_1_synapses.html#ae98d97d1ac6a3aec59635896281566e9',1,'brain::Synapses']]],
+  ['pregid',['preGID',['../classbrain_1_1_synapses.html#aee34db1322d205801c3011fa18c83e6f',1,'brain::Synapses']]],
+  ['presectionid',['preSectionID',['../classbrain_1_1_synapses.html#aa1b96ac278945457b96f84b652ef9185',1,'brain::Synapses']]],
+  ['presegmentid',['preSegmentID',['../classbrain_1_1_synapses.html#ae4f9d1791cb1263636d7d390f77e2f44',1,'brain::Synapses']]],
+  ['presurfacepositionx',['preSurfacePositionX',['../classbrain_1_1_synapses.html#a827cd55621e549aa21d8303fcb6d2816',1,'brain::Synapses']]],
+  ['presurfacepositiony',['preSurfacePositionY',['../classbrain_1_1_synapses.html#aae63524533ea814894782d3a32bf265d',1,'brain::Synapses']]],
+  ['presurfacepositionz',['preSurfacePositionZ',['../classbrain_1_1_synapses.html#a229a462e378ab99c5691bc27af690718',1,'brain::Synapses']]]
 ];

@@ -1,4 +1,7 @@
 var searchData=
 [
-  ['flush',['flush',['../classbrion_1_1_compartment_report.html#aada18371df36d46de253b2df4495ecb5',1,'brion::CompartmentReport::flush()'],['../classbrion_1_1_compartment_report_plugin.html#a29f488ea011b60d69788eb5f28d39de8',1,'brion::CompartmentReportPlugin::flush()'],['../classbrion_1_1_mesh.html#a268f1c164a98bb286b5ae71e1e84ab7f',1,'brion::Mesh::flush()'],['../classbrion_1_1_morphology.html#a875995889e7e94dbe0959475aec03924',1,'brion::Morphology::flush()'],['../classbrion_1_1_morphology_plugin.html#a7e46021d144fc5dad9faa3e23ea0b20d',1,'brion::MorphologyPlugin::flush()']]]
+  ['efficacy',['efficacy',['../classbrain_1_1_synapses.html#aec7e0ee044a43a1750e2388b3818e6cf',1,'brain::Synapses']]],
+  ['empty',['empty',['../classbrain_1_1_spikes.html#abd11e9785ebc0cad3e6d9524fd815d21',1,'brain::Spikes::empty()'],['../classbrain_1_1_synapses.html#a7e678a61149c15e862817857837b2d49',1,'brain::Synapses::empty()']]],
+  ['end',['end',['../classbrain_1_1_spikes.html#a44fdc7e974acf671452b88bc755dca70',1,'brain::Spikes::end()'],['../classbrain_1_1_synapses.html#ae1389b3ea053954ebdda1a96baacff30',1,'brain::Synapses::end()']]],
+  ['eos',['eos',['../classbrain_1_1_synapses_stream.html#a94d6a47d3b66064f6269d1f2c65300aa',1,'brain::SynapsesStream']]]
 ];
