@@ -23,6 +23,7 @@ var searchData=
   ['getpatch',['getPatch',['../classlivrecore_1_1_version.html#af21985e9ea26ed0784ae176773bafa7b',1,'livrecore::Version']]],
   ['getposition',['getPosition',['../classlivre_1_1_node_id.html#ae9177230097c51052ba832a3c8cd03dd',1,'livre::NodeId']]],
   ['getprogram',['getProgram',['../classlivre_1_1_g_l_s_l_shaders.html#abf9c5ddad548a8cf99932031ffb4e00a',1,'livre::GLSLShaders']]],
+  ['getrange',['getRange',['../classlivre_1_1_histogram.html#a8db504dc2444889798575ec216342734',1,'livre::Histogram']]],
   ['getratio',['getRatio',['../classlivre_1_1_histogram.html#a8d62edf1af6d65defa5c78e17dc186db',1,'livre::Histogram']]],
   ['getreflevel',['getRefLevel',['../classlivre_1_1_l_o_d_node.html#ae08e05e94db5b43977747969e8a7fac2',1,'livre::LODNode']]],
   ['getrelativeposition',['getRelativePosition',['../classlivre_1_1_l_o_d_node.html#a6ae4cffe00c659bcf2c3dc32643e8e1e',1,'livre::LODNode']]],
