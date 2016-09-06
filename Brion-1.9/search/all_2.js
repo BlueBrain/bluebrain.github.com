@@ -14,7 +14,7 @@ var searchData=
   ['compartmentreportinitdata',['CompartmentReportInitData',['../classbrion_1_1_compartment_report_init_data.html',1,'brion']]],
   ['compartmentreportinitdata',['CompartmentReportInitData',['../classbrion_1_1_compartment_report_init_data.html#a268487758574e1da6febf4666a235d6b',1,'brion::CompartmentReportInitData']]],
   ['compartmentreportplugin',['CompartmentReportPlugin',['../classbrion_1_1_compartment_report_plugin.html',1,'brion']]],
-  ['conductance',['conductance',['../classbrain_1_1_synapses.html#aaa938f68fa95a68305bb3a8ebb6128db',1,'brain::Synapses']]],
+  ['conductances',['conductances',['../classbrain_1_1_synapses.html#ae1aef670cad058fe953fe50b4f511a94',1,'brain::Synapses']]],
   ['const_5fiterator',['const_iterator',['../classbrain_1_1_spikes_1_1const__iterator.html',1,'brain::Spikes']]],
   ['const_5fiterator',['const_iterator',['../classbrain_1_1_spikes_1_1const__iterator.html#ab9da3bf11b39762352fa03d019d6693b',1,'brain::Spikes::const_iterator::const_iterator()'],['../classbrain_1_1_spikes_1_1const__iterator.html#a07366218e13f964dfcc6792999dd8b3f',1,'brain::Spikes::const_iterator::const_iterator(const const_iterator &amp;rhs)']]],
   ['contains',['contains',['../classbrion_1_1_target.html#aa58924378a7389ae2a44867ce5e8be20',1,'brion::Target']]],

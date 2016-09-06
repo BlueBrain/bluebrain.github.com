@@ -1,14 +1,14 @@
 var classbrain_1_1_circuit =
 [
     [ "Coordinates", "classbrain_1_1_circuit.html#a1f220992f40a8759f34ef96da4041610", [
-      [ "COORDINATES_GLOBAL", "classbrain_1_1_circuit.html#a1f220992f40a8759f34ef96da4041610af46e537cb4b8ae263b6006243935f509", null ],
-      [ "COORDINATES_LOCAL", "classbrain_1_1_circuit.html#a1f220992f40a8759f34ef96da4041610a6047d340613ee6abed1cc4a6d722a112", null ]
+      [ "global", "classbrain_1_1_circuit.html#a1f220992f40a8759f34ef96da4041610a9c70933aff6b2a6d08c687a6cbb6b765", null ],
+      [ "local", "classbrain_1_1_circuit.html#a1f220992f40a8759f34ef96da4041610af5ddaf0ca7929578b408c909429f68f2", null ]
     ] ],
     [ "Circuit", "classbrain_1_1_circuit.html#ad8018f3c4aaf467133ca254295ba53af", null ],
     [ "Circuit", "classbrain_1_1_circuit.html#aa333684a12851014e36ee5c897599599", null ],
     [ "~Circuit", "classbrain_1_1_circuit.html#a5f39340d71b68b181d521fcc9e41fcdc", null ],
-    [ "getAfferentSynapses", "classbrain_1_1_circuit.html#a278119ff6f7f4076e9bd3676a85c5a1a", null ],
-    [ "getEfferentSynapses", "classbrain_1_1_circuit.html#a04678822701aba5d455bde715b88d4d4", null ],
+    [ "getAfferentSynapses", "classbrain_1_1_circuit.html#af61281b575caf5ecc6e360c9772a8df6", null ],
+    [ "getEfferentSynapses", "classbrain_1_1_circuit.html#a49d0cd2b6390b319c155ce3c9391ffa7", null ],
     [ "getElectrophysiologyNames", "classbrain_1_1_circuit.html#ad20ecae7e4dff3256f98f33180f469c4", null ],
     [ "getElectrophysiologyTypes", "classbrain_1_1_circuit.html#a1ef23f6f2ca7e62bf1102b5b31324bc6", null ],
     [ "getGIDs", "classbrain_1_1_circuit.html#a36ee80e8f35795978c648acfd79253a5", null ],
@@ -18,7 +18,7 @@ var classbrain_1_1_circuit =
     [ "getMorphologyURIs", "classbrain_1_1_circuit.html#a2af6cc4a5ae4691771980d15d72a56f6", null ],
     [ "getNumNeurons", "classbrain_1_1_circuit.html#a69480d5a0edcb1ded3627d618204289c", null ],
     [ "getPositions", "classbrain_1_1_circuit.html#a1b05989eb2e2a76c477982021d4039a9", null ],
-    [ "getProjectedSynapses", "classbrain_1_1_circuit.html#a28730cdfc1f9e515a9273c91a6ec7e19", null ],
+    [ "getProjectedSynapses", "classbrain_1_1_circuit.html#a6e739daf2c567484073fa1e8b709cc6d", null ],
     [ "getRandomGIDs", "classbrain_1_1_circuit.html#a6780629e47b81063a4893f7b7cd5e415", null ],
     [ "getRandomGIDs", "classbrain_1_1_circuit.html#aa822f3a660884ad01a8e1622c7dbd860", null ],
     [ "getRotations", "classbrain_1_1_circuit.html#a457e6f64353f0b20bb1a6524c88ea3af", null ],

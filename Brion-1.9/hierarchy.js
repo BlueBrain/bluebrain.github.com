@@ -25,6 +25,7 @@ var hierarchy =
     [ "brain::Spikes", "classbrain_1_1_spikes.html", null ],
     [ "brain::Synapse", "classbrain_1_1_synapse.html", null ],
     [ "brain::Synapses", "classbrain_1_1_synapses.html", null ],
+    [ "brain::Synapses::BaseImpl", "structbrain_1_1_synapses_1_1_base_impl.html", null ],
     [ "brain::SynapsesStream", "classbrain_1_1_synapses_stream.html", null ],
     [ "brain::Version", "classbrain_1_1_version.html", null ],
     [ "brion::PluginInitData", "classbrion_1_1_plugin_init_data.html", [

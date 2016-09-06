@@ -2,6 +2,7 @@ var searchData=
 [
   ['api_2eh',['api.h',['../brion_2api_8h.html',1,'']]],
   ['api_2eh',['api.h',['../brain_2api_8h.html',1,'']]],
+  ['baseimpl',['BaseImpl',['../structbrain_1_1_synapses_1_1_base_impl.html',1,'brain::Synapses']]],
   ['begin',['begin',['../classbrain_1_1_spikes.html#a20f3b7a2befe0f6428411f3d1f9e4793',1,'brain::Spikes::begin()'],['../classbrain_1_1_synapses.html#a1c392ff82ffe765f5cbd9c8724460120',1,'brain::Synapses::begin()']]],
   ['blueconfig',['BlueConfig',['../classbrion_1_1_blue_config.html',1,'brion']]],
   ['blueconfig',['BlueConfig',['../classbrion_1_1_blue_config.html#afbac59429e4019abf307e9f415efdace',1,'brion::BlueConfig']]],
@@ -25,8 +26,6 @@ var searchData=
   ['brion_5fversion_5fminor',['BRION_VERSION_MINOR',['../brion_2version_8h.html#aa5a2357f391cbb650d1d8894ee1b526f',1,'version.h']]],
   ['brion_5fversion_5fpatch',['BRION_VERSION_PATCH',['../brion_2version_8h.html#ab7df48db132552459d856511d31fec71',1,'version.h']]],
   ['brion_5fversion_5frevision',['BRION_VERSION_REVISION',['../brion_2version_8h.html#a6044ab3ac01614da058254ed01b5b206',1,'version.h']]],
-  ['enums_2eh',['enums.h',['../brain_2enums_8h.html',1,'']]],
-  ['enums_2eh',['enums.h',['../brion_2enums_8h.html',1,'']]],
   ['neuron',['neuron',['../namespacebrain_1_1neuron.html',1,'brain']]],
   ['version_2eh',['version.h',['../brion_2version_8h.html',1,'']]],
   ['version_2eh',['version.h',['../brain_2version_8h.html',1,'']]]
