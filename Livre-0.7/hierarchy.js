@@ -1,8 +1,5 @@
 var hierarchy =
 [
-    [ "noncopyable", null, [
-      [ "livre::AllocMemoryUnit", "classlivre_1_1_alloc_memory_unit.html", null ]
-    ] ],
     [ "Distributable", null, [
       [ "livre::Histogram", "classlivre_1_1_histogram.html", null ]
     ] ],

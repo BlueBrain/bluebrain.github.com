@@ -1,5 +1,4 @@
 var searchData=
 [
-  ['alloc',['alloc',['../classlivre_1_1_alloc_memory_unit.html#a8b1f3ba3acced253c778a6e8e9560824',1,'livre::AllocMemoryUnit']]],
-  ['allocandsetdata',['allocAndSetData',['../classlivre_1_1_alloc_memory_unit.html#a24a64d5789f49fb5dd6a22dced9a7dde',1,'livre::AllocMemoryUnit::allocAndSetData(const T *sourceData, const size_t size)'],['../classlivre_1_1_alloc_memory_unit.html#afb6b6fceabb20469e4c907abc49b930c',1,'livre::AllocMemoryUnit::allocAndSetData(const void *sourceData, const size_t size)'],['../classlivre_1_1_alloc_memory_unit.html#ab9078c7888da36cb56da1b526f0d6cdb',1,'livre::AllocMemoryUnit::allocAndSetData(const std::vector&lt; T &gt; &amp;sourceData)']]]
+  ['_5fgetdata',['_getData',['../classlivre_1_1_memory_unit.html#ae7c856ec0915173be22ef4467520c6a7',1,'livre::MemoryUnit::_getData() const =0'],['../classlivre_1_1_memory_unit.html#a73ca4bb80738eb20b7733a15df356d86',1,'livre::MemoryUnit::_getData()=0'],['../classlivre_1_1_const_memory_unit.html#a2800d7b0c337f04f101ccdecda9ad498',1,'livre::ConstMemoryUnit::_getData() const final'],['../classlivre_1_1_const_memory_unit.html#ad52cfb396c5e717871fced78b956816a',1,'livre::ConstMemoryUnit::_getData() final']]]
 ];
