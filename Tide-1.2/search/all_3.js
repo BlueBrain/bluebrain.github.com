@@ -5,7 +5,7 @@ var searchData=
   ['cairodeleter',['CairoDeleter',['../struct_cairo_deleter.html',1,'']]],
   ['cairosurfacedeleter',['CairoSurfaceDeleter',['../struct_cairo_surface_deleter.html',1,'']]],
   ['canrequestnewframe',['canRequestNewFrame',['../class_movie_updater.html#ac2ae41e78a4829c30ce5d7c496cf00e9',1,'MovieUpdater']]],
-  ['changelog',['Changelog',['../_changelog.html',1,'']]],
+  ['changelog',['Changelog',['../changelog.html',1,'']]],
   ['check',['check',['../classtide_1_1_version.html#a6db9588b945925020747cffdfc464db7',1,'tide::Version::check()'],['../classtide_1_1_version.html#a6db9588b945925020747cffdfc464db7',1,'tide::Version::check()'],['../classtide_1_1_version.html#a6db9588b945925020747cffdfc464db7',1,'tide::Version::check()']]],
   ['checked',['checked',['../class_content_action.html#a563fe54bba76599da58a0da5d1eaf21e',1,'ContentAction']]],
   ['checkversion',['checkVersion',['../class_wall_to_wall_channel.html#addd62ca5f6199f4ca0c31c23d282066d',1,'WallToWallChannel']]],

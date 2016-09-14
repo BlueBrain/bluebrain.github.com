@@ -14,5 +14,5 @@ var searchData=
   ['updatetiles',['updateTiles',['../class_tiled_synchronizer.html#ac2d23b0e012c2d6a32b1d9302f7e98f6',1,'TiledSynchronizer']]],
   ['uploaded',['uploaded',['../class_texture_uploader.html#a197926c629c7efccb0f3321983b28a2c',1,'TextureUploader']]],
   ['uploadtexture',['uploadTexture',['../class_texture_uploader.html#a43ddea0b3f1cfddbacf83352dcdf95fe',1,'TextureUploader']]],
-  ['user_20guide',['User Guide',['../_user_guide.html',1,'']]]
+  ['user_20guide',['User Guide',['../user_guide.html',1,'']]]
 ];

@@ -1,9 +1,5 @@
 var NAVTREEINDEX3 =
 {
-"class_markers.html#a0ffb026053d84d05a157adc9a5a0a3c2":[5,0,51,7],
-"class_markers.html#a3932715d3ac4bc865bc303007fcac5cc":[5,0,51,4],
-"class_markers.html#a704997f33b96a475b29167a92cd68ab3":[5,0,51,3],
-"class_markers.html#a8274924d49d7d6f1ed3ce3489ea98739":[5,0,51,1],
 "class_markers.html#a9758d9926d9fbf5c556820114bacedee":[5,0,51,0],
 "class_markers.html#a9758d9926d9fbf5c556820114bacedeea4e434fb5794d8d6f31d910833c9ed6d4":[5,0,51,0,1],
 "class_markers.html#a9758d9926d9fbf5c556820114bacedeea83eee584d5149ba9beaff74fe649f9cd":[5,0,51,0,0],
@@ -249,5 +245,9 @@ var NAVTREEINDEX3 =
 "class_pixel_stream_interaction_delegate.html#abed2568335034b569429f0b3442e15f5":[5,0,75,9],
 "class_pixel_stream_interaction_delegate.html#add9405a583307fea5a17d7cb6ea2846e":[5,0,75,7],
 "class_pixel_stream_interaction_delegate.html#afb4f6a22da6e068ca8a7017be460dc53":[5,0,75,16],
-"class_pixel_stream_synchronizer.html":[5,0,76]
+"class_pixel_stream_synchronizer.html":[5,0,76],
+"class_pixel_stream_synchronizer.html#a12666d81a8a86b90e41dd750027f2373":[5,0,76,0],
+"class_pixel_stream_synchronizer.html#a6b0ae9339e04bd1e1972ebb3eab6ebef":[5,0,76,1],
+"class_pixel_stream_synchronizer.html#a850f91c504e2e240b3edeb5a58f6804d":[5,0,76,2],
+"class_pixel_stream_synchronizer.html#aa32e353578381044b7b30f5e4bbc9b16":[5,0,76,6]
 };

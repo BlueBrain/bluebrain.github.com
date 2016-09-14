@@ -37,7 +37,7 @@
           </tr>
           <tr>
             <td class="headerItem">Date:</td>
-            <td class="headerValue">2016-08-16 06:19:20</td>
+            <td class="headerValue">2016-09-14 06:17:28</td>
             <td></td>
             <td class="headerItem">Functions:</td>
             <td class="headerCovTableEntry">2</td>
@@ -61,8 +61,8 @@
 <pre class="sourceHeading">          Line data    Source code</pre>
 <pre class="source">
 <a name="1"><span class="lineNum">       1 </span>            : /*********************************************************************/</a>
-<span class="lineNum">       2 </span>            : /* Copyright (c) 2014, EPFL/Blue Brain Project                       */
-<span class="lineNum">       3 </span>            : /*                     Raphael Dumusc &lt;raphael.dumusc@epfl.ch&gt;       */
+<span class="lineNum">       2 </span>            : /* Copyright (c) 2014-2016, EPFL/Blue Brain Project                  */
+<span class="lineNum">       3 </span>            : /*                          Raphael Dumusc &lt;raphael.dumusc@epfl.ch&gt;  */
 <span class="lineNum">       4 </span>            : /* All rights reserved.                                              */
 <span class="lineNum">       5 </span>            : /*                                                                   */
 <span class="lineNum">       6 </span>            : /* Redistribution and use in source and binary forms, with or        */
@@ -101,28 +101,32 @@
 <span class="lineNum">      39 </span>            : 
 <span class="lineNum">      40 </span>            : #include &quot;MPIContext.h&quot;
 <span class="lineNum">      41 </span>            : 
-<span class="lineNum">      42 </span>            : #include &quot;log.h&quot;
-<span class="lineNum">      43 </span>            : 
-<span class="lineNum">      44 </span>            : #include &lt;mpi.h&gt;
-<a name="45"><span class="lineNum">      45 </span>            : #include &lt;stdexcept&gt;</a>
-<span class="lineNum">      46 </span>            : 
-<span class="lineNum">      47 </span><span class="lineNoCov">          0 : MPIContext::MPIContext( int argc, char* argv[] )</span>
-<span class="lineNum">      48 </span>            : {
-<span class="lineNum">      49 </span><span class="lineNoCov">          0 :     const int required = MPI_THREAD_MULTIPLE;</span>
-<span class="lineNum">      50 </span>            :     int provided;
-<span class="lineNum">      51 </span><span class="lineNoCov">          0 :     MPI_Init_thread( &amp;argc, &amp;argv, required, &amp;provided );</span>
-<span class="lineNum">      52 </span><span class="lineNoCov">          0 :     if( provided &lt; MPI_THREAD_SERIALIZED )</span>
-<span class="lineNum">      53 </span>            :     {
-<span class="lineNum">      54 </span>            :         throw std::runtime_error( &quot;MPI implementation must support at least &quot;
-<span class="lineNum">      55 </span>            :                                   &quot;MPI_THREAD_SERIALIZED. (MPI_THREAD_MULTIPLE &quot;
-<span class="lineNum">      56 </span><span class="lineNoCov">          0 :                                   &quot;is recommended for better performances)&quot; );</span>
-<span class="lineNum">      57 </span>            :     }
-<a name="58"><span class="lineNum">      58 </span><span class="lineNoCov">          0 : }</span></a>
-<span class="lineNum">      59 </span>            : 
-<span class="lineNum">      60 </span><span class="lineNoCov">          0 : MPIContext::~MPIContext()</span>
-<a name="61"><span class="lineNum">      61 </span>            : {</a>
-<span class="lineNum">      62 </span><span class="lineNoCov">          0 :     MPI_Finalize();</span>
-<span class="lineNum">      63 </span><span class="lineCov">         57 : }</span>
+<span class="lineNum">      42 </span>            : #include &quot;config.h&quot;
+<span class="lineNum">      43 </span>            : #include &quot;log.h&quot;
+<span class="lineNum">      44 </span>            : 
+<span class="lineNum">      45 </span>            : #include &lt;mpi.h&gt;
+<a name="46"><span class="lineNum">      46 </span>            : #include &lt;stdexcept&gt;</a>
+<span class="lineNum">      47 </span>            : 
+<span class="lineNum">      48 </span><span class="lineNoCov">          0 : MPIContext::MPIContext( int argc, char* argv[] )</span>
+<span class="lineNum">      49 </span>            : {
+<span class="lineNum">      50 </span><span class="lineNoCov">          0 :     const int required = MPI_THREAD_MULTIPLE;</span>
+<span class="lineNum">      51 </span>            :     int provided;
+<span class="lineNum">      52 </span><span class="lineNoCov">          0 :     MPI_Init_thread( &amp;argc, &amp;argv, required, &amp;provided );</span>
+<span class="lineNum">      53 </span><span class="lineNoCov">          0 :     if( provided &lt; required )</span>
+<span class="lineNum">      54 </span>            :     {
+<span class="lineNum">      55 </span>            : #if TIDE_IGNORE_MPI_THREADSAFETY
+<span class="lineNum">      56 </span>            :         put_flog( LOG_DEBUG, &quot;MPI support: %d/%d&quot;, provided, required );
+<span class="lineNum">      57 </span>            : #else
+<span class="lineNum">      58 </span>            :         throw std::runtime_error( &quot;MPI implementation must support &quot;
+<span class="lineNum">      59 </span><span class="lineNoCov">          0 :                                   &quot;MPI_THREAD_MULTIPLE&quot; );</span>
+<span class="lineNum">      60 </span>            : #endif
+<span class="lineNum">      61 </span>            :     }
+<a name="62"><span class="lineNum">      62 </span><span class="lineNoCov">          0 : }</span></a>
+<span class="lineNum">      63 </span>            : 
+<span class="lineNum">      64 </span><span class="lineNoCov">          0 : MPIContext::~MPIContext()</span>
+<a name="65"><span class="lineNum">      65 </span>            : {</a>
+<span class="lineNum">      66 </span><span class="lineNoCov">          0 :     MPI_Finalize();</span>
+<span class="lineNum">      67 </span><span class="lineCov">         57 : }</span>
 </pre>
       </td>
     </tr>

@@ -74,6 +74,7 @@ var hierarchy =
     [ "QMainWindow", null, [
       [ "MasterWindow", "class_master_window.html", null ]
     ] ],
+    [ "QmlKeyInjector", "class_qml_key_injector.html", null ],
     [ "QObject", null, [
       [ "Content", "class_content.html", [
         [ "DynamicTextureContent", "class_dynamic_texture_content.html", null ],

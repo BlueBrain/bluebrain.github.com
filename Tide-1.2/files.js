@@ -89,6 +89,7 @@ var files =
     [ "PixelStreamUpdater.h", "_pixel_stream_updater_8h_source.html", null ],
     [ "PixelStreamWindowManager.h", "_pixel_stream_window_manager_8h_source.html", null ],
     [ "ProcessForker.h", "_process_forker_8h_source.html", null ],
+    [ "QmlKeyInjector.h", "_qml_key_injector_8h_source.html", null ],
     [ "core/QmlTypeRegistration.h", "core_2_qml_type_registration_8h_source.html", null ],
     [ "master/QmlTypeRegistration.h", "master_2_qml_type_registration_8h_source.html", null ],
     [ "qmlUtils.h", "qml_utils_8h_source.html", null ],

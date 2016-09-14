@@ -83,6 +83,7 @@ var annotated =
     [ "PixelStreamWindowManager", "class_pixel_stream_window_manager.html", "class_pixel_stream_window_manager" ],
     [ "ProbeResult", "struct_probe_result.html", "struct_probe_result" ],
     [ "ProcessForker", "class_process_forker.html", "class_process_forker" ],
+    [ "QmlKeyInjector", "class_qml_key_injector.html", "class_qml_key_injector" ],
     [ "QmlWindowRenderer", "class_qml_window_renderer.html", "class_qml_window_renderer" ],
     [ "QtImage", "class_qt_image.html", "class_qt_image" ],
     [ "QuadLineNode", "class_quad_line_node.html", "class_quad_line_node" ],
