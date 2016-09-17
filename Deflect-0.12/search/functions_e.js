@@ -1,4 +1,4 @@
 var searchData=
 [
-  ['waitdecoding',['waitDecoding',['../classdeflect_1_1_segment_decoder.html#a68feab2dd3806cce0cafef1fcd7c1670',1,'deflect::SegmentDecoder']]]
+  ['touchinjector',['TouchInjector',['../classdeflect_1_1qt_1_1_touch_injector.html#a5347f1348ab37ddc04e15ca953eef83c',1,'deflect::qt::TouchInjector']]]
 ];

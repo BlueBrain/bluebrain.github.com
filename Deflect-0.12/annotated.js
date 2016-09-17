@@ -2,7 +2,8 @@ var annotated =
 [
     [ "deflect", null, [
       [ "qt", null, [
-        [ "QmlStreamer", "classdeflect_1_1qt_1_1_qml_streamer.html", "classdeflect_1_1qt_1_1_qml_streamer" ]
+        [ "QmlStreamer", "classdeflect_1_1qt_1_1_qml_streamer.html", "classdeflect_1_1qt_1_1_qml_streamer" ],
+        [ "TouchInjector", "classdeflect_1_1qt_1_1_touch_injector.html", "classdeflect_1_1qt_1_1_touch_injector" ]
       ] ],
       [ "Event", "structdeflect_1_1_event.html", "structdeflect_1_1_event" ],
       [ "EventReceiver", "classdeflect_1_1_event_receiver.html", "classdeflect_1_1_event_receiver" ],

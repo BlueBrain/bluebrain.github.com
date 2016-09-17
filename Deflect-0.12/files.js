@@ -20,6 +20,7 @@ var files =
     [ "Server.h", "_server_8h_source.html", null ],
     [ "SizeHints.h", "_size_hints_8h_source.html", null ],
     [ "Stream.h", "_stream_8h_source.html", null ],
+    [ "TouchInjector.h", "_touch_injector_8h_source.html", null ],
     [ "types.h", "types_8h_source.html", null ],
     [ "qt/version.h", "qt_2version_8h.html", "qt_2version_8h" ],
     [ "version.h", "version_8h.html", "version_8h" ]

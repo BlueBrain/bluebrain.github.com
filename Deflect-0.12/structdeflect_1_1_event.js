@@ -17,7 +17,11 @@ var structdeflect_1_1_event =
       [ "EVT_KEY_RELEASE", "structdeflect_1_1_event.html#a8f86848d715aee8f5bdff4de30d9fb2ba293d7ae59518db30fc92564b6a0b46ac", null ],
       [ "EVT_VIEW_SIZE_CHANGED", "structdeflect_1_1_event.html#a8f86848d715aee8f5bdff4de30d9fb2bacdd4127244f4f6cf5ac95c49a47cac25", null ],
       [ "EVT_TAP_AND_HOLD", "structdeflect_1_1_event.html#a8f86848d715aee8f5bdff4de30d9fb2ba56ed3e1e6c19087d7c209173ac128464", null ],
-      [ "EVT_PAN", "structdeflect_1_1_event.html#a8f86848d715aee8f5bdff4de30d9fb2baae8c307b98f1e655e3a971ad444b31d1", null ]
+      [ "EVT_PAN", "structdeflect_1_1_event.html#a8f86848d715aee8f5bdff4de30d9fb2baae8c307b98f1e655e3a971ad444b31d1", null ],
+      [ "EVT_PINCH", "structdeflect_1_1_event.html#a8f86848d715aee8f5bdff4de30d9fb2babe35c0e271dd0904f8a427771a260a6d", null ],
+      [ "EVT_TOUCH_ADD", "structdeflect_1_1_event.html#a8f86848d715aee8f5bdff4de30d9fb2ba79840bbb6a425305caeae779c835a058", null ],
+      [ "EVT_TOUCH_UPDATE", "structdeflect_1_1_event.html#a8f86848d715aee8f5bdff4de30d9fb2ba2035ffc0a04e8abfa8913a381f901ab9", null ],
+      [ "EVT_TOUCH_REMOVE", "structdeflect_1_1_event.html#a8f86848d715aee8f5bdff4de30d9fb2ba19d05f4f99df81531e8175e5661f1fb2", null ]
     ] ],
     [ "Event", "structdeflect_1_1_event.html#a8212fb4013179eff56a621ed7f5a40ca", null ],
     [ "dx", "structdeflect_1_1_event.html#a16b046b14e8d6f66685cc3db5f669f7d", null ],
