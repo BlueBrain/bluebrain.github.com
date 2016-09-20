@@ -9,6 +9,7 @@ var searchData=
   ['mastertoforkerchannel',['MasterToForkerChannel',['../class_master_to_forker_channel.html',1,'MasterToForkerChannel'],['../class_master_to_forker_channel.html#a4281cf932f32d2db274303e2e176e792',1,'MasterToForkerChannel::MasterToForkerChannel()']]],
   ['mastertowallchannel',['MasterToWallChannel',['../class_master_to_wall_channel.html',1,'MasterToWallChannel'],['../class_master_to_wall_channel.html#a8f671d612ef52095bf7290d791df4fc0',1,'MasterToWallChannel::MasterToWallChannel()']]],
   ['masterwindow',['MasterWindow',['../class_master_window.html',1,'MasterWindow'],['../class_master_window.html#a72c6e4e684166ced410888e59d15c03a',1,'MasterWindow::MasterWindow()']]],
+  ['mathutils',['MathUtils',['../namespace_math_utils.html',1,'']]],
   ['message',['message',['../struct_probe_result.html#af15554a30e968ef7341d18a786899f95',1,'ProbeResult']]],
   ['modified',['modified',['../class_content.html#a44c022cb6fed6fb1b0dff45e39ececb9',1,'Content::modified()'],['../class_content_window.html#a32931ee8f5106d270e959e998b34d14c',1,'ContentWindow::modified()'],['../class_display_group.html#a2d45f47c71869da3799d9e1c88274cbd',1,'DisplayGroup::modified()'],['../class_keyboard_state.html#abff446f04460e5c3e5aa337591d33648',1,'KeyboardState::modified()']]],
   ['movecenterto',['moveCenterTo',['../class_content_window_controller.html#ab5311fc946d3a957af4447c1be37a8e0',1,'ContentWindowController']]],

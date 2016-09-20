@@ -1,5 +1,7 @@
 var searchData=
 [
+  ['tapandholddetector',['TapAndHoldDetector',['../class_tap_and_hold_detector.html',1,'']]],
+  ['tapdetector',['TapDetector',['../class_tap_detector.html',1,'']]],
   ['testpattern',['TestPattern',['../class_test_pattern.html',1,'']]],
   ['texturecontent',['TextureContent',['../class_texture_content.html',1,'']]],
   ['texturenode',['TextureNode',['../class_texture_node.html',1,'']]],

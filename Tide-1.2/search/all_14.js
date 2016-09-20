@@ -1,7 +1,9 @@
 var searchData=
 [
-  ['tap',['tap',['../class_multitouch_area.html#a4a7f521ad8c5eb0c7756f737134fb4e0',1,'MultitouchArea']]],
-  ['tapandhold',['tapAndHold',['../class_multitouch_area.html#a968c008c352f09cb24486ed8257b0968',1,'MultitouchArea']]],
+  ['tap',['tap',['../class_tap_detector.html#ac7b0f69cf359dd1a4adadba8e4dd2554',1,'TapDetector::tap()'],['../class_multitouch_area.html#ad10f067038cca27820ec0da46630b7ec',1,'MultitouchArea::tap()']]],
+  ['tapandhold',['tapAndHold',['../class_tap_and_hold_detector.html#ac74ae2cad949de85e7983238d1794634',1,'TapAndHoldDetector::tapAndHold()'],['../class_multitouch_area.html#a968c008c352f09cb24486ed8257b0968',1,'MultitouchArea::tapAndHold()']]],
+  ['tapandholddetector',['TapAndHoldDetector',['../class_tap_and_hold_detector.html',1,'']]],
+  ['tapdetector',['TapDetector',['../class_tap_detector.html',1,'']]],
   ['testpattern',['TestPattern',['../class_test_pattern.html',1,'TestPattern'],['../class_test_pattern.html#a0d3c3504086d1a78f7631c65af92a9ac',1,'TestPattern::TestPattern()']]],
   ['texturecontent',['TextureContent',['../class_texture_content.html',1,'TextureContent'],['../class_texture_content.html#a34ede22c00496d1f2309d56c0bfcf70b',1,'TextureContent::TextureContent()']]],
   ['texturenode',['TextureNode',['../class_texture_node.html',1,'']]],
@@ -28,6 +30,9 @@ var searchData=
   ['tilesareachanged',['tilesAreaChanged',['../class_content_synchronizer.html#aac807a9cb073a52d88a80ceca93b34a3',1,'ContentSynchronizer']]],
   ['toqimage',['toQImage',['../class_f_f_m_p_e_g_picture.html#aa25b7b1aa75fe4651ff575f8b8457a5b',1,'FFMPEGPicture']]],
   ['touchended',['touchEnded',['../class_multitouch_area.html#a6e02038540cd46754d22afa699377624',1,'MultitouchArea']]],
+  ['touchpointadded',['touchPointAdded',['../class_multitouch_area.html#aa08e85999206eec2072eedaaba87d25e',1,'MultitouchArea']]],
+  ['touchpointremoved',['touchPointRemoved',['../class_multitouch_area.html#a67c43e38ec50bc56871ad09e3ce97d96',1,'MultitouchArea']]],
+  ['touchpointupdated',['touchPointUpdated',['../class_multitouch_area.html#a59d40a182cea4744da1ce4be5ec75c31',1,'MultitouchArea']]],
   ['touchstarted',['touchStarted',['../class_multitouch_area.html#a9930406bdbbcb1a9ad99f10d691e2313',1,'MultitouchArea']]],
   ['trigger',['trigger',['../class_content_action.html#ad38737ffd4ee0b2623f00f0326136df3',1,'ContentAction']]],
   ['triggered',['triggered',['../class_content_action.html#ad53201dc988d6e4aa0ec81e9c820045d',1,'ContentAction']]]

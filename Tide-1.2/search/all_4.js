@@ -16,6 +16,7 @@ var searchData=
   ['displaygrouplistwidget',['DisplayGroupListWidget',['../class_display_group_list_widget.html',1,'DisplayGroupListWidget'],['../class_display_group_list_widget.html#a80c4e4b0a83d25dea87c7ff79029745a',1,'DisplayGroupListWidget::DisplayGroupListWidget()']]],
   ['displaygrouprenderer',['DisplayGroupRenderer',['../class_display_group_renderer.html',1,'DisplayGroupRenderer'],['../class_display_group_renderer.html#a4a2ff328df8cc22d6a8d5e330a498373',1,'DisplayGroupRenderer::DisplayGroupRenderer()']]],
   ['displaygroupview',['DisplayGroupView',['../class_display_group_view.html',1,'DisplayGroupView'],['../class_display_group_view.html#ad2df5ac523506bac5674fc0c2bb31caf',1,'DisplayGroupView::DisplayGroupView()']]],
-  ['doubletap',['doubleTap',['../class_multitouch_area.html#adb8cdf3637fd79b43967ffc5d1faf8f5',1,'MultitouchArea']]],
+  ['doubletap',['doubleTap',['../class_double_tap_detector.html#ad473d07379d7616f498d719dfbdee187',1,'DoubleTapDetector::doubleTap()'],['../class_multitouch_area.html#ad5ec58d1a203366694155eb3066a5e04',1,'MultitouchArea::doubleTap()']]],
+  ['doubletapdetector',['DoubleTapDetector',['../class_double_tap_detector.html',1,'']]],
   ['dynamictexturecontent',['DynamicTextureContent',['../class_dynamic_texture_content.html',1,'']]]
 ];

@@ -14,5 +14,6 @@ var searchData=
   ['svggpuimage',['SVGGpuImage',['../class_s_v_g_gpu_image.html',1,'']]],
   ['svgqtgpubackend',['SVGQtGpuBackend',['../class_s_v_g_qt_gpu_backend.html',1,'']]],
   ['svgsynchronizer',['SVGSynchronizer',['../class_s_v_g_synchronizer.html',1,'']]],
-  ['svgtiler',['SVGTiler',['../class_s_v_g_tiler.html',1,'']]]
+  ['svgtiler',['SVGTiler',['../class_s_v_g_tiler.html',1,'']]],
+  ['swipedetector',['SwipeDetector',['../class_swipe_detector.html',1,'']]]
 ];

@@ -1,10 +1,12 @@
 var searchData=
 [
+  ['pandetector',['PanDetector',['../class_pan_detector.html',1,'']]],
   ['pdfbackend',['PDFBackend',['../class_p_d_f_backend.html',1,'']]],
   ['pdfcontent',['PDFContent',['../class_p_d_f_content.html',1,'']]],
   ['pdfpopplerqtbackend',['PDFPopplerQtBackend',['../class_p_d_f_poppler_qt_backend.html',1,'']]],
   ['pdfsynchronizer',['PDFSynchronizer',['../class_p_d_f_synchronizer.html',1,'']]],
   ['pdftiler',['PDFTiler',['../class_p_d_f_tiler.html',1,'']]],
+  ['pinchdetector',['PinchDetector',['../class_pinch_detector.html',1,'']]],
   ['pixelstreamcontent',['PixelStreamContent',['../class_pixel_stream_content.html',1,'']]],
   ['pixelstreamer',['PixelStreamer',['../class_pixel_streamer.html',1,'']]],
   ['pixelstreamerfactory',['PixelStreamerFactory',['../class_pixel_streamer_factory.html',1,'']]],
