@@ -1,5 +1,6 @@
 var annotated =
 [
+    [ "serialization", "namespaceserialization.html", "namespaceserialization" ],
     [ "tide", null, [
       [ "Version", "classtide_1_1_version.html", "classtide_1_1_version" ]
     ] ],
@@ -91,13 +92,12 @@ var annotated =
     [ "QtImage", "class_qt_image.html", "class_qt_image" ],
     [ "QuadLineNode", "class_quad_line_node.html", "class_quad_line_node" ],
     [ "QuickRenderer", "class_quick_renderer.html", "class_quick_renderer" ],
+    [ "ReceiveBuffer", "class_receive_buffer.html", "class_receive_buffer" ],
     [ "RenderController", "class_render_controller.html", "class_render_controller" ],
     [ "RestCommand", "class_rest_command.html", "class_rest_command" ],
     [ "RestInterface", "class_rest_interface.html", "class_rest_interface" ],
     [ "RestLogger", "class_rest_logger.html", "class_rest_logger" ],
     [ "RestServer", "class_rest_server.html", "class_rest_server" ],
-    [ "SerializeBuffer", "class_serialize_buffer.html", "class_serialize_buffer" ],
-    [ "SerializeUtils", "struct_serialize_utils.html", "struct_serialize_utils" ],
     [ "State", "class_state.html", "class_state" ],
     [ "StatePreview", "class_state_preview.html", "class_state_preview" ],
     [ "StateSerializationHelper", "class_state_serialization_helper.html", "class_state_serialization_helper" ],

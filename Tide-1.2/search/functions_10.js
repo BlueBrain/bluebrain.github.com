@@ -5,6 +5,7 @@ var searchData=
   ['readtoplevelimage',['readTopLevelImage',['../class_tiff_pyramid_reader.html#ae1dab67ed7e2115c2be1a807314bb7c4',1,'TiffPyramidReader']]],
   ['receive',['receive',['../class_m_p_i_channel.html#acf6c03c4fb40017c5a6c5a7b84967116',1,'MPIChannel']]],
   ['receivebroadcast',['receiveBroadcast',['../class_m_p_i_channel.html#acfbacf7a49cc1ce09bac7d17f9de5bd7',1,'MPIChannel']]],
+  ['receivebuffer',['ReceiveBuffer',['../class_receive_buffer.html#a561edee4b7cd82271207abdb16c7c785',1,'ReceiveBuffer']]],
   ['received',['received',['../class_wall_from_master_channel.html#ab57f20a60ab6c83820e4344915a4f109',1,'WallFromMasterChannel::received()'],['../class_wall_from_master_channel.html#afb6a2af77cb53d4daff226e765de3338',1,'WallFromMasterChannel::received()'],['../class_wall_from_master_channel.html#a32ac04eade034a8cd78c198a1b6decfd',1,'WallFromMasterChannel::received()'],['../class_wall_from_master_channel.html#a7e9d59550c96986e0f417d86ee08f053',1,'WallFromMasterChannel::received()'],['../class_rest_command.html#abd42d768a3e1a651ec55ff1a19b86612',1,'RestCommand::received()']]],
   ['receivedquit',['receivedQuit',['../class_wall_from_master_channel.html#af64048387bb958cc6678929489337ebc',1,'WallFromMasterChannel']]],
   ['receivedrequestframe',['receivedRequestFrame',['../class_master_from_wall_channel.html#ab34184bf2068baeed81bc652149c994e',1,'MasterFromWallChannel']]],

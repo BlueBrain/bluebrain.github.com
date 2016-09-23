@@ -7,7 +7,7 @@ var hierarchy =
     ] ],
     [ "noncopyable", null, [
       [ "MPIContext", "class_m_p_i_context.html", null ],
-      [ "SerializeBuffer", "class_serialize_buffer.html", null ]
+      [ "ReceiveBuffer", "class_receive_buffer.html", null ]
     ] ],
     [ "CairoDeleter", "struct_cairo_deleter.html", null ],
     [ "CairoSurfaceDeleter", "struct_cairo_surface_deleter.html", null ],
@@ -170,7 +170,8 @@ var hierarchy =
       [ "TextureNode", "class_texture_node.html", null ]
     ] ],
     [ "RestServer", "class_rest_server.html", null ],
-    [ "SerializeUtils", "struct_serialize_utils.html", null ],
+    [ "serialization::detail::serialize< N >", "structserialization_1_1detail_1_1serialize.html", null ],
+    [ "serialization::detail::serialize< 0 >", "structserialization_1_1detail_1_1serialize_3_010_01_4.html", null ],
     [ "Serializable", null, [
       [ "JsonOptions", "class_json_options.html", null ],
       [ "RestCommand", "class_rest_command.html", null ],

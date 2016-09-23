@@ -1,6 +1,6 @@
 var searchData=
 [
-  ['data',['data',['../class_serialize_buffer.html#a86478d9a1fc56d5dc719176931941feb',1,'SerializeBuffer']]],
+  ['data',['data',['../class_receive_buffer.html#a6ca0d95e7af7ea46905ebc50fde81060',1,'ReceiveBuffer']]],
   ['dataprovider',['DataProvider',['../class_data_provider.html',1,'']]],
   ['datasource',['DataSource',['../class_data_source.html',1,'']]],
   ['decode',['decode',['../class_f_f_m_p_e_g_video_stream.html#a740cc6e53585987ed948ce75de986b1b',1,'FFMPEGVideoStream']]],
@@ -9,7 +9,6 @@ var searchData=
   ['defaultthumbnailgenerator',['DefaultThumbnailGenerator',['../class_default_thumbnail_generator.html',1,'']]],
   ['defines_2eh',['defines.h',['../defines_8h.html',1,'']]],
   ['denormalize',['denormalize',['../class_display_group_controller.html#a6d1a39818b26bcd4d47537bcbcbff9a4',1,'DisplayGroupController']]],
-  ['deserialize',['deserialize',['../class_serialize_buffer.html#a0460cf60db742505d7732966a6bbf9a0',1,'SerializeBuffer']]],
   ['developer_20guide',['Developer Guide',['../developer_guide.html',1,'']]],
   ['displaygroup',['DisplayGroup',['../class_display_group.html',1,'DisplayGroup'],['../class_display_group.html#a779255c3aa959085ad613850286dd43d',1,'DisplayGroup::DisplayGroup()']]],
   ['displaygroupcontroller',['DisplayGroupController',['../class_display_group_controller.html',1,'DisplayGroupController'],['../class_display_group_controller.html#ac3bd75cfaf3d6374085e2cc117beae82',1,'DisplayGroupController::DisplayGroupController()']]],

@@ -3,7 +3,7 @@ var searchData=
   ['gatherall',['gatherAll',['../class_m_p_i_channel.html#a76a7f0709dcb3fc71dda271ca6a7df4a',1,'MPIChannel']]],
   ['generategpuimage',['generateGpuImage',['../class_image.html#a8284c68a45d845a6ffd8eb81a4544092',1,'Image::generateGpuImage()'],['../class_s_v_g_gpu_image.html#a6db44b92e6c465a0a5d9dc2ba7b90f83',1,'SVGGpuImage::generateGpuImage()']]],
   ['generateimage',['generateImage',['../class_state_preview.html#ad52539007cf3bcc2c37adf935a536e6a',1,'StatePreview']]],
-  ['get',['get',['../class_rest_server.html#a04c88c24208f2e7797a9b8d82751f8a8',1,'RestServer']]],
+  ['get',['get',['../class_rest_server.html#a04c88c24208f2e7797a9b8d82751f8a8',1,'RestServer::get()'],['../namespaceserialization.html#ad72b5d0cca2d7f1811aff04e9a181a8a',1,'serialization::get()']]],
   ['getabi',['getABI',['../classtide_1_1_version.html#afdf47bdc2db574072947ff605eb4afc6',1,'tide::Version::getABI()'],['../classtide_1_1_version.html#afdf47bdc2db574072947ff605eb4afc6',1,'tide::Version::getABI()'],['../classtide_1_1_version.html#afdf47bdc2db574072947ff605eb4afc6',1,'tide::Version::getABI()']]],
   ['getaccumulatedwindowcount',['getAccumulatedWindowCount',['../class_logging_utility.html#a546bf7a69a9440e3d2a92edf1113d929',1,'LoggingUtility']]],
   ['getactions',['getActions',['../class_content.html#a7ae29df27d493e89dd7dccd775efbff8',1,'Content']]],

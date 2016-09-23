@@ -9,5 +9,7 @@ var searchData=
   ['focus',['focus',['../class_display_group.html#abe8c0ccc90732fa127118db09877e000',1,'DisplayGroup']]],
   ['folderthumbnailgenerator',['FolderThumbnailGenerator',['../class_folder_thumbnail_generator.html',1,'']]],
   ['fpscounter',['FpsCounter',['../class_fps_counter.html',1,'']]],
-  ['frameswapped',['frameSwapped',['../class_quick_renderer.html#ab050dc439300f27ba7a212a04bf54e0b',1,'QuickRenderer']]]
+  ['frameswapped',['frameSwapped',['../class_quick_renderer.html#ab050dc439300f27ba7a212a04bf54e0b',1,'QuickRenderer']]],
+  ['frombinary',['fromBinary',['../namespaceserialization.html#a8f44e51d760ffb5e17973ec28873abd1',1,'serialization']]],
+  ['fromxmlfile',['fromXmlFile',['../namespaceserialization.html#a00c40e41ef0c2fdd90c49aafbc1ece9b',1,'serialization']]]
 ];
