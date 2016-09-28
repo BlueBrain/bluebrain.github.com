@@ -1,7 +1,7 @@
 var searchData=
 [
-  ['tap',['tap',['../class_tap_detector.html#ac7b0f69cf359dd1a4adadba8e4dd2554',1,'TapDetector::tap()'],['../class_multitouch_area.html#ad10f067038cca27820ec0da46630b7ec',1,'MultitouchArea::tap()']]],
-  ['tapandhold',['tapAndHold',['../class_tap_and_hold_detector.html#ac74ae2cad949de85e7983238d1794634',1,'TapAndHoldDetector::tapAndHold()'],['../class_multitouch_area.html#a968c008c352f09cb24486ed8257b0968',1,'MultitouchArea::tapAndHold()']]],
+  ['tap',['tap',['../class_multitouch_area.html#ad10f067038cca27820ec0da46630b7ec',1,'MultitouchArea::tap()'],['../class_tap_detector.html#ac7b0f69cf359dd1a4adadba8e4dd2554',1,'TapDetector::tap()']]],
+  ['tapandhold',['tapAndHold',['../class_multitouch_area.html#a968c008c352f09cb24486ed8257b0968',1,'MultitouchArea::tapAndHold()'],['../class_tap_and_hold_detector.html#ac74ae2cad949de85e7983238d1794634',1,'TapAndHoldDetector::tapAndHold()']]],
   ['tapandholddetector',['TapAndHoldDetector',['../class_tap_and_hold_detector.html',1,'']]],
   ['tapdetector',['TapDetector',['../class_tap_detector.html',1,'']]],
   ['testpattern',['TestPattern',['../class_test_pattern.html',1,'TestPattern'],['../class_test_pattern.html#a0d3c3504086d1a78f7631c65af92a9ac',1,'TestPattern::TestPattern()']]],
@@ -36,6 +36,8 @@ var searchData=
   ['touchpointupdated',['touchPointUpdated',['../class_multitouch_area.html#a59d40a182cea4744da1ce4be5ec75c31',1,'MultitouchArea']]],
   ['touchstarted',['touchStarted',['../class_multitouch_area.html#a9930406bdbbcb1a9ad99f10d691e2313',1,'MultitouchArea']]],
   ['toxmlfile',['toXmlFile',['../namespaceserialization.html#adcd3a4acf763ce23192c136ac0d816d7',1,'serialization']]],
+  ['tracking_5flevel_3c_20std_3a_3achrono_3a_3aduration_3c_20rep_2c_20period_20_3e_20_3e',['tracking_level&lt; std::chrono::duration&lt; Rep, Period &gt; &gt;',['../structboost_1_1serialization_1_1tracking__level_3_01std_1_1chrono_1_1duration_3_01_rep_00_01_period_01_4_01_4.html',1,'boost::serialization']]],
+  ['tracking_5flevel_3c_20std_3a_3achrono_3a_3atime_5fpoint_3c_20c_2c_20d_20_3e_20_3e',['tracking_level&lt; std::chrono::time_point&lt; C, D &gt; &gt;',['../structboost_1_1serialization_1_1tracking__level_3_01std_1_1chrono_1_1time__point_3_01_c_00_01_d_01_4_01_4.html',1,'boost::serialization']]],
   ['trigger',['trigger',['../class_content_action.html#ad38737ffd4ee0b2623f00f0326136df3',1,'ContentAction']]],
   ['triggered',['triggered',['../class_content_action.html#ad53201dc988d6e4aa0ec81e9c820045d',1,'ContentAction']]]
 ];

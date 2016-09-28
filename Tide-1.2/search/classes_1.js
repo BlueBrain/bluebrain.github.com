@@ -15,5 +15,6 @@ var searchData=
   ['contentsynchronizer',['ContentSynchronizer',['../class_content_synchronizer.html',1,'']]],
   ['contentwindow',['ContentWindow',['../class_content_window.html',1,'']]],
   ['contentwindowcontroller',['ContentWindowController',['../class_content_window_controller.html',1,'']]],
+  ['contentwindowlistwidgetitem',['ContentWindowListWidgetItem',['../class_content_window_list_widget_item.html',1,'']]],
   ['coordinates',['Coordinates',['../class_coordinates.html',1,'']]]
 ];

@@ -31,18 +31,18 @@
             <td class="headerValue">Tide</td>
             <td></td>
             <td class="headerItem">Lines:</td>
-            <td class="headerCovTableEntry">45</td>
-            <td class="headerCovTableEntry">48</td>
-            <td class="headerCovTableEntryHi">93.8 %</td>
+            <td class="headerCovTableEntry">52</td>
+            <td class="headerCovTableEntry">55</td>
+            <td class="headerCovTableEntryHi">94.5 %</td>
           </tr>
           <tr>
             <td class="headerItem">Date:</td>
-            <td class="headerValue">2016-09-23 06:21:52</td>
+            <td class="headerValue">2016-09-28 06:27:47</td>
             <td></td>
             <td class="headerItem">Functions:</td>
-            <td class="headerCovTableEntry">17</td>
             <td class="headerCovTableEntry">18</td>
-            <td class="headerCovTableEntryHi">94.4 %</td>
+            <td class="headerCovTableEntry">19</td>
+            <td class="headerCovTableEntryHi">94.7 %</td>
           </tr>
           <tr><td><img src="../glass.png" width=3 height=3 alt=""></td></tr>
         </table>
@@ -102,7 +102,7 @@
 <span class="lineNum">      40 </span>            : #include &quot;LoggingUtility.h&quot;
 <span class="lineNum">      41 </span>            : #include &quot;ContentWindow.h&quot;
 <span class="lineNum">      42 </span>            : 
-<a name="43"><span class="lineNum">      43 </span>            : #include &lt;boost/date_time/posix_time/posix_time.hpp&gt;</a>
+<a name="43"><span class="lineNum">      43 </span>            : #include &lt;chrono&gt;</a>
 <span class="lineNum">      44 </span>            : 
 <span class="lineNum">      45 </span><span class="lineCov">          6 : size_t LoggingUtility::getAccumulatedWindowCount() const</span>
 <span class="lineNum">      46 </span>            : {
@@ -176,19 +176,30 @@
 <span class="lineNum">     114 </span><span class="lineCov">          9 :     ++_windowCounter;</span>
 <a name="115"><span class="lineNum">     115 </span><span class="lineCov">          9 : }</span></a>
 <span class="lineNum">     116 </span>            : 
-<span class="lineNum">     117 </span><span class="lineCov">         25 : QString LoggingUtility::_getTimeStamp() const</span>
+<span class="lineNum">     117 </span><span class="lineCov">         25 : uint _getMilliseconds( std::chrono::system_clock::duration timePoint )</span>
 <span class="lineNum">     118 </span>            : {
-<span class="lineNum">     119 </span>            :     using namespace boost::posix_time;
-<span class="lineNum">     120 </span><span class="lineCov">         25 :     ptime t = microsec_clock::local_time();</span>
-<span class="lineNum">     121 </span><span class="lineCov">         25 :     return QString::fromStdString( to_iso_extended_string( t ));</span>
-<a name="122"><span class="lineNum">     122 </span>            : }</a>
-<span class="lineNum">     123 </span>            : 
-<span class="lineNum">     124 </span><span class="lineCov">         15 : void LoggingUtility::_log( const QString&amp; s )</span>
-<span class="lineNum">     125 </span>            : {
-<span class="lineNum">     126 </span><span class="lineCov">         15 :     _lastInteraction = s;</span>
-<a name="127"><span class="lineNum">     127 </span><span class="lineCov">         15 :     _lastInteractionTime = _getTimeStamp();</span></a>
-<span class="lineNum">     128 </span><span class="lineCov">         15 :     ++_interactionCounter;</span>
-<span class="lineNum">     129 </span><span class="lineCov">         75 : }</span>
+<span class="lineNum">     119 </span><span class="lineCov">         25 :     timePoint -= std::chrono::duration_cast&lt;std::chrono::seconds&gt;( timePoint );</span>
+<span class="lineNum">     120 </span><span class="lineCov">         25 :     return timePoint.count();</span>
+<a name="121"><span class="lineNum">     121 </span>            : }</a>
+<span class="lineNum">     122 </span>            : 
+<span class="lineNum">     123 </span><span class="lineCov">         25 : QString LoggingUtility::_getTimeStamp() const</span>
+<span class="lineNum">     124 </span>            : {
+<span class="lineNum">     125 </span>            :     // ISO extended format: &quot;2016-09-23T10:31:36.776385&quot;
+<span class="lineNum">     126 </span><span class="lineCov">         25 :     const auto now = std::chrono::system_clock::now();</span>
+<span class="lineNum">     127 </span><span class="lineCov">         25 :     std::time_t now_c = std::chrono::system_clock::to_time_t( now );</span>
+<span class="lineNum">     128 </span>            : 
+<span class="lineNum">     129 </span><span class="lineCov">         25 :     std::vector&lt;char&gt; buf( 21 );</span>
+<span class="lineNum">     130 </span><span class="lineCov">         25 :     std::strftime( buf.data(), buf.size(), &quot;%FT%T&quot;, std::localtime( &amp;now_c ));</span>
+<span class="lineNum">     131 </span><span class="lineCov">         25 :     const auto ms = _getMilliseconds( now.time_since_epoch( ));</span>
+<span class="lineNum">     132 </span><span class="lineCov">         25 :     return QString{ buf.data() } + '.' + QString::number( ms ).left( 6 );</span>
+<a name="133"><span class="lineNum">     133 </span>            : }</a>
+<span class="lineNum">     134 </span>            : 
+<span class="lineNum">     135 </span><span class="lineCov">         15 : void LoggingUtility::_log( const QString&amp; s )</span>
+<span class="lineNum">     136 </span>            : {
+<span class="lineNum">     137 </span><span class="lineCov">         15 :     _lastInteraction = s;</span>
+<a name="138"><span class="lineNum">     138 </span><span class="lineCov">         15 :     _lastInteractionTime = _getTimeStamp();</span></a>
+<span class="lineNum">     139 </span><span class="lineCov">         15 :     ++_interactionCounter;</span>
+<span class="lineNum">     140 </span><span class="lineCov">         75 : }</span>
 </pre>
       </td>
     </tr>

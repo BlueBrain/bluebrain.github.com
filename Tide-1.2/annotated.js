@@ -1,5 +1,15 @@
 var annotated =
 [
+    [ "boost", null, [
+      [ "serialization", null, [
+        [ "implementation_level< std::chrono::duration< Rep, Period > >", "structboost_1_1serialization_1_1implementation__level_3_01std_1_1chrono_1_1duration_3_01_rep_00_01_period_01_4_01_4.html", null ],
+        [ "implementation_level< std::chrono::time_point< C, D > >", "structboost_1_1serialization_1_1implementation__level_3_01std_1_1chrono_1_1time__point_3_01_c_00_01_d_01_4_01_4.html", null ],
+        [ "is_bitwise_serializable< std::chrono::duration< Rep, Period > >", "structboost_1_1serialization_1_1is__bitwise__serializable_3_01std_1_1chrono_1_1duration_3_01_rep_00_01_period_01_4_01_4.html", null ],
+        [ "is_bitwise_serializable< std::chrono::time_point< C, D > >", "structboost_1_1serialization_1_1is__bitwise__serializable_3_01std_1_1chrono_1_1time__point_3_01_c_00_01_d_01_4_01_4.html", null ],
+        [ "tracking_level< std::chrono::duration< Rep, Period > >", "structboost_1_1serialization_1_1tracking__level_3_01std_1_1chrono_1_1duration_3_01_rep_00_01_period_01_4_01_4.html", null ],
+        [ "tracking_level< std::chrono::time_point< C, D > >", "structboost_1_1serialization_1_1tracking__level_3_01std_1_1chrono_1_1time__point_3_01_c_00_01_d_01_4_01_4.html", null ]
+      ] ]
+    ] ],
     [ "serialization", "namespaceserialization.html", "namespaceserialization" ],
     [ "tide", null, [
       [ "Version", "classtide_1_1_version.html", "classtide_1_1_version" ]
@@ -21,6 +31,7 @@ var annotated =
     [ "ContentSynchronizer", "class_content_synchronizer.html", "class_content_synchronizer" ],
     [ "ContentWindow", "class_content_window.html", "class_content_window" ],
     [ "ContentWindowController", "class_content_window_controller.html", "class_content_window_controller" ],
+    [ "ContentWindowListWidgetItem", "class_content_window_list_widget_item.html", "class_content_window_list_widget_item" ],
     [ "Coordinates", "class_coordinates.html", "class_coordinates" ],
     [ "DataProvider", "class_data_provider.html", "class_data_provider" ],
     [ "DataSource", "class_data_source.html", "class_data_source" ],

@@ -1,7 +1,7 @@
 var searchData=
 [
-  ['tap',['tap',['../class_tap_detector.html#ac7b0f69cf359dd1a4adadba8e4dd2554',1,'TapDetector::tap()'],['../class_multitouch_area.html#ad10f067038cca27820ec0da46630b7ec',1,'MultitouchArea::tap()']]],
-  ['tapandhold',['tapAndHold',['../class_tap_and_hold_detector.html#ac74ae2cad949de85e7983238d1794634',1,'TapAndHoldDetector::tapAndHold()'],['../class_multitouch_area.html#a968c008c352f09cb24486ed8257b0968',1,'MultitouchArea::tapAndHold()']]],
+  ['tap',['tap',['../class_multitouch_area.html#ad10f067038cca27820ec0da46630b7ec',1,'MultitouchArea::tap()'],['../class_tap_detector.html#ac7b0f69cf359dd1a4adadba8e4dd2554',1,'TapDetector::tap()']]],
+  ['tapandhold',['tapAndHold',['../class_multitouch_area.html#a968c008c352f09cb24486ed8257b0968',1,'MultitouchArea::tapAndHold()'],['../class_tap_and_hold_detector.html#ac74ae2cad949de85e7983238d1794634',1,'TapAndHoldDetector::tapAndHold()']]],
   ['testpattern',['TestPattern',['../class_test_pattern.html#a0d3c3504086d1a78f7631c65af92a9ac',1,'TestPattern']]],
   ['texturecontent',['TextureContent',['../class_texture_content.html#a34ede22c00496d1f2309d56c0bfcf70b',1,'TextureContent']]],
   ['textureready',['textureReady',['../class_tile.html#af4a65319df0b8bf8f04deb7188376b16',1,'Tile']]],

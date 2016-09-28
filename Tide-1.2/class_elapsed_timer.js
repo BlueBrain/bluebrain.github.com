@@ -1,9 +1,9 @@
 var class_elapsed_timer =
 [
+    [ "clock", "class_elapsed_timer.html#a606417825f8b2b4c8362f61ffba81439", null ],
     [ "ElapsedTimer", "class_elapsed_timer.html#a898261990fc2ab88f0ac3c35f0de83d0", null ],
-    [ "getElapsedTime", "class_elapsed_timer.html#a7b19ebb48d1788a3e9d3e505705e21f2", null ],
-    [ "resetTime", "class_elapsed_timer.html#a6559cc2f39064382de5ead5a9673e8e8", null ],
-    [ "setCurrentTime", "class_elapsed_timer.html#a0a3be4fb86ac666df6007078a2c35997", null ],
-    [ "toSeconds", "class_elapsed_timer.html#a28e4acf9ddf9087a057b6187119da998", null ],
-    [ "toTimeDuration", "class_elapsed_timer.html#ae0788970b45bd0a61795805b5f584359", null ]
+    [ "getElapsedTime", "class_elapsed_timer.html#a70049c66c5e335968e85f4750ef0c27e", null ],
+    [ "getElapsedTimeInSeconds", "class_elapsed_timer.html#a2aa629d0e011eaf778695a6b7e44500b", null ],
+    [ "resetTime", "class_elapsed_timer.html#a3dd7ad8a34c58a3651887db99a74d553", null ],
+    [ "setCurrentTime", "class_elapsed_timer.html#a6025f2aeea4e3a12a4197621f58ef053", null ]
 ];
