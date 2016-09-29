@@ -1,6 +1,6 @@
 var classdeflect_1_1_stream =
 [
-    [ "Future", "classdeflect_1_1_stream.html#a4a9e3727dddb1c25d5f8cbaf77a35914", null ],
+    [ "Future", "classdeflect_1_1_stream.html#aa25cb0c6d7205d87aa1f5891afd361da", null ],
     [ "Stream", "classdeflect_1_1_stream.html#a5bef22dd831e886429004e86af59c3ad", null ],
     [ "Stream", "classdeflect_1_1_stream.html#a34c51c546f2c9136c5fa4bd0f886e8ff", null ],
     [ "~Stream", "classdeflect_1_1_stream.html#a3aef9921d1bc59ffea7b2de8cdf2b7e3", null ],
@@ -17,6 +17,6 @@ var classdeflect_1_1_stream =
     [ "send", "classdeflect_1_1_stream.html#a31fd6e85be950b8799f557be71ef787d", null ],
     [ "sendData", "classdeflect_1_1_stream.html#ad4d57fc018a327a553c985ec7de390dc", null ],
     [ "sendSizeHints", "classdeflect_1_1_stream.html#ae580afe8ed6e374789be1b088667e1d9", null ],
-    [ "::Application", "classdeflect_1_1_stream.html#ab2d6819b36f0e9174889b0db0ab35a59", null ],
-    [ "disconnected", "classdeflect_1_1_stream.html#a1021de00de42059139af3808905a54d9", null ]
+    [ "setDisconnectedCallback", "classdeflect_1_1_stream.html#ad2b1ada7a339378121fa11a2e4eb30eb", null ],
+    [ "::Application", "classdeflect_1_1_stream.html#ab2d6819b36f0e9174889b0db0ab35a59", null ]
 ];

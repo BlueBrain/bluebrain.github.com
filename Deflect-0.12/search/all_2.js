@@ -25,7 +25,6 @@ var searchData=
   ['deletepixelstream',['deletePixelStream',['../classdeflect_1_1_frame_dispatcher.html#a179f5bdad5747d863ef0a1146fa45f3d',1,'deflect::FrameDispatcher']]],
   ['deletestream',['deleteStream',['../classdeflect_1_1_frame_dispatcher.html#aaef1c92e79914d6796d570fad2cb262c',1,'deflect::FrameDispatcher']]],
   ['dequeue',['dequeue',['../classdeflect_1_1_m_t_queue.html#af694237052ea1ddc9e1a4ad3c7f7811f',1,'deflect::MTQueue']]],
-  ['disconnected',['disconnected',['../classdeflect_1_1_stream.html#a1021de00de42059139af3808905a54d9',1,'deflect::Stream']]],
   ['dx',['dx',['../structdeflect_1_1_event.html#a16b046b14e8d6f66685cc3db5f669f7d',1,'deflect::Event']]],
   ['dy',['dy',['../structdeflect_1_1_event.html#a2a2dcc09ecccae9283d91290b2e33ced',1,'deflect::Event']]]
 ];
