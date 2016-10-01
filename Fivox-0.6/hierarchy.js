@@ -16,6 +16,7 @@ var hierarchy =
       [ "fivox::TestLoader", "classfivox_1_1_test_loader.html", null ],
       [ "fivox::VSDLoader", "classfivox_1_1_v_s_d_loader.html", null ]
     ] ],
+    [ "fivox::ScaleFilter< TImage >", "classfivox_1_1_scale_filter.html", null ],
     [ "fivox::URIHandler", "classfivox_1_1_u_r_i_handler.html", null ],
     [ "fivox::Version", "classfivox_1_1_version.html", null ],
     [ "Command", null, [
@@ -23,7 +24,10 @@ var hierarchy =
     ] ],
     [ "itk::Image< typename, unsigned >", "classitk_1_1_image.html", null ],
     [ "ImageSource", null, [
-      [ "fivox::ImageSource< TImage >", "classfivox_1_1_image_source.html", null ]
+      [ "fivox::ImageSource< TImage >", "classfivox_1_1_image_source.html", [
+        [ "fivox::EventValueSummationImageSource< TImage >", "classfivox_1_1_event_value_summation_image_source.html", null ],
+        [ "fivox::FunctorImageSource< TImage >", "classfivox_1_1_functor_image_source.html", null ]
+      ] ]
     ] ],
     [ "itk::SmartPointer< typename >", "classitk_1_1_smart_pointer.html", null ],
     [ "itk::SmartPointer< ProgressObserver >", "classitk_1_1_smart_pointer.html", null ]
