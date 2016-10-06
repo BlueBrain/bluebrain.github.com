@@ -10,7 +10,6 @@ var files =
     [ "Histogram.h", "_histogram_8h_source.html", null ],
     [ "LODNode.h", "_l_o_d_node_8h_source.html", null ],
     [ "lunchboxTypes.h", "lunchbox_types_8h_source.html", null ],
-    [ "mathTypes.h", "math_types_8h_source.html", null ],
     [ "MemoryUnit.h", "_memory_unit_8h_source.html", null ],
     [ "NodeId.h", "_node_id_8h_source.html", null ],
     [ "types.h", "types_8h_source.html", null ],
