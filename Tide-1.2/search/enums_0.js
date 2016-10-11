@@ -1,4 +1,4 @@
 var searchData=
 [
-  ['interaction',['Interaction',['../class_content.html#a696d2c945254b9d37928253bc5159cc6',1,'Content']]]
+  ['coordinates',['Coordinates',['../class_content_window_controller.html#a8c5180701a60b6c4c3761cc9feca6c50',1,'ContentWindowController']]]
 ];

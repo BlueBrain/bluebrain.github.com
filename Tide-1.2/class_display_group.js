@@ -13,6 +13,7 @@ var class_display_group =
     [ "getContentWindow", "class_display_group.html#a1b578c1cd18a8b8c8fe637de45b4302b", null ],
     [ "getContentWindows", "class_display_group.html#aa1940079d2bc1464f59e38c52ac1bffb", null ],
     [ "getFocusedWindows", "class_display_group.html#ad34ce28749abdf4530486c499c84cc9c", null ],
+    [ "getFullscreenWindow", "class_display_group.html#a546ce6735b26922e50a0bba874d6ad16", null ],
     [ "getShowWindowTitles", "class_display_group.html#a1da05076e3571e8efd80f40e99973abc", null ],
     [ "getZindex", "class_display_group.html#a337d8975b3c7815be8b574faf2b77c84", null ],
     [ "hasFocusedWindows", "class_display_group.html#a24a30aa05f0ca717c9b559aed1b6c50d", null ],
@@ -32,6 +33,7 @@ var class_display_group =
     [ "unfocus", "class_display_group.html#af09535f73c71da284b767b32e293d2e8", null ],
     [ "unfocusAll", "class_display_group.html#a7de33cf817c38e2ca511bf2426c6d24a", null ],
     [ "boost::serialization::access", "class_display_group.html#ac98d07dd8f7b70e16ccb9a01abf56b9c", null ],
+    [ "fullscreenWindow", "class_display_group.html#ac897b2d9af33f3b7675e3cc402183da8", null ],
     [ "hasFocusedWindows", "class_display_group.html#aceecd49371e6d1e7dd02aa4106631213", null ],
     [ "hasFullscreenWindows", "class_display_group.html#abad1ce28d34b9410b59819d184b6ce38", null ]
 ];

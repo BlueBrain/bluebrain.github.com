@@ -14,7 +14,7 @@ var searchData=
   ['pinch',['pinch',['../class_multitouch_area.html#aebe0754fc96dc5e04b66a398234ac497',1,'MultitouchArea::pinch()'],['../class_pinch_detector.html#a766674038d1b18e44ee08cd9579fc27c',1,'PinchDetector::pinch()']]],
   ['pinchended',['pinchEnded',['../class_multitouch_area.html#abba7bbdd185bc021830935a4874b4bcc',1,'MultitouchArea::pinchEnded()'],['../class_pinch_detector.html#abb6bb84b407c3531308968fd8bfab3f8',1,'PinchDetector::pinchEnded()']]],
   ['pinchstarted',['pinchStarted',['../class_multitouch_area.html#a9c989dba8fdecc040c302dcc76e53972',1,'MultitouchArea::pinchStarted()'],['../class_pinch_detector.html#afc5779ca07f5afc4338625e1ac8b35d3',1,'PinchDetector::pinchStarted()']]],
-  ['pixelstreamcontent',['PixelStreamContent',['../class_pixel_stream_content.html#a2a0d5fbde3ac80753ad2e3e42a07327e',1,'PixelStreamContent']]],
+  ['pixelstreamcontent',['PixelStreamContent',['../class_pixel_stream_content.html#a3816d288d9e81f668bd868a4a999c8ce',1,'PixelStreamContent']]],
   ['pixelstreamer',['PixelStreamer',['../class_pixel_streamer.html#ac397a643a355ec36446edb8a55e52c81',1,'PixelStreamer']]],
   ['pixelstreamerlauncher',['PixelStreamerLauncher',['../class_pixel_streamer_launcher.html#aa6afe5831da8128c53d47b7527c0f332',1,'PixelStreamerLauncher']]],
   ['pixelstreaminteractiondelegate',['PixelStreamInteractionDelegate',['../class_pixel_stream_interaction_delegate.html#a4fe0211dc870c9fb9ef30e15a55d86dd',1,'PixelStreamInteractionDelegate']]],

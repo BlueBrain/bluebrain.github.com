@@ -1,5 +1,9 @@
 var NAVTREEINDEX5 =
 {
+"class_tap_detector.html":[6,0,113],
+"class_tap_detector.html#a0fffa4721814267098f5dcd40cb72f75":[6,0,113,1],
+"class_tap_detector.html#a684838bce8ce50470702b841fd3e06f9":[6,0,113,2],
+"class_tap_detector.html#aa04c0160f9b9c54047656e3c2b6336cc":[6,0,113,4],
 "class_tap_detector.html#ac7b0f69cf359dd1a4adadba8e4dd2554":[6,0,113,3],
 "class_tap_detector.html#ae0c52ca352dddfb8ad0aab35781cb27a":[6,0,113,0],
 "class_test_pattern.html":[6,0,114],
@@ -224,8 +228,8 @@ var NAVTREEINDEX5 =
 "classes.html":[6,1],
 "classtide_1_1_version.html":[6,0,2,0],
 "classtide_1_1_version.html#a5ac34234a70f79244282a4ddb09a2ac9":[6,0,2,0,16],
-"classtide_1_1_version.html#a5ac34234a70f79244282a4ddb09a2ac9":[6,0,2,0,17],
 "classtide_1_1_version.html#a5ac34234a70f79244282a4ddb09a2ac9":[6,0,2,0,15],
+"classtide_1_1_version.html#a5ac34234a70f79244282a4ddb09a2ac9":[6,0,2,0,17],
 "classtide_1_1_version.html#a667071293731b328a5c44b574e794680":[6,0,2,0,20],
 "classtide_1_1_version.html#a667071293731b328a5c44b574e794680":[6,0,2,0,18],
 "classtide_1_1_version.html#a667071293731b328a5c44b574e794680":[6,0,2,0,19],
@@ -235,19 +239,15 @@ var NAVTREEINDEX5 =
 "classtide_1_1_version.html#a803e009bd02d601bc708e9ac276e16f1":[6,0,2,0,21],
 "classtide_1_1_version.html#a803e009bd02d601bc708e9ac276e16f1":[6,0,2,0,22],
 "classtide_1_1_version.html#a803e009bd02d601bc708e9ac276e16f1":[6,0,2,0,23],
+"classtide_1_1_version.html#a8839ec9495649dc52b6f1cbc3e6e48f8":[6,0,2,0,6],
 "classtide_1_1_version.html#a8839ec9495649dc52b6f1cbc3e6e48f8":[6,0,2,0,8],
 "classtide_1_1_version.html#a8839ec9495649dc52b6f1cbc3e6e48f8":[6,0,2,0,7],
-"classtide_1_1_version.html#a8839ec9495649dc52b6f1cbc3e6e48f8":[6,0,2,0,6],
-"classtide_1_1_version.html#ac9dd21fa66e56caa86f6a41dcbca2ba4":[6,0,2,0,13],
 "classtide_1_1_version.html#ac9dd21fa66e56caa86f6a41dcbca2ba4":[6,0,2,0,12],
+"classtide_1_1_version.html#ac9dd21fa66e56caa86f6a41dcbca2ba4":[6,0,2,0,13],
 "classtide_1_1_version.html#ac9dd21fa66e56caa86f6a41dcbca2ba4":[6,0,2,0,14],
-"classtide_1_1_version.html#ae38ec59f6d1c305d5737a21e3e574394":[6,0,2,0,10],
 "classtide_1_1_version.html#ae38ec59f6d1c305d5737a21e3e574394":[6,0,2,0,11],
 "classtide_1_1_version.html#ae38ec59f6d1c305d5737a21e3e574394":[6,0,2,0,9],
-"classtide_1_1_version.html#afdf47bdc2db574072947ff605eb4afc6":[6,0,2,0,5],
+"classtide_1_1_version.html#ae38ec59f6d1c305d5737a21e3e574394":[6,0,2,0,10],
 "classtide_1_1_version.html#afdf47bdc2db574072947ff605eb4afc6":[6,0,2,0,4],
-"classtide_1_1_version.html#afdf47bdc2db574072947ff605eb4afc6":[6,0,2,0,3],
-"core_2_qml_type_registration_8h_source.html":[7,0,98],
-"core_2api_8h.html":[7,0,0],
-"core_2api_8h.html#a16ab85396255bfafad525acdef382d84":[7,0,0,0]
+"classtide_1_1_version.html#afdf47bdc2db574072947ff605eb4afc6":[6,0,2,0,3]
 };

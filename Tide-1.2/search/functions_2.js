@@ -21,6 +21,7 @@ var searchData=
   ['contentsynchronizer',['ContentSynchronizer',['../class_content_synchronizer.html#aa9b57c8a735fbfb9b35e3e79d9ac9682',1,'ContentSynchronizer']]],
   ['contentwindow',['ContentWindow',['../class_content_window.html#a318b342ac7fd8854094dfa617da0a3e6',1,'ContentWindow']]],
   ['contentwindowadded',['contentWindowAdded',['../class_display_group.html#a7d776c2d2ae02dcbd1a0011446a1c5de',1,'DisplayGroup::contentWindowAdded()'],['../class_logging_utility.html#a1faa262f91ad9d25c894ace63ab1524a',1,'LoggingUtility::contentWindowAdded()']]],
+  ['contentwindowcontroller',['ContentWindowController',['../class_content_window_controller.html#ae1fbfcee523c0afabeaf40a27ea13b86',1,'ContentWindowController']]],
   ['contentwindowlistwidgetitem',['ContentWindowListWidgetItem',['../class_content_window_list_widget_item.html#a83d146b721c8b4e3178050541a94ae62',1,'ContentWindowListWidgetItem']]],
   ['contentwindowmovedtofront',['contentWindowMovedToFront',['../class_display_group.html#a018a418c963074c2fee79896c327e950',1,'DisplayGroup::contentWindowMovedToFront()'],['../class_logging_utility.html#a819c7cd03f7243347c64cabf190a359e',1,'LoggingUtility::contentWindowMovedToFront()']]],
   ['contentwindowremoved',['contentWindowRemoved',['../class_display_group.html#a2901850c2b9893e2c3826cbdf6b1795a',1,'DisplayGroup::contentWindowRemoved()'],['../class_logging_utility.html#a1b4961ce92b0464015f357b87fa25f1c',1,'LoggingUtility::contentWindowRemoved()']]],

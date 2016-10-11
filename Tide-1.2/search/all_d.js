@@ -12,6 +12,7 @@ var searchData=
   ['mathutils',['MathUtils',['../namespace_math_utils.html',1,'']]],
   ['message',['message',['../struct_probe_result.html#af15554a30e968ef7341d18a786899f95',1,'ProbeResult']]],
   ['modified',['modified',['../class_content.html#a44c022cb6fed6fb1b0dff45e39ececb9',1,'Content::modified()'],['../class_content_window.html#a32931ee8f5106d270e959e998b34d14c',1,'ContentWindow::modified()'],['../class_display_group.html#a2d45f47c71869da3799d9e1c88274cbd',1,'DisplayGroup::modified()'],['../class_keyboard_state.html#abff446f04460e5c3e5aa337591d33648',1,'KeyboardState::modified()']]],
+  ['moveby',['moveBy',['../class_content_window_controller.html#abad60234268169b77d29628b562a1151',1,'ContentWindowController']]],
   ['movecenterto',['moveCenterTo',['../class_content_window_controller.html#ab5311fc946d3a957af4447c1be37a8e0',1,'ContentWindowController']]],
   ['movecontentwindowtofront',['moveContentWindowToFront',['../class_display_group.html#ac9fdb362fa9fe16bcb43f4d438815537',1,'DisplayGroup::moveContentWindowToFront(QUuid id)'],['../class_display_group.html#a426a5219ee17a10f991dad5f2f35a21e',1,'DisplayGroup::moveContentWindowToFront(ContentWindowPtr contentWindow)']]],
   ['moveto',['moveTo',['../class_content_window_controller.html#ac675e17bebe6711f1f35e0a8e499756e',1,'ContentWindowController']]],

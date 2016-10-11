@@ -1,5 +1,9 @@
 var NAVTREEINDEX4 =
 {
+"class_pan_detector.html#a461bee1b4e840d9681973ace0b48f4ba":[6,0,70,8],
+"class_pan_detector.html#a4da6121099455abfc6d57991fa082a5e":[6,0,70,7],
+"class_pan_detector.html#a7a5d23b0c0eb1ca4d6860909a317ef2c":[6,0,70,4],
+"class_pan_detector.html#a8be95bf11be396bfcff018ddcb56858f":[6,0,70,1],
 "class_pan_detector.html#ad1d7437a2c54953cec3bb15471a209b5":[6,0,70,0],
 "class_pan_detector.html#aef95826cbe45a9f564ac123164b4e5e0":[6,0,70,9],
 "class_pinch_detector.html":[6,0,76],
@@ -13,12 +17,12 @@ var NAVTREEINDEX4 =
 "class_pixel_stream_content.html":[6,0,77],
 "class_pixel_stream_content.html#a0e40610bb7d62536fcce4a31f268098e":[6,0,77,4],
 "class_pixel_stream_content.html#a1da19d9ae276ac73c4a966a7b2505b34":[6,0,77,3],
-"class_pixel_stream_content.html#a2a0d5fbde3ac80753ad2e3e42a07327e":[6,0,77,0],
+"class_pixel_stream_content.html#a3816d288d9e81f668bd868a4a999c8ce":[6,0,77,0],
 "class_pixel_stream_content.html#a5109f320daef0181de2110d271cd545c":[6,0,77,5],
 "class_pixel_stream_content.html#aaeecac84283680ea0ead807c2006e1d7":[6,0,77,6],
 "class_pixel_stream_content.html#ac98d07dd8f7b70e16ccb9a01abf56b9c":[6,0,77,8],
+"class_pixel_stream_content.html#ad6f757d8bf09e8bd9b31564167557083":[6,0,77,1],
 "class_pixel_stream_content.html#ad9c2f1c69fded0c63eecf35a9bdabd84":[6,0,77,2],
-"class_pixel_stream_content.html#adaafb5c36d58bbf114c2736dd382a4a6":[6,0,77,1],
 "class_pixel_stream_content.html#af1fde82b270db2ed217ec6542924c3e4":[6,0,77,7],
 "class_pixel_stream_interaction_delegate.html":[6,0,81],
 "class_pixel_stream_interaction_delegate.html#a009ed76031da7235dc546fe54777d1fe":[6,0,81,4],
@@ -245,9 +249,5 @@ var NAVTREEINDEX4 =
 "class_tap_and_hold_detector.html#aa4648a961407d0a817aa45ef199945a0":[6,0,112,2],
 "class_tap_and_hold_detector.html#ac74ae2cad949de85e7983238d1794634":[6,0,112,3],
 "class_tap_and_hold_detector.html#ae4e49cfcba0244556e3d300a5fa98709":[6,0,112,4],
-"class_tap_and_hold_detector.html#aecf84a59877ede48f1b8ab9b6740d79c":[6,0,112,0],
-"class_tap_detector.html":[6,0,113],
-"class_tap_detector.html#a0fffa4721814267098f5dcd40cb72f75":[6,0,113,1],
-"class_tap_detector.html#a684838bce8ce50470702b841fd3e06f9":[6,0,113,2],
-"class_tap_detector.html#aa04c0160f9b9c54047656e3c2b6336cc":[6,0,113,4]
+"class_tap_and_hold_detector.html#aecf84a59877ede48f1b8ab9b6740d79c":[6,0,112,0]
 };
