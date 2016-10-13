@@ -1,15 +1,16 @@
 var searchData=
 [
   ['getabi',['getABI',['../classfivox_1_1_version.html#a6d258bd9a6a01c5f9e4ebe4f7fb19f80',1,'fivox::Version::getABI()'],['../classfivox_1_1_version.html#a6d258bd9a6a01c5f9e4ebe4f7fb19f80',1,'fivox::Version::getABI()']]],
-  ['getattenuation',['getAttenuation',['../classfivox_1_1_attenuation_curve.html#ae2a9b590f60531cae1d7e5844bf6d77c',1,'fivox::AttenuationCurve']]],
+  ['getareas',['getAreas',['../classfivox_1_1_u_r_i_handler.html#a1db2cc9dd1163e84084c1ca71c36ef78',1,'fivox::URIHandler']]],
+  ['getattenuation',['getAttenuation',['../classfivox_1_1_attenuation_curve.html#a548ea76dc5f2ff2ae158fcdc95c3a025',1,'fivox::AttenuationCurve']]],
   ['getboundingbox',['getBoundingBox',['../classfivox_1_1_event_source.html#a36cd3f9e13e20bbebfd84a08116234ea',1,'fivox::EventSource::getBoundingBox()'],['../classfivox_1_1_image_source.html#ad7c53efb6a48637b9dfff113119effd9',1,'fivox::ImageSource::getBoundingBox()']]],
+  ['getboundingboxsomas',['getBoundingBoxSomas',['../classfivox_1_1_v_s_d_loader.html#afe556c63153c1b2d5644509e486f905e',1,'fivox::VSDLoader']]],
   ['getconfig',['getConfig',['../classfivox_1_1_u_r_i_handler.html#a0fdb8fe8f1c4d024d547144893bc7dae',1,'fivox::URIHandler']]],
   ['getcurrenttime',['getCurrentTime',['../classfivox_1_1_event_source.html#af6dbbe8f044ddb142f2fbc1cb75b83e2',1,'fivox::EventSource']]],
   ['getcutoffdistance',['getCutOffDistance',['../classfivox_1_1_event_source.html#a134f842c23cde45681f2e154a3e3498c',1,'fivox::EventSource::getCutOffDistance()'],['../classfivox_1_1_u_r_i_handler.html#a708bdf0a86741e5a715c3235c47e50bc',1,'fivox::URIHandler::getCutoffDistance()']]],
   ['getdescription',['getDescription',['../classfivox_1_1_u_r_i_handler.html#a53abfe174aae35fefce65ad5010f2500',1,'fivox::URIHandler']]],
   ['getdt',['getDt',['../classfivox_1_1_event_source.html#a8b0b9afd1cd85d9ca7d12cd81dea02fc',1,'fivox::EventSource::getDt()'],['../classfivox_1_1_u_r_i_handler.html#a0cf08598c30cf1df02634b4a4a2aa776',1,'fivox::URIHandler::getDt()']]],
   ['getduration',['getDuration',['../classfivox_1_1_u_r_i_handler.html#acae4cf6c1736a55ec44a119eb4f89a97',1,'fivox::URIHandler']]],
-  ['getdyecurve',['getDyeCurve',['../classfivox_1_1_u_r_i_handler.html#af3392e9096cea586d758b44ba8bc194e',1,'fivox::URIHandler']]],
   ['geteventsource',['getEventSource',['../classfivox_1_1_image_source.html#a9c18d6e34788517cd492eae9f004e6dd',1,'fivox::ImageSource']]],
   ['getextenddistance',['getExtendDistance',['../classfivox_1_1_u_r_i_handler.html#a03c056ea9813556d5e49492f894811ce',1,'fivox::URIHandler']]],
   ['getframerange',['getFrameRange',['../classfivox_1_1_event_source.html#aef0553017c50ba4f338c986252940c9d',1,'fivox::EventSource']]],

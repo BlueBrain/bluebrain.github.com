@@ -2,12 +2,12 @@ var classfivox_1_1_u_r_i_handler =
 [
     [ "URIHandler", "classfivox_1_1_u_r_i_handler.html#a7f206af2931241f63ab8cb5dfcd513c0", null ],
     [ "~URIHandler", "classfivox_1_1_u_r_i_handler.html#a54e53bdbffa6cbe9ff8b11d65bfed0f2", null ],
+    [ "getAreas", "classfivox_1_1_u_r_i_handler.html#a1db2cc9dd1163e84084c1ca71c36ef78", null ],
     [ "getConfig", "classfivox_1_1_u_r_i_handler.html#a0fdb8fe8f1c4d024d547144893bc7dae", null ],
     [ "getCutoffDistance", "classfivox_1_1_u_r_i_handler.html#a708bdf0a86741e5a715c3235c47e50bc", null ],
     [ "getDescription", "classfivox_1_1_u_r_i_handler.html#a53abfe174aae35fefce65ad5010f2500", null ],
     [ "getDt", "classfivox_1_1_u_r_i_handler.html#a0cf08598c30cf1df02634b4a4a2aa776", null ],
     [ "getDuration", "classfivox_1_1_u_r_i_handler.html#acae4cf6c1736a55ec44a119eb4f89a97", null ],
-    [ "getDyeCurve", "classfivox_1_1_u_r_i_handler.html#af3392e9096cea586d758b44ba8bc194e", null ],
     [ "getExtendDistance", "classfivox_1_1_u_r_i_handler.html#a03c056ea9813556d5e49492f894811ce", null ],
     [ "getFunctorType", "classfivox_1_1_u_r_i_handler.html#aebf008427ee3f0db8977d93777b80b6b", null ],
     [ "getGIDs", "classfivox_1_1_u_r_i_handler.html#a7d33cf6c62be950ad8ef15cb78ea6ad5", null ],

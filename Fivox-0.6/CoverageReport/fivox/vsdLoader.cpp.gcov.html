@@ -31,18 +31,18 @@
             <td class="headerValue">Fivox</td>
             <td></td>
             <td class="headerItem">Lines:</td>
-            <td class="headerCovTableEntry">1</td>
-            <td class="headerCovTableEntry">46</td>
-            <td class="headerCovTableEntryLo">2.2 %</td>
+            <td class="headerCovTableEntry">42</td>
+            <td class="headerCovTableEntry">65</td>
+            <td class="headerCovTableEntryMed">64.6 %</td>
           </tr>
           <tr>
             <td class="headerItem">Date:</td>
-            <td class="headerValue">2016-10-06 05:13:35</td>
+            <td class="headerValue">2016-10-13 05:12:13</td>
             <td></td>
             <td class="headerItem">Functions:</td>
-            <td class="headerCovTableEntry">2</td>
-            <td class="headerCovTableEntry">13</td>
-            <td class="headerCovTableEntryLo">15.4 %</td>
+            <td class="headerCovTableEntry">10</td>
+            <td class="headerCovTableEntry">18</td>
+            <td class="headerCovTableEntryMed">55.6 %</td>
           </tr>
           <tr><td><img src="../glass.png" width=3 height=3 alt=""></td></tr>
         </table>
@@ -93,99 +93,148 @@
 <span class="lineNum">      31 </span>            : #include &lt;brain/neuron/section.h&gt;
 <span class="lineNum">      32 </span>            : #include &lt;brain/neuron/soma.h&gt;
 <span class="lineNum">      33 </span>            : 
-<span class="lineNum">      34 </span>            : #include &lt;cassert&gt;
-<span class="lineNum">      35 </span>            : 
-<span class="lineNum">      36 </span>            : namespace fivox
-<a name="37"><span class="lineNum">      37 </span>            : {</a>
-<span class="lineNum">      38 </span>            : 
-<span class="lineNum">      39 </span><span class="lineNoCov">          0 : class VSDLoader::Impl</span>
-<a name="40"><span class="lineNum">      40 </span>            : {</a>
-<span class="lineNum">      41 </span>            : public:
-<span class="lineNum">      42 </span><span class="lineNoCov">          0 :     Impl( EventSource&amp; output, const URIHandler&amp; params )</span>
-<span class="lineNum">      43 </span>            :         : _output( output )
-<span class="lineNum">      44 </span><span class="lineNoCov">          0 :         , _voltageReport( params.getConfig().getReportSource( params.getReport( )),</span>
-<span class="lineNum">      45 </span><span class="lineNoCov">          0 :                           brion::MODE_READ, params.getGIDs( ))</span>
-<span class="lineNum">      46 </span><span class="lineNoCov">          0 :         , _areaReport( params.getConfig().getReportSource( &quot;areas&quot; ),</span>
-<span class="lineNum">      47 </span><span class="lineNoCov">          0 :                        brion::MODE_READ, params.getGIDs( ))</span>
-<span class="lineNum">      48 </span>            :     {
-<span class="lineNum">      49 </span><span class="lineNoCov">          0 :         const brain::Circuit circuit( params.getConfig( ));</span>
-<span class="lineNum">      50 </span>            :         const auto morphologies = circuit.loadMorphologies(
-<span class="lineNum">      51 </span><span class="lineNoCov">          0 :             params.getGIDs(), brain::Circuit::Coordinates::global );</span>
-<span class="lineNum">      52 </span>            : 
-<span class="lineNum">      53 </span><span class="lineNoCov">          0 :         _areas = _areaReport.loadFrame( 0.f );</span>
-<span class="lineNum">      54 </span><span class="lineNoCov">          0 :         if( !_areas )</span>
-<span class="lineNum">      55 </span><span class="lineNoCov">          0 :             LBTHROW( std::runtime_error( &quot;Can't load 'areas' vsd report&quot; ));</span>
-<span class="lineNum">      56 </span>            : 
-<span class="lineNum">      57 </span><span class="lineNoCov">          0 :         helpers::addCompartmentEvents( morphologies, _voltageReport, output );</span>
-<span class="lineNum">      58 </span>            : 
-<span class="lineNum">      59 </span><span class="lineNoCov">          0 :         const float thickness = _output.getBoundingBox().getSize()[1];</span>
-<span class="lineNum">      60 </span><span class="lineNoCov">          0 :         setCurve( AttenuationCurve( params.getDyeCurve(), thickness ));</span>
-<a name="61"><span class="lineNum">      61 </span><span class="lineNoCov">          0 :     }</span></a>
-<span class="lineNum">      62 </span>            : 
-<span class="lineNum">      63 </span><span class="lineNoCov">          0 :     ssize_t load()</span>
-<span class="lineNum">      64 </span>            :     {
-<span class="lineNum">      65 </span>            :         brion::floatsPtr voltages =
-<span class="lineNum">      66 </span><span class="lineNoCov">          0 :                 _voltageReport.loadFrame( _output.getCurrentTime( ));</span>
-<span class="lineNum">      67 </span><span class="lineNoCov">          0 :         if( !voltages )</span>
-<span class="lineNum">      68 </span><span class="lineNoCov">          0 :             return -1;</span>
-<span class="lineNum">      69 </span>            : 
-<span class="lineNum">      70 </span><span class="lineNoCov">          0 :         const float yMax = _output.getBoundingBox().getMax()[1];</span>
-<span class="lineNum">      71 </span>            : 
-<span class="lineNum">      72 </span><span class="lineNoCov">          0 :         assert( voltages-&gt;size() == _areas-&gt;size( ));</span>
-<span class="lineNum">      73 </span><span class="lineNoCov">          0 :         for( size_t i = 0; i != voltages-&gt;size( ); ++i )</span>
-<span class="lineNum">      74 </span><span class="lineNoCov">          0 :             _updateEventValue( i, ( *voltages )[i], ( *_areas )[i], yMax );</span>
-<span class="lineNum">      75 </span>            : 
-<span class="lineNum">      76 </span><span class="lineNoCov">          0 :         return voltages-&gt;size();</span>
-<a name="77"><span class="lineNum">      77 </span>            :     }</a>
-<span class="lineNum">      78 </span>            : 
-<span class="lineNum">      79 </span><span class="lineNoCov">          0 :     void setCurve( const AttenuationCurve&amp; curve ) { _curve = curve; }</span>
-<span class="lineNum">      80 </span>            : 
-<span class="lineNum">      81 </span>            :     EventSource&amp; _output;
-<span class="lineNum">      82 </span>            : 
-<span class="lineNum">      83 </span>            :     brion::CompartmentReport _voltageReport;
-<span class="lineNum">      84 </span>            :     brion::CompartmentReport _areaReport;
-<span class="lineNum">      85 </span>            :     brion::floatsPtr _areas;
-<span class="lineNum">      86 </span>            : 
-<a name="87"><span class="lineNum">      87 </span>            :     AttenuationCurve _curve;</a>
-<span class="lineNum">      88 </span>            : 
-<span class="lineNum">      89 </span><span class="lineNoCov">          0 :     void _updateEventValue( const size_t index, const float voltage,</span>
-<span class="lineNum">      90 </span>            :                             const float area, const float yMax )
-<span class="lineNum">      91 </span>            :     {
-<span class="lineNum">      92 </span><span class="lineNoCov">          0 :         const float positionY = _output.getPositionsY()[index];</span>
-<span class="lineNum">      93 </span><span class="lineNoCov">          0 :         const float depth = yMax - positionY;</span>
-<span class="lineNum">      94 </span><span class="lineNoCov">          0 :         _output[index] = voltage * area * _curve.getAttenuation( depth );</span>
-<span class="lineNum">      95 </span><span class="lineNoCov">          0 :     }</span>
-<a name="96"><span class="lineNum">      96 </span>            : };</a>
-<span class="lineNum">      97 </span>            : 
-<span class="lineNum">      98 </span><span class="lineNoCov">          0 : VSDLoader::VSDLoader( const URIHandler&amp; params )</span>
-<span class="lineNum">      99 </span>            :     : EventSource( params )
-<span class="lineNum">     100 </span><span class="lineNoCov">          0 :     , _impl( new VSDLoader::Impl( *this, params ))</span>
-<span class="lineNum">     101 </span>            : {
-<span class="lineNum">     102 </span><span class="lineNoCov">          0 :     if( getDt() &lt; 0.f )</span>
-<span class="lineNum">     103 </span><span class="lineNoCov">          0 :         setDt( _impl-&gt;_voltageReport.getTimestep( ));</span>
-<a name="104"><span class="lineNum">     104 </span><span class="lineNoCov">          0 : }</span></a>
-<span class="lineNum">     105 </span>            : 
-<span class="lineNum">     106 </span><span class="lineNoCov">          0 : VSDLoader::~VSDLoader()</span>
-<a name="107"><span class="lineNum">     107 </span><span class="lineNoCov">          0 : {}</span></a>
-<span class="lineNum">     108 </span>            : 
-<span class="lineNum">     109 </span><span class="lineNoCov">          0 : void VSDLoader::setCurve( const AttenuationCurve&amp; curve )</span>
-<span class="lineNum">     110 </span>            : {
-<span class="lineNum">     111 </span><span class="lineNoCov">          0 :     _impl-&gt;setCurve( curve );</span>
-<a name="112"><span class="lineNum">     112 </span><span class="lineNoCov">          0 : }</span></a>
-<span class="lineNum">     113 </span>            : 
-<span class="lineNum">     114 </span><span class="lineNoCov">          0 : Vector2f VSDLoader::_getTimeRange() const</span>
-<span class="lineNum">     115 </span>            : {
-<span class="lineNum">     116 </span><span class="lineNoCov">          0 :     return Vector2f( _impl-&gt;_voltageReport.getStartTime(),</span>
-<span class="lineNum">     117 </span><span class="lineNoCov">          0 :                      _impl-&gt;_voltageReport.getEndTime( ));</span>
-<a name="118"><span class="lineNum">     118 </span>            : }</a>
-<span class="lineNum">     119 </span>            : 
-<span class="lineNum">     120 </span><span class="lineNoCov">          0 : ssize_t VSDLoader::_load( const size_t /*chunkIndex*/,</span>
-<span class="lineNum">     121 </span>            :                           const size_t /*numChunks*/ )
-<span class="lineNum">     122 </span>            : {
-<span class="lineNum">     123 </span><span class="lineNoCov">          0 :     return _impl-&gt;load();</span>
-<a name="124"><span class="lineNum">     124 </span>            : }</a>
-<span class="lineNum">     125 </span>            : 
-<span class="lineNum">     126 </span><span class="lineCov">         15 : }</span>
+<span class="lineNum">      34 </span>            : #include &lt;fstream&gt;
+<span class="lineNum">      35 </span>            : #include &lt;cassert&gt;
+<span class="lineNum">      36 </span>            : 
+<span class="lineNum">      37 </span>            : namespace fivox
+<a name="38"><span class="lineNum">      38 </span>            : {</a>
+<span class="lineNum">      39 </span>            : 
+<span class="lineNum">      40 </span><span class="lineCov">          2 : class VSDLoader::Impl</span>
+<a name="41"><span class="lineNum">      41 </span>            : {</a>
+<span class="lineNum">      42 </span>            : public:
+<span class="lineNum">      43 </span><span class="lineCov">          2 :     Impl( EventSource&amp; output, const URIHandler&amp; params )</span>
+<span class="lineNum">      44 </span>            :         : _output( output )
+<span class="lineNum">      45 </span><span class="lineCov">          2 :         , _circuit( params.getConfig( ))</span>
+<span class="lineNum">      46 </span><span class="lineCov">          2 :         , _gids( params.getGIDs( ))</span>
+<span class="lineNum">      47 </span><span class="lineCov">          2 :         , _voltageReport( params.getConfig().getReportSource( params.getReport( )),</span>
+<span class="lineNum">      48 </span>            :                           brion::MODE_READ, _gids )
+<span class="lineNum">      49 </span>            :         , _areaReport( URI( params.getAreas( )), brion::MODE_READ, _gids )
+<span class="lineNum">      50 </span>            :         , _restingPotential( 0.f )
+<span class="lineNum">      51 </span>            :         , _areaMultiplier( 0.f )
+<span class="lineNum">      52 </span>            :         , _spikeFilter( false )
+<span class="lineNum">      53 </span>            :         , _apThreshold( 0.f )
+<span class="lineNum">      54 </span><span class="lineCov">          8 :         , _interpolate( false )</span>
+<span class="lineNum">      55 </span>            :     {
+<span class="lineNum">      56 </span><span class="lineCov">          2 :         LBINFO &lt;&lt; &quot;Loading &quot; &lt;&lt; _gids.size() &lt;&lt; &quot; morphologies...&quot; &lt;&lt; std::endl;</span>
+<span class="lineNum">      57 </span>            :         const auto morphologies = _circuit.loadMorphologies(
+<span class="lineNum">      58 </span><span class="lineCov">          2 :             _gids, brain::Circuit::Coordinates::global );</span>
+<span class="lineNum">      59 </span>            : 
+<span class="lineNum">      60 </span><span class="lineCov">          4 :         const brion::Vector3fs&amp; positions = _circuit.getPositions( _gids );</span>
+<span class="lineNum">      61 </span><span class="lineCov">        102 :         for( const auto&amp; position : positions )</span>
+<span class="lineNum">      62 </span><span class="lineCov">        100 :             _bboxSomas.merge( position );</span>
+<span class="lineNum">      63 </span>            : 
+<span class="lineNum">      64 </span><span class="lineCov">          2 :         LBINFO &lt;&lt; &quot;Creating events...&quot; &lt;&lt; std::endl;</span>
+<span class="lineNum">      65 </span><span class="lineCov">          2 :         helpers::addCompartmentEvents( morphologies, _areaReport, _output );</span>
+<span class="lineNum">      66 </span>            : 
+<span class="lineNum">      67 </span><span class="lineCov">          2 :         LBINFO &lt;&lt; &quot;Loading areas...&quot; &lt;&lt; std::endl;</span>
+<span class="lineNum">      68 </span><span class="lineCov">          4 :         _areas = _areaReport.loadFrame( 0.f );</span>
+<a name="69"><span class="lineNum">      69 </span><span class="lineCov">          2 :     }</span></a>
+<span class="lineNum">      70 </span>            : 
+<span class="lineNum">      71 </span><span class="lineCov">          2 :     ssize_t load()</span>
+<span class="lineNum">      72 </span>            :     {
+<span class="lineNum">      73 </span>            :         brion::floatsPtr voltages =
+<span class="lineNum">      74 </span><span class="lineCov">          2 :                 _voltageReport.loadFrame( _output.getCurrentTime( ));</span>
+<span class="lineNum">      75 </span><span class="lineCov">          2 :         if( !voltages )</span>
+<span class="lineNum">      76 </span><span class="lineNoCov">          0 :             return -1;</span>
+<span class="lineNum">      77 </span>            : 
+<span class="lineNum">      78 </span><span class="lineCov">          2 :         if( voltages-&gt;size() != _areas-&gt;size( ))</span>
+<span class="lineNum">      79 </span><span class="lineNoCov">          0 :             LBTHROW( std::runtime_error( &quot;The number of compartments in the &quot;</span>
+<span class="lineNum">      80 </span>            :                                          &quot;voltage report doesn't match the &quot;
+<span class="lineNum">      81 </span>            :                                          &quot;number of areas&quot; ));
+<span class="lineNum">      82 </span><span class="lineCov">      33108 :         for( size_t i = 0; i != voltages-&gt;size(); ++i )</span>
+<span class="lineNum">      83 </span>            :         {
+<span class="lineNum">      84 </span><span class="lineCov">      33106 :             const float voltage = ( *voltages )[i];</span>
+<span class="lineNum">      85 </span><span class="lineNoCov">          0 :             _updateEventValue( i, _spikeFilter ? std::min(voltage, _apThreshold)</span>
+<span class="lineNum">      86 </span><span class="lineCov">      33106 :                                                : voltage, ( *_areas )[i] );</span>
+<span class="lineNum">      87 </span>            :         }
+<span class="lineNum">      88 </span><span class="lineCov">          2 :         return voltages-&gt;size();</span>
+<a name="89"><span class="lineNum">      89 </span>            :     }</a>
+<span class="lineNum">      90 </span>            : 
+<span class="lineNum">      91 </span><span class="lineCov">      33106 :     void _updateEventValue( const size_t index, const float voltage,</span>
+<span class="lineNum">      92 </span>            :                             const float area )
+<span class="lineNum">      93 </span>            :     {
+<span class="lineNum">      94 </span><span class="lineCov">      33106 :         const float positionY = _output.getPositionsY()[index];</span>
+<span class="lineNum">      95 </span><span class="lineCov">      33106 :         _output[index] = ( voltage - _restingPotential + _areaMultiplier ) *</span>
+<span class="lineNum">      96 </span><span class="lineCov">      33106 :                          area * _curve.getAttenuation( positionY, _interpolate);</span>
+<span class="lineNum">      97 </span><span class="lineCov">      33106 :     }</span>
+<span class="lineNum">      98 </span>            : 
+<span class="lineNum">      99 </span>            :     EventSource&amp; _output;
+<span class="lineNum">     100 </span>            :     const brain::Circuit _circuit;
+<span class="lineNum">     101 </span>            :     brion::GIDSet _gids;
+<span class="lineNum">     102 </span>            : 
+<span class="lineNum">     103 </span>            :     brion::CompartmentReport _voltageReport;
+<span class="lineNum">     104 </span>            :     brion::CompartmentReport _areaReport;
+<span class="lineNum">     105 </span>            :     brion::floatsPtr _areas;
+<span class="lineNum">     106 </span>            :     AttenuationCurve _curve;
+<span class="lineNum">     107 </span>            : 
+<span class="lineNum">     108 </span>            :     AABBf _bboxSomas; // bounding box of the somas
+<span class="lineNum">     109 </span>            :     float _restingPotential; // resting potential (mV)
+<span class="lineNum">     110 </span>            :     float _areaMultiplier; // multiplier for surface area in background
+<span class="lineNum">     111 </span>            :                            // fluorescence term
+<span class="lineNum">     112 </span>            :     bool _spikeFilter; // use the action potential threshold to filter spikes
+<span class="lineNum">     113 </span>            :     float _apThreshold; // action potential threshold (mV)
+<span class="lineNum">     114 </span>            :     bool _interpolate; // interpolate the attenuation from the dye curve
+<a name="115"><span class="lineNum">     115 </span>            : };</a>
+<span class="lineNum">     116 </span>            : 
+<span class="lineNum">     117 </span><span class="lineCov">          2 : VSDLoader::VSDLoader( const URIHandler&amp; params )</span>
+<span class="lineNum">     118 </span>            :     : EventSource( params )
+<span class="lineNum">     119 </span><span class="lineCov">          2 :     , _impl( new VSDLoader::Impl( *this, params ))</span>
+<span class="lineNum">     120 </span>            : {
+<span class="lineNum">     121 </span><span class="lineCov">          2 :     if( getDt() &lt; 0.f )</span>
+<span class="lineNum">     122 </span><span class="lineCov">          2 :         setDt( _impl-&gt;_voltageReport.getTimestep( ));</span>
+<a name="123"><span class="lineNum">     123 </span><span class="lineCov">          2 : }</span></a>
+<span class="lineNum">     124 </span>            : 
+<span class="lineNum">     125 </span><span class="lineCov">          2 : VSDLoader::~VSDLoader()</span>
+<a name="126"><span class="lineNum">     126 </span><span class="lineCov">          2 : {}</span></a>
+<span class="lineNum">     127 </span>            : 
+<span class="lineNum">     128 </span><span class="lineNoCov">          0 : void VSDLoader::setCurve( const AttenuationCurve&amp; curve )</span>
+<span class="lineNum">     129 </span>            : {
+<span class="lineNum">     130 </span><span class="lineNoCov">          0 :     _impl-&gt;_curve = curve;</span>
+<a name="131"><span class="lineNum">     131 </span><span class="lineNoCov">          0 : }</span></a>
+<span class="lineNum">     132 </span>            : 
+<span class="lineNum">     133 </span><span class="lineNoCov">          0 : AABBf VSDLoader::getBoundingBoxSomas() const</span>
+<span class="lineNum">     134 </span>            : {
+<span class="lineNum">     135 </span><span class="lineNoCov">          0 :     return _impl-&gt;_bboxSomas;</span>
+<a name="136"><span class="lineNum">     136 </span>            : }</a>
+<span class="lineNum">     137 </span>            : 
+<span class="lineNum">     138 </span><span class="lineNoCov">          0 : void VSDLoader::setRestingPotential( const float millivolts )</span>
+<span class="lineNum">     139 </span>            : {
+<span class="lineNum">     140 </span><span class="lineNoCov">          0 :     _impl-&gt;_restingPotential = millivolts;</span>
+<a name="141"><span class="lineNum">     141 </span><span class="lineNoCov">          0 : }</span></a>
+<span class="lineNum">     142 </span>            : 
+<span class="lineNum">     143 </span><span class="lineNoCov">          0 : void VSDLoader::setAreaMultiplier( const float factor )</span>
+<span class="lineNum">     144 </span>            : {
+<span class="lineNum">     145 </span><span class="lineNoCov">          0 :     _impl-&gt;_areaMultiplier = factor;</span>
+<a name="146"><span class="lineNum">     146 </span><span class="lineNoCov">          0 : }</span></a>
+<span class="lineNum">     147 </span>            : 
+<span class="lineNum">     148 </span><span class="lineNoCov">          0 : void VSDLoader::setSpikeFilter( const bool enable )</span>
+<span class="lineNum">     149 </span>            : {
+<span class="lineNum">     150 </span><span class="lineNoCov">          0 :     _impl-&gt;_spikeFilter = enable;</span>
+<a name="151"><span class="lineNum">     151 </span><span class="lineNoCov">          0 : }</span></a>
+<span class="lineNum">     152 </span>            : 
+<span class="lineNum">     153 </span><span class="lineNoCov">          0 : void VSDLoader::setApThreshold( const float apThreshold )</span>
+<span class="lineNum">     154 </span>            : {
+<span class="lineNum">     155 </span><span class="lineNoCov">          0 :     _impl-&gt;_apThreshold = apThreshold;</span>
+<a name="156"><span class="lineNum">     156 </span><span class="lineNoCov">          0 : }</span></a>
+<span class="lineNum">     157 </span>            : 
+<span class="lineNum">     158 </span><span class="lineNoCov">          0 : void VSDLoader::setInterpolation( const bool interpolate )</span>
+<span class="lineNum">     159 </span>            : {
+<span class="lineNum">     160 </span><span class="lineNoCov">          0 :     _impl-&gt;_interpolate = interpolate;</span>
+<a name="161"><span class="lineNum">     161 </span><span class="lineNoCov">          0 : }</span></a>
+<span class="lineNum">     162 </span>            : 
+<span class="lineNum">     163 </span><span class="lineCov">          2 : Vector2f VSDLoader::_getTimeRange() const</span>
+<span class="lineNum">     164 </span>            : {
+<span class="lineNum">     165 </span><span class="lineCov">          2 :     return Vector2f( _impl-&gt;_voltageReport.getStartTime(),</span>
+<span class="lineNum">     166 </span><span class="lineCov">          4 :                      _impl-&gt;_voltageReport.getEndTime( ));</span>
+<a name="167"><span class="lineNum">     167 </span>            : }</a>
+<span class="lineNum">     168 </span>            : 
+<span class="lineNum">     169 </span><span class="lineCov">          2 : ssize_t VSDLoader::_load( const size_t /*chunkIndex*/,</span>
+<span class="lineNum">     170 </span>            :                           const size_t /*numChunks*/ )
+<span class="lineNum">     171 </span>            : {
+<span class="lineNum">     172 </span><span class="lineCov">          2 :     return _impl-&gt;load();</span>
+<a name="173"><span class="lineNum">     173 </span>            : }</a>
+<span class="lineNum">     174 </span>            : 
+<span class="lineNum">     175 </span><span class="lineCov">         15 : }</span>
 </pre>
       </td>
     </tr>
