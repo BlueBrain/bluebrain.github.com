@@ -1,7 +1,7 @@
 var searchData=
 [
   ['_7econfiguration',['~Configuration',['../class_configuration.html#a1226f87dc3c27be16eb16e53301eb2f3',1,'Configuration']]],
-  ['_7econtentinteractiondelegate',['~ContentInteractionDelegate',['../class_content_interaction_delegate.html#acb5fa802e1b625e1c24b1f59ee15a784',1,'ContentInteractionDelegate']]],
+  ['_7econtentcontroller',['~ContentController',['../class_content_controller.html#a163809b078fbd897aef5507a12e2b733',1,'ContentController']]],
   ['_7econtentsynchronizer',['~ContentSynchronizer',['../class_content_synchronizer.html#a68aa090a819ade8f4193c6848aa5d7c0',1,'ContentSynchronizer']]],
   ['_7econtentwindow',['~ContentWindow',['../class_content_window.html#a048c11ac7d49072c2655e7adb0737844',1,'ContentWindow']]],
   ['_7edisplaygroup',['~DisplayGroup',['../class_display_group.html#ae621c03bd2408c8ece4a61237efca355',1,'DisplayGroup']]],
@@ -28,5 +28,5 @@ var searchData=
   ['_7etiffpyramidreader',['~TiffPyramidReader',['../class_tiff_pyramid_reader.html#a2d45866756f830e4e5d63e5706d7e5aa',1,'TiffPyramidReader']]],
   ['_7ewallapplication',['~WallApplication',['../class_wall_application.html#a8178cc81cec13ae323948ade5a76227a',1,'WallApplication']]],
   ['_7ewebkitpixelstreamer',['~WebkitPixelStreamer',['../class_webkit_pixel_streamer.html#aa0a741712313a0963f69bc28cae292e3',1,'WebkitPixelStreamer']]],
-  ['_7ezoominteractiondelegate',['~ZoomInteractionDelegate',['../class_zoom_interaction_delegate.html#af502767e577191940a82bd0d03962908',1,'ZoomInteractionDelegate']]]
+  ['_7ezoomcontroller',['~ZoomController',['../class_zoom_controller.html#a717fd48c85e5ab55b8a283a8666b3426',1,'ZoomController']]]
 ];

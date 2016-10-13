@@ -3,7 +3,7 @@ var class_content_synchronizer =
     [ "ContentSynchronizer", "class_content_synchronizer.html#aa9b57c8a735fbfb9b35e3e79d9ac9682", null ],
     [ "~ContentSynchronizer", "class_content_synchronizer.html#a68aa090a819ade8f4193c6848aa5d7c0", null ],
     [ "addTile", "class_content_synchronizer.html#a07a22964fedee87ec47fddc4b02a40f0", null ],
-    [ "create", "class_content_synchronizer.html#a1ad34f14a76b9eae5f55b90ccf6d3db5", null ],
+    [ "create", "class_content_synchronizer.html#a1dbfdba9e6b73e6f16bde19d90dd14b8", null ],
     [ "getStatistics", "class_content_synchronizer.html#aac53ae2d14888ef268e22f7c7a5eb14f", null ],
     [ "getTileImage", "class_content_synchronizer.html#a637dfab5813107a509142633c32465cf", null ],
     [ "getTilesArea", "class_content_synchronizer.html#ad1d547e9b327f320163aa2976bfffa8e", null ],

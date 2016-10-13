@@ -31,7 +31,6 @@ var hierarchy =
       [ "MovieUpdater", "class_movie_updater.html", null ],
       [ "PixelStreamUpdater", "class_pixel_stream_updater.html", null ]
     ] ],
-    [ "DisplayGroupController", "class_display_group_controller.html", null ],
     [ "ElapsedTimer", "class_elapsed_timer.html", null ],
     [ "FFMPEGMovie", "class_f_f_m_p_e_g_movie.html", null ],
     [ "FFMPEGVideoFrameConverter", "class_f_f_m_p_e_g_video_frame_converter.html", null ],
@@ -54,6 +53,7 @@ var hierarchy =
     [ "LodTools::TileIndex", "struct_lod_tools_1_1_tile_index.html", null ],
     [ "LodTools::TileInfo", "struct_lod_tools_1_1_tile_info.html", null ],
     [ "MPIChannel", "class_m_p_i_channel.html", null ],
+    [ "MPIHeader", "struct_m_p_i_header.html", null ],
     [ "int_", null, [
       [ "boost::serialization::implementation_level< std::chrono::duration< Rep, Period > >", "structboost_1_1serialization_1_1implementation__level_3_01std_1_1chrono_1_1duration_3_01_rep_00_01_period_01_4_01_4.html", null ],
       [ "boost::serialization::implementation_level< std::chrono::time_point< C, D > >", "structboost_1_1serialization_1_1implementation__level_3_01std_1_1chrono_1_1time__point_3_01_c_00_01_d_01_4_01_4.html", null ],
@@ -103,11 +103,13 @@ var hierarchy =
         ] ]
       ] ],
       [ "ContentAction", "class_content_action.html", null ],
-      [ "ContentInteractionDelegate", "class_content_interaction_delegate.html", [
-        [ "PixelStreamInteractionDelegate", "class_pixel_stream_interaction_delegate.html", [
-          [ "WebbrowserInteractionDelegate", "class_webbrowser_interaction_delegate.html", null ]
+      [ "ContentController", "class_content_controller.html", [
+        [ "PixelStreamController", "class_pixel_stream_controller.html", [
+          [ "WebbrowserController", "class_webbrowser_controller.html", null ]
         ] ],
-        [ "ZoomInteractionDelegate", "class_zoom_interaction_delegate.html", null ]
+        [ "ZoomController", "class_zoom_controller.html", [
+          [ "PDFController", "class_p_d_f_controller.html", null ]
+        ] ]
       ] ],
       [ "ContentSynchronizer", "class_content_synchronizer.html", [
         [ "BasicSynchronizer", "class_basic_synchronizer.html", [
@@ -124,11 +126,8 @@ var hierarchy =
         ] ]
       ] ],
       [ "ContentWindowController", "class_content_window_controller.html", null ],
-      [ "Coordinates", "class_coordinates.html", [
-        [ "ContentWindow", "class_content_window.html", null ],
-        [ "DisplayGroup", "class_display_group.html", null ]
-      ] ],
       [ "DataProvider", "class_data_provider.html", null ],
+      [ "DisplayGroupController", "class_display_group_controller.html", null ],
       [ "DisplayGroupRenderer", "class_display_group_renderer.html", null ],
       [ "DoubleTapDetector", "class_double_tap_detector.html", null ],
       [ "KeyboardState", "class_keyboard_state.html", null ],
@@ -147,6 +146,10 @@ var hierarchy =
       [ "PixelStreamWindowManager", "class_pixel_stream_window_manager.html", null ],
       [ "QmlWindowRenderer", "class_qml_window_renderer.html", null ],
       [ "QuickRenderer", "class_quick_renderer.html", null ],
+      [ "Rectangle", "class_rectangle.html", [
+        [ "ContentWindow", "class_content_window.html", null ],
+        [ "DisplayGroup", "class_display_group.html", null ]
+      ] ],
       [ "RenderController", "class_render_controller.html", null ],
       [ "RestCommand", "class_rest_command.html", null ],
       [ "RestInterface", "class_rest_interface.html", null ],

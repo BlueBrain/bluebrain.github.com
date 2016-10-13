@@ -13,5 +13,6 @@ var searchData=
   ['movieupdater',['MovieUpdater',['../class_movie_updater.html',1,'']]],
   ['mpichannel',['MPIChannel',['../class_m_p_i_channel.html',1,'']]],
   ['mpicontext',['MPIContext',['../class_m_p_i_context.html',1,'']]],
+  ['mpiheader',['MPIHeader',['../struct_m_p_i_header.html',1,'']]],
   ['multitoucharea',['MultitouchArea',['../class_multitouch_area.html',1,'']]]
 ];

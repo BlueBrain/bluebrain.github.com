@@ -18,6 +18,5 @@ var class_content_window_controller =
     [ "resize", "class_content_window_controller.html#a0069301d97e2ab70db7abffb74f6d15d", null ],
     [ "resizeRelative", "class_content_window_controller.html#a3a20b4c22eb64fa0c094a44df766c138", null ],
     [ "scale", "class_content_window_controller.html#a0692b71b65e4d3fcae4e6648a7c2f93a", null ],
-    [ "scaleRectAroundPosition", "class_content_window_controller.html#a1279562400102db76a46ce1b20566f2a", null ],
     [ "toogleFullscreenMaxSize", "class_content_window_controller.html#a5346e75efa6c702cb3bd76e24f528ffb", null ]
 ];

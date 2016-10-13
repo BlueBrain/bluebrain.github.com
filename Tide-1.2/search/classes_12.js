@@ -1,5 +1,5 @@
 var searchData=
 [
-  ['zoomhelper',['ZoomHelper',['../class_zoom_helper.html',1,'']]],
-  ['zoominteractiondelegate',['ZoomInteractionDelegate',['../class_zoom_interaction_delegate.html',1,'']]]
+  ['zoomcontroller',['ZoomController',['../class_zoom_controller.html',1,'']]],
+  ['zoomhelper',['ZoomHelper',['../class_zoom_helper.html',1,'']]]
 ];
