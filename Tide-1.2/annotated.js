@@ -50,6 +50,7 @@ var annotated =
     [ "FFMPEGVideoStream", "class_f_f_m_p_e_g_video_stream.html", "class_f_f_m_p_e_g_video_stream" ],
     [ "FolderThumbnailGenerator", "class_folder_thumbnail_generator.html", "class_folder_thumbnail_generator" ],
     [ "FpsCounter", "class_fps_counter.html", "class_fps_counter" ],
+    [ "HtmlSelectReplacer", "class_html_select_replacer.html", "class_html_select_replacer" ],
     [ "Image", "class_image.html", "class_image" ],
     [ "ImagePyramidContent", "class_image_pyramid_content.html", "class_image_pyramid_content" ],
     [ "ImagePyramidDataSource", "class_image_pyramid_data_source.html", "class_image_pyramid_data_source" ],

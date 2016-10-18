@@ -9,5 +9,6 @@ var searchData=
   ['hasmoved',['hasMoved',['../namespace_math_utils.html#a67e1c703df8094b68695378c074fb6d1',1,'MathUtils']]],
   ['height',['height',['../class_content.html#a0ac15e1ba630bc6c6f98d47529f4c48c',1,'Content']]],
   ['hidelauncher',['hideLauncher',['../class_pixel_streamer_launcher.html#aeba47f1f510c639b194db271367e253b',1,'PixelStreamerLauncher::hideLauncher()'],['../class_master_window.html#a6ebb673d92b5883136aa147f98f7532f',1,'MasterWindow::hideLauncher()']]],
-  ['hidewindow',['hideWindow',['../class_pixel_stream_window_manager.html#a74bb0eb12ff7357fef0fbbd1d9c92aff',1,'PixelStreamWindowManager']]]
+  ['hidewindow',['hideWindow',['../class_pixel_stream_window_manager.html#a74bb0eb12ff7357fef0fbbd1d9c92aff',1,'PixelStreamWindowManager']]],
+  ['htmlselectreplacer',['HtmlSelectReplacer',['../class_html_select_replacer.html',1,'']]]
 ];

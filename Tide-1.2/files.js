@@ -45,6 +45,7 @@ var files =
     [ "FolderThumbnailGenerator.h", "_folder_thumbnail_generator_8h_source.html", null ],
     [ "FpsCounter.h", "_fps_counter_8h_source.html", null ],
     [ "geometry.h", "geometry_8h_source.html", null ],
+    [ "HtmlSelectReplacer.h", "_html_select_replacer_8h_source.html", null ],
     [ "Image.h", "_image_8h_source.html", null ],
     [ "ImagePyramidContent.h", "_image_pyramid_content_8h_source.html", null ],
     [ "ImagePyramidDataSource.h", "_image_pyramid_data_source_8h_source.html", null ],

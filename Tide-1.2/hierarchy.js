@@ -130,6 +130,7 @@ var hierarchy =
       [ "DisplayGroupController", "class_display_group_controller.html", null ],
       [ "DisplayGroupRenderer", "class_display_group_renderer.html", null ],
       [ "DoubleTapDetector", "class_double_tap_detector.html", null ],
+      [ "HtmlSelectReplacer", "class_html_select_replacer.html", null ],
       [ "KeyboardState", "class_keyboard_state.html", null ],
       [ "LoggingUtility", "class_logging_utility.html", null ],
       [ "MasterFromWallChannel", "class_master_from_wall_channel.html", null ],
@@ -160,8 +161,7 @@ var hierarchy =
       [ "WallFromMasterChannel", "class_wall_from_master_channel.html", null ],
       [ "WallToMasterChannel", "class_wall_to_master_channel.html", null ],
       [ "WallToWallChannel", "class_wall_to_wall_channel.html", null ],
-      [ "WebkitAuthenticationHelper", "class_webkit_authentication_helper.html", null ],
-      [ "WebkitHtmlSelectReplacer", "class_webkit_html_select_replacer.html", null ]
+      [ "WebkitAuthenticationHelper", "class_webkit_authentication_helper.html", null ]
     ] ],
     [ "QQuickImageProvider", null, [
       [ "ThumbnailProvider", "class_thumbnail_provider.html", null ]
@@ -218,5 +218,6 @@ var hierarchy =
     [ "TiffPyramidReader", "class_tiff_pyramid_reader.html", null ],
     [ "VisibilityHelper", "class_visibility_helper.html", null ],
     [ "WebbrowserHistory", "class_webbrowser_history.html", null ],
+    [ "WebkitHtmlSelectReplacer", "class_webkit_html_select_replacer.html", null ],
     [ "ZoomHelper", "class_zoom_helper.html", null ]
 ];
