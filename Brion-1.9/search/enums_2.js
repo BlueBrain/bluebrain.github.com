@@ -1,4 +1,5 @@
 var searchData=
 [
-  ['synapseprefetch',['SynapsePrefetch',['../namespacebrain.html#a9465fc0a732855959304f34a970b3a21',1,'brain']]]
+  ['cellfamily',['CellFamily',['../enums_8h.html#a8bbad79a506997aec2cc5553e927e03e',1,'brion::enums']]],
+  ['coordinates',['Coordinates',['../classbrain_1_1_circuit.html#a1f220992f40a8759f34ef96da4041610',1,'brain::Circuit']]]
 ];

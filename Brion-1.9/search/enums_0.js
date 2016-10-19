@@ -1,4 +1,4 @@
 var searchData=
 [
-  ['coordinates',['Coordinates',['../classbrain_1_1_circuit.html#a1f220992f40a8759f34ef96da4041610',1,'brain::Circuit']]]
+  ['accessmode',['AccessMode',['../enums_8h.html#a9288d352a3b246c678d4a02acaf2e135',1,'brion::enums']]]
 ];

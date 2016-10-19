@@ -1,4 +1,4 @@
 var searchData=
 [
-  ['readmode',['ReadMode',['../classbrion_1_1_spike_report.html#ad9af81cd27062d7bc7e88f262829ce3e',1,'brion::SpikeReport']]]
+  ['blueconfigsection',['BlueConfigSection',['../enums_8h.html#a969f557406a58a03cd42097c6485c3fc',1,'brion::enums']]]
 ];
