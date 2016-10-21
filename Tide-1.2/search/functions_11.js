@@ -70,7 +70,7 @@ var searchData=
   ['showfullscreen',['showFullscreen',['../class_display_group_controller.html#ac57dcb287a2aad5fe0f8098c66a914ed',1,'DisplayGroupController']]],
   ['showsyntax',['showSyntax',['../class_command_line_parameters.html#ab06563f0abec4cf64d3909966b966966',1,'CommandLineParameters::showSyntax()'],['../class_command_line_options.html#a7afe005172796945c93d08dfe495eb92',1,'CommandLineOptions::showSyntax()']]],
   ['showwindow',['showWindow',['../class_pixel_stream_window_manager.html#a6e68e2ca3ba0213a872e22acd082b468',1,'PixelStreamWindowManager']]],
-  ['size',['size',['../class_receive_buffer.html#ac318a09ddc49c104cb9c02c853fe947d',1,'ReceiveBuffer::size()'],['../class_pixel_streamer.html#a413ae104f919f14a0974b357e5e7d9e7',1,'PixelStreamer::size()'],['../class_webkit_pixel_streamer.html#a314e66c210f8d1ae19b9b36e26d4f59c',1,'WebkitPixelStreamer::size()']]],
+  ['size',['size',['../class_receive_buffer.html#ac318a09ddc49c104cb9c02c853fe947d',1,'ReceiveBuffer::size()'],['../class_pixel_streamer.html#a88ab1c7f5d818da275129240a76437c3',1,'PixelStreamer::size()'],['../class_webkit_pixel_streamer.html#a3968b41116b48ed8b36775c921cca84c',1,'WebkitPixelStreamer::size()']]],
   ['start',['start',['../class_pixel_streamer_launcher.html#a8723160ae4f5cba40778e9e727c1f52c',1,'PixelStreamerLauncher']]],
   ['state',['State',['../class_state.html#ab91bb1dd5aa6260ab2a456581daf9ec2',1,'State::State()'],['../class_state.html#ab46b49d64046781249ed09988d54a8b8',1,'State::State(DisplayGroupPtr displayGroup)']]],
   ['statechanged',['stateChanged',['../class_pixel_streamer.html#adcf2ee6d8fb44a0e64fa43c4ded32e1d',1,'PixelStreamer']]],

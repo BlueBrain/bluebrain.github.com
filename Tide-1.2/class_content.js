@@ -22,7 +22,7 @@ var class_content =
     [ "getMinDimensions", "class_content.html#a8cf06fbd623453fd2aa349d91ebbca3b", null ],
     [ "getPreferredDimensions", "class_content.html#a508b7f5c09ffa4f5a1a7f3e89cbec489", null ],
     [ "getQmlControls", "class_content.html#af64c08ff1aafa0206bf178a6e4bfa634", null ],
-    [ "getType", "class_content.html#af9e369355bb2be4ab07ed23f0f82113d", null ],
+    [ "getType", "class_content.html#a0671a3883929b1326ffa684c2c4bf03f", null ],
     [ "getURI", "class_content.html#a887d2b952cd824d70f64106ae048a5f8", null ],
     [ "getZoomRect", "class_content.html#a461bb62d3989d0eb5b4d1f824e7a66c0", null ],
     [ "hasFixedAspectRatio", "class_content.html#adceac372a702843a1e0bd207f670680a", null ],

@@ -6,6 +6,7 @@ var searchData=
   ['openlauncher',['openLauncher',['../class_pixel_streamer_launcher.html#abec11d7adeb5d7afb60c5e08000f4b2b',1,'PixelStreamerLauncher::openLauncher()'],['../class_master_window.html#a29b454a98aaa3cc0d5713d59f4e79315',1,'MasterWindow::openLauncher()']]],
   ['openpixelstreamwindow',['openPixelStreamWindow',['../class_pixel_stream_window_manager.html#a29d8232ee6b125dfdf4e9639741922ff',1,'PixelStreamWindowManager']]],
   ['openwebbrowser',['openWebBrowser',['../class_pixel_streamer_launcher.html#a2570a4a7985d254b2e5a420f0ffda1ec',1,'PixelStreamerLauncher::openWebBrowser()'],['../class_master_window.html#ad4113336b83f4993c3a7129f7b453ffc',1,'MasterWindow::openWebBrowser()'],['../class_webbrowser_widget.html#ab0c2a8efb418af56a12d63671a963d4f',1,'WebbrowserWidget::openWebBrowser()']]],
-  ['openwindow',['openWindow',['../class_pixel_stream_window_manager.html#a3f878a4364c8e4d9a8cb43ca20519126',1,'PixelStreamWindowManager']]],
+  ['openwhiteboard',['openWhiteboard',['../class_pixel_streamer_launcher.html#ac0ead780789fb67514f69d5fb8ec9ddb',1,'PixelStreamerLauncher']]],
+  ['openwindow',['openWindow',['../class_pixel_stream_window_manager.html#ab3e43a2bbd11d734f5d28bec47c76447',1,'PixelStreamWindowManager']]],
   ['options',['Options',['../class_options.html',1,'Options'],['../class_options.html#ab72fb640172a6109e34c8a5366563753',1,'Options::Options()']]]
 ];

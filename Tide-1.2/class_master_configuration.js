@@ -11,6 +11,7 @@ var class_master_configuration =
     [ "getSessionsDir", "class_master_configuration.html#a4985b2568e33198f6e283ddf9fa8e2ca", null ],
     [ "getWebBrowserDefaultURL", "class_master_configuration.html#a7786132d2c47c7575b7cd682752d1b3c", null ],
     [ "getWebServicePort", "class_master_configuration.html#a161728807fc81592ff865956942bc4c3", null ],
+    [ "getWhiteboardSaveFolder", "class_master_configuration.html#a105bca4aa2e25f8b417890cd21fae797", null ],
     [ "save", "class_master_configuration.html#aa54097d7fb4f58aca81e9fe83620858d", null ],
     [ "save", "class_master_configuration.html#a51fd2b31a51c1b4aa56c0ae1527567be", null ],
     [ "setBackgroundColor", "class_master_configuration.html#a2b83fb924d0a1259eb7ef7a1a095bd64", null ],
