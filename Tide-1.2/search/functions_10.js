@@ -17,7 +17,7 @@ var searchData=
   ['registereventreceiver',['registerEventReceiver',['../class_pixel_stream_window_manager.html#aa4317964b249dffd8ad5bc9fa4f49e6f',1,'PixelStreamWindowManager']]],
   ['reject',['reject',['../class_background_widget.html#a46290d2cbf08a44b84533b6aacc631c5',1,'BackgroundWidget']]],
   ['remove',['remove',['../class_display_group_controller.html#ae4cd656537e86cc3fd15eee21a93f942',1,'DisplayGroupController']]],
-  ['removecontentwindow',['removeContentWindow',['../class_display_group.html#a46fdba0e3511b4363f8417f4f7c4719d',1,'DisplayGroup']]],
+  ['removecontentwindow',['removeContentWindow',['../class_display_group.html#a0008de37c460a0cce7f0a9b592088a0f',1,'DisplayGroup']]],
   ['removefocusedwindow',['removeFocusedWindow',['../class_display_group.html#affa37c3402674148ae3e3d1f4339b796',1,'DisplayGroup']]],
   ['removetile',['removeTile',['../class_content_synchronizer.html#a755db8af943fc6bd0aab4220320d3a89',1,'ContentSynchronizer']]],
   ['removewindowlater',['removeWindowLater',['../class_display_group_controller.html#aeb8910743ba441bafbbfb6a0b85f53a7',1,'DisplayGroupController']]],
