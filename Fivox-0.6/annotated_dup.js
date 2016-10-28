@@ -1,4 +1,4 @@
-var annotated =
+var annotated_dup =
 [
     [ "fivox", "namespacefivox.html", "namespacefivox" ],
     [ "itk", null, [
