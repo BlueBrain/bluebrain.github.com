@@ -1,6 +1,6 @@
 var searchData=
 [
-  ['synapse_20support_20in_20brain',['Synapse support in Brain',['../md__jenkins_02_workspace_oss.Brion.documentation_build_type_Debug_platform_cscsviz-vm_sources_doc_feature_synapses.html',1,'']]],
+  ['synapse_20support_20in_20brain',['Synapse support in Brain',['../brainSynapses.html',1,'FeatureSpecs']]],
   ['section',['Section',['../classbrain_1_1neuron_1_1_section.html',1,'brain::neuron']]],
   ['section_5fapical_5fdendrite',['SECTION_APICAL_DENDRITE',['../enums_8h.html#adbb154f3c78c0209ce2f3d33b628b5a1a5148c4e4922ea7417a2cbc4caa96bbfb',1,'brion::enums']]],
   ['section_5fdendrite',['SECTION_DENDRITE',['../enums_8h.html#adbb154f3c78c0209ce2f3d33b628b5a1add1dc7730c5982d2440438a7ce81f320',1,'brion::enums']]],

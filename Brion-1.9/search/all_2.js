@@ -14,12 +14,12 @@ var searchData=
   ['compartmentreport',['CompartmentReport',['../classbrion_1_1_compartment_report.html#a1068892309907490436a2f5b23e3f252',1,'brion::CompartmentReport']]],
   ['compartmentreportinitdata',['CompartmentReportInitData',['../classbrion_1_1_compartment_report_init_data.html',1,'brion']]],
   ['compartmentreportinitdata',['CompartmentReportInitData',['../classbrion_1_1_compartment_report_init_data.html#a268487758574e1da6febf4666a235d6b',1,'brion::CompartmentReportInitData']]],
+  ['compartment_20report_20writing_20from_20mpi_20applications',['Compartment report writing from MPI applications',['../compartmentReportMPI.html',1,'FeatureSpecs']]],
   ['compartmentreportplugin',['CompartmentReportPlugin',['../classbrion_1_1_compartment_report_plugin.html',1,'brion']]],
   ['conductances',['conductances',['../classbrain_1_1_synapses.html#ae1aef670cad058fe953fe50b4f511a94',1,'brain::Synapses']]],
   ['const_5fiterator',['const_iterator',['../classbrain_1_1_spikes_1_1const__iterator.html',1,'brain::Spikes']]],
   ['const_5fiterator',['const_iterator',['../classbrain_1_1_spikes_1_1const__iterator.html#ab9da3bf11b39762352fa03d019d6693b',1,'brain::Spikes::const_iterator::const_iterator()'],['../classbrain_1_1_spikes_1_1const__iterator.html#a07366218e13f964dfcc6792999dd8b3f',1,'brain::Spikes::const_iterator::const_iterator(const const_iterator &amp;rhs)']]],
   ['contains',['contains',['../classbrion_1_1_target.html#aa58924378a7389ae2a44867ce5e8be20',1,'brion::Target']]],
   ['coordinates',['Coordinates',['../classbrain_1_1_circuit.html#a1f220992f40a8759f34ef96da4041610',1,'brain::Circuit']]],
-  ['caching_20support',['Caching support',['../md__jenkins_02_workspace_oss.Brion.documentation_build_type_Debug_platform_cscsviz-vm_sources_doc_caching.html',1,'']]],
-  ['compartment_20report_20writing_20from_20mpi_20applications',['Compartment report writing from MPI applications',['../md__jenkins_02_workspace_oss.Brion.documentation_build_type_Debug_platform_cscsviz-vm_sources_doc_feature_compartmentReportMPI.html',1,'']]]
+  ['caching_20support',['Caching support',['../md__jenkins_02_workspace_oss.Brion.documentation_build_type_Debug_platform_cscsviz-vm_sources_doc_caching.html',1,'']]]
 ];

@@ -6,11 +6,7 @@ var NAVTREE =
     [ "Building", "index.html#Building", null ],
     [ "Caching support", "md__jenkins_02_workspace_oss.Brion.documentation_build_type_Debug_platform_cscsviz-vm_sources_doc_caching.html", null ],
     [ "Changelog", "Changelog.html", null ],
-    [ "Additions to compartmentReport to support ZeroEQ streams", "md__jenkins_02_workspace_oss.Brion.documentation_build_type_Debug_platform_cscsviz-vm_sources_doc_feature_compartmentReport.html", null ],
-    [ "Compartment report writing from MPI applications", "md__jenkins_02_workspace_oss.Brion.documentation_build_type_Debug_platform_cscsviz-vm_sources_doc_feature_compartmentReportMPI.html", null ],
-    [ "Implementing Morphology version 1.1, support for glia cells", "md__jenkins_02_workspace_oss.Brion.documentation_build_type_Debug_platform_cscsviz-vm_sources_doc_feature_morphology11.html", null ],
-    [ "Redesign of the SpikeReport and Spikes container", "md__jenkins_02_workspace_oss.Brion.documentation_build_type_Debug_platform_cscsviz-vm_sources_doc_feature_spikeReport.html", null ],
-    [ "Synapse support in Brain", "md__jenkins_02_workspace_oss.Brion.documentation_build_type_Debug_platform_cscsviz-vm_sources_doc_feature_synapses.html", null ],
+    [ "Feature specifications", "FeatureSpecs.html", "FeatureSpecs" ],
     [ "Environment Variables", "env.html", null ],
     [ "Deprecated List", "deprecated.html", null ],
     [ "Namespaces", null, [
@@ -47,8 +43,8 @@ var NAVTREE =
 var NAVTREEINDEX =
 [
 "Changelog.html",
-"classbrion_1_1_blue_config.html#a30f64c0386fc846429a3dda70b5214cb",
-"enums_8h.html#a66e583bba6f011701c4d545b1bb28533ab7a3ae8e6050fb5a8567aae8607e3e38"
+"classbrion_1_1_blue_config.html#a2e3c4ab0dcd34d3639c4e58a16d68767",
+"enums_8h.html#a66e583bba6f011701c4d545b1bb28533a593ccdf3e8f6153e7440ef1076663c24"
 ];
 
 var SYNCONMSG = 'click to disable panel synchronisation';

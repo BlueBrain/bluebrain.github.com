@@ -4,7 +4,7 @@ version: "1.9"
 major: 1
 minor: 9
 description: The Blue Brain C++ I/O library
-updated: 21/10/16
+updated: 03/11/16
 homepage: https://github.com/BlueBrain/Brion
 repository: https://github.com/BlueBrain/Brion.git
 issuesurl: https://github.com/BlueBrain/Brion/issues
@@ -12,7 +12,7 @@ packageurl:
 license: LGPL
 maturity: EP
 maintainers: Blue Brain Project (bbp-open-source@googlegroups.com)
-contributors: Juan Hernando Vieites
+contributors: hernando
 readmetype: text/x-markdown
 ---
 [TOC]
@@ -30,6 +30,8 @@ Brion can be retrieved by cloning the
 The [latest API documentation]
 (http://bluebrain.github.io/Brion-1.9/index.html) can be found on
 [bluebrain.github.io](http://bluebrain.github.io).
+Additional documentation exists for the [Python wrapping of Brain]
+(python/index.html).
 
 To keep track of the changes between releases check the [changelog](@ref Changelog).
 
