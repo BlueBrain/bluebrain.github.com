@@ -17,12 +17,12 @@ var NAVTREE =
       [ "Errata", "index.html#Errata", null ]
     ] ],
     [ "Documentation", "documentation.html", null ],
-    [ "Feature X", "md__jenkins_04_workspace_oss_8_hello_8documentation_build_type__debug_platform_cscsviz-vm_sources_doc__feature.html", null ],
+    [ "Feature X", "md__jenkins_04_workspace_oss.Hello.documentation_build_type_Debug_platform_cscsviz-vm_sources_doc_Feature.html", null ],
     [ "Namespaces", null, [
       [ "Namespace List", "namespaces.html", "namespaces" ]
     ] ],
-    [ "Classes", null, [
-      [ "Class List", "annotated.html", "annotated" ],
+    [ "Classes", "annotated.html", [
+      [ "Class List", "annotated.html", "annotated_dup" ],
       [ "Class Index", "classes.html", null ],
       [ "Class Members", "functions.html", [
         [ "All", "functions.html", null ],
