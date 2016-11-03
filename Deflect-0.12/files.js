@@ -14,6 +14,7 @@ var files =
     [ "MTQueue.h", "_m_t_queue_8h_source.html", null ],
     [ "QmlStreamer.h", "_qml_streamer_8h_source.html", null ],
     [ "qt.h", "qt_8h_source.html", null ],
+    [ "QuickRenderer.h", "_quick_renderer_8h_source.html", null ],
     [ "Segment.h", "_segment_8h_source.html", null ],
     [ "SegmentDecoder.h", "_segment_decoder_8h_source.html", null ],
     [ "SegmentParameters.h", "_segment_parameters_8h_source.html", null ],

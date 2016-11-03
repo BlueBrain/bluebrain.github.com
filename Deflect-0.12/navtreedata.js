@@ -1,9 +1,9 @@
 var NAVTREE =
 [
   [ "Deflect", "index.html", [
-    [ "Changelog", "_changelog.html", null ],
-    [ "Classes", null, [
-      [ "Class List", "annotated.html", "annotated" ],
+    [ "Changelog", "Changelog.html", null ],
+    [ "Classes", "annotated.html", [
+      [ "Class List", "annotated.html", "annotated_dup" ],
       [ "Class Index", "classes.html", null ],
       [ "Class Hierarchy", "hierarchy.html", "hierarchy" ],
       [ "Class Members", "functions.html", [

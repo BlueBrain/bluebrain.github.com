@@ -4,5 +4,6 @@ var searchData=
   ['removealltouchpoints',['removeAllTouchPoints',['../classdeflect_1_1qt_1_1_touch_injector.html#a96c53f72080981e4c3165b1d58dcbdf8',1,'deflect::qt::TouchInjector']]],
   ['removesource',['removeSource',['../classdeflect_1_1_frame_dispatcher.html#ad26b5acc92ce3fbc61f656a9def62328',1,'deflect::FrameDispatcher']]],
   ['removetouchpoint',['removeTouchPoint',['../classdeflect_1_1qt_1_1_touch_injector.html#a1b15ba90f5754acf4e577ed827ff4be0',1,'deflect::qt::TouchInjector']]],
+  ['render',['render',['../classdeflect_1_1qt_1_1_quick_renderer.html#a6d8dbb634c27a5bdb4abae63189861b5',1,'deflect::qt::QuickRenderer']]],
   ['requestframe',['requestFrame',['../classdeflect_1_1_frame_dispatcher.html#a9bce9a9c691743d0589bc5c50375c1b9',1,'deflect::FrameDispatcher']]]
 ];

@@ -15,6 +15,7 @@ var hierarchy =
       [ "deflect::EventReceiver", "classdeflect_1_1_event_receiver.html", null ],
       [ "deflect::FrameDispatcher", "classdeflect_1_1_frame_dispatcher.html", null ],
       [ "deflect::qt::QmlStreamer", "classdeflect_1_1qt_1_1_qml_streamer.html", null ],
+      [ "deflect::qt::QuickRenderer", "classdeflect_1_1qt_1_1_quick_renderer.html", null ],
       [ "deflect::qt::TouchInjector", "classdeflect_1_1qt_1_1_touch_injector.html", null ]
     ] ],
     [ "QTcpServer", null, [
