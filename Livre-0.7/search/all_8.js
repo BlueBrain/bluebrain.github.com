@@ -2,6 +2,7 @@ var searchData=
 [
   ['initdatat',['InitDataT',['../classlivre_1_1_data_source_plugin.html#a862a0794cdd6abf334db665583086d33',1,'livre::DataSourcePlugin']]],
   ['initializegl',['initializeGL',['../classlivre_1_1_data_source_plugin.html#a1219e01f6a9132de4f3e0a07cf03aa50',1,'livre::DataSourcePlugin']]],
+  ['interfacet',['InterfaceT',['../classlivre_1_1_data_source_plugin.html#a77e2457796b1d27454af3349cefd3306',1,'livre::DataSourcePlugin']]],
   ['internalnodetolodnode',['internalNodeToLODNode',['../classlivre_1_1_data_source_plugin.html#ac62bcd839931bd6cfa0c07e2615ed185',1,'livre::DataSourcePlugin']]],
   ['ischild',['isChild',['../classlivre_1_1_node_id.html#a0f9b7337250e5c80ef39a50a7b68e640',1,'livre::NodeId']]],
   ['isdatauniform',['isDataUniform',['../classlivre_1_1_histogram.html#aec7bfa1fbd662c3de91aea4a4a6ba5e8',1,'livre::Histogram']]],

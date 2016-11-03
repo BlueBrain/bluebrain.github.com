@@ -1,44 +1,44 @@
 var NAVTREE =
 [
   [ "Livre", "index.html", [
-    [ "Changelog", "_changelog.html", [
-      [ "master", "_changelog.html#master", null ]
+    [ "Changelog", "Changelog.html", [
+      [ "master", "Changelog.html#master", null ]
     ] ],
-    [ "Technical Overview", "_technical__overview.html", [
-      [ "Table of Contents", "_technical__overview.html#TABLE_OF_CONTENTS_Technical_overview", null ],
-      [ "Technical Features", "_technical__overview.html#Technical_Features", null ],
-      [ "Architecture", "_technical__overview.html#Architecture", [
-        [ "Render thread", "_technical__overview.html#Render_Thread", null ],
-        [ "Upload threads", "_technical__overview.html#Upload_Threads", null ],
-        [ "Compute threads", "_technical__overview.html#Compute_Threads", null ],
-        [ "Livre library", "_technical__overview.html#Livre_Library", null ]
+    [ "Technical Overview", "Technical_Overview.html", [
+      [ "Table of Contents", "Technical_Overview.html#TABLE_OF_CONTENTS_Technical_overview", null ],
+      [ "Technical Features", "Technical_Overview.html#Technical_Features", null ],
+      [ "Architecture", "Technical_Overview.html#Architecture", [
+        [ "Render thread", "Technical_Overview.html#Render_Thread", null ],
+        [ "Upload threads", "Technical_Overview.html#Upload_Threads", null ],
+        [ "Compute threads", "Technical_Overview.html#Compute_Threads", null ],
+        [ "Livre library", "Technical_Overview.html#Livre_Library", null ]
       ] ],
-      [ "References", "_technical__overview.html#References", null ]
+      [ "References", "Technical_Overview.html#References", null ]
     ] ],
-    [ "Tuvok Volume Data Generation", "_tuvok__tool.html", [
-      [ "Table of Contents", "_tuvok__tool.html#TABLE_OF_CONTENTS_Tuvok", null ],
-      [ "General Information", "_tuvok__tool.html#GENERAL_INFORMATION_Tuvok", null ],
-      [ "Pipeline", "_tuvok__tool.html#PIPELINE", [
-        [ "Fiji", "_tuvok__tool.html#Fiji", null ],
-        [ "TuvokDataConverter", "_tuvok__tool.html#TuvokDataConverter", null ]
+    [ "Tuvok Volume Data Generation", "Tuvok_Tool.html", [
+      [ "Table of Contents", "Tuvok_Tool.html#TABLE_OF_CONTENTS_Tuvok", null ],
+      [ "General Information", "Tuvok_Tool.html#GENERAL_INFORMATION_Tuvok", null ],
+      [ "Pipeline", "Tuvok_Tool.html#PIPELINE", [
+        [ "Fiji", "Tuvok_Tool.html#Fiji", null ],
+        [ "TuvokDataConverter", "Tuvok_Tool.html#TuvokDataConverter", null ]
       ] ]
     ] ],
-    [ "User Guide", "_user__guide.html", [
-      [ "Table of Contents", "_user__guide.html#TABLE_OF_CONTENTS_User_guide", null ],
-      [ "General Information", "_user__guide.html#GENERAL_INFORMATION", [
-        [ "Overview", "_user__guide.html#Overview", null ]
+    [ "User Guide", "User_Guide.html", [
+      [ "Table of Contents", "User_Guide.html#TABLE_OF_CONTENTS_User_guide", null ],
+      [ "General Information", "User_Guide.html#GENERAL_INFORMATION", [
+        [ "Overview", "User_Guide.html#Overview", null ]
       ] ],
-      [ "Installation", "_user__guide.html#INSTALLATION", [
-        [ "Setup", "_user__guide.html#Setup", null ]
+      [ "Installation", "User_Guide.html#INSTALLATION", [
+        [ "Setup", "User_Guide.html#Setup", null ]
       ] ],
-      [ "Getting Started", "_user__guide.html#GETTING_STARTED", [
-        [ "Volume pre-processing tools", "_user__guide.html#Pre-processing_Tools", null ],
-        [ "Livre", "_user__guide.html#Livre", null ],
-        [ "Interactive Scupercomputing Controller", "_user__guide.html#LivreGUI", null ]
+      [ "Getting Started", "User_Guide.html#GETTING_STARTED", [
+        [ "Volume pre-processing tools", "User_Guide.html#Pre-processing_Tools", null ],
+        [ "Livre", "User_Guide.html#Livre", null ],
+        [ "Interactive Scupercomputing Controller", "User_Guide.html#LivreGUI", null ]
       ] ]
     ] ],
-    [ "Classes", null, [
-      [ "Class List", "annotated.html", "annotated" ],
+    [ "Classes", "annotated.html", [
+      [ "Class List", "annotated.html", "annotated_dup" ],
       [ "Class Index", "classes.html", null ],
       [ "Class Hierarchy", "hierarchy.html", "hierarchy" ],
       [ "Class Members", "functions.html", [

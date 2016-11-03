@@ -2,7 +2,7 @@ var classlivre_1_1_data_source_plugin =
 [
     [ "IdLODNodeMap", "classlivre_1_1_data_source_plugin.html#adab1e3dcacb2dc162372c3ab62cc1aae", null ],
     [ "InitDataT", "classlivre_1_1_data_source_plugin.html#a862a0794cdd6abf334db665583086d33", null ],
-    [ "PluginT", "classlivre_1_1_data_source_plugin.html#a5555435981fda05de09c964422986edf", null ],
+    [ "InterfaceT", "classlivre_1_1_data_source_plugin.html#a77e2457796b1d27454af3349cefd3306", null ],
     [ "DataSourcePlugin", "classlivre_1_1_data_source_plugin.html#a14482744f0b437239e437a2c6f0f403b", null ],
     [ "~DataSourcePlugin", "classlivre_1_1_data_source_plugin.html#a9311a6ffda5c4162632968217bcc33a2", null ],
     [ "DataSourcePlugin", "classlivre_1_1_data_source_plugin.html#af713f320519246c51e5e68a8f046880c", null ],
