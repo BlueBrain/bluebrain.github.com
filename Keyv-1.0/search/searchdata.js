@@ -7,7 +7,7 @@ var indexSectionsWithContent =
   4: "cfghimost~",
   5: "cv",
   6: "k",
-  7: "dfh"
+  7: "c"
 };
 
 var indexSectionNames =

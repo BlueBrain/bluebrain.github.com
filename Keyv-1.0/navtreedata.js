@@ -1,23 +1,7 @@
 var NAVTREE =
 [
   [ "Keyv", "index.html", [
-    [ "Hello API Documentation", "index.html", [
-      [ "Introduction", "index.html#Introduction", [
-        [ "Features", "index.html#Features", null ]
-      ] ],
-      [ "New in this release", "index.html#New", [
-        [ "New Features", "index.html#NewFeatures", null ],
-        [ "Enhancements", "index.html#Enhancements", null ],
-        [ "Optimizations", "index.html#Optimizations", null ],
-        [ "Documentation", "index.html#Documentation", null ],
-        [ "Bug Fixes", "index.html#Fixes", null ],
-        [ "Known Bugs", "index.html#Bugs", null ]
-      ] ],
-      [ "About", "index.html#About", null ],
-      [ "Errata", "index.html#Errata", null ]
-    ] ],
-    [ "Documentation", "documentation.html", null ],
-    [ "Feature X", "md__jenkins_04_workspace_oss.Keyv.documentation_build_type_Debug_platform_cscsviz-vm_sources_doc_Feature.html", null ],
+    [ "Changelog", "Changelog.html", null ],
     [ "Namespaces", null, [
       [ "Namespace List", "namespaces.html", "namespaces" ],
       [ "Namespace Members", "namespacemembers.html", [
@@ -45,7 +29,7 @@ var NAVTREE =
 
 var NAVTREEINDEX =
 [
-"_map_8h_source.html"
+"Changelog.html"
 ];
 
 var SYNCONMSG = 'click to disable panel synchronisation';
