@@ -6,7 +6,6 @@ var searchData=
   ['checked',['checked',['../class_content_action.html#a563fe54bba76599da58a0da5d1eaf21e',1,'ContentAction']]],
   ['checkversion',['checkVersion',['../class_wall_to_wall_channel.html#addd62ca5f6199f4ca0c31c23d282066d',1,'WallToWallChannel']]],
   ['clear',['clear',['../class_display_group.html#a0c10092c41d5dee217dd49f52c7e2302',1,'DisplayGroup::clear()'],['../class_rest_interface.html#a50bdbfca3ff5afa3af1f387616915729',1,'RestInterface::clear()']]],
-  ['closepixelstreamwindow',['closePixelStreamWindow',['../class_pixel_stream_window_manager.html#a007d2144a767aef3e5e2a1840a58ab0e',1,'PixelStreamWindowManager']]],
   ['commandlineoptions',['CommandLineOptions',['../class_command_line_options.html#ad470c893b63d2f91ebf0b65824473727',1,'CommandLineOptions::CommandLineOptions()'],['../class_command_line_options.html#a2dde83b128fd9b439e8cd9f080e6db30',1,'CommandLineOptions::CommandLineOptions(int &amp;argc, char **argv)']]],
   ['commandlineparameters',['CommandLineParameters',['../class_command_line_parameters.html#a61991864c07ad0a1a01f2186342c5ce3',1,'CommandLineParameters']]],
   ['computecenter',['computeCenter',['../namespace_math_utils.html#a444f37ad2d3e5cce1c74358af01163df',1,'MathUtils']]],
@@ -29,6 +28,8 @@ var searchData=
   ['contentwindowremoved',['contentWindowRemoved',['../class_display_group.html#a2901850c2b9893e2c3826cbdf6b1795a',1,'DisplayGroup::contentWindowRemoved()'],['../class_logging_utility.html#a1b4961ce92b0464015f357b87fa25f1c',1,'LoggingUtility::contentWindowRemoved()']]],
   ['convert',['convert',['../class_f_f_m_p_e_g_video_frame_converter.html#a3ad2bf176bf86fd55cf17a558452ca03',1,'FFMPEGVideoFrameConverter']]],
   ['coordinateschanged',['coordinatesChanged',['../class_content_window.html#a2124659668dfee637f722e31aa3eed53',1,'ContentWindow']]],
-  ['create',['create',['../class_content_controller.html#a4cf751b013cf5572698e3a2367b29f5f',1,'ContentController::create()'],['../class_pixel_streamer_factory.html#a901701ac6afa91292aad59749d3782ad',1,'PixelStreamerFactory::create()'],['../class_content_synchronizer.html#a1dbfdba9e6b73e6f16bde19d90dd14b8',1,'ContentSynchronizer::create()']]],
+  ['create',['create',['../class_content_controller.html#a4cf751b013cf5572698e3a2367b29f5f',1,'ContentController::create()'],['../class_pixel_streamer_factory.html#a901701ac6afa91292aad59749d3782ad',1,'PixelStreamerFactory::create()'],['../class_content_synchronizer.html#a1dbfdba9e6b73e6f16bde19d90dd14b8',1,'ContentSynchronizer::create()'],['../namespacethumbnail.html#ac6540caaac13eae8ebf7da2f3fff4be0',1,'thumbnail::create(const Content &amp;content, const QSize &amp;size)'],['../namespacethumbnail.html#a75e7a0f3d12c6c2f0c8e0ead50961246',1,'thumbnail::create(const QString &amp;filename, const QSize &amp;size)']]],
+  ['createerrorimage',['createErrorImage',['../class_thumbnail_generator.html#a9fba0be45fafb6dca5ceba86725ae398',1,'ThumbnailGenerator']]],
+  ['creategradientimage',['createGradientImage',['../class_thumbnail_generator.html#af950dcda932b1ddc5dc0f6cff98da787',1,'ThumbnailGenerator']]],
   ['createtile',['createTile',['../class_basic_synchronizer.html#a3e9d3a2e8158ee28a44cf4e1e003546c',1,'BasicSynchronizer']]]
 ];

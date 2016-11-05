@@ -1,5 +1,4 @@
 var searchData=
 [
-  ['backgroundwidget',['BackgroundWidget',['../class_background_widget.html',1,'']]],
-  ['basicsynchronizer',['BasicSynchronizer',['../class_basic_synchronizer.html',1,'']]]
+  ['addressbar',['AddressBar',['../class_address_bar.html',1,'']]]
 ];

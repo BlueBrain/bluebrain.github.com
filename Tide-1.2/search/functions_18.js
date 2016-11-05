@@ -25,6 +25,7 @@ var searchData=
   ['_7esvg',['~SVG',['../class_s_v_g.html#ad34298f0fb0cc7bf208c5667b26dd21b',1,'SVG']]],
   ['_7esvgbackend',['~SVGBackend',['../class_s_v_g_backend.html#a54c3fe3bbb119d468dab5bfe875894ad',1,'SVGBackend']]],
   ['_7esvgsynchronizer',['~SVGSynchronizer',['../class_s_v_g_synchronizer.html#aa05d79048efff7633966cf1c8cfed078',1,'SVGSynchronizer']]],
+  ['_7ethumbnailgenerator',['~ThumbnailGenerator',['../class_thumbnail_generator.html#aa726f0f40d9c5d1e43026260f89d923a',1,'ThumbnailGenerator']]],
   ['_7etiffpyramidreader',['~TiffPyramidReader',['../class_tiff_pyramid_reader.html#a2d45866756f830e4e5d63e5706d7e5aa',1,'TiffPyramidReader']]],
   ['_7ewallapplication',['~WallApplication',['../class_wall_application.html#a8178cc81cec13ae323948ade5a76227a',1,'WallApplication']]],
   ['_7ewebkitpixelstreamer',['~WebkitPixelStreamer',['../class_webkit_pixel_streamer.html#aa0a741712313a0963f69bc28cae292e3',1,'WebkitPixelStreamer']]],

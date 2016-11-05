@@ -14,6 +14,7 @@ var annotated_dup =
     [ "tide", null, [
       [ "Version", "classtide_1_1_version.html", "classtide_1_1_version" ]
     ] ],
+    [ "AddressBar", "class_address_bar.html", "class_address_bar" ],
     [ "BackgroundWidget", "class_background_widget.html", "class_background_widget" ],
     [ "BasicSynchronizer", "class_basic_synchronizer.html", "class_basic_synchronizer" ],
     [ "CachedDataSource", "class_cached_data_source.html", "class_cached_data_source" ],
@@ -48,6 +49,7 @@ var annotated_dup =
     [ "FFMPEGPicture", "class_f_f_m_p_e_g_picture.html", "class_f_f_m_p_e_g_picture" ],
     [ "FFMPEGVideoFrameConverter", "class_f_f_m_p_e_g_video_frame_converter.html", "class_f_f_m_p_e_g_video_frame_converter" ],
     [ "FFMPEGVideoStream", "class_f_f_m_p_e_g_video_stream.html", "class_f_f_m_p_e_g_video_stream" ],
+    [ "FileInfoHelper", "class_file_info_helper.html", "class_file_info_helper" ],
     [ "FolderThumbnailGenerator", "class_folder_thumbnail_generator.html", "class_folder_thumbnail_generator" ],
     [ "FpsCounter", "class_fps_counter.html", "class_fps_counter" ],
     [ "HtmlSelectReplacer", "class_html_select_replacer.html", "class_html_select_replacer" ],
@@ -104,7 +106,6 @@ var annotated_dup =
     [ "QmlWindowRenderer", "class_qml_window_renderer.html", "class_qml_window_renderer" ],
     [ "QtImage", "class_qt_image.html", "class_qt_image" ],
     [ "QuadLineNode", "class_quad_line_node.html", "class_quad_line_node" ],
-    [ "QuickRenderer", "class_quick_renderer.html", "class_quick_renderer" ],
     [ "ReceiveBuffer", "class_receive_buffer.html", "class_receive_buffer" ],
     [ "Rectangle", "class_rectangle.html", "class_rectangle" ],
     [ "RenderController", "class_render_controller.html", "class_render_controller" ],
@@ -149,6 +150,7 @@ var annotated_dup =
     [ "WebbrowserContent", "class_webbrowser_content.html", "class_webbrowser_content" ],
     [ "WebbrowserController", "class_webbrowser_controller.html", "class_webbrowser_controller" ],
     [ "WebbrowserHistory", "class_webbrowser_history.html", "class_webbrowser_history" ],
+    [ "WebbrowserThumbnailGenerator", "class_webbrowser_thumbnail_generator.html", "class_webbrowser_thumbnail_generator" ],
     [ "WebbrowserWidget", "class_webbrowser_widget.html", "class_webbrowser_widget" ],
     [ "WebkitAuthenticationHelper", "class_webkit_authentication_helper.html", "class_webkit_authentication_helper" ],
     [ "WebkitHtmlSelectReplacer", "class_webkit_html_select_replacer.html", "class_webkit_html_select_replacer" ],

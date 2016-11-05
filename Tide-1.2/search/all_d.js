@@ -20,7 +20,7 @@ var searchData=
   ['movewindowtofront',['moveWindowToFront',['../class_display_group_controller.html#ade1b64873ebf1b035a0a2524645a1262',1,'DisplayGroupController']]],
   ['moviecontent',['MovieContent',['../class_movie_content.html',1,'MovieContent'],['../class_movie_content.html#a156808cda9a564dd70229ad2fe203e9c',1,'MovieContent::MovieContent()']]],
   ['moviesynchronizer',['MovieSynchronizer',['../class_movie_synchronizer.html',1,'MovieSynchronizer'],['../class_movie_synchronizer.html#a17e0bdee24b8c040dbfc82a889610c33',1,'MovieSynchronizer::MovieSynchronizer()']]],
-  ['moviethumbnailgenerator',['MovieThumbnailGenerator',['../class_movie_thumbnail_generator.html',1,'']]],
+  ['moviethumbnailgenerator',['MovieThumbnailGenerator',['../class_movie_thumbnail_generator.html',1,'MovieThumbnailGenerator'],['../class_movie_thumbnail_generator.html#a600c5485ccb796ef25b8d8a160e2904f',1,'MovieThumbnailGenerator::MovieThumbnailGenerator()']]],
   ['movieupdater',['MovieUpdater',['../class_movie_updater.html',1,'']]],
   ['mpichannel',['MPIChannel',['../class_m_p_i_channel.html',1,'MPIChannel'],['../class_m_p_i_channel.html#a3d6135b9ea469f6242b8396699ee74fd',1,'MPIChannel::MPIChannel(int argc, char *argv[])'],['../class_m_p_i_channel.html#a466aa85d1bc711eca37eb73eb0101126',1,'MPIChannel::MPIChannel(const MPIChannel &amp;parent, int color, int key)']]],
   ['mpicontext',['MPIContext',['../class_m_p_i_context.html',1,'MPIContext'],['../class_m_p_i_context.html#a1fc58d205deca92b9a9a307d49a124cb',1,'MPIContext::MPIContext()']]],

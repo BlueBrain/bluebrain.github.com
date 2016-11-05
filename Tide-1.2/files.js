@@ -1,5 +1,6 @@
 var files =
 [
+    [ "AddressBar.h", "_address_bar_8h_source.html", null ],
     [ "core/api.h", "core_2api_8h.html", "core_2api_8h" ],
     [ "master/api.h", "master_2api_8h.html", "master_2api_8h" ],
     [ "wall/api.h", "wall_2api_8h.html", "wall_2api_8h" ],
@@ -42,6 +43,7 @@ var files =
     [ "FFMPEGPicture.h", "_f_f_m_p_e_g_picture_8h_source.html", null ],
     [ "FFMPEGVideoFrameConverter.h", "_f_f_m_p_e_g_video_frame_converter_8h_source.html", null ],
     [ "FFMPEGVideoStream.h", "_f_f_m_p_e_g_video_stream_8h_source.html", null ],
+    [ "FileInfoHelper.h", "_file_info_helper_8h_source.html", null ],
     [ "FolderThumbnailGenerator.h", "_folder_thumbnail_generator_8h_source.html", null ],
     [ "FpsCounter.h", "_fps_counter_8h_source.html", null ],
     [ "geometry.h", "geometry_8h_source.html", null ],
@@ -108,7 +110,6 @@ var files =
     [ "QtImage.h", "_qt_image_8h_source.html", null ],
     [ "qtTypes.h", "qt_types_8h_source.html", null ],
     [ "QuadLineNode.h", "_quad_line_node_8h_source.html", null ],
-    [ "QuickRenderer.h", "_quick_renderer_8h_source.html", null ],
     [ "ReceiveBuffer.h", "_receive_buffer_8h_source.html", null ],
     [ "Rectangle.h", "_rectangle_8h_source.html", null ],
     [ "RenderController.h", "_render_controller_8h_source.html", null ],
@@ -136,6 +137,7 @@ var files =
     [ "TextureContent.h", "_texture_content_8h_source.html", null ],
     [ "TextureNode.h", "_texture_node_8h_source.html", null ],
     [ "TextureUploader.h", "_texture_uploader_8h_source.html", null ],
+    [ "thumbnail.h", "thumbnail_8h_source.html", null ],
     [ "ThumbnailGenerator.h", "_thumbnail_generator_8h_source.html", null ],
     [ "ThumbnailGeneratorFactory.h", "_thumbnail_generator_factory_8h_source.html", null ],
     [ "ThumbnailProvider.h", "_thumbnail_provider_8h_source.html", null ],
@@ -159,6 +161,7 @@ var files =
     [ "WebbrowserContent.h", "_webbrowser_content_8h_source.html", null ],
     [ "WebbrowserController.h", "_webbrowser_controller_8h_source.html", null ],
     [ "WebbrowserHistory.h", "_webbrowser_history_8h_source.html", null ],
+    [ "WebbrowserThumbnailGenerator.h", "_webbrowser_thumbnail_generator_8h_source.html", null ],
     [ "WebbrowserWidget.h", "_webbrowser_widget_8h_source.html", null ],
     [ "WebkitAuthenticationHelper.h", "_webkit_authentication_helper_8h_source.html", null ],
     [ "WebkitHtmlSelectReplacer.h", "_webkit_html_select_replacer_8h_source.html", null ],

@@ -89,6 +89,7 @@ var hierarchy =
     ] ],
     [ "QmlKeyInjector", "class_qml_key_injector.html", null ],
     [ "QObject", null, [
+      [ "AddressBar", "class_address_bar.html", null ],
       [ "Content", "class_content.html", [
         [ "DynamicTextureContent", "class_dynamic_texture_content.html", null ],
         [ "ImagePyramidContent", "class_image_pyramid_content.html", null ],
@@ -130,6 +131,7 @@ var hierarchy =
       [ "DisplayGroupController", "class_display_group_controller.html", null ],
       [ "DisplayGroupRenderer", "class_display_group_renderer.html", null ],
       [ "DoubleTapDetector", "class_double_tap_detector.html", null ],
+      [ "FileInfoHelper", "class_file_info_helper.html", null ],
       [ "HtmlSelectReplacer", "class_html_select_replacer.html", null ],
       [ "KeyboardState", "class_keyboard_state.html", null ],
       [ "LoggingUtility", "class_logging_utility.html", null ],
@@ -146,7 +148,6 @@ var hierarchy =
       [ "PixelStreamUpdater", "class_pixel_stream_updater.html", null ],
       [ "PixelStreamWindowManager", "class_pixel_stream_window_manager.html", null ],
       [ "QmlWindowRenderer", "class_qml_window_renderer.html", null ],
-      [ "QuickRenderer", "class_quick_renderer.html", null ],
       [ "Rectangle", "class_rectangle.html", [
         [ "ContentWindow", "class_content_window.html", null ],
         [ "DisplayGroup", "class_display_group.html", null ]
@@ -211,7 +212,8 @@ var hierarchy =
       [ "ImagePyramidThumbnailGenerator", "class_image_pyramid_thumbnail_generator.html", null ],
       [ "ImageThumbnailGenerator", "class_image_thumbnail_generator.html", null ],
       [ "MovieThumbnailGenerator", "class_movie_thumbnail_generator.html", null ],
-      [ "StateThumbnailGenerator", "class_state_thumbnail_generator.html", null ]
+      [ "StateThumbnailGenerator", "class_state_thumbnail_generator.html", null ],
+      [ "WebbrowserThumbnailGenerator", "class_webbrowser_thumbnail_generator.html", null ]
     ] ],
     [ "ThumbnailGeneratorFactory", "class_thumbnail_generator_factory.html", null ],
     [ "tide::Version", "classtide_1_1_version.html", null ],

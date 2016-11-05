@@ -21,7 +21,6 @@ var searchData=
   ['removefocusedwindow',['removeFocusedWindow',['../class_display_group.html#affa37c3402674148ae3e3d1f4339b796',1,'DisplayGroup']]],
   ['removetile',['removeTile',['../class_content_synchronizer.html#a755db8af943fc6bd0aab4220320d3a89',1,'ContentSynchronizer']]],
   ['removewindowlater',['removeWindowLater',['../class_display_group_controller.html#aeb8910743ba441bafbbfb6a0b85f53a7',1,'DisplayGroupController']]],
-  ['render',['render',['../class_quick_renderer.html#a1a325bec6cfbd42b0b52e610773e2ae9',1,'QuickRenderer']]],
   ['rendercontroller',['RenderController',['../class_render_controller.html#a5587c28a55be4fdea3cbb95a44747006',1,'RenderController']]],
   ['rendertoimage',['renderToImage',['../class_p_d_f_backend.html#aa7b2bdf170043124b8a61250878dd008',1,'PDFBackend::renderToImage()'],['../class_p_d_f_poppler_qt_backend.html#a11b9baeff08e897194215fdf3c6cacc3',1,'PDFPopplerQtBackend::renderToImage()'],['../class_s_v_g.html#a0caf324174ee21227db6a766d6bcd770',1,'SVG::renderToImage()'],['../class_s_v_g_backend.html#a39c5b3f29d3f945152c65b9289d1f6de',1,'SVGBackend::renderToImage()'],['../class_s_v_g_qt_gpu_backend.html#ac8edf80dc6457735721d2f082ecde733',1,'SVGQtGpuBackend::renderToImage()']]],
   ['replaceallselectelements',['replaceAllSelectElements',['../class_webkit_html_select_replacer.html#a6a8236e75946bb10abca9b8683a9b117',1,'WebkitHtmlSelectReplacer']]],

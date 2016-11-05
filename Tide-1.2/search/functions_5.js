@@ -10,7 +10,7 @@ var searchData=
   ['findwindow',['findWindow',['../class_content_loader.html#ac9459928e3b235005850a50e81099276',1,'ContentLoader']]],
   ['focus',['focus',['../class_display_group_controller.html#a3419a4b5fcd802a750622c4259272574',1,'DisplayGroupController']]],
   ['focusselected',['focusSelected',['../class_display_group_controller.html#a0786c06785a566b126edb19ab1666f8c',1,'DisplayGroupController']]],
-  ['frameswapped',['frameSwapped',['../class_quick_renderer.html#ab050dc439300f27ba7a212a04bf54e0b',1,'QuickRenderer']]],
+  ['folderthumbnailgenerator',['FolderThumbnailGenerator',['../class_folder_thumbnail_generator.html#ace3c4e536cc2bf77331cfd4f20bec2a9',1,'FolderThumbnailGenerator']]],
   ['frombinary',['fromBinary',['../namespaceserialization.html#a8f44e51d760ffb5e17973ec28873abd1',1,'serialization']]],
   ['fromxmlfile',['fromXmlFile',['../namespaceserialization.html#a00c40e41ef0c2fdd90c49aafbc1ece9b',1,'serialization']]]
 ];

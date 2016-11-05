@@ -22,6 +22,7 @@ var class_content =
     [ "getMinDimensions", "class_content.html#a8cf06fbd623453fd2aa349d91ebbca3b", null ],
     [ "getPreferredDimensions", "class_content.html#a508b7f5c09ffa4f5a1a7f3e89cbec489", null ],
     [ "getQmlControls", "class_content.html#af64c08ff1aafa0206bf178a6e4bfa634", null ],
+    [ "getTitle", "class_content.html#a57345c59f1ca4a395cfa230bafdc7812", null ],
     [ "getType", "class_content.html#a0671a3883929b1326ffa684c2c4bf03f", null ],
     [ "getURI", "class_content.html#a887d2b952cd824d70f64106ae048a5f8", null ],
     [ "getZoomRect", "class_content.html#a461bb62d3989d0eb5b4d1f824e7a66c0", null ],
@@ -40,6 +41,7 @@ var class_content =
     [ "setMaxScale", "class_content.html#a87465efbfaf4e2e5b0a5e7e8af0985f2", null ],
     [ "setSizeHints", "class_content.html#a70292d652fb37ee21640801fce53c186", null ],
     [ "setZoomRect", "class_content.html#a0f3e5f9203b97450e3856d39a12807e3", null ],
+    [ "titleChanged", "class_content.html#ac3eda10b0587b887e406402960d31cd5", null ],
     [ "width", "class_content.html#add67cf2f0ec836aabd24a088473f9e9d", null ],
     [ "boost::serialization::access", "class_content.html#ac98d07dd8f7b70e16ccb9a01abf56b9c", null ],
     [ "_actions", "class_content.html#acecc4dd9197d1d4f3bc0f6ae6a3c954f", null ],
@@ -58,5 +60,6 @@ var class_content =
     [ "keyboard", "class_content.html#aded8c9d6721e9c52f57204937dfa0cf5", null ],
     [ "qmlControls", "class_content.html#af3540e434752288a35efd670186e127f", null ],
     [ "size", "class_content.html#a5c8292dbaab045c65cc9a6f1821f8efd", null ],
+    [ "title", "class_content.html#afd9a0166b0789cdba7eed8070f2c429e", null ],
     [ "zoomRect", "class_content.html#ade1377306703c28f2977e0d308b3c09a", null ]
 ];
