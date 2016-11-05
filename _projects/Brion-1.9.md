@@ -4,7 +4,7 @@ version: "1.9"
 major: 1
 minor: 9
 description: The Blue Brain C++ I/O library
-updated: 04/11/16
+updated: 05/11/16
 homepage: https://github.com/BlueBrain/Brion
 repository: https://github.com/BlueBrain/Brion.git
 issuesurl: https://github.com/BlueBrain/Brion/issues
@@ -12,7 +12,7 @@ packageurl:
 license: LGPL
 maturity: EP
 maintainers: Blue Brain Project (bbp-open-source@googlegroups.com)
-contributors: Juan Hernando Vieites
+contributors: Stefan Eilemann
 readmetype: text/x-markdown
 ---
 [TOC]
