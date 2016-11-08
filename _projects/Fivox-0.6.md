@@ -4,7 +4,7 @@ version: "0.6"
 major: 0
 minor: 6
 description: ITK library to sample events into regular volumes
-updated: 05/11/16
+updated: 08/11/16
 homepage: https://github.com/BlueBrain/Fivox
 repository: https://github.com/BlueBrain/Fivox.git
 issuesurl: https://github.com/BlueBrain/Fivox/issues
@@ -12,7 +12,7 @@ packageurl:
 license: LGPL
 maturity: EP
 maintainers: Blue Brain Project (bbp-open-source@googlegroups.com)
-contributors: Jafet Villafranca
+contributors: Stefan Eilemann
 readmetype: text/x-markdown
 ---
 Fivox Documentation
