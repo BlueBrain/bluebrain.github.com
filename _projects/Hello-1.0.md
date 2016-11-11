@@ -4,7 +4,7 @@ version: "1.0"
 major: 1
 minor: 0
 description: Example project for the Blue Brain Project
-updated: 03/11/16
+updated: 11/11/16
 homepage: https://github.com/BlueBrain/Hello
 repository: https://github.com/BlueBrain/Hello.git
 issuesurl: https://github.com/BlueBrain/Hello/issues

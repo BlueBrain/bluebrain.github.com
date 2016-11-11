@@ -9,6 +9,5 @@ var searchData=
   ['hello_5fversion_5fmajor',['HELLO_VERSION_MAJOR',['../version_8h.html#ab68a4a326ad0c5e1a564e76e97819151',1,'version.h']]],
   ['hello_5fversion_5fminor',['HELLO_VERSION_MINOR',['../version_8h.html#ae1c0a1cacdfc842fd76b29ea6ac3b50e',1,'version.h']]],
   ['hello_5fversion_5fpatch',['HELLO_VERSION_PATCH',['../version_8h.html#a775aee1714484ddac6be03de6665b97a',1,'version.h']]],
-  ['hello_5fversion_5frevision',['HELLO_VERSION_REVISION',['../version_8h.html#ab0d2c315941e4052ce13015ea65fd4b5',1,'version.h']]],
-  ['hello_20api_20documentation',['Hello API Documentation',['../index.html',1,'']]]
+  ['hello_5fversion_5frevision',['HELLO_VERSION_REVISION',['../version_8h.html#ab0d2c315941e4052ce13015ea65fd4b5',1,'version.h']]]
 ];
