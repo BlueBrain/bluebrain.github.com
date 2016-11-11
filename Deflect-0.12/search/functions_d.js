@@ -3,7 +3,7 @@ var searchData=
   ['segmentdecoder',['SegmentDecoder',['../classdeflect_1_1_segment_decoder.html#a27136dcbc7c0447aa638a41e00afd46d',1,'deflect::SegmentDecoder']]],
   ['segmentparameters',['SegmentParameters',['../structdeflect_1_1_segment_parameters.html#aff4e6956b8e4efe8d637beeb1044eb47',1,'deflect::SegmentParameters']]],
   ['send',['send',['../classdeflect_1_1_stream.html#a31fd6e85be950b8799f557be71ef787d',1,'deflect::Stream']]],
-  ['senddata',['sendData',['../classdeflect_1_1qt_1_1_qml_streamer.html#a47eace10c1740c5b82ea9ff468495456',1,'deflect::qt::QmlStreamer::sendData()'],['../classdeflect_1_1_stream.html#ad4d57fc018a327a553c985ec7de390dc',1,'deflect::Stream::sendData()']]],
+  ['senddata',['sendData',['../classdeflect_1_1qt_1_1_qml_streamer.html#a813f38f626cb1785b02784d44f962303',1,'deflect::qt::QmlStreamer::sendData()'],['../classdeflect_1_1_stream.html#ad4d57fc018a327a553c985ec7de390dc',1,'deflect::Stream::sendData()']]],
   ['sendframe',['sendFrame',['../classdeflect_1_1_frame_dispatcher.html#a28c789e275fb5a72451d2a52e3f781af',1,'deflect::FrameDispatcher']]],
   ['sendsizehints',['sendSizeHints',['../classdeflect_1_1_stream.html#ae580afe8ed6e374789be1b088667e1d9',1,'deflect::Stream']]],
   ['server',['Server',['../classdeflect_1_1_server.html#a5c0d102c85af38a8c9731e46afc4ee51',1,'deflect::Server']]],
