@@ -1,5 +1,6 @@
 var NAVTREEINDEX5 =
 {
+"class_s_v_g_gpu_image.html#a6db44b92e6c465a0a5d9dc2ba7b90f83":[6,0,111,1],
 "class_s_v_g_gpu_image.html#ac344a36d69cb8d45ea8103d8b752de02":[6,0,111,6],
 "class_s_v_g_gpu_image.html#ae72dc82feae79c1109cc2bc77cb4368a":[6,0,111,0],
 "class_s_v_g_qt_gpu_backend.html":[6,0,112],
@@ -248,6 +249,5 @@ var NAVTREEINDEX5 =
 "class_webbrowser_widget.html#ab0c2a8efb418af56a12d63671a963d4f":[6,0,140,2],
 "class_webkit_authentication_helper.html":[6,0,141],
 "class_webkit_authentication_helper.html#a29c58f07fe0b85dfb7141127324c19e1":[6,0,141,2],
-"class_webkit_authentication_helper.html#a4566e282a6780eeb97b84b4d6f88930d":[6,0,141,0],
-"class_webkit_authentication_helper.html#af6c93da9c99bb1c5f1e94b8d2983429b":[6,0,141,1]
+"class_webkit_authentication_helper.html#a4566e282a6780eeb97b84b4d6f88930d":[6,0,141,0]
 };
