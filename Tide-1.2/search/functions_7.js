@@ -12,7 +12,6 @@ var searchData=
   ['hasvisiblepanels',['hasVisiblePanels',['../class_display_group.html#aa2857a09fb72669d48021f0cb30efeb5',1,'DisplayGroup']]],
   ['hasvisiblepanelschanged',['hasVisiblePanelsChanged',['../class_display_group.html#a745e87f0f41cdcf6cd7b05fc5ed2a8c5',1,'DisplayGroup']]],
   ['height',['height',['../class_content.html#a0ac15e1ba630bc6c6f98d47529f4c48c',1,'Content']]],
-  ['hidelauncher',['hideLauncher',['../class_pixel_streamer_launcher.html#aeba47f1f510c639b194db271367e253b',1,'PixelStreamerLauncher::hideLauncher()'],['../class_display_group_view.html#ab800e50c2d37a0786c9c318ba79f80d2',1,'DisplayGroupView::hideLauncher()']]],
   ['hidepanels',['hidePanels',['../class_display_group_controller.html#a30c12fa5deb6859f9304b47ab7bc7722',1,'DisplayGroupController']]],
   ['hidewindow',['hideWindow',['../class_pixel_stream_window_manager.html#a74bb0eb12ff7357fef0fbbd1d9c92aff',1,'PixelStreamWindowManager']]]
 ];

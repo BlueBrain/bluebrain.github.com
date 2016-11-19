@@ -7,6 +7,7 @@ var class_master_configuration =
     [ "getContentDir", "class_master_configuration.html#accd88a306419367f6714fb5158d06655", null ],
     [ "getDemoServiceImageFolder", "class_master_configuration.html#a464e5fac6d5a0232052d96e00894e073", null ],
     [ "getDemoServiceUrl", "class_master_configuration.html#aed8e72f877a93c14ac153e8dcbd2a376", null ],
+    [ "getHeadless", "class_master_configuration.html#a5e099760abaaba78f1ddd1a653fb8462", null ],
     [ "getLauncherDisplay", "class_master_configuration.html#a8d210bd05849a09ef2692bf143fd6f87", null ],
     [ "getSessionsDir", "class_master_configuration.html#a4985b2568e33198f6e283ddf9fa8e2ca", null ],
     [ "getWebBrowserDefaultURL", "class_master_configuration.html#a7786132d2c47c7575b7cd682752d1b3c", null ],

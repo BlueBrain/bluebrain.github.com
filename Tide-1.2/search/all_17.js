@@ -5,6 +5,7 @@ var searchData=
   ['wallapplication',['WallApplication',['../class_wall_application.html',1,'WallApplication'],['../class_wall_application.html#a8b3f627770c09407345a9dbbacb29979',1,'WallApplication::WallApplication()']]],
   ['wallconfiguration',['WallConfiguration',['../class_wall_configuration.html',1,'WallConfiguration'],['../class_wall_configuration.html#a7e44c5d98df432d18c455bcae2decf3a',1,'WallConfiguration::WallConfiguration()']]],
   ['wallfrommasterchannel',['WallFromMasterChannel',['../class_wall_from_master_channel.html',1,'WallFromMasterChannel'],['../class_wall_from_master_channel.html#a8f799726df2923051e9615728de8ed36',1,'WallFromMasterChannel::WallFromMasterChannel()']]],
+  ['wallitem',['wallItem',['../class_master_quick_view.html#aa32d7119d75611e2cb761cb275bf8a8e',1,'MasterQuickView']]],
   ['walltomasterchannel',['WallToMasterChannel',['../class_wall_to_master_channel.html',1,'WallToMasterChannel'],['../class_wall_to_master_channel.html#a566e3c97ead7e0578a81e11d2d24adcd',1,'WallToMasterChannel::WallToMasterChannel()']]],
   ['walltowallchannel',['WallToWallChannel',['../class_wall_to_wall_channel.html',1,'WallToWallChannel'],['../class_wall_to_wall_channel.html#aba4b1dba030d03dde3e677ded75a688f',1,'WallToWallChannel::WallToWallChannel()']]],
   ['wallwindow',['WallWindow',['../class_wall_window.html',1,'WallWindow'],['../class_wall_window.html#a49ca521f1e4e8c9cbee074be4598bd83',1,'WallWindow::WallWindow()']]],

@@ -36,7 +36,7 @@ var searchData=
   ['setcoordinates',['setCoordinates',['../class_content_window.html#ac4a6c11c1a4cf8e83c4bca9bff8c1115',1,'ContentWindow']]],
   ['setcurrenttime',['setCurrentTime',['../class_elapsed_timer.html#a6025f2aeea4e3a12a4197621f58ef053',1,'ElapsedTimer']]],
   ['setcursorposition',['setCursorPosition',['../class_address_bar.html#af96bb870cab2be7ba917f483ede81ffd',1,'AddressBar']]],
-  ['setdatamodel',['setDataModel',['../class_display_group_list_widget.html#a0424e0f76d98a4514b4417122ecf05e3',1,'DisplayGroupListWidget::setDataModel()'],['../class_display_group_view.html#a217ec2c8ba202c74db38262038ccd8c3',1,'DisplayGroupView::setDataModel()']]],
+  ['setdatamodel',['setDataModel',['../class_display_group_list_widget.html#a0424e0f76d98a4514b4417122ecf05e3',1,'DisplayGroupListWidget']]],
   ['setdatasource',['setDataSource',['../class_pixel_stream_synchronizer.html#ae674b7e55539e08c3211261890d6d5ad',1,'PixelStreamSynchronizer']]],
   ['setdimensions',['setDimensions',['../class_content.html#a1b7a6f49f447c124b497b0a844fd6ea6',1,'Content']]],
   ['setdisplaycoordinates',['setDisplayCoordinates',['../class_content_window.html#a652013bcdfff8cbfbdf64f571b658ec8',1,'ContentWindow']]],

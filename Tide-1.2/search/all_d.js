@@ -1,11 +1,13 @@
 var searchData=
 [
   ['api_2eh',['api.h',['../master_2api_8h.html',1,'']]],
-  ['maptowallpos',['mapToWallPos',['../class_display_group_view.html#a8d0b47b243973fa5f6d64d436c9c3245',1,'DisplayGroupView']]],
+  ['maptowallpos',['mapToWallPos',['../class_master_quick_view.html#a8cca513cded41f400424556ff803684a',1,'MasterQuickView']]],
   ['markers',['Markers',['../class_markers.html',1,'Markers'],['../class_markers.html#a8274924d49d7d6f1ed3ce3489ea98739',1,'Markers::Markers()']]],
   ['masterapplication',['MasterApplication',['../class_master_application.html',1,'MasterApplication'],['../class_master_application.html#aeac41cab164926055074b36fe813d5de',1,'MasterApplication::MasterApplication()']]],
   ['masterconfiguration',['MasterConfiguration',['../class_master_configuration.html',1,'MasterConfiguration'],['../class_master_configuration.html#a1e9671231ef79842a80c80009584987e',1,'MasterConfiguration::MasterConfiguration()']]],
+  ['masterdisplaygrouprenderer',['MasterDisplayGroupRenderer',['../class_master_display_group_renderer.html',1,'MasterDisplayGroupRenderer'],['../class_master_display_group_renderer.html#af80880c950bb6bf2798ef46b740e816e',1,'MasterDisplayGroupRenderer::MasterDisplayGroupRenderer()']]],
   ['masterfromwallchannel',['MasterFromWallChannel',['../class_master_from_wall_channel.html',1,'MasterFromWallChannel'],['../class_master_from_wall_channel.html#ae3a1dc5ffe6841e24a3df3bd78254d38',1,'MasterFromWallChannel::MasterFromWallChannel()']]],
+  ['masterquickview',['MasterQuickView',['../class_master_quick_view.html',1,'MasterQuickView'],['../class_master_quick_view.html#ae91298b2262280078a9d3d6139637144',1,'MasterQuickView::MasterQuickView()']]],
   ['mastertoforkerchannel',['MasterToForkerChannel',['../class_master_to_forker_channel.html',1,'MasterToForkerChannel'],['../class_master_to_forker_channel.html#a4281cf932f32d2db274303e2e176e792',1,'MasterToForkerChannel::MasterToForkerChannel()']]],
   ['mastertowallchannel',['MasterToWallChannel',['../class_master_to_wall_channel.html',1,'MasterToWallChannel'],['../class_master_to_wall_channel.html#a8f671d612ef52095bf7290d791df4fc0',1,'MasterToWallChannel::MasterToWallChannel()']]],
   ['masterwindow',['MasterWindow',['../class_master_window.html',1,'MasterWindow'],['../class_master_window.html#a1104eed56f46330d46fd0535b0b2bc77',1,'MasterWindow::MasterWindow()']]],

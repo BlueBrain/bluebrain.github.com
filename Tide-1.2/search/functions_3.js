@@ -11,6 +11,5 @@ var searchData=
   ['displaygroupcontroller',['DisplayGroupController',['../class_display_group_controller.html#ac3bd75cfaf3d6374085e2cc117beae82',1,'DisplayGroupController']]],
   ['displaygrouplistwidget',['DisplayGroupListWidget',['../class_display_group_list_widget.html#a4e7f56488a6238d1577d539c7913dafb',1,'DisplayGroupListWidget']]],
   ['displaygrouprenderer',['DisplayGroupRenderer',['../class_display_group_renderer.html#a4a2ff328df8cc22d6a8d5e330a498373',1,'DisplayGroupRenderer']]],
-  ['displaygroupview',['DisplayGroupView',['../class_display_group_view.html#ad2df5ac523506bac5674fc0c2bb31caf',1,'DisplayGroupView']]],
   ['doubletap',['doubleTap',['../class_double_tap_detector.html#ad473d07379d7616f498d719dfbdee187',1,'DoubleTapDetector::doubleTap()'],['../class_multitouch_area.html#ad5ec58d1a203366694155eb3066a5e04',1,'MultitouchArea::doubleTap()']]]
 ];

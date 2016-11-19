@@ -135,6 +135,7 @@ var hierarchy =
       [ "HtmlSelectReplacer", "class_html_select_replacer.html", null ],
       [ "KeyboardState", "class_keyboard_state.html", null ],
       [ "LoggingUtility", "class_logging_utility.html", null ],
+      [ "MasterDisplayGroupRenderer", "class_master_display_group_renderer.html", null ],
       [ "MasterFromWallChannel", "class_master_from_wall_channel.html", null ],
       [ "MasterToForkerChannel", "class_master_to_forker_channel.html", null ],
       [ "MasterToWallChannel", "class_master_to_wall_channel.html", null ],
@@ -175,7 +176,7 @@ var hierarchy =
       [ "TestPattern", "class_test_pattern.html", null ]
     ] ],
     [ "QQuickView", null, [
-      [ "DisplayGroupView", "class_display_group_view.html", null ]
+      [ "MasterQuickView", "class_master_quick_view.html", null ]
     ] ],
     [ "QQuickWindow", null, [
       [ "WallWindow", "class_wall_window.html", null ]

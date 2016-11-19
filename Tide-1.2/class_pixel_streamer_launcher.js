@@ -1,7 +1,6 @@
 var class_pixel_streamer_launcher =
 [
     [ "PixelStreamerLauncher", "class_pixel_streamer_launcher.html#a4e75a7d4d03297d532d969337bb93bb9", null ],
-    [ "hideLauncher", "class_pixel_streamer_launcher.html#aeba47f1f510c639b194db271367e253b", null ],
     [ "launch", "class_pixel_streamer_launcher.html#afb119ec627665c21906d5365fabaeb75", null ],
     [ "openLauncher", "class_pixel_streamer_launcher.html#abec11d7adeb5d7afb60c5e08000f4b2b", null ],
     [ "openWebBrowser", "class_pixel_streamer_launcher.html#a2570a4a7985d254b2e5a420f0ffda1ec", null ],
