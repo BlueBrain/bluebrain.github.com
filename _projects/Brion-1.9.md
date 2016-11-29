@@ -4,7 +4,7 @@ version: "1.9"
 major: 1
 minor: 9
 description: The Blue Brain C++ I/O library
-updated: 08/11/16
+updated: 29/11/16
 homepage: https://github.com/BlueBrain/Brion
 repository: https://github.com/BlueBrain/Brion.git
 issuesurl: https://github.com/BlueBrain/Brion/issues
@@ -12,7 +12,7 @@ packageurl:
 license: LGPL
 maturity: EP
 maintainers: Blue Brain Project (bbp-open-source@googlegroups.com)
-contributors: Stefan Eilemann
+contributors: Daniel Nachbaur
 readmetype: text/x-markdown
 ---
 [TOC]
@@ -83,7 +83,7 @@ system, including all Unix variants. Brion uses CMake to create a
 platform-specific build environment. The following platforms and build
 environments are tested:
 
-* Linux: Ubuntu 14.04 & 16.04 and RHEL 6 (Makefile, i386, x64)
+* Linux: Ubuntu 16.04 and RHEL 6 (Makefile, x64)
 
 Building from source is as simple as:
 

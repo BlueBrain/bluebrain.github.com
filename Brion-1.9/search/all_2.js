@@ -9,17 +9,18 @@ var searchData=
   ['clear',['clear',['../classbrion_1_1_spike_report.html#a025c64d02116e0b86e0e07cb4cc975f9',1,'brion::SpikeReport::clear()'],['../classbrion_1_1_spike_report_plugin.html#a8da9693509c7ad057f28c7bb7c4780e2',1,'brion::SpikeReportPlugin::clear()']]],
   ['clearbuffer',['clearBuffer',['../classbrion_1_1_compartment_report.html#a30882f15ba7f42ebe56e044d4a956082',1,'brion::CompartmentReport::clearBuffer()'],['../classbrion_1_1_compartment_report_plugin.html#a7fe02b55cdecf384aa1ec33aff7a3620',1,'brion::CompartmentReportPlugin::clearBuffer()']]],
   ['close',['close',['../classbrion_1_1_spike_report.html#a5610cfd2b4f663e5c9e6393af63a472c',1,'brion::SpikeReport::close()'],['../classbrion_1_1_spike_report_plugin.html#a972c34269c7b114a27f01d13363bddad',1,'brion::SpikeReportPlugin::close()'],['../classbrain_1_1_spike_report_reader.html#aefb0598576af03e0470ee99cdf74d23f',1,'brain::SpikeReportReader::close()'],['../classbrain_1_1_spike_report_writer.html#a490d30db02568611990cfff67b4adb5d',1,'brain::SpikeReportWriter::close()']]],
+  ['compartment_20report_20writing_20from_20mpi_20applications',['Compartment report writing from MPI applications',['../compartment_report_mpi.html',1,'rfcs']]],
   ['compartmentcounts',['CompartmentCounts',['../namespacebrion.html#ab990cd6483c3e4237375b0b8098b2f42',1,'brion']]],
   ['compartmentreport',['CompartmentReport',['../classbrion_1_1_compartment_report.html',1,'brion']]],
   ['compartmentreport',['CompartmentReport',['../classbrion_1_1_compartment_report.html#a1068892309907490436a2f5b23e3f252',1,'brion::CompartmentReport']]],
   ['compartmentreportinitdata',['CompartmentReportInitData',['../classbrion_1_1_compartment_report_init_data.html',1,'brion']]],
   ['compartmentreportinitdata',['CompartmentReportInitData',['../classbrion_1_1_compartment_report_init_data.html#a268487758574e1da6febf4666a235d6b',1,'brion::CompartmentReportInitData']]],
-  ['compartment_20report_20writing_20from_20mpi_20applications',['Compartment report writing from MPI applications',['../compartmentReportMPI.html',1,'FeatureSpecs']]],
   ['compartmentreportplugin',['CompartmentReportPlugin',['../classbrion_1_1_compartment_report_plugin.html',1,'brion']]],
   ['conductances',['conductances',['../classbrain_1_1_synapses.html#ae1aef670cad058fe953fe50b4f511a94',1,'brain::Synapses']]],
-  ['const_5fiterator',['const_iterator',['../classbrain_1_1_spikes_1_1const__iterator.html',1,'brain::Spikes']]],
   ['const_5fiterator',['const_iterator',['../classbrain_1_1_spikes_1_1const__iterator.html#ab9da3bf11b39762352fa03d019d6693b',1,'brain::Spikes::const_iterator::const_iterator()'],['../classbrain_1_1_spikes_1_1const__iterator.html#a07366218e13f964dfcc6792999dd8b3f',1,'brain::Spikes::const_iterator::const_iterator(const const_iterator &amp;rhs)']]],
+  ['const_5fiterator',['const_iterator',['../classbrain_1_1_spikes_1_1const__iterator.html',1,'brain::Spikes']]],
   ['contains',['contains',['../classbrion_1_1_target.html#aa58924378a7389ae2a44867ce5e8be20',1,'brion::Target']]],
   ['coordinates',['Coordinates',['../classbrain_1_1_circuit.html#a1f220992f40a8759f34ef96da4041610',1,'brain::Circuit']]],
-  ['caching_20support',['Caching support',['../md__jenkins_02_workspace_oss.Brion.documentation_build_type_Debug_platform_cscsviz-vm_sources_doc_caching.html',1,'']]]
+  ['compartment_20report_20data_20model',['Compartment report data model',['../data_compartments.html',1,'data']]],
+  ['caching_20support',['Caching support',['../md__jenkins_02_workspace_oss.Brion.documentation_build_type_Debug_platform_cscsviz-vm_sources_doc_user_caching.html',1,'']]]
 ];

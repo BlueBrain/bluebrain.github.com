@@ -19,5 +19,6 @@ var searchData=
   ['readvertexsections',['readVertexSections',['../classbrion_1_1_mesh.html#a8030c1ee2238659ae3dfe7a9749011e4',1,'brion::Mesh']]],
   ['readvertices',['readVertices',['../classbrion_1_1_mesh.html#ad26774b45b0182cffe3398622a8be1e6',1,'brion::Mesh']]],
   ['resting_5fvoltage',['RESTING_VOLTAGE',['../namespacebrion.html#a8ae1d136d8ee3a42852723c5d323b9f7',1,'brion']]],
-  ['redesign_20of_20the_20spikereport_20and_20spikes_20container',['Redesign of the SpikeReport and Spikes container',['../spikeReport.html',1,'FeatureSpecs']]]
+  ['rfcs',['RFCs',['../rfcs.html',1,'']]],
+  ['redesign_20of_20the_20spikereport_20and_20spikes_20container',['Redesign of the SpikeReport and Spikes container',['../spike_reports.html',1,'rfcs']]]
 ];

@@ -1,5 +1,6 @@
 var searchData=
 [
+  ['data_20models',['Data models',['../data.html',1,'']]],
   ['decays',['decays',['../classbrain_1_1_synapses.html#a3d370a963f47aec79ac9fc3be6551273',1,'brain::Synapses']]],
   ['defines_2eh',['defines.h',['../defines_8h.html',1,'']]],
   ['delays',['delays',['../classbrain_1_1_synapses.html#ab204f49e0e762bc7baeddfcb0abcd065',1,'brain::Synapses']]],
