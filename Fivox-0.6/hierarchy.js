@@ -19,12 +19,14 @@ var hierarchy =
     [ "fivox::ScaleFilter< TImage >", "classfivox_1_1_scale_filter.html", null ],
     [ "fivox::URIHandler", "classfivox_1_1_u_r_i_handler.html", null ],
     [ "fivox::Version", "classfivox_1_1_version.html", null ],
+    [ "fivox::VolumeHandler", "classfivox_1_1_volume_handler.html", null ],
     [ "Command", null, [
       [ "fivox::ProgressObserver", "classfivox_1_1_progress_observer.html", null ]
     ] ],
     [ "itk::Image< typename, unsigned >", "classitk_1_1_image.html", null ],
     [ "ImageSource", null, [
       [ "fivox::ImageSource< TImage >", "classfivox_1_1_image_source.html", [
+        [ "fivox::CudaImageSource< TImage >", "classfivox_1_1_cuda_image_source.html", null ],
         [ "fivox::EventValueSummationImageSource< TImage >", "classfivox_1_1_event_value_summation_image_source.html", null ],
         [ "fivox::FunctorImageSource< TImage >", "classfivox_1_1_functor_image_source.html", null ]
       ] ]

@@ -2,7 +2,7 @@ var searchData=
 [
   ['scalefilter',['ScaleFilter',['../classfivox_1_1_scale_filter.html',1,'fivox']]],
   ['scalefilter',['ScaleFilter',['../classfivox_1_1_scale_filter.html#af2ecf88a3ac8fcee1d23eca561f6126e',1,'fivox::ScaleFilter::ScaleFilter()'],['../classfivox_1_1_scale_filter.html#ac3d5bfb13f2e0f4ad062b8f81837c748',1,'fivox::ScaleFilter::ScaleFilter(VolumePtr input, const fivox::Vector2f &amp;dataRange)']]],
-  ['self',['Self',['../classfivox_1_1_event_value_summation_image_source.html#a9d07e1b5fe6d2b52ff3a4c028e23c489',1,'fivox::EventValueSummationImageSource::Self()'],['../classfivox_1_1_functor_image_source.html#a74e94291cf87bf6f6751a245371d2bdb',1,'fivox::FunctorImageSource::Self()'],['../classfivox_1_1_image_source.html#a0f201fd40bef7e95187f3f69b5d9a9f5',1,'fivox::ImageSource::Self()']]],
+  ['self',['Self',['../classfivox_1_1_cuda_image_source.html#a0dc803dbc2632f936d8f4210aa9d92c7',1,'fivox::CudaImageSource::Self()'],['../classfivox_1_1_event_value_summation_image_source.html#a9d07e1b5fe6d2b52ff3a4c028e23c489',1,'fivox::EventValueSummationImageSource::Self()'],['../classfivox_1_1_functor_image_source.html#a74e94291cf87bf6f6751a245371d2bdb',1,'fivox::FunctorImageSource::Self()'],['../classfivox_1_1_image_source.html#a0f201fd40bef7e95187f3f69b5d9a9f5',1,'fivox::ImageSource::Self()']]],
   ['setapthreshold',['setApThreshold',['../classfivox_1_1_v_s_d_loader.html#aac1c487eb853e071a61fcebb4b372215',1,'fivox::VSDLoader']]],
   ['setareamultiplier',['setAreaMultiplier',['../classfivox_1_1_v_s_d_loader.html#a39936d1100ee2dd7fd69faf386cefda0',1,'fivox::VSDLoader']]],
   ['setboundingbox',['setBoundingBox',['../classfivox_1_1_event_source.html#a80f1761c9e83a78d1bbee97230a6432f',1,'fivox::EventSource']]],

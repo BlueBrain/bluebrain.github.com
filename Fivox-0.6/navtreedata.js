@@ -45,7 +45,7 @@ var NAVTREE =
 var NAVTREEINDEX =
 [
 ".html",
-"livre_2api_8h.html#a0bbb4584be791e97f7c9dcaf73278737"
+"density_functor_8h_source.html"
 ];
 
 var SYNCONMSG = 'click to disable panel synchronisation';

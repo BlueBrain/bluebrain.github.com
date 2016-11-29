@@ -6,7 +6,7 @@ var searchData=
   ['getboundingbox',['getBoundingBox',['../classfivox_1_1_event_source.html#a36cd3f9e13e20bbebfd84a08116234ea',1,'fivox::EventSource::getBoundingBox()'],['../classfivox_1_1_image_source.html#ad7c53efb6a48637b9dfff113119effd9',1,'fivox::ImageSource::getBoundingBox()']]],
   ['getconfig',['getConfig',['../classfivox_1_1_u_r_i_handler.html#a0fdb8fe8f1c4d024d547144893bc7dae',1,'fivox::URIHandler']]],
   ['getcurrenttime',['getCurrentTime',['../classfivox_1_1_event_source.html#af6dbbe8f044ddb142f2fbc1cb75b83e2',1,'fivox::EventSource']]],
-  ['getcutoffdistance',['getCutOffDistance',['../classfivox_1_1_event_source.html#a134f842c23cde45681f2e154a3e3498c',1,'fivox::EventSource::getCutOffDistance()'],['../classfivox_1_1_u_r_i_handler.html#a708bdf0a86741e5a715c3235c47e50bc',1,'fivox::URIHandler::getCutoffDistance()']]],
+  ['getcutoffdistance',['getCutoffDistance',['../classfivox_1_1_u_r_i_handler.html#a708bdf0a86741e5a715c3235c47e50bc',1,'fivox::URIHandler::getCutoffDistance()'],['../classfivox_1_1_event_source.html#a134f842c23cde45681f2e154a3e3498c',1,'fivox::EventSource::getCutOffDistance()']]],
   ['getdescription',['getDescription',['../classfivox_1_1_u_r_i_handler.html#a53abfe174aae35fefce65ad5010f2500',1,'fivox::URIHandler']]],
   ['getdt',['getDt',['../classfivox_1_1_event_source.html#a8b0b9afd1cd85d9ca7d12cd81dea02fc',1,'fivox::EventSource::getDt()'],['../classfivox_1_1_u_r_i_handler.html#a0cf08598c30cf1df02634b4a4a2aa776',1,'fivox::URIHandler::getDt()']]],
   ['getduration',['getDuration',['../classfivox_1_1_u_r_i_handler.html#acae4cf6c1736a55ec44a119eb4f89a97',1,'fivox::URIHandler']]],
