@@ -108,6 +108,18 @@ var enums_8h =
       [ "SYNAPSE_POSTSYNAPTIC_NEURON", "enums_8h.html#ad023e746676d235c53853a69c9c1c454a22b03e0c519d41deefbdf4b69be7386d", null ],
       [ "SYNAPSE_ALL_ATTRIBUTES", "enums_8h.html#ad023e746676d235c53853a69c9c1c454a3c62d97f291f33f35fe87634c380cf19", null ]
     ] ],
+    [ "SynapseOldPositions", "enums_8h.html#ab11ce7527325f4a5031c9b691252a2de", [
+      [ "SYNAPSE_OLD_PRESYNAPTIC_CENTER_X", "enums_8h.html#ab11ce7527325f4a5031c9b691252a2dea1cb525506cd6c636bb7f21cce3ed9103", null ],
+      [ "SYNAPSE_OLD_PRESYNAPTIC_CENTER_Y", "enums_8h.html#ab11ce7527325f4a5031c9b691252a2dea24f2182d7db5567a83bea1d77e4a35f8", null ],
+      [ "SYNAPSE_OLD_PRESYNAPTIC_CENTER_Z", "enums_8h.html#ab11ce7527325f4a5031c9b691252a2dea5bbcd3fc7e971150114ea9cb50f9e1fe", null ],
+      [ "SYNAPSE_OLD_POSTSYNAPTIC_CENTER_X", "enums_8h.html#ab11ce7527325f4a5031c9b691252a2deaa0c78029d5d6f89d2e52815d2b66575b", null ],
+      [ "SYNAPSE_OLD_POSTSYNAPTIC_CENTER_Y", "enums_8h.html#ab11ce7527325f4a5031c9b691252a2dea7043155b9d57eb8bfadd9722faa7a424", null ],
+      [ "SYNAPSE_OLD_POSTSYNAPTIC_CENTER_Z", "enums_8h.html#ab11ce7527325f4a5031c9b691252a2dea0b9d7dcbf4a8876e56dd11760ab7c1fb", null ],
+      [ "SYNAPSE_OLD_POSITION_ALL", "enums_8h.html#ab11ce7527325f4a5031c9b691252a2deacc74abd13ef145bde3bea90f4495e8a9", null ],
+      [ "SYNAPSE_OLD_PRESYNAPTIC_POSITION", "enums_8h.html#ab11ce7527325f4a5031c9b691252a2dea124601624f1f05626eb5978913acf6ad", null ],
+      [ "SYNAPSE_OLD_POSTSYNAPTIC_POSITION", "enums_8h.html#ab11ce7527325f4a5031c9b691252a2dea2e25f894495b301c9ed04eec454d68d4", null ],
+      [ "SYNAPSE_OLD_POSITION", "enums_8h.html#ab11ce7527325f4a5031c9b691252a2deafde2580bbca8b9be35d150c77ee4b36f", null ]
+    ] ],
     [ "SynapsePositions", "enums_8h.html#a66e583bba6f011701c4d545b1bb28533", [
       [ "SYNAPSE_PRESYNAPTIC_SURFACE_X", "enums_8h.html#a66e583bba6f011701c4d545b1bb28533abf8e4333b2777a2992b6f948aa0c5076", null ],
       [ "SYNAPSE_PRESYNAPTIC_SURFACE_Y", "enums_8h.html#a66e583bba6f011701c4d545b1bb28533a013339df03c0c26ab8d4f5836f16e5a3", null ],

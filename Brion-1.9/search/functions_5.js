@@ -38,6 +38,7 @@ var searchData=
   ['getmorphologytypes',['getMorphologyTypes',['../classbrain_1_1_circuit.html#acdaadb6bbf5c998085f3d284e22a14fa',1,'brain::Circuit']]],
   ['getmorphologyuris',['getMorphologyURIs',['../classbrain_1_1_circuit.html#a2af6cc4a5ae4691771980d15d72a56f6',1,'brain::Circuit']]],
   ['getnextspiketime',['getNextSpikeTime',['../classbrion_1_1_spike_report.html#a5e366cdface09f9de23b0ef369f7d7fc',1,'brion::SpikeReport::getNextSpikeTime()'],['../classbrion_1_1_spike_report_plugin.html#ab0c9e3bab16d3d4c3c5ef7e321b09102',1,'brion::SpikeReportPlugin::getNextSpikeTime()']]],
+  ['getnumattributes',['getNumAttributes',['../classbrion_1_1_synapse.html#abfae772ef7b2c7af3f219b2f2e4e140a',1,'brion::Synapse']]],
   ['getnumcompartments',['getNumCompartments',['../classbrion_1_1_compartment_report.html#ace0923ed2cb001197da414284383ec7b',1,'brion::CompartmentReport::getNumCompartments()'],['../classbrion_1_1_compartment_report_plugin.html#a3288f5deda7263bf1ff47954011abac4',1,'brion::CompartmentReportPlugin::getNumCompartments()']]],
   ['getnumneurons',['getNumNeurons',['../classbrion_1_1_circuit.html#af7ed47392549f914b7ab7625f493176e',1,'brion::Circuit::getNumNeurons()'],['../classbrain_1_1_circuit.html#a69480d5a0edcb1ded3627d618204289c',1,'brain::Circuit::getNumNeurons()']]],
   ['getnumnormals',['getNumNormals',['../classbrion_1_1_mesh.html#a0e2ebd5da50e066a96afe7c971825da7',1,'brion::Mesh']]],
