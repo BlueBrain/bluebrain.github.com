@@ -4,7 +4,7 @@ version: "1.0"
 major: 1
 minor: 0
 description: Example project for the Blue Brain Project
-updated: 11/11/16
+updated: 03/12/16
 homepage: https://github.com/BlueBrain/Hello
 repository: https://github.com/BlueBrain/Hello.git
 issuesurl: https://github.com/BlueBrain/Hello/issues
@@ -28,11 +28,22 @@ Hello provides the following functionality:
 
 ## Building from Source
 
-```
-  git clone https://github.com/BlueBrain/Hello.git
-  mkdir Hello/build
-  cd Hello/build
-  cmake -GNinja ..
-  ninja
-```
+Hello is a cross-platform library, designed to run on any modern
+operating system, including all Unix variants and the Windows operating
+system. It requires a C++11 compiler and uses CMake to create a
+platform-specific build environment. The following platforms and build
+environments are tested:
+
+* Linux: Ubuntu 16.04, RHEL 6.8 (Makefile, Ninja)
+* Windows: 7 (Visual Studio 2012)
+* Mac OS X: 10.9 (Makefile, Ninja)
+
+Building from source is as simple as:
+
+    git clone https://github.com/BlueBrain/Hello.git
+    mkdir Hello/build
+    cd Hello/build
+    cmake -GNinja ..
+    ninja
+
 
