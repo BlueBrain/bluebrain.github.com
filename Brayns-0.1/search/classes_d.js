@@ -1,9 +1,11 @@
 var searchData=
 [
-  ['scene',['Scene',['../classbrayns_1_1_scene.html',1,'brayns']]],
-  ['sceneparameters',['SceneParameters',['../classbrayns_1_1_scene_parameters.html',1,'brayns']]],
-  ['simulationinformation',['SimulationInformation',['../structbrayns_1_1_simulation_information.html',1,'brayns']]],
-  ['simulationrenderer',['SimulationRenderer',['../classbrayns_1_1_simulation_renderer.html',1,'brayns']]],
-  ['sphere',['Sphere',['../classbrayns_1_1_sphere.html',1,'brayns']]],
-  ['stereocamera',['StereoCamera',['../structbrayns_1_1_stereo_camera.html',1,'brayns']]]
+  ['parametersmanager',['ParametersManager',['../classbrayns_1_1_parameters_manager.html',1,'brayns']]],
+  ['particlerenderer',['ParticleRenderer',['../classbrayns_1_1_particle_renderer.html',1,'brayns']]],
+  ['perraydata_5fradiance',['PerRayData_radiance',['../struct_per_ray_data__radiance.html',1,'']]],
+  ['perraydata_5fshadow',['PerRayData_shadow',['../struct_per_ray_data__shadow.html',1,'']]],
+  ['pointlight',['PointLight',['../classbrayns_1_1_point_light.html',1,'brayns']]],
+  ['primitive',['Primitive',['../classbrayns_1_1_primitive.html',1,'brayns']]],
+  ['proteinloader',['ProteinLoader',['../classbrayns_1_1_protein_loader.html',1,'brayns']]],
+  ['proximityrenderer',['ProximityRenderer',['../classbrayns_1_1_proximity_renderer.html',1,'brayns']]]
 ];

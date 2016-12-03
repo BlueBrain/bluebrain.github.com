@@ -1,4 +1,4 @@
 var searchData=
 [
-  ['light',['Light',['../classbrayns_1_1_light.html',1,'brayns']]]
+  ['keyboardhandler',['KeyboardHandler',['../classbrayns_1_1_keyboard_handler.html',1,'brayns']]]
 ];

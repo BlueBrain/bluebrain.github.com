@@ -2,7 +2,7 @@ var structbrayns_1_1_extended_cylinders =
 [
     [ "ExtendedCylinders", "structbrayns_1_1_extended_cylinders.html#ae6cd37462fe35ded8a07809e526b20cb", null ],
     [ "finalize", "structbrayns_1_1_extended_cylinders.html#a555b496065a16004af66daec0bc46cb2", null ],
-    [ "toString", "structbrayns_1_1_extended_cylinders.html#a2b95aa2a38d8ae3783bdbd6e5ebf0477", null ],
+    [ "toString", "structbrayns_1_1_extended_cylinders.html#a0b160b52e7dfcdec74d0e8dde7d1006c", null ],
     [ "bytesPerCylinder", "structbrayns_1_1_extended_cylinders.html#abd0fc0cb1c4db191c38286fc4bb32a39", null ],
     [ "data", "structbrayns_1_1_extended_cylinders.html#ab427aa020160f976d7d93a0666cbe062", null ],
     [ "materialID", "structbrayns_1_1_extended_cylinders.html#ae7d5beeeb87826ca0c5e997f37f0ef85", null ],

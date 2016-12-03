@@ -1,8 +1,8 @@
 var searchData=
 [
-  ['ospraycamera',['OSPRayCamera',['../classbrayns_1_1_o_s_p_ray_camera.html',1,'brayns']]],
-  ['osprayengine',['OSPRayEngine',['../classbrayns_1_1_o_s_p_ray_engine.html',1,'brayns']]],
-  ['osprayframebuffer',['OSPRayFrameBuffer',['../classbrayns_1_1_o_s_p_ray_frame_buffer.html',1,'brayns']]],
-  ['osprayrenderer',['OSPRayRenderer',['../classbrayns_1_1_o_s_p_ray_renderer.html',1,'brayns']]],
-  ['osprayscene',['OSPRayScene',['../classbrayns_1_1_o_s_p_ray_scene.html',1,'brayns']]]
+  ['material',['Material',['../classbrayns_1_1_material.html',1,'brayns']]],
+  ['meshcontainer',['MeshContainer',['../structbrayns_1_1_mesh_container.html',1,'brayns']]],
+  ['meshloader',['MeshLoader',['../classbrayns_1_1_mesh_loader.html',1,'brayns']]],
+  ['morphologylayout',['MorphologyLayout',['../structbrayns_1_1_morphology_layout.html',1,'brayns']]],
+  ['morphologyloader',['MorphologyLoader',['../classbrayns_1_1_morphology_loader.html',1,'brayns']]]
 ];

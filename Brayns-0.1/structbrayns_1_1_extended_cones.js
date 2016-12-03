@@ -2,7 +2,7 @@ var structbrayns_1_1_extended_cones =
 [
     [ "ExtendedCones", "structbrayns_1_1_extended_cones.html#a121ab01874af588a0d4031cce9b6e287", null ],
     [ "finalize", "structbrayns_1_1_extended_cones.html#a70ecf2865094adb3d975a4627fbe9642", null ],
-    [ "toString", "structbrayns_1_1_extended_cones.html#ae79d8e7b7179f92688a35830ee3d632d", null ],
+    [ "toString", "structbrayns_1_1_extended_cones.html#aa9e44b3b3af1ac540072ffddd768948a", null ],
     [ "bytesPerCone", "structbrayns_1_1_extended_cones.html#a5463c8dba8cc6e193678754b3bb0b57b", null ],
     [ "data", "structbrayns_1_1_extended_cones.html#a09220e7a08ae17305d209644a7952ff5", null ],
     [ "length", "structbrayns_1_1_extended_cones.html#a27eca28bd0ec60a6c81801448b50f2c4", null ],

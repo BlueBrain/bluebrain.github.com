@@ -1,20 +1,19 @@
 var NAVTREE =
 [
   [ "Brayns", "index.html", [
-    [ "Changelog", "_changelog.html", [
-      [ "master", "_changelog.html#master", null ],
-      [ "Release 0.1 (2016-06-16)", "_changelog.html#Release010", null ]
+    [ "Changelog", "Changelog.html", [
+      [ "master", "Changelog.html#master", null ],
+      [ "Release 0.1 (2016-06-16)", "Changelog.html#Release010", null ]
     ] ],
     [ "Todo List", "todo.html", null ],
-    [ "Classes", null, [
-      [ "Class List", "annotated.html", "annotated" ],
+    [ "Classes", "annotated.html", [
+      [ "Class List", "annotated.html", "annotated_dup" ],
       [ "Class Index", "classes.html", null ],
       [ "Class Hierarchy", "hierarchy.html", "hierarchy" ],
       [ "Class Members", "functions.html", [
         [ "All", "functions.html", "functions_dup" ],
-        [ "Functions", "functions_func.html", null ],
-        [ "Variables", "functions_vars.html", null ],
-        [ "Related Functions", "functions_rela.html", null ]
+        [ "Functions", "functions_func.html", "functions_func" ],
+        [ "Variables", "functions_vars.html", null ]
       ] ]
     ] ],
     [ "Files", null, [
@@ -30,9 +29,10 @@ var NAVTREE =
 var NAVTREEINDEX =
 [
 ".html",
-"classbrayns_1_1_cylinder.html#adbaf2cbe88d6d8f8211e456c44a4573d",
-"classbrayns_1_1_renderer.html#a78355a8f89df7bea8c6cfaa099c09b44",
-"structbrayns_1_1_extended_cylinders.html#ad5dbac18708aa796933694a6d3cc9e63"
+"classbrayns_1_1_camera.html#a5583d0a667ef2d3ad4c5bc3ea408783b",
+"classbrayns_1_1_o_s_p_ray_engine.html#adb5872f032ee147b699ffd8c1171c5e0",
+"classbrayns_1_1_texture2_d.html#a8141ee22a64574ba7dc5741b620cbb77",
+"structbrayns_1_1_stereo_camera.html#a420bef67aa0ea3a8659996595bad49aa"
 ];
 
 var SYNCONMSG = 'click to disable panel synchronisation';

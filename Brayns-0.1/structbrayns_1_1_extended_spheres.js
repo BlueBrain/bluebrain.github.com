@@ -2,7 +2,7 @@ var structbrayns_1_1_extended_spheres =
 [
     [ "ExtendedSpheres", "structbrayns_1_1_extended_spheres.html#ae279071b8068d8534a5d88ef8f04ed71", null ],
     [ "finalize", "structbrayns_1_1_extended_spheres.html#ad91fc10b8112a1a08b04b5f22b4834a2", null ],
-    [ "toString", "structbrayns_1_1_extended_spheres.html#adc4105e4a0dc449a7684085ab657fffa", null ],
+    [ "toString", "structbrayns_1_1_extended_spheres.html#a686fad1202a8e37f16471eeb0655eadd", null ],
     [ "bytesPerExtendedSphere", "structbrayns_1_1_extended_spheres.html#a00046bcc8065288b5848d8d9f9ae4884", null ],
     [ "data", "structbrayns_1_1_extended_spheres.html#ae22c9ba27d08029135d1c9eed8abad87", null ],
     [ "materialID", "structbrayns_1_1_extended_spheres.html#aa01aa61b6348888f191f6968301ad196", null ],

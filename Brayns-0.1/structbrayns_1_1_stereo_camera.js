@@ -2,7 +2,7 @@ var structbrayns_1_1_stereo_camera =
 [
     [ "StereoCamera", "structbrayns_1_1_stereo_camera.html#a9ba7897115682df10bc61458db67ccb2", null ],
     [ "commit", "structbrayns_1_1_stereo_camera.html#ad3e27439ff25afd209a118944887f1e8", null ],
-    [ "toString", "structbrayns_1_1_stereo_camera.html#aefeb146d6f42fd9d2d7edf49bf1e2274", null ],
+    [ "toString", "structbrayns_1_1_stereo_camera.html#ab8ea2f83ef8e4388ba2583b1ecfd6b1a", null ],
     [ "aspect", "structbrayns_1_1_stereo_camera.html#a79f25b126ebb7e02a02014eeab5b09b7", null ],
     [ "dir", "structbrayns_1_1_stereo_camera.html#a420bef67aa0ea3a8659996595bad49aa", null ],
     [ "dir_00", "structbrayns_1_1_stereo_camera.html#a53b6fc43146fdd915480e654b73436e2", null ],

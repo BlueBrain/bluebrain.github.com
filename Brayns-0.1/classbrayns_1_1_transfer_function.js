@@ -7,5 +7,7 @@ var classbrayns_1_1_transfer_function =
     [ "getControlPoints", "classbrayns_1_1_transfer_function.html#a7068b7f237742949f7fa54443d40029e", null ],
     [ "getDiffuseColors", "classbrayns_1_1_transfer_function.html#a1f5738a01364bde00a8d013b200c602c", null ],
     [ "getEmissionIntensities", "classbrayns_1_1_transfer_function.html#a95b81f63fd306da29b23f7eb00eb5060", null ],
-    [ "resample", "classbrayns_1_1_transfer_function.html#a5623845c93420fc5ba47991580cb8a52", null ]
+    [ "getValuesRange", "classbrayns_1_1_transfer_function.html#aa6fe90fcf4c6ce0b4658d069f11a0650", null ],
+    [ "resample", "classbrayns_1_1_transfer_function.html#a651ca78899189f823637dd2a7756d9f7", null ],
+    [ "setValuesRange", "classbrayns_1_1_transfer_function.html#a3b1c4ce9d79a704b4f0ae0bcf0c86e19", null ]
 ];

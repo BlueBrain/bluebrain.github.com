@@ -1,6 +1,6 @@
 var classbrayns_1_1_extension_plugin_factory =
 [
-    [ "ExtensionPluginFactory", "classbrayns_1_1_extension_plugin_factory.html#a7af941dd75dd7757c33ee149165ab4b9", null ],
+    [ "ExtensionPluginFactory", "classbrayns_1_1_extension_plugin_factory.html#a775793305ee3767f279f3f9b7a9bf2a5", null ],
     [ "~ExtensionPluginFactory", "classbrayns_1_1_extension_plugin_factory.html#a8f583c2f45b7de33f3c627717c996880", null ],
     [ "add", "classbrayns_1_1_extension_plugin_factory.html#a3f2268cf183286874d8c3e47a1ca9860", null ],
     [ "clear", "classbrayns_1_1_extension_plugin_factory.html#a7cc708c0b64298493774d19ca6df8636", null ],

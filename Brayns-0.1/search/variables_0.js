@@ -1,9 +1,10 @@
 var searchData=
 [
+  ['_5fcamera',['_camera',['../classbrayns_1_1_abstract_manipulator.html#aae08537e81adbbd7275c7d6fd9ec8ed6',1,'brayns::AbstractManipulator']]],
   ['_5fcurrmousepos',['_currMousePos',['../classbrayns_1_1_base_window.html#a33a00f1cd06ce75f249593f148cf439b',1,'brayns::BaseWindow']]],
   ['_5fdefaultinitsize',['_defaultInitSize',['../classbrayns_1_1_base_window.html#addd591463e1330d7e9233e0ee20f4f47',1,'brayns::BaseWindow']]],
-  ['_5flastbuttonstate',['_lastButtonState',['../classbrayns_1_1_base_window.html#af38cceaac3ea5f5da0de91661e217b66',1,'brayns::BaseWindow']]],
-  ['_5fmanipulator',['_manipulator',['../classbrayns_1_1_base_window.html#a28186afa39802e3c8cb8e858b752fb0f',1,'brayns::BaseWindow']]],
-  ['_5fmotionspeed',['_motionSpeed',['../classbrayns_1_1_base_window.html#a8fa02338c974f975e57d2354090e5213',1,'brayns::BaseWindow']]],
-  ['_5frotatespeed',['_rotateSpeed',['../classbrayns_1_1_base_window.html#afaf125bf36babe80a6a60bca2f54b39b',1,'brayns::BaseWindow']]]
+  ['_5fkeyboardhandler',['_keyboardHandler',['../classbrayns_1_1_abstract_manipulator.html#a1ddb4ed7cefbbb93422d8f26b5911245',1,'brayns::AbstractManipulator']]],
+  ['_5fmotionspeed',['_motionSpeed',['../classbrayns_1_1_abstract_manipulator.html#a3b110bb323f6163f82855d55c32ff177',1,'brayns::AbstractManipulator']]],
+  ['_5fmouse',['_mouse',['../classbrayns_1_1_base_window.html#aadc33e9b2cec154eefd08b1179426e02',1,'brayns::BaseWindow']]],
+  ['_5frotationspeed',['_rotationSpeed',['../classbrayns_1_1_abstract_manipulator.html#ac0ee65066a75352e0c5f550e1b1a0cd6',1,'brayns::AbstractManipulator']]]
 ];
