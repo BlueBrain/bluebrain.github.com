@@ -156,6 +156,7 @@ var hierarchy =
       [ "RenderController", "class_render_controller.html", null ],
       [ "RestCommand", "class_rest_command.html", null ],
       [ "RestInterface", "class_rest_interface.html", null ],
+      [ "ScreenshotAssembler", "class_screenshot_assembler.html", null ],
       [ "SwipeDetector", "class_swipe_detector.html", null ],
       [ "TapAndHoldDetector", "class_tap_and_hold_detector.html", null ],
       [ "TapDetector", "class_tap_detector.html", null ],
@@ -192,6 +193,7 @@ var hierarchy =
     [ "serialization::detail::serialize< 0 >", "structserialization_1_1detail_1_1serialize_3_010_01_4.html", null ],
     [ "Serializable", null, [
       [ "JsonOptions", "class_json_options.html", null ],
+      [ "JsonSize", "class_json_size.html", null ],
       [ "RestCommand", "class_rest_command.html", null ],
       [ "RestLogger", "class_rest_logger.html", null ],
       [ "StaticContent", "class_static_content.html", null ]

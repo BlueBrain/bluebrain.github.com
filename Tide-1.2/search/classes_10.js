@@ -1,5 +1,6 @@
 var searchData=
 [
+  ['screenshotassembler',['ScreenshotAssembler',['../class_screenshot_assembler.html',1,'']]],
   ['serialize',['serialize',['../structserialization_1_1detail_1_1serialize.html',1,'serialization::detail']]],
   ['serialize_3c_200_20_3e',['serialize&lt; 0 &gt;',['../structserialization_1_1detail_1_1serialize_3_010_01_4.html',1,'serialization::detail']]],
   ['state',['State',['../class_state.html',1,'']]],

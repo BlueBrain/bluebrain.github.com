@@ -8,5 +8,6 @@ var class_wall_from_master_channel =
     [ "received", "class_wall_from_master_channel.html#a32ac04eade034a8cd78c198a1b6decfd", null ],
     [ "received", "class_wall_from_master_channel.html#a7e9d59550c96986e0f417d86ee08f053", null ],
     [ "receivedQuit", "class_wall_from_master_channel.html#af64048387bb958cc6678929489337ebc", null ],
+    [ "receivedScreenshotRequest", "class_wall_from_master_channel.html#a49c5e352d07f230a7a26c1bb6b7fa9c2", null ],
     [ "receiveMessage", "class_wall_from_master_channel.html#a8ee7bd69b551972aa732743a116c7c04", null ]
 ];

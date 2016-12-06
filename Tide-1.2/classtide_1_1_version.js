@@ -21,7 +21,13 @@ var classtide_1_1_version =
     [ "getRevString", "classtide_1_1_version.html#a667071293731b328a5c44b574e794680", null ],
     [ "getRevString", "classtide_1_1_version.html#a667071293731b328a5c44b574e794680", null ],
     [ "getRevString", "classtide_1_1_version.html#a667071293731b328a5c44b574e794680", null ],
+    [ "getSchema", "classtide_1_1_version.html#a9ffd7f983f989c1c25f15ad7e35cb218", null ],
+    [ "getSchema", "classtide_1_1_version.html#a9ffd7f983f989c1c25f15ad7e35cb218", null ],
+    [ "getSchema", "classtide_1_1_version.html#a9ffd7f983f989c1c25f15ad7e35cb218", null ],
     [ "getString", "classtide_1_1_version.html#a803e009bd02d601bc708e9ac276e16f1", null ],
     [ "getString", "classtide_1_1_version.html#a803e009bd02d601bc708e9ac276e16f1", null ],
-    [ "getString", "classtide_1_1_version.html#a803e009bd02d601bc708e9ac276e16f1", null ]
+    [ "getString", "classtide_1_1_version.html#a803e009bd02d601bc708e9ac276e16f1", null ],
+    [ "toJSON", "classtide_1_1_version.html#a59657063b95a825f8d1daf8022e2919c", null ],
+    [ "toJSON", "classtide_1_1_version.html#a59657063b95a825f8d1daf8022e2919c", null ],
+    [ "toJSON", "classtide_1_1_version.html#a59657063b95a825f8d1daf8022e2919c", null ]
 ];
