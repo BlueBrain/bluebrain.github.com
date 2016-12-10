@@ -4,6 +4,7 @@ var NAVTREE =
     [ "Fivox Documentation", "index.html", null ],
     [ "Changelog", "changelog.html", [
       [ "git master", "changelog.html#master", null ],
+      [ "Release 0.6 (09-12-2016)", "changelog.html#Release06", null ],
       [ "Release 0.5 (30-06-2016)", "changelog.html#Release05", null ],
       [ "Release 0.4 (05-04-2016)", "changelog.html#Release04", null ],
       [ "Release 0.3 (9-Nov-2015)", "changelog.html#Release03", null ],
@@ -11,7 +12,6 @@ var NAVTREE =
       [ "Release 0.1 (30-Apr-2015)", "changelog.html#Release01", null ]
     ] ],
     [ "Feature specifications", "Features.html", "Features" ],
-    [ "Applications", "md__jenkins_02_workspace_oss.Fivox.documentation_build_type_Debug_platform_cscsviz-vm_sources_doc_userGuide_applications.html", null ],
     [ "User guide", "UserGuide.html", "UserGuide" ],
     [ "Namespaces", null, [
       [ "Namespace List", "namespaces.html", "namespaces" ],
@@ -45,7 +45,7 @@ var NAVTREE =
 var NAVTREEINDEX =
 [
 ".html",
-"density_functor_8h_source.html"
+"fivox_8h_source.html"
 ];
 
 var SYNCONMSG = 'click to disable panel synchronisation';

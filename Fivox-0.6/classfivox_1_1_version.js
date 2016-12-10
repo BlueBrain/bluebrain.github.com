@@ -14,6 +14,10 @@ var classfivox_1_1_version =
     [ "getRevision", "classfivox_1_1_version.html#a94f45590b48b3539e6c455bd094710f6", null ],
     [ "getRevString", "classfivox_1_1_version.html#a66a4bd35cf85420c6cc92c5d0a70ace2", null ],
     [ "getRevString", "classfivox_1_1_version.html#a66a4bd35cf85420c6cc92c5d0a70ace2", null ],
+    [ "getSchema", "classfivox_1_1_version.html#a15fb2bbf7c4f549f813db52828e2274d", null ],
+    [ "getSchema", "classfivox_1_1_version.html#a15fb2bbf7c4f549f813db52828e2274d", null ],
     [ "getString", "classfivox_1_1_version.html#a205b597ac703c03cb828c240f77ea53e", null ],
-    [ "getString", "classfivox_1_1_version.html#a205b597ac703c03cb828c240f77ea53e", null ]
+    [ "getString", "classfivox_1_1_version.html#a205b597ac703c03cb828c240f77ea53e", null ],
+    [ "toJSON", "classfivox_1_1_version.html#ab20d282d9f529329677c6d6cb34325cb", null ],
+    [ "toJSON", "classfivox_1_1_version.html#ab20d282d9f529329677c6d6cb34325cb", null ]
 ];

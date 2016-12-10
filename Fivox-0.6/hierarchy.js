@@ -26,7 +26,6 @@ var hierarchy =
     [ "itk::Image< typename, unsigned >", "classitk_1_1_image.html", null ],
     [ "ImageSource", null, [
       [ "fivox::ImageSource< TImage >", "classfivox_1_1_image_source.html", [
-        [ "fivox::CudaImageSource< TImage >", "classfivox_1_1_cuda_image_source.html", null ],
         [ "fivox::EventValueSummationImageSource< TImage >", "classfivox_1_1_event_value_summation_image_source.html", null ],
         [ "fivox::FunctorImageSource< TImage >", "classfivox_1_1_functor_image_source.html", null ]
       ] ]
