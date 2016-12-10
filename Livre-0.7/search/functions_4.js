@@ -29,6 +29,7 @@ var searchData=
   ['getrevision',['getRevision',['../classlivrecore_1_1_version.html#a424f4dd6fc5dbab2804e033119f02380',1,'livrecore::Version']]],
   ['getrevstring',['getRevString',['../classlivrecore_1_1_version.html#ab36a4f4c03bdcfef4af8ad004a133da1',1,'livrecore::Version']]],
   ['getroot',['getRoot',['../classlivre_1_1_node_id.html#a90bfb5a7f074b640774af27ebcfee8cf',1,'livre::NodeId']]],
+  ['getschema',['getSchema',['../classlivrecore_1_1_version.html#a6ace949450bf47952a9e329ee552ce58',1,'livrecore::Version']]],
   ['getstring',['getString',['../classlivrecore_1_1_version.html#a31549ebc68a8aad426660114ba4f6203',1,'livrecore::Version']]],
   ['getsum',['getSum',['../classlivre_1_1_histogram.html#aa0096e379da321c850b843d7105c8269',1,'livre::Histogram']]],
   ['gettimestep',['getTimeStep',['../classlivre_1_1_node_id.html#aade941df3202b1552d5d35f953a0da2d',1,'livre::NodeId']]],

@@ -1,9 +1,7 @@
 var NAVTREE =
 [
   [ "Livre", "index.html", [
-    [ "Changelog", "Changelog.html", [
-      [ "master", "Changelog.html#master", null ]
-    ] ],
+    [ "Changelog", "Changelog.html", null ],
     [ "Technical Overview", "Technical_Overview.html", [
       [ "Table of Contents", "Technical_Overview.html#TABLE_OF_CONTENTS_Technical_overview", null ],
       [ "Technical Features", "Technical_Overview.html#Technical_Features", null ],
