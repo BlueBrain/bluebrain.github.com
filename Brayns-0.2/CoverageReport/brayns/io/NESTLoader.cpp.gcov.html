@@ -1,0 +1,377 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+
+<html lang="en">
+
+<head>
+  <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+  <title>LCOV - Brayns - brayns/io/NESTLoader.cpp</title>
+  <link rel="stylesheet" type="text/css" href="../../gcov.css">
+</head>
+
+<body>
+
+  <table width="100%" border=0 cellspacing=0 cellpadding=0>
+    <tr><td class="title">LCOV - code coverage report</td></tr>
+    <tr><td class="ruler"><img src="../../glass.png" width=3 height=3 alt=""></td></tr>
+
+    <tr>
+      <td width="100%">
+        <table cellpadding=1 border=0 width="100%">
+          <tr>
+            <td width="10%" class="headerItem">Current view:</td>
+            <td width="35%" class="headerValue"><a href="../../index.html">top level</a> - <a href="index.html">brayns/io</a> - NESTLoader.cpp<span style="font-size: 80%;"> (source / <a href="NESTLoader.cpp.func-sort-c.html">functions</a>)</span></td>
+            <td width="5%"></td>
+            <td width="15%"></td>
+            <td width="10%" class="headerCovTableHead">Hit</td>
+            <td width="10%" class="headerCovTableHead">Total</td>
+            <td width="15%" class="headerCovTableHead">Coverage</td>
+          </tr>
+          <tr>
+            <td class="headerItem">Test:</td>
+            <td class="headerValue">Brayns</td>
+            <td></td>
+            <td class="headerItem">Lines:</td>
+            <td class="headerCovTableEntry">1</td>
+            <td class="headerCovTableEntry">143</td>
+            <td class="headerCovTableEntryLo">0.7 %</td>
+          </tr>
+          <tr>
+            <td class="headerItem">Date:</td>
+            <td class="headerValue">2016-12-10 01:10:50</td>
+            <td></td>
+            <td class="headerItem">Functions:</td>
+            <td class="headerCovTableEntry">2</td>
+            <td class="headerCovTableEntry">7</td>
+            <td class="headerCovTableEntryLo">28.6 %</td>
+          </tr>
+          <tr><td><img src="../../glass.png" width=3 height=3 alt=""></td></tr>
+        </table>
+      </td>
+    </tr>
+
+    <tr><td class="ruler"><img src="../../glass.png" width=3 height=3 alt=""></td></tr>
+  </table>
+
+  <table cellpadding=0 cellspacing=0 border=0>
+    <tr>
+      <td><br></td>
+    </tr>
+    <tr>
+      <td>
+<pre class="sourceHeading">          Line data    Source code</pre>
+<pre class="source">
+<a name="1"><span class="lineNum">       1 </span>            : /* Copyright (c) 2015-2016, EPFL/Blue Brain Project</a>
+<span class="lineNum">       2 </span>            :  * All rights reserved. Do not distribute without permission.
+<span class="lineNum">       3 </span>            :  * Responsible Author: Jafet Villafranca Diaz &lt;jafet.villafrancadiaz@epfl.ch&gt;
+<span class="lineNum">       4 </span>            :  *
+<span class="lineNum">       5 </span>            :  * This file is part of Brayns &lt;https://github.com/BlueBrain/Brayns&gt;
+<span class="lineNum">       6 </span>            :  *
+<span class="lineNum">       7 </span>            :  * This library is free software; you can redistribute it and/or modify it under
+<span class="lineNum">       8 </span>            :  * the terms of the GNU Lesser General Public License version 3.0 as published
+<span class="lineNum">       9 </span>            :  * by the Free Software Foundation.
+<span class="lineNum">      10 </span>            :  *
+<span class="lineNum">      11 </span>            :  * This library is distributed in the hope that it will be useful, but WITHOUT
+<span class="lineNum">      12 </span>            :  * ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS
+<span class="lineNum">      13 </span>            :  * FOR A PARTICULAR PURPOSE.  See the GNU Lesser General Public License for more
+<span class="lineNum">      14 </span>            :  * details.
+<span class="lineNum">      15 </span>            :  *
+<span class="lineNum">      16 </span>            :  * You should have received a copy of the GNU Lesser General Public License
+<span class="lineNum">      17 </span>            :  * along with this library; if not, write to the Free Software Foundation, Inc.,
+<span class="lineNum">      18 </span>            :  * 51 Franklin Street, Fifth Floor, Boston, MA 02110-1301 USA.
+<span class="lineNum">      19 </span>            :  */
+<span class="lineNum">      20 </span>            : 
+<span class="lineNum">      21 </span>            : #include &quot;NESTLoader.h&quot;
+<span class="lineNum">      22 </span>            : 
+<span class="lineNum">      23 </span>            : #include &lt;brayns/common/log.h&gt;
+<span class="lineNum">      24 </span>            : #include &lt;brayns/common/types.h&gt;
+<span class="lineNum">      25 </span>            : #include &lt;brayns/common/geometry/Sphere.h&gt;
+<span class="lineNum">      26 </span>            : #include &lt;brayns/common/simulation/SpikeSimulationHandler.h&gt;
+<span class="lineNum">      27 </span>            : 
+<span class="lineNum">      28 </span>            : #include &lt;H5Cpp.h&gt;
+<span class="lineNum">      29 </span>            : #include &lt;algorithm&gt;
+<span class="lineNum">      30 </span>            : #include &lt;fstream&gt;
+<span class="lineNum">      31 </span>            : 
+<span class="lineNum">      32 </span>            : namespace
+<span class="lineNum">      33 </span>            : {
+<span class="lineNum">      34 </span>            :     const uint32_t NEST_MAGIC = 0xf0a;
+<span class="lineNum">      35 </span>            :     const uint32_t NEST_VERSION = 1;
+<span class="lineNum">      36 </span>            :     const uint32_t NEST_HEADER_SIZE = 2 * sizeof( uint32_t);
+<span class="lineNum">      37 </span>            :     const float NEST_TIMESTEP = 0.1f;
+<span class="lineNum">      38 </span>            :     const uint32_t NEST_OFFSET = 2;
+<span class="lineNum">      39 </span>            : }
+<span class="lineNum">      40 </span>            : 
+<span class="lineNum">      41 </span>            : namespace brayns
+<a name="42"><span class="lineNum">      42 </span>            : {</a>
+<span class="lineNum">      43 </span>            : 
+<span class="lineNum">      44 </span><span class="lineNoCov">          0 : NESTLoader::NESTLoader( const GeometryParameters&amp; geometryParameters )</span>
+<span class="lineNum">      45 </span>            :     : _geometryParameters( geometryParameters )
+<span class="lineNum">      46 </span>            :     , _spikesStart( 0.f )
+<span class="lineNum">      47 </span><span class="lineNoCov">          0 :     , _spikesEnd( 0.f )</span>
+<span class="lineNum">      48 </span>            : {
+<span class="lineNum">      49 </span><span class="lineNoCov">          0 : }</span>
+<a name="50"><span class="lineNum">      50 </span>            : </a>
+<span class="lineNum">      51 </span>            : #ifdef BRAYNS_USE_BRION
+<span class="lineNum">      52 </span><span class="lineNoCov">          0 : void NESTLoader::importCircuit( const std::string&amp; filepath, Scene&amp; scene, size_t&amp; nbMaterials )</span>
+<span class="lineNum">      53 </span>            : {
+<span class="lineNum">      54 </span><span class="lineNoCov">          0 :     BRAYNS_INFO &lt;&lt; &quot;Loading NEST cells from circuit &quot; &lt;&lt; filepath &lt;&lt; std::endl;</span>
+<span class="lineNum">      55 </span>            : 
+<span class="lineNum">      56 </span><span class="lineNoCov">          0 :     H5::H5File neurons( filepath.c_str(), H5F_ACC_RDONLY, H5P_DEFAULT );</span>
+<span class="lineNum">      57 </span>            : 
+<span class="lineNum">      58 </span><span class="lineNoCov">          0 :     H5::DataSet posDataset;</span>
+<span class="lineNum">      59 </span><span class="lineNoCov">          0 :     posDataset = neurons.openDataSet( &quot;/x&quot; );</span>
+<span class="lineNum">      60 </span>            : 
+<span class="lineNum">      61 </span>            :     hsize_t dims[2];
+<span class="lineNum">      62 </span><span class="lineNoCov">          0 :     H5::DataSpace dspace = posDataset.getSpace();</span>
+<span class="lineNum">      63 </span><span class="lineNoCov">          0 :     dspace.getSimpleExtentDims( dims );</span>
+<span class="lineNum">      64 </span>            : 
+<span class="lineNum">      65 </span><span class="lineNoCov">          0 :     _frameSize = dims[0];</span>
+<span class="lineNum">      66 </span>            : 
+<span class="lineNum">      67 </span><span class="lineNoCov">          0 :     floats xPos( _frameSize );</span>
+<span class="lineNum">      68 </span><span class="lineNoCov">          0 :     floats yPos( _frameSize );</span>
+<span class="lineNum">      69 </span><span class="lineNoCov">          0 :     floats zPos( _frameSize );</span>
+<span class="lineNum">      70 </span><span class="lineNoCov">          0 :     floats xColor( _frameSize );</span>
+<span class="lineNum">      71 </span><span class="lineNoCov">          0 :     floats yColor( _frameSize );</span>
+<span class="lineNum">      72 </span><span class="lineNoCov">          0 :     floats zColor( _frameSize );</span>
+<span class="lineNum">      73 </span>            : 
+<span class="lineNum">      74 </span>            : 
+<span class="lineNum">      75 </span><span class="lineNoCov">          0 :     posDataset.read( xPos.data(), H5::PredType::NATIVE_FLOAT );</span>
+<span class="lineNum">      76 </span><span class="lineNoCov">          0 :     posDataset = neurons.openDataSet( &quot;/y&quot; );</span>
+<span class="lineNum">      77 </span><span class="lineNoCov">          0 :     posDataset.read( yPos.data(), H5::PredType::NATIVE_FLOAT );</span>
+<span class="lineNum">      78 </span><span class="lineNoCov">          0 :     posDataset = neurons.openDataSet( &quot;/z&quot; );</span>
+<span class="lineNum">      79 </span><span class="lineNoCov">          0 :     posDataset.read( zPos.data(), H5::PredType::NATIVE_FLOAT );</span>
+<span class="lineNum">      80 </span><span class="lineNoCov">          0 :     posDataset = neurons.openDataSet( &quot;/colorx&quot; );</span>
+<span class="lineNum">      81 </span><span class="lineNoCov">          0 :     posDataset.read( xColor.data(), H5::PredType::NATIVE_FLOAT );</span>
+<span class="lineNum">      82 </span><span class="lineNoCov">          0 :     posDataset = neurons.openDataSet( &quot;/colory&quot; );</span>
+<span class="lineNum">      83 </span><span class="lineNoCov">          0 :     posDataset.read( yColor.data(), H5::PredType::NATIVE_FLOAT );</span>
+<span class="lineNum">      84 </span><span class="lineNoCov">          0 :     posDataset = neurons.openDataSet( &quot;/colorz&quot; );</span>
+<span class="lineNum">      85 </span><span class="lineNoCov">          0 :     posDataset.read( zColor.data(), H5::PredType::NATIVE_FLOAT );</span>
+<span class="lineNum">      86 </span>            : 
+<span class="lineNum">      87 </span><span class="lineNoCov">          0 :     std::map&lt; size_t, Vector4f &gt; materials;</span>
+<span class="lineNum">      88 </span><span class="lineNoCov">          0 :     for( size_t gid = 0; gid &lt; _frameSize; ++gid )</span>
+<span class="lineNum">      89 </span>            :     {
+<span class="lineNum">      90 </span>            :         const size_t index =
+<span class="lineNum">      91 </span><span class="lineNoCov">          0 :             int(xColor[gid]) + int(yColor[gid] * 256) + int(zColor[gid] * 65536);</span>
+<span class="lineNum">      92 </span><span class="lineNoCov">          0 :         materials[index] = Vector4f(xColor[gid], yColor[gid], zColor[gid], 0.f);</span>
+<span class="lineNum">      93 </span>            :     }
+<span class="lineNum">      94 </span><span class="lineNoCov">          0 :     nbMaterials = materials.size();</span>
+<span class="lineNum">      95 </span>            : 
+<span class="lineNum">      96 </span><span class="lineNoCov">          0 :     size_t i = 0;</span>
+<span class="lineNum">      97 </span><span class="lineNoCov">          0 :     for( auto&amp; material: materials )</span>
+<span class="lineNum">      98 </span>            :     {
+<span class="lineNum">      99 </span><span class="lineNoCov">          0 :         material.second.w() = i;</span>
+<span class="lineNum">     100 </span><span class="lineNoCov">          0 :         ++i;</span>
+<span class="lineNum">     101 </span>            :     }
+<span class="lineNum">     102 </span><span class="lineNoCov">          0 :     BRAYNS_INFO &lt;&lt; &quot;Number of materials: &quot; &lt;&lt; nbMaterials &lt;&lt; std::endl;</span>
+<span class="lineNum">     103 </span>            : 
+<span class="lineNum">     104 </span><span class="lineNoCov">          0 :     PrimitivesMap&amp; primitives = scene.getPrimitives();</span>
+<span class="lineNum">     105 </span><span class="lineNoCov">          0 :     Boxf&amp; bounds = scene.getWorldBounds();</span>
+<span class="lineNum">     106 </span><span class="lineNoCov">          0 :     const float radius = _geometryParameters.getRadiusMultiplier();</span>
+<span class="lineNum">     107 </span>            : 
+<span class="lineNum">     108 </span><span class="lineNoCov">          0 :     for( uint64_t gid = 0; gid &lt; _frameSize; ++gid )</span>
+<span class="lineNum">     109 </span>            :     {
+<span class="lineNum">     110 </span><span class="lineNoCov">          0 :         BRAYNS_PROGRESS( gid, _frameSize );</span>
+<span class="lineNum">     111 </span>            :         // Create a unique index for the combination of R,G and B values. This index will then
+<span class="lineNum">     112 </span>            :         // be used to identify the color that should be applied to the sphere by the renderer
+<span class="lineNum">     113 </span>            :         const size_t index =
+<span class="lineNum">     114 </span><span class="lineNoCov">          0 :             int(xColor[gid]) + int(yColor[gid] * 256) + int(zColor[gid] * 65536);</span>
+<span class="lineNum">     115 </span><span class="lineNoCov">          0 :         const Vector3f center( xPos[gid], yPos[gid], zPos[gid] );</span>
+<span class="lineNum">     116 </span><span class="lineNoCov">          0 :         _positions.push_back( center );</span>
+<span class="lineNum">     117 </span><span class="lineNoCov">          0 :         primitives[ 0 ].push_back( SpherePtr(</span>
+<span class="lineNum">     118 </span><span class="lineNoCov">          0 :             new Sphere( 0, center, radius, 0.f, materials[index].w() )));</span>
+<span class="lineNum">     119 </span><span class="lineNoCov">          0 :         bounds.merge( center );</span>
+<span class="lineNum">     120 </span>            :     }
+<span class="lineNum">     121 </span>            : 
+<span class="lineNum">     122 </span><span class="lineNoCov">          0 :     BRAYNS_INFO &lt;&lt; &quot;Finished loading &quot; &lt;&lt; _frameSize &lt;&lt; &quot; neurons&quot; &lt;&lt; std::endl;</span>
+<a name="123"><span class="lineNum">     123 </span><span class="lineNoCov">          0 : }</span></a>
+<span class="lineNum">     124 </span>            : 
+<span class="lineNum">     125 </span><span class="lineNoCov">          0 : bool NESTLoader::importSpikeReport( const std::string&amp; filename, Scene&amp; scene )</span>
+<span class="lineNum">     126 </span>            : {
+<span class="lineNum">     127 </span><span class="lineNoCov">          0 :     SpikeSimulationHandlerPtr simulationHandler( new SpikeSimulationHandler( ));</span>
+<span class="lineNum">     128 </span><span class="lineNoCov">          0 :     const std::string&amp; cacheFile = _geometryParameters.getNESTCacheFile();</span>
+<span class="lineNum">     129 </span><span class="lineNoCov">          0 :     if( simulationHandler-&gt;attachSimulationToCacheFile( cacheFile ))</span>
+<span class="lineNum">     130 </span>            :         // Cache already exists, no need to create it.
+<span class="lineNum">     131 </span><span class="lineNoCov">          0 :         return true;</span>
+<span class="lineNum">     132 </span>            : 
+<span class="lineNum">     133 </span><span class="lineNoCov">          0 :     if( !_loadBinarySpikes( filename ))</span>
+<span class="lineNum">     134 </span>            :     {
+<span class="lineNum">     135 </span><span class="lineNoCov">          0 :         BRAYNS_ERROR &lt;&lt; &quot;No valid binary .spikes file found&quot; &lt;&lt; std::endl;</span>
+<span class="lineNum">     136 </span><span class="lineNoCov">          0 :         return false;</span>
+<span class="lineNum">     137 </span>            :     }
+<span class="lineNum">     138 </span>            : 
+<span class="lineNum">     139 </span><span class="lineNoCov">          0 :     const uint64_t nbFrames = ( _spikesEnd - _spikesStart ) / NEST_TIMESTEP;</span>
+<span class="lineNum">     140 </span><span class="lineNoCov">          0 :     _spikingTimes.resize( _frameSize, -1.f );</span>
+<span class="lineNum">     141 </span>            : 
+<span class="lineNum">     142 </span><span class="lineNoCov">          0 :     BRAYNS_INFO &lt;&lt; &quot;Cache file does not exist, creating it&quot; &lt;&lt; std::endl;</span>
+<span class="lineNum">     143 </span><span class="lineNoCov">          0 :     std::ofstream file( cacheFile, std::ios::out | std::ios::binary );</span>
+<span class="lineNum">     144 </span>            : 
+<span class="lineNum">     145 </span><span class="lineNoCov">          0 :     if( !file.is_open() )</span>
+<span class="lineNum">     146 </span>            :     {
+<span class="lineNum">     147 </span><span class="lineNoCov">          0 :         BRAYNS_ERROR &lt;&lt; &quot;Failed to create cache file&quot; &lt;&lt; std::endl;</span>
+<span class="lineNum">     148 </span><span class="lineNoCov">          0 :         return false;</span>
+<span class="lineNum">     149 </span>            :     }
+<span class="lineNum">     150 </span>            : 
+<span class="lineNum">     151 </span>            :     // Write header
+<span class="lineNum">     152 </span><span class="lineNoCov">          0 :     simulationHandler-&gt;setNbFrames( nbFrames );</span>
+<span class="lineNum">     153 </span><span class="lineNoCov">          0 :     simulationHandler-&gt;setFrameSize( _frameSize );</span>
+<span class="lineNum">     154 </span><span class="lineNoCov">          0 :     simulationHandler-&gt;writeHeader( file );</span>
+<span class="lineNum">     155 </span>            : 
+<span class="lineNum">     156 </span><span class="lineNoCov">          0 :     BRAYNS_INFO &lt;&lt; &quot;Spike report contains &quot; &lt;&lt; nbFrames &lt;&lt; &quot; frames of &quot;</span>
+<span class="lineNum">     157 </span><span class="lineNoCov">          0 :                 &lt;&lt; _frameSize &lt;&lt; &quot; values each&quot; &lt;&lt; std::endl;</span>
+<span class="lineNum">     158 </span>            : 
+<span class="lineNum">     159 </span>            :     // Write body
+<span class="lineNum">     160 </span><span class="lineNoCov">          0 :     for( float timestamp = _spikesStart; timestamp &lt; _spikesEnd; timestamp += NEST_TIMESTEP )</span>
+<span class="lineNum">     161 </span>            :     {
+<span class="lineNum">     162 </span><span class="lineNoCov">          0 :         _load( timestamp );</span>
+<span class="lineNum">     163 </span><span class="lineNoCov">          0 :         simulationHandler-&gt;writeFrame( file, _spikingTimes );</span>
+<span class="lineNum">     164 </span>            :     }
+<span class="lineNum">     165 </span><span class="lineNoCov">          0 :     file.close();</span>
+<span class="lineNum">     166 </span>            : 
+<span class="lineNum">     167 </span><span class="lineNoCov">          0 :     scene.setSimulationHandler( simulationHandler );</span>
+<span class="lineNum">     168 </span>            : 
+<span class="lineNum">     169 </span><span class="lineNoCov">          0 :     BRAYNS_INFO &lt;&lt; &quot;----------------------------------------&quot; &lt;&lt; std::endl;</span>
+<span class="lineNum">     170 </span><span class="lineNoCov">          0 :     BRAYNS_INFO &lt;&lt; &quot;Number of frames: &quot; &lt;&lt; nbFrames &lt;&lt; std::endl;</span>
+<span class="lineNum">     171 </span><span class="lineNoCov">          0 :     BRAYNS_INFO &lt;&lt; &quot;Frame size      : &quot; &lt;&lt; _frameSize &lt;&lt; std::endl;</span>
+<span class="lineNum">     172 </span><span class="lineNoCov">          0 :     BRAYNS_INFO &lt;&lt; &quot;----------------------------------------&quot; &lt;&lt; std::endl;</span>
+<span class="lineNum">     173 </span><span class="lineNoCov">          0 :     return true;</span>
+<a name="174"><span class="lineNum">     174 </span>            : }</a>
+<span class="lineNum">     175 </span>            : 
+<span class="lineNum">     176 </span><span class="lineNoCov">          0 : bool NESTLoader::_loadBinarySpikes( const std::string&amp; spikesFilename )</span>
+<span class="lineNum">     177 </span>            : {
+<span class="lineNum">     178 </span><span class="lineNoCov">          0 :     std::ifstream file( spikesFilename, std::ios::out | std::ios::binary );</span>
+<span class="lineNum">     179 </span><span class="lineNoCov">          0 :     file.seekg( 0, std::ios::end );</span>
+<span class="lineNum">     180 </span><span class="lineNoCov">          0 :     const size_t fileSize = file.tellg();</span>
+<span class="lineNum">     181 </span><span class="lineNoCov">          0 :     file.seekg( 0 );</span>
+<span class="lineNum">     182 </span>            : 
+<span class="lineNum">     183 </span><span class="lineNoCov">          0 :     _nbElements = ( fileSize - NEST_HEADER_SIZE ) / ( sizeof( uint32_t ) + sizeof( float ));</span>
+<span class="lineNum">     184 </span><span class="lineNoCov">          0 :     BRAYNS_INFO &lt;&lt; &quot;Loading &quot; &lt;&lt; _nbElements &lt;&lt; &quot; spikes from &quot; &lt;&lt; spikesFilename &lt;&lt; std::endl;</span>
+<span class="lineNum">     185 </span>            : 
+<span class="lineNum">     186 </span>            :     // Parse header
+<span class="lineNum">     187 </span>            :     uint32_t magic;
+<span class="lineNum">     188 </span><span class="lineNoCov">          0 :     file.read(( char* )&amp;magic, sizeof( uint32_t ));</span>
+<span class="lineNum">     189 </span>            : 
+<span class="lineNum">     190 </span><span class="lineNoCov">          0 :     if( NEST_MAGIC != magic )</span>
+<span class="lineNum">     191 </span><span class="lineNoCov">          0 :         return false;</span>
+<span class="lineNum">     192 </span>            : 
+<span class="lineNum">     193 </span>            :     uint32_t version;
+<span class="lineNum">     194 </span><span class="lineNoCov">          0 :     file.read(( char* )&amp;version, sizeof( uint32_t ));</span>
+<span class="lineNum">     195 </span><span class="lineNoCov">          0 :     if( NEST_VERSION != version )</span>
+<span class="lineNum">     196 </span><span class="lineNoCov">          0 :         return false;</span>
+<span class="lineNum">     197 </span>            : 
+<span class="lineNum">     198 </span>            :     // Parse elements
+<span class="lineNum">     199 </span>            :     uint32_t gid;
+<span class="lineNum">     200 </span>            :     float value;
+<span class="lineNum">     201 </span><span class="lineNoCov">          0 :     _values.reserve( _nbElements );</span>
+<span class="lineNum">     202 </span><span class="lineNoCov">          0 :     _gids.reserve( _nbElements );</span>
+<span class="lineNum">     203 </span><span class="lineNoCov">          0 :     size_t i = 0;</span>
+<span class="lineNum">     204 </span><span class="lineNoCov">          0 :     while( !file.eof( ))</span>
+<span class="lineNum">     205 </span>            :     {
+<span class="lineNum">     206 </span><span class="lineNoCov">          0 :         BRAYNS_PROGRESS( i, _nbElements );</span>
+<span class="lineNum">     207 </span><span class="lineNoCov">          0 :         file.read(( char* )&amp;value, sizeof( float ));</span>
+<span class="lineNum">     208 </span><span class="lineNoCov">          0 :         _values.push_back( value );</span>
+<span class="lineNum">     209 </span><span class="lineNoCov">          0 :         file.read(( char* )&amp;gid, sizeof( uint32_t ));</span>
+<span class="lineNum">     210 </span><span class="lineNoCov">          0 :         _gids.push_back( gid );</span>
+<span class="lineNum">     211 </span><span class="lineNoCov">          0 :         ++i;</span>
+<span class="lineNum">     212 </span>            :     }
+<span class="lineNum">     213 </span>            : 
+<span class="lineNum">     214 </span><span class="lineNoCov">          0 :     _spikesStart = _values[ 0 ]; // First spike timestamp after header</span>
+<span class="lineNum">     215 </span><span class="lineNoCov">          0 :     _spikesEnd = _values[ _nbElements - 1 ]; // Last spike timestamp</span>
+<span class="lineNum">     216 </span>            : 
+<span class="lineNum">     217 </span><span class="lineNoCov">          0 :     BRAYNS_INFO &lt;&lt; &quot;Loaded &quot; &lt;&lt; i &lt;&lt; &quot; elements out of &quot; &lt;&lt; _nbElements &lt;&lt; std::endl;</span>
+<span class="lineNum">     218 </span><span class="lineNoCov">          0 :     BRAYNS_INFO &lt;&lt; &quot;Spikes interval: [&quot; &lt;&lt; _spikesStart &lt;&lt; &quot; - &quot; &lt;&lt; _spikesEnd &lt;&lt; &quot;]&quot; &lt;&lt; std::endl;</span>
+<span class="lineNum">     219 </span>            : 
+<span class="lineNum">     220 </span><span class="lineNoCov">          0 :     file.close();</span>
+<span class="lineNum">     221 </span><span class="lineNoCov">          0 :     return true;</span>
+<a name="222"><span class="lineNum">     222 </span>            : }</a>
+<span class="lineNum">     223 </span>            : 
+<span class="lineNum">     224 </span><span class="lineNoCov">          0 : bool NESTLoader::_load( const float timestamp )</span>
+<span class="lineNum">     225 </span>            : {
+<span class="lineNum">     226 </span><span class="lineNoCov">          0 :     const float start = timestamp;</span>
+<span class="lineNum">     227 </span><span class="lineNoCov">          0 :     const float end = timestamp + NEST_TIMESTEP;</span>
+<span class="lineNum">     228 </span>            : 
+<span class="lineNum">     229 </span><span class="lineNoCov">          0 :     BRAYNS_DEBUG &lt;&lt; &quot;Loading spikes at timestamp: &quot; &lt;&lt; timestamp</span>
+<span class="lineNum">     230 </span><span class="lineNoCov">          0 :                  &lt;&lt; &quot; (&quot; &lt;&lt; start &lt;&lt; &quot; ms)&quot; &lt;&lt; std::endl;</span>
+<span class="lineNum">     231 </span>            : 
+<span class="lineNum">     232 </span>            : 
+<span class="lineNum">     233 </span>            :     char filename[1024];
+<span class="lineNum">     234 </span><span class="lineNoCov">          0 :     sprintf( filename, &quot;/home/favreau/medias/volumes/spikes/10pct/events/spikes_%05d.events&quot;, int(timestamp*10) );</span>
+<span class="lineNum">     235 </span><span class="lineNoCov">          0 :     std::ofstream myFile (filename, std::ios::out | std::ios::binary);</span>
+<span class="lineNum">     236 </span><span class="lineNoCov">          0 :     size_t nbSpikes = 0;</span>
+<span class="lineNum">     237 </span><span class="lineNoCov">          0 :     for( size_t i = 0; i &lt; _nbElements; ++i )</span>
+<span class="lineNum">     238 </span>            :     {
+<span class="lineNum">     239 </span><span class="lineNoCov">          0 :         const float time = _values[ i ];</span>
+<span class="lineNum">     240 </span>            :         // Whith the next check, simulation only plays forward because the value that is stored
+<span class="lineNum">     241 </span>            :         // is the last time the spike occured for this neuron.
+<span class="lineNum">     242 </span><span class="lineNoCov">          0 :         if( time &lt; start )</span>
+<span class="lineNum">     243 </span><span class="lineNoCov">          0 :             continue;</span>
+<span class="lineNum">     244 </span>            : 
+<span class="lineNum">     245 </span><span class="lineNoCov">          0 :         if( time &gt;= end )</span>
+<span class="lineNum">     246 </span><span class="lineNoCov">          0 :             break;</span>
+<span class="lineNum">     247 </span>            : 
+<span class="lineNum">     248 </span><span class="lineNoCov">          0 :         const uint32_t gid = _gids[ i ] - NEST_OFFSET;</span>
+<span class="lineNum">     249 </span>            : 
+<span class="lineNum">     250 </span>            :         // We store the frame on which the spike happens, as the renderer keeps
+<span class="lineNum">     251 </span>            :         // track of the current timestamp
+<span class="lineNum">     252 </span><span class="lineNoCov">          0 :         _spikingTimes[ gid ] = time;</span>
+<span class="lineNum">     253 </span>            : 
+<span class="lineNum">     254 </span><span class="lineNoCov">          0 :         const Vector3f&amp; position = _positions[gid];</span>
+<span class="lineNum">     255 </span>            :         float value;
+<span class="lineNum">     256 </span><span class="lineNoCov">          0 :         value = position.x();</span>
+<span class="lineNum">     257 </span><span class="lineNoCov">          0 :         myFile.write( (char *) &amp;value, sizeof(float ));</span>
+<span class="lineNum">     258 </span><span class="lineNoCov">          0 :         value = position.y();</span>
+<span class="lineNum">     259 </span><span class="lineNoCov">          0 :         myFile.write( (char *) &amp;value, sizeof(float ));</span>
+<span class="lineNum">     260 </span><span class="lineNoCov">          0 :         value = position.z();</span>
+<span class="lineNum">     261 </span><span class="lineNoCov">          0 :         myFile.write( (char *) &amp;value, sizeof(float ));</span>
+<span class="lineNum">     262 </span><span class="lineNoCov">          0 :         value = 1.f;</span>
+<span class="lineNum">     263 </span><span class="lineNoCov">          0 :         myFile.write( (char *) &amp;value, sizeof(float ));</span>
+<span class="lineNum">     264 </span><span class="lineNoCov">          0 :         myFile.write( (char *) &amp;value, sizeof(float ));</span>
+<span class="lineNum">     265 </span>            : 
+<span class="lineNum">     266 </span><span class="lineNoCov">          0 :         ++nbSpikes;</span>
+<span class="lineNum">     267 </span>            :     }
+<span class="lineNum">     268 </span><span class="lineNoCov">          0 :     myFile.close();</span>
+<span class="lineNum">     269 </span><span class="lineNoCov">          0 :     BRAYNS_INFO &lt;&lt; &quot;Nb Spikes for timestamp &quot; &lt;&lt; timestamp &lt;&lt; &quot; [&quot;</span>
+<span class="lineNum">     270 </span><span class="lineNoCov">          0 :                 &lt;&lt; start &lt;&lt; &quot;-&quot; &lt;&lt; end &lt;&lt; &quot;]: &quot; &lt;&lt; nbSpikes</span>
+<span class="lineNum">     271 </span><span class="lineNoCov">          0 :                 &lt;&lt; std::endl;</span>
+<span class="lineNum">     272 </span>            : 
+<span class="lineNum">     273 </span><span class="lineNoCov">          0 :     return true;</span>
+<span class="lineNum">     274 </span>            : }
+<span class="lineNum">     275 </span>            : #else
+<span class="lineNum">     276 </span>            : void NESTLoader::importCircuit( const std::string&amp;, Scene&amp;, size_t&amp; )
+<span class="lineNum">     277 </span>            : {
+<span class="lineNum">     278 </span>            :     BRAYNS_ERROR &lt;&lt; &quot;Brion is required to load circuits&quot; &lt;&lt; std::endl;
+<span class="lineNum">     279 </span>            : }
+<span class="lineNum">     280 </span>            : 
+<span class="lineNum">     281 </span>            : bool NESTLoader::importSpikeReport( const std::string&amp;, Scene&amp;)
+<span class="lineNum">     282 </span>            : {
+<span class="lineNum">     283 </span>            :     BRAYNS_ERROR &lt;&lt; &quot;Brion is required to load circuits&quot; &lt;&lt; std::endl;
+<span class="lineNum">     284 </span>            :     return false;
+<span class="lineNum">     285 </span>            : }
+<span class="lineNum">     286 </span>            : 
+<span class="lineNum">     287 </span>            : bool NESTLoader::_loadBinarySpikes( const std::string&amp; )
+<span class="lineNum">     288 </span>            : {
+<span class="lineNum">     289 </span>            :     BRAYNS_ERROR &lt;&lt; &quot;Brion is required to load circuits&quot; &lt;&lt; std::endl;
+<span class="lineNum">     290 </span>            :     return false;
+<span class="lineNum">     291 </span>            : }
+<span class="lineNum">     292 </span>            : 
+<span class="lineNum">     293 </span>            : bool NESTLoader::_load( const float )
+<span class="lineNum">     294 </span>            : {
+<span class="lineNum">     295 </span>            :     BRAYNS_ERROR &lt;&lt; &quot;Brion is required to load circuits&quot; &lt;&lt; std::endl;
+<span class="lineNum">     296 </span>            :     return false;
+<span class="lineNum">     297 </span>            : }
+<span class="lineNum">     298 </span>            : 
+<a name="299"><span class="lineNum">     299 </span>            : #endif</a>
+<span class="lineNum">     300 </span>            : 
+<span class="lineNum">     301 </span><span class="lineCov">         12 : }</span>
+</pre>
+      </td>
+    </tr>
+  </table>
+  <br>
+
+  <table width="100%" border=0 cellspacing=0 cellpadding=0>
+    <tr><td class="ruler"><img src="../../glass.png" width=3 height=3 alt=""></td></tr>
+    <tr><td class="versionInfo">Generated by: <a href="http://ltp.sourceforge.net/coverage/lcov.php" target="_parent">LCOV version 1.11</a></td></tr>
+  </table>
+  <br>
+
+</body>
+</html>
