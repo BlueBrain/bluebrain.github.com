@@ -1,6 +1,7 @@
 var NAVTREE =
 [
   [ "Keyv", "index.html", [
+    [ "/ˈkiːwi/:", "index.html", null ],
     [ "Changelog", "Changelog.html", null ],
     [ "Namespaces", null, [
       [ "Namespace List", "namespaces.html", "namespaces" ],
