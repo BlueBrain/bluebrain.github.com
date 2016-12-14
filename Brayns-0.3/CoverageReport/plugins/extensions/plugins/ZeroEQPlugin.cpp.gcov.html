@@ -1,0 +1,1033 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+
+<html lang="en">
+
+<head>
+  <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+  <title>LCOV - Brayns - plugins/extensions/plugins/ZeroEQPlugin.cpp</title>
+  <link rel="stylesheet" type="text/css" href="../../../gcov.css">
+</head>
+
+<body>
+
+  <table width="100%" border=0 cellspacing=0 cellpadding=0>
+    <tr><td class="title">LCOV - code coverage report</td></tr>
+    <tr><td class="ruler"><img src="../../../glass.png" width=3 height=3 alt=""></td></tr>
+
+    <tr>
+      <td width="100%">
+        <table cellpadding=1 border=0 width="100%">
+          <tr>
+            <td width="10%" class="headerItem">Current view:</td>
+            <td width="35%" class="headerValue"><a href="../../../index.html">top level</a> - <a href="index.html">plugins/extensions/plugins</a> - ZeroEQPlugin.cpp<span style="font-size: 80%;"> (source / <a href="ZeroEQPlugin.cpp.func-sort-c.html">functions</a>)</span></td>
+            <td width="5%"></td>
+            <td width="15%"></td>
+            <td width="10%" class="headerCovTableHead">Hit</td>
+            <td width="10%" class="headerCovTableHead">Total</td>
+            <td width="15%" class="headerCovTableHead">Coverage</td>
+          </tr>
+          <tr>
+            <td class="headerItem">Test:</td>
+            <td class="headerValue">Brayns</td>
+            <td></td>
+            <td class="headerItem">Lines:</td>
+            <td class="headerCovTableEntry">137</td>
+            <td class="headerCovTableEntry">629</td>
+            <td class="headerCovTableEntryLo">21.8 %</td>
+          </tr>
+          <tr>
+            <td class="headerItem">Date:</td>
+            <td class="headerValue">2016-12-14 01:15:11</td>
+            <td></td>
+            <td class="headerItem">Functions:</td>
+            <td class="headerCovTableEntry">11</td>
+            <td class="headerCovTableEntry">39</td>
+            <td class="headerCovTableEntryLo">28.2 %</td>
+          </tr>
+          <tr><td><img src="../../../glass.png" width=3 height=3 alt=""></td></tr>
+        </table>
+      </td>
+    </tr>
+
+    <tr><td class="ruler"><img src="../../../glass.png" width=3 height=3 alt=""></td></tr>
+  </table>
+
+  <table cellpadding=0 cellspacing=0 border=0>
+    <tr>
+      <td><br></td>
+    </tr>
+    <tr>
+      <td>
+<pre class="sourceHeading">          Line data    Source code</pre>
+<pre class="source">
+<a name="1"><span class="lineNum">       1 </span>            : /* Copyright (c) 2015-2016, EPFL/Blue Brain Project</a>
+<span class="lineNum">       2 </span>            :  * All rights reserved. Do not distribute without permission.
+<span class="lineNum">       3 </span>            :  * Responsible Author: Cyrille Favreau &lt;cyrille.favreau@epfl.ch&gt;
+<span class="lineNum">       4 </span>            :  *
+<span class="lineNum">       5 </span>            :  * This file is part of Brayns &lt;https://github.com/BlueBrain/Brayns&gt;
+<span class="lineNum">       6 </span>            :  *
+<span class="lineNum">       7 </span>            :  * This library is free software; you can redistribute it and/or modify it under
+<span class="lineNum">       8 </span>            :  * the terms of the GNU Lesser General Public License version 3.0 as published
+<span class="lineNum">       9 </span>            :  * by the Free Software Foundation.
+<span class="lineNum">      10 </span>            :  *
+<span class="lineNum">      11 </span>            :  * This library is distributed in the hope that it will be useful, but WITHOUT
+<span class="lineNum">      12 </span>            :  * ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS
+<span class="lineNum">      13 </span>            :  * FOR A PARTICULAR PURPOSE.  See the GNU Lesser General Public License for more
+<span class="lineNum">      14 </span>            :  * details.
+<span class="lineNum">      15 </span>            :  *
+<span class="lineNum">      16 </span>            :  * You should have received a copy of the GNU Lesser General Public License
+<span class="lineNum">      17 </span>            :  * along with this library; if not, write to the Free Software Foundation, Inc.,
+<span class="lineNum">      18 </span>            :  * 51 Franklin Street, Fifth Floor, Boston, MA 02110-1301 USA.
+<span class="lineNum">      19 </span>            :  */
+<span class="lineNum">      20 </span>            : 
+<span class="lineNum">      21 </span>            : #include &quot;ZeroEQPlugin.h&quot;
+<span class="lineNum">      22 </span>            : 
+<span class="lineNum">      23 </span>            : #include &lt;brayns/Brayns.h&gt;
+<span class="lineNum">      24 </span>            : #include &lt;brayns/common/engine/Engine.h&gt;
+<span class="lineNum">      25 </span>            : #include &lt;brayns/common/camera/Camera.h&gt;
+<span class="lineNum">      26 </span>            : #include &lt;brayns/common/scene/Scene.h&gt;
+<span class="lineNum">      27 </span>            : #include &lt;brayns/common/renderer/Renderer.h&gt;
+<span class="lineNum">      28 </span>            : #include &lt;brayns/common/renderer/FrameBuffer.h&gt;
+<span class="lineNum">      29 </span>            : #include &lt;brayns/parameters/ParametersManager.h&gt;
+<span class="lineNum">      30 </span>            : #include &lt;zerobuf/render/camera.h&gt;
+<span class="lineNum">      31 </span>            : #include &lt;brayns/common/simulation/AbstractSimulationHandler.h&gt;
+<span class="lineNum">      32 </span>            : #include &lt;brayns/common/simulation/SpikeSimulationHandler.h&gt;
+<span class="lineNum">      33 </span>            : 
+<span class="lineNum">      34 </span>            : #include &lt;brayns/version.h&gt;
+<span class="lineNum">      35 </span>            : 
+<span class="lineNum">      36 </span>            : 
+<span class="lineNum">      37 </span>            : namespace brayns
+<a name="38"><span class="lineNum">      38 </span>            : {</a>
+<span class="lineNum">      39 </span>            : 
+<span class="lineNum">      40 </span><span class="lineCov">          3 : ZeroEQPlugin::ZeroEQPlugin(</span>
+<span class="lineNum">      41 </span>            :     Engine&amp; engine,
+<span class="lineNum">      42 </span><span class="lineCov">          3 :     ParametersManager&amp; parametersManager )</span>
+<span class="lineNum">      43 </span>            :     : ExtensionPlugin( engine )
+<span class="lineNum">      44 </span>            :     , _parametersManager( parametersManager )
+<span class="lineNum">      45 </span><span class="lineCov">          3 :     , _compressor( tjInitCompress() )</span>
+<span class="lineNum">      46 </span><span class="lineCov">          6 :     , _processingImageJpeg( false )</span>
+<span class="lineNum">      47 </span>            : {
+<span class="lineNum">      48 </span><span class="lineCov">          3 :     _setupHTTPServer();</span>
+<span class="lineNum">      49 </span><span class="lineCov">          3 :     _setupRequests();</span>
+<span class="lineNum">      50 </span><span class="lineCov">          3 :     _setupSubscriber();</span>
+<span class="lineNum">      51 </span><span class="lineCov">          3 :     _initializeDataSource();</span>
+<span class="lineNum">      52 </span><span class="lineCov">          3 :     _initializeSettings();</span>
+<a name="53"><span class="lineNum">      53 </span><span class="lineCov">          3 : }</span></a>
+<span class="lineNum">      54 </span>            : 
+<span class="lineNum">      55 </span><span class="lineCov">          6 : ZeroEQPlugin::~ZeroEQPlugin( )</span>
+<span class="lineNum">      56 </span>            : {
+<span class="lineNum">      57 </span><span class="lineCov">          3 :     if( _compressor )</span>
+<span class="lineNum">      58 </span><span class="lineCov">          3 :         tjDestroy( _compressor );</span>
+<span class="lineNum">      59 </span>            : 
+<span class="lineNum">      60 </span><span class="lineCov">          3 :     if( _httpServer )</span>
+<span class="lineNum">      61 </span>            :     {
+<span class="lineNum">      62 </span><span class="lineNoCov">          0 :         _httpServer-&gt;remove( *_engine.getCamera().getSerializable() );</span>
+<span class="lineNum">      63 </span><span class="lineNoCov">          0 :         _httpServer-&gt;remove( _remoteImageJPEG );</span>
+<span class="lineNum">      64 </span>            :     }
+<a name="65"><span class="lineNum">      65 </span><span class="lineCov">          3 : }</span></a>
+<span class="lineNum">      66 </span>            : 
+<span class="lineNum">      67 </span><span class="lineCov">          4 : void ZeroEQPlugin::run()</span>
+<span class="lineNum">      68 </span>            : {
+<span class="lineNum">      69 </span><span class="lineCov">          4 :     while( _subscriber.receive( 1 )) {}</span>
+<a name="70"><span class="lineNum">      70 </span><span class="lineCov">          4 : }</span></a>
+<span class="lineNum">      71 </span>            : 
+<span class="lineNum">      72 </span><span class="lineCov">          3 : bool ZeroEQPlugin::operator ! () const</span>
+<span class="lineNum">      73 </span>            : {
+<span class="lineNum">      74 </span><span class="lineCov">          3 :     return !_httpServer;</span>
+<a name="75"><span class="lineNum">      75 </span>            : }</a>
+<span class="lineNum">      76 </span>            : 
+<span class="lineNum">      77 </span><span class="lineNoCov">          0 : ::zeroeq::http::Server* ZeroEQPlugin::operator-&gt;()</span>
+<span class="lineNum">      78 </span>            : {
+<span class="lineNum">      79 </span><span class="lineNoCov">          0 :     return _httpServer.get();</span>
+<a name="80"><span class="lineNum">      80 </span>            : }</a>
+<span class="lineNum">      81 </span>            : 
+<span class="lineNum">      82 </span><span class="lineCov">          3 : void ZeroEQPlugin::_setupHTTPServer()</span>
+<span class="lineNum">      83 </span>            : {
+<span class="lineNum">      84 </span><span class="lineCov">          3 :     const strings&amp; arguments = _parametersManager.getApplicationParameters().arguments();</span>
+<span class="lineNum">      85 </span><span class="lineCov">          3 :     char** argv = new char*[arguments.size()];</span>
+<span class="lineNum">      86 </span><span class="lineCov">         11 :     for( size_t i = 0; i &lt; arguments.size( ); ++i )</span>
+<span class="lineNum">      87 </span><span class="lineCov">          8 :         argv[ i ] = const_cast&lt; char* &gt;( arguments[ i ].c_str( ));</span>
+<span class="lineNum">      88 </span>            : 
+<span class="lineNum">      89 </span><span class="lineCov">          9 :     _httpServer = ::zeroeq::http::Server::parse(</span>
+<span class="lineNum">      90 </span><span class="lineCov">          6 :         arguments.size(), const_cast&lt; const char** &gt;( argv ), _subscriber );</span>
+<span class="lineNum">      91 </span><span class="lineCov">          3 :     delete [] argv;</span>
+<span class="lineNum">      92 </span>            : 
+<span class="lineNum">      93 </span><span class="lineCov">          3 :     if( !_httpServer )</span>
+<span class="lineNum">      94 </span>            :     {
+<span class="lineNum">      95 </span><span class="lineCov">          3 :         BRAYNS_ERROR &lt;&lt; &quot;HTTP could not be initialized&quot; &lt;&lt; std::endl;</span>
+<span class="lineNum">      96 </span><span class="lineCov">          3 :         return;</span>
+<span class="lineNum">      97 </span>            :     }
+<span class="lineNum">      98 </span>            : 
+<span class="lineNum">      99 </span><span class="lineNoCov">          0 :     BRAYNS_INFO &lt;&lt; &quot;Registering handlers on &quot; &lt;&lt;</span>
+<span class="lineNum">     100 </span><span class="lineNoCov">          0 :         _httpServer-&gt;getURI() &lt;&lt; std::endl;</span>
+<span class="lineNum">     101 </span>            : 
+<span class="lineNum">     102 </span><span class="lineNoCov">          0 :     _httpServer-&gt;handleGET( &quot;brayns/version&quot;, brayns::Version::getSchema(),</span>
+<span class="lineNum">     103 </span><span class="lineNoCov">          0 :                             &amp;brayns::Version::toJSON );</span>
+<span class="lineNum">     104 </span><span class="lineNoCov">          0 :     servus::Serializable&amp; cam = *_engine.getCamera().getSerializable();</span>
+<span class="lineNum">     105 </span><span class="lineNoCov">          0 :     _httpServer-&gt;handle( cam );</span>
+<span class="lineNum">     106 </span><span class="lineNoCov">          0 :     cam.registerDeserializedCallback( std::bind( &amp;ZeroEQPlugin::_cameraUpdated, this ));</span>
+<span class="lineNum">     107 </span>            : 
+<span class="lineNum">     108 </span><span class="lineNoCov">          0 :     _httpServer-&gt;handleGET( _remoteImageJPEG );</span>
+<span class="lineNum">     109 </span><span class="lineNoCov">          0 :     _remoteImageJPEG.registerSerializeCallback(</span>
+<span class="lineNum">     110 </span><span class="lineNoCov">          0 :         std::bind( &amp;ZeroEQPlugin::_requestImageJPEG, this ));</span>
+<span class="lineNum">     111 </span>            : 
+<span class="lineNum">     112 </span><span class="lineNoCov">          0 :     _httpServer-&gt;handleGET( _remoteFrameBuffers );</span>
+<span class="lineNum">     113 </span><span class="lineNoCov">          0 :     _remoteFrameBuffers.registerSerializeCallback(</span>
+<span class="lineNum">     114 </span><span class="lineNoCov">          0 :         std::bind( &amp;ZeroEQPlugin::_requestFrameBuffers, this ));</span>
+<span class="lineNum">     115 </span>            : 
+<span class="lineNum">     116 </span><span class="lineNoCov">          0 :     _httpServer-&gt;handlePUT( _remoteAttribute );</span>
+<span class="lineNum">     117 </span><span class="lineNoCov">          0 :     _remoteAttribute.registerDeserializedCallback(</span>
+<span class="lineNum">     118 </span><span class="lineNoCov">          0 :         std::bind( &amp;ZeroEQPlugin::_attributeUpdated, this ));</span>
+<span class="lineNum">     119 </span>            : 
+<span class="lineNum">     120 </span><span class="lineNoCov">          0 :     _httpServer-&gt;handlePUT( _remoteResetCamera );</span>
+<span class="lineNum">     121 </span><span class="lineNoCov">          0 :     _remoteResetCamera.registerDeserializedCallback(</span>
+<span class="lineNum">     122 </span><span class="lineNoCov">          0 :         std::bind( &amp;ZeroEQPlugin::_resetCameraUpdated, this ));</span>
+<span class="lineNum">     123 </span>            : 
+<span class="lineNum">     124 </span><span class="lineNoCov">          0 :     _httpServer-&gt;handlePUT( _remoteResetScene );</span>
+<span class="lineNum">     125 </span><span class="lineNoCov">          0 :     _remoteResetScene.registerDeserializedCallback(</span>
+<span class="lineNum">     126 </span><span class="lineNoCov">          0 :         std::bind( &amp;ZeroEQPlugin::_resetSceneUpdated, this ));</span>
+<span class="lineNum">     127 </span>            : 
+<span class="lineNum">     128 </span><span class="lineNoCov">          0 :     _httpServer-&gt;handle( _remoteScene );</span>
+<span class="lineNum">     129 </span><span class="lineNoCov">          0 :     _remoteScene.registerDeserializedCallback(</span>
+<span class="lineNum">     130 </span><span class="lineNoCov">          0 :         std::bind( &amp;ZeroEQPlugin::_sceneUpdated, this ));</span>
+<span class="lineNum">     131 </span><span class="lineNoCov">          0 :     _remoteScene.registerSerializeCallback(</span>
+<span class="lineNum">     132 </span><span class="lineNoCov">          0 :         std::bind( &amp;ZeroEQPlugin::_requestScene, this ));</span>
+<span class="lineNum">     133 </span>            : 
+<span class="lineNum">     134 </span><span class="lineNoCov">          0 :     _httpServer-&gt;handle( _remoteTransferFunction1D );</span>
+<span class="lineNum">     135 </span><span class="lineNoCov">          0 :     _remoteTransferFunction1D.registerDeserializedCallback(</span>
+<span class="lineNum">     136 </span><span class="lineNoCov">          0 :         std::bind( &amp;ZeroEQPlugin::_transferFunction1DUpdated, this ));</span>
+<span class="lineNum">     137 </span><span class="lineNoCov">          0 :     _remoteTransferFunction1D.registerSerializeCallback(</span>
+<span class="lineNum">     138 </span><span class="lineNoCov">          0 :         std::bind( &amp;ZeroEQPlugin::_requestTransferFunction1D, this ));</span>
+<span class="lineNum">     139 </span>            : 
+<span class="lineNum">     140 </span><span class="lineNoCov">          0 :     _httpServer-&gt;handle( _remoteSpikes );</span>
+<span class="lineNum">     141 </span><span class="lineNoCov">          0 :     _remoteSpikes.registerDeserializedCallback(</span>
+<span class="lineNum">     142 </span><span class="lineNoCov">          0 :         std::bind( &amp;ZeroEQPlugin::_spikesUpdated, this ));</span>
+<span class="lineNum">     143 </span><span class="lineNoCov">          0 :     _remoteSpikes.registerSerializeCallback(</span>
+<span class="lineNum">     144 </span><span class="lineNoCov">          0 :         std::bind( &amp;ZeroEQPlugin::_requestSpikes, this ));</span>
+<span class="lineNum">     145 </span>            : 
+<span class="lineNum">     146 </span><span class="lineNoCov">          0 :     _remoteLookupTable1D.registerDeserializedCallback(</span>
+<span class="lineNum">     147 </span><span class="lineNoCov">          0 :         std::bind( &amp;ZeroEQPlugin::_LookupTable1DUpdated, this ));</span>
+<span class="lineNum">     148 </span><span class="lineNoCov">          0 :     _remoteLookupTable1D.registerSerializeCallback(</span>
+<span class="lineNum">     149 </span><span class="lineNoCov">          0 :         std::bind( &amp;ZeroEQPlugin::_requestLookupTable1D, this ));</span>
+<span class="lineNum">     150 </span>            : 
+<span class="lineNum">     151 </span><span class="lineNoCov">          0 :     _httpServer-&gt;handle( _remoteColormap );</span>
+<span class="lineNum">     152 </span><span class="lineNoCov">          0 :     _remoteColormap.registerDeserializedCallback(</span>
+<span class="lineNum">     153 </span><span class="lineNoCov">          0 :         std::bind( &amp;ZeroEQPlugin::_colormapUpdated, this ));</span>
+<span class="lineNum">     154 </span><span class="lineNoCov">          0 :     _remoteColormap.registerSerializeCallback(</span>
+<span class="lineNum">     155 </span><span class="lineNoCov">          0 :         std::bind( &amp;ZeroEQPlugin::_requestColormap, this ));</span>
+<span class="lineNum">     156 </span>            : 
+<span class="lineNum">     157 </span><span class="lineNoCov">          0 :     _httpServer-&gt;handle( _remoteDataSource );</span>
+<span class="lineNum">     158 </span><span class="lineNoCov">          0 :     _remoteDataSource.registerDeserializedCallback(</span>
+<span class="lineNum">     159 </span><span class="lineNoCov">          0 :         std::bind( &amp;ZeroEQPlugin::_dataSourceUpdated, this ));</span>
+<span class="lineNum">     160 </span>            : 
+<span class="lineNum">     161 </span><span class="lineNoCov">          0 :     _httpServer-&gt;handle( _remoteSettings );</span>
+<span class="lineNum">     162 </span><span class="lineNoCov">          0 :     _remoteSettings.registerDeserializedCallback(</span>
+<span class="lineNum">     163 </span><span class="lineNoCov">          0 :         std::bind( &amp;ZeroEQPlugin::_settingsUpdated, this ));</span>
+<span class="lineNum">     164 </span>            : 
+<span class="lineNum">     165 </span><span class="lineNoCov">          0 :     _httpServer-&gt;handle( _remoteFrame );</span>
+<span class="lineNum">     166 </span><span class="lineNoCov">          0 :     _remoteFrame.registerSerializeCallback(</span>
+<span class="lineNum">     167 </span><span class="lineNoCov">          0 :         std::bind( &amp;ZeroEQPlugin::_requestFrame, this ));</span>
+<span class="lineNum">     168 </span><span class="lineNoCov">          0 :     _remoteFrame.registerDeserializedCallback(</span>
+<span class="lineNum">     169 </span><span class="lineNoCov">          0 :         std::bind( &amp;ZeroEQPlugin::_frameUpdated, this ));</span>
+<span class="lineNum">     170 </span>            : 
+<span class="lineNum">     171 </span><span class="lineNoCov">          0 :     _httpServer-&gt;handle( _remoteViewport );</span>
+<span class="lineNum">     172 </span><span class="lineNoCov">          0 :     _remoteViewport.registerSerializeCallback(</span>
+<span class="lineNum">     173 </span><span class="lineNoCov">          0 :         std::bind( &amp;ZeroEQPlugin::_requestViewport, this ));</span>
+<span class="lineNum">     174 </span><span class="lineNoCov">          0 :     _remoteViewport.registerDeserializedCallback(</span>
+<span class="lineNum">     175 </span><span class="lineNoCov">          0 :         std::bind( &amp;ZeroEQPlugin::_viewportUpdated, this ));</span>
+<span class="lineNum">     176 </span>            : 
+<span class="lineNum">     177 </span><span class="lineNoCov">          0 :     _httpServer-&gt;handleGET( _remoteHistogram );</span>
+<span class="lineNum">     178 </span><span class="lineNoCov">          0 :     _remoteHistogram.registerSerializeCallback(</span>
+<span class="lineNum">     179 </span><span class="lineNoCov">          0 :         std::bind( &amp;ZeroEQPlugin::_requestHistogram, this ));</span>
+<a name="180"><span class="lineNum">     180 </span>            : }</a>
+<span class="lineNum">     181 </span>            : 
+<span class="lineNum">     182 </span><span class="lineCov">          3 : void ZeroEQPlugin::_setupRequests()</span>
+<span class="lineNum">     183 </span>            : {
+<a name="184"><span class="lineNum">     184 </span><span class="lineCov">          6 :     ::brayns::v1::Camera camera;</span></a>
+<span class="lineNum">     185 </span><span class="lineCov">          6 :     _requests[ camera.getTypeIdentifier() ] =</span>
+<span class="lineNum">     186 </span><span class="lineCov">          9 :         [&amp;]{ return _publisher.publish( *_engine.getCamera().getSerializable( )); };</span>
+<span class="lineNum">     187 </span>            : 
+<span class="lineNum">     188 </span><span class="lineCov">          6 :     ::lexis::render::ImageJPEG imageJPEG;</span>
+<span class="lineNum">     189 </span><span class="lineCov">          6 :     _requests[ imageJPEG.getTypeIdentifier() ] =</span>
+<span class="lineNum">     190 </span><span class="lineCov">          9 :         std::bind( &amp;ZeroEQPlugin::_requestImageJPEG, this );</span>
+<span class="lineNum">     191 </span>            : 
+<span class="lineNum">     192 </span><span class="lineCov">          6 :     ::brayns::v1::FrameBuffers frameBuffers;</span>
+<span class="lineNum">     193 </span><span class="lineCov">          6 :     _requests[ frameBuffers.getTypeIdentifier() ] =</span>
+<span class="lineNum">     194 </span><span class="lineCov">          9 :         std::bind( &amp;ZeroEQPlugin::_requestFrameBuffers, this );</span>
+<span class="lineNum">     195 </span>            : 
+<span class="lineNum">     196 </span><span class="lineCov">          6 :     ::brayns::v1::TransferFunction1D transferFunction1D;</span>
+<span class="lineNum">     197 </span><span class="lineCov">          6 :     _requests[ transferFunction1D.getTypeIdentifier() ] =</span>
+<span class="lineNum">     198 </span><span class="lineCov">          9 :         std::bind( &amp;ZeroEQPlugin::_requestTransferFunction1D, this );</span>
+<span class="lineNum">     199 </span>            : 
+<span class="lineNum">     200 </span><span class="lineCov">          6 :     ::brayns::v1::Spikes spikes;</span>
+<span class="lineNum">     201 </span><span class="lineCov">          6 :     _requests[ spikes.getTypeIdentifier() ] =</span>
+<span class="lineNum">     202 </span><span class="lineCov">          9 :         std::bind( &amp;ZeroEQPlugin::_requestSpikes, this );</span>
+<a name="203"><span class="lineNum">     203 </span><span class="lineCov">          3 : }</span></a>
+<span class="lineNum">     204 </span>            : 
+<span class="lineNum">     205 </span><span class="lineCov">          3 : void ZeroEQPlugin::_setupSubscriber()</span>
+<span class="lineNum">     206 </span>            : {
+<span class="lineNum">     207 </span><span class="lineCov">          3 :     _subscriber.subscribe( _remoteLookupTable1D );</span>
+<a name="208"><span class="lineNum">     208 </span><span class="lineCov">          3 : }</span></a>
+<span class="lineNum">     209 </span>            : 
+<span class="lineNum">     210 </span><span class="lineNoCov">          0 : void ZeroEQPlugin::_cameraUpdated()</span>
+<span class="lineNum">     211 </span>            : {
+<span class="lineNum">     212 </span><span class="lineNoCov">          0 :     _engine.getFrameBuffer().clear();</span>
+<span class="lineNum">     213 </span><span class="lineNoCov">          0 :     _engine.getCamera().commit();</span>
+<a name="214"><span class="lineNum">     214 </span><span class="lineNoCov">          0 : }</span></a>
+<span class="lineNum">     215 </span>            : 
+<span class="lineNum">     216 </span><span class="lineNoCov">          0 : void ZeroEQPlugin::_attributeUpdated( )</span>
+<span class="lineNum">     217 </span>            : {
+<span class="lineNum">     218 </span><span class="lineNoCov">          0 :     BRAYNS_INFO &lt;&lt; _remoteAttribute.getKeyString() &lt;&lt; &quot; = &quot; &lt;&lt;</span>
+<span class="lineNum">     219 </span><span class="lineNoCov">          0 :         _remoteAttribute.getValueString() &lt;&lt; std::endl;</span>
+<span class="lineNum">     220 </span><span class="lineNoCov">          0 :     _parametersManager.set( _remoteAttribute.getKeyString(), _remoteAttribute.getValueString( ));</span>
+<span class="lineNum">     221 </span><span class="lineNoCov">          0 :     _engine.getScene().commitVolumeData();</span>
+<span class="lineNum">     222 </span><span class="lineNoCov">          0 :     _engine.getRenderer().commit();</span>
+<span class="lineNum">     223 </span><span class="lineNoCov">          0 :     _engine.getFrameBuffer().clear();</span>
+<a name="224"><span class="lineNum">     224 </span><span class="lineNoCov">          0 : }</span></a>
+<span class="lineNum">     225 </span>            : 
+<span class="lineNum">     226 </span><span class="lineNoCov">          0 : void ZeroEQPlugin::_resetCameraUpdated()</span>
+<span class="lineNum">     227 </span>            : {
+<span class="lineNum">     228 </span><span class="lineNoCov">          0 :     auto&amp; sceneParameters = _parametersManager.getSceneParameters();</span>
+<span class="lineNum">     229 </span><span class="lineNoCov">          0 :     _engine.getCamera().setEnvironmentMap( !sceneParameters.getEnvironmentMap().empty( ));</span>
+<span class="lineNum">     230 </span><span class="lineNoCov">          0 :     _engine.getCamera().reset();</span>
+<span class="lineNum">     231 </span><span class="lineNoCov">          0 :     _engine.getCamera().commit();</span>
+<span class="lineNum">     232 </span><span class="lineNoCov">          0 :     _engine.getFrameBuffer().clear();</span>
+<a name="233"><span class="lineNum">     233 </span><span class="lineNoCov">          0 : }</span></a>
+<span class="lineNum">     234 </span>            : 
+<span class="lineNum">     235 </span><span class="lineNoCov">          0 : void ZeroEQPlugin::_resetSceneUpdated()</span>
+<span class="lineNum">     236 </span>            : {
+<span class="lineNum">     237 </span><span class="lineNoCov">          0 :     _engine.makeDirty();</span>
+<a name="238"><span class="lineNum">     238 </span><span class="lineNoCov">          0 : }</span></a>
+<span class="lineNum">     239 </span>            : 
+<span class="lineNum">     240 </span><span class="lineNoCov">          0 : bool ZeroEQPlugin::_requestScene()</span>
+<span class="lineNum">     241 </span>            : {
+<span class="lineNum">     242 </span><span class="lineNoCov">          0 :     auto&amp; ms = _remoteScene.getMaterials();</span>
+<span class="lineNum">     243 </span><span class="lineNoCov">          0 :     ms.clear();</span>
+<span class="lineNum">     244 </span><span class="lineNoCov">          0 :     auto&amp; scene = _engine.getScene();</span>
+<span class="lineNum">     245 </span><span class="lineNoCov">          0 :     const auto&amp; materials = scene.getMaterials();</span>
+<span class="lineNum">     246 </span>            : 
+<span class="lineNum">     247 </span><span class="lineNoCov">          0 :     for( const auto&amp; material: materials )</span>
+<span class="lineNum">     248 </span>            :     {
+<span class="lineNum">     249 </span><span class="lineNoCov">          0 :         ::brayns::v1::Material m;</span>
+<span class="lineNum">     250 </span><span class="lineNoCov">          0 :         m.setDiffuse_color( material-&gt;getColor( ));</span>
+<span class="lineNum">     251 </span><span class="lineNoCov">          0 :         m.setSpecular_color( material-&gt;getSpecularColor( ));</span>
+<span class="lineNum">     252 </span><span class="lineNoCov">          0 :         m.setSpecular_exponent( material-&gt;getSpecularExponent( ));</span>
+<span class="lineNum">     253 </span><span class="lineNoCov">          0 :         m.setReflection_index( material-&gt;getReflectionIndex( ));</span>
+<span class="lineNum">     254 </span><span class="lineNoCov">          0 :         m.setOpacity( material-&gt;getOpacity( ));</span>
+<span class="lineNum">     255 </span><span class="lineNoCov">          0 :         m.setRefraction_index( material-&gt;getRefractionIndex( ));</span>
+<span class="lineNum">     256 </span><span class="lineNoCov">          0 :         m.setLight_emission( material-&gt;getEmission( ));</span>
+<span class="lineNum">     257 </span><span class="lineNoCov">          0 :         ms.push_back(m);</span>
+<span class="lineNum">     258 </span>            :     }
+<span class="lineNum">     259 </span><span class="lineNoCov">          0 :     return true;</span>
+<a name="260"><span class="lineNum">     260 </span>            : }</a>
+<span class="lineNum">     261 </span>            : 
+<span class="lineNum">     262 </span><span class="lineNoCov">          0 : void ZeroEQPlugin::_sceneUpdated( )</span>
+<span class="lineNum">     263 </span>            : {
+<span class="lineNum">     264 </span><span class="lineNoCov">          0 :     auto&amp; materials = _remoteScene.getMaterials();</span>
+<span class="lineNum">     265 </span><span class="lineNoCov">          0 :     auto&amp; scene = _engine.getScene();</span>
+<span class="lineNum">     266 </span>            : 
+<span class="lineNum">     267 </span><span class="lineNoCov">          0 :     for( size_t materialId = 0; materialId &lt; materials.size(); ++materialId )</span>
+<span class="lineNum">     268 </span>            :     {
+<span class="lineNum">     269 </span><span class="lineNoCov">          0 :         MaterialPtr material = scene.getMaterial( materialId );</span>
+<span class="lineNum">     270 </span>            : 
+<span class="lineNum">     271 </span><span class="lineNoCov">          0 :         if( material)</span>
+<span class="lineNum">     272 </span>            :         {
+<span class="lineNum">     273 </span><span class="lineNoCov">          0 :             ::brayns::v1::Material&amp; m = materials[ materialId ];</span>
+<span class="lineNum">     274 </span><span class="lineNoCov">          0 :             const floats&amp; diffuse = m.getDiffuse_colorVector();</span>
+<span class="lineNum">     275 </span><span class="lineNoCov">          0 :             Vector3f kd = { diffuse[0], diffuse[1], diffuse[2] };</span>
+<span class="lineNum">     276 </span><span class="lineNoCov">          0 :             material-&gt;setColor( kd );</span>
+<span class="lineNum">     277 </span>            : 
+<span class="lineNum">     278 </span><span class="lineNoCov">          0 :             const floats&amp; specular = m.getSpecular_colorVector();</span>
+<span class="lineNum">     279 </span><span class="lineNoCov">          0 :             Vector3f ks = { specular[0], specular[1], specular[2] };</span>
+<span class="lineNum">     280 </span><span class="lineNoCov">          0 :             material-&gt;setSpecularColor( ks );</span>
+<span class="lineNum">     281 </span>            : 
+<span class="lineNum">     282 </span><span class="lineNoCov">          0 :             material-&gt;setSpecularExponent( m.getSpecular_exponent() );</span>
+<span class="lineNum">     283 </span><span class="lineNoCov">          0 :             material-&gt;setReflectionIndex( m.getReflection_index() );</span>
+<span class="lineNum">     284 </span><span class="lineNoCov">          0 :             material-&gt;setOpacity( m.getOpacity() );</span>
+<span class="lineNum">     285 </span><span class="lineNoCov">          0 :             material-&gt;setRefractionIndex( m.getRefraction_index() );</span>
+<span class="lineNum">     286 </span><span class="lineNoCov">          0 :             material-&gt;setEmission( m.getLight_emission() );</span>
+<span class="lineNum">     287 </span>            :         }
+<span class="lineNum">     288 </span>            :     }
+<span class="lineNum">     289 </span><span class="lineNoCov">          0 :     scene.commitMaterials( true );</span>
+<span class="lineNum">     290 </span><span class="lineNoCov">          0 :     _engine.getRenderer().commit();</span>
+<span class="lineNum">     291 </span><span class="lineNoCov">          0 :     _engine.getFrameBuffer().clear();</span>
+<a name="292"><span class="lineNum">     292 </span><span class="lineNoCov">          0 : }</span></a>
+<span class="lineNum">     293 </span>            : 
+<span class="lineNum">     294 </span><span class="lineNoCov">          0 : void ZeroEQPlugin::_spikesUpdated( )</span>
+<span class="lineNum">     295 </span>            : {
+<span class="lineNum">     296 </span>            : #if 0
+<span class="lineNum">     297 </span>            :     AbstractSimulationHandlerPtr simulationHandler =
+<span class="lineNum">     298 </span>            :         _engine.getScene().getSimulationHandler();
+<span class="lineNum">     299 </span>            : 
+<span class="lineNum">     300 </span>            :     SpikeSimulationHandler* spikeSimulationHandler =
+<span class="lineNum">     301 </span>            :         dynamic_cast&lt; SpikeSimulationHandler * &gt;(simulationHandler.get());
+<span class="lineNum">     302 </span>            : 
+<span class="lineNum">     303 </span>            :     if( spikeSimulationHandler )
+<span class="lineNum">     304 </span>            :     {
+<span class="lineNum">     305 </span>            :         uint64_t ts = _remoteSpikes.getTimestamp();
+<span class="lineNum">     306 </span>            :         float* data = (float*)spikeSimulationHandler-&gt;getFrameData( ts );
+<span class="lineNum">     307 </span>            :         for( const auto&amp; gid: _remoteSpikes.getGidsVector() )
+<span class="lineNum">     308 </span>            :             data[gid] = ts;
+<span class="lineNum">     309 </span>            : 
+<span class="lineNum">     310 </span>            :         _engine.getFrameBuffer().clear();
+<span class="lineNum">     311 </span>            :         _engine.getScene().commitSimulationData();
+<span class="lineNum">     312 </span>            :     }
+<span class="lineNum">     313 </span>            : #endif
+<span class="lineNum">     314 </span><span class="lineNoCov">          0 : }</span>
+<a name="315"><span class="lineNum">     315 </span>            : </a>
+<span class="lineNum">     316 </span>            : 
+<span class="lineNum">     317 </span><span class="lineNoCov">          0 : bool ZeroEQPlugin::_requestTransferFunction1D()</span>
+<span class="lineNum">     318 </span>            : {
+<span class="lineNum">     319 </span><span class="lineNoCov">          0 :     auto&amp; scene = _engine.getScene();</span>
+<span class="lineNum">     320 </span><span class="lineNoCov">          0 :     TransferFunction&amp; transferFunction = scene.getTransferFunction();</span>
+<span class="lineNum">     321 </span><span class="lineNoCov">          0 :     std::vector&lt; ::brayns::v1::Point2D &gt; items;</span>
+<span class="lineNum">     322 </span>            : 
+<span class="lineNum">     323 </span><span class="lineNoCov">          0 :     for( const auto&amp; controlPoint: transferFunction.getControlPoints( TF_RED ) )</span>
+<span class="lineNum">     324 </span><span class="lineNoCov">          0 :         items.push_back( ::brayns::v1::Point2D(</span>
+<span class="lineNum">     325 </span><span class="lineNoCov">          0 :             controlPoint.x(), controlPoint.y() ));</span>
+<span class="lineNum">     326 </span><span class="lineNoCov">          0 :     _remoteTransferFunction1D.setAttribute( transferFunction.getAttributeAsString( TF_RED ) );</span>
+<span class="lineNum">     327 </span><span class="lineNoCov">          0 :     _remoteTransferFunction1D.setPoints( items );</span>
+<span class="lineNum">     328 </span><span class="lineNoCov">          0 :     return true;</span>
+<a name="329"><span class="lineNum">     329 </span>            : }</a>
+<span class="lineNum">     330 </span>            : 
+<span class="lineNum">     331 </span><span class="lineNoCov">          0 : void ZeroEQPlugin::_transferFunction1DUpdated( )</span>
+<span class="lineNum">     332 </span>            : {
+<span class="lineNum">     333 </span><span class="lineNoCov">          0 :     auto&amp; scene = _engine.getScene();</span>
+<span class="lineNum">     334 </span><span class="lineNoCov">          0 :     TransferFunction&amp; transferFunction = scene.getTransferFunction();</span>
+<span class="lineNum">     335 </span><span class="lineNoCov">          0 :     std::vector&lt; ::brayns::v1::Point2D &gt; points = _remoteTransferFunction1D.getPointsVector();</span>
+<span class="lineNum">     336 </span>            : 
+<span class="lineNum">     337 </span><span class="lineNoCov">          0 :     const std::string&amp; attributeName = _remoteTransferFunction1D.getAttributeString();</span>
+<span class="lineNum">     338 </span><span class="lineNoCov">          0 :     BRAYNS_INFO &lt;&lt; &quot;Setting &quot;</span>
+<span class="lineNum">     339 </span><span class="lineNoCov">          0 :                 &lt;&lt; points.size() &lt;&lt; &quot; control points for transfer function attribute &lt;&quot;</span>
+<span class="lineNum">     340 </span><span class="lineNoCov">          0 :                 &lt;&lt; attributeName &lt;&lt;  &quot;&gt;&quot; &lt;&lt; std::endl;</span>
+<span class="lineNum">     341 </span>            : 
+<span class="lineNum">     342 </span>            :     const TransferFunctionAttribute attribute =
+<span class="lineNum">     343 </span><span class="lineNoCov">          0 :         transferFunction.getAttributeFromString( attributeName );</span>
+<span class="lineNum">     344 </span>            : 
+<span class="lineNum">     345 </span><span class="lineNoCov">          0 :     if( attribute == TF_UNDEFINED )</span>
+<span class="lineNum">     346 </span><span class="lineNoCov">          0 :         return;</span>
+<span class="lineNum">     347 </span>            : 
+<span class="lineNum">     348 </span><span class="lineNoCov">          0 :     auto&amp; controlPoints = transferFunction.getControlPoints( attribute );</span>
+<span class="lineNum">     349 </span><span class="lineNoCov">          0 :     controlPoints.clear();</span>
+<span class="lineNum">     350 </span><span class="lineNoCov">          0 :     for( const auto&amp; point: points )</span>
+<span class="lineNum">     351 </span><span class="lineNoCov">          0 :         controlPoints.push_back( Vector2f(point.getX(), point.getY()));</span>
+<span class="lineNum">     352 </span><span class="lineNoCov">          0 :     transferFunction.resample();</span>
+<span class="lineNum">     353 </span>            : 
+<span class="lineNum">     354 </span><span class="lineNoCov">          0 :     scene.commitSimulationData();</span>
+<span class="lineNum">     355 </span><span class="lineNoCov">          0 :     scene.commitTransferFunctionData();</span>
+<span class="lineNum">     356 </span><span class="lineNoCov">          0 :     _engine.getRenderer().commit();</span>
+<span class="lineNum">     357 </span><span class="lineNoCov">          0 :     _engine.getFrameBuffer().clear();</span>
+<a name="358"><span class="lineNum">     358 </span>            : }</a>
+<span class="lineNum">     359 </span>            : 
+<span class="lineNum">     360 </span><span class="lineNoCov">          0 : void ZeroEQPlugin::_LookupTable1DUpdated( )</span>
+<span class="lineNum">     361 </span>            : {
+<span class="lineNum">     362 </span><span class="lineNoCov">          0 :     auto&amp; scene = _engine.getScene();</span>
+<span class="lineNum">     363 </span><span class="lineNoCov">          0 :     TransferFunction&amp; transferFunction = scene.getTransferFunction();</span>
+<span class="lineNum">     364 </span>            : 
+<span class="lineNum">     365 </span><span class="lineNoCov">          0 :     transferFunction.clear();</span>
+<span class="lineNum">     366 </span><span class="lineNoCov">          0 :     Vector4fs&amp; diffuseColors = transferFunction.getDiffuseColors();</span>
+<span class="lineNum">     367 </span><span class="lineNoCov">          0 :     floats&amp; emissionIntensities = transferFunction.getEmissionIntensities();</span>
+<span class="lineNum">     368 </span>            : 
+<span class="lineNum">     369 </span><span class="lineNoCov">          0 :     const uint8_ts&amp; lut = _remoteLookupTable1D.getLutVector();</span>
+<span class="lineNum">     370 </span><span class="lineNoCov">          0 :     for( size_t i = 0; i &lt; lut.size(); i += 4 )</span>
+<span class="lineNum">     371 </span>            :     {
+<span class="lineNum">     372 </span>            :         Vector4f color = {
+<span class="lineNum">     373 </span><span class="lineNoCov">          0 :             lut[ i ] / 255.f,</span>
+<span class="lineNum">     374 </span><span class="lineNoCov">          0 :             lut[ i + 1 ] / 255.f,</span>
+<span class="lineNum">     375 </span><span class="lineNoCov">          0 :             lut[ i + 2 ] / 255.f,</span>
+<span class="lineNum">     376 </span><span class="lineNoCov">          0 :             lut[ i + 3 ] / 255.f</span>
+<span class="lineNum">     377 </span><span class="lineNoCov">          0 :         };</span>
+<span class="lineNum">     378 </span><span class="lineNoCov">          0 :         diffuseColors.push_back( color );</span>
+<span class="lineNum">     379 </span><span class="lineNoCov">          0 :         emissionIntensities.push_back( 0.f );</span>
+<span class="lineNum">     380 </span>            :     }
+<span class="lineNum">     381 </span>            : 
+<span class="lineNum">     382 </span><span class="lineNoCov">          0 :     transferFunction.setValuesRange( Vector2f( 0.f, lut.size() / 4 ));</span>
+<span class="lineNum">     383 </span><span class="lineNoCov">          0 :     scene.commitTransferFunctionData();</span>
+<span class="lineNum">     384 </span><span class="lineNoCov">          0 :     _engine.getFrameBuffer().clear();</span>
+<a name="385"><span class="lineNum">     385 </span><span class="lineNoCov">          0 : }</span></a>
+<span class="lineNum">     386 </span>            : 
+<span class="lineNum">     387 </span><span class="lineNoCov">          0 : bool ZeroEQPlugin::_requestLookupTable1D( )</span>
+<span class="lineNum">     388 </span>            : {
+<span class="lineNum">     389 </span><span class="lineNoCov">          0 :     auto&amp; scene = _engine.getScene();</span>
+<span class="lineNum">     390 </span><span class="lineNoCov">          0 :     TransferFunction&amp; transferFunction = scene.getTransferFunction();</span>
+<span class="lineNum">     391 </span>            : 
+<span class="lineNum">     392 </span><span class="lineNoCov">          0 :     Vector4fs&amp; diffuseColors = transferFunction.getDiffuseColors();</span>
+<span class="lineNum">     393 </span>            : 
+<span class="lineNum">     394 </span><span class="lineNoCov">          0 :     uint8_ts lut;</span>
+<span class="lineNum">     395 </span><span class="lineNoCov">          0 :     lut.clear();</span>
+<span class="lineNum">     396 </span><span class="lineNoCov">          0 :     for( const auto&amp; color: diffuseColors )</span>
+<span class="lineNum">     397 </span>            :     {
+<span class="lineNum">     398 </span><span class="lineNoCov">          0 :         lut.push_back( color.x() * 255.f );</span>
+<span class="lineNum">     399 </span><span class="lineNoCov">          0 :         lut.push_back( color.y() * 255.f );</span>
+<span class="lineNum">     400 </span><span class="lineNoCov">          0 :         lut.push_back( color.z() * 255.f );</span>
+<span class="lineNum">     401 </span><span class="lineNoCov">          0 :         lut.push_back( color.w() * 255.f );</span>
+<span class="lineNum">     402 </span>            :     }
+<span class="lineNum">     403 </span><span class="lineNoCov">          0 :     _remoteLookupTable1D.setLut( lut );</span>
+<span class="lineNum">     404 </span><span class="lineNoCov">          0 :     return true;</span>
+<a name="405"><span class="lineNum">     405 </span>            : }</a>
+<span class="lineNum">     406 </span>            : 
+<span class="lineNum">     407 </span><span class="lineNoCov">          0 : void ZeroEQPlugin::_colormapUpdated()</span>
+<span class="lineNum">     408 </span>            : {
+<span class="lineNum">     409 </span><span class="lineNoCov">          0 :     auto&amp; scene = _engine.getScene();</span>
+<span class="lineNum">     410 </span><span class="lineNoCov">          0 :     TransferFunction&amp; transferFunction = scene.getTransferFunction();</span>
+<span class="lineNum">     411 </span>            : 
+<span class="lineNum">     412 </span><span class="lineNoCov">          0 :     transferFunction.clear();</span>
+<span class="lineNum">     413 </span><span class="lineNoCov">          0 :     Vector4fs&amp; diffuseColors = transferFunction.getDiffuseColors();</span>
+<span class="lineNum">     414 </span><span class="lineNoCov">          0 :     floats&amp; emissionIntensities = transferFunction.getEmissionIntensities();</span>
+<span class="lineNum">     415 </span>            : 
+<span class="lineNum">     416 </span><span class="lineNoCov">          0 :     const uint8_ts&amp; rgba = _remoteColormap.getRgbaVector();</span>
+<span class="lineNum">     417 </span><span class="lineNoCov">          0 :     for( size_t i = 0; i &lt; rgba.size(); i += 4 )</span>
+<span class="lineNum">     418 </span>            :     {
+<span class="lineNum">     419 </span>            :         Vector4f color = {
+<span class="lineNum">     420 </span><span class="lineNoCov">          0 :             rgba[ i ] / 255.f,</span>
+<span class="lineNum">     421 </span><span class="lineNoCov">          0 :             rgba[ i + 1 ] / 255.f,</span>
+<span class="lineNum">     422 </span><span class="lineNoCov">          0 :             rgba[ i + 2 ] / 255.f,</span>
+<span class="lineNum">     423 </span><span class="lineNoCov">          0 :             rgba[ i + 3 ] / 255.f</span>
+<span class="lineNum">     424 </span><span class="lineNoCov">          0 :         };</span>
+<span class="lineNum">     425 </span><span class="lineNoCov">          0 :         diffuseColors.push_back( color );</span>
+<span class="lineNum">     426 </span><span class="lineNoCov">          0 :         emissionIntensities.push_back( 0.f );</span>
+<span class="lineNum">     427 </span>            :     }
+<span class="lineNum">     428 </span>            : 
+<span class="lineNum">     429 </span><span class="lineNoCov">          0 :     const auto&amp; range = _remoteColormap.getRange( );</span>
+<span class="lineNum">     430 </span><span class="lineNoCov">          0 :     transferFunction.setValuesRange( Vector2f(range[0], range[1] ));</span>
+<span class="lineNum">     431 </span><span class="lineNoCov">          0 :     scene.commitTransferFunctionData();</span>
+<span class="lineNum">     432 </span><span class="lineNoCov">          0 :     _engine.getFrameBuffer().clear();</span>
+<a name="433"><span class="lineNum">     433 </span><span class="lineNoCov">          0 : }</span></a>
+<span class="lineNum">     434 </span>            : 
+<span class="lineNum">     435 </span><span class="lineNoCov">          0 : bool ZeroEQPlugin::_requestColormap( )</span>
+<span class="lineNum">     436 </span>            : {
+<span class="lineNum">     437 </span><span class="lineNoCov">          0 :     auto&amp; scene = _engine.getScene();</span>
+<span class="lineNum">     438 </span><span class="lineNoCov">          0 :     TransferFunction&amp; transferFunction = scene.getTransferFunction();</span>
+<span class="lineNum">     439 </span>            : 
+<span class="lineNum">     440 </span><span class="lineNoCov">          0 :     Vector4fs&amp; diffuseColors = transferFunction.getDiffuseColors();</span>
+<span class="lineNum">     441 </span>            : 
+<span class="lineNum">     442 </span><span class="lineNoCov">          0 :     uint8_ts rgba;</span>
+<span class="lineNum">     443 </span><span class="lineNoCov">          0 :     rgba.clear();</span>
+<span class="lineNum">     444 </span><span class="lineNoCov">          0 :     for( const auto&amp; color: diffuseColors )</span>
+<span class="lineNum">     445 </span>            :     {
+<span class="lineNum">     446 </span><span class="lineNoCov">          0 :         rgba.push_back( color.x() * 255.f );</span>
+<span class="lineNum">     447 </span><span class="lineNoCov">          0 :         rgba.push_back( color.y() * 255.f );</span>
+<span class="lineNum">     448 </span><span class="lineNoCov">          0 :         rgba.push_back( color.z() * 255.f );</span>
+<span class="lineNum">     449 </span><span class="lineNoCov">          0 :         rgba.push_back( color.w() * 255.f );</span>
+<span class="lineNum">     450 </span>            :     }
+<span class="lineNum">     451 </span><span class="lineNoCov">          0 :     _remoteColormap.setRgba( rgba );</span>
+<span class="lineNum">     452 </span><span class="lineNoCov">          0 :     const auto&amp; range = transferFunction.getValuesRange( );</span>
+<span class="lineNum">     453 </span><span class="lineNoCov">          0 :     _remoteColormap.setRange( { range[0], range[1] } );</span>
+<span class="lineNum">     454 </span><span class="lineNoCov">          0 :     return true;</span>
+<a name="455"><span class="lineNum">     455 </span>            : }</a>
+<span class="lineNum">     456 </span>            : 
+<span class="lineNum">     457 </span><span class="lineNoCov">          0 : void ZeroEQPlugin::_resizeImage(</span>
+<span class="lineNum">     458 </span>            :     unsigned int* srcData,
+<span class="lineNum">     459 </span>            :     const Vector2i&amp; srcSize,
+<span class="lineNum">     460 </span>            :     const Vector2i&amp; dstSize,
+<span class="lineNum">     461 </span>            :     uints&amp; dstData)
+<span class="lineNum">     462 </span>            : {
+<span class="lineNum">     463 </span><span class="lineNoCov">          0 :     dstData.reserve(dstSize.x() * dstSize.y());</span>
+<span class="lineNum">     464 </span>            :     size_t x_ratio =
+<span class="lineNum">     465 </span><span class="lineNoCov">          0 :         static_cast&lt; size_t &gt;(((srcSize.x() &lt;&lt; 16) / dstSize.x()) + 1);</span>
+<span class="lineNum">     466 </span>            :     size_t y_ratio =
+<span class="lineNum">     467 </span><span class="lineNoCov">          0 :         static_cast&lt; size_t &gt;(((srcSize.y() &lt;&lt; 16) / dstSize.y()) + 1);</span>
+<span class="lineNum">     468 </span>            : 
+<span class="lineNum">     469 </span><span class="lineNoCov">          0 :     for( int y = 0; y &lt; dstSize.y(); ++y )</span>
+<span class="lineNum">     470 </span>            :     {
+<span class="lineNum">     471 </span><span class="lineNoCov">          0 :         for( int x=0; x &lt; dstSize.x() ; ++x)</span>
+<span class="lineNum">     472 </span>            :         {
+<span class="lineNum">     473 </span><span class="lineNoCov">          0 :             const size_t x2 = ((x*x_ratio) &gt;&gt; 16);</span>
+<span class="lineNum">     474 </span><span class="lineNoCov">          0 :             const size_t y2 = ((y*y_ratio) &gt;&gt; 16);</span>
+<span class="lineNum">     475 </span><span class="lineNoCov">          0 :             dstData[ ( y * dstSize.x() ) + x ] =</span>
+<span class="lineNum">     476 </span><span class="lineNoCov">          0 :                 srcData[ ( y2 * srcSize.x() ) + x2 ] ;</span>
+<span class="lineNum">     477 </span>            :         }
+<span class="lineNum">     478 </span>            :     }
+<a name="479"><span class="lineNum">     479 </span><span class="lineNoCov">          0 : }</span></a>
+<span class="lineNum">     480 </span>            : 
+<span class="lineNum">     481 </span><span class="lineNoCov">          0 : bool ZeroEQPlugin::_requestImageJPEG()</span>
+<span class="lineNum">     482 </span>            : {
+<span class="lineNum">     483 </span><span class="lineNoCov">          0 :     if(!_processingImageJpeg)</span>
+<span class="lineNum">     484 </span>            :     {
+<span class="lineNum">     485 </span><span class="lineNoCov">          0 :         _processingImageJpeg = true;</span>
+<span class="lineNum">     486 </span>            :         const auto&amp; newFrameSize =
+<span class="lineNum">     487 </span><span class="lineNoCov">          0 :             _parametersManager.getApplicationParameters().getJpegSize();</span>
+<span class="lineNum">     488 </span><span class="lineNoCov">          0 :         if( newFrameSize.x() == 0 || newFrameSize.y() == 0 )</span>
+<span class="lineNum">     489 </span>            :         {
+<span class="lineNum">     490 </span><span class="lineNoCov">          0 :             BRAYNS_ERROR &lt;&lt; &quot;Encountered invalid size of image JPEG: &quot;</span>
+<span class="lineNum">     491 </span><span class="lineNoCov">          0 :                          &lt;&lt; newFrameSize &lt;&lt; std::endl;</span>
+<span class="lineNum">     492 </span><span class="lineNoCov">          0 :             _processingImageJpeg = false;</span>
+<span class="lineNum">     493 </span><span class="lineNoCov">          0 :             return false;</span>
+<span class="lineNum">     494 </span>            :         }
+<span class="lineNum">     495 </span>            : 
+<span class="lineNum">     496 </span><span class="lineNoCov">          0 :         FrameBuffer&amp; frameBuffer = _engine.getFrameBuffer();</span>
+<span class="lineNum">     497 </span><span class="lineNoCov">          0 :         const auto&amp; frameSize = frameBuffer.getSize();</span>
+<span class="lineNum">     498 </span>            :         unsigned int* colorBuffer =
+<span class="lineNum">     499 </span><span class="lineNoCov">          0 :             (unsigned int*)frameBuffer.getColorBuffer( );</span>
+<span class="lineNum">     500 </span><span class="lineNoCov">          0 :         if( colorBuffer )</span>
+<span class="lineNum">     501 </span>            :         {
+<span class="lineNum">     502 </span><span class="lineNoCov">          0 :             unsigned int* resizedColorBuffer = colorBuffer;</span>
+<span class="lineNum">     503 </span>            : 
+<span class="lineNum">     504 </span><span class="lineNoCov">          0 :             uints resizedBuffer;</span>
+<span class="lineNum">     505 </span><span class="lineNoCov">          0 :             if( frameSize != newFrameSize )</span>
+<span class="lineNum">     506 </span>            :             {
+<span class="lineNum">     507 </span><span class="lineNoCov">          0 :                 _resizeImage( colorBuffer, frameSize,</span>
+<span class="lineNum">     508 </span><span class="lineNoCov">          0 :                               newFrameSize, resizedBuffer);</span>
+<span class="lineNum">     509 </span><span class="lineNoCov">          0 :                 resizedColorBuffer = resizedBuffer.data();</span>
+<span class="lineNum">     510 </span>            :             }
+<span class="lineNum">     511 </span>            : 
+<span class="lineNum">     512 </span>            :             unsigned long jpegSize =
+<span class="lineNum">     513 </span><span class="lineNoCov">          0 :                 newFrameSize.x( ) * newFrameSize.y( ) * sizeof( unsigned long );</span>
+<span class="lineNum">     514 </span><span class="lineNoCov">          0 :             uint8_t* jpegData = _encodeJpeg(</span>
+<span class="lineNum">     515 </span><span class="lineNoCov">          0 :                     ( uint32_t )newFrameSize.x( ),</span>
+<span class="lineNum">     516 </span><span class="lineNoCov">          0 :                     ( uint32_t )newFrameSize.y( ),</span>
+<span class="lineNum">     517 </span><span class="lineNoCov">          0 :                     ( uint8_t* )resizedColorBuffer, jpegSize );</span>
+<span class="lineNum">     518 </span>            : 
+<span class="lineNum">     519 </span><span class="lineNoCov">          0 :             _remoteImageJPEG.setData( jpegData, jpegSize  );</span>
+<span class="lineNum">     520 </span><span class="lineNoCov">          0 :             tjFree(jpegData);</span>
+<span class="lineNum">     521 </span>            :         }
+<span class="lineNum">     522 </span><span class="lineNoCov">          0 :         _processingImageJpeg = false;</span>
+<span class="lineNum">     523 </span>            :     }
+<span class="lineNum">     524 </span><span class="lineNoCov">          0 :     return true;</span>
+<a name="525"><span class="lineNum">     525 </span>            : }</a>
+<span class="lineNum">     526 </span>            : 
+<span class="lineNum">     527 </span><span class="lineNoCov">          0 : bool ZeroEQPlugin::_requestFrameBuffers()</span>
+<span class="lineNum">     528 </span>            : {
+<span class="lineNum">     529 </span><span class="lineNoCov">          0 :     auto&amp; frameBuffer = _engine.getFrameBuffer();</span>
+<span class="lineNum">     530 </span><span class="lineNoCov">          0 :     const Vector2i frameSize = frameBuffer.getSize( );</span>
+<span class="lineNum">     531 </span><span class="lineNoCov">          0 :     const float* depthBuffer = frameBuffer.getDepthBuffer( );</span>
+<span class="lineNum">     532 </span>            : 
+<span class="lineNum">     533 </span><span class="lineNoCov">          0 :     _remoteFrameBuffers.setWidth( frameSize.x( ));</span>
+<span class="lineNum">     534 </span><span class="lineNoCov">          0 :     _remoteFrameBuffers.setHeight( frameSize.y( ));</span>
+<span class="lineNum">     535 </span><span class="lineNoCov">          0 :     if( depthBuffer )</span>
+<span class="lineNum">     536 </span>            :     {
+<span class="lineNum">     537 </span><span class="lineNoCov">          0 :         uint16_ts depths;</span>
+<span class="lineNum">     538 </span><span class="lineNoCov">          0 :         const size_t size = frameSize.x( ) * frameSize.y( );</span>
+<span class="lineNum">     539 </span><span class="lineNoCov">          0 :         depths.reserve( size  );</span>
+<span class="lineNum">     540 </span><span class="lineNoCov">          0 :         for( size_t i = 0; i &lt; size; ++i )</span>
+<span class="lineNum">     541 </span><span class="lineNoCov">          0 :             depths.push_back(</span>
+<span class="lineNum">     542 </span><span class="lineNoCov">          0 :                 std::numeric_limits&lt; uint16_t &gt;::max() * depthBuffer[ i ] );</span>
+<span class="lineNum">     543 </span><span class="lineNoCov">          0 :         _remoteFrameBuffers.setDepth(</span>
+<span class="lineNum">     544 </span><span class="lineNoCov">          0 :             reinterpret_cast&lt; const uint8_t *&gt;( depths.data( )),</span>
+<span class="lineNum">     545 </span><span class="lineNoCov">          0 :             depths.size() * sizeof( uint16_t ));</span>
+<span class="lineNum">     546 </span>            :     }
+<span class="lineNum">     547 </span>            :     else
+<span class="lineNum">     548 </span><span class="lineNoCov">          0 :         _remoteFrameBuffers.setDepth( 0, 0 );</span>
+<span class="lineNum">     549 </span>            : 
+<span class="lineNum">     550 </span>            :     const uint8_t* colorBuffer =
+<span class="lineNum">     551 </span><span class="lineNoCov">          0 :         frameBuffer.getColorBuffer();</span>
+<span class="lineNum">     552 </span><span class="lineNoCov">          0 :     if( colorBuffer )</span>
+<span class="lineNum">     553 </span><span class="lineNoCov">          0 :         _remoteFrameBuffers.setDiffuse(</span>
+<span class="lineNum">     554 </span><span class="lineNoCov">          0 :             colorBuffer, frameSize.x() * frameSize.y() * frameBuffer.getColorDepth() );</span>
+<span class="lineNum">     555 </span>            :     else
+<span class="lineNum">     556 </span><span class="lineNoCov">          0 :         _remoteFrameBuffers.setDiffuse( 0, 0 );</span>
+<span class="lineNum">     557 </span>            : 
+<span class="lineNum">     558 </span><span class="lineNoCov">          0 :     return true;</span>
+<a name="559"><span class="lineNum">     559 </span>            : }</a>
+<span class="lineNum">     560 </span>            : 
+<span class="lineNum">     561 </span><span class="lineNoCov">          0 : bool ZeroEQPlugin::_requestSpikes()</span>
+<span class="lineNum">     562 </span>            : {
+<span class="lineNum">     563 </span>            : #if 0
+<span class="lineNum">     564 </span>            :     AbstractSimulationHandlerPtr simulationHandler = _engine.getScene().getSimulationHandler();
+<span class="lineNum">     565 </span>            : 
+<span class="lineNum">     566 </span>            :     SpikeSimulationHandler* spikeSimulationHandler =
+<span class="lineNum">     567 </span>            :         dynamic_cast&lt; SpikeSimulationHandler * &gt;( simulationHandler.get() );
+<span class="lineNum">     568 </span>            : 
+<span class="lineNum">     569 </span>            :     std::vector&lt; uint64_t &gt; spikeGids;
+<span class="lineNum">     570 </span>            :     uint64_t ts = 0.f;
+<span class="lineNum">     571 </span>            : 
+<span class="lineNum">     572 </span>            :     _remoteSpikes.setTimestamp( ts );
+<span class="lineNum">     573 </span>            :     if( spikeSimulationHandler )
+<span class="lineNum">     574 </span>            :     {
+<span class="lineNum">     575 </span>            :         uint64_t frameSize = spikeSimulationHandler-&gt;getFrameSize();
+<span class="lineNum">     576 </span>            :         uint64_t* gids = (uint64_t*)spikeSimulationHandler-&gt;getFrameData( ts );
+<span class="lineNum">     577 </span>            :         spikeGids.reserve( frameSize );
+<span class="lineNum">     578 </span>            :         spikeGids.assign( gids, gids + frameSize );
+<span class="lineNum">     579 </span>            :     }
+<span class="lineNum">     580 </span>            :     _remoteSpikes.setGids( spikeGids );
+<span class="lineNum">     581 </span>            : #endif
+<span class="lineNum">     582 </span><span class="lineNoCov">          0 :     return true;</span>
+<a name="583"><span class="lineNum">     583 </span>            : }</a>
+<span class="lineNum">     584 </span>            : 
+<span class="lineNum">     585 </span><span class="lineCov">          3 : void ZeroEQPlugin::_initializeDataSource()</span>
+<span class="lineNum">     586 </span>            : {
+<span class="lineNum">     587 </span><span class="lineCov">          3 :     auto&amp; sceneParameters = _parametersManager.getSceneParameters();</span>
+<span class="lineNum">     588 </span><span class="lineCov">          3 :     auto&amp; geometryParameters = _parametersManager.getGeometryParameters();</span>
+<span class="lineNum">     589 </span><span class="lineCov">          3 :     auto&amp; volumeParameters = _parametersManager.getVolumeParameters();</span>
+<span class="lineNum">     590 </span>            : 
+<span class="lineNum">     591 </span><span class="lineCov">          3 :     _remoteDataSource.setTransfer_function_file( sceneParameters.getTransferFunctionFilename( ));</span>
+<span class="lineNum">     592 </span><span class="lineCov">          3 :     _remoteDataSource.setMorphology_folder( geometryParameters.getMorphologyFolder( ));</span>
+<span class="lineNum">     593 </span><span class="lineCov">          3 :     _remoteDataSource.setNest_circuit( geometryParameters.getNESTCircuit( ));</span>
+<span class="lineNum">     594 </span><span class="lineCov">          3 :     _remoteDataSource.setNest_report( geometryParameters.getNESTReport( ));</span>
+<span class="lineNum">     595 </span><span class="lineCov">          3 :     _remoteDataSource.setPdb_file( geometryParameters.getPDBFile( ));</span>
+<span class="lineNum">     596 </span><span class="lineCov">          3 :     _remoteDataSource.setPdb_folder( geometryParameters.getPDBFolder( ));</span>
+<span class="lineNum">     597 </span><span class="lineCov">          3 :     _remoteDataSource.setXyzb_file( geometryParameters.getXYZBFile( ));</span>
+<span class="lineNum">     598 </span><span class="lineCov">          3 :     _remoteDataSource.setMesh_folder( geometryParameters.getMeshFolder( ));</span>
+<span class="lineNum">     599 </span><span class="lineCov">          3 :     _remoteDataSource.setCircuit_config( geometryParameters.getCircuitConfiguration( ));</span>
+<span class="lineNum">     600 </span><span class="lineCov">          3 :     _remoteDataSource.setLoad_cache_file( geometryParameters.getLoadCacheFile( ));</span>
+<span class="lineNum">     601 </span><span class="lineCov">          3 :     _remoteDataSource.setSave_cache_file( geometryParameters.getSaveCacheFile( ));</span>
+<span class="lineNum">     602 </span><span class="lineCov">          3 :     _remoteDataSource.setRadius_multiplier( geometryParameters.getRadiusMultiplier( ));</span>
+<span class="lineNum">     603 </span><span class="lineCov">          3 :     _remoteDataSource.setRadius_correction( geometryParameters.getRadiusCorrection( ));</span>
+<span class="lineNum">     604 </span><span class="lineCov">          3 :     _remoteDataSource.setColor_scheme(</span>
+<span class="lineNum">     605 </span><span class="lineCov">          6 :         ::brayns::v1::ColorScheme(geometryParameters.getColorScheme()));</span>
+<span class="lineNum">     606 </span><span class="lineCov">          3 :     _remoteDataSource.setScene_environment(</span>
+<span class="lineNum">     607 </span><span class="lineCov">          6 :         ::brayns::v1::SceneEnvironment( geometryParameters.getSceneEnvironment( )));</span>
+<span class="lineNum">     608 </span><span class="lineCov">          3 :     _remoteDataSource.setGeometry_quality(</span>
+<span class="lineNum">     609 </span><span class="lineCov">          6 :         ::brayns::v1::GeometryQuality( geometryParameters.getGeometryQuality( )));</span>
+<span class="lineNum">     610 </span><span class="lineCov">          3 :     _remoteDataSource.setTarget( geometryParameters.getTarget( ));</span>
+<span class="lineNum">     611 </span><span class="lineCov">          3 :     _remoteDataSource.setReport( geometryParameters.getReport( ));</span>
+<span class="lineNum">     612 </span><span class="lineCov">          3 :     _remoteDataSource.setNon_simulated_cells( geometryParameters.getNonSimulatedCells( ));</span>
+<span class="lineNum">     613 </span><span class="lineCov">          3 :     _remoteDataSource.setStart_simulation_time( geometryParameters.getStartSimulationTime( ));</span>
+<span class="lineNum">     614 </span><span class="lineCov">          3 :     _remoteDataSource.setEnd_simulation_time( geometryParameters.getEndSimulationTime( ));</span>
+<span class="lineNum">     615 </span><span class="lineCov">          3 :     _remoteDataSource.setSimulation_values_range( geometryParameters.getSimulationValuesRange( ));</span>
+<span class="lineNum">     616 </span><span class="lineCov">          3 :     _remoteDataSource.setSimulation_cache_file( geometryParameters.getSimulationCacheFile( ));</span>
+<span class="lineNum">     617 </span><span class="lineCov">          3 :     _remoteDataSource.setNest_cache_file( geometryParameters.getNESTCacheFile( ));</span>
+<span class="lineNum">     618 </span>            : 
+<span class="lineNum">     619 </span><span class="lineCov">          3 :     const auto mst = geometryParameters.getMorphologySectionTypes();</span>
+<span class="lineNum">     620 </span><span class="lineCov">          6 :     std::vector&lt; ::brayns::v1::SectionType &gt; sectionTypes;</span>
+<span class="lineNum">     621 </span><span class="lineCov">          3 :     const auto all = mst &amp; (size_t)::brayns::v1::SectionType::all;</span>
+<span class="lineNum">     622 </span><span class="lineCov">          3 :     if( all || mst &amp; (size_t)::brayns::v1::SectionType::soma )</span>
+<span class="lineNum">     623 </span><span class="lineCov">          3 :         sectionTypes.push_back( ::brayns::v1::SectionType::soma );</span>
+<span class="lineNum">     624 </span><span class="lineCov">          3 :     if( all || mst &amp; (size_t)::brayns::v1::SectionType::axon )</span>
+<span class="lineNum">     625 </span><span class="lineCov">          3 :         sectionTypes.push_back( ::brayns::v1::SectionType::axon );</span>
+<span class="lineNum">     626 </span><span class="lineCov">          3 :     if( all || mst &amp; (size_t)::brayns::v1::SectionType::dendrite )</span>
+<span class="lineNum">     627 </span><span class="lineCov">          3 :         sectionTypes.push_back( ::brayns::v1::SectionType::dendrite );</span>
+<span class="lineNum">     628 </span><span class="lineCov">          3 :     if( all || mst &amp; (size_t)::brayns::v1::SectionType::apical_dendrite )</span>
+<span class="lineNum">     629 </span><span class="lineCov">          3 :         sectionTypes.push_back( ::brayns::v1::SectionType::apical_dendrite );</span>
+<span class="lineNum">     630 </span><span class="lineCov">          3 :     _remoteDataSource.setMorphology_section_types( sectionTypes );</span>
+<span class="lineNum">     631 </span>            : 
+<span class="lineNum">     632 </span><span class="lineCov">          3 :     const auto&amp; morphologyLayout = geometryParameters.getMorphologyLayout();</span>
+<span class="lineNum">     633 </span>            :     brayns::v1::MorphologyLayout remoteMorphologyLayout(
+<span class="lineNum">     634 </span><span class="lineCov">          3 :         morphologyLayout.nbColumns,</span>
+<span class="lineNum">     635 </span><span class="lineCov">          3 :         morphologyLayout.verticalSpacing,</span>
+<span class="lineNum">     636 </span><span class="lineCov">         12 :         morphologyLayout.horizontalSpacing );</span>
+<span class="lineNum">     637 </span><span class="lineCov">          3 :     _remoteDataSource.setMorphology_layout( remoteMorphologyLayout );</span>
+<span class="lineNum">     638 </span>            : 
+<span class="lineNum">     639 </span><span class="lineCov">          3 :     _remoteDataSource.setGenerate_multiple_models( geometryParameters.getGenerateMultipleModels( ));</span>
+<span class="lineNum">     640 </span><span class="lineCov">          3 :     _remoteDataSource.setVolume_folder( volumeParameters.getFolder( ));</span>
+<span class="lineNum">     641 </span><span class="lineCov">          3 :     _remoteDataSource.setVolume_file( volumeParameters.getFilename( ));</span>
+<span class="lineNum">     642 </span><span class="lineCov">          3 :     _remoteDataSource.setVolume_dimensions( Vector3ui(volumeParameters.getDimensions( )));</span>
+<span class="lineNum">     643 </span><span class="lineCov">          3 :     _remoteDataSource.setVolume_element_spacing( Vector3f( volumeParameters.getElementSpacing( )));</span>
+<span class="lineNum">     644 </span><span class="lineCov">          3 :     _remoteDataSource.setVolume_offset( Vector3f(volumeParameters.getOffset( )));</span>
+<span class="lineNum">     645 </span><span class="lineCov">          3 :     _remoteDataSource.setEnvironment_map( sceneParameters.getEnvironmentMap( ));</span>
+<a name="646"><span class="lineNum">     646 </span><span class="lineCov">          3 : }</span></a>
+<span class="lineNum">     647 </span>            : 
+<span class="lineNum">     648 </span><span class="lineNoCov">          0 : void ZeroEQPlugin::_dataSourceUpdated()</span>
+<span class="lineNum">     649 </span>            : {
+<span class="lineNum">     650 </span><span class="lineNoCov">          0 :     _parametersManager.set(</span>
+<span class="lineNum">     651 </span><span class="lineNoCov">          0 :         &quot;splash-scene-folder&quot;, &quot;&quot;); // Make sure the splash scene is removed</span>
+<span class="lineNum">     652 </span><span class="lineNoCov">          0 :     _parametersManager.set(</span>
+<span class="lineNum">     653 </span><span class="lineNoCov">          0 :         &quot;transfer-function-file&quot;, _remoteDataSource.getTransfer_function_fileString( ));</span>
+<span class="lineNum">     654 </span><span class="lineNoCov">          0 :     _parametersManager.set(</span>
+<span class="lineNum">     655 </span><span class="lineNoCov">          0 :         &quot;morphology-folder&quot;, _remoteDataSource.getMorphology_folderString( ));</span>
+<span class="lineNum">     656 </span><span class="lineNoCov">          0 :     _parametersManager.set(</span>
+<span class="lineNum">     657 </span><span class="lineNoCov">          0 :         &quot;nest-circuit&quot;, _remoteDataSource.getNest_circuitString( ));</span>
+<span class="lineNum">     658 </span><span class="lineNoCov">          0 :     _parametersManager.set(</span>
+<span class="lineNum">     659 </span><span class="lineNoCov">          0 :         &quot;nest-report&quot;, _remoteDataSource.getNest_reportString( ));</span>
+<span class="lineNum">     660 </span><span class="lineNoCov">          0 :     _parametersManager.set(</span>
+<span class="lineNum">     661 </span><span class="lineNoCov">          0 :         &quot;pdb-file&quot;, _remoteDataSource.getPdb_fileString( ));</span>
+<span class="lineNum">     662 </span><span class="lineNoCov">          0 :     _parametersManager.set(</span>
+<span class="lineNum">     663 </span><span class="lineNoCov">          0 :         &quot;pdb-folder&quot;, _remoteDataSource.getPdb_folderString( ));</span>
+<span class="lineNum">     664 </span><span class="lineNoCov">          0 :     _parametersManager.set(</span>
+<span class="lineNum">     665 </span><span class="lineNoCov">          0 :         &quot;xyzb-file&quot;, _remoteDataSource.getXyzb_fileString( ));</span>
+<span class="lineNum">     666 </span><span class="lineNoCov">          0 :     _parametersManager.set(</span>
+<span class="lineNum">     667 </span><span class="lineNoCov">          0 :         &quot;mesh-folder&quot;, _remoteDataSource.getMesh_folderString( ));</span>
+<span class="lineNum">     668 </span><span class="lineNoCov">          0 :     _parametersManager.set(</span>
+<span class="lineNum">     669 </span><span class="lineNoCov">          0 :         &quot;circuit-config&quot;, _remoteDataSource.getCircuit_configString( ));</span>
+<span class="lineNum">     670 </span><span class="lineNoCov">          0 :     _parametersManager.set(</span>
+<span class="lineNum">     671 </span><span class="lineNoCov">          0 :         &quot;load-cache-file&quot;, _remoteDataSource.getLoad_cache_fileString( ));</span>
+<span class="lineNum">     672 </span><span class="lineNoCov">          0 :     _parametersManager.set(</span>
+<span class="lineNum">     673 </span><span class="lineNoCov">          0 :         &quot;save-cache-file&quot;, _remoteDataSource.getSave_cache_fileString( ));</span>
+<span class="lineNum">     674 </span><span class="lineNoCov">          0 :     _parametersManager.set(</span>
+<span class="lineNum">     675 </span><span class="lineNoCov">          0 :         &quot;radius-multiplier&quot;, std::to_string(_remoteDataSource.getRadius_multiplier( )));</span>
+<span class="lineNum">     676 </span><span class="lineNoCov">          0 :     _parametersManager.set(</span>
+<span class="lineNum">     677 </span><span class="lineNoCov">          0 :         &quot;radius-correction&quot;, std::to_string(_remoteDataSource.getRadius_correction( )));</span>
+<span class="lineNum">     678 </span><span class="lineNoCov">          0 :     _parametersManager.set(</span>
+<span class="lineNum">     679 </span><span class="lineNoCov">          0 :         &quot;color-scheme&quot;, std::to_string( static_cast&lt;uint&gt;( _remoteDataSource.getColor_scheme( ))));</span>
+<span class="lineNum">     680 </span><span class="lineNoCov">          0 :     _parametersManager.set(</span>
+<span class="lineNum">     681 </span>            :         &quot;scene-environment&quot;,
+<span class="lineNum">     682 </span><span class="lineNoCov">          0 :         std::to_string( static_cast&lt;uint&gt;( _remoteDataSource.getScene_environment( ))));</span>
+<span class="lineNum">     683 </span><span class="lineNoCov">          0 :     _parametersManager.set(</span>
+<span class="lineNum">     684 </span>            :         &quot;geometry-quality&quot;,
+<span class="lineNum">     685 </span><span class="lineNoCov">          0 :         std::to_string( static_cast&lt;uint&gt;( _remoteDataSource.getGeometry_quality( ))));</span>
+<span class="lineNum">     686 </span><span class="lineNoCov">          0 :     _parametersManager.set(</span>
+<span class="lineNum">     687 </span><span class="lineNoCov">          0 :         &quot;target&quot;, _remoteDataSource.getTargetString( ));</span>
+<span class="lineNum">     688 </span><span class="lineNoCov">          0 :     _parametersManager.set(</span>
+<span class="lineNum">     689 </span><span class="lineNoCov">          0 :         &quot;report&quot;, _remoteDataSource.getReportString( ));</span>
+<span class="lineNum">     690 </span><span class="lineNoCov">          0 :     _parametersManager.set(</span>
+<span class="lineNum">     691 </span><span class="lineNoCov">          0 :         &quot;non-simulated-cells&quot;, std::to_string(_remoteDataSource.getNon_simulated_cells( )));</span>
+<span class="lineNum">     692 </span><span class="lineNoCov">          0 :     _parametersManager.set(</span>
+<span class="lineNum">     693 </span><span class="lineNoCov">          0 :         &quot;start-simulation-time&quot;, std::to_string(_remoteDataSource.getStart_simulation_time( )));</span>
+<span class="lineNum">     694 </span><span class="lineNoCov">          0 :     _parametersManager.set(</span>
+<span class="lineNum">     695 </span><span class="lineNoCov">          0 :         &quot;end-simulation-time&quot;, std::to_string(_remoteDataSource.getEnd_simulation_time( )));</span>
+<span class="lineNum">     696 </span><span class="lineNoCov">          0 :     _parametersManager.set(</span>
+<span class="lineNum">     697 </span>            :         &quot;simulation-values-range&quot;,
+<span class="lineNum">     698 </span><span class="lineNoCov">          0 :         std::to_string(_remoteDataSource.getSimulation_values_range()[0]) + &quot; &quot; +</span>
+<span class="lineNum">     699 </span><span class="lineNoCov">          0 :         std::to_string(_remoteDataSource.getSimulation_values_range()[1]) );</span>
+<span class="lineNum">     700 </span><span class="lineNoCov">          0 :     _parametersManager.set(</span>
+<span class="lineNum">     701 </span><span class="lineNoCov">          0 :         &quot;simulation-cache-file&quot;, _remoteDataSource.getSimulation_cache_fileString( ));</span>
+<span class="lineNum">     702 </span><span class="lineNoCov">          0 :     _parametersManager.set(</span>
+<span class="lineNum">     703 </span><span class="lineNoCov">          0 :         &quot;nest-cache-file&quot;, _remoteDataSource.getNest_cache_fileString( ));</span>
+<span class="lineNum">     704 </span>            : 
+<span class="lineNum">     705 </span><span class="lineNoCov">          0 :     uint morphologySectionTypes = MST_UNDEFINED;</span>
+<span class="lineNum">     706 </span><span class="lineNoCov">          0 :     const auto sectionTypes = _remoteDataSource.getMorphology_section_typesVector();</span>
+<span class="lineNum">     707 </span><span class="lineNoCov">          0 :     for( const auto&amp; sectionType: sectionTypes )</span>
+<span class="lineNum">     708 </span>            :     {
+<span class="lineNum">     709 </span><span class="lineNoCov">          0 :         switch( sectionType )</span>
+<span class="lineNum">     710 </span>            :         {
+<span class="lineNum">     711 </span>            :         case ::brayns::v1::SectionType::soma:
+<span class="lineNum">     712 </span><span class="lineNoCov">          0 :             morphologySectionTypes |= MST_SOMA; break;</span>
+<span class="lineNum">     713 </span>            :         case ::brayns::v1::SectionType::axon:
+<span class="lineNum">     714 </span><span class="lineNoCov">          0 :             morphologySectionTypes |= MST_AXON; break;</span>
+<span class="lineNum">     715 </span>            :         case ::brayns::v1::SectionType::dendrite:
+<span class="lineNum">     716 </span><span class="lineNoCov">          0 :             morphologySectionTypes |= MST_DENDRITE; break;</span>
+<span class="lineNum">     717 </span>            :         case ::brayns::v1::SectionType::apical_dendrite:
+<span class="lineNum">     718 </span><span class="lineNoCov">          0 :             morphologySectionTypes |= MST_APICAL_DENDRITE; break;</span>
+<span class="lineNum">     719 </span>            :         case ::brayns::v1::SectionType::all:
+<span class="lineNum">     720 </span><span class="lineNoCov">          0 :             morphologySectionTypes |= MST_ALL;</span>
+<span class="lineNum">     721 </span>            :         }
+<span class="lineNum">     722 </span>            :     }
+<span class="lineNum">     723 </span><span class="lineNoCov">          0 :     _parametersManager.set( &quot;morphology-section-types&quot;, std::to_string( morphologySectionTypes ));</span>
+<span class="lineNum">     724 </span>            : 
+<span class="lineNum">     725 </span><span class="lineNoCov">          0 :     const auto remoteMorphologyLayout = _remoteDataSource.getMorphology_layout();</span>
+<span class="lineNum">     726 </span><span class="lineNoCov">          0 :     std::string layoutAsString;</span>
+<span class="lineNum">     727 </span><span class="lineNoCov">          0 :     layoutAsString += std::to_string( remoteMorphologyLayout.getNb_columns( ));</span>
+<span class="lineNum">     728 </span><span class="lineNoCov">          0 :     layoutAsString += &quot; &quot; + std::to_string( remoteMorphologyLayout.getVertical_spacing( ));</span>
+<span class="lineNum">     729 </span><span class="lineNoCov">          0 :     layoutAsString += &quot; &quot; + std::to_string( remoteMorphologyLayout.getHorizontal_spacing( ));</span>
+<span class="lineNum">     730 </span><span class="lineNoCov">          0 :     BRAYNS_ERROR &lt;&lt; &quot;morphology-layout: &quot; &lt;&lt; layoutAsString &lt;&lt; std::endl;</span>
+<span class="lineNum">     731 </span><span class="lineNoCov">          0 :     _parametersManager.set( &quot;morphology-layout&quot;, layoutAsString );</span>
+<span class="lineNum">     732 </span>            : 
+<span class="lineNum">     733 </span><span class="lineNoCov">          0 :     _parametersManager.set(</span>
+<span class="lineNum">     734 </span><span class="lineNoCov">          0 :         &quot;generate-multiple-models&quot;, (_remoteDataSource.getGenerate_multiple_models( ) ? &quot;1&quot; : &quot;0&quot;));</span>
+<span class="lineNum">     735 </span><span class="lineNoCov">          0 :     _parametersManager.set(</span>
+<span class="lineNum">     736 </span><span class="lineNoCov">          0 :         &quot;volume-folder&quot;, _remoteDataSource.getVolume_folderString( ));</span>
+<span class="lineNum">     737 </span><span class="lineNoCov">          0 :     _parametersManager.set(</span>
+<span class="lineNum">     738 </span><span class="lineNoCov">          0 :         &quot;volume-file&quot;, _remoteDataSource.getVolume_fileString( ));</span>
+<span class="lineNum">     739 </span><span class="lineNoCov">          0 :     _parametersManager.set(</span>
+<span class="lineNum">     740 </span>            :         &quot;volume-dimensions&quot;,
+<span class="lineNum">     741 </span><span class="lineNoCov">          0 :         std::to_string(_remoteDataSource.getVolume_dimensions()[0]) + &quot; &quot; +</span>
+<span class="lineNum">     742 </span><span class="lineNoCov">          0 :         std::to_string(_remoteDataSource.getVolume_dimensions()[1]) + &quot; &quot; +</span>
+<span class="lineNum">     743 </span><span class="lineNoCov">          0 :         std::to_string(_remoteDataSource.getVolume_dimensions()[2]) );</span>
+<span class="lineNum">     744 </span><span class="lineNoCov">          0 :     _parametersManager.set(</span>
+<span class="lineNum">     745 </span>            :         &quot;volume-element-spacing&quot;,
+<span class="lineNum">     746 </span><span class="lineNoCov">          0 :         std::to_string(_remoteDataSource.getVolume_element_spacing()[0]) + &quot; &quot; +</span>
+<span class="lineNum">     747 </span><span class="lineNoCov">          0 :         std::to_string(_remoteDataSource.getVolume_element_spacing()[1]) + &quot; &quot; +</span>
+<span class="lineNum">     748 </span><span class="lineNoCov">          0 :         std::to_string(_remoteDataSource.getVolume_element_spacing()[2]) );</span>
+<span class="lineNum">     749 </span><span class="lineNoCov">          0 :     _parametersManager.set(</span>
+<span class="lineNum">     750 </span>            :         &quot;volume-offset&quot;,
+<span class="lineNum">     751 </span><span class="lineNoCov">          0 :         std::to_string(_remoteDataSource.getVolume_offset()[0]) + &quot; &quot; +</span>
+<span class="lineNum">     752 </span><span class="lineNoCov">          0 :         std::to_string(_remoteDataSource.getVolume_offset()[1]) + &quot; &quot; +</span>
+<span class="lineNum">     753 </span><span class="lineNoCov">          0 :         std::to_string(_remoteDataSource.getVolume_offset()[2]) );</span>
+<span class="lineNum">     754 </span><span class="lineNoCov">          0 :     _parametersManager.set(</span>
+<span class="lineNum">     755 </span><span class="lineNoCov">          0 :         &quot;environment-map&quot;, _remoteDataSource.getEnvironment_mapString( ));</span>
+<span class="lineNum">     756 </span>            : 
+<span class="lineNum">     757 </span><span class="lineNoCov">          0 :     _resetSceneUpdated();</span>
+<span class="lineNum">     758 </span><span class="lineNoCov">          0 :     _resetCameraUpdated();</span>
+<span class="lineNum">     759 </span>            : 
+<span class="lineNum">     760 </span><span class="lineNoCov">          0 :     _engine.getFrameBuffer().clear();</span>
+<span class="lineNum">     761 </span><span class="lineNoCov">          0 :     _engine.getScene().commitSimulationData();</span>
+<span class="lineNum">     762 </span><span class="lineNoCov">          0 :     _engine.getScene().commitVolumeData();</span>
+<span class="lineNum">     763 </span><span class="lineNoCov">          0 :     _engine.getRenderer().commit();</span>
+<span class="lineNum">     764 </span><span class="lineNoCov">          0 :     _parametersManager.print();</span>
+<a name="765"><span class="lineNum">     765 </span><span class="lineNoCov">          0 : }</span></a>
+<span class="lineNum">     766 </span>            : 
+<span class="lineNum">     767 </span><span class="lineCov">          3 : void ZeroEQPlugin::_initializeSettings()</span>
+<span class="lineNum">     768 </span>            : {
+<span class="lineNum">     769 </span><span class="lineCov">          3 :     auto&amp; sceneParameters = _parametersManager.getSceneParameters();</span>
+<span class="lineNum">     770 </span><span class="lineCov">          3 :     auto&amp; renderingParameters = _parametersManager.getRenderingParameters();</span>
+<span class="lineNum">     771 </span><span class="lineCov">          3 :     auto&amp; volumeParameters = _parametersManager.getVolumeParameters();</span>
+<span class="lineNum">     772 </span><span class="lineCov">          3 :     auto&amp; applicationParameters = _parametersManager.getApplicationParameters();</span>
+<span class="lineNum">     773 </span>            : 
+<span class="lineNum">     774 </span><span class="lineCov">          3 :     _remoteSettings.setTimestamp( sceneParameters.getTimestamp( ));</span>
+<span class="lineNum">     775 </span><span class="lineCov">          3 :     _remoteSettings.setVolume_samples_per_ray( volumeParameters.getSamplesPerRay( ));</span>
+<span class="lineNum">     776 </span><span class="lineCov">          3 :     if( renderingParameters.getRenderer( ) == &quot;exobj&quot; )</span>
+<span class="lineNum">     777 </span><span class="lineCov">          3 :         _remoteSettings.setShader( ::brayns::v1::Shader::basic );</span>
+<span class="lineNum">     778 </span><span class="lineNoCov">          0 :      else if( renderingParameters.getRenderer( ) == &quot;proximityrenderer&quot; )</span>
+<span class="lineNum">     779 </span><span class="lineNoCov">          0 :         _remoteSettings.setShader( ::brayns::v1::Shader::proximity );</span>
+<span class="lineNum">     780 </span><span class="lineNoCov">          0 :      else if( renderingParameters.getRenderer( ) == &quot;particlerenderer&quot; )</span>
+<span class="lineNum">     781 </span><span class="lineNoCov">          0 :         _remoteSettings.setShader( ::brayns::v1::Shader::particle );</span>
+<span class="lineNum">     782 </span><span class="lineNoCov">          0 :      else if( renderingParameters.getRenderer( ) == &quot;simulationrenderer&quot; )</span>
+<span class="lineNum">     783 </span><span class="lineNoCov">          0 :         _remoteSettings.setShader( ::brayns::v1::Shader::simulation );</span>
+<span class="lineNum">     784 </span>            : 
+<span class="lineNum">     785 </span><span class="lineCov">          3 :     switch( renderingParameters.getShading( ) )</span>
+<span class="lineNum">     786 </span>            :     {
+<span class="lineNum">     787 </span>            :         case ShadingType::diffuse:
+<span class="lineNum">     788 </span><span class="lineCov">          3 :             _remoteSettings.setShading( ::brayns::v1::Shading::diffuse ); break;</span>
+<span class="lineNum">     789 </span>            :         case ShadingType::electron:
+<span class="lineNum">     790 </span><span class="lineNoCov">          0 :             _remoteSettings.setShading( ::brayns::v1::Shading::electron ); break;</span>
+<span class="lineNum">     791 </span>            :         default:
+<span class="lineNum">     792 </span><span class="lineNoCov">          0 :             _remoteSettings.setShading( ::brayns::v1::Shading::none ); break;</span>
+<span class="lineNum">     793 </span>            :     }
+<span class="lineNum">     794 </span><span class="lineCov">          3 :     _remoteSettings.setSamples_per_pixel( renderingParameters.getSamplesPerPixel( ));</span>
+<span class="lineNum">     795 </span><span class="lineCov">          3 :     _remoteSettings.setAmbient_occlusion( renderingParameters.getAmbientOcclusionStrength( ));</span>
+<span class="lineNum">     796 </span><span class="lineCov">          3 :     _remoteSettings.setShadows( renderingParameters.getShadows( ));</span>
+<span class="lineNum">     797 </span><span class="lineCov">          3 :     _remoteSettings.setSoft_shadows( renderingParameters.getSoftShadows( ));</span>
+<span class="lineNum">     798 </span><span class="lineCov">          3 :     _remoteSettings.setRadiance( renderingParameters.getLightEmittingMaterials( ));</span>
+<span class="lineNum">     799 </span><span class="lineCov">          3 :     Vector3f value = renderingParameters.getBackgroundColor();</span>
+<span class="lineNum">     800 </span><span class="lineCov">          3 :     _remoteSettings.setBackground_color( value );</span>
+<span class="lineNum">     801 </span><span class="lineCov">          3 :     _remoteSettings.setDetection_distance( renderingParameters.getDetectionDistance( ));</span>
+<span class="lineNum">     802 </span><span class="lineCov">          3 :     value = renderingParameters.getDetectionNearColor();</span>
+<span class="lineNum">     803 </span><span class="lineCov">          3 :     _remoteSettings.setDetection_near_color( value );</span>
+<span class="lineNum">     804 </span><span class="lineCov">          3 :     value = renderingParameters.getDetectionFarColor();</span>
+<span class="lineNum">     805 </span><span class="lineCov">          3 :     _remoteSettings.setDetection_far_color( value );</span>
+<span class="lineNum">     806 </span><span class="lineCov">          3 :     _remoteSettings.setEpsilon( renderingParameters.getEpsilon( ));</span>
+<span class="lineNum">     807 </span><span class="lineCov">          3 :     _remoteSettings.setHead_light( renderingParameters.getHeadLight( ));</span>
+<span class="lineNum">     808 </span><span class="lineCov">          3 :     _remoteSettings.setJpeg_compression( applicationParameters.getJpegCompression( ));</span>
+<span class="lineNum">     809 </span><span class="lineCov">          3 :     const auto&amp; jpegSize = applicationParameters.getJpegSize();</span>
+<span class="lineNum">     810 </span><span class="lineCov">          3 :     _remoteSettings.setJpeg_size( { jpegSize[0], jpegSize[1] } );</span>
+<a name="811"><span class="lineNum">     811 </span><span class="lineCov">          3 : }</span></a>
+<span class="lineNum">     812 </span>            : 
+<span class="lineNum">     813 </span><span class="lineNoCov">          0 : void ZeroEQPlugin::_settingsUpdated()</span>
+<span class="lineNum">     814 </span>            : {
+<span class="lineNum">     815 </span><span class="lineNoCov">          0 :     _parametersManager.set(</span>
+<span class="lineNum">     816 </span><span class="lineNoCov">          0 :         &quot;timestamp&quot;, std::to_string(_remoteSettings.getTimestamp( )));</span>
+<span class="lineNum">     817 </span><span class="lineNoCov">          0 :     _parametersManager.set(</span>
+<span class="lineNum">     818 </span><span class="lineNoCov">          0 :         &quot;volume-samples-per-ray&quot;, std::to_string(_remoteSettings.getVolume_samples_per_ray( )));</span>
+<span class="lineNum">     819 </span><span class="lineNoCov">          0 :     switch( _remoteSettings.getShader( ))</span>
+<span class="lineNum">     820 </span>            :     {
+<span class="lineNum">     821 </span>            :         case ::brayns::v1::Shader::proximity:
+<span class="lineNum">     822 </span><span class="lineNoCov">          0 :             _parametersManager.set( &quot;renderer&quot;, &quot;proximityrenderer&quot;); break;</span>
+<span class="lineNum">     823 </span>            :         case ::brayns::v1::Shader::particle:
+<span class="lineNum">     824 </span><span class="lineNoCov">          0 :             _parametersManager.set( &quot;renderer&quot;, &quot;particlerenderer&quot;); break;</span>
+<span class="lineNum">     825 </span>            :         case ::brayns::v1::Shader::simulation:
+<span class="lineNum">     826 </span><span class="lineNoCov">          0 :             _parametersManager.set( &quot;renderer&quot;, &quot;simulationrenderer&quot;); break;</span>
+<span class="lineNum">     827 </span>            :         default:
+<span class="lineNum">     828 </span><span class="lineNoCov">          0 :             _parametersManager.set( &quot;renderer&quot;, &quot;exobj&quot;); break;</span>
+<span class="lineNum">     829 </span>            :     }
+<span class="lineNum">     830 </span><span class="lineNoCov">          0 :     switch( _remoteSettings.getShading( ))</span>
+<span class="lineNum">     831 </span>            :     {
+<span class="lineNum">     832 </span>            :         case ::brayns::v1::Shading::diffuse:
+<span class="lineNum">     833 </span><span class="lineNoCov">          0 :             _parametersManager.set( &quot;shading&quot;, &quot;diffuse&quot;); break;</span>
+<span class="lineNum">     834 </span>            :         case ::brayns::v1::Shading::electron:
+<span class="lineNum">     835 </span><span class="lineNoCov">          0 :             _parametersManager.set( &quot;shading&quot;, &quot;electron&quot;); break;</span>
+<span class="lineNum">     836 </span>            :         default:
+<span class="lineNum">     837 </span><span class="lineNoCov">          0 :             _parametersManager.set( &quot;shading&quot;, &quot;none&quot;); break;</span>
+<span class="lineNum">     838 </span>            :     }
+<span class="lineNum">     839 </span><span class="lineNoCov">          0 :     _parametersManager.set(</span>
+<span class="lineNum">     840 </span><span class="lineNoCov">          0 :         &quot;spp&quot;, std::to_string(_remoteSettings.getSamples_per_pixel( )));</span>
+<span class="lineNum">     841 </span><span class="lineNoCov">          0 :     _parametersManager.set(</span>
+<span class="lineNum">     842 </span><span class="lineNoCov">          0 :         &quot;ambient-occlusion&quot;, std::to_string(_remoteSettings.getAmbient_occlusion()));</span>
+<span class="lineNum">     843 </span><span class="lineNoCov">          0 :     _parametersManager.set(</span>
+<span class="lineNum">     844 </span><span class="lineNoCov">          0 :         &quot;shadows&quot;, (_remoteSettings.getShadows( ) ? &quot;1&quot; : &quot;0&quot;));</span>
+<span class="lineNum">     845 </span><span class="lineNoCov">          0 :     _parametersManager.set(</span>
+<span class="lineNum">     846 </span><span class="lineNoCov">          0 :         &quot;soft-shadows&quot;, (_remoteSettings.getSoft_shadows( ) ? &quot;1&quot; : &quot;0&quot;));</span>
+<span class="lineNum">     847 </span><span class="lineNoCov">          0 :     _parametersManager.set(</span>
+<span class="lineNum">     848 </span><span class="lineNoCov">          0 :         &quot;radiance&quot;, (_remoteSettings.getRadiance( ) ? &quot;1&quot; : &quot;0&quot;));</span>
+<span class="lineNum">     849 </span><span class="lineNoCov">          0 :     _parametersManager.set(</span>
+<span class="lineNum">     850 </span>            :         &quot;background-color&quot;,
+<span class="lineNum">     851 </span><span class="lineNoCov">          0 :         std::to_string(_remoteSettings.getBackground_color()[0]) + &quot; &quot; +</span>
+<span class="lineNum">     852 </span><span class="lineNoCov">          0 :         std::to_string(_remoteSettings.getBackground_color()[1]) + &quot; &quot; +</span>
+<span class="lineNum">     853 </span><span class="lineNoCov">          0 :         std::to_string(_remoteSettings.getBackground_color()[2]) );</span>
+<span class="lineNum">     854 </span><span class="lineNoCov">          0 :     _parametersManager.set(</span>
+<span class="lineNum">     855 </span><span class="lineNoCov">          0 :         &quot;detection-distance&quot;, std::to_string(_remoteSettings.getDetection_distance( )));</span>
+<span class="lineNum">     856 </span><span class="lineNoCov">          0 :     _parametersManager.set(</span>
+<span class="lineNum">     857 </span>            :         &quot;detection-on-different-material&quot;,
+<span class="lineNum">     858 </span><span class="lineNoCov">          0 :         (_remoteSettings.getDetection_on_different_material() ? &quot;1&quot; : &quot;0&quot;));</span>
+<span class="lineNum">     859 </span><span class="lineNoCov">          0 :     _parametersManager.set(</span>
+<span class="lineNum">     860 </span>            :         &quot;detection-near-color&quot;,
+<span class="lineNum">     861 </span><span class="lineNoCov">          0 :         std::to_string(_remoteSettings.getDetection_near_color()[0]) + &quot; &quot; +</span>
+<span class="lineNum">     862 </span><span class="lineNoCov">          0 :         std::to_string(_remoteSettings.getDetection_near_color()[1]) + &quot; &quot; +</span>
+<span class="lineNum">     863 </span><span class="lineNoCov">          0 :         std::to_string(_remoteSettings.getDetection_near_color()[2]) );</span>
+<span class="lineNum">     864 </span><span class="lineNoCov">          0 :     _parametersManager.set(</span>
+<span class="lineNum">     865 </span>            :         &quot;detection-far-color&quot;,
+<span class="lineNum">     866 </span><span class="lineNoCov">          0 :         std::to_string(_remoteSettings.getDetection_far_color()[0]) + &quot; &quot; +</span>
+<span class="lineNum">     867 </span><span class="lineNoCov">          0 :         std::to_string(_remoteSettings.getDetection_far_color()[1]) + &quot; &quot; +</span>
+<span class="lineNum">     868 </span><span class="lineNoCov">          0 :         std::to_string(_remoteSettings.getDetection_far_color()[2]) );</span>
+<span class="lineNum">     869 </span><span class="lineNoCov">          0 :     _parametersManager.set(</span>
+<span class="lineNum">     870 </span><span class="lineNoCov">          0 :         &quot;epsilon&quot;, std::to_string(_remoteSettings.getEpsilon( )));</span>
+<span class="lineNum">     871 </span><span class="lineNoCov">          0 :     _parametersManager.set(</span>
+<span class="lineNum">     872 </span><span class="lineNoCov">          0 :         &quot;head-light&quot;, (_remoteSettings.getHead_light( ) ? &quot;1&quot; : &quot;0&quot;));</span>
+<span class="lineNum">     873 </span>            : 
+<span class="lineNum">     874 </span><span class="lineNoCov">          0 :     auto&amp; app = _parametersManager.getApplicationParameters();</span>
+<span class="lineNum">     875 </span><span class="lineNoCov">          0 :     app.setJpegSize( Vector2ui{ _remoteSettings.getJpeg_size()  } );</span>
+<span class="lineNum">     876 </span><span class="lineNoCov">          0 :     app.setJpegCompression( std::min( _remoteSettings.getJpeg_compression(), 100u ));</span>
+<span class="lineNum">     877 </span>            : 
+<span class="lineNum">     878 </span><span class="lineNoCov">          0 :     _engine.getRenderer().commit();</span>
+<span class="lineNum">     879 </span><span class="lineNoCov">          0 :     _engine.getFrameBuffer().clear();</span>
+<a name="880"><span class="lineNum">     880 </span><span class="lineNoCov">          0 : }</span></a>
+<span class="lineNum">     881 </span>            : 
+<span class="lineNum">     882 </span><span class="lineNoCov">          0 : bool ZeroEQPlugin::_requestFrame()</span>
+<span class="lineNum">     883 </span>            : {
+<span class="lineNum">     884 </span><span class="lineNoCov">          0 :     auto simHandler = _engine.getScene().getSimulationHandler();</span>
+<span class="lineNum">     885 </span><span class="lineNoCov">          0 :     const uint64_t nbFrames = simHandler ? simHandler-&gt;getNbFrames() : 0;</span>
+<span class="lineNum">     886 </span>            : 
+<span class="lineNum">     887 </span><span class="lineNoCov">          0 :     const auto ts = uint64_t(_parametersManager.getSceneParameters().getTimestamp());</span>
+<span class="lineNum">     888 </span><span class="lineNoCov">          0 :     _remoteFrame.setCurrent( nbFrames == 0 ? 0 : (ts % nbFrames) );</span>
+<span class="lineNum">     889 </span><span class="lineNoCov">          0 :     _remoteFrame.setDelta( 1 );</span>
+<span class="lineNum">     890 </span><span class="lineNoCov">          0 :     _remoteFrame.setEnd( nbFrames );</span>
+<span class="lineNum">     891 </span><span class="lineNoCov">          0 :     _remoteFrame.setStart( 0 );</span>
+<span class="lineNum">     892 </span><span class="lineNoCov">          0 :     return true;</span>
+<a name="893"><span class="lineNum">     893 </span>            : }</a>
+<span class="lineNum">     894 </span>            : 
+<span class="lineNum">     895 </span><span class="lineNoCov">          0 : void ZeroEQPlugin::_frameUpdated()</span>
+<span class="lineNum">     896 </span>            : {
+<span class="lineNum">     897 </span><span class="lineNoCov">          0 :     _parametersManager.getSceneParameters().setTimestamp( _remoteFrame.getCurrent( ));</span>
+<span class="lineNum">     898 </span><span class="lineNoCov">          0 :     _engine.commit();</span>
+<a name="899"><span class="lineNum">     899 </span><span class="lineNoCov">          0 : }</span></a>
+<span class="lineNum">     900 </span>            : 
+<span class="lineNum">     901 </span><span class="lineNoCov">          0 : bool ZeroEQPlugin::_requestViewport()</span>
+<span class="lineNum">     902 </span>            : {
+<span class="lineNum">     903 </span>            :     const auto&amp; windowSize =
+<span class="lineNum">     904 </span><span class="lineNoCov">          0 :         _parametersManager.getApplicationParameters().getWindowSize();</span>
+<span class="lineNum">     905 </span><span class="lineNoCov">          0 :     _remoteViewport.setSize( { windowSize[0], windowSize[1] } );</span>
+<span class="lineNum">     906 </span><span class="lineNoCov">          0 :     return true;</span>
+<a name="907"><span class="lineNum">     907 </span>            : }</a>
+<span class="lineNum">     908 </span>            : 
+<span class="lineNum">     909 </span><span class="lineNoCov">          0 : void ZeroEQPlugin::_viewportUpdated()</span>
+<span class="lineNum">     910 </span>            : {
+<span class="lineNum">     911 </span><span class="lineNoCov">          0 :     _parametersManager.getApplicationParameters().setWindowSize( Vector2ui{ _remoteViewport.getSize() } );</span>
+<span class="lineNum">     912 </span><span class="lineNoCov">          0 :     _engine.commit();</span>
+<a name="913"><span class="lineNum">     913 </span><span class="lineNoCov">          0 : }</span></a>
+<span class="lineNum">     914 </span>            : 
+<span class="lineNum">     915 </span><span class="lineNoCov">          0 : bool ZeroEQPlugin::_requestHistogram()</span>
+<span class="lineNum">     916 </span>            : {
+<span class="lineNum">     917 </span><span class="lineNoCov">          0 :     auto simulationHandler = _engine.getScene().getSimulationHandler();</span>
+<span class="lineNum">     918 </span><span class="lineNoCov">          0 :     if( simulationHandler )</span>
+<span class="lineNum">     919 </span>            :     {
+<span class="lineNum">     920 </span><span class="lineNoCov">          0 :         const auto&amp; histogram = simulationHandler-&gt;getHistogram();</span>
+<span class="lineNum">     921 </span><span class="lineNoCov">          0 :         _remoteHistogram.setMin( histogram.range.x( ));</span>
+<span class="lineNum">     922 </span><span class="lineNoCov">          0 :         _remoteHistogram.setMax( histogram.range.y( ));</span>
+<span class="lineNum">     923 </span><span class="lineNoCov">          0 :         _remoteHistogram.setBins( histogram.values );</span>
+<span class="lineNum">     924 </span>            :     }
+<span class="lineNum">     925 </span><span class="lineNoCov">          0 :     return true;</span>
+<a name="926"><span class="lineNum">     926 </span>            : }</a>
+<span class="lineNum">     927 </span>            : 
+<span class="lineNum">     928 </span><span class="lineNoCov">          0 : uint8_t* ZeroEQPlugin::_encodeJpeg(const uint32_t width,</span>
+<span class="lineNum">     929 </span>            :                      const uint32_t height,
+<span class="lineNum">     930 </span>            :                      const uint8_t* rawData,
+<span class="lineNum">     931 </span>            :                      unsigned long&amp; dataSize)
+<span class="lineNum">     932 </span>            : {
+<span class="lineNum">     933 </span><span class="lineNoCov">          0 :     uint8_t* tjSrcBuffer = const_cast&lt; uint8_t* &gt;( rawData );</span>
+<span class="lineNum">     934 </span><span class="lineNoCov">          0 :     const int32_t pixelFormat = TJPF_RGBA;</span>
+<span class="lineNum">     935 </span><span class="lineNoCov">          0 :     const int32_t color_components = 4; // Color Depth</span>
+<span class="lineNum">     936 </span><span class="lineNoCov">          0 :     const int32_t tjPitch = width * color_components;</span>
+<span class="lineNum">     937 </span><span class="lineNoCov">          0 :     const int32_t tjPixelFormat = pixelFormat;</span>
+<span class="lineNum">     938 </span>            : 
+<span class="lineNum">     939 </span><span class="lineNoCov">          0 :     uint8_t* tjJpegBuf = 0;</span>
+<span class="lineNum">     940 </span><span class="lineNoCov">          0 :     const int32_t tjJpegSubsamp = TJSAMP_444;</span>
+<span class="lineNum">     941 </span><span class="lineNoCov">          0 :     const int32_t tjFlags = TJXOP_ROT180;</span>
+<span class="lineNum">     942 </span>            : 
+<span class="lineNum">     943 </span><span class="lineNoCov">          0 :     const int32_t success = tjCompress2(</span>
+<span class="lineNum">     944 </span>            :         _compressor, tjSrcBuffer, width, tjPitch, height,
+<span class="lineNum">     945 </span>            :         tjPixelFormat, &amp;tjJpegBuf, &amp;dataSize, tjJpegSubsamp,
+<span class="lineNum">     946 </span><span class="lineNoCov">          0 :         _parametersManager.getApplicationParameters().getJpegCompression(),</span>
+<span class="lineNum">     947 </span><span class="lineNoCov">          0 :         tjFlags);</span>
+<span class="lineNum">     948 </span>            : 
+<span class="lineNum">     949 </span><span class="lineNoCov">          0 :     if(success != 0)</span>
+<span class="lineNum">     950 </span>            :     {
+<span class="lineNum">     951 </span><span class="lineNoCov">          0 :         BRAYNS_ERROR &lt;&lt; &quot;libjpeg-turbo image conversion failure&quot; &lt;&lt; std::endl;</span>
+<span class="lineNum">     952 </span><span class="lineNoCov">          0 :         return 0;</span>
+<span class="lineNum">     953 </span>            :     }
+<span class="lineNum">     954 </span><span class="lineNoCov">          0 :     return static_cast&lt;uint8_t *&gt;(tjJpegBuf);</span>
+<a name="955"><span class="lineNum">     955 </span>            : }</a>
+<span class="lineNum">     956 </span>            : 
+<span class="lineNum">     957 </span><span class="lineCov">          6 : }</span>
+</pre>
+      </td>
+    </tr>
+  </table>
+  <br>
+
+  <table width="100%" border=0 cellspacing=0 cellpadding=0>
+    <tr><td class="ruler"><img src="../../../glass.png" width=3 height=3 alt=""></td></tr>
+    <tr><td class="versionInfo">Generated by: <a href="http://ltp.sourceforge.net/coverage/lcov.php" target="_parent">LCOV version 1.11</a></td></tr>
+  </table>
+  <br>
+
+</body>
+</html>

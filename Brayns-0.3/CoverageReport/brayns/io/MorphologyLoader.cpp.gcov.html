@@ -1,0 +1,648 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+
+<html lang="en">
+
+<head>
+  <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+  <title>LCOV - Brayns - brayns/io/MorphologyLoader.cpp</title>
+  <link rel="stylesheet" type="text/css" href="../../gcov.css">
+</head>
+
+<body>
+
+  <table width="100%" border=0 cellspacing=0 cellpadding=0>
+    <tr><td class="title">LCOV - code coverage report</td></tr>
+    <tr><td class="ruler"><img src="../../glass.png" width=3 height=3 alt=""></td></tr>
+
+    <tr>
+      <td width="100%">
+        <table cellpadding=1 border=0 width="100%">
+          <tr>
+            <td width="10%" class="headerItem">Current view:</td>
+            <td width="35%" class="headerValue"><a href="../../index.html">top level</a> - <a href="index.html">brayns/io</a> - MorphologyLoader.cpp<span style="font-size: 80%;"> (source / <a href="MorphologyLoader.cpp.func-sort-c.html">functions</a>)</span></td>
+            <td width="5%"></td>
+            <td width="15%"></td>
+            <td width="10%" class="headerCovTableHead">Hit</td>
+            <td width="10%" class="headerCovTableHead">Total</td>
+            <td width="15%" class="headerCovTableHead">Coverage</td>
+          </tr>
+          <tr>
+            <td class="headerItem">Test:</td>
+            <td class="headerValue">Brayns</td>
+            <td></td>
+            <td class="headerItem">Lines:</td>
+            <td class="headerCovTableEntry">121</td>
+            <td class="headerCovTableEntry">279</td>
+            <td class="headerCovTableEntryMed">43.4 %</td>
+          </tr>
+          <tr>
+            <td class="headerItem">Date:</td>
+            <td class="headerValue">2016-12-14 01:15:11</td>
+            <td></td>
+            <td class="headerItem">Functions:</td>
+            <td class="headerCovTableEntry">7</td>
+            <td class="headerCovTableEntry">12</td>
+            <td class="headerCovTableEntryMed">58.3 %</td>
+          </tr>
+          <tr><td><img src="../../glass.png" width=3 height=3 alt=""></td></tr>
+        </table>
+      </td>
+    </tr>
+
+    <tr><td class="ruler"><img src="../../glass.png" width=3 height=3 alt=""></td></tr>
+  </table>
+
+  <table cellpadding=0 cellspacing=0 border=0>
+    <tr>
+      <td><br></td>
+    </tr>
+    <tr>
+      <td>
+<pre class="sourceHeading">          Line data    Source code</pre>
+<pre class="source">
+<a name="1"><span class="lineNum">       1 </span>            : /* Copyright (c) 2015-2016, EPFL/Blue Brain Project</a>
+<span class="lineNum">       2 </span>            :  * All rights reserved. Do not distribute without permission.
+<span class="lineNum">       3 </span>            :  * Responsible Author: Cyrille Favreau &lt;cyrille.favreau@epfl.ch&gt;
+<span class="lineNum">       4 </span>            :  *
+<span class="lineNum">       5 </span>            :  * This file is part of Brayns &lt;https://github.com/BlueBrain/Brayns&gt;
+<span class="lineNum">       6 </span>            :  *
+<span class="lineNum">       7 </span>            :  * This library is free software; you can redistribute it and/or modify it under
+<span class="lineNum">       8 </span>            :  * the terms of the GNU Lesser General Public License version 3.0 as published
+<span class="lineNum">       9 </span>            :  * by the Free Software Foundation.
+<span class="lineNum">      10 </span>            :  *
+<span class="lineNum">      11 </span>            :  * This library is distributed in the hope that it will be useful, but WITHOUT
+<span class="lineNum">      12 </span>            :  * ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS
+<span class="lineNum">      13 </span>            :  * FOR A PARTICULAR PURPOSE.  See the GNU Lesser General Public License for more
+<span class="lineNum">      14 </span>            :  * details.
+<span class="lineNum">      15 </span>            :  *
+<span class="lineNum">      16 </span>            :  * You should have received a copy of the GNU Lesser General Public License
+<span class="lineNum">      17 </span>            :  * along with this library; if not, write to the Free Software Foundation, Inc.,
+<span class="lineNum">      18 </span>            :  * 51 Franklin Street, Fifth Floor, Boston, MA 02110-1301 USA.
+<span class="lineNum">      19 </span>            :  */
+<span class="lineNum">      20 </span>            : 
+<span class="lineNum">      21 </span>            : #include &quot;MorphologyLoader.h&quot;
+<span class="lineNum">      22 </span>            : 
+<span class="lineNum">      23 </span>            : #include &lt;brayns/common/log.h&gt;
+<span class="lineNum">      24 </span>            : #include &lt;brayns/common/geometry/Sphere.h&gt;
+<span class="lineNum">      25 </span>            : #include &lt;brayns/common/geometry/Cylinder.h&gt;
+<span class="lineNum">      26 </span>            : #include &lt;brayns/common/geometry/Cone.h&gt;
+<span class="lineNum">      27 </span>            : #include &lt;brayns/common/scene/Scene.h&gt;
+<span class="lineNum">      28 </span>            : #include &lt;brayns/common/simulation/CircuitSimulationHandler.h&gt;
+<span class="lineNum">      29 </span>            : 
+<span class="lineNum">      30 </span>            : #include &lt;algorithm&gt;
+<span class="lineNum">      31 </span>            : #include &lt;fstream&gt;
+<span class="lineNum">      32 </span>            : 
+<span class="lineNum">      33 </span>            : #ifdef BRAYNS_USE_BRION
+<span class="lineNum">      34 </span>            : #  include &lt;brain/brain.h&gt;
+<span class="lineNum">      35 </span>            : #  include &lt;brion/brion.h&gt;
+<span class="lineNum">      36 </span>            : #endif
+<span class="lineNum">      37 </span>            : 
+<span class="lineNum">      38 </span>            : namespace brayns
+<a name="39"><span class="lineNum">      39 </span>            : {</a>
+<span class="lineNum">      40 </span>            : 
+<span class="lineNum">      41 </span><span class="lineCov">          2 : MorphologyLoader::MorphologyLoader(</span>
+<span class="lineNum">      42 </span><span class="lineCov">          2 :         const GeometryParameters&amp; geometryParameters )</span>
+<span class="lineNum">      43 </span><span class="lineCov">          2 :     : _geometryParameters(geometryParameters)</span>
+<span class="lineNum">      44 </span>            : {
+<span class="lineNum">      45 </span><span class="lineCov">          2 : }</span>
+<a name="46"><span class="lineNum">      46 </span>            : </a>
+<span class="lineNum">      47 </span>            : #ifdef BRAYNS_USE_BRION
+<span class="lineNum">      48 </span><span class="lineNoCov">          0 : bool MorphologyLoader::importMorphology(</span>
+<span class="lineNum">      49 </span>            :     const servus::URI&amp; uri,
+<span class="lineNum">      50 </span>            :     const int morphologyIndex,
+<span class="lineNum">      51 </span>            :     Scene&amp; scene)
+<span class="lineNum">      52 </span>            : {
+<span class="lineNum">      53 </span>            :     float maxDistanceToSoma;
+<span class="lineNum">      54 </span><span class="lineNoCov">          0 :     return _importMorphology(</span>
+<span class="lineNum">      55 </span><span class="lineNoCov">          0 :         uri, morphologyIndex, Matrix4f(),</span>
+<span class="lineNum">      56 </span>            :         0, scene.getPrimitives(),
+<span class="lineNum">      57 </span><span class="lineNoCov">          0 :         scene.getWorldBounds(), 0, maxDistanceToSoma);</span>
+<a name="58"><span class="lineNum">      58 </span>            : }</a>
+<span class="lineNum">      59 </span>            : 
+<span class="lineNum">      60 </span><span class="lineCov">         34 : bool MorphologyLoader::_importMorphology(</span>
+<span class="lineNum">      61 </span>            :     const servus::URI&amp; source,
+<span class="lineNum">      62 </span>            :     const size_t morphologyIndex,
+<span class="lineNum">      63 </span>            :     const Matrix4f&amp; transformation,
+<span class="lineNum">      64 </span>            :     const SimulationInformation* simulationInformation,
+<span class="lineNum">      65 </span>            :     PrimitivesMap&amp; primitives,
+<span class="lineNum">      66 </span>            :     Boxf&amp; bounds,
+<span class="lineNum">      67 </span>            :     const size_t simulationOffset,
+<span class="lineNum">      68 </span>            :     float&amp; maxDistanceToSoma)
+<span class="lineNum">      69 </span>            : {
+<span class="lineNum">      70 </span><span class="lineCov">         34 :     maxDistanceToSoma = 0.f;</span>
+<span class="lineNum">      71 </span>            :     try
+<span class="lineNum">      72 </span>            :     {
+<span class="lineNum">      73 </span><span class="lineCov">         34 :         Vector3f translation = { 0.f, 0.f, 0.f };</span>
+<span class="lineNum">      74 </span>            : 
+<span class="lineNum">      75 </span><span class="lineCov">         74 :         brain::neuron::Morphology morphology( source, transformation );</span>
+<span class="lineNum">      76 </span><span class="lineCov">         80 :         brain::neuron::SectionTypes sectionTypes;</span>
+<span class="lineNum">      77 </span>            : 
+<span class="lineNum">      78 </span>            :         const MorphologyLayout&amp; layout =
+<span class="lineNum">      79 </span><span class="lineCov">         40 :             _geometryParameters.getMorphologyLayout();</span>
+<span class="lineNum">      80 </span>            : 
+<span class="lineNum">      81 </span><span class="lineCov">         40 :         if( layout.nbColumns != 0 )</span>
+<span class="lineNum">      82 </span>            :         {
+<span class="lineNum">      83 </span><span class="lineNoCov">          0 :             Boxf morphologyAABB;</span>
+<span class="lineNum">      84 </span><span class="lineNoCov">          0 :             const brain::Vector4fs&amp; points = morphology.getPoints();</span>
+<span class="lineNum">      85 </span><span class="lineNoCov">          0 :             for( Vector4f point: points )</span>
+<span class="lineNum">      86 </span>            :             {
+<span class="lineNum">      87 </span><span class="lineNoCov">          0 :                 const Vector3f p = { point.x(), point.y(), point.z() };</span>
+<span class="lineNum">      88 </span><span class="lineNoCov">          0 :                 morphologyAABB.merge( p );</span>
+<span class="lineNum">      89 </span>            :             }
+<span class="lineNum">      90 </span>            : 
+<span class="lineNum">      91 </span>            :             const Vector3f positionInGrid =
+<span class="lineNum">      92 </span>            :             {
+<span class="lineNum">      93 </span><span class="lineNoCov">          0 :                 -layout.horizontalSpacing * static_cast&lt; float &gt;(</span>
+<span class="lineNum">      94 </span><span class="lineNoCov">          0 :                     morphologyIndex % layout.nbColumns ),</span>
+<span class="lineNum">      95 </span><span class="lineNoCov">          0 :                 -layout.verticalSpacing * static_cast&lt; float &gt;(</span>
+<span class="lineNum">      96 </span><span class="lineNoCov">          0 :                     morphologyIndex / layout.nbColumns),</span>
+<span class="lineNum">      97 </span>            :                 0.f
+<span class="lineNum">      98 </span><span class="lineNoCov">          0 :             };</span>
+<span class="lineNum">      99 </span><span class="lineNoCov">          0 :             translation = positionInGrid - morphologyAABB.getCenter();</span>
+<span class="lineNum">     100 </span>            :         }
+<span class="lineNum">     101 </span>            : 
+<span class="lineNum">     102 </span>            :         const size_t morphologySectionTypes =
+<span class="lineNum">     103 </span><span class="lineCov">         40 :             _geometryParameters.getMorphologySectionTypes();</span>
+<span class="lineNum">     104 </span><span class="lineCov">         40 :         if( morphologySectionTypes &amp; MST_SOMA )</span>
+<span class="lineNum">     105 </span><span class="lineCov">         40 :             sectionTypes.push_back( brain::neuron::SectionType::soma );</span>
+<span class="lineNum">     106 </span><span class="lineCov">         40 :         if( morphologySectionTypes &amp; MST_AXON )</span>
+<span class="lineNum">     107 </span><span class="lineCov">         40 :             sectionTypes.push_back( brain::neuron::SectionType::axon );</span>
+<span class="lineNum">     108 </span><span class="lineCov">         40 :         if( morphologySectionTypes &amp; MST_DENDRITE )</span>
+<span class="lineNum">     109 </span><span class="lineCov">         40 :             sectionTypes.push_back( brain::neuron::SectionType::dendrite );</span>
+<span class="lineNum">     110 </span><span class="lineCov">         40 :         if( morphologySectionTypes &amp; MST_APICAL_DENDRITE )</span>
+<span class="lineNum">     111 </span><span class="lineCov">         40 :             sectionTypes.push_back( brain::neuron::SectionType::apicalDendrite );</span>
+<span class="lineNum">     112 </span>            : 
+<span class="lineNum">     113 </span>            :         const brain::neuron::Sections&amp; sections =
+<span class="lineNum">     114 </span><span class="lineCov">         80 :             morphology.getSections( sectionTypes );</span>
+<span class="lineNum">     115 </span>            : 
+<span class="lineNum">     116 </span><span class="lineCov">         40 :         size_t sectionId = 0;</span>
+<span class="lineNum">     117 </span>            : 
+<span class="lineNum">     118 </span><span class="lineCov">         40 :         float offset = 0.f;</span>
+<span class="lineNum">     119 </span><span class="lineCov">         40 :         if( simulationInformation )</span>
+<span class="lineNum">     120 </span><span class="lineNoCov">          0 :             offset = (*simulationInformation-&gt;compartmentOffsets)[sectionId];</span>
+<span class="lineNum">     121 </span>            :         else
+<span class="lineNum">     122 </span><span class="lineCov">         40 :             if( simulationOffset != 0 )</span>
+<span class="lineNum">     123 </span><span class="lineCov">         40 :                 offset = simulationOffset;</span>
+<span class="lineNum">     124 </span>            : 
+<span class="lineNum">     125 </span><span class="lineCov">         40 :         if( morphologySectionTypes &amp; MST_SOMA )</span>
+<span class="lineNum">     126 </span>            :         {
+<span class="lineNum">     127 </span>            :             // Soma
+<span class="lineNum">     128 </span><span class="lineCov">         72 :             const brain::neuron::Soma&amp; soma = morphology.getSoma();</span>
+<span class="lineNum">     129 </span>            :             const size_t material =
+<span class="lineNum">     130 </span><span class="lineCov">         40 :                 _material( morphologyIndex,</span>
+<span class="lineNum">     131 </span><span class="lineCov">         40 :                            size_t( brain::neuron::SectionType::soma ));</span>
+<span class="lineNum">     132 </span><span class="lineCov">         40 :             const Vector3f&amp; center = soma.getCentroid() + translation;</span>
+<span class="lineNum">     133 </span>            : 
+<span class="lineNum">     134 </span>            :             const float radius =
+<span class="lineNum">     135 </span><span class="lineCov">         80 :                 ( _geometryParameters.getRadiusCorrection() != 0.f ?</span>
+<span class="lineNum">     136 </span><span class="lineNoCov">          0 :                 _geometryParameters.getRadiusCorrection() :</span>
+<span class="lineNum">     137 </span><span class="lineCov">         40 :                 soma.getMeanRadius() *</span>
+<span class="lineNum">     138 </span><span class="lineCov">         80 :                     _geometryParameters.getRadiusMultiplier() );</span>
+<span class="lineNum">     139 </span><span class="lineCov">         74 :             primitives[material].push_back( SpherePtr(</span>
+<span class="lineNum">     140 </span><span class="lineCov">         80 :                 new Sphere( material, center, radius, 0.f, offset )));</span>
+<span class="lineNum">     141 </span><span class="lineCov">         32 :             bounds.merge( center );</span>
+<span class="lineNum">     142 </span>            :         }
+<span class="lineNum">     143 </span>            : 
+<span class="lineNum">     144 </span>            :         // Dendrites and axon
+<span class="lineNum">     145 </span><span class="lineCov">       3238 :         for( const auto&amp; section: sections )</span>
+<span class="lineNum">     146 </span>            :         {
+<span class="lineNum">     147 </span>            :             const size_t material =
+<span class="lineNum">     148 </span><span class="lineCov">       3194 :                 _material( morphologyIndex, size_t( section.getType( )));</span>
+<span class="lineNum">     149 </span><span class="lineCov">       6400 :             const Vector4fs&amp; samples = section.getSamples();</span>
+<span class="lineNum">     150 </span><span class="lineCov">       3196 :             if( samples.size() == 0 )</span>
+<span class="lineNum">     151 </span><span class="lineNoCov">          0 :                 continue;</span>
+<span class="lineNum">     152 </span>            : 
+<span class="lineNum">     153 </span><span class="lineCov">       3196 :             Vector4f previousSample = samples[0];</span>
+<span class="lineNum">     154 </span><span class="lineCov">       3198 :             size_t step = 1;</span>
+<span class="lineNum">     155 </span><span class="lineCov">       3198 :             switch( _geometryParameters.getGeometryQuality() )</span>
+<span class="lineNum">     156 </span>            :             {
+<span class="lineNum">     157 </span>            :                 case GeometryQuality::low:
+<span class="lineNum">     158 </span><span class="lineNoCov">          0 :                     step = samples.size()-1;</span>
+<span class="lineNum">     159 </span><span class="lineNoCov">          0 :                     break;</span>
+<span class="lineNum">     160 </span>            :                 case GeometryQuality::medium:
+<span class="lineNum">     161 </span><span class="lineNoCov">          0 :                     step = samples.size()/2;</span>
+<span class="lineNum">     162 </span><span class="lineNoCov">          0 :                     step = ( step == 0 ) ? 1 : step;</span>
+<span class="lineNum">     163 </span><span class="lineNoCov">          0 :                     break;</span>
+<span class="lineNum">     164 </span>            :                 default:
+<span class="lineNum">     165 </span><span class="lineCov">       3198 :                     step = 1;</span>
+<span class="lineNum">     166 </span>            :             }
+<span class="lineNum">     167 </span>            : 
+<span class="lineNum">     168 </span><span class="lineCov">       3198 :             const float distanceToSoma = section.getDistanceToSoma();</span>
+<span class="lineNum">     169 </span><span class="lineCov">       6384 :             const floats&amp; distancesToSoma = section.getSampleDistancesToSoma();</span>
+<span class="lineNum">     170 </span>            : 
+<span class="lineNum">     171 </span><span class="lineCov">       4222 :             float segmentStep = 0.f;</span>
+<span class="lineNum">     172 </span><span class="lineCov">       4222 :             if( simulationInformation )</span>
+<span class="lineNum">     173 </span>            :             {
+<span class="lineNum">     174 </span><span class="lineNoCov">          0 :                 const auto&amp; counts = *simulationInformation-&gt;compartmentCounts;</span>
+<span class="lineNum">     175 </span>            :                 // Number of compartments usually differs from number of samples
+<span class="lineNum">     176 </span><span class="lineNoCov">          0 :                 if( samples.size() != 0 &amp;&amp; counts[sectionId] &gt; 1 )</span>
+<span class="lineNum">     177 </span><span class="lineNoCov">          0 :                     segmentStep = counts[sectionId] / float(samples.size());</span>
+<span class="lineNum">     178 </span>            :             }
+<span class="lineNum">     179 </span>            : 
+<span class="lineNum">     180 </span><span class="lineCov">       4222 :             bool done = false;</span>
+<span class="lineNum">     181 </span><span class="lineCov">      88206 :             for( size_t i = step; !done &amp;&amp; i &lt; samples.size() + step; i += step )</span>
+<span class="lineNum">     182 </span>            :             {
+<span class="lineNum">     183 </span><span class="lineCov">      85044 :                 if( i &gt;= samples.size( ))</span>
+<span class="lineNum">     184 </span>            :                 {
+<span class="lineNum">     185 </span><span class="lineCov">       3196 :                     i = samples.size() - 1;</span>
+<span class="lineNum">     186 </span><span class="lineCov">       3196 :                     done = true;</span>
+<span class="lineNum">     187 </span>            :                 }
+<span class="lineNum">     188 </span>            : 
+<span class="lineNum">     189 </span><span class="lineCov">      84812 :                 const float distance = distanceToSoma + distancesToSoma[i];</span>
+<span class="lineNum">     190 </span>            : 
+<span class="lineNum">     191 </span><span class="lineCov">      84806 :                 maxDistanceToSoma = std::max(maxDistanceToSoma, distance);</span>
+<span class="lineNum">     192 </span>            : 
+<span class="lineNum">     193 </span><span class="lineCov">      84662 :                 if( simulationInformation )</span>
+<span class="lineNum">     194 </span><span class="lineNoCov">          0 :                     offset = (*simulationInformation-&gt;compartmentOffsets)[sectionId] + float(i)*segmentStep;</span>
+<span class="lineNum">     195 </span>            :                 else
+<span class="lineNum">     196 </span><span class="lineCov">      84662 :                     if( simulationOffset != 0 )</span>
+<span class="lineNum">     197 </span><span class="lineCov">      84762 :                         offset = simulationOffset + distance;</span>
+<span class="lineNum">     198 </span>            : 
+<span class="lineNum">     199 </span><span class="lineCov">      84662 :                 Vector4f sample =  samples[i];</span>
+<span class="lineNum">     200 </span>            :                 const float previousRadius =
+<span class="lineNum">     201 </span><span class="lineCov">     168218 :                     (_geometryParameters.getRadiusCorrection() != 0.f ?</span>
+<span class="lineNum">     202 </span><span class="lineNoCov">          0 :                     _geometryParameters.getRadiusCorrection() :</span>
+<span class="lineNum">     203 </span><span class="lineCov">      84702 :                     samples[ i - step ].w() * 0.5f *</span>
+<span class="lineNum">     204 </span><span class="lineCov">     167992 :                         _geometryParameters.getRadiusMultiplier( ));</span>
+<span class="lineNum">     205 </span>            : 
+<span class="lineNum">     206 </span><span class="lineCov">      83604 :                 Vector3f position( sample.x(), sample.y(), sample.z());</span>
+<span class="lineNum">     207 </span><span class="lineCov">      84490 :                 position += translation;</span>
+<span class="lineNum">     208 </span>            :                 Vector3f target(
+<span class="lineNum">     209 </span><span class="lineCov">      81128 :                     previousSample.x(), previousSample.y(), previousSample.z());</span>
+<span class="lineNum">     210 </span><span class="lineCov">      82056 :                 target += translation;</span>
+<span class="lineNum">     211 </span>            :                 const float radius =
+<span class="lineNum">     212 </span><span class="lineCov">     161326 :                     (_geometryParameters.getRadiusCorrection() != 0.f ?</span>
+<span class="lineNum">     213 </span><span class="lineNoCov">          0 :                     _geometryParameters.getRadiusCorrection() :</span>
+<span class="lineNum">     214 </span><span class="lineCov">      81042 :                     samples[ i ].w() * 0.5f *</span>
+<span class="lineNum">     215 </span><span class="lineCov">     161864 :                          _geometryParameters.getRadiusMultiplier( ));</span>
+<span class="lineNum">     216 </span>            : 
+<span class="lineNum">     217 </span><span class="lineCov">      80886 :                 if( radius &gt; 0.f )</span>
+<span class="lineNum">     218 </span><span class="lineCov">     165876 :                     primitives[material].push_back( SpherePtr(</span>
+<span class="lineNum">     219 </span>            :                         new Sphere( material, position,
+<span class="lineNum">     220 </span><span class="lineCov">     159966 :                             radius, distance, offset )));</span>
+<span class="lineNum">     221 </span>            : 
+<span class="lineNum">     222 </span><span class="lineCov">      80146 :                 bounds.merge( position );</span>
+<span class="lineNum">     223 </span><span class="lineCov">      82732 :                 if( position != target &amp;&amp; radius &gt; 0.f &amp;&amp; previousRadius &gt; 0.f )</span>
+<span class="lineNum">     224 </span>            :                 {
+<span class="lineNum">     225 </span><span class="lineCov">      81610 :                     if( radius == previousRadius )</span>
+<span class="lineNum">     226 </span><span class="lineCov">     147576 :                         primitives[material].push_back( CylinderPtr(</span>
+<span class="lineNum">     227 </span>            :                             new Cylinder( material, position, target,
+<span class="lineNum">     228 </span><span class="lineCov">     144012 :                                 radius, distance, offset )));</span>
+<span class="lineNum">     229 </span>            :                     else
+<span class="lineNum">     230 </span><span class="lineCov">      16544 :                         primitives[material].push_back( ConePtr(</span>
+<span class="lineNum">     231 </span>            :                             new Cone( material, position, target,
+<span class="lineNum">     232 </span><span class="lineCov">      16492 :                                 radius, previousRadius, distance, offset )));</span>
+<span class="lineNum">     233 </span><span class="lineCov">      79678 :                     bounds.merge( target );</span>
+<span class="lineNum">     234 </span>            :                 }
+<span class="lineNum">     235 </span><span class="lineCov">      82980 :                 previousSample = sample;</span>
+<span class="lineNum">     236 </span>            :             }
+<span class="lineNum">     237 </span><span class="lineCov">       3188 :             ++sectionId;</span>
+<span class="lineNum">     238 </span>            :         }
+<span class="lineNum">     239 </span>            :     }
+<span class="lineNum">     240 </span><span class="lineNoCov">          0 :     catch( const std::runtime_error&amp; e )</span>
+<span class="lineNum">     241 </span>            :     {
+<span class="lineNum">     242 </span><span class="lineNoCov">          0 :         BRAYNS_ERROR &lt;&lt; e.what() &lt;&lt; std::endl;</span>
+<span class="lineNum">     243 </span><span class="lineNoCov">          0 :         return false;</span>
+<span class="lineNum">     244 </span>            :     }
+<span class="lineNum">     245 </span><span class="lineCov">         40 :     return true;</span>
+<a name="246"><span class="lineNum">     246 </span>            : }</a>
+<span class="lineNum">     247 </span>            : 
+<span class="lineNum">     248 </span><span class="lineCov">          2 : bool MorphologyLoader::importCircuit(</span>
+<span class="lineNum">     249 </span>            :     const servus::URI&amp; circuitConfig,
+<span class="lineNum">     250 </span>            :     const std::string&amp; target,
+<span class="lineNum">     251 </span>            :     Scene&amp; scene)
+<span class="lineNum">     252 </span>            : {
+<span class="lineNum">     253 </span><span class="lineCov">          2 :     const std::string&amp; filename = circuitConfig.getPath();</span>
+<span class="lineNum">     254 </span><span class="lineCov">          4 :     const brion::BlueConfig bc( filename );</span>
+<span class="lineNum">     255 </span><span class="lineCov">          4 :     const brain::Circuit circuit( bc );</span>
+<span class="lineNum">     256 </span>            :     const brain::GIDSet&amp; gids =
+<span class="lineNum">     257 </span><span class="lineCov">          4 :         ( target.empty() ? circuit.getGIDs() : circuit.getGIDs( target ));</span>
+<span class="lineNum">     258 </span><span class="lineCov">          2 :     if( gids.empty() )</span>
+<span class="lineNum">     259 </span>            :     {
+<span class="lineNum">     260 </span><span class="lineNoCov">          0 :         BRAYNS_ERROR &lt;&lt; &quot;Circuit does not contain any cells&quot; &lt;&lt; std::endl;</span>
+<span class="lineNum">     261 </span><span class="lineNoCov">          0 :         return false;</span>
+<span class="lineNum">     262 </span>            :     }
+<span class="lineNum">     263 </span><span class="lineCov">          4 :     const Matrix4fs&amp; transforms = circuit.getTransforms( gids );</span>
+<span class="lineNum">     264 </span>            : 
+<span class="lineNum">     265 </span><span class="lineCov">          4 :     const brain::URIs&amp; uris = circuit.getMorphologyURIs( gids );</span>
+<span class="lineNum">     266 </span>            : 
+<span class="lineNum">     267 </span><span class="lineCov">          2 :     BRAYNS_INFO &lt;&lt; &quot;Loading &quot; &lt;&lt; uris.size() &lt;&lt; &quot; cells&quot; &lt;&lt; std::endl;</span>
+<span class="lineNum">     268 </span>            : 
+<span class="lineNum">     269 </span><span class="lineCov">          4 :     std::map&lt; size_t, float &gt; morphologyOffsets;</span>
+<span class="lineNum">     270 </span>            : 
+<span class="lineNum">     271 </span><span class="lineCov">          2 :     size_t simulationOffset = 1;</span>
+<a name="272"><span class="lineNum">     272 </span><span class="lineCov">          2 :     size_t simulatedCells = 0;</span></a>
+<span class="lineNum">     273 </span><span class="lineCov">          2 :     size_t progress = 0;</span>
+<span class="lineNum">     274 </span><span class="lineCov">         10 :     #pragma omp parallel</span>
+<span class="lineNum">     275 </span>            :     {
+<span class="lineNum">     276 </span><span class="lineCov">         20 :         PrimitivesMap private_primitives;</span>
+<span class="lineNum">     277 </span><span class="lineCov">          6 :         #pragma omp for nowait</span>
+<span class="lineNum">     278 </span>            :         for( size_t i = 0; i &lt; uris.size(); ++i )
+<span class="lineNum">     279 </span>            :         {
+<span class="lineNum">     280 </span><span class="lineCov">         38 :             const auto&amp; uri = uris[i];</span>
+<span class="lineNum">     281 </span><span class="lineCov">         36 :             float maxDistanceToSoma = 0.f;</span>
+<span class="lineNum">     282 </span><span class="lineCov">         74 :             if( _importMorphology(</span>
+<span class="lineNum">     283 </span><span class="lineCov">         36 :                 uri, i, transforms[i], 0,</span>
+<span class="lineNum">     284 </span>            :                 private_primitives, scene.getWorldBounds(),
+<span class="lineNum">     285 </span>            :                 simulationOffset, maxDistanceToSoma))
+<span class="lineNum">     286 </span>            :             {
+<span class="lineNum">     287 </span><span class="lineCov">         40 :                 morphologyOffsets[simulatedCells] = maxDistanceToSoma;</span>
+<span class="lineNum">     288 </span><span class="lineCov">         40 :                 simulationOffset += maxDistanceToSoma;</span>
+<span class="lineNum">     289 </span>            :             }
+<span class="lineNum">     290 </span>            : 
+<span class="lineNum">     291 </span><span class="lineCov">         80 :             BRAYNS_PROGRESS( progress, uris.size() );</span>
+<span class="lineNum">     292 </span>            :             #pragma omp atomic
+<span class="lineNum">     293 </span><span class="lineCov">         40 :             ++progress;</span>
+<span class="lineNum">     294 </span>            :         }
+<span class="lineNum">     295 </span><span class="lineCov">         22 :         #pragma omp critical</span>
+<span class="lineNum">     296 </span><span class="lineCov">         34 :         for( const auto&amp; p: private_primitives )</span>
+<span class="lineNum">     297 </span>            :         {
+<span class="lineNum">     298 </span><span class="lineCov">         12 :             const size_t material = p.first;</span>
+<span class="lineNum">     299 </span><span class="lineCov">         12 :             scene.getPrimitives()[material].insert(</span>
+<span class="lineNum">     300 </span><span class="lineCov">         24 :                 scene.getPrimitives()[material].end(),</span>
+<span class="lineNum">     301 </span><span class="lineCov">         12 :                 private_primitives[material].begin(),</span>
+<span class="lineNum">     302 </span><span class="lineCov">         48 :                 private_primitives[material].end());</span>
+<span class="lineNum">     303 </span>            :         }
+<span class="lineNum">     304 </span>            :     }
+<span class="lineNum">     305 </span>            : 
+<span class="lineNum">     306 </span><span class="lineCov">          2 :     return true;</span>
+<a name="307"><span class="lineNum">     307 </span>            : }</a>
+<span class="lineNum">     308 </span>            : 
+<span class="lineNum">     309 </span><span class="lineNoCov">          0 : bool MorphologyLoader::importCircuit(</span>
+<span class="lineNum">     310 </span>            :     const servus::URI&amp; circuitConfig,
+<span class="lineNum">     311 </span>            :     const std::string&amp; target,
+<span class="lineNum">     312 </span>            :     const std::string&amp; report,
+<span class="lineNum">     313 </span>            :     Scene&amp; scene)
+<span class="lineNum">     314 </span>            : {
+<span class="lineNum">     315 </span><span class="lineNoCov">          0 :     const std::string&amp; filename = circuitConfig.getPath();</span>
+<span class="lineNum">     316 </span><span class="lineNoCov">          0 :     const brion::BlueConfig bc( filename );</span>
+<span class="lineNum">     317 </span><span class="lineNoCov">          0 :     const brain::Circuit circuit( bc );</span>
+<span class="lineNum">     318 </span>            :     const brain::GIDSet&amp; gids =
+<span class="lineNum">     319 </span><span class="lineNoCov">          0 :         ( target.empty() ? circuit.getGIDs() : circuit.getGIDs( target ));</span>
+<span class="lineNum">     320 </span><span class="lineNoCov">          0 :     if( gids.empty() )</span>
+<span class="lineNum">     321 </span>            :     {
+<span class="lineNum">     322 </span><span class="lineNoCov">          0 :         BRAYNS_ERROR &lt;&lt; &quot;Circuit does not contain any cells&quot; &lt;&lt; std::endl;</span>
+<span class="lineNum">     323 </span><span class="lineNoCov">          0 :         return false;</span>
+<span class="lineNum">     324 </span>            :     }
+<span class="lineNum">     325 </span><span class="lineNoCov">          0 :     const Matrix4fs&amp; transforms = circuit.getTransforms( gids );</span>
+<span class="lineNum">     326 </span>            : 
+<span class="lineNum">     327 </span><span class="lineNoCov">          0 :     const brain::URIs&amp; uris = circuit.getMorphologyURIs( gids );</span>
+<span class="lineNum">     328 </span>            : 
+<span class="lineNum">     329 </span>            :     // Load simulation information from compartment reports
+<span class="lineNum">     330 </span>            :     const brion::CompartmentReport compartmentReport(
+<span class="lineNum">     331 </span><span class="lineNoCov">          0 :         brion::URI( bc.getReportSource( report ).getPath( )), brion::MODE_READ,</span>
+<span class="lineNum">     332 </span><span class="lineNoCov">          0 :                     gids );</span>
+<span class="lineNum">     333 </span>            : 
+<span class="lineNum">     334 </span>            :     const brion::CompartmentCounts&amp; compartmentCounts =
+<span class="lineNum">     335 </span><span class="lineNoCov">          0 :         compartmentReport.getCompartmentCounts();</span>
+<span class="lineNum">     336 </span>            : 
+<span class="lineNum">     337 </span>            :     const brion::SectionOffsets&amp; compartmentOffsets =
+<span class="lineNum">     338 </span><span class="lineNoCov">          0 :         compartmentReport.getOffsets();</span>
+<span class="lineNum">     339 </span>            : 
+<span class="lineNum">     340 </span><span class="lineNoCov">          0 :     brain::URIs cr_uris;</span>
+<span class="lineNum">     341 </span><span class="lineNoCov">          0 :     const brain::GIDSet&amp; cr_gids = compartmentReport.getGIDs();</span>
+<span class="lineNum">     342 </span>            : 
+<span class="lineNum">     343 </span><span class="lineNoCov">          0 :     BRAYNS_INFO &lt;&lt; &quot;Loading &quot; &lt;&lt; cr_gids.size()</span>
+<span class="lineNum">     344 </span><span class="lineNoCov">          0 :                 &lt;&lt; &quot; simulated cells&quot; &lt;&lt; std::endl;</span>
+<span class="lineNum">     345 </span><span class="lineNoCov">          0 :     for( const auto cr_gid: cr_gids)</span>
+<span class="lineNum">     346 </span>            :     {
+<span class="lineNum">     347 </span><span class="lineNoCov">          0 :         auto it = std::find( gids.begin(), gids.end(), cr_gid );</span>
+<span class="lineNum">     348 </span><span class="lineNoCov">          0 :         auto index = std::distance( gids.begin(), it );</span>
+<span class="lineNum">     349 </span><span class="lineNoCov">          0 :         cr_uris.push_back( uris[ index ] );</span>
+<span class="lineNum">     350 </span>            :     }
+<a name="351"><span class="lineNum">     351 </span>            : </a>
+<span class="lineNum">     352 </span><span class="lineNoCov">          0 :     size_t progress = 0;</span>
+<span class="lineNum">     353 </span><span class="lineNoCov">          0 :     #pragma omp parallel</span>
+<span class="lineNum">     354 </span>            :     {
+<span class="lineNum">     355 </span><span class="lineNoCov">          0 :         PrimitivesMap private_primitives;</span>
+<span class="lineNum">     356 </span><span class="lineNoCov">          0 :         #pragma omp for nowait</span>
+<span class="lineNum">     357 </span><span class="lineNoCov">          0 :         for( size_t i = 0; i &lt; cr_uris.size(); ++i )</span>
+<span class="lineNum">     358 </span>            :         {
+<span class="lineNum">     359 </span><span class="lineNoCov">          0 :             const auto&amp; uri = cr_uris[i];</span>
+<span class="lineNum">     360 </span>            :             const SimulationInformation simulationInformation =
+<span class="lineNum">     361 </span>            :             {
+<span class="lineNum">     362 </span><span class="lineNoCov">          0 :                 &amp;compartmentCounts[i],</span>
+<span class="lineNum">     363 </span><span class="lineNoCov">          0 :                 &amp;compartmentOffsets[i]</span>
+<span class="lineNum">     364 </span><span class="lineNoCov">          0 :             };</span>
+<span class="lineNum">     365 </span>            : 
+<span class="lineNum">     366 </span>            :             float maxDistanceToSoma;
+<span class="lineNum">     367 </span><span class="lineNoCov">          0 :             _importMorphology(</span>
+<span class="lineNum">     368 </span><span class="lineNoCov">          0 :                 uri, i, transforms[i], &amp;simulationInformation,</span>
+<span class="lineNum">     369 </span>            :                 private_primitives, scene.getWorldBounds(),
+<span class="lineNum">     370 </span><span class="lineNoCov">          0 :                 0, maxDistanceToSoma);</span>
+<span class="lineNum">     371 </span>            : 
+<span class="lineNum">     372 </span><span class="lineNoCov">          0 :             BRAYNS_PROGRESS( progress, cr_uris.size() );</span>
+<span class="lineNum">     373 </span>            :             #pragma omp atomic
+<span class="lineNum">     374 </span><span class="lineNoCov">          0 :             ++progress;</span>
+<span class="lineNum">     375 </span>            :         }
+<span class="lineNum">     376 </span><span class="lineNoCov">          0 :         #pragma omp critical</span>
+<span class="lineNum">     377 </span><span class="lineNoCov">          0 :         for( const auto&amp; p: private_primitives )</span>
+<span class="lineNum">     378 </span>            :         {
+<span class="lineNum">     379 </span><span class="lineNoCov">          0 :             const size_t material = p.first;</span>
+<span class="lineNum">     380 </span><span class="lineNoCov">          0 :             scene.getPrimitives()[material].insert(</span>
+<span class="lineNum">     381 </span><span class="lineNoCov">          0 :                 scene.getPrimitives()[material].end(),</span>
+<span class="lineNum">     382 </span><span class="lineNoCov">          0 :                 private_primitives[material].begin(),</span>
+<span class="lineNum">     383 </span><span class="lineNoCov">          0 :                 private_primitives[material].end());</span>
+<span class="lineNum">     384 </span>            :         }
+<span class="lineNum">     385 </span>            :     }
+<span class="lineNum">     386 </span>            : 
+<span class="lineNum">     387 </span>            :     size_t nonSimulatedCells =
+<span class="lineNum">     388 </span><span class="lineNoCov">          0 :         _geometryParameters.getNonSimulatedCells();</span>
+<span class="lineNum">     389 </span><span class="lineNoCov">          0 :     if( nonSimulatedCells != 0 )</span>
+<span class="lineNum">     390 </span>            :     {
+<span class="lineNum">     391 </span>            :         // Non simulated cells
+<span class="lineNum">     392 </span><span class="lineNoCov">          0 :         const brain::GIDSet&amp; allGids = circuit.getGIDs();</span>
+<span class="lineNum">     393 </span><span class="lineNoCov">          0 :         const brain::URIs&amp; allUris = circuit.getMorphologyURIs( allGids );</span>
+<span class="lineNum">     394 </span><span class="lineNoCov">          0 :         const Matrix4fs&amp; allTransforms = circuit.getTransforms( allGids );</span>
+<span class="lineNum">     395 </span>            : 
+<span class="lineNum">     396 </span><span class="lineNoCov">          0 :         cr_uris.clear();</span>
+<span class="lineNum">     397 </span><span class="lineNoCov">          0 :         size_t index = 0;</span>
+<span class="lineNum">     398 </span><span class="lineNoCov">          0 :         for( const auto gid: allGids)</span>
+<span class="lineNum">     399 </span>            :         {
+<span class="lineNum">     400 </span><span class="lineNoCov">          0 :             auto it = std::find( cr_gids.begin(), cr_gids.end(), gid );</span>
+<span class="lineNum">     401 </span><span class="lineNoCov">          0 :             if( it == cr_gids.end() )</span>
+<span class="lineNum">     402 </span><span class="lineNoCov">          0 :                 cr_uris.push_back( allUris[ index ] );</span>
+<span class="lineNum">     403 </span><span class="lineNoCov">          0 :             ++index;</span>
+<span class="lineNum">     404 </span>            :         }
+<span class="lineNum">     405 </span>            : 
+<span class="lineNum">     406 </span><span class="lineNoCov">          0 :         if( cr_uris.size() &lt; nonSimulatedCells )</span>
+<span class="lineNum">     407 </span><span class="lineNoCov">          0 :             nonSimulatedCells = cr_uris.size();</span>
+<span class="lineNum">     408 </span>            : 
+<span class="lineNum">     409 </span><span class="lineNoCov">          0 :         BRAYNS_INFO &lt;&lt; &quot;Loading &quot; &lt;&lt; nonSimulatedCells</span>
+<span class="lineNum">     410 </span><span class="lineNoCov">          0 :                     &lt;&lt; &quot; non-simulated cells&quot; &lt;&lt; std::endl;</span>
+<a name="411"><span class="lineNum">     411 </span>            : </a>
+<span class="lineNum">     412 </span><span class="lineNoCov">          0 :         progress = 0;</span>
+<span class="lineNum">     413 </span><span class="lineNoCov">          0 :         #pragma omp parallel</span>
+<span class="lineNum">     414 </span>            :         {
+<span class="lineNum">     415 </span><span class="lineNoCov">          0 :             PrimitivesMap private_primitives;</span>
+<span class="lineNum">     416 </span><span class="lineNoCov">          0 :             #pragma omp for nowait</span>
+<span class="lineNum">     417 </span>            :             for( size_t i = 0; i &lt; nonSimulatedCells; ++i )
+<span class="lineNum">     418 </span>            :             {
+<span class="lineNum">     419 </span>            :                 float maxDistanceToSoma;
+<span class="lineNum">     420 </span><span class="lineNoCov">          0 :                 const auto&amp; uri = allUris[i];</span>
+<span class="lineNum">     421 </span>            : 
+<span class="lineNum">     422 </span><span class="lineNoCov">          0 :                 _importMorphology(</span>
+<span class="lineNum">     423 </span><span class="lineNoCov">          0 :                     uri, i, allTransforms[i], 0,</span>
+<span class="lineNum">     424 </span>            :                     private_primitives, scene.getWorldBounds(),
+<span class="lineNum">     425 </span><span class="lineNoCov">          0 :                     0, maxDistanceToSoma);</span>
+<span class="lineNum">     426 </span>            : 
+<span class="lineNum">     427 </span><span class="lineNoCov">          0 :                 BRAYNS_PROGRESS( progress, allUris.size() );</span>
+<span class="lineNum">     428 </span>            :                 #pragma omp atomic
+<span class="lineNum">     429 </span><span class="lineNoCov">          0 :                 ++progress;</span>
+<span class="lineNum">     430 </span>            :             }
+<span class="lineNum">     431 </span><span class="lineNoCov">          0 :             #pragma omp critical</span>
+<span class="lineNum">     432 </span><span class="lineNoCov">          0 :             for( const auto&amp; p: private_primitives )</span>
+<span class="lineNum">     433 </span>            :             {
+<span class="lineNum">     434 </span><span class="lineNoCov">          0 :                 const size_t material = p.first;</span>
+<span class="lineNum">     435 </span><span class="lineNoCov">          0 :                 scene.getPrimitives()[material].insert(</span>
+<span class="lineNum">     436 </span><span class="lineNoCov">          0 :                     scene.getPrimitives()[material].end(),</span>
+<span class="lineNum">     437 </span><span class="lineNoCov">          0 :                     private_primitives[material].begin(),</span>
+<span class="lineNum">     438 </span><span class="lineNoCov">          0 :                     private_primitives[material].end());</span>
+<span class="lineNum">     439 </span>            :             }
+<span class="lineNum">     440 </span>            :         }
+<span class="lineNum">     441 </span>            :     }
+<span class="lineNum">     442 </span><span class="lineNoCov">          0 :     return true;</span>
+<a name="443"><span class="lineNum">     443 </span>            : }</a>
+<span class="lineNum">     444 </span>            : 
+<span class="lineNum">     445 </span><span class="lineNoCov">          0 : bool MorphologyLoader::importSimulationData(</span>
+<span class="lineNum">     446 </span>            :     const servus::URI&amp; circuitConfig,
+<span class="lineNum">     447 </span>            :     const std::string&amp; target,
+<span class="lineNum">     448 </span>            :     const std::string&amp; report,
+<span class="lineNum">     449 </span>            :     Scene&amp; scene )
+<span class="lineNum">     450 </span>            : {
+<span class="lineNum">     451 </span><span class="lineNoCov">          0 :     const std::string&amp; filename = circuitConfig.getPath();</span>
+<span class="lineNum">     452 </span><span class="lineNoCov">          0 :     const brion::BlueConfig bc( filename );</span>
+<span class="lineNum">     453 </span><span class="lineNoCov">          0 :     const brain::Circuit circuit( bc );</span>
+<span class="lineNum">     454 </span>            :     const brain::GIDSet&amp; gids =
+<span class="lineNum">     455 </span><span class="lineNoCov">          0 :         ( target.empty() ? circuit.getGIDs() : circuit.getGIDs( target ));</span>
+<span class="lineNum">     456 </span><span class="lineNoCov">          0 :     if( gids.empty( ))</span>
+<span class="lineNum">     457 </span>            :     {
+<span class="lineNum">     458 </span><span class="lineNoCov">          0 :         BRAYNS_ERROR &lt;&lt; &quot;Circuit does not contain any cells&quot; &lt;&lt; std::endl;</span>
+<span class="lineNum">     459 </span><span class="lineNoCov">          0 :         return false;</span>
+<span class="lineNum">     460 </span>            :     }
+<span class="lineNum">     461 </span>            : 
+<span class="lineNum">     462 </span>            :     // Load simulation information from compartment reports
+<span class="lineNum">     463 </span>            :     brion::CompartmentReport compartmentReport(
+<span class="lineNum">     464 </span><span class="lineNoCov">          0 :         brion::URI( bc.getReportSource( report ).getPath( )), brion::MODE_READ, gids );</span>
+<span class="lineNum">     465 </span>            : 
+<span class="lineNum">     466 </span>            :     CircuitSimulationHandlerPtr simulationHandler(
+<span class="lineNum">     467 </span><span class="lineNoCov">          0 :         new CircuitSimulationHandler( _geometryParameters ));</span>
+<span class="lineNum">     468 </span><span class="lineNoCov">          0 :     scene.setSimulationHandler( simulationHandler );</span>
+<span class="lineNum">     469 </span><span class="lineNoCov">          0 :     const std::string&amp; cacheFile = _geometryParameters.getSimulationCacheFile();</span>
+<span class="lineNum">     470 </span><span class="lineNoCov">          0 :     if( simulationHandler-&gt;attachSimulationToCacheFile( cacheFile ))</span>
+<span class="lineNum">     471 </span>            :         // Cache already exists, no need to create it.
+<span class="lineNum">     472 </span><span class="lineNoCov">          0 :         return true;</span>
+<span class="lineNum">     473 </span>            : 
+<span class="lineNum">     474 </span><span class="lineNoCov">          0 :     BRAYNS_INFO &lt;&lt; &quot;Cache file does not exist, creating it&quot; &lt;&lt; std::endl;</span>
+<span class="lineNum">     475 </span><span class="lineNoCov">          0 :     std::ofstream file( cacheFile, std::ios::out | std::ios::binary );</span>
+<span class="lineNum">     476 </span>            : 
+<span class="lineNum">     477 </span><span class="lineNoCov">          0 :     if( !file.is_open() )</span>
+<span class="lineNum">     478 </span>            :     {
+<span class="lineNum">     479 </span><span class="lineNoCov">          0 :         BRAYNS_ERROR &lt;&lt; &quot;Failed to create cache file&quot; &lt;&lt; std::endl;</span>
+<span class="lineNum">     480 </span><span class="lineNoCov">          0 :         return false;</span>
+<span class="lineNum">     481 </span>            :     }
+<span class="lineNum">     482 </span>            : 
+<span class="lineNum">     483 </span>            :     // Load simulation information from compartment reports
+<span class="lineNum">     484 </span><span class="lineNoCov">          0 :     const float start = compartmentReport.getStartTime();</span>
+<span class="lineNum">     485 </span><span class="lineNoCov">          0 :     const float end = compartmentReport.getEndTime();</span>
+<span class="lineNum">     486 </span><span class="lineNoCov">          0 :     const float step = compartmentReport.getTimestep();</span>
+<span class="lineNum">     487 </span>            : 
+<span class="lineNum">     488 </span><span class="lineNoCov">          0 :     const float firstFrame = std::max( start, _geometryParameters.getStartSimulationTime() );</span>
+<span class="lineNum">     489 </span><span class="lineNoCov">          0 :     const float lastFrame = std::min( end, _geometryParameters.getEndSimulationTime() );</span>
+<span class="lineNum">     490 </span><span class="lineNoCov">          0 :     const uint64_t frameSize = compartmentReport.getFrameSize();</span>
+<span class="lineNum">     491 </span>            : 
+<span class="lineNum">     492 </span><span class="lineNoCov">          0 :     const uint64_t nbFrames = ( lastFrame - firstFrame ) / step;</span>
+<span class="lineNum">     493 </span>            : 
+<span class="lineNum">     494 </span><span class="lineNoCov">          0 :     BRAYNS_INFO &lt;&lt; &quot;Loading values from compartment report and saving them to cache&quot; &lt;&lt; std::endl;</span>
+<span class="lineNum">     495 </span>            : 
+<span class="lineNum">     496 </span>            :     // Write header
+<span class="lineNum">     497 </span><span class="lineNoCov">          0 :     simulationHandler-&gt;setNbFrames( nbFrames );</span>
+<span class="lineNum">     498 </span><span class="lineNoCov">          0 :     simulationHandler-&gt;setFrameSize( frameSize );</span>
+<span class="lineNum">     499 </span><span class="lineNoCov">          0 :     simulationHandler-&gt;writeHeader( file );</span>
+<span class="lineNum">     500 </span>            : 
+<span class="lineNum">     501 </span>            :     // Write body
+<span class="lineNum">     502 </span><span class="lineNoCov">          0 :     for( uint64_t frame = 0; frame &lt; nbFrames; ++frame )</span>
+<span class="lineNum">     503 </span>            :     {
+<span class="lineNum">     504 </span><span class="lineNoCov">          0 :         BRAYNS_PROGRESS( frame, nbFrames );</span>
+<span class="lineNum">     505 </span><span class="lineNoCov">          0 :         const float frameTime = firstFrame + step * frame;</span>
+<span class="lineNum">     506 </span><span class="lineNoCov">          0 :         const brion::floatsPtr&amp; valuesPtr = compartmentReport.loadFrame( frameTime );</span>
+<span class="lineNum">     507 </span><span class="lineNoCov">          0 :         const floats&amp; values = *valuesPtr;</span>
+<span class="lineNum">     508 </span><span class="lineNoCov">          0 :         simulationHandler-&gt;writeFrame( file, values );</span>
+<span class="lineNum">     509 </span>            :     }
+<span class="lineNum">     510 </span><span class="lineNoCov">          0 :     file.close();</span>
+<span class="lineNum">     511 </span>            : 
+<span class="lineNum">     512 </span><span class="lineNoCov">          0 :     BRAYNS_INFO &lt;&lt; &quot;----------------------------------------&quot; &lt;&lt; std::endl;</span>
+<span class="lineNum">     513 </span><span class="lineNoCov">          0 :     BRAYNS_INFO &lt;&lt; &quot;Cache file successfully created&quot; &lt;&lt; std::endl;</span>
+<span class="lineNum">     514 </span><span class="lineNoCov">          0 :     BRAYNS_INFO &lt;&lt; &quot;Number of frames: &quot; &lt;&lt; nbFrames &lt;&lt; std::endl;</span>
+<span class="lineNum">     515 </span><span class="lineNoCov">          0 :     BRAYNS_INFO &lt;&lt; &quot;Frame size      : &quot; &lt;&lt; frameSize &lt;&lt; std::endl;</span>
+<span class="lineNum">     516 </span><span class="lineNoCov">          0 :     BRAYNS_INFO &lt;&lt; &quot;----------------------------------------&quot; &lt;&lt; std::endl;</span>
+<span class="lineNum">     517 </span><span class="lineNoCov">          0 :     return true;</span>
+<span class="lineNum">     518 </span>            : }
+<span class="lineNum">     519 </span>            : 
+<span class="lineNum">     520 </span>            : #else
+<span class="lineNum">     521 </span>            : 
+<span class="lineNum">     522 </span>            : bool MorphologyLoader::importMorphology(
+<span class="lineNum">     523 </span>            :     const servus::URI&amp;, const int, Scene&amp; )
+<span class="lineNum">     524 </span>            : {
+<span class="lineNum">     525 </span>            :     BRAYNS_ERROR &lt;&lt; &quot;Brion is required to load morphologies&quot; &lt;&lt; std::endl;
+<span class="lineNum">     526 </span>            :     return false;
+<span class="lineNum">     527 </span>            : }
+<span class="lineNum">     528 </span>            : 
+<span class="lineNum">     529 </span>            : bool MorphologyLoader::importCircuit(
+<span class="lineNum">     530 </span>            :     const servus::URI&amp;, const std::string&amp;, Scene&amp; )
+<span class="lineNum">     531 </span>            : {
+<span class="lineNum">     532 </span>            :     BRAYNS_ERROR &lt;&lt; &quot;Brion is required to load circuits&quot; &lt;&lt; std::endl;
+<span class="lineNum">     533 </span>            :     return false;
+<span class="lineNum">     534 </span>            : }
+<span class="lineNum">     535 </span>            : 
+<span class="lineNum">     536 </span>            : bool MorphologyLoader::importCircuit(
+<span class="lineNum">     537 </span>            :     const servus::URI&amp;, const std::string&amp;, const std::string&amp;, Scene&amp; )
+<span class="lineNum">     538 </span>            : {
+<span class="lineNum">     539 </span>            :     BRAYNS_ERROR &lt;&lt; &quot;Brion is required to load circuits&quot; &lt;&lt; std::endl;
+<span class="lineNum">     540 </span>            :     return false;
+<span class="lineNum">     541 </span>            : }
+<span class="lineNum">     542 </span>            : 
+<span class="lineNum">     543 </span>            : bool MorphologyLoader::importSimulationData(
+<span class="lineNum">     544 </span>            :     const servus::URI&amp;, const std::string&amp;, const std::string&amp;, Scene&amp; )
+<span class="lineNum">     545 </span>            : {
+<span class="lineNum">     546 </span>            :     BRAYNS_ERROR &lt;&lt; &quot;Brion is required to load circuits&quot; &lt;&lt; std::endl;
+<span class="lineNum">     547 </span>            :     return false;
+<span class="lineNum">     548 </span>            : }
+<span class="lineNum">     549 </span>            : 
+<span class="lineNum">     550 </span>            : 
+<a name="551"><span class="lineNum">     551 </span>            : #endif</a>
+<span class="lineNum">     552 </span>            : 
+<span class="lineNum">     553 </span><span class="lineCov">       3240 : size_t MorphologyLoader::_material(</span>
+<span class="lineNum">     554 </span>            :     const size_t morphologyIndex,
+<span class="lineNum">     555 </span>            :     const size_t sectionType )
+<span class="lineNum">     556 </span>            : {
+<span class="lineNum">     557 </span>            :     size_t material;
+<span class="lineNum">     558 </span><span class="lineCov">       3240 :     switch( _geometryParameters.getColorScheme() )</span>
+<span class="lineNum">     559 </span>            :     {
+<span class="lineNum">     560 </span>            :     case ColorScheme::neuron_by_id:
+<span class="lineNum">     561 </span><span class="lineNoCov">          0 :         material = morphologyIndex % (NB_MAX_MATERIALS - NB_SYSTEM_MATERIALS);</span>
+<span class="lineNum">     562 </span><span class="lineNoCov">          0 :         break;</span>
+<span class="lineNum">     563 </span>            :     case ColorScheme::neuron_by_segment_type:
+<span class="lineNum">     564 </span><span class="lineNoCov">          0 :         material = sectionType % (NB_MAX_MATERIALS - NB_SYSTEM_MATERIALS);</span>
+<span class="lineNum">     565 </span><span class="lineNoCov">          0 :         break;</span>
+<span class="lineNum">     566 </span>            :     default:
+<span class="lineNum">     567 </span><span class="lineCov">       3240 :         material = 0;</span>
+<span class="lineNum">     568 </span>            :     }
+<span class="lineNum">     569 </span><span class="lineCov">       3240 :     return material;</span>
+<a name="570"><span class="lineNum">     570 </span>            : }</a>
+<span class="lineNum">     571 </span>            : 
+<span class="lineNum">     572 </span><span class="lineCov">         12 : }</span>
+</pre>
+      </td>
+    </tr>
+  </table>
+  <br>
+
+  <table width="100%" border=0 cellspacing=0 cellpadding=0>
+    <tr><td class="ruler"><img src="../../glass.png" width=3 height=3 alt=""></td></tr>
+    <tr><td class="versionInfo">Generated by: <a href="http://ltp.sourceforge.net/coverage/lcov.php" target="_parent">LCOV version 1.11</a></td></tr>
+  </table>
+  <br>
+
+</body>
+</html>

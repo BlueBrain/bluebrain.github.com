@@ -1,0 +1,645 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+
+<html lang="en">
+
+<head>
+  <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+  <title>LCOV - Brayns - brayns/common/scene/Scene.cpp</title>
+  <link rel="stylesheet" type="text/css" href="../../../gcov.css">
+</head>
+
+<body>
+
+  <table width="100%" border=0 cellspacing=0 cellpadding=0>
+    <tr><td class="title">LCOV - code coverage report</td></tr>
+    <tr><td class="ruler"><img src="../../../glass.png" width=3 height=3 alt=""></td></tr>
+
+    <tr>
+      <td width="100%">
+        <table cellpadding=1 border=0 width="100%">
+          <tr>
+            <td width="10%" class="headerItem">Current view:</td>
+            <td width="35%" class="headerValue"><a href="../../../index.html">top level</a> - <a href="index.html">brayns/common/scene</a> - Scene.cpp<span style="font-size: 80%;"> (source / <a href="Scene.cpp.func-sort-c.html">functions</a>)</span></td>
+            <td width="5%"></td>
+            <td width="15%"></td>
+            <td width="10%" class="headerCovTableHead">Hit</td>
+            <td width="10%" class="headerCovTableHead">Total</td>
+            <td width="15%" class="headerCovTableHead">Coverage</td>
+          </tr>
+          <tr>
+            <td class="headerItem">Test:</td>
+            <td class="headerValue">Brayns</td>
+            <td></td>
+            <td class="headerItem">Lines:</td>
+            <td class="headerCovTableEntry">113</td>
+            <td class="headerCovTableEntry">364</td>
+            <td class="headerCovTableEntryLo">31.0 %</td>
+          </tr>
+          <tr>
+            <td class="headerItem">Date:</td>
+            <td class="headerValue">2016-12-14 01:15:11</td>
+            <td></td>
+            <td class="headerItem">Functions:</td>
+            <td class="headerCovTableEntry">10</td>
+            <td class="headerCovTableEntry">17</td>
+            <td class="headerCovTableEntryMed">58.8 %</td>
+          </tr>
+          <tr><td><img src="../../../glass.png" width=3 height=3 alt=""></td></tr>
+        </table>
+      </td>
+    </tr>
+
+    <tr><td class="ruler"><img src="../../../glass.png" width=3 height=3 alt=""></td></tr>
+  </table>
+
+  <table cellpadding=0 cellspacing=0 border=0>
+    <tr>
+      <td><br></td>
+    </tr>
+    <tr>
+      <td>
+<pre class="sourceHeading">          Line data    Source code</pre>
+<pre class="source">
+<a name="1"><span class="lineNum">       1 </span>            : /* Copyright (c) 2015-2016, EPFL/Blue Brain Project</a>
+<span class="lineNum">       2 </span>            :  * All rights reserved. Do not distribute without permission.
+<span class="lineNum">       3 </span>            :  * Responsible Author: Cyrille Favreau &lt;cyrille.favreau@epfl.ch&gt;
+<span class="lineNum">       4 </span>            :  *
+<span class="lineNum">       5 </span>            :  * This file is part of Brayns &lt;https://github.com/BlueBrain/Brayns&gt;
+<span class="lineNum">       6 </span>            :  *
+<span class="lineNum">       7 </span>            :  * This library is free software; you can redistribute it and/or modify it under
+<span class="lineNum">       8 </span>            :  * the terms of the GNU Lesser General Public License version 3.0 as published
+<span class="lineNum">       9 </span>            :  * by the Free Software Foundation.
+<span class="lineNum">      10 </span>            :  *
+<span class="lineNum">      11 </span>            :  * This library is distributed in the hope that it will be useful, but WITHOUT
+<span class="lineNum">      12 </span>            :  * ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS
+<span class="lineNum">      13 </span>            :  * FOR A PARTICULAR PURPOSE.  See the GNU Lesser General Public License for more
+<span class="lineNum">      14 </span>            :  * details.
+<span class="lineNum">      15 </span>            :  *
+<span class="lineNum">      16 </span>            :  * You should have received a copy of the GNU Lesser General Public License
+<span class="lineNum">      17 </span>            :  * along with this library; if not, write to the Free Software Foundation, Inc.,
+<span class="lineNum">      18 </span>            :  * 51 Franklin Street, Fifth Floor, Boston, MA 02110-1301 USA.
+<span class="lineNum">      19 </span>            :  */
+<span class="lineNum">      20 </span>            : 
+<span class="lineNum">      21 </span>            : #include &quot;Scene.h&quot;
+<span class="lineNum">      22 </span>            : 
+<span class="lineNum">      23 </span>            : #include &lt;brayns/common/log.h&gt;
+<span class="lineNum">      24 </span>            : #include &lt;brayns/parameters/ParametersManager.h&gt;
+<span class="lineNum">      25 </span>            : #include &lt;brayns/common/material/Material.h&gt;
+<span class="lineNum">      26 </span>            : #include &lt;brayns/io/TransferFunctionLoader.h&gt;
+<span class="lineNum">      27 </span>            : #include &lt;brayns/io/NESTLoader.h&gt;
+<span class="lineNum">      28 </span>            : #include &lt;brayns/common/volume/VolumeHandler.h&gt;
+<span class="lineNum">      29 </span>            : 
+<span class="lineNum">      30 </span>            : #include &lt;servus/uri.h&gt;
+<span class="lineNum">      31 </span>            : 
+<span class="lineNum">      32 </span>            : #include &lt;boost/filesystem.hpp&gt;
+<span class="lineNum">      33 </span>            : 
+<span class="lineNum">      34 </span>            : namespace brayns
+<a name="35"><span class="lineNum">      35 </span>            : {</a>
+<span class="lineNum">      36 </span>            : 
+<span class="lineNum">      37 </span><span class="lineCov">         12 : Scene::Scene(</span>
+<span class="lineNum">      38 </span>            :     Renderers renderers,
+<span class="lineNum">      39 </span><span class="lineCov">         12 :     ParametersManager&amp; parametersManager )</span>
+<span class="lineNum">      40 </span>            :     : _parametersManager( parametersManager )
+<span class="lineNum">      41 </span>            :     , _renderers( renderers )
+<span class="lineNum">      42 </span>            :     , _volumeHandler( 0 )
+<span class="lineNum">      43 </span><span class="lineCov">         12 :     , _simulationHandler( 0 )</span>
+<span class="lineNum">      44 </span>            : {
+<a name="45"><span class="lineNum">      45 </span><span class="lineCov">         12 : }</span></a>
+<span class="lineNum">      46 </span>            : 
+<span class="lineNum">      47 </span><span class="lineNoCov">          0 : Scene::~Scene( )</span>
+<span class="lineNum">      48 </span>            : {
+<a name="49"><span class="lineNum">      49 </span><span class="lineNoCov">          0 : }</span></a>
+<span class="lineNum">      50 </span>            : 
+<span class="lineNum">      51 </span><span class="lineNoCov">          0 : void Scene::reset( )</span>
+<span class="lineNum">      52 </span>            : {
+<span class="lineNum">      53 </span><span class="lineNoCov">          0 :     _primitives.clear( );</span>
+<span class="lineNum">      54 </span><span class="lineNoCov">          0 :     _trianglesMeshes.clear( );</span>
+<span class="lineNum">      55 </span><span class="lineNoCov">          0 :     _bounds.reset();</span>
+<a name="56"><span class="lineNum">      56 </span><span class="lineNoCov">          0 : }</span></a>
+<span class="lineNum">      57 </span>            : 
+<span class="lineNum">      58 </span><span class="lineCov">         12 : void Scene::setMaterials(</span>
+<span class="lineNum">      59 </span>            :     const MaterialType materialType,
+<span class="lineNum">      60 </span>            :     const size_t nbMaterials )
+<span class="lineNum">      61 </span>            : {
+<span class="lineNum">      62 </span><span class="lineCov">         12 :     _materials.clear( );</span>
+<span class="lineNum">      63 </span><span class="lineCov">       2412 :     for( size_t i = 0; i &lt; nbMaterials; ++i )</span>
+<span class="lineNum">      64 </span>            :     {
+<span class="lineNum">      65 </span><span class="lineCov">       4800 :         MaterialPtr material( new Material );</span>
+<span class="lineNum">      66 </span><span class="lineCov">       2400 :         material-&gt;setSpecularColor( Vector3f( 0.f, 0.f, 0.f ));</span>
+<span class="lineNum">      67 </span>            : 
+<span class="lineNum">      68 </span>            :         // Special materials ( skybox, etc )
+<span class="lineNum">      69 </span><span class="lineCov">       2400 :         switch( i )</span>
+<span class="lineNum">      70 </span>            :         {
+<span class="lineNum">      71 </span>            :             case MATERIAL_BOUNDING_BOX:
+<span class="lineNum">      72 </span><span class="lineCov">         12 :                 material-&gt;setColor( Vector3f( 1.f, 1.f, 1.f ));</span>
+<span class="lineNum">      73 </span><span class="lineCov">         12 :                 material-&gt;setEmission( 1.f );</span>
+<span class="lineNum">      74 </span><span class="lineCov">         12 :                 break;</span>
+<span class="lineNum">      75 </span>            :             case MATERIAL_INVISIBLE:
+<span class="lineNum">      76 </span><span class="lineCov">         12 :                 material-&gt;setOpacity( 0.f );</span>
+<span class="lineNum">      77 </span><span class="lineCov">         12 :                 material-&gt;setRefractionIndex( 1.f );</span>
+<span class="lineNum">      78 </span><span class="lineCov">         12 :                 material-&gt;setColor( Vector3f( 1.f, 1.f, 1.f ));</span>
+<span class="lineNum">      79 </span><span class="lineCov">         12 :                 material-&gt;setSpecularColor( Vector3f( 0.f, 0.f, 0.f ));</span>
+<span class="lineNum">      80 </span><span class="lineCov">         12 :                 break;</span>
+<span class="lineNum">      81 </span>            :             default:
+<span class="lineNum">      82 </span><span class="lineCov">       2376 :                 break;</span>
+<span class="lineNum">      83 </span>            :         }
+<span class="lineNum">      84 </span>            : 
+<span class="lineNum">      85 </span><span class="lineCov">       2400 :         switch( materialType )</span>
+<span class="lineNum">      86 </span>            :         {
+<span class="lineNum">      87 </span>            :         case MT_DEFAULT:
+<span class="lineNum">      88 </span><span class="lineCov">       2400 :             switch( i )</span>
+<span class="lineNum">      89 </span>            :             {
+<span class="lineNum">      90 </span>            :                 case 1: // Soma
+<span class="lineNum">      91 </span><span class="lineCov">         12 :                     material-&gt;setColor( Vector3f( 0.9f, 0.9f, 0.9f ));</span>
+<span class="lineNum">      92 </span><span class="lineCov">         12 :                     break;</span>
+<span class="lineNum">      93 </span>            :                 case 2: // Axon
+<span class="lineNum">      94 </span><span class="lineCov">         12 :                     material-&gt;setColor( Vector3f( 0.2f, 0.2f, 0.8f ));</span>
+<span class="lineNum">      95 </span><span class="lineCov">         12 :                     break;</span>
+<span class="lineNum">      96 </span>            :                 case 3: // Dendrite
+<span class="lineNum">      97 </span><span class="lineCov">         12 :                     material-&gt;setColor( Vector3f( 0.8f, 0.2f, 0.2f ));</span>
+<span class="lineNum">      98 </span><span class="lineCov">         12 :                     break;</span>
+<span class="lineNum">      99 </span>            :                 case 4: // Apical dendrite
+<span class="lineNum">     100 </span><span class="lineCov">         12 :                     material-&gt;setColor( Vector3f( 0.8f, 0.2f, 0.8f ));</span>
+<span class="lineNum">     101 </span><span class="lineCov">         12 :                     break;</span>
+<span class="lineNum">     102 </span>            :                 default:
+<span class="lineNum">     103 </span><span class="lineCov">       4704 :                     material-&gt;setColor( Vector3f(</span>
+<span class="lineNum">     104 </span><span class="lineCov">       4704 :                         float( std::rand( ) % 255 ) / 255.f,</span>
+<span class="lineNum">     105 </span><span class="lineCov">       4704 :                         float( std::rand( ) % 255 ) / 255.f,</span>
+<span class="lineNum">     106 </span><span class="lineCov">       7056 :                         float( std::rand( ) % 255 ) / 255.f ));</span>
+<span class="lineNum">     107 </span>            :             }
+<span class="lineNum">     108 </span><span class="lineCov">       2400 :             break;</span>
+<span class="lineNum">     109 </span>            :         case MT_GRADIENT:
+<span class="lineNum">     110 </span><span class="lineNoCov">          0 :             material-&gt;setColor( Vector3f(</span>
+<span class="lineNum">     111 </span><span class="lineNoCov">          0 :                 float( std::rand( ) % nbMaterials ) / float( nbMaterials ),</span>
+<span class="lineNum">     112 </span>            :                 1.f,
+<span class="lineNum">     113 </span><span class="lineNoCov">          0 :                 0.f ));</span>
+<span class="lineNum">     114 </span><span class="lineNoCov">          0 :             break;</span>
+<span class="lineNum">     115 </span>            :         case MT_PASTEL_COLORS:
+<span class="lineNum">     116 </span><span class="lineNoCov">          0 :             material-&gt;setColor( Vector3f(</span>
+<span class="lineNum">     117 </span><span class="lineNoCov">          0 :                 0.5f + float( std::rand( ) % 127 ) / 255.f,</span>
+<span class="lineNum">     118 </span><span class="lineNoCov">          0 :                 0.5f + float( std::rand( ) % 127 ) / 255.f,</span>
+<span class="lineNum">     119 </span><span class="lineNoCov">          0 :                 0.5f + float( std::rand( ) % 127 ) / 255.f));</span>
+<span class="lineNum">     120 </span><span class="lineNoCov">          0 :             break;</span>
+<span class="lineNum">     121 </span>            :         case MT_RANDOM:
+<span class="lineNum">     122 </span><span class="lineNoCov">          0 :             material-&gt;setColor( Vector3f(</span>
+<span class="lineNum">     123 </span><span class="lineNoCov">          0 :                 float(rand( ) % 255 ) / 255.f,</span>
+<span class="lineNum">     124 </span><span class="lineNoCov">          0 :                 float(rand( ) % 255 ) / 255.f,</span>
+<span class="lineNum">     125 </span><span class="lineNoCov">          0 :                 float(rand( ) % 255 ) / 255.f));</span>
+<span class="lineNum">     126 </span><span class="lineNoCov">          0 :             switch( rand( ) % 4 )</span>
+<span class="lineNum">     127 </span>            :             {
+<span class="lineNum">     128 </span>            :             case 0:
+<span class="lineNum">     129 </span>            :                 // Transparent
+<span class="lineNum">     130 </span><span class="lineNoCov">          0 :                 material-&gt;setOpacity( float( std::rand( )%100 ) / 100.f );</span>
+<span class="lineNum">     131 </span><span class="lineNoCov">          0 :                 material-&gt;setRefractionIndex( 0.98f );</span>
+<span class="lineNum">     132 </span><span class="lineNoCov">          0 :                 material-&gt;setSpecularColor( Vector3f( 0.01f, 0.01f, 0.01f ));</span>
+<span class="lineNum">     133 </span><span class="lineNoCov">          0 :                 material-&gt;setSpecularExponent( 10.f );</span>
+<span class="lineNum">     134 </span>            :             case 1:
+<span class="lineNum">     135 </span>            :                 // Light emmitter
+<span class="lineNum">     136 </span><span class="lineNoCov">          0 :                 material-&gt;setEmission(1.f);</span>
+<span class="lineNum">     137 </span>            :             case 2:
+<span class="lineNum">     138 </span>            :                 // Reflector
+<span class="lineNum">     139 </span><span class="lineNoCov">          0 :                 material-&gt;setReflectionIndex(</span>
+<span class="lineNum">     140 </span><span class="lineNoCov">          0 :                     float( std::rand( ) % 100 ) / 100.f );</span>
+<span class="lineNum">     141 </span><span class="lineNoCov">          0 :                 material-&gt;setSpecularColor(</span>
+<span class="lineNum">     142 </span><span class="lineNoCov">          0 :                     Vector3f( 0.01f, 0.01f, 0.01f ));</span>
+<span class="lineNum">     143 </span><span class="lineNoCov">          0 :                 material-&gt;setSpecularExponent( 10.f );</span>
+<span class="lineNum">     144 </span>            :             }
+<span class="lineNum">     145 </span><span class="lineNoCov">          0 :             break;</span>
+<span class="lineNum">     146 </span>            :         case MT_SHADES_OF_GREY:
+<span class="lineNum">     147 </span><span class="lineNoCov">          0 :             float value = float( std::rand( ) % 255 ) / 255.f;</span>
+<span class="lineNum">     148 </span><span class="lineNoCov">          0 :             material-&gt;setColor( Vector3f( value, value, value ));</span>
+<span class="lineNum">     149 </span><span class="lineNoCov">          0 :             break;</span>
+<span class="lineNum">     150 </span>            :         }
+<span class="lineNum">     151 </span><span class="lineCov">       2400 :         _materials.push_back(material);</span>
+<span class="lineNum">     152 </span>            :     }
+<span class="lineNum">     153 </span><span class="lineCov">         12 :     BRAYNS_INFO &lt;&lt; nbMaterials &lt;&lt; &quot; materials set&quot; &lt;&lt; std::endl;</span>
+<a name="154"><span class="lineNum">     154 </span><span class="lineCov">         12 : }</span></a>
+<span class="lineNum">     155 </span>            : 
+<span class="lineNum">     156 </span><span class="lineCov">          2 : MaterialPtr Scene::getMaterial( size_t index )</span>
+<span class="lineNum">     157 </span>            : {
+<span class="lineNum">     158 </span><span class="lineCov">          2 :     return _materials[index];</span>
+<a name="159"><span class="lineNum">     159 </span>            : }</a>
+<span class="lineNum">     160 </span>            : 
+<span class="lineNum">     161 </span><span class="lineCov">          8 : void Scene::buildDefault( )</span>
+<span class="lineNum">     162 </span>            : {
+<span class="lineNum">     163 </span><span class="lineCov">          8 :     BRAYNS_INFO &lt;&lt; &quot;Building default Cornell Box scene&quot; &lt;&lt; std::endl;</span>
+<span class="lineNum">     164 </span>            : 
+<span class="lineNum">     165 </span><span class="lineCov">          8 :     const Vector3f WHITE = { 1.f, 1.f, 1.f };</span>
+<span class="lineNum">     166 </span>            : 
+<span class="lineNum">     167 </span>            :     const Vector3f positions[8] =
+<span class="lineNum">     168 </span>            :     {
+<span class="lineNum">     169 </span>            :         {  0.f, 0.f, 0.f },
+<span class="lineNum">     170 </span>            :         {  1.f, 0.f, 0.f }, //    6--------7
+<span class="lineNum">     171 </span>            :         {  0.f, 1.f, 0.f }, //   /|       /|
+<span class="lineNum">     172 </span>            :         {  1.f, 1.f, 0.f }, //  2--------3 |
+<span class="lineNum">     173 </span>            :         {  0.f, 0.f, 1.f }, //  | |      | |
+<span class="lineNum">     174 </span>            :         {  1.f, 0.f, 1.f }, //  | 4------|-5
+<span class="lineNum">     175 </span>            :         {  0.f, 1.f, 1.f }, //  |/       |/
+<span class="lineNum">     176 </span>            :         {  1.f, 1.f, 1.f }  //  0--------1
+<span class="lineNum">     177 </span><span class="lineCov">          8 :     };</span>
+<span class="lineNum">     178 </span>            : 
+<span class="lineNum">     179 </span>            :     const uint16_t indices[6][6] =
+<span class="lineNum">     180 </span>            :     {
+<span class="lineNum">     181 </span>            :         { 0, 1, 3, 3, 2, 0 }, // Front
+<span class="lineNum">     182 </span>            :         { 1, 5, 7, 7, 3, 1 }, // Right
+<span class="lineNum">     183 </span>            :         { 5, 4, 6, 6, 7, 5 }, // Back
+<span class="lineNum">     184 </span>            :         { 4, 0, 2, 2, 6, 4 }, // Left
+<span class="lineNum">     185 </span>            :         { 0, 1, 5, 5, 4, 0 }, // Bottom
+<span class="lineNum">     186 </span>            :         { 2, 3, 7, 7, 6, 2 }  // Top
+<span class="lineNum">     187 </span><span class="lineCov">          8 :     };</span>
+<span class="lineNum">     188 </span>            : 
+<span class="lineNum">     189 </span>            :     const Vector3f colors[6] =
+<span class="lineNum">     190 </span>            :     {
+<span class="lineNum">     191 </span>            :         { 0.8f, 0.8f, 0.8f },
+<span class="lineNum">     192 </span>            :         { 1.f, 0.f, 0.f },
+<span class="lineNum">     193 </span>            :         { 0.8f, 0.8f, 0.8f },
+<span class="lineNum">     194 </span>            :         { 0.f, 1.f, 0.f },
+<span class="lineNum">     195 </span>            :         { 0.8f, 0.8f, 0.8f },
+<span class="lineNum">     196 </span>            :         { 0.8f, 0.8f, 0.8f }
+<span class="lineNum">     197 </span><span class="lineCov">          8 :     };</span>
+<span class="lineNum">     198 </span>            : 
+<span class="lineNum">     199 </span>            :     // Cornell box
+<span class="lineNum">     200 </span><span class="lineCov">         48 :     for( size_t material = 1; material &lt; 6; ++material )</span>
+<span class="lineNum">     201 </span>            :     {
+<span class="lineNum">     202 </span><span class="lineCov">         40 :         _materials[material]-&gt;setColor( colors[ material ] );</span>
+<span class="lineNum">     203 </span><span class="lineCov">         40 :         _materials[material]-&gt;setSpecularColor( WHITE );</span>
+<span class="lineNum">     204 </span><span class="lineCov">         40 :         _materials[material]-&gt;setSpecularExponent( 10.f );</span>
+<span class="lineNum">     205 </span><span class="lineCov">         40 :         _materials[material]-&gt;setReflectionIndex( material == 4 ? 0.8f : 0.f );</span>
+<span class="lineNum">     206 </span><span class="lineCov">         40 :         _materials[material]-&gt;setOpacity( 1.f );</span>
+<span class="lineNum">     207 </span><span class="lineCov">        280 :         for( size_t i = 0; i &lt; 6; ++i )</span>
+<span class="lineNum">     208 </span>            :         {
+<span class="lineNum">     209 </span><span class="lineCov">        240 :             const Vector3f&amp; position = positions[ indices[ material ][ i ] ];</span>
+<span class="lineNum">     210 </span><span class="lineCov">        240 :             _trianglesMeshes[material].getVertices().push_back( position );</span>
+<span class="lineNum">     211 </span><span class="lineCov">        240 :             _bounds.merge( position );</span>
+<span class="lineNum">     212 </span>            :         }
+<span class="lineNum">     213 </span><span class="lineCov">         40 :         _trianglesMeshes[material].getIndices().push_back(</span>
+<span class="lineNum">     214 </span><span class="lineCov">         80 :             Vector3ui( 0, 1, 2 ));</span>
+<span class="lineNum">     215 </span><span class="lineCov">         40 :         _trianglesMeshes[material].getIndices().push_back(</span>
+<span class="lineNum">     216 </span><span class="lineCov">         80 :             Vector3ui( 3, 4, 5 ));</span>
+<span class="lineNum">     217 </span>            :     }
+<span class="lineNum">     218 </span>            : 
+<span class="lineNum">     219 </span><span class="lineCov">          8 :     size_t material = 7;</span>
+<span class="lineNum">     220 </span>            : 
+<span class="lineNum">     221 </span>            :     // Sphere
+<span class="lineNum">     222 </span><span class="lineCov">         24 :     _primitives[material].push_back( SpherePtr(</span>
+<span class="lineNum">     223 </span><span class="lineCov">         32 :         new Sphere( material, Vector3f( 0.25f, 0.26f, 0.30f ), 0.25f, 0, 0 )));</span>
+<span class="lineNum">     224 </span><span class="lineCov">          8 :     _materials[material]-&gt;setOpacity( 0.3f );</span>
+<span class="lineNum">     225 </span><span class="lineCov">          8 :     _materials[material]-&gt;setRefractionIndex( 1.1f );</span>
+<span class="lineNum">     226 </span><span class="lineCov">          8 :     _materials[material]-&gt;setSpecularColor( WHITE );</span>
+<span class="lineNum">     227 </span><span class="lineCov">          8 :     _materials[material]-&gt;setSpecularExponent( 100.f );</span>
+<span class="lineNum">     228 </span>            : 
+<span class="lineNum">     229 </span>            :     // Cylinder
+<span class="lineNum">     230 </span><span class="lineCov">          8 :     ++material;</span>
+<span class="lineNum">     231 </span><span class="lineCov">         32 :     _primitives[material].push_back( CylinderPtr(</span>
+<span class="lineNum">     232 </span>            :         new Cylinder( material,
+<span class="lineNum">     233 </span><span class="lineCov">         24 :             Vector3f( 0.25f, 0.126f, 0.75f ), Vector3f( 0.75f, 0.126f, 0.75f ),</span>
+<span class="lineNum">     234 </span><span class="lineCov">         16 :             0.125f, 0, 0 )));</span>
+<span class="lineNum">     235 </span><span class="lineCov">          8 :     _materials[material]-&gt;setColor( Vector3f( 0.1f, 0.1f, 0.8f ));</span>
+<span class="lineNum">     236 </span><span class="lineCov">          8 :     _materials[material]-&gt;setSpecularColor( WHITE );</span>
+<span class="lineNum">     237 </span><span class="lineCov">          8 :     _materials[material]-&gt;setSpecularExponent( 10.f );</span>
+<span class="lineNum">     238 </span>            : 
+<span class="lineNum">     239 </span>            :     // Cone
+<span class="lineNum">     240 </span><span class="lineCov">          8 :     ++material;</span>
+<span class="lineNum">     241 </span><span class="lineCov">         32 :     _primitives[material].push_back( ConePtr(</span>
+<span class="lineNum">     242 </span>            :         new Cone( material,
+<span class="lineNum">     243 </span><span class="lineCov">         24 :             Vector3f( 0.75f, 0.01f, 0.25f ), Vector3f( 0.75f, 0.5f, 0.25f ),</span>
+<span class="lineNum">     244 </span><span class="lineCov">         16 :             0.15f, 0.f, 0, 0 )));</span>
+<span class="lineNum">     245 </span><span class="lineCov">          8 :     _materials[material]-&gt;setReflectionIndex(0.8f);</span>
+<span class="lineNum">     246 </span><span class="lineCov">          8 :     _materials[material]-&gt;setSpecularColor( WHITE );</span>
+<span class="lineNum">     247 </span><span class="lineCov">          8 :     _materials[material]-&gt;setSpecularExponent( 10.f );</span>
+<span class="lineNum">     248 </span>            : 
+<span class="lineNum">     249 </span>            :     // Lamp
+<span class="lineNum">     250 </span><span class="lineCov">          8 :     ++material;</span>
+<span class="lineNum">     251 </span><span class="lineCov">          8 :     const Vector3f lampInfo = { 0.15f, 0.99f, 0.15f };</span>
+<span class="lineNum">     252 </span>            :     const Vector3f lampPositions[4] =
+<span class="lineNum">     253 </span>            :     {
+<span class="lineNum">     254 </span><span class="lineCov">         24 :         { 0.5f - lampInfo.x(), lampInfo.y(), 0.5f - lampInfo.z() },</span>
+<span class="lineNum">     255 </span><span class="lineCov">         24 :         { 0.5f + lampInfo.x(), lampInfo.y(), 0.5f - lampInfo.z() },</span>
+<span class="lineNum">     256 </span><span class="lineCov">         24 :         { 0.5f + lampInfo.x(), lampInfo.y(), 0.5f + lampInfo.z() },</span>
+<span class="lineNum">     257 </span><span class="lineCov">         24 :         { 0.5f - lampInfo.x(), lampInfo.y(), 0.5f + lampInfo.z() }</span>
+<span class="lineNum">     258 </span><span class="lineCov">        104 :     };</span>
+<span class="lineNum">     259 </span><span class="lineCov">         40 :     for( size_t i = 0; i &lt; 4; ++i )</span>
+<span class="lineNum">     260 </span><span class="lineCov">         32 :         _trianglesMeshes[material].getVertices().push_back( lampPositions[i] );</span>
+<span class="lineNum">     261 </span><span class="lineCov">          8 :     _trianglesMeshes[material].getIndices().push_back( Vector3i( 2, 1, 0 ));</span>
+<span class="lineNum">     262 </span><span class="lineCov">          8 :     _trianglesMeshes[material].getIndices().push_back( Vector3i( 0, 3, 2 ));</span>
+<span class="lineNum">     263 </span><span class="lineCov">          8 :     _materials[material]-&gt;setColor( WHITE );</span>
+<span class="lineNum">     264 </span><span class="lineCov">          8 :     _materials[material]-&gt;setEmission( 5.f );</span>
+<span class="lineNum">     265 </span>            : 
+<span class="lineNum">     266 </span><span class="lineCov">          8 :     BRAYNS_INFO &lt;&lt; &quot;Bounding Box: &quot; &lt;&lt; _bounds &lt;&lt; std::endl;</span>
+<a name="267"><span class="lineNum">     267 </span><span class="lineCov">          8 : }</span></a>
+<span class="lineNum">     268 </span>            : 
+<span class="lineNum">     269 </span><span class="lineCov">         12 : void Scene::buildEnvironment( )</span>
+<span class="lineNum">     270 </span>            : {
+<span class="lineNum">     271 </span><span class="lineCov">         12 :     switch( _parametersManager.getGeometryParameters().getSceneEnvironment( ) )</span>
+<span class="lineNum">     272 </span>            :     {
+<span class="lineNum">     273 </span>            :     case SE_NONE:
+<span class="lineNum">     274 </span><span class="lineCov">         12 :         break;</span>
+<span class="lineNum">     275 </span>            :     case SE_GROUND:
+<span class="lineNum">     276 </span>            :     {
+<span class="lineNum">     277 </span>            :         // Ground
+<span class="lineNum">     278 </span><span class="lineNoCov">          0 :         const Vector3f scale( 4.f, 0.5f, 4.f );</span>
+<span class="lineNum">     279 </span><span class="lineNoCov">          0 :         const float tiles = 8.f;</span>
+<span class="lineNum">     280 </span><span class="lineNoCov">          0 :         const float S = 0.5f * std::min(</span>
+<span class="lineNum">     281 </span><span class="lineNoCov">          0 :             _bounds.getSize( ).x( ), _bounds.getSize( ).z( ));</span>
+<span class="lineNum">     282 </span><span class="lineNoCov">          0 :         const Vector3f s( S,_bounds.getSize( ).y( ), S );</span>
+<span class="lineNum">     283 </span><span class="lineNoCov">          0 :         const Vector3f c = _bounds.getCenter( );</span>
+<span class="lineNum">     284 </span>            : 
+<span class="lineNum">     285 </span><span class="lineNoCov">          0 :         Vector3i i;</span>
+<span class="lineNum">     286 </span><span class="lineNoCov">          0 :         const size_t material = 0;</span>
+<span class="lineNum">     287 </span><span class="lineNoCov">          0 :         size_t meshIndex = _trianglesMeshes[material].getIndices( ).size( );</span>
+<span class="lineNum">     288 </span>            : 
+<span class="lineNum">     289 </span><span class="lineNoCov">          0 :         Vector4f v;</span>
+<span class="lineNum">     290 </span><span class="lineNoCov">          0 :         const Vector4f n( 0.f, 1.f, 0.f, 0.f );</span>
+<span class="lineNum">     291 </span><span class="lineNoCov">          0 :         v = Vector4f(</span>
+<span class="lineNum">     292 </span><span class="lineNoCov">          0 :             c.x( ) - s.x( ) * scale.x( ),</span>
+<span class="lineNum">     293 </span><span class="lineNoCov">          0 :             c.y( ) - s.y( ) * scale.y( ) * 1.001f,</span>
+<span class="lineNum">     294 </span><span class="lineNoCov">          0 :             c.z( ) - s.z( ) * scale.z( ),</span>
+<span class="lineNum">     295 </span><span class="lineNoCov">          0 :             0.f);</span>
+<span class="lineNum">     296 </span><span class="lineNoCov">          0 :         _trianglesMeshes[material].getVertices( ).push_back( v );</span>
+<span class="lineNum">     297 </span><span class="lineNoCov">          0 :         _trianglesMeshes[material].getNormals( ).push_back( n );</span>
+<span class="lineNum">     298 </span><span class="lineNoCov">          0 :         _trianglesMeshes[material].getTextureCoordinates( ).push_back(</span>
+<span class="lineNum">     299 </span><span class="lineNoCov">          0 :             Vector2f( 0.f, 0.f ));</span>
+<span class="lineNum">     300 </span><span class="lineNoCov">          0 :         v = Vector4f(</span>
+<span class="lineNum">     301 </span><span class="lineNoCov">          0 :             c.x( ) + s.x( ) * scale.x( ),</span>
+<span class="lineNum">     302 </span><span class="lineNoCov">          0 :             c.y( ) - s.y( ) * scale.y( ) * 1.001f,</span>
+<span class="lineNum">     303 </span><span class="lineNoCov">          0 :             c.z( ) - s.z( ) * scale.z( ),</span>
+<span class="lineNum">     304 </span><span class="lineNoCov">          0 :             0.f);</span>
+<span class="lineNum">     305 </span><span class="lineNoCov">          0 :         _trianglesMeshes[material].getVertices( ).push_back( v );</span>
+<span class="lineNum">     306 </span><span class="lineNoCov">          0 :         _trianglesMeshes[material].getNormals( ).push_back( n );</span>
+<span class="lineNum">     307 </span><span class="lineNoCov">          0 :         _trianglesMeshes[material].getTextureCoordinates( ).push_back(</span>
+<span class="lineNum">     308 </span><span class="lineNoCov">          0 :             Vector2f( tiles, 0.f ));</span>
+<span class="lineNum">     309 </span><span class="lineNoCov">          0 :         v = Vector4f(</span>
+<span class="lineNum">     310 </span><span class="lineNoCov">          0 :             c.x( ) + s.x( ) * scale.x( ),</span>
+<span class="lineNum">     311 </span><span class="lineNoCov">          0 :             c.y( ) - s.y( ) * scale.y( ) * 1.001f,</span>
+<span class="lineNum">     312 </span><span class="lineNoCov">          0 :             c.z( ) + s.z( ) * scale.z( ),</span>
+<span class="lineNum">     313 </span><span class="lineNoCov">          0 :             0.f);</span>
+<span class="lineNum">     314 </span><span class="lineNoCov">          0 :         _trianglesMeshes[material].getVertices( ).push_back( v );</span>
+<span class="lineNum">     315 </span><span class="lineNoCov">          0 :         _trianglesMeshes[material].getNormals( ).push_back( n );</span>
+<span class="lineNum">     316 </span><span class="lineNoCov">          0 :         _trianglesMeshes[material].getTextureCoordinates( ).push_back(</span>
+<span class="lineNum">     317 </span><span class="lineNoCov">          0 :             Vector2f( tiles, tiles ));</span>
+<span class="lineNum">     318 </span><span class="lineNoCov">          0 :         i = Vector3i( meshIndex, meshIndex+1, meshIndex+2 );</span>
+<span class="lineNum">     319 </span><span class="lineNoCov">          0 :         _trianglesMeshes[material].getIndices( ).push_back( i );</span>
+<span class="lineNum">     320 </span><span class="lineNoCov">          0 :         meshIndex += 3;</span>
+<span class="lineNum">     321 </span>            : 
+<span class="lineNum">     322 </span><span class="lineNoCov">          0 :         v = Vector4f(</span>
+<span class="lineNum">     323 </span><span class="lineNoCov">          0 :             c.x( ) + s.x( ) * scale.x( ),</span>
+<span class="lineNum">     324 </span><span class="lineNoCov">          0 :             c.y( ) - s.y( ) * scale.y( ) * 1.001f,</span>
+<span class="lineNum">     325 </span><span class="lineNoCov">          0 :             c.z( ) + s.z( ) * scale.z( ),</span>
+<span class="lineNum">     326 </span><span class="lineNoCov">          0 :             0.f );</span>
+<span class="lineNum">     327 </span><span class="lineNoCov">          0 :         _trianglesMeshes[material].getVertices( ).push_back( v );</span>
+<span class="lineNum">     328 </span><span class="lineNoCov">          0 :         _trianglesMeshes[material].getNormals( ).push_back( n );</span>
+<span class="lineNum">     329 </span><span class="lineNoCov">          0 :         _trianglesMeshes[material].getTextureCoordinates( ).push_back(</span>
+<span class="lineNum">     330 </span><span class="lineNoCov">          0 :             Vector2f( tiles, tiles ));</span>
+<span class="lineNum">     331 </span><span class="lineNoCov">          0 :         v = Vector4f(</span>
+<span class="lineNum">     332 </span><span class="lineNoCov">          0 :             c.x( ) - s.x( ) * scale.x( ),</span>
+<span class="lineNum">     333 </span><span class="lineNoCov">          0 :             c.y( ) - s.y( ) * scale.y( ) * 1.001f,</span>
+<span class="lineNum">     334 </span><span class="lineNoCov">          0 :             c.z( ) + s.z( ) * scale.z( ),</span>
+<span class="lineNum">     335 </span><span class="lineNoCov">          0 :             0.f );</span>
+<span class="lineNum">     336 </span><span class="lineNoCov">          0 :         _trianglesMeshes[material].getVertices( ).push_back( v );</span>
+<span class="lineNum">     337 </span><span class="lineNoCov">          0 :         _trianglesMeshes[material].getNormals( ).push_back( n );</span>
+<span class="lineNum">     338 </span><span class="lineNoCov">          0 :         _trianglesMeshes[material].getTextureCoordinates( ).push_back(</span>
+<span class="lineNum">     339 </span><span class="lineNoCov">          0 :             Vector2f( 0.f, tiles ));</span>
+<span class="lineNum">     340 </span><span class="lineNoCov">          0 :         v = Vector4f(</span>
+<span class="lineNum">     341 </span><span class="lineNoCov">          0 :             c.x( ) - s.x( ) * scale.x( ),</span>
+<span class="lineNum">     342 </span><span class="lineNoCov">          0 :             c.y( ) - s.y( ) * scale.y( ) * 1.001f,</span>
+<span class="lineNum">     343 </span><span class="lineNoCov">          0 :             c.z( ) - s.z( ) * scale.z( ),</span>
+<span class="lineNum">     344 </span><span class="lineNoCov">          0 :             0.f );</span>
+<span class="lineNum">     345 </span><span class="lineNoCov">          0 :         _trianglesMeshes[material].getVertices( ).push_back( v );</span>
+<span class="lineNum">     346 </span><span class="lineNoCov">          0 :         _trianglesMeshes[material].getNormals( ).push_back( n );</span>
+<span class="lineNum">     347 </span><span class="lineNoCov">          0 :         _trianglesMeshes[material].getTextureCoordinates( ).push_back(</span>
+<span class="lineNum">     348 </span><span class="lineNoCov">          0 :             Vector2f( 0.f, 0.f ));</span>
+<span class="lineNum">     349 </span><span class="lineNoCov">          0 :         i = Vector3i( meshIndex, meshIndex+1, meshIndex+2 );</span>
+<span class="lineNum">     350 </span><span class="lineNoCov">          0 :         _trianglesMeshes[material].getIndices( ).push_back( i );</span>
+<span class="lineNum">     351 </span><span class="lineNoCov">          0 :         break;</span>
+<span class="lineNum">     352 </span>            :     }
+<span class="lineNum">     353 </span>            :     case SE_WALL:
+<span class="lineNum">     354 </span>            :     {
+<span class="lineNum">     355 </span>            :         // Wall
+<span class="lineNum">     356 </span><span class="lineNoCov">          0 :         const Vector3f scale( 1.f, 1.f, 1.f );</span>
+<span class="lineNum">     357 </span><span class="lineNoCov">          0 :         const float tiles = 4.f;</span>
+<span class="lineNum">     358 </span><span class="lineNoCov">          0 :         const float S = 0.5f * std::min(</span>
+<span class="lineNum">     359 </span><span class="lineNoCov">          0 :             _bounds.getSize( ).x( ), _bounds.getSize( ).z( ));</span>
+<span class="lineNum">     360 </span><span class="lineNoCov">          0 :         const Vector3f s( S, _bounds.getSize( ).y( ), S );</span>
+<span class="lineNum">     361 </span><span class="lineNoCov">          0 :         const Vector3f c = _bounds.getCenter( );</span>
+<span class="lineNum">     362 </span><span class="lineNoCov">          0 :         Vector3i i;</span>
+<span class="lineNum">     363 </span><span class="lineNoCov">          0 :         const size_t material = 0;</span>
+<span class="lineNum">     364 </span><span class="lineNoCov">          0 :         size_t meshIndex = _trianglesMeshes[material].getIndices( ).size( );</span>
+<span class="lineNum">     365 </span><span class="lineNoCov">          0 :         Vector4f v;</span>
+<span class="lineNum">     366 </span><span class="lineNoCov">          0 :         const Vector4f n( 0.f, 0.f, -1.f, 0.f );</span>
+<span class="lineNum">     367 </span><span class="lineNoCov">          0 :         v = Vector4f(</span>
+<span class="lineNum">     368 </span><span class="lineNoCov">          0 :             c.x( ) - s.x( ) * scale.x( ),</span>
+<span class="lineNum">     369 </span><span class="lineNoCov">          0 :             c.y( ) - s.y( ) * scale.y( ),</span>
+<span class="lineNum">     370 </span><span class="lineNoCov">          0 :             c.z( ) + s.z( ) * scale.z( ) * 1.001f,</span>
+<span class="lineNum">     371 </span><span class="lineNoCov">          0 :             0.f);</span>
+<span class="lineNum">     372 </span><span class="lineNoCov">          0 :         _trianglesMeshes[material].getVertices( ).push_back( v );</span>
+<span class="lineNum">     373 </span><span class="lineNoCov">          0 :         _trianglesMeshes[material].getNormals( ).push_back( n );</span>
+<span class="lineNum">     374 </span><span class="lineNoCov">          0 :         _trianglesMeshes[material].getTextureCoordinates( ).push_back(</span>
+<span class="lineNum">     375 </span><span class="lineNoCov">          0 :             Vector2f( 0.f, 0.f ));</span>
+<span class="lineNum">     376 </span><span class="lineNoCov">          0 :         v = Vector4f(</span>
+<span class="lineNum">     377 </span><span class="lineNoCov">          0 :             c.x( ) + s.x( ) * scale.x( ),</span>
+<span class="lineNum">     378 </span><span class="lineNoCov">          0 :             c.y( ) - s.y( ) * scale.y( ),</span>
+<span class="lineNum">     379 </span><span class="lineNoCov">          0 :             c.z( ) + s.z( ) * scale.z( ) * 1.001f,</span>
+<span class="lineNum">     380 </span><span class="lineNoCov">          0 :             0.f);</span>
+<span class="lineNum">     381 </span><span class="lineNoCov">          0 :         _trianglesMeshes[material].getVertices( ).push_back( v );</span>
+<span class="lineNum">     382 </span><span class="lineNoCov">          0 :         _trianglesMeshes[material].getNormals( ).push_back( n );</span>
+<span class="lineNum">     383 </span><span class="lineNoCov">          0 :         _trianglesMeshes[material].getTextureCoordinates( ).push_back(</span>
+<span class="lineNum">     384 </span><span class="lineNoCov">          0 :             Vector2f( tiles, 0.f ));</span>
+<span class="lineNum">     385 </span><span class="lineNoCov">          0 :         v = Vector4f(</span>
+<span class="lineNum">     386 </span><span class="lineNoCov">          0 :             c.x( ) + s.x( ) * scale.x( ),</span>
+<span class="lineNum">     387 </span><span class="lineNoCov">          0 :             c.y( ) + s.y( ) * scale.y( ),</span>
+<span class="lineNum">     388 </span><span class="lineNoCov">          0 :             c.z( ) + s.z( ) * scale.z( ) * 1.001f,</span>
+<span class="lineNum">     389 </span><span class="lineNoCov">          0 :             0.f );</span>
+<span class="lineNum">     390 </span><span class="lineNoCov">          0 :         _trianglesMeshes[material].getVertices( ).push_back( v );</span>
+<span class="lineNum">     391 </span><span class="lineNoCov">          0 :         _trianglesMeshes[material].getNormals( ).push_back( n );</span>
+<span class="lineNum">     392 </span><span class="lineNoCov">          0 :         _trianglesMeshes[material].getTextureCoordinates( ).push_back(</span>
+<span class="lineNum">     393 </span><span class="lineNoCov">          0 :             Vector2f( tiles, tiles ));</span>
+<span class="lineNum">     394 </span><span class="lineNoCov">          0 :         i = Vector3i( meshIndex, meshIndex+1, meshIndex+2 );</span>
+<span class="lineNum">     395 </span><span class="lineNoCov">          0 :         _trianglesMeshes[material].getIndices( ).push_back( i );</span>
+<span class="lineNum">     396 </span><span class="lineNoCov">          0 :         meshIndex += 3;</span>
+<span class="lineNum">     397 </span><span class="lineNoCov">          0 :         v = Vector4f(</span>
+<span class="lineNum">     398 </span><span class="lineNoCov">          0 :             c.x( ) + s.x( ) * scale.x( ),</span>
+<span class="lineNum">     399 </span><span class="lineNoCov">          0 :             c.y( ) + s.y( ) * scale.y( ),</span>
+<span class="lineNum">     400 </span><span class="lineNoCov">          0 :             c.z( ) + s.z( ) * scale.z( ) * 1.001f,</span>
+<span class="lineNum">     401 </span><span class="lineNoCov">          0 :             0.f );</span>
+<span class="lineNum">     402 </span><span class="lineNoCov">          0 :         _trianglesMeshes[material].getVertices( ).push_back( v );</span>
+<span class="lineNum">     403 </span><span class="lineNoCov">          0 :         _trianglesMeshes[material].getNormals( ).push_back( n );</span>
+<span class="lineNum">     404 </span><span class="lineNoCov">          0 :         _trianglesMeshes[material].getTextureCoordinates( ).push_back(</span>
+<span class="lineNum">     405 </span><span class="lineNoCov">          0 :             Vector2f( tiles, tiles ));</span>
+<span class="lineNum">     406 </span><span class="lineNoCov">          0 :         v = Vector4f(</span>
+<span class="lineNum">     407 </span><span class="lineNoCov">          0 :             c.x( ) - s.x( ) * scale.x( ),</span>
+<span class="lineNum">     408 </span><span class="lineNoCov">          0 :             c.y( ) + s.y( ) * scale.y( ),</span>
+<span class="lineNum">     409 </span><span class="lineNoCov">          0 :             c.z( ) + s.z( ) * scale.z( ) * 1.001f,</span>
+<span class="lineNum">     410 </span><span class="lineNoCov">          0 :             0.f );</span>
+<span class="lineNum">     411 </span><span class="lineNoCov">          0 :         _trianglesMeshes[material].getVertices( ).push_back( v );</span>
+<span class="lineNum">     412 </span><span class="lineNoCov">          0 :         _trianglesMeshes[material].getNormals( ).push_back( n );</span>
+<span class="lineNum">     413 </span><span class="lineNoCov">          0 :         _trianglesMeshes[material].getTextureCoordinates( ).push_back(</span>
+<span class="lineNum">     414 </span><span class="lineNoCov">          0 :             Vector2f( 0.f, tiles ));</span>
+<span class="lineNum">     415 </span><span class="lineNoCov">          0 :         v = Vector4f(</span>
+<span class="lineNum">     416 </span><span class="lineNoCov">          0 :             c.x( ) - s.x( ) * scale.x( ),</span>
+<span class="lineNum">     417 </span><span class="lineNoCov">          0 :             c.y( ) - s.y( ) * scale.y( ),</span>
+<span class="lineNum">     418 </span><span class="lineNoCov">          0 :             c.z( ) + s.z( ) * scale.z( ) * 1.001f,</span>
+<span class="lineNum">     419 </span><span class="lineNoCov">          0 :             0.f);</span>
+<span class="lineNum">     420 </span><span class="lineNoCov">          0 :         _trianglesMeshes[material].getVertices( ).push_back( v );</span>
+<span class="lineNum">     421 </span><span class="lineNoCov">          0 :         _trianglesMeshes[material].getNormals( ).push_back( n );</span>
+<span class="lineNum">     422 </span><span class="lineNoCov">          0 :         _trianglesMeshes[material].getTextureCoordinates( ).push_back(</span>
+<span class="lineNum">     423 </span><span class="lineNoCov">          0 :             Vector2f( 0.f, 0.f ));</span>
+<span class="lineNum">     424 </span><span class="lineNoCov">          0 :         i = Vector3i( meshIndex, meshIndex+1, meshIndex+2 );</span>
+<span class="lineNum">     425 </span><span class="lineNoCov">          0 :         _trianglesMeshes[material].getIndices( ).push_back( i );</span>
+<span class="lineNum">     426 </span><span class="lineNoCov">          0 :         break;</span>
+<span class="lineNum">     427 </span>            :     }
+<span class="lineNum">     428 </span>            :     case SE_BOUNDING_BOX:
+<span class="lineNum">     429 </span>            :     {
+<span class="lineNum">     430 </span><span class="lineNoCov">          0 :         const size_t material = MATERIAL_BOUNDING_BOX;</span>
+<span class="lineNum">     431 </span><span class="lineNoCov">          0 :         const Vector3f s = _bounds.getSize()/2.f;</span>
+<span class="lineNum">     432 </span><span class="lineNoCov">          0 :         const Vector3f c = _bounds.getCenter();</span>
+<span class="lineNum">     433 </span><span class="lineNoCov">          0 :         const float radius = s.length()/500.f;</span>
+<span class="lineNum">     434 </span>            :         const Vector3f positions[8] =
+<span class="lineNum">     435 </span>            :         {
+<span class="lineNum">     436 </span><span class="lineNoCov">          0 :             { c.x() - s.x(), c.y() - s.y(), c.z() - s.z() },</span>
+<span class="lineNum">     437 </span><span class="lineNoCov">          0 :             { c.x() + s.x(), c.y() - s.y(), c.z() - s.z() }, //    6--------7</span>
+<span class="lineNum">     438 </span><span class="lineNoCov">          0 :             { c.x() - s.x(), c.y() + s.y(), c.z() - s.z() }, //   /|       /|</span>
+<span class="lineNum">     439 </span><span class="lineNoCov">          0 :             { c.x() + s.x(), c.y() + s.y(), c.z() - s.z() }, //  2--------3 |</span>
+<span class="lineNum">     440 </span><span class="lineNoCov">          0 :             { c.x() - s.x(), c.y() - s.y(), c.z() + s.z() }, //  | |      | |</span>
+<span class="lineNum">     441 </span><span class="lineNoCov">          0 :             { c.x() + s.x(), c.y() - s.y(), c.z() + s.z() }, //  | 4------|-5</span>
+<span class="lineNum">     442 </span><span class="lineNoCov">          0 :             { c.x() - s.x(), c.y() + s.y(), c.z() + s.z() }, //  |/       |/</span>
+<span class="lineNum">     443 </span><span class="lineNoCov">          0 :             { c.x() + s.x(), c.y() + s.y(), c.z() + s.z() }  //  0--------1</span>
+<span class="lineNum">     444 </span><span class="lineNoCov">          0 :         };</span>
+<span class="lineNum">     445 </span>            : 
+<span class="lineNum">     446 </span><span class="lineNoCov">          0 :         for( size_t i = 0; i &lt; 8; ++i)</span>
+<span class="lineNum">     447 </span><span class="lineNoCov">          0 :             _primitives[material].push_back( SpherePtr(</span>
+<span class="lineNum">     448 </span><span class="lineNoCov">          0 :                 new Sphere( material, positions[i], radius, 0, 0)));</span>
+<span class="lineNum">     449 </span>            : 
+<span class="lineNum">     450 </span><span class="lineNoCov">          0 :         _primitives[material].push_back( CylinderPtr(</span>
+<span class="lineNum">     451 </span><span class="lineNoCov">          0 :             new Cylinder( material, positions[0], positions[1], radius, 0, 0)));</span>
+<span class="lineNum">     452 </span><span class="lineNoCov">          0 :         _primitives[material].push_back( CylinderPtr(</span>
+<span class="lineNum">     453 </span><span class="lineNoCov">          0 :             new Cylinder( material, positions[2], positions[3], radius, 0, 0)));</span>
+<span class="lineNum">     454 </span><span class="lineNoCov">          0 :         _primitives[material].push_back( CylinderPtr(</span>
+<span class="lineNum">     455 </span><span class="lineNoCov">          0 :             new Cylinder( material, positions[4], positions[5], radius, 0, 0)));</span>
+<span class="lineNum">     456 </span><span class="lineNoCov">          0 :         _primitives[material].push_back( CylinderPtr(</span>
+<span class="lineNum">     457 </span><span class="lineNoCov">          0 :             new Cylinder( material, positions[6], positions[7], radius, 0, 0)));</span>
+<span class="lineNum">     458 </span>            : 
+<span class="lineNum">     459 </span><span class="lineNoCov">          0 :         _primitives[material].push_back( CylinderPtr(</span>
+<span class="lineNum">     460 </span><span class="lineNoCov">          0 :             new Cylinder( material, positions[0], positions[2], radius, 0, 0)));</span>
+<span class="lineNum">     461 </span><span class="lineNoCov">          0 :         _primitives[material].push_back( CylinderPtr(</span>
+<span class="lineNum">     462 </span><span class="lineNoCov">          0 :             new Cylinder( material, positions[1], positions[3], radius, 0, 0)));</span>
+<span class="lineNum">     463 </span><span class="lineNoCov">          0 :         _primitives[material].push_back( CylinderPtr(</span>
+<span class="lineNum">     464 </span><span class="lineNoCov">          0 :             new Cylinder( material, positions[4], positions[6], radius, 0, 0)));</span>
+<span class="lineNum">     465 </span><span class="lineNoCov">          0 :         _primitives[material].push_back( CylinderPtr(</span>
+<span class="lineNum">     466 </span><span class="lineNoCov">          0 :             new Cylinder( material, positions[5], positions[7], radius, 0, 0)));</span>
+<span class="lineNum">     467 </span>            : 
+<span class="lineNum">     468 </span><span class="lineNoCov">          0 :         _primitives[material].push_back( CylinderPtr(</span>
+<span class="lineNum">     469 </span><span class="lineNoCov">          0 :             new Cylinder( material, positions[0], positions[4], radius, 0, 0)));</span>
+<span class="lineNum">     470 </span><span class="lineNoCov">          0 :         _primitives[material].push_back( CylinderPtr(</span>
+<span class="lineNum">     471 </span><span class="lineNoCov">          0 :             new Cylinder( material, positions[1], positions[5], radius, 0, 0)));</span>
+<span class="lineNum">     472 </span><span class="lineNoCov">          0 :         _primitives[material].push_back( CylinderPtr(</span>
+<span class="lineNum">     473 </span><span class="lineNoCov">          0 :             new Cylinder( material, positions[2], positions[6], radius, 0, 0)));</span>
+<span class="lineNum">     474 </span><span class="lineNoCov">          0 :         _primitives[material].push_back( CylinderPtr(</span>
+<span class="lineNum">     475 </span><span class="lineNoCov">          0 :             new Cylinder( material, positions[3], positions[7], radius, 0, 0)));</span>
+<span class="lineNum">     476 </span>            : 
+<span class="lineNum">     477 </span><span class="lineNoCov">          0 :         break;</span>
+<span class="lineNum">     478 </span>            :     }
+<span class="lineNum">     479 </span>            :     }
+<a name="480"><span class="lineNum">     480 </span><span class="lineCov">         12 : }</span></a>
+<span class="lineNum">     481 </span>            : 
+<span class="lineNum">     482 </span><span class="lineCov">         12 : void Scene::addLight( LightPtr light )</span>
+<span class="lineNum">     483 </span>            : {
+<span class="lineNum">     484 </span><span class="lineCov">         12 :     removeLight( light );</span>
+<span class="lineNum">     485 </span><span class="lineCov">         12 :     _lights.push_back( light );</span>
+<a name="486"><span class="lineNum">     486 </span><span class="lineCov">         12 : }</span></a>
+<span class="lineNum">     487 </span>            : 
+<span class="lineNum">     488 </span><span class="lineCov">         12 : void Scene::removeLight( LightPtr light )</span>
+<span class="lineNum">     489 </span>            : {
+<span class="lineNum">     490 </span><span class="lineCov">         12 :     Lights::iterator it = std::find( _lights.begin( ), _lights.end( ), light );</span>
+<span class="lineNum">     491 </span><span class="lineCov">         12 :     if( it != _lights.end( ))</span>
+<span class="lineNum">     492 </span><span class="lineNoCov">          0 :         _lights.erase( it );</span>
+<a name="493"><span class="lineNum">     493 </span><span class="lineCov">         12 : }</span></a>
+<span class="lineNum">     494 </span>            : 
+<span class="lineNum">     495 </span><span class="lineNoCov">          0 : LightPtr Scene::getLight( const size_t index )</span>
+<span class="lineNum">     496 </span>            : {
+<span class="lineNum">     497 </span><span class="lineNoCov">          0 :     if( index &lt; _lights.size() )</span>
+<span class="lineNum">     498 </span><span class="lineNoCov">          0 :         return _lights[index];</span>
+<span class="lineNum">     499 </span><span class="lineNoCov">          0 :     return 0;</span>
+<a name="500"><span class="lineNum">     500 </span>            : }</a>
+<span class="lineNum">     501 </span>            : 
+<span class="lineNum">     502 </span><span class="lineNoCov">          0 : void Scene::clearLights( )</span>
+<span class="lineNum">     503 </span>            : {
+<span class="lineNum">     504 </span><span class="lineNoCov">          0 :     _lights.clear();</span>
+<a name="505"><span class="lineNum">     505 </span><span class="lineNoCov">          0 : }</span></a>
+<span class="lineNum">     506 </span>            : 
+<span class="lineNum">     507 </span><span class="lineNoCov">          0 : void Scene::setSimulationHandler( AbstractSimulationHandlerPtr handler )</span>
+<span class="lineNum">     508 </span>            : {
+<span class="lineNum">     509 </span><span class="lineNoCov">          0 :     _simulationHandler = handler;</span>
+<a name="510"><span class="lineNum">     510 </span><span class="lineNoCov">          0 : }</span></a>
+<span class="lineNum">     511 </span>            : 
+<span class="lineNum">     512 </span><span class="lineNoCov">          0 : AbstractSimulationHandlerPtr Scene::getSimulationHandler() const</span>
+<span class="lineNum">     513 </span>            : {
+<span class="lineNum">     514 </span><span class="lineNoCov">          0 :     return _simulationHandler;</span>
+<a name="515"><span class="lineNum">     515 </span>            : }</a>
+<span class="lineNum">     516 </span>            : 
+<span class="lineNum">     517 </span><span class="lineCov">         28 : VolumeHandlerPtr Scene::getVolumeHandler()</span>
+<span class="lineNum">     518 </span>            : {
+<span class="lineNum">     519 </span>            :     const std::string&amp; volumeFile =
+<span class="lineNum">     520 </span><span class="lineCov">         28 :         _parametersManager.getVolumeParameters().getFilename();</span>
+<span class="lineNum">     521 </span>            :     const std::string&amp; volumeFolder =
+<span class="lineNum">     522 </span><span class="lineCov">         28 :         _parametersManager.getVolumeParameters().getFolder();</span>
+<span class="lineNum">     523 </span><span class="lineCov">         28 :     if( volumeFile.empty() &amp;&amp; volumeFolder.empty() )</span>
+<span class="lineNum">     524 </span><span class="lineCov">         28 :         return 0;</span>
+<span class="lineNum">     525 </span>            : 
+<span class="lineNum">     526 </span>            :     try
+<span class="lineNum">     527 </span>            :     {
+<span class="lineNum">     528 </span><span class="lineNoCov">          0 :         if( !_volumeHandler )</span>
+<span class="lineNum">     529 </span>            :         {
+<span class="lineNum">     530 </span><span class="lineNoCov">          0 :             _volumeHandler.reset( new VolumeHandler(</span>
+<span class="lineNum">     531 </span><span class="lineNoCov">          0 :                 _parametersManager.getVolumeParameters(), TimestampMode::modulo ));</span>
+<span class="lineNum">     532 </span><span class="lineNoCov">          0 :             if( !volumeFile.empty() )</span>
+<span class="lineNum">     533 </span><span class="lineNoCov">          0 :                 _volumeHandler-&gt;attachVolumeToFile( 0.f, volumeFile );</span>
+<span class="lineNum">     534 </span>            :             else
+<span class="lineNum">     535 </span>            :             {
+<span class="lineNum">     536 </span><span class="lineNoCov">          0 :                 strings filenames;</span>
+<span class="lineNum">     537 </span>            : 
+<span class="lineNum">     538 </span><span class="lineNoCov">          0 :                 boost::filesystem::directory_iterator endIter;</span>
+<span class="lineNum">     539 </span><span class="lineNoCov">          0 :                 if( boost::filesystem::is_directory(volumeFolder))</span>
+<span class="lineNum">     540 </span>            :                 {
+<span class="lineNum">     541 </span><span class="lineNoCov">          0 :                     for( boost::filesystem::directory_iterator dirIter( volumeFolder );</span>
+<span class="lineNum">     542 </span>            :                          dirIter != endIter; ++dirIter )
+<span class="lineNum">     543 </span>            :                     {
+<span class="lineNum">     544 </span><span class="lineNoCov">          0 :                         if( boost::filesystem::is_regular_file(dirIter-&gt;status( )))</span>
+<span class="lineNum">     545 </span>            :                         {
+<span class="lineNum">     546 </span><span class="lineNoCov">          0 :                             const std::string&amp; filename = dirIter-&gt;path( ).string( );</span>
+<span class="lineNum">     547 </span><span class="lineNoCov">          0 :                             filenames.push_back( filename );</span>
+<span class="lineNum">     548 </span>            :                         }
+<span class="lineNum">     549 </span>            :                     }
+<span class="lineNum">     550 </span>            :                 }
+<span class="lineNum">     551 </span><span class="lineNoCov">          0 :                 std::sort(filenames.begin(), filenames.end());</span>
+<span class="lineNum">     552 </span><span class="lineNoCov">          0 :                 float timestamp = 0.f;</span>
+<span class="lineNum">     553 </span><span class="lineNoCov">          0 :                 for( const auto&amp; filename: filenames )</span>
+<span class="lineNum">     554 </span>            :                 {
+<span class="lineNum">     555 </span><span class="lineNoCov">          0 :                     _volumeHandler-&gt;attachVolumeToFile( timestamp, filename );</span>
+<span class="lineNum">     556 </span><span class="lineNoCov">          0 :                     timestamp += 1.f;</span>
+<span class="lineNum">     557 </span>            :                 }
+<span class="lineNum">     558 </span>            :             }
+<span class="lineNum">     559 </span>            :         }
+<span class="lineNum">     560 </span>            :     }
+<span class="lineNum">     561 </span><span class="lineNoCov">          0 :     catch( const std::runtime_error&amp; e )</span>
+<span class="lineNum">     562 </span>            :     {
+<span class="lineNum">     563 </span><span class="lineNoCov">          0 :         BRAYNS_ERROR &lt;&lt; e.what() &lt;&lt; std::endl;</span>
+<span class="lineNum">     564 </span>            :     }
+<span class="lineNum">     565 </span>            : 
+<span class="lineNum">     566 </span><span class="lineNoCov">          0 :     return _volumeHandler;</span>
+<a name="567"><span class="lineNum">     567 </span>            : }</a>
+<span class="lineNum">     568 </span>            : 
+<span class="lineNum">     569 </span><span class="lineCov">         12 : }</span>
+</pre>
+      </td>
+    </tr>
+  </table>
+  <br>
+
+  <table width="100%" border=0 cellspacing=0 cellpadding=0>
+    <tr><td class="ruler"><img src="../../../glass.png" width=3 height=3 alt=""></td></tr>
+    <tr><td class="versionInfo">Generated by: <a href="http://ltp.sourceforge.net/coverage/lcov.php" target="_parent">LCOV version 1.11</a></td></tr>
+  </table>
+  <br>
+
+</body>
+</html>
