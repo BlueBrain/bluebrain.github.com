@@ -1,4 +1,5 @@
 var searchData=
 [
-  ['implementing_20morphology_20version_201_2e1_2c_20support_20for_20glia_20cells',['Implementing Morphology version 1.1, support for glia cells',['../morphology11.html',1,'rfcs']]]
+  ['rfcs',['RFCs',['../rfcs.html',1,'']]],
+  ['redesign_20of_20the_20spikereport_20and_20spikes_20container',['Redesign of the SpikeReport and Spikes container',['../spike_reports.html',1,'rfcs']]]
 ];

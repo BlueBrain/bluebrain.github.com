@@ -7,5 +7,7 @@ var classbrion_1_1_version =
     [ "getPatch", "classbrion_1_1_version.html#abb649c2122bcb69b00e2485d6695fdee", null ],
     [ "getRevision", "classbrion_1_1_version.html#a6f481c7090688eeb4742a22a53982c14", null ],
     [ "getRevString", "classbrion_1_1_version.html#a0529b8442a3578b60213b46007be4624", null ],
-    [ "getString", "classbrion_1_1_version.html#a100387ecec439ad9a41c6125d4584288", null ]
+    [ "getSchema", "classbrion_1_1_version.html#a1d222a0670a0df9f7b70415ec501602a", null ],
+    [ "getString", "classbrion_1_1_version.html#a100387ecec439ad9a41c6125d4584288", null ],
+    [ "toJSON", "classbrion_1_1_version.html#a4852c8bfeec845a82718d1a42250c16a", null ]
 ];

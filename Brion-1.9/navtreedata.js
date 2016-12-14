@@ -6,7 +6,6 @@ var NAVTREE =
     [ "Building", "index.html#Building", null ],
     [ "Changelog", "Changelog.html", null ],
     [ "Data models", "data.html", "data" ],
-    [ "Feature specifications", "FeatureSpecs.html", "FeatureSpecs" ],
     [ "RFCs", "rfcs.html", "rfcs" ],
     [ "Caching support", "md__jenkins_02_workspace_oss.Brion.documentation_build_type_Debug_platform_cscsviz-vm_sources_doc_user_caching.html", null ],
     [ "Environment Variables", "env.html", null ],
@@ -45,8 +44,8 @@ var NAVTREE =
 var NAVTREEINDEX =
 [
 "Changelog.html",
-"classbrion_1_1_blue_config.html#a2e3c4ab0dcd34d3639c4e58a16d68767",
-"enums_8h.html#a66e583bba6f011701c4d545b1bb28533a1b174468490de786ddeecc49d86f11ab"
+"classbrion_1_1_blue_config.html#a15ca4b93088443b660df47d4cd865e9c",
+"enums_8h.html#a66e583bba6f011701c4d545b1bb28533"
 ];
 
 var SYNCONMSG = 'click to disable panel synchronisation';
