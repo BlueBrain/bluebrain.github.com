@@ -7,7 +7,7 @@ var searchData=
   ['screenspaceprocessor',['ScreenSpaceProcessor',['../classbrayns_1_1_screen_space_processor.html',1,'brayns']]],
   ['screenspaceprocessordata',['ScreenSpaceProcessorData',['../structbrayns_1_1_screen_space_processor_data.html',1,'brayns']]],
   ['set',['set',['../classbrayns_1_1_abstract_parameters.html#a54da8b217bcd52a00a4b039b98abfcbd',1,'brayns::AbstractParameters::set()'],['../classbrayns_1_1_camera.html#a5583d0a667ef2d3ad4c5bc3ea408783b',1,'brayns::Camera::set()'],['../classbrayns_1_1_parameters_manager.html#a1d25e34639dbb420f9a3405b556a88b0',1,'brayns::ParametersManager::set()']]],
-  ['setactiverenderer',['setActiveRenderer',['../classbrayns_1_1_engine.html#a37e51a086aa2baad4e245a23af683cf2',1,'brayns::Engine']]],
+  ['setactiverenderer',['setActiveRenderer',['../classbrayns_1_1_engine.html#a65a906caa0f052f74d57a646d7457a05',1,'brayns::Engine']]],
   ['setaperture',['setAperture',['../classbrayns_1_1_camera.html#a9873a3ba6d6c346e4b5051a11b2ff748',1,'brayns::Camera']]],
   ['setaspectratio',['setAspectRatio',['../classbrayns_1_1_camera.html#aeda21b6f02421dedc266b992fbfe89a4',1,'brayns::Camera']]],
   ['setcamera',['setCamera',['../classbrayns_1_1_opti_x_renderer.html#ac8f9051827a1ef369e2fc8c31baa47e9',1,'brayns::OptiXRenderer']]],

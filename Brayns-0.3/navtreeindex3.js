@@ -1,5 +1,10 @@
 var NAVTREEINDEX3 =
 {
+"classbrayns_1_1_sphere.html#a1901f74bb00229ca5e5694050a65d617":[2,0,0,66,3],
+"classbrayns_1_1_sphere.html#a5aa364199fb292761c9f2f35e1bdceb3":[2,0,0,66,0],
+"classbrayns_1_1_sphere.html#a65cebf9377f6a23a0ec494cc2ddd5d5d":[2,0,0,66,4],
+"classbrayns_1_1_sphere.html#a87fd4533b06e79db22d2cbd934922a39":[2,0,0,66,5],
+"classbrayns_1_1_sphere.html#ae9af33a93f1baf06c354b81cd88d7327":[2,0,0,66,1],
 "classbrayns_1_1_spike_simulation_handler.html":[2,0,0,67],
 "classbrayns_1_1_spike_simulation_handler.html#a249fcd4324838bed7e17af5c2bf7fc10":[2,0,0,67,1],
 "classbrayns_1_1_spike_simulation_handler.html#aae5dc41c31d6b1a5473075eaf0c54fc9":[2,0,0,67,0],
@@ -111,8 +116,8 @@ var NAVTREEINDEX3 =
 "defines_linux_8h_source.html":[3,0,22],
 "exceptions_8h_source.html":[3,0,27],
 "files.html":[3,0],
-"functions.html":[2,3,0,0],
 "functions.html":[2,3,0],
+"functions.html":[2,3,0,0],
 "functions_0x7e.html":[2,3,0,19],
 "functions_a.html":[2,3,0,1],
 "functions_b.html":[2,3,0,2],
@@ -120,8 +125,8 @@ var NAVTREEINDEX3 =
 "functions_d.html":[2,3,0,4],
 "functions_e.html":[2,3,0,5],
 "functions_f.html":[2,3,0,6],
-"functions_func.html":[2,3,1,0],
 "functions_func.html":[2,3,1],
+"functions_func.html":[2,3,1,0],
 "functions_func_0x7e.html":[2,3,1,18],
 "functions_func_b.html":[2,3,1,1],
 "functions_func_c.html":[2,3,1,2],
@@ -244,10 +249,5 @@ var NAVTREEINDEX3 =
 "structbrayns_1_1_morphology_layout.html":[2,0,0,38],
 "structbrayns_1_1_morphology_layout.html#a099854a0a9ff14a183dc71a4c68cf35d":[2,0,0,38,0],
 "structbrayns_1_1_morphology_layout.html#a355fbef686222fc221cfee3aed303852":[2,0,0,38,1],
-"structbrayns_1_1_morphology_layout.html#a61b2fae31527804824b4c2be512d9534":[2,0,0,38,2],
-"structbrayns_1_1_morphology_layout.html#a8cc44739420ceee7cfd5ef288f80207e":[2,0,0,38,3],
-"structbrayns_1_1_screen_space_processor_data.html":[2,0,0,62],
-"structbrayns_1_1_screen_space_processor_data.html#a0a0952aefbf991f8daea0d4240b79ec7":[2,0,0,62,4],
-"structbrayns_1_1_screen_space_processor_data.html#a0a98061b395a9673514ad5ffd209d98b":[2,0,0,62,6],
-"structbrayns_1_1_screen_space_processor_data.html#a4a8aeebac32f5fce7ab9075b1ee91196":[2,0,0,62,3]
+"structbrayns_1_1_morphology_layout.html#a61b2fae31527804824b4c2be512d9534":[2,0,0,38,2]
 };

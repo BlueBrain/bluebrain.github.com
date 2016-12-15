@@ -1,5 +1,10 @@
 var NAVTREEINDEX4 =
 {
+"structbrayns_1_1_morphology_layout.html#a8cc44739420ceee7cfd5ef288f80207e":[2,0,0,38,3],
+"structbrayns_1_1_screen_space_processor_data.html":[2,0,0,62],
+"structbrayns_1_1_screen_space_processor_data.html#a0a0952aefbf991f8daea0d4240b79ec7":[2,0,0,62,4],
+"structbrayns_1_1_screen_space_processor_data.html#a0a98061b395a9673514ad5ffd209d98b":[2,0,0,62,6],
+"structbrayns_1_1_screen_space_processor_data.html#a4a8aeebac32f5fce7ab9075b1ee91196":[2,0,0,62,3],
 "structbrayns_1_1_screen_space_processor_data.html#a56d5fb6615ff399de60869cfc025309e":[2,0,0,62,5],
 "structbrayns_1_1_screen_space_processor_data.html#a6a96a6ac09eef0aae7df252871ff48c6":[2,0,0,62,1],
 "structbrayns_1_1_screen_space_processor_data.html#a90b7306cd264422a756a61cb8d50f15e":[2,0,0,62,2],
