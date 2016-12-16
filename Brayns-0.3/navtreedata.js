@@ -27,9 +27,9 @@ var NAVTREEINDEX =
 [
 ".html",
 "classbrayns_1_1_camera.html#a2f23e2260a19ad81e160cb69574a111f",
-"classbrayns_1_1_o_s_p_ray_camera.html#a5790eff76579edc1639f952921a24a11",
-"classbrayns_1_1_sphere.html#a1901f74bb00229ca5e5694050a65d617",
-"structbrayns_1_1_morphology_layout.html#a8cc44739420ceee7cfd5ef288f80207e"
+"classbrayns_1_1_o_s_p_ray_camera.html#a4d0d1cd0dc21287c004888322417da9f",
+"classbrayns_1_1_simulation_renderer.html#a941a4ac2580f7fe1273eba83f3b31032",
+"structbrayns_1_1_morphology_layout.html"
 ];
 
 var SYNCONMSG = 'click to disable panel synchronisation';

@@ -1,5 +1,9 @@
 var NAVTREEINDEX3 =
 {
+"classbrayns_1_1_simulation_renderer.html#a941a4ac2580f7fe1273eba83f3b31032":[2,0,0,65,0],
+"classbrayns_1_1_simulation_renderer.html#af3807e12a84ddcd858ab9273ec0ad9fc":[2,0,0,65,1],
+"classbrayns_1_1_sphere.html":[2,0,0,66],
+"classbrayns_1_1_sphere.html#a18e41311ab3fd172d0e3a6bc95b52d0f":[2,0,0,66,2],
 "classbrayns_1_1_sphere.html#a1901f74bb00229ca5e5694050a65d617":[2,0,0,66,3],
 "classbrayns_1_1_sphere.html#a5aa364199fb292761c9f2f35e1bdceb3":[2,0,0,66,0],
 "classbrayns_1_1_sphere.html#a65cebf9377f6a23a0ec494cc2ddd5d5d":[2,0,0,66,4],
@@ -116,8 +120,8 @@ var NAVTREEINDEX3 =
 "defines_linux_8h_source.html":[3,0,22],
 "exceptions_8h_source.html":[3,0,27],
 "files.html":[3,0],
-"functions.html":[2,3,0],
 "functions.html":[2,3,0,0],
+"functions.html":[2,3,0],
 "functions_0x7e.html":[2,3,0,19],
 "functions_a.html":[2,3,0,1],
 "functions_b.html":[2,3,0,2],
@@ -245,9 +249,5 @@ var NAVTREEINDEX3 =
 "structbrayns_1_1_mesh_container.html":[2,0,0,36],
 "structbrayns_1_1_mesh_container.html#a2485955ba4237fa84f7812894ab3bcf4":[2,0,0,36,0],
 "structbrayns_1_1_mesh_container.html#a98d07573ce79fd50f24906d85ac0a075":[2,0,0,36,1],
-"structbrayns_1_1_mesh_container.html#aea1e794c95b41ce35111923122726439":[2,0,0,36,2],
-"structbrayns_1_1_morphology_layout.html":[2,0,0,38],
-"structbrayns_1_1_morphology_layout.html#a099854a0a9ff14a183dc71a4c68cf35d":[2,0,0,38,0],
-"structbrayns_1_1_morphology_layout.html#a355fbef686222fc221cfee3aed303852":[2,0,0,38,1],
-"structbrayns_1_1_morphology_layout.html#a61b2fae31527804824b4c2be512d9534":[2,0,0,38,2]
+"structbrayns_1_1_mesh_container.html#aea1e794c95b41ce35111923122726439":[2,0,0,36,2]
 };

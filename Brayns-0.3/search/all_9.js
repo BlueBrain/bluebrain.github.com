@@ -11,6 +11,5 @@ var searchData=
   ['initializematerials',['initializeMaterials',['../classbrayns_1_1_engine.html#ad8f813b4404c85f75e4688f073748223',1,'brayns::Engine']]],
   ['inspectcentermanipulator',['InspectCenterManipulator',['../classbrayns_1_1_inspect_center_manipulator.html',1,'brayns']]],
   ['isbenchmarking',['isBenchmarking',['../classbrayns_1_1_application_parameters.html#a0baa53fd46c9a6aecddeec70d2546ce2',1,'brayns::ApplicationParameters']]],
-  ['isdirty',['isDirty',['../classbrayns_1_1_engine.html#a6ecca869a614a48e569d7cf7c6d827cc',1,'brayns::Engine']]],
-  ['isempty',['isEmpty',['../classbrayns_1_1_scene.html#a4a7b6501db821d19b56a86cde48ffd94',1,'brayns::Scene']]]
+  ['isdirty',['isDirty',['../classbrayns_1_1_engine.html#a6ecca869a614a48e569d7cf7c6d827cc',1,'brayns::Engine']]]
 ];

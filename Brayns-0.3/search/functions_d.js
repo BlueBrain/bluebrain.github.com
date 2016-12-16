@@ -1,6 +1,7 @@
 var searchData=
 [
   ['saveframetodisk',['saveFrameToDisk',['../classbrayns_1_1_base_window.html#a8ce72982bdec9284b615da1e19cbe60f',1,'brayns::BaseWindow']]],
+  ['savescenetocachefile',['saveSceneToCacheFile',['../classbrayns_1_1_opti_x_scene.html#a6bb8367f6b887be1c4528c349098d786',1,'brayns::OptiXScene::saveSceneToCacheFile()'],['../classbrayns_1_1_o_s_p_ray_scene.html#ad9ea4a411a09d9f76af6ad5f428b4762',1,'brayns::OSPRayScene::saveSceneToCacheFile()'],['../classbrayns_1_1_scene.html#a02722804a27cf1d458c09d3cd9a3b8f3',1,'brayns::Scene::saveSceneToCacheFile()']]],
   ['scene',['Scene',['../classbrayns_1_1_scene.html#a17f0dfc82bcbd4f69c9f1b436fcb1d66',1,'brayns::Scene']]],
   ['set',['set',['../classbrayns_1_1_abstract_parameters.html#a54da8b217bcd52a00a4b039b98abfcbd',1,'brayns::AbstractParameters::set()'],['../classbrayns_1_1_camera.html#a5583d0a667ef2d3ad4c5bc3ea408783b',1,'brayns::Camera::set()'],['../classbrayns_1_1_parameters_manager.html#a1d25e34639dbb420f9a3405b556a88b0',1,'brayns::ParametersManager::set()']]],
   ['setactiverenderer',['setActiveRenderer',['../classbrayns_1_1_engine.html#a65a906caa0f052f74d57a646d7457a05',1,'brayns::Engine']]],

@@ -9,5 +9,6 @@ var classbrayns_1_1_opti_x_scene =
     [ "commitSimulationData", "classbrayns_1_1_opti_x_scene.html#af7077a0b459a2a27db13b0ca5c1dc726", null ],
     [ "commitTransferFunctionData", "classbrayns_1_1_opti_x_scene.html#ad2804172919ba949c1b76764f8dcc5c1", null ],
     [ "commitVolumeData", "classbrayns_1_1_opti_x_scene.html#aabc1d5e3e24845a20d5e74fea75b25a3", null ],
-    [ "reset", "classbrayns_1_1_opti_x_scene.html#ab4142145a22dd06167d073d37af2170e", null ]
+    [ "reset", "classbrayns_1_1_opti_x_scene.html#ab4142145a22dd06167d073d37af2170e", null ],
+    [ "saveSceneToCacheFile", "classbrayns_1_1_opti_x_scene.html#a6bb8367f6b887be1c4528c349098d786", null ]
 ];

@@ -1,6 +1,7 @@
 var searchData=
 [
   ['saveframetodisk',['saveFrameToDisk',['../classbrayns_1_1_base_window.html#a8ce72982bdec9284b615da1e19cbe60f',1,'brayns::BaseWindow']]],
+  ['savescenetocachefile',['saveSceneToCacheFile',['../classbrayns_1_1_opti_x_scene.html#a6bb8367f6b887be1c4528c349098d786',1,'brayns::OptiXScene::saveSceneToCacheFile()'],['../classbrayns_1_1_o_s_p_ray_scene.html#ad9ea4a411a09d9f76af6ad5f428b4762',1,'brayns::OSPRayScene::saveSceneToCacheFile()'],['../classbrayns_1_1_scene.html#a02722804a27cf1d458c09d3cd9a3b8f3',1,'brayns::Scene::saveSceneToCacheFile()']]],
   ['scene',['Scene',['../classbrayns_1_1_scene.html',1,'brayns']]],
   ['scene',['Scene',['../classbrayns_1_1_scene.html#a17f0dfc82bcbd4f69c9f1b436fcb1d66',1,'brayns::Scene']]],
   ['sceneparameters',['SceneParameters',['../classbrayns_1_1_scene_parameters.html',1,'brayns']]],

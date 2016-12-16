@@ -9,6 +9,5 @@ var searchData=
   ['importspikereport',['importSpikeReport',['../classbrayns_1_1_n_e_s_t_loader.html#ade2f9a6adf69468e725edf4bb04073ff',1,'brayns::NESTLoader']]],
   ['initializematerials',['initializeMaterials',['../classbrayns_1_1_engine.html#ad8f813b4404c85f75e4688f073748223',1,'brayns::Engine']]],
   ['isbenchmarking',['isBenchmarking',['../classbrayns_1_1_application_parameters.html#a0baa53fd46c9a6aecddeec70d2546ce2',1,'brayns::ApplicationParameters']]],
-  ['isdirty',['isDirty',['../classbrayns_1_1_engine.html#a6ecca869a614a48e569d7cf7c6d827cc',1,'brayns::Engine']]],
-  ['isempty',['isEmpty',['../classbrayns_1_1_scene.html#a4a7b6501db821d19b56a86cde48ffd94',1,'brayns::Scene']]]
+  ['isdirty',['isDirty',['../classbrayns_1_1_engine.html#a6ecca869a614a48e569d7cf7c6d827cc',1,'brayns::Engine']]]
 ];
