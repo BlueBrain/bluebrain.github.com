@@ -1,0 +1,7 @@
+set(KEYV_MATURITY "EP")
+set(KEYV_DESCRIPTION "Key-Value based storage and caching using a variety of backends")
+set(KEYV_GIT_ROOT_URL "https://github.com/BlueBrain/Keyv.git")
+set(KEYV_PACKAGE_URL "")
+set(KEYV_CI_URL "https://travis-ci.org/BlueBrain/Keyv")
+set(KEYV_CI_PNG "https://travis-ci.org/BlueBrain/Keyv.png")
+set(KEYV_ISSUES_URL "https://github.com/BlueBrain/Keyv/issues")
