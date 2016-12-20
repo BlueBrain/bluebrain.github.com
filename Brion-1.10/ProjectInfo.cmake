@@ -1,0 +1,7 @@
+set(BRION_MATURITY "EP")
+set(BRION_DESCRIPTION "The Blue Brain C++ I/O library")
+set(BRION_GIT_ROOT_URL "https://github.com/BlueBrain/Brion.git")
+set(BRION_PACKAGE_URL "")
+set(BRION_CI_URL "https://travis-ci.org/BlueBrain/Brion")
+set(BRION_CI_PNG "https://travis-ci.org/BlueBrain/Brion.png")
+set(BRION_ISSUES_URL "https://github.com/BlueBrain/Brion/issues")

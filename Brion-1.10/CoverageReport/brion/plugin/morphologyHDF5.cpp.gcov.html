@@ -1,0 +1,893 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+
+<html lang="en">
+
+<head>
+  <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+  <title>LCOV - Brion - brion/plugin/morphologyHDF5.cpp</title>
+  <link rel="stylesheet" type="text/css" href="../../gcov.css">
+</head>
+
+<body>
+
+  <table width="100%" border=0 cellspacing=0 cellpadding=0>
+    <tr><td class="title">LCOV - code coverage report</td></tr>
+    <tr><td class="ruler"><img src="../../glass.png" width=3 height=3 alt=""></td></tr>
+
+    <tr>
+      <td width="100%">
+        <table cellpadding=1 border=0 width="100%">
+          <tr>
+            <td width="10%" class="headerItem">Current view:</td>
+            <td width="35%" class="headerValue"><a href="../../index.html">top level</a> - <a href="index.html">brion/plugin</a> - morphologyHDF5.cpp<span style="font-size: 80%;"> (source / <a href="morphologyHDF5.cpp.func-sort-c.html">functions</a>)</span></td>
+            <td width="5%"></td>
+            <td width="15%"></td>
+            <td width="10%" class="headerCovTableHead">Hit</td>
+            <td width="10%" class="headerCovTableHead">Total</td>
+            <td width="15%" class="headerCovTableHead">Coverage</td>
+          </tr>
+          <tr>
+            <td class="headerItem">Test:</td>
+            <td class="headerValue">Brion</td>
+            <td></td>
+            <td class="headerItem">Lines:</td>
+            <td class="headerCovTableEntry">384</td>
+            <td class="headerCovTableEntry">419</td>
+            <td class="headerCovTableEntryHi">91.6 %</td>
+          </tr>
+          <tr>
+            <td class="headerItem">Date:</td>
+            <td class="headerValue">2016-12-20 06:06:34</td>
+            <td></td>
+            <td class="headerItem">Functions:</td>
+            <td class="headerCovTableEntry">28</td>
+            <td class="headerCovTableEntry">28</td>
+            <td class="headerCovTableEntryHi">100.0 %</td>
+          </tr>
+          <tr><td><img src="../../glass.png" width=3 height=3 alt=""></td></tr>
+        </table>
+      </td>
+    </tr>
+
+    <tr><td class="ruler"><img src="../../glass.png" width=3 height=3 alt=""></td></tr>
+  </table>
+
+  <table cellpadding=0 cellspacing=0 border=0>
+    <tr>
+      <td><br></td>
+    </tr>
+    <tr>
+      <td>
+<pre class="sourceHeading">          Line data    Source code</pre>
+<pre class="source">
+<a name="1"><span class="lineNum">       1 </span>            : /* Copyright (c) 2013-2016, EPFL/Blue Brain Project</a>
+<span class="lineNum">       2 </span>            :  *                          Daniel Nachbaur &lt;daniel.nachbaur@epfl.ch&gt;
+<span class="lineNum">       3 </span>            :  *                          Juan Hernando &lt;jhernando@fi.upm.es&gt;
+<span class="lineNum">       4 </span>            :  *
+<span class="lineNum">       5 </span>            :  * This file is part of Brion &lt;https://github.com/BlueBrain/Brion&gt;
+<span class="lineNum">       6 </span>            :  *
+<span class="lineNum">       7 </span>            :  * This library is free software; you can redistribute it and/or modify it under
+<span class="lineNum">       8 </span>            :  * the terms of the GNU Lesser General Public License version 3.0 as published
+<span class="lineNum">       9 </span>            :  * by the Free Software Foundation.
+<span class="lineNum">      10 </span>            :  *
+<span class="lineNum">      11 </span>            :  * This library is distributed in the hope that it will be useful, but WITHOUT
+<span class="lineNum">      12 </span>            :  * ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS
+<span class="lineNum">      13 </span>            :  * FOR A PARTICULAR PURPOSE.  See the GNU Lesser General Public License for more
+<span class="lineNum">      14 </span>            :  * details.
+<span class="lineNum">      15 </span>            :  *
+<span class="lineNum">      16 </span>            :  * You should have received a copy of the GNU Lesser General Public License
+<span class="lineNum">      17 </span>            :  * along with this library; if not, write to the Free Software Foundation, Inc.,
+<span class="lineNum">      18 </span>            :  * 51 Franklin Street, Fifth Floor, Boston, MA 02110-1301 USA.
+<span class="lineNum">      19 </span>            :  */
+<span class="lineNum">      20 </span>            : 
+<span class="lineNum">      21 </span>            : #include &quot;morphologyHDF5.h&quot;
+<span class="lineNum">      22 </span>            : 
+<span class="lineNum">      23 </span>            : #include &quot;../detail/lockHDF5.h&quot;
+<span class="lineNum">      24 </span>            : #include &quot;../detail/silenceHDF5.h&quot;
+<span class="lineNum">      25 </span>            : #include &quot;../detail/utilsHDF5.h&quot;
+<span class="lineNum">      26 </span>            : 
+<span class="lineNum">      27 </span>            : #include &lt;brion/version.h&gt;
+<span class="lineNum">      28 </span>            : 
+<span class="lineNum">      29 </span>            : #include &lt;lunchbox/debug.h&gt;
+<span class="lineNum">      30 </span>            : #include &lt;lunchbox/scopedMutex.h&gt;
+<span class="lineNum">      31 </span>            : #include &lt;lunchbox/pluginRegisterer.h&gt;
+<span class="lineNum">      32 </span>            : 
+<span class="lineNum">      33 </span>            : #include &lt;H5Cpp.h&gt;
+<span class="lineNum">      34 </span>            : 
+<span class="lineNum">      35 </span>            : namespace brion
+<span class="lineNum">      36 </span>            : {
+<span class="lineNum">      37 </span>            : namespace plugin
+<span class="lineNum">      38 </span>            : {
+<span class="lineNum">      39 </span>            : 
+<span class="lineNum">      40 </span>            : namespace
+<span class="lineNum">      41 </span>            : {
+<a name="42"><span class="lineNum">      42 </span>            : </a>
+<span class="lineNum">      43 </span>            : // v1 &amp; v2
+<span class="lineNum">      44 </span><span class="lineCov">         14 : const std::string _d_points( &quot;points&quot; );</span>
+<span class="lineNum">      45 </span>            : const size_t _pointColumns = 4;
+<span class="lineNum">      46 </span>            : 
+<span class="lineNum">      47 </span>            : // v1
+<span class="lineNum">      48 </span><span class="lineCov">         14 : const std::string _d_structure( &quot;/structure&quot; );</span>
+<span class="lineNum">      49 </span>            : const size_t _structureV1Columns = 3;
+<span class="lineNum">      50 </span>            : 
+<span class="lineNum">      51 </span>            : // v1.1
+<span class="lineNum">      52 </span><span class="lineCov">         14 : const std::string _g_metadata( &quot;/metadata&quot; );</span>
+<span class="lineNum">      53 </span><span class="lineCov">         14 : const std::string _e_family( &quot;cell_family_enum&quot; );</span>
+<span class="lineNum">      54 </span><span class="lineCov">         14 : const std::string _a_family( &quot;cell_family&quot; );</span>
+<span class="lineNum">      55 </span><span class="lineCov">         14 : const std::string _d_perimeters( &quot;/perimeters&quot; );</span>
+<span class="lineNum">      56 </span><span class="lineCov">         14 : const std::string _a_software_version( &quot;software_version&quot; );</span>
+<span class="lineNum">      57 </span><span class="lineCov">         14 : const std::string _a_creation_time( &quot;creation_time&quot; );</span>
+<span class="lineNum">      58 </span>            : 
+<span class="lineNum">      59 </span>            : // v1.1 &amp; v2
+<span class="lineNum">      60 </span><span class="lineCov">         14 : const std::string _a_creator( &quot;creator&quot; );</span>
+<span class="lineNum">      61 </span><span class="lineCov">         14 : const std::string _a_version( &quot;version&quot; );</span>
+<span class="lineNum">      62 </span>            : 
+<span class="lineNum">      63 </span>            : // v2
+<span class="lineNum">      64 </span><span class="lineCov">         14 : const std::string _g_structure( &quot;structure&quot; );</span>
+<span class="lineNum">      65 </span>            : const size_t _structureV2Columns = 2;
+<span class="lineNum">      66 </span><span class="lineCov">         14 : const std::string _g_root( &quot;neuron1&quot; );</span>
+<span class="lineNum">      67 </span><span class="lineCov">         14 : const std::string _d_type( &quot;sectiontype&quot; );</span>
+<span class="lineNum">      68 </span><span class="lineCov">         14 : const std::string _a_apical( &quot;apical&quot; );</span>
+<a name="69"><span class="lineNum">      69 </span>            : </a>
+<span class="lineNum">      70 </span>            : 
+<span class="lineNum">      71 </span><span class="lineCov">         11 : std::string toString( const brion::enums::MorphologyRepairStage&amp; s )</span>
+<span class="lineNum">      72 </span>            : {
+<span class="lineNum">      73 </span><span class="lineCov">         11 :     switch( s )</span>
+<span class="lineNum">      74 </span>            :     {
+<span class="lineNum">      75 </span><span class="lineNoCov">          0 :     case brion::MORPHOLOGY_RAW: return &quot;raw&quot;;</span>
+<span class="lineNum">      76 </span><span class="lineNoCov">          0 :     case brion::MORPHOLOGY_UNRAVELED: return &quot;unraveled&quot;;</span>
+<span class="lineNum">      77 </span><span class="lineCov">         11 :     case brion::MORPHOLOGY_REPAIRED: return &quot;repaired&quot;;</span>
+<span class="lineNum">      78 </span>            :     case brion::MORPHOLOGY_UNDEFINED:
+<span class="lineNum">      79 </span>            :     default:
+<span class="lineNum">      80 </span><span class="lineNoCov">          0 :         throw boost::bad_lexical_cast();</span>
+<span class="lineNum">      81 </span>            :     }
+<span class="lineNum">      82 </span>            : }
+<span class="lineNum">      83 </span>            : 
+<span class="lineNum">      84 </span><span class="lineCov">         14 : lunchbox::PluginRegisterer&lt; MorphologyHDF5 &gt; registerer;</span>
+<span class="lineNum">      85 </span>            : 
+<span class="lineNum">      86 </span>            : }
+<span class="lineNum">      87 </span>            : 
+<span class="lineNum">      88 </span>            : 
+<span class="lineNum">      89 </span>            : #define ASSERT_WRITE                                                         \
+<span class="lineNum">      90 </span>            :     if( !_write )                                                            \
+<span class="lineNum">      91 </span>            :         LBTHROW( std::runtime_error( &quot;Cannot not write read-only morphology&quot; \
+<a name="92"><span class="lineNum">      92 </span>            :                                      &quot; file &quot; + _file.getFileName( )));</a>
+<span class="lineNum">      93 </span>            : 
+<span class="lineNum">      94 </span><span class="lineCov">         44 : MorphologyHDF5::MorphologyHDF5( const MorphologyInitData&amp; initData )</span>
+<span class="lineNum">      95 </span>            :     : _file()
+<span class="lineNum">      96 </span>            :     , _version( MORPHOLOGY_VERSION_UNDEFINED )
+<span class="lineNum">      97 </span>            :     , _stage( MORPHOLOGY_UNDEFINED )
+<span class="lineNum">      98 </span>            :     , _family( FAMILY_NEURON )
+<span class="lineNum">      99 </span><span class="lineCov">         46 :     , _write( false )</span>
+<span class="lineNum">     100 </span>            : {
+<span class="lineNum">     101 </span><span class="lineCov">         88 :     lunchbox::ScopedWrite mutex( detail::_hdf5Lock );</span>
+<span class="lineNum">     102 </span>            : 
+<span class="lineNum">     103 </span><span class="lineCov">         88 :     const std::string path = initData.getURI().getPath();</span>
+<span class="lineNum">     104 </span><span class="lineCov">         44 :     unsigned int flags = 0;</span>
+<span class="lineNum">     105 </span><span class="lineCov">         44 :     switch( initData.getAccessMode( ))</span>
+<span class="lineNum">     106 </span>            :     {
+<span class="lineNum">     107 </span>            :     case MODE_READ:
+<span class="lineNum">     108 </span><span class="lineCov">         33 :         flags = H5F_ACC_RDONLY;</span>
+<span class="lineNum">     109 </span><span class="lineCov">         33 :         _write = false;</span>
+<span class="lineNum">     110 </span><span class="lineCov">         33 :         break;</span>
+<span class="lineNum">     111 </span>            :     case MODE_WRITE:
+<span class="lineNum">     112 </span><span class="lineCov">          7 :         _write = true;</span>
+<span class="lineNum">     113 </span><span class="lineCov">          7 :         flags = H5F_ACC_EXCL;</span>
+<span class="lineNum">     114 </span><span class="lineCov">          7 :         break;</span>
+<span class="lineNum">     115 </span>            :     case MODE_OVERWRITE:
+<span class="lineNum">     116 </span><span class="lineCov">          4 :         _write = true;</span>
+<span class="lineNum">     117 </span><span class="lineCov">          4 :         flags = H5F_ACC_TRUNC;</span>
+<span class="lineNum">     118 </span><span class="lineCov">          4 :         break;</span>
+<span class="lineNum">     119 </span>            :     default:
+<span class="lineNum">     120 </span><span class="lineNoCov">          0 :         LBTHROW( std::runtime_error( &quot;Could not open morphology file &quot; +</span>
+<span class="lineNum">     121 </span>            :                                      path + &quot;: Invalid access mode&quot; ));
+<span class="lineNum">     122 </span>            :     }
+<span class="lineNum">     123 </span>            : 
+<span class="lineNum">     124 </span>            :     try
+<span class="lineNum">     125 </span>            :     {
+<span class="lineNum">     126 </span><span class="lineCov">         88 :         detail::SilenceHDF5 silence;</span>
+<span class="lineNum">     127 </span><span class="lineCov">         44 :         if( _write )</span>
+<span class="lineNum">     128 </span><span class="lineCov">         11 :             _file = H5::H5File( path, flags );</span>
+<span class="lineNum">     129 </span>            :         else
+<span class="lineNum">     130 </span><span class="lineCov">         33 :             _file.openFile( path, flags );</span>
+<span class="lineNum">     131 </span>            :     }
+<span class="lineNum">     132 </span><span class="lineCov">          2 :     catch( const H5::Exception&amp; exc )</span>
+<span class="lineNum">     133 </span>            :     {
+<span class="lineNum">     134 </span><span class="lineCov">          1 :         LBTHROW( std::runtime_error( _write ?</span>
+<span class="lineNum">     135 </span>            :                                      &quot;Could not create morphology file &quot; :
+<span class="lineNum">     136 </span>            :                                      &quot;Could not open morphology file &quot; +
+<span class="lineNum">     137 </span>            :                                      path + &quot;: &quot; + exc.getDetailMsg( )));
+<span class="lineNum">     138 </span>            :     }
+<span class="lineNum">     139 </span>            : 
+<span class="lineNum">     140 </span><span class="lineCov">         43 :     if( _write )</span>
+<span class="lineNum">     141 </span>            :     {
+<span class="lineNum">     142 </span><span class="lineCov">         10 :         _version = initData.getVersion();</span>
+<span class="lineNum">     143 </span><span class="lineCov">         10 :         switch( _version )</span>
+<span class="lineNum">     144 </span>            :         {
+<span class="lineNum">     145 </span>            :         case MORPHOLOGY_VERSION_H5_1:
+<span class="lineNum">     146 </span>            :             // no metadata for version 1
+<span class="lineNum">     147 </span><span class="lineCov">          1 :             break;</span>
+<span class="lineNum">     148 </span>            :         case MORPHOLOGY_VERSION_H5_1_1:
+<span class="lineNum">     149 </span><span class="lineCov">          5 :             _writeV11Metadata( initData );</span>
+<span class="lineNum">     150 </span><span class="lineCov">          5 :             break;</span>
+<span class="lineNum">     151 </span>            :         case MORPHOLOGY_VERSION_UNDEFINED:
+<span class="lineNum">     152 </span><span class="lineCov">          1 :             _version = MORPHOLOGY_VERSION_H5_2;</span>
+<span class="lineNum">     153 </span>            :             // no break;
+<span class="lineNum">     154 </span>            :         case MORPHOLOGY_VERSION_H5_2:
+<span class="lineNum">     155 </span><span class="lineCov">          4 :             _writeV2Metadata();</span>
+<span class="lineNum">     156 </span><span class="lineCov">          4 :             break;</span>
+<span class="lineNum">     157 </span>            :         default:
+<span class="lineNum">     158 </span><span class="lineNoCov">          0 :             LBTHROW( std::runtime_error( &quot;Unknown morphology file format for &quot;</span>
+<span class="lineNum">     159 </span>            :                                          &quot;file &quot; + path ));
+<span class="lineNum">     160 </span>            :         }
+<span class="lineNum">     161 </span>            :     }
+<span class="lineNum">     162 </span>            :     else
+<span class="lineNum">     163 </span>            :     {
+<span class="lineNum">     164 </span><span class="lineCov">         33 :         _checkVersion( path );</span>
+<span class="lineNum">     165 </span><span class="lineCov">         32 :         _selectRepairStage();</span>
+<span class="lineNum">     166 </span>            :     }
+<a name="167"><span class="lineNum">     167 </span><span class="lineCov">         42 : }</span></a>
+<span class="lineNum">     168 </span>            : 
+<span class="lineNum">     169 </span><span class="lineCov">        126 : MorphologyHDF5::~MorphologyHDF5()</span>
+<span class="lineNum">     170 </span>            : {
+<span class="lineNum">     171 </span><span class="lineCov">         84 :     lunchbox::ScopedWrite mutex( detail::_hdf5Lock );</span>
+<span class="lineNum">     172 </span>            : 
+<span class="lineNum">     173 </span><span class="lineCov">         42 :     if( _points.getId( ))</span>
+<span class="lineNum">     174 </span><span class="lineCov">         29 :         _points.close();</span>
+<span class="lineNum">     175 </span>            : 
+<span class="lineNum">     176 </span><span class="lineCov">         42 :     if( _sections.getId( ))</span>
+<span class="lineNum">     177 </span><span class="lineCov">         29 :         _sections.close();</span>
+<span class="lineNum">     178 </span>            : 
+<span class="lineNum">     179 </span><span class="lineCov">         42 :     if( _file.getId( ))</span>
+<span class="lineNum">     180 </span><span class="lineCov">         42 :         _file.close();</span>
+<a name="181"><span class="lineNum">     181 </span><span class="lineCov">         84 : }</span></a>
+<span class="lineNum">     182 </span>            : 
+<span class="lineNum">     183 </span><span class="lineCov">         64 : bool MorphologyHDF5::handles( const MorphologyInitData&amp; initData )</span>
+<span class="lineNum">     184 </span>            : {
+<span class="lineNum">     185 </span><span class="lineCov">        128 :     const std::string path = initData.getURI().getPath();</span>
+<span class="lineNum">     186 </span><span class="lineCov">         64 :     const size_t pos = path.find_last_of( &quot;.&quot; );</span>
+<span class="lineNum">     187 </span><span class="lineCov">         64 :     if( pos == std::string::npos )</span>
+<span class="lineNum">     188 </span><span class="lineCov">          3 :         return false;</span>
+<span class="lineNum">     189 </span>            : 
+<span class="lineNum">     190 </span><span class="lineCov">         61 :     return path.substr( pos ) == &quot;.h5&quot;;</span>
+<a name="191"><span class="lineNum">     191 </span>            : }</a>
+<span class="lineNum">     192 </span>            : 
+<span class="lineNum">     193 </span><span class="lineCov">          6 : CellFamily MorphologyHDF5::getCellFamily() const</span>
+<span class="lineNum">     194 </span>            : {
+<span class="lineNum">     195 </span><span class="lineCov">          6 :     return _family;</span>
+<a name="196"><span class="lineNum">     196 </span>            : }</a>
+<span class="lineNum">     197 </span>            : 
+<span class="lineNum">     198 </span><span class="lineCov">         25 : Vector4fsPtr MorphologyHDF5::readPoints( MorphologyRepairStage stage ) const</span>
+<span class="lineNum">     199 </span>            : {
+<span class="lineNum">     200 </span><span class="lineCov">         55 :     lunchbox::ScopedWrite mutex( detail::_hdf5Lock );</span>
+<span class="lineNum">     201 </span>            : 
+<span class="lineNum">     202 </span><span class="lineCov">         30 :     if( _version == MORPHOLOGY_VERSION_H5_2 )</span>
+<span class="lineNum">     203 </span>            :     {
+<span class="lineNum">     204 </span><span class="lineCov">          6 :         H5::DataSet dataset;</span>
+<span class="lineNum">     205 </span>            :         try
+<span class="lineNum">     206 </span>            :         {
+<span class="lineNum">     207 </span><span class="lineCov">          3 :             if( stage == MORPHOLOGY_UNDEFINED )</span>
+<span class="lineNum">     208 </span><span class="lineNoCov">          0 :                 stage = _stage;</span>
+<span class="lineNum">     209 </span><span class="lineCov">          6 :             dataset = _file.openDataSet(</span>
+<span class="lineNum">     210 </span><span class="lineCov">          9 :                 &quot;/&quot; + _g_root + &quot;/&quot; + toString( stage ) + &quot;/&quot; + _d_points );</span>
+<span class="lineNum">     211 </span>            :         }
+<span class="lineNum">     212 </span><span class="lineNoCov">          0 :         catch( ... )</span>
+<span class="lineNum">     213 </span>            :         {
+<span class="lineNum">     214 </span><span class="lineNoCov">          0 :             LBERROR &lt;&lt; &quot;Could not open points dataset for morphology file &quot;</span>
+<span class="lineNum">     215 </span><span class="lineNoCov">          0 :                     &lt;&lt; _file.getFileName() &lt;&lt; &quot; repair stage &quot;</span>
+<span class="lineNum">     216 </span><span class="lineNoCov">          0 :                     &lt;&lt; toString( stage ) &lt;&lt; std::endl;</span>
+<span class="lineNum">     217 </span><span class="lineNoCov">          0 :             return Vector4fsPtr( new Vector4fs );</span>
+<span class="lineNum">     218 </span>            :         }
+<span class="lineNum">     219 </span>            : 
+<span class="lineNum">     220 </span>            :         hsize_t dims[2];
+<span class="lineNum">     221 </span><span class="lineCov">          6 :         const H5::DataSpace&amp; dspace = dataset.getSpace();</span>
+<span class="lineNum">     222 </span><span class="lineCov">          9 :         if( dspace.getSimpleExtentNdims() != 2 ||</span>
+<span class="lineNum">     223 </span><span class="lineCov">          6 :             dspace.getSimpleExtentDims( dims ) &lt; 0 || dims[1] != _pointColumns )</span>
+<span class="lineNum">     224 </span>            :         {
+<span class="lineNum">     225 </span><span class="lineNoCov">          0 :             LBTHROW( std::runtime_error( &quot;Reading morphology file '&quot; +</span>
+<span class="lineNum">     226 </span>            :                           _file.getFileName() + &quot;': bad number of dimensions in&quot;
+<span class="lineNum">     227 </span>            :                           &quot; 'points' dataspace&quot;));
+<span class="lineNum">     228 </span>            :         }
+<span class="lineNum">     229 </span>            : 
+<span class="lineNum">     230 </span><span class="lineCov">          6 :         Vector4fsPtr data( new Vector4fs( dims[0] ));</span>
+<span class="lineNum">     231 </span><span class="lineCov">          3 :         dataset.read( data-&gt;data(), H5::PredType::NATIVE_FLOAT );</span>
+<span class="lineNum">     232 </span><span class="lineCov">          3 :         return data;</span>
+<span class="lineNum">     233 </span>            :     }
+<span class="lineNum">     234 </span>            : 
+<span class="lineNum">     235 </span><span class="lineCov">         54 :     Vector4fsPtr data( new Vector4fs( _pointsDims[0] ));</span>
+<span class="lineNum">     236 </span><span class="lineCov">         27 :     _points.read( data-&gt;data(), H5::PredType::NATIVE_FLOAT );</span>
+<span class="lineNum">     237 </span><span class="lineCov">         27 :     return data;</span>
+<a name="238"><span class="lineNum">     238 </span>            : }</a>
+<span class="lineNum">     239 </span>            : 
+<span class="lineNum">     240 </span><span class="lineCov">         29 : Vector2isPtr MorphologyHDF5::readSections( MorphologyRepairStage stage ) const</span>
+<span class="lineNum">     241 </span>            : {
+<span class="lineNum">     242 </span><span class="lineCov">         58 :     lunchbox::ScopedWrite mutex( detail::_hdf5Lock );</span>
+<span class="lineNum">     243 </span>            : 
+<span class="lineNum">     244 </span><span class="lineCov">         29 :     if( _version == MORPHOLOGY_VERSION_H5_2 )</span>
+<span class="lineNum">     245 </span>            :     {
+<span class="lineNum">     246 </span><span class="lineCov">          3 :         if( stage == MORPHOLOGY_UNDEFINED )</span>
+<span class="lineNum">     247 </span><span class="lineNoCov">          0 :             stage = _stage;</span>
+<span class="lineNum">     248 </span>            : 
+<span class="lineNum">     249 </span>            :         // fixes BBPSDK-295 by restoring old BBPSDK 0.13 implementation
+<span class="lineNum">     250 </span><span class="lineCov">          3 :         if( stage == MORPHOLOGY_UNRAVELED )</span>
+<span class="lineNum">     251 </span><span class="lineNoCov">          0 :             stage = MORPHOLOGY_RAW;</span>
+<span class="lineNum">     252 </span>            : 
+<span class="lineNum">     253 </span><span class="lineCov">          6 :         H5::DataSet dataset;</span>
+<span class="lineNum">     254 </span>            :         try
+<span class="lineNum">     255 </span>            :         {
+<span class="lineNum">     256 </span><span class="lineCov">         12 :             dataset = _file.openDataSet( &quot;/&quot; + _g_root  + &quot;/&quot; + _g_structure +</span>
+<span class="lineNum">     257 </span><span class="lineCov">         15 :                                          &quot;/&quot; + toString( stage ));</span>
+<span class="lineNum">     258 </span>            :         }
+<span class="lineNum">     259 </span><span class="lineNoCov">          0 :         catch( ... )</span>
+<span class="lineNum">     260 </span>            :         {
+<span class="lineNum">     261 </span><span class="lineNoCov">          0 :             LBERROR &lt;&lt; &quot;Could not open sections dataset for morphology file &quot;</span>
+<span class="lineNum">     262 </span><span class="lineNoCov">          0 :                     &lt;&lt; _file.getFileName() &lt;&lt; &quot; repair stage &quot;</span>
+<span class="lineNum">     263 </span><span class="lineNoCov">          0 :                     &lt;&lt; toString( stage ) &lt;&lt; std::endl;</span>
+<span class="lineNum">     264 </span><span class="lineNoCov">          0 :             return Vector2isPtr( new Vector2is );</span>
+<span class="lineNum">     265 </span>            :         }
+<span class="lineNum">     266 </span>            : 
+<span class="lineNum">     267 </span>            :         hsize_t dims[2];
+<span class="lineNum">     268 </span><span class="lineCov">          6 :         const H5::DataSpace&amp; dspace  = dataset.getSpace();</span>
+<span class="lineNum">     269 </span><span class="lineCov">          9 :         if( dspace.getSimpleExtentNdims() != 2 ||</span>
+<span class="lineNum">     270 </span><span class="lineCov">          6 :             dspace.getSimpleExtentDims( dims ) &lt; 0 ||</span>
+<span class="lineNum">     271 </span><span class="lineCov">          3 :             dims[1] != _structureV2Columns )</span>
+<span class="lineNum">     272 </span>            :         {
+<span class="lineNum">     273 </span><span class="lineNoCov">          0 :             LBTHROW( std::runtime_error( &quot;Reading morphology file '&quot; +</span>
+<span class="lineNum">     274 </span>            :                       _file.getFileName() + &quot;': bad number of dimensions in&quot;
+<span class="lineNum">     275 </span>            :                       &quot; 'structure' dataspace&quot;));
+<span class="lineNum">     276 </span>            :         }
+<span class="lineNum">     277 </span>            : 
+<span class="lineNum">     278 </span><span class="lineCov">          6 :         Vector2isPtr data( new Vector2is( dims[0] ));</span>
+<span class="lineNum">     279 </span><span class="lineCov">          3 :         dataset.read( data-&gt;data(), H5::PredType::NATIVE_INT );</span>
+<span class="lineNum">     280 </span><span class="lineCov">          3 :         return data;</span>
+<span class="lineNum">     281 </span>            :     }
+<span class="lineNum">     282 </span>            : 
+<span class="lineNum">     283 </span><span class="lineCov">         26 :     const hsize_t readCount[2] = { _sectionsDims[0], 1 };</span>
+<span class="lineNum">     284 </span><span class="lineCov">         26 :     const hsize_t readOffset[2] = { 0, 1 };</span>
+<span class="lineNum">     285 </span><span class="lineCov">         52 :     H5::DataSpace dspace = _sections.getSpace();</span>
+<span class="lineNum">     286 </span><span class="lineCov">         26 :     dspace.selectHyperslab( H5S_SELECT_XOR, readCount, readOffset );</span>
+<span class="lineNum">     287 </span>            : 
+<span class="lineNum">     288 </span><span class="lineCov">         52 :     Vector2isPtr data( new Vector2is( _sectionsDims[0] ));</span>
+<span class="lineNum">     289 </span><span class="lineCov">         26 :     const hsize_t mdim[2] = { _sectionsDims[0], 2 };</span>
+<span class="lineNum">     290 </span><span class="lineCov">         52 :     const H5::DataSpace mspace( 2, mdim );</span>
+<span class="lineNum">     291 </span><span class="lineCov">         26 :     _sections.read( data-&gt;data(), H5::PredType::NATIVE_INT, mspace,</span>
+<span class="lineNum">     292 </span><span class="lineCov">         26 :                     dspace );</span>
+<span class="lineNum">     293 </span><span class="lineCov">         26 :     return data;</span>
+<a name="294"><span class="lineNum">     294 </span>            : }</a>
+<span class="lineNum">     295 </span>            : 
+<span class="lineNum">     296 </span><span class="lineCov">         29 : SectionTypesPtr MorphologyHDF5::readSectionTypes() const</span>
+<span class="lineNum">     297 </span>            : {
+<span class="lineNum">     298 </span><span class="lineCov">         58 :     lunchbox::ScopedWrite mutex( detail::_hdf5Lock );</span>
+<span class="lineNum">     299 </span>            : 
+<span class="lineNum">     300 </span><span class="lineCov">         29 :     if( _version == MORPHOLOGY_VERSION_H5_2 )</span>
+<span class="lineNum">     301 </span>            :     {
+<span class="lineNum">     302 </span><span class="lineCov">          6 :         const H5::DataSet&amp; dataset = _file.openDataSet( &quot;/&quot; + _g_root  +</span>
+<span class="lineNum">     303 </span><span class="lineCov">          6 :                                      &quot;/&quot; + _g_structure + &quot;/&quot; + _d_type );</span>
+<span class="lineNum">     304 </span>            : 
+<span class="lineNum">     305 </span>            :         hsize_t dims[2];
+<span class="lineNum">     306 </span><span class="lineCov">          6 :         const H5::DataSpace&amp; dspace  = dataset.getSpace();</span>
+<span class="lineNum">     307 </span><span class="lineCov">          9 :         if( dspace.getSimpleExtentNdims() != 2 ||</span>
+<span class="lineNum">     308 </span><span class="lineCov">          6 :             dspace.getSimpleExtentDims( dims ) &lt; 0 || dims[1] != 1 )</span>
+<span class="lineNum">     309 </span>            :         {
+<span class="lineNum">     310 </span><span class="lineNoCov">          0 :             LBTHROW( std::runtime_error( &quot;Reading morphology file '&quot; +</span>
+<span class="lineNum">     311 </span>            :                       _file.getFileName() + &quot;': bad number of dimensions in&quot;
+<span class="lineNum">     312 </span>            :                       &quot; 'sectiontype' dataspace&quot;));
+<span class="lineNum">     313 </span>            :         }
+<span class="lineNum">     314 </span>            : 
+<span class="lineNum">     315 </span><span class="lineCov">          6 :         SectionTypesPtr data( new SectionTypes( dims[0] ));</span>
+<span class="lineNum">     316 </span><span class="lineCov">          3 :         dataset.read( data-&gt;data(), H5::PredType::NATIVE_INT );</span>
+<span class="lineNum">     317 </span><span class="lineCov">          3 :         return data;</span>
+<span class="lineNum">     318 </span>            :     }
+<span class="lineNum">     319 </span>            : 
+<span class="lineNum">     320 </span><span class="lineCov">         26 :     const hsize_t readCount[2] = { _sectionsDims[0], 1 };</span>
+<span class="lineNum">     321 </span><span class="lineCov">         26 :     const hsize_t readOffset[2] = { 0, 1 };</span>
+<span class="lineNum">     322 </span><span class="lineCov">         52 :     H5::DataSpace dspace = _sections.getSpace();</span>
+<span class="lineNum">     323 </span><span class="lineCov">         26 :     dspace.selectHyperslab( H5S_SELECT_SET, readCount, readOffset );</span>
+<span class="lineNum">     324 </span>            : 
+<span class="lineNum">     325 </span><span class="lineCov">         52 :     SectionTypesPtr data( new SectionTypes( _sectionsDims[0] ));</span>
+<span class="lineNum">     326 </span><span class="lineCov">         26 :     const hsize_t mdim = _sectionsDims[0];</span>
+<span class="lineNum">     327 </span><span class="lineCov">         52 :     const H5::DataSpace mspace( 1, &amp;mdim );</span>
+<span class="lineNum">     328 </span><span class="lineCov">         26 :     _sections.read( data-&gt;data(), H5::PredType::NATIVE_INT, mspace,</span>
+<span class="lineNum">     329 </span><span class="lineCov">         26 :                     dspace );</span>
+<span class="lineNum">     330 </span><span class="lineCov">         26 :     return data;</span>
+<a name="331"><span class="lineNum">     331 </span>            : }</a>
+<span class="lineNum">     332 </span>            : 
+<span class="lineNum">     333 </span><span class="lineCov">         18 : Vector2isPtr MorphologyHDF5::readApicals() const</span>
+<span class="lineNum">     334 </span>            : {
+<span class="lineNum">     335 </span><span class="lineCov">         36 :     lunchbox::ScopedWrite mutex( detail::_hdf5Lock );</span>
+<span class="lineNum">     336 </span>            : 
+<span class="lineNum">     337 </span><span class="lineCov">         18 :     Vector2isPtr data( new Vector2is );</span>
+<span class="lineNum">     338 </span><span class="lineCov">         18 :     if( _version == MORPHOLOGY_VERSION_H5_1 )</span>
+<span class="lineNum">     339 </span><span class="lineCov">         15 :         return data;</span>
+<span class="lineNum">     340 </span>            : 
+<span class="lineNum">     341 </span>            :     try
+<span class="lineNum">     342 </span>            :     {
+<span class="lineNum">     343 </span><span class="lineCov">          6 :         detail::SilenceHDF5 silence;</span>
+<span class="lineNum">     344 </span><span class="lineCov">          6 :         const H5::Group&amp; root = _file.openGroup( _g_root );</span>
+<span class="lineNum">     345 </span><span class="lineCov">          6 :         const H5::Attribute&amp; attr = root.openAttribute( _a_apical );</span>
+<span class="lineNum">     346 </span><span class="lineCov">          6 :         const H5::DataSpace dspace = attr.getSpace();</span>
+<span class="lineNum">     347 </span>            : 
+<span class="lineNum">     348 </span>            :         hsize_t dims[1];
+<span class="lineNum">     349 </span><span class="lineCov">          3 :         dspace.getSimpleExtentDims( dims );</span>
+<span class="lineNum">     350 </span>            : 
+<span class="lineNum">     351 </span><span class="lineCov">          3 :         data-&gt;resize( dims[0] / 2 );</span>
+<span class="lineNum">     352 </span><span class="lineCov">          3 :         attr.read( H5::PredType::NATIVE_INT, data-&gt;data( ));</span>
+<span class="lineNum">     353 </span>            :     }
+<span class="lineNum">     354 </span><span class="lineNoCov">          0 :     catch( ... ) {}</span>
+<span class="lineNum">     355 </span>            : 
+<span class="lineNum">     356 </span><span class="lineCov">          3 :     return data;</span>
+<a name="357"><span class="lineNum">     357 </span>            : }</a>
+<span class="lineNum">     358 </span>            : 
+<span class="lineNum">     359 </span><span class="lineCov">          4 : floatsPtr MorphologyHDF5::readPerimeters() const</span>
+<span class="lineNum">     360 </span>            : {
+<span class="lineNum">     361 </span><span class="lineCov">          4 :     if( _version != MORPHOLOGY_VERSION_H5_1_1 )</span>
+<span class="lineNum">     362 </span><span class="lineCov">          2 :         return floatsPtr( new floats( ));</span>
+<span class="lineNum">     363 </span>            : 
+<span class="lineNum">     364 </span><span class="lineCov">          4 :     lunchbox::ScopedWrite mutex( detail::_hdf5Lock );</span>
+<span class="lineNum">     365 </span>            : 
+<span class="lineNum">     366 </span>            :     try
+<span class="lineNum">     367 </span>            :     {
+<span class="lineNum">     368 </span><span class="lineCov">          4 :         detail::SilenceHDF5 silence;</span>
+<span class="lineNum">     369 </span><span class="lineCov">          3 :         H5::DataSet dataset = _file.openDataSet( _d_perimeters );</span>
+<span class="lineNum">     370 </span>            : 
+<span class="lineNum">     371 </span>            :         hsize_t dims;
+<span class="lineNum">     372 </span><span class="lineCov">          2 :         const H5::DataSpace&amp; dspace = dataset.getSpace();</span>
+<span class="lineNum">     373 </span><span class="lineCov">          2 :         if( dspace.getSimpleExtentNdims() != 1 ||</span>
+<span class="lineNum">     374 </span><span class="lineCov">          1 :             dspace.getSimpleExtentDims( &amp;dims ) &lt; 0 )</span>
+<span class="lineNum">     375 </span>            :         {
+<span class="lineNum">     376 </span><span class="lineNoCov">          0 :             LBTHROW( std::runtime_error( &quot;Reading morphology file '&quot; +</span>
+<span class="lineNum">     377 </span>            :                           _file.getFileName() + &quot;': bad number of dimensions in&quot;
+<span class="lineNum">     378 </span>            :                           &quot; 'perimeters' dataspace&quot;));
+<span class="lineNum">     379 </span>            :         }
+<span class="lineNum">     380 </span>            : 
+<span class="lineNum">     381 </span><span class="lineCov">          2 :         floatsPtr data( new floats( dims ));</span>
+<span class="lineNum">     382 </span><span class="lineCov">          1 :         dataset.read( data-&gt;data(), H5::PredType::NATIVE_FLOAT );</span>
+<span class="lineNum">     383 </span><span class="lineCov">          1 :         return data;</span>
+<span class="lineNum">     384 </span>            :     }
+<span class="lineNum">     385 </span><span class="lineCov">          2 :     catch( ... )</span>
+<span class="lineNum">     386 </span>            :     {
+<span class="lineNum">     387 </span><span class="lineCov">          1 :         if( getCellFamily() == FAMILY_GLIA )</span>
+<span class="lineNum">     388 </span><span class="lineNoCov">          0 :             LBTHROW( std::runtime_error( &quot;No empty perimeters allowed for glia &quot;</span>
+<span class="lineNum">     389 </span>            :                                          &quot;morphology&quot; ));
+<span class="lineNum">     390 </span><span class="lineCov">          1 :         return floatsPtr( new floats( ));</span>
+<span class="lineNum">     391 </span>            :     }
+<a name="392"><span class="lineNum">     392 </span>            : }</a>
+<span class="lineNum">     393 </span>            : 
+<span class="lineNum">     394 </span><span class="lineCov">          1 : MorphologyVersion MorphologyHDF5::getVersion() const</span>
+<span class="lineNum">     395 </span>            : {
+<span class="lineNum">     396 </span><span class="lineCov">          1 :     return _version;</span>
+<a name="397"><span class="lineNum">     397 </span>            : }</a>
+<span class="lineNum">     398 </span>            : 
+<span class="lineNum">     399 </span><span class="lineCov">          9 : void MorphologyHDF5::writePoints( const Vector4fs&amp; points,</span>
+<span class="lineNum">     400 </span>            :                                   const MorphologyRepairStage stage )
+<span class="lineNum">     401 </span>            : {
+<span class="lineNum">     402 </span><span class="lineCov">         18 :     lunchbox::ScopedWrite mutex( detail::_hdf5Lock );</span>
+<span class="lineNum">     403 </span>            : 
+<span class="lineNum">     404 </span><span class="lineCov">          9 :     ASSERT_WRITE;</span>
+<span class="lineNum">     405 </span>            : 
+<span class="lineNum">     406 </span><span class="lineCov">          8 :     hsize_t dim[2] = { points.size(), 4 };</span>
+<span class="lineNum">     407 </span><span class="lineCov">         16 :     H5::DataSpace pointsDS( 2, dim );</span>
+<span class="lineNum">     408 </span>            : 
+<span class="lineNum">     409 </span><span class="lineCov">         16 :     H5::DataSet dataset;</span>
+<span class="lineNum">     410 </span><span class="lineCov">         16 :     H5::FloatType pointsDT( H5::PredType::NATIVE_DOUBLE );</span>
+<span class="lineNum">     411 </span><span class="lineCov">          8 :     pointsDT.setOrder( H5T_ORDER_LE );</span>
+<span class="lineNum">     412 </span><span class="lineCov">          8 :     if( _version == MORPHOLOGY_VERSION_H5_2 )</span>
+<span class="lineNum">     413 </span>            :     {
+<span class="lineNum">     414 </span><span class="lineCov">          2 :         H5::Group root = _file.openGroup( _g_root );</span>
+<span class="lineNum">     415 </span><span class="lineCov">          2 :         H5::Group group = root.createGroup( toString( stage ));</span>
+<span class="lineNum">     416 </span>            :         try
+<span class="lineNum">     417 </span>            :         {
+<span class="lineNum">     418 </span><span class="lineCov">          2 :             detail::SilenceHDF5 silence;</span>
+<span class="lineNum">     419 </span><span class="lineCov">          1 :             group.openDataSet( _d_points );</span>
+<span class="lineNum">     420 </span><span class="lineNoCov">          0 :             LBTHROW( std::runtime_error( &quot;Points were already written&quot; ));</span>
+<span class="lineNum">     421 </span>            :         }
+<span class="lineNum">     422 </span><span class="lineCov">          1 :         catch( const H5::Exception&amp; ) {}</span>
+<span class="lineNum">     423 </span><span class="lineCov">          1 :         dataset = group.createDataSet( _d_points, pointsDT, pointsDS );</span>
+<span class="lineNum">     424 </span>            :     }
+<span class="lineNum">     425 </span>            :     else
+<span class="lineNum">     426 </span>            :     {
+<span class="lineNum">     427 </span>            :         try
+<span class="lineNum">     428 </span>            :         {
+<span class="lineNum">     429 </span><span class="lineCov">         14 :             detail::SilenceHDF5 silence;</span>
+<span class="lineNum">     430 </span><span class="lineCov">          7 :             _file.openDataSet( _d_points );</span>
+<span class="lineNum">     431 </span><span class="lineCov">          1 :             LBTHROW( std::runtime_error( &quot;Points were already written&quot; ));</span>
+<span class="lineNum">     432 </span>            :         }
+<span class="lineNum">     433 </span><span class="lineCov">          6 :         catch( const H5::Exception&amp; ) {}</span>
+<span class="lineNum">     434 </span>            : 
+<span class="lineNum">     435 </span>            :         try
+<span class="lineNum">     436 </span>            :         {
+<span class="lineNum">     437 </span><span class="lineCov">         12 :             detail::SilenceHDF5 silence;</span>
+<span class="lineNum">     438 </span><span class="lineCov">          8 :             H5::DataSet perimeters = _file.openDataSet( _d_perimeters );</span>
+<span class="lineNum">     439 </span>            :             hsize_t dims[2];
+<span class="lineNum">     440 </span><span class="lineCov">          2 :             perimeters.getSpace().getSimpleExtentDims( dims );</span>
+<span class="lineNum">     441 </span><span class="lineCov">          2 :             if( dims[0] != points.size( ))</span>
+<span class="lineNum">     442 </span>            :             {
+<span class="lineNum">     443 </span><span class="lineCov">          2 :                 std::stringstream msg;</span>
+<span class="lineNum">     444 </span><span class="lineCov">          1 :                 msg &lt;&lt; &quot;Number of points does not match number of perimeters, &quot;</span>
+<span class="lineNum">     445 </span><span class="lineCov">          2 :                     &lt;&lt; dims[0] &lt;&lt; &quot; != &quot; &lt;&lt; points.size() &lt;&lt; std::endl;</span>
+<span class="lineNum">     446 </span><span class="lineCov">          1 :                 LBTHROW( std::runtime_error( msg.str( )));</span>
+<span class="lineNum">     447 </span>            :             }
+<span class="lineNum">     448 </span>            :         }
+<span class="lineNum">     449 </span><span class="lineCov">          4 :         catch( const H5::Exception&amp; ) {}</span>
+<span class="lineNum">     450 </span>            : 
+<span class="lineNum">     451 </span><span class="lineCov">          5 :         dataset = _file.createDataSet( _d_points, pointsDT, pointsDS );</span>
+<span class="lineNum">     452 </span>            :     }
+<span class="lineNum">     453 </span>            : 
+<span class="lineNum">     454 </span><span class="lineCov">          6 :     dataset.write( points.data(), H5::PredType::NATIVE_FLOAT );</span>
+<a name="455"><span class="lineNum">     455 </span><span class="lineCov">          6 : }</span></a>
+<span class="lineNum">     456 </span>            : 
+<span class="lineNum">     457 </span><span class="lineCov">          5 : void MorphologyHDF5::writeSections( const Vector2is&amp; sections,</span>
+<span class="lineNum">     458 </span>            :                                     const MorphologyRepairStage stage )
+<span class="lineNum">     459 </span>            : {
+<span class="lineNum">     460 </span><span class="lineCov">          9 :     lunchbox::ScopedWrite mutex( detail::_hdf5Lock );</span>
+<span class="lineNum">     461 </span>            : 
+<span class="lineNum">     462 </span><span class="lineCov">          5 :     ASSERT_WRITE;</span>
+<span class="lineNum">     463 </span>            : 
+<span class="lineNum">     464 </span><span class="lineCov">          4 :     if( _version == MORPHOLOGY_VERSION_H5_2 )</span>
+<span class="lineNum">     465 </span>            :     {
+<span class="lineNum">     466 </span><span class="lineCov">          1 :         hsize_t dim[2] = { sections.size(), 2 };</span>
+<span class="lineNum">     467 </span><span class="lineCov">          2 :         H5::DataSpace structureDS( 2, dim );</span>
+<span class="lineNum">     468 </span>            : 
+<span class="lineNum">     469 </span><span class="lineCov">          2 :         H5::FloatType structureDT( H5::PredType::NATIVE_INT );</span>
+<span class="lineNum">     470 </span><span class="lineCov">          1 :         structureDT.setOrder( H5T_ORDER_LE );</span>
+<span class="lineNum">     471 </span><span class="lineCov">          2 :         H5::Group root = _file.openGroup( _g_root + &quot;/&quot; + _g_structure );</span>
+<span class="lineNum">     472 </span><span class="lineCov">          2 :         H5::DataSet dataset = root.createDataSet( toString( stage ),</span>
+<span class="lineNum">     473 </span><span class="lineCov">          2 :                                                   structureDT, structureDS );</span>
+<span class="lineNum">     474 </span><span class="lineCov">          1 :         dataset.write( sections.data(), H5::PredType::NATIVE_INT );</span>
+<span class="lineNum">     475 </span><span class="lineCov">          1 :         return;</span>
+<span class="lineNum">     476 </span>            :     }
+<span class="lineNum">     477 </span>            : 
+<span class="lineNum">     478 </span><span class="lineCov">          6 :     H5::DataSet dataset = _getStructureDataSet( sections.size( ));</span>
+<span class="lineNum">     479 </span><span class="lineCov">          6 :     const H5::DataSpace&amp; dspace = dataset.getSpace();</span>
+<span class="lineNum">     480 </span><span class="lineCov">          3 :     const hsize_t count[2] = { sections.size(), 1 };</span>
+<span class="lineNum">     481 </span><span class="lineCov">          3 :     const hsize_t offset[2] = { 0, 1 };</span>
+<span class="lineNum">     482 </span><span class="lineCov">          3 :     dspace.selectHyperslab( H5S_SELECT_XOR, count, offset );</span>
+<span class="lineNum">     483 </span>            : 
+<span class="lineNum">     484 </span><span class="lineCov">          3 :     const hsize_t mdim[2] = { sections.size(), 2 };</span>
+<span class="lineNum">     485 </span><span class="lineCov">          6 :     const H5::DataSpace mspace( 2, mdim );</span>
+<span class="lineNum">     486 </span><span class="lineCov">          3 :     dataset.write( sections.data(), H5::PredType::NATIVE_INT, mspace,</span>
+<span class="lineNum">     487 </span><span class="lineCov">          3 :                    dspace );</span>
+<a name="488"><span class="lineNum">     488 </span>            : }</a>
+<span class="lineNum">     489 </span>            : 
+<span class="lineNum">     490 </span><span class="lineCov">          5 : void MorphologyHDF5::writeSectionTypes( const SectionTypes&amp; types )</span>
+<span class="lineNum">     491 </span>            : {
+<span class="lineNum">     492 </span><span class="lineCov">          9 :     lunchbox::ScopedWrite mutex( detail::_hdf5Lock );</span>
+<span class="lineNum">     493 </span>            : 
+<span class="lineNum">     494 </span><span class="lineCov">          5 :     ASSERT_WRITE;</span>
+<span class="lineNum">     495 </span>            : 
+<span class="lineNum">     496 </span><span class="lineCov">          4 :     if( _version == MORPHOLOGY_VERSION_H5_2 )</span>
+<span class="lineNum">     497 </span>            :     {
+<span class="lineNum">     498 </span><span class="lineCov">          1 :         hsize_t dim[2] = { types.size(), 1 };</span>
+<span class="lineNum">     499 </span><span class="lineCov">          2 :         H5::DataSpace structureDS( 2, dim );</span>
+<span class="lineNum">     500 </span>            : 
+<span class="lineNum">     501 </span><span class="lineCov">          2 :         H5::FloatType structureDT( H5::PredType::NATIVE_INT );</span>
+<span class="lineNum">     502 </span><span class="lineCov">          1 :         structureDT.setOrder( H5T_ORDER_LE );</span>
+<span class="lineNum">     503 </span><span class="lineCov">          2 :         H5::Group root = _file.openGroup( _g_root + &quot;/&quot; + _g_structure );</span>
+<span class="lineNum">     504 </span>            :         H5::DataSet dataset = root.createDataSet( _d_type, structureDT,
+<span class="lineNum">     505 </span><span class="lineCov">          2 :                                                   structureDS );</span>
+<span class="lineNum">     506 </span><span class="lineCov">          1 :         dataset.write( types.data(), H5::PredType::NATIVE_INT );</span>
+<span class="lineNum">     507 </span>            : 
+<span class="lineNum">     508 </span><span class="lineCov">          1 :         return;</span>
+<span class="lineNum">     509 </span>            :     }
+<span class="lineNum">     510 </span>            : 
+<span class="lineNum">     511 </span><span class="lineCov">          6 :     H5::DataSet dataset = _getStructureDataSet( types.size( ));</span>
+<span class="lineNum">     512 </span><span class="lineCov">          6 :     const H5::DataSpace&amp; dspace = dataset.getSpace();</span>
+<span class="lineNum">     513 </span><span class="lineCov">          3 :     const hsize_t count[2] = { types.size(), 1 };</span>
+<span class="lineNum">     514 </span><span class="lineCov">          3 :     const hsize_t offset[2] = { 0, 1 };</span>
+<span class="lineNum">     515 </span><span class="lineCov">          3 :     dspace.selectHyperslab( H5S_SELECT_SET, count, offset );</span>
+<span class="lineNum">     516 </span>            : 
+<span class="lineNum">     517 </span><span class="lineCov">          3 :     const hsize_t mdim = types.size();</span>
+<span class="lineNum">     518 </span><span class="lineCov">          6 :     const H5::DataSpace mspace( 1, &amp;mdim );</span>
+<span class="lineNum">     519 </span><span class="lineCov">          3 :     dataset.write( types.data(), H5::PredType::NATIVE_INT, mspace, dspace );</span>
+<a name="520"><span class="lineNum">     520 </span>            : }</a>
+<span class="lineNum">     521 </span>            : 
+<span class="lineNum">     522 </span><span class="lineCov">          5 : void MorphologyHDF5::writeApicals( const Vector2is&amp; apicals )</span>
+<span class="lineNum">     523 </span>            : {
+<span class="lineNum">     524 </span><span class="lineCov">          5 :     ASSERT_WRITE;</span>
+<span class="lineNum">     525 </span>            : 
+<span class="lineNum">     526 </span><span class="lineCov">          4 :     if( _version != MORPHOLOGY_VERSION_H5_2 )</span>
+<span class="lineNum">     527 </span><span class="lineCov">          3 :         LBTHROW( std::runtime_error( &quot;Need version 2 to write apicals&quot; ));</span>
+<span class="lineNum">     528 </span>            : 
+<span class="lineNum">     529 </span><span class="lineCov">          1 :     if( apicals.empty( ))</span>
+<span class="lineNum">     530 </span><span class="lineNoCov">          0 :         return;</span>
+<span class="lineNum">     531 </span>            : 
+<span class="lineNum">     532 </span><span class="lineCov">          2 :     lunchbox::ScopedWrite mutex( detail::_hdf5Lock );</span>
+<span class="lineNum">     533 </span>            : 
+<span class="lineNum">     534 </span><span class="lineCov">          2 :     const H5::Group&amp; root = _file.openGroup( _g_root );</span>
+<span class="lineNum">     535 </span><span class="lineCov">          1 :     hsize_t dims = 2 * apicals.size();</span>
+<span class="lineNum">     536 </span><span class="lineCov">          2 :     H5::DataSpace apicalDS( 1, &amp;dims );</span>
+<span class="lineNum">     537 </span>            :     H5::Attribute attr = root.createAttribute( _a_apical,
+<span class="lineNum">     538 </span><span class="lineCov">          2 :                                     H5::PredType::NATIVE_DOUBLE, apicalDS );</span>
+<span class="lineNum">     539 </span><span class="lineCov">          1 :     attr.write( H5::PredType::NATIVE_INT, apicals.data( ));</span>
+<a name="540"><span class="lineNum">     540 </span>            : }</a>
+<span class="lineNum">     541 </span>            : 
+<span class="lineNum">     542 </span><span class="lineCov">          8 : void MorphologyHDF5::writePerimeters( const floats&amp; perimeters )</span>
+<span class="lineNum">     543 </span>            : {
+<span class="lineNum">     544 </span><span class="lineCov">          8 :     ASSERT_WRITE;</span>
+<span class="lineNum">     545 </span>            : 
+<span class="lineNum">     546 </span><span class="lineCov">          8 :     if( _version != MORPHOLOGY_VERSION_H5_1_1 )</span>
+<span class="lineNum">     547 </span><span class="lineCov">          2 :         LBTHROW( std::runtime_error( &quot;Need version 1.1 to write perimeters&quot; ));</span>
+<span class="lineNum">     548 </span>            : 
+<span class="lineNum">     549 </span><span class="lineCov">          6 :     if( perimeters.empty( ))</span>
+<span class="lineNum">     550 </span>            :     {
+<span class="lineNum">     551 </span><span class="lineCov">          1 :         if( getCellFamily() == FAMILY_GLIA )</span>
+<span class="lineNum">     552 </span><span class="lineCov">          1 :             LBTHROW( std::runtime_error( &quot;No empty perimeters allowed for glia &quot;</span>
+<span class="lineNum">     553 </span>            :                                          &quot;morphology&quot; ));
+<span class="lineNum">     554 </span><span class="lineNoCov">          0 :         return;</span>
+<span class="lineNum">     555 </span>            :     }
+<span class="lineNum">     556 </span>            : 
+<span class="lineNum">     557 </span><span class="lineCov">         10 :     lunchbox::ScopedWrite mutex( detail::_hdf5Lock );</span>
+<span class="lineNum">     558 </span>            : 
+<span class="lineNum">     559 </span>            :     try
+<span class="lineNum">     560 </span>            :     {
+<span class="lineNum">     561 </span><span class="lineCov">         10 :         detail::SilenceHDF5 silence;</span>
+<span class="lineNum">     562 </span><span class="lineCov">          5 :         _file.openDataSet( _d_perimeters );</span>
+<span class="lineNum">     563 </span><span class="lineCov">          1 :         LBTHROW( std::runtime_error( &quot;Perimeters were already written&quot; ));</span>
+<span class="lineNum">     564 </span>            :     }
+<span class="lineNum">     565 </span><span class="lineCov">          4 :     catch( const H5::Exception&amp; ) {}</span>
+<span class="lineNum">     566 </span>            : 
+<span class="lineNum">     567 </span><span class="lineCov">          4 :     const hsize_t dim = perimeters.size();</span>
+<span class="lineNum">     568 </span>            : 
+<span class="lineNum">     569 </span>            :     try
+<span class="lineNum">     570 </span>            :     {
+<span class="lineNum">     571 </span><span class="lineCov">          8 :         detail::SilenceHDF5 silence;</span>
+<span class="lineNum">     572 </span><span class="lineCov">          7 :         H5::DataSet points = _file.openDataSet( _d_points );</span>
+<span class="lineNum">     573 </span>            :         hsize_t dims[2];
+<span class="lineNum">     574 </span><span class="lineCov">          3 :         points.getSpace().getSimpleExtentDims( dims );</span>
+<span class="lineNum">     575 </span><span class="lineCov">          3 :         if( dims[0] != perimeters.size( ))</span>
+<span class="lineNum">     576 </span>            :         {
+<span class="lineNum">     577 </span><span class="lineCov">          2 :             std::stringstream msg;</span>
+<span class="lineNum">     578 </span><span class="lineCov">          1 :             msg &lt;&lt; &quot;Number of perimeters does not match number of points, &quot;</span>
+<span class="lineNum">     579 </span><span class="lineCov">          2 :                 &lt;&lt; dims[0] &lt;&lt; &quot; != &quot; &lt;&lt; perimeters.size() &lt;&lt; std::endl;</span>
+<span class="lineNum">     580 </span><span class="lineCov">          1 :             LBTHROW( std::runtime_error( msg.str( )));</span>
+<span class="lineNum">     581 </span>            :         }
+<span class="lineNum">     582 </span>            :     }
+<span class="lineNum">     583 </span><span class="lineCov">          1 :     catch( const H5::Exception&amp; ) {}</span>
+<span class="lineNum">     584 </span>            : 
+<span class="lineNum">     585 </span><span class="lineCov">          6 :     H5::DataSpace perimeterDS( 1, &amp;dim );</span>
+<span class="lineNum">     586 </span>            : 
+<span class="lineNum">     587 </span>            :     H5::DataSet dataset = _file.createDataSet( _d_perimeters,
+<span class="lineNum">     588 </span>            :                                                H5::PredType::NATIVE_FLOAT,
+<span class="lineNum">     589 </span><span class="lineCov">          6 :                                                perimeterDS );</span>
+<span class="lineNum">     590 </span><span class="lineCov">          3 :     dataset.write( perimeters.data(), H5::PredType::NATIVE_FLOAT );</span>
+<a name="591"><span class="lineNum">     591 </span>            : }</a>
+<span class="lineNum">     592 </span>            : 
+<span class="lineNum">     593 </span><span class="lineCov">          1 : void MorphologyHDF5::flush()</span>
+<span class="lineNum">     594 </span>            : {
+<span class="lineNum">     595 </span><span class="lineCov">          2 :     lunchbox::ScopedWrite mutex( detail::_hdf5Lock );</span>
+<span class="lineNum">     596 </span>            : 
+<span class="lineNum">     597 </span><span class="lineCov">          1 :     ASSERT_WRITE;</span>
+<span class="lineNum">     598 </span><span class="lineNoCov">          0 :     _file.flush( H5F_SCOPE_GLOBAL );</span>
+<a name="599"><span class="lineNum">     599 </span><span class="lineNoCov">          0 : }</span></a>
+<span class="lineNum">     600 </span>            : 
+<span class="lineNum">     601 </span><span class="lineCov">         33 : void MorphologyHDF5::_checkVersion( const std::string&amp; source )</span>
+<span class="lineNum">     602 </span>            : {
+<span class="lineNum">     603 </span><span class="lineCov">         33 :     if( _readV11Metadata( ))</span>
+<span class="lineNum">     604 </span><span class="lineCov">          2 :         return;</span>
+<span class="lineNum">     605 </span>            : 
+<span class="lineNum">     606 </span><span class="lineCov">         31 :     if( _readV2Metadata( ))</span>
+<span class="lineNum">     607 </span><span class="lineCov">          3 :         return;</span>
+<span class="lineNum">     608 </span>            : 
+<span class="lineNum">     609 </span>            :     try
+<span class="lineNum">     610 </span>            :     {
+<span class="lineNum">     611 </span><span class="lineCov">         28 :         _resolveV1();</span>
+<span class="lineNum">     612 </span><span class="lineCov">         27 :         _version = MORPHOLOGY_VERSION_H5_1;</span>
+<span class="lineNum">     613 </span><span class="lineCov">         27 :         return;</span>
+<span class="lineNum">     614 </span>            :     }
+<span class="lineNum">     615 </span><span class="lineCov">          2 :     catch( ... )</span>
+<span class="lineNum">     616 </span>            :     {
+<span class="lineNum">     617 </span><span class="lineCov">          1 :         LBTHROW( std::runtime_error( &quot;Unknown morphology file format for &quot;</span>
+<span class="lineNum">     618 </span>            :                                      &quot;file &quot; + source ));
+<span class="lineNum">     619 </span>            :     }
+<a name="620"><span class="lineNum">     620 </span>            : }</a>
+<span class="lineNum">     621 </span>            : 
+<span class="lineNum">     622 </span><span class="lineCov">         32 : void MorphologyHDF5::_selectRepairStage()</span>
+<span class="lineNum">     623 </span>            : {
+<span class="lineNum">     624 </span><span class="lineCov">         32 :     if( _version != MORPHOLOGY_VERSION_H5_2 )</span>
+<span class="lineNum">     625 </span><span class="lineCov">         29 :         return;</span>
+<span class="lineNum">     626 </span>            : 
+<span class="lineNum">     627 </span>            :     MorphologyRepairStage stages[3] = { MORPHOLOGY_REPAIRED,
+<span class="lineNum">     628 </span>            :                                         MORPHOLOGY_UNRAVELED,
+<span class="lineNum">     629 </span><span class="lineCov">          3 :                                         MORPHOLOGY_RAW };</span>
+<span class="lineNum">     630 </span><span class="lineCov">          3 :     for( size_t i = 0; i &lt; 3; ++i )</span>
+<span class="lineNum">     631 </span>            :     {
+<span class="lineNum">     632 </span>            :         try
+<span class="lineNum">     633 </span>            :         {
+<span class="lineNum">     634 </span><span class="lineCov">          6 :             detail::SilenceHDF5 silence;</span>
+<span class="lineNum">     635 </span><span class="lineCov">          6 :             _file.openDataSet( &quot;/&quot; + _g_root + &quot;/&quot; +</span>
+<span class="lineNum">     636 </span><span class="lineCov">          9 :                                toString( stages[i] ) + &quot;/&quot; + _d_points );</span>
+<span class="lineNum">     637 </span><span class="lineCov">          3 :             _stage = stages[i];</span>
+<span class="lineNum">     638 </span><span class="lineCov">          3 :             break;</span>
+<span class="lineNum">     639 </span>            :         }
+<span class="lineNum">     640 </span><span class="lineNoCov">          0 :         catch( const H5::Exception&amp; ) {}</span>
+<span class="lineNum">     641 </span>            :     }
+<a name="642"><span class="lineNum">     642 </span>            : }</a>
+<span class="lineNum">     643 </span>            : 
+<span class="lineNum">     644 </span><span class="lineCov">         30 : void MorphologyHDF5::_resolveV1()</span>
+<span class="lineNum">     645 </span>            : {
+<span class="lineNum">     646 </span><span class="lineCov">         30 :     _points = _file.openDataSet( &quot;/&quot; + _d_points );</span>
+<span class="lineNum">     647 </span><span class="lineCov">         58 :     const H5::DataSpace pointsSpace = _points.getSpace();</span>
+<span class="lineNum">     648 </span><span class="lineCov">         87 :     if( pointsSpace.getSimpleExtentNdims() != 2 ||</span>
+<span class="lineNum">     649 </span><span class="lineCov">         58 :         pointsSpace.getSimpleExtentDims( _pointsDims ) &lt; 0 ||</span>
+<span class="lineNum">     650 </span><span class="lineCov">         29 :         _pointsDims[1] != _pointColumns )</span>
+<span class="lineNum">     651 </span>            :     {
+<span class="lineNum">     652 </span><span class="lineNoCov">          0 :         LBTHROW( std::runtime_error( &quot;Opening morphology file '&quot; +</span>
+<span class="lineNum">     653 </span>            :                       _file.getFileName() + &quot;': bad number of dimensions in&quot;
+<span class="lineNum">     654 </span>            :                       &quot; 'points' dataspace&quot;));
+<span class="lineNum">     655 </span>            :     }
+<span class="lineNum">     656 </span>            : 
+<span class="lineNum">     657 </span><span class="lineCov">         29 :     _sections = _file.openDataSet( _d_structure );</span>
+<span class="lineNum">     658 </span><span class="lineCov">         58 :     const H5::DataSpace sectionsSpace = _sections.getSpace();</span>
+<span class="lineNum">     659 </span><span class="lineCov">         87 :     if( sectionsSpace.getSimpleExtentNdims() != 2 ||</span>
+<span class="lineNum">     660 </span><span class="lineCov">         58 :         sectionsSpace.getSimpleExtentDims(_sectionsDims ) &lt; 0 ||</span>
+<span class="lineNum">     661 </span><span class="lineCov">         29 :         _sectionsDims[1] != _structureV1Columns )</span>
+<span class="lineNum">     662 </span>            :     {
+<span class="lineNum">     663 </span><span class="lineNoCov">          0 :         LBTHROW( std::runtime_error( &quot;Opening morphology file '&quot; +</span>
+<span class="lineNum">     664 </span>            :                   _file.getFileName() + &quot;': bad number of dimensions in&quot;
+<span class="lineNum">     665 </span>            :                   &quot; 'structure' dataspace&quot;));
+<span class="lineNum">     666 </span>            :     }
+<a name="667"><span class="lineNum">     667 </span><span class="lineCov">         29 : }</span></a>
+<span class="lineNum">     668 </span>            : 
+<span class="lineNum">     669 </span><span class="lineCov">          5 : void MorphologyHDF5::_writeV11Metadata( const MorphologyInitData&amp; initData )</span>
+<span class="lineNum">     670 </span>            : {
+<span class="lineNum">     671 </span><span class="lineCov">          5 :     ASSERT_WRITE;</span>
+<span class="lineNum">     672 </span>            : 
+<span class="lineNum">     673 </span><span class="lineCov">         10 :     H5::Group metadata = _file.createGroup( _g_metadata );</span>
+<span class="lineNum">     674 </span>            : 
+<span class="lineNum">     675 </span><span class="lineCov">         10 :     H5::EnumType familyEnum( H5::PredType::STD_U32LE );</span>
+<span class="lineNum">     676 </span><span class="lineCov">          5 :     uint32_t enumValue = brion::FAMILY_NEURON;</span>
+<span class="lineNum">     677 </span><span class="lineCov">          5 :     familyEnum.insert( &quot;NEURON&quot;, &amp;enumValue );</span>
+<span class="lineNum">     678 </span><span class="lineCov">          5 :     enumValue = brion::FAMILY_GLIA;</span>
+<span class="lineNum">     679 </span><span class="lineCov">          5 :     familyEnum.insert( &quot;GLIA&quot;, &amp;enumValue );</span>
+<span class="lineNum">     680 </span><span class="lineCov">          5 :     familyEnum.commit( metadata, _e_family );</span>
+<span class="lineNum">     681 </span>            : 
+<span class="lineNum">     682 </span><span class="lineCov">          5 :     const hsize_t dim = 1;</span>
+<span class="lineNum">     683 </span><span class="lineCov">         10 :     H5::DataSpace familyDS( 1, &amp;dim );</span>
+<span class="lineNum">     684 </span>            :     H5::Attribute familyAttr = metadata.createAttribute( _a_family, familyEnum,
+<span class="lineNum">     685 </span><span class="lineCov">         10 :                                                      familyDS );</span>
+<span class="lineNum">     686 </span><span class="lineCov">          5 :     _family = initData.getFamily();</span>
+<span class="lineNum">     687 </span><span class="lineCov">          5 :     familyAttr.write( familyEnum, &amp;_family );</span>
+<span class="lineNum">     688 </span>            : 
+<span class="lineNum">     689 </span><span class="lineCov">         10 :     const std::string creator = &quot;Brion&quot;;</span>
+<span class="lineNum">     690 </span><span class="lineCov">          5 :     detail::addStringAttribute( metadata, _a_creator, creator );</span>
+<span class="lineNum">     691 </span>            : 
+<span class="lineNum">     692 </span>            :     detail::addStringAttribute( metadata, _a_software_version,
+<span class="lineNum">     693 </span><span class="lineCov">          5 :                                 Version::getString( ));</span>
+<span class="lineNum">     694 </span>            : 
+<span class="lineNum">     695 </span><span class="lineCov">          5 :     const time_t now = ::time(0);</span>
+<span class="lineNum">     696 </span>            : #ifdef _WIN32
+<span class="lineNum">     697 </span>            :     char* gmtString = ::ctime( &amp;now );
+<span class="lineNum">     698 </span>            : #else
+<span class="lineNum">     699 </span>            :     char gmtString[32];
+<span class="lineNum">     700 </span><span class="lineCov">          5 :     ::ctime_r( &amp;now, gmtString );</span>
+<span class="lineNum">     701 </span>            : #endif
+<span class="lineNum">     702 </span>            : 
+<span class="lineNum">     703 </span><span class="lineCov">         10 :     std::string creation_time = gmtString;</span>
+<span class="lineNum">     704 </span><span class="lineCov">          5 :     creation_time = creation_time.substr( 0, creation_time.size() -1 ); // ctime_r ends with \n</span>
+<span class="lineNum">     705 </span><span class="lineCov">          5 :     detail::addStringAttribute( metadata, _a_creation_time, creation_time );</span>
+<span class="lineNum">     706 </span>            : 
+<span class="lineNum">     707 </span><span class="lineCov">          5 :     hsize_t dims = 2;</span>
+<span class="lineNum">     708 </span><span class="lineCov">         10 :     H5::DataSpace versionDS( 1, &amp;dims );</span>
+<span class="lineNum">     709 </span>            :     H5::Attribute versionAttr = metadata.createAttribute( _a_version,
+<span class="lineNum">     710 </span><span class="lineCov">         10 :                                       H5::PredType::STD_U32LE, versionDS );</span>
+<span class="lineNum">     711 </span><span class="lineCov">          5 :     const uint32_t version[2] = { 1, 1 };</span>
+<span class="lineNum">     712 </span><span class="lineCov">          5 :     versionAttr.write( H5::PredType::STD_U32LE, &amp;version[0] );</span>
+<a name="713"><span class="lineNum">     713 </span><span class="lineCov">          5 : }</span></a>
+<span class="lineNum">     714 </span>            : 
+<span class="lineNum">     715 </span><span class="lineCov">         33 : bool MorphologyHDF5::_readV11Metadata()</span>
+<span class="lineNum">     716 </span>            : {
+<span class="lineNum">     717 </span>            :     try
+<span class="lineNum">     718 </span>            :     {
+<span class="lineNum">     719 </span><span class="lineCov">         66 :         detail::SilenceHDF5 silence;</span>
+<span class="lineNum">     720 </span><span class="lineCov">         35 :         const H5::Group&amp; metadata = _file.openGroup( _g_metadata );</span>
+<span class="lineNum">     721 </span><span class="lineCov">          4 :         const H5::Attribute&amp; attr = metadata.openAttribute( _a_version );</span>
+<span class="lineNum">     722 </span>            : 
+<span class="lineNum">     723 </span>            :         uint32_t version[2];
+<span class="lineNum">     724 </span><span class="lineCov">          2 :         attr.read( H5::PredType::STD_U32LE, &amp;version[0] );</span>
+<span class="lineNum">     725 </span><span class="lineCov">          2 :         if( version[0] != 1 || version[1] != 1 )</span>
+<span class="lineNum">     726 </span><span class="lineNoCov">          0 :             return false;</span>
+<span class="lineNum">     727 </span>            : 
+<span class="lineNum">     728 </span><span class="lineCov">          2 :         _version = MORPHOLOGY_VERSION_H5_1_1;</span>
+<span class="lineNum">     729 </span>            : 
+<span class="lineNum">     730 </span><span class="lineCov">          4 :         const H5::Attribute&amp; familyAttr = metadata.openAttribute( _a_family );</span>
+<span class="lineNum">     731 </span><span class="lineCov">          4 :         H5::EnumType familyEnum = metadata.openEnumType( _e_family );</span>
+<span class="lineNum">     732 </span>            : 
+<span class="lineNum">     733 </span><span class="lineCov">          2 :         familyAttr.read( familyEnum, &amp;_family );</span>
+<span class="lineNum">     734 </span>            : 
+<span class="lineNum">     735 </span><span class="lineCov">          2 :         _resolveV1();</span>
+<span class="lineNum">     736 </span><span class="lineCov">          2 :         return true;</span>
+<span class="lineNum">     737 </span>            :     }
+<span class="lineNum">     738 </span><span class="lineCov">         62 :     catch( const H5::Exception&amp; )</span>
+<span class="lineNum">     739 </span>            :     {
+<span class="lineNum">     740 </span><span class="lineCov">         31 :         return false;</span>
+<span class="lineNum">     741 </span>            :     }
+<a name="742"><span class="lineNum">     742 </span>            : }</a>
+<span class="lineNum">     743 </span>            : 
+<span class="lineNum">     744 </span><span class="lineCov">         31 : bool MorphologyHDF5:: _readV2Metadata()</span>
+<span class="lineNum">     745 </span>            : {
+<span class="lineNum">     746 </span>            :     try
+<span class="lineNum">     747 </span>            :     {
+<span class="lineNum">     748 </span><span class="lineCov">         59 :         detail::SilenceHDF5 silence;</span>
+<span class="lineNum">     749 </span><span class="lineCov">         31 :         const H5::Group&amp; root = _file.openGroup( _g_root );</span>
+<span class="lineNum">     750 </span><span class="lineCov">          3 :         const H5::Attribute&amp; attr = root.openAttribute( _a_version );</span>
+<span class="lineNum">     751 </span>            : 
+<span class="lineNum">     752 </span><span class="lineCov">          3 :         attr.read( H5::PredType::NATIVE_INT, &amp;_version );</span>
+<span class="lineNum">     753 </span>            : 
+<span class="lineNum">     754 </span><span class="lineCov">          3 :         if( _version == MORPHOLOGY_VERSION_H5_2 )</span>
+<span class="lineNum">     755 </span><span class="lineCov">          3 :             return true;</span>
+<span class="lineNum">     756 </span>            :     }
+<span class="lineNum">     757 </span><span class="lineCov">         28 :     catch( const H5::Exception&amp; ) {}</span>
+<span class="lineNum">     758 </span>            : 
+<span class="lineNum">     759 </span>            :     try
+<span class="lineNum">     760 </span>            :     {
+<span class="lineNum">     761 </span><span class="lineCov">         56 :         detail::SilenceHDF5 silence;</span>
+<span class="lineNum">     762 </span><span class="lineCov">         28 :         _file.openGroup( _g_root );</span>
+<span class="lineNum">     763 </span><span class="lineNoCov">          0 :         _version = MORPHOLOGY_VERSION_H5_2;</span>
+<span class="lineNum">     764 </span><span class="lineNoCov">          0 :         return true;</span>
+<span class="lineNum">     765 </span>            :     }
+<span class="lineNum">     766 </span><span class="lineCov">         56 :     catch( const H5::Exception&amp; )</span>
+<span class="lineNum">     767 </span>            :     {
+<span class="lineNum">     768 </span><span class="lineCov">         28 :         return false;</span>
+<span class="lineNum">     769 </span>            :     }
+<a name="770"><span class="lineNum">     770 </span>            : }</a>
+<span class="lineNum">     771 </span>            : 
+<span class="lineNum">     772 </span><span class="lineCov">          4 : void MorphologyHDF5::_writeV2Metadata()</span>
+<span class="lineNum">     773 </span>            : {
+<span class="lineNum">     774 </span><span class="lineCov">          4 :     ASSERT_WRITE;</span>
+<span class="lineNum">     775 </span>            : 
+<span class="lineNum">     776 </span><span class="lineCov">          8 :     H5::Group root = _file.createGroup( _g_root );</span>
+<span class="lineNum">     777 </span><span class="lineCov">          4 :     root.createGroup( _g_structure );</span>
+<span class="lineNum">     778 </span>            : 
+<span class="lineNum">     779 </span><span class="lineCov">          4 :     const time_t now = ::time(0);</span>
+<span class="lineNum">     780 </span>            : #ifdef _WIN32
+<span class="lineNum">     781 </span>            :     char* gmtString = ::ctime( &amp;now );
+<span class="lineNum">     782 </span>            : #else
+<span class="lineNum">     783 </span>            :     char gmtString[32];
+<span class="lineNum">     784 </span><span class="lineCov">          4 :     ::ctime_r( &amp;now, gmtString );</span>
+<span class="lineNum">     785 </span>            : #endif
+<span class="lineNum">     786 </span><span class="lineCov">         12 :     std::string creator = &quot;Brion &quot; + Version::getString() +</span>
+<span class="lineNum">     787 </span><span class="lineCov">         12 :                           &quot; brion::Morphology &quot; + gmtString;</span>
+<span class="lineNum">     788 </span><span class="lineCov">          4 :     creator = creator.substr( 0, creator.size() -1 ); // ctime_r ends with \n</span>
+<span class="lineNum">     789 </span><span class="lineCov">          4 :     detail::addStringAttribute( root, _a_creator, creator );</span>
+<span class="lineNum">     790 </span>            : 
+<span class="lineNum">     791 </span><span class="lineCov">          8 :     H5::DataSpace versionDS( H5S_SCALAR );</span>
+<span class="lineNum">     792 </span>            :     H5::Attribute versionAttr = root.createAttribute( _a_version,
+<span class="lineNum">     793 </span><span class="lineCov">          8 :                                       H5::PredType::NATIVE_INT, versionDS );</span>
+<span class="lineNum">     794 </span><span class="lineCov">          4 :     const int version = MORPHOLOGY_VERSION_H5_2;</span>
+<span class="lineNum">     795 </span><span class="lineCov">          4 :     versionAttr.write( H5::PredType::NATIVE_INT, &amp;version );</span>
+<a name="796"><span class="lineNum">     796 </span><span class="lineCov">          4 : }</span></a>
+<span class="lineNum">     797 </span>            : 
+<span class="lineNum">     798 </span><span class="lineCov">          6 : H5::DataSet MorphologyHDF5::_getStructureDataSet( size_t nSections )</span>
+<span class="lineNum">     799 </span>            : {
+<span class="lineNum">     800 </span><span class="lineCov">         12 :     H5::DataSet dataset;</span>
+<span class="lineNum">     801 </span>            :     try
+<span class="lineNum">     802 </span>            :     {
+<span class="lineNum">     803 </span><span class="lineCov">         12 :         detail::SilenceHDF5 silence;</span>
+<span class="lineNum">     804 </span><span class="lineCov">          6 :         return _file.openDataSet( _d_structure );</span>
+<span class="lineNum">     805 </span>            :     }
+<span class="lineNum">     806 </span><span class="lineCov">          6 :     catch( const H5::Exception&amp; )</span>
+<span class="lineNum">     807 </span>            :     {
+<span class="lineNum">     808 </span><span class="lineCov">          3 :         hsize_t dim[2] = { nSections, 3 };</span>
+<span class="lineNum">     809 </span><span class="lineCov">          6 :         H5::DataSpace structureDS( 2, dim );</span>
+<span class="lineNum">     810 </span><span class="lineCov">          6 :         H5::FloatType structureDT( H5::PredType::NATIVE_INT );</span>
+<span class="lineNum">     811 </span><span class="lineCov">          3 :         structureDT.setOrder( H5T_ORDER_LE );</span>
+<span class="lineNum">     812 </span><span class="lineCov">          3 :         return _file.createDataSet( _d_structure, structureDT, structureDS );</span>
+<span class="lineNum">     813 </span>            :     }
+<span class="lineNum">     814 </span>            : }
+<a name="815"><span class="lineNum">     815 </span>            : </a>
+<span class="lineNum">     816 </span>            : }
+<span class="lineNum">     817 </span><span class="lineCov">         42 : }</span>
+</pre>
+      </td>
+    </tr>
+  </table>
+  <br>
+
+  <table width="100%" border=0 cellspacing=0 cellpadding=0>
+    <tr><td class="ruler"><img src="../../glass.png" width=3 height=3 alt=""></td></tr>
+    <tr><td class="versionInfo">Generated by: <a href="http://ltp.sourceforge.net/coverage/lcov.php" target="_parent">LCOV version 1.11</a></td></tr>
+  </table>
+  <br>
+
+</body>
+</html>
