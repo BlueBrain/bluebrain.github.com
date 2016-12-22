@@ -41,6 +41,7 @@ var annotated_dup =
       [ "Material", "classbrayns_1_1_material.html", "classbrayns_1_1_material" ],
       [ "MeshContainer", "structbrayns_1_1_mesh_container.html", "structbrayns_1_1_mesh_container" ],
       [ "MeshLoader", "classbrayns_1_1_mesh_loader.html", "classbrayns_1_1_mesh_loader" ],
+      [ "MolecularSystemReader", "classbrayns_1_1_molecular_system_reader.html", "classbrayns_1_1_molecular_system_reader" ],
       [ "MorphologyLayout", "structbrayns_1_1_morphology_layout.html", "structbrayns_1_1_morphology_layout" ],
       [ "MorphologyLoader", "classbrayns_1_1_morphology_loader.html", "classbrayns_1_1_morphology_loader" ],
       [ "NESTLoader", "classbrayns_1_1_n_e_s_t_loader.html", "classbrayns_1_1_n_e_s_t_loader" ],

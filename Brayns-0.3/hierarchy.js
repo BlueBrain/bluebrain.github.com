@@ -56,6 +56,7 @@ var hierarchy =
     [ "brayns::Material", "classbrayns_1_1_material.html", null ],
     [ "brayns::MeshContainer", "structbrayns_1_1_mesh_container.html", null ],
     [ "brayns::MeshLoader", "classbrayns_1_1_mesh_loader.html", null ],
+    [ "brayns::MolecularSystemReader", "classbrayns_1_1_molecular_system_reader.html", null ],
     [ "brayns::MorphologyLayout", "structbrayns_1_1_morphology_layout.html", null ],
     [ "brayns::MorphologyLoader", "classbrayns_1_1_morphology_loader.html", null ],
     [ "brayns::NESTLoader", "classbrayns_1_1_n_e_s_t_loader.html", null ],
