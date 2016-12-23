@@ -12,7 +12,6 @@ var searchData=
   ['getlevel',['getLevel',['../classlivre_1_1_node_id.html#a55a71a3b1fa35f1a0b564c1e9b11cd0b',1,'livre::NodeId']]],
   ['getmajor',['getMajor',['../classlivrecore_1_1_version.html#ac7fae924c506e38def00f88cbe924d97',1,'livrecore::Version']]],
   ['getmaxindex',['getMaxIndex',['../classlivre_1_1_histogram.html#a5b97bb91400a9cd6000ce488198d287f',1,'livre::Histogram']]],
-  ['getmemsize',['getMemSize',['../classlivre_1_1_memory_unit.html#adc6d7dc0879f90777657ecdc0bfee9e5',1,'livre::MemoryUnit::getMemSize()'],['../classlivre_1_1_no_memory_unit.html#ac515e121dbb6ac214b5ed0beb20269d4',1,'livre::NoMemoryUnit::getMemSize()'],['../classlivre_1_1_const_memory_unit.html#a664053d9b698f1be2429c3ed36d8a575',1,'livre::ConstMemoryUnit::getMemSize()'],['../classlivre_1_1_alloc_memory_unit.html#ab0f9f4cb00db47c88431c4a288257627',1,'livre::AllocMemoryUnit::getMemSize()']]],
   ['getminindex',['getMinIndex',['../classlivre_1_1_histogram.html#ae1bdfd90cdd3b46e872977b78fdbf3af',1,'livre::Histogram']]],
   ['getminor',['getMinor',['../classlivrecore_1_1_version.html#a70a2b01332da98f450cada3b37cadc9d',1,'livrecore::Version']]],
   ['getnode',['getNode',['../classlivre_1_1_data_source_plugin.html#a94912dce35d46c61d454214869e8b41f',1,'livre::DataSourcePlugin']]],
