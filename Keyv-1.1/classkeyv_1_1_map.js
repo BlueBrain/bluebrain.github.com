@@ -1,6 +1,7 @@
 var classkeyv_1_1_map =
 [
     [ "Map", "classkeyv_1_1_map.html#a2e9a1c8d64490a469e4209dcd9b99f29", null ],
+    [ "Map", "classkeyv_1_1_map.html#aeb1f00603e7db85d8d7663ea18fc243a", null ],
     [ "~Map", "classkeyv_1_1_map.html#a31f144c6836a17d0382f29606416efe6", null ],
     [ "_insert", "classkeyv_1_1_map.html#a039665d385e1d1c67cbc882a470368ba", null ],
     [ "createCache", "classkeyv_1_1_map.html#a52492a97cf9efff86e51768b7b771b1e", null ],
@@ -15,6 +16,7 @@ var classkeyv_1_1_map =
     [ "insert", "classkeyv_1_1_map.html#acbf4677eb56ae4ce4480f6202db28b9b", null ],
     [ "insert", "classkeyv_1_1_map.html#aeae2cd84dcb9f869d3f746db8f8ec7b4", null ],
     [ "insert", "classkeyv_1_1_map.html#a43928e5c6c298a2e02de2e3740395421", null ],
+    [ "operator=", "classkeyv_1_1_map.html#a9f44bc787a936c54abd5fbd9875164ea", null ],
     [ "operator[]", "classkeyv_1_1_map.html#a11c0cceb4a4d0ea849b90304848cc390", null ],
     [ "setByteswap", "classkeyv_1_1_map.html#ae0e5f17373059dd8ec8f60f60d007d11", null ],
     [ "setQueueDepth", "classkeyv_1_1_map.html#a23860564004acd599b68341aa372e70b", null ],
