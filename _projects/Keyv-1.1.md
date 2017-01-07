@@ -4,7 +4,7 @@ version: "1.1"
 major: 1
 minor: 1
 description: Key-Value based storage and caching using a variety of backends
-updated: 04/01/17
+updated: 07/01/17
 homepage: https://github.com/BlueBrain/Keyv
 repository: https://github.com/BlueBrain/Keyv.git
 issuesurl: https://github.com/BlueBrain/Keyv/issues

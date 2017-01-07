@@ -5,7 +5,6 @@ var classkeyv_1_1_map =
     [ "~Map", "classkeyv_1_1_map.html#a31f144c6836a17d0382f29606416efe6", null ],
     [ "_insert", "classkeyv_1_1_map.html#a039665d385e1d1c67cbc882a470368ba", null ],
     [ "createCache", "classkeyv_1_1_map.html#a52492a97cf9efff86e51768b7b771b1e", null ],
-    [ "fetch", "classkeyv_1_1_map.html#ae8919d3bed24553467266a71af75459a", null ],
     [ "flush", "classkeyv_1_1_map.html#af7d5f10d47e6c64c83361a31ffd07641", null ],
     [ "get", "classkeyv_1_1_map.html#a382030f70d9e8df2e1c2459dc22241c6", null ],
     [ "getSet", "classkeyv_1_1_map.html#aba228e44a816dd0cc67409355fbe6409", null ],
