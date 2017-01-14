@@ -4,7 +4,7 @@ version: "0.3"
 major: 0
 minor: 3
 description: Hardware Agnostic Ray-Tracer
-updated: 24/12/16
+updated: 14/01/17
 homepage: https://github.com/BlueBrain/Brayns
 repository: https://github.com/BlueBrain/Brayns.git
 issuesurl: https://github.com/BlueBrain/Brayns/issues
@@ -12,7 +12,7 @@ packageurl:
 license: 
 maturity: EP
 maintainers: 
-contributors: chevtche
+contributors: Cyrille Favreau
 readmetype: text/x-markdown
 ---
 # Brayns
@@ -73,15 +73,28 @@ following tree structure:
 
 Download and extract [ISPC compiler 1.9.0 archive](https://ispc.github.io/downloads.html).
 
+#### Embree
+
+Clone embree in the same folder level as ISPC compiler
+
+```
+  git clone https://github.com/embree/embree.git
+  mkdir embree/Build
+  cd embree/Build
+  cmake .. -DCMAKE_INSTALL_PREFIX=<Brayns_installation_folder>
+  make install
+```
+
 #### OSPRay
 
 Clone OSPRay in the same folder level as ISPC compiler
 
 ```
-  git clone https://github.com/BlueBrain/OSPRay.git
+  git clone https://github.com/ospray/OSPRay.git
   mkdir OSPRay/Build
   cd OSPRay/Build
-  cmake .. -DCMAKE_INSTALL_PREFIX=<Brayns_installation_folder>
+  export embree_DIR=<Brayns_installation_folder>
+  cmake .. -DOSPRAY_USE_EXTERNAL_EMBREE=ON -DCMAKE_INSTALL_PREFIX=<Brayns_installation_folder>
   make install
 ```
 
@@ -91,7 +104,7 @@ Clone OSPRay in the same folder level as ISPC compiler
   git clone https://github.com/BlueBrain/Brayns.git
   mkdir Brayns/Build
   cd Brayns/Build
-  cmake .. -DOSPRAY_ROOT=<Brayns_installation_folder> -DCMAKE_INSTALL_PREFIX=<Brayns_installation_folder>
+  cmake .. -DOSPRAY_ROOT=<Brayns_installation_folder> -DEMBREE_ROOT=<Brayns_installation_folder> -DCMAKE_INSTALL_PREFIX=<Brayns_installation_folder>
   make install
 ```
 

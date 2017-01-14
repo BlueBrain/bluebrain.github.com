@@ -20,6 +20,7 @@ var searchData=
   ['setdirection',['setDirection',['../classbrayns_1_1_directional_light.html#a7b30ca18ef5beeb3ad887dfec000e28f',1,'brayns::DirectionalLight']]],
   ['setenvironmentmap',['setEnvironmentMap',['../classbrayns_1_1_camera.html#a772e27325b19ab05e7966976bc755a44',1,'brayns::Camera::setEnvironmentMap()'],['../classbrayns_1_1_opti_x_camera.html#a237a5116de5296d8fc92141ffb6692b5',1,'brayns::OptiXCamera::setEnvironmentMap()'],['../classbrayns_1_1_o_s_p_ray_camera.html#ab0b292441fd978c5a3f98285e6d70249',1,'brayns::OSPRayCamera::setEnvironmentMap()']]],
   ['setepsilon',['setEpsilon',['../classbrayns_1_1_rendering_parameters.html#abc66474540605dc0c643e1dae19027a6',1,'brayns::RenderingParameters']]],
+  ['seteyeseparation',['setEyeSeparation',['../classbrayns_1_1_camera.html#a6f4f1b8f69cbf91e671c68e055fb9f92',1,'brayns::Camera']]],
   ['setfieldofview',['setFieldOfView',['../classbrayns_1_1_camera.html#a60c233a5b53c7d8bbad0a88ea753fca9',1,'brayns::Camera']]],
   ['setfocallength',['setFocalLength',['../classbrayns_1_1_camera.html#adb7e9f91916e49cd6d2a4370908c8a82',1,'brayns::Camera']]],
   ['setframesize',['setFrameSize',['../classbrayns_1_1_abstract_simulation_handler.html#a8fa6e6c15ed6b6aad1e30004cf2c2983',1,'brayns::AbstractSimulationHandler']]],
@@ -33,6 +34,7 @@ var searchData=
   ['setsamplesperray',['setSamplesPerRay',['../classbrayns_1_1_volume_parameters.html#ae8eb99f1718e213b31a051ad8864d677',1,'brayns::VolumeParameters']]],
   ['setsimulationhandler',['setSimulationHandler',['../classbrayns_1_1_scene.html#a0ebde9602b22c831f46ca3fa07db6795',1,'brayns::Scene']]],
   ['setsplashscenefolder',['setSplashSceneFolder',['../classbrayns_1_1_geometry_parameters.html#ad4fef2d48a0d138c284cc407a0b9c02d',1,'brayns::GeometryParameters']]],
+  ['setstereomode',['setStereoMode',['../classbrayns_1_1_camera.html#a9d72938ca0b714a6a8f7132546f5033d',1,'brayns::Camera']]],
   ['settarget',['setTarget',['../classbrayns_1_1_camera.html#ac93d24c8fe13e55d1092817bb94983a1',1,'brayns::Camera']]],
   ['settimestamp',['setTimestamp',['../classbrayns_1_1_abstract_simulation_handler.html#a7e7bd675c0ad2ad12872e2074d4de985',1,'brayns::AbstractSimulationHandler::setTimestamp()'],['../classbrayns_1_1_volume_handler.html#a66235cbdf2b90d7e47593a166ea890e1',1,'brayns::VolumeHandler::setTimestamp()']]],
   ['settimestampmode',['setTimestampMode',['../classbrayns_1_1_volume_handler.html#a0e887bb0dca2c2df76e3340b51d2197c',1,'brayns::VolumeHandler']]],
@@ -44,6 +46,5 @@ var searchData=
   ['simulationrenderer',['SimulationRenderer',['../classbrayns_1_1_simulation_renderer.html',1,'brayns']]],
   ['sphere',['Sphere',['../classbrayns_1_1_sphere.html',1,'brayns']]],
   ['spikesimulationhandler',['SpikeSimulationHandler',['../classbrayns_1_1_spike_simulation_handler.html#aae5dc41c31d6b1a5473075eaf0c54fc9',1,'brayns::SpikeSimulationHandler']]],
-  ['spikesimulationhandler',['SpikeSimulationHandler',['../classbrayns_1_1_spike_simulation_handler.html',1,'brayns']]],
-  ['stereocamera',['StereoCamera',['../structbrayns_1_1_stereo_camera.html',1,'brayns']]]
+  ['spikesimulationhandler',['SpikeSimulationHandler',['../classbrayns_1_1_spike_simulation_handler.html',1,'brayns']]]
 ];

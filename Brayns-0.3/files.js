@@ -78,7 +78,6 @@ var files =
     [ "SimulationRenderer.h", "_simulation_renderer_8h_source.html", null ],
     [ "Sphere.h", "_sphere_8h_source.html", null ],
     [ "SpikeSimulationHandler.h", "_spike_simulation_handler_8h_source.html", null ],
-    [ "StereoCamera.h", "_stereo_camera_8h_source.html", null ],
     [ "Texture2D.h", "_texture2_d_8h_source.html", null ],
     [ "TextureLoader.h", "_texture_loader_8h_source.html", null ],
     [ "TransferFunction.h", "_transfer_function_8h_source.html", null ],

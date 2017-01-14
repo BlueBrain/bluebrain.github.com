@@ -22,10 +22,7 @@ var annotated_dup =
       [ "Engine", "classbrayns_1_1_engine.html", "classbrayns_1_1_engine" ],
       [ "EngineFactory", "classbrayns_1_1_engine_factory.html", "classbrayns_1_1_engine_factory" ],
       [ "Exception", "classbrayns_1_1_exception.html", "classbrayns_1_1_exception" ],
-      [ "ExtendedCones", "structbrayns_1_1_extended_cones.html", "structbrayns_1_1_extended_cones" ],
-      [ "ExtendedCylinders", "structbrayns_1_1_extended_cylinders.html", "structbrayns_1_1_extended_cylinders" ],
       [ "ExtendedOBJRenderer", "classbrayns_1_1_extended_o_b_j_renderer.html", "classbrayns_1_1_extended_o_b_j_renderer" ],
-      [ "ExtendedSpheres", "structbrayns_1_1_extended_spheres.html", "structbrayns_1_1_extended_spheres" ],
       [ "ExtensionPlugin", "classbrayns_1_1_extension_plugin.html", "classbrayns_1_1_extension_plugin" ],
       [ "ExtensionPluginFactory", "classbrayns_1_1_extension_plugin_factory.html", "classbrayns_1_1_extension_plugin_factory" ],
       [ "FlyingModeManipulator", "classbrayns_1_1_flying_mode_manipulator.html", "classbrayns_1_1_flying_mode_manipulator" ],
@@ -72,7 +69,6 @@ var annotated_dup =
       [ "SimulationRenderer", "classbrayns_1_1_simulation_renderer.html", "classbrayns_1_1_simulation_renderer" ],
       [ "Sphere", "classbrayns_1_1_sphere.html", "classbrayns_1_1_sphere" ],
       [ "SpikeSimulationHandler", "classbrayns_1_1_spike_simulation_handler.html", "classbrayns_1_1_spike_simulation_handler" ],
-      [ "StereoCamera", "structbrayns_1_1_stereo_camera.html", "structbrayns_1_1_stereo_camera" ],
       [ "Texture2D", "classbrayns_1_1_texture2_d.html", "classbrayns_1_1_texture2_d" ],
       [ "TextureLoader", "classbrayns_1_1_texture_loader.html", "classbrayns_1_1_texture_loader" ],
       [ "TransferFunction", "classbrayns_1_1_transfer_function.html", "classbrayns_1_1_transfer_function" ],
@@ -83,6 +79,11 @@ var annotated_dup =
       [ "VolumeParameters", "classbrayns_1_1_volume_parameters.html", "classbrayns_1_1_volume_parameters" ],
       [ "XYZBLoader", "classbrayns_1_1_x_y_z_b_loader.html", "classbrayns_1_1_x_y_z_b_loader" ],
       [ "ZeroEQPlugin", "classbrayns_1_1_zero_e_q_plugin.html", "classbrayns_1_1_zero_e_q_plugin" ]
+    ] ],
+    [ "ospray", null, [
+      [ "ExtendedCones", "structospray_1_1_extended_cones.html", "structospray_1_1_extended_cones" ],
+      [ "ExtendedCylinders", "structospray_1_1_extended_cylinders.html", "structospray_1_1_extended_cylinders" ],
+      [ "ExtendedSpheres", "structospray_1_1_extended_spheres.html", "structospray_1_1_extended_spheres" ]
     ] ],
     [ "BasicLight", "struct_basic_light.html", "struct_basic_light" ],
     [ "PerRayData_radiance", "struct_per_ray_data__radiance.html", "struct_per_ray_data__radiance" ],

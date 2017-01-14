@@ -8,6 +8,5 @@ var searchData=
   ['simulationinformation',['SimulationInformation',['../structbrayns_1_1_simulation_information.html',1,'brayns']]],
   ['simulationrenderer',['SimulationRenderer',['../classbrayns_1_1_simulation_renderer.html',1,'brayns']]],
   ['sphere',['Sphere',['../classbrayns_1_1_sphere.html',1,'brayns']]],
-  ['spikesimulationhandler',['SpikeSimulationHandler',['../classbrayns_1_1_spike_simulation_handler.html',1,'brayns']]],
-  ['stereocamera',['StereoCamera',['../structbrayns_1_1_stereo_camera.html',1,'brayns']]]
+  ['spikesimulationhandler',['SpikeSimulationHandler',['../classbrayns_1_1_spike_simulation_handler.html',1,'brayns']]]
 ];

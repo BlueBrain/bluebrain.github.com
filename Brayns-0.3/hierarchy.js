@@ -82,13 +82,10 @@ var hierarchy =
     [ "brayns::VolumeHandler", "classbrayns_1_1_volume_handler.html", null ],
     [ "brayns::VolumeHandler::VolumeDescriptor", "classbrayns_1_1_volume_handler_1_1_volume_descriptor.html", null ],
     [ "brayns::XYZBLoader", "classbrayns_1_1_x_y_z_b_loader.html", null ],
-    [ "Camera", null, [
-      [ "brayns::StereoCamera", "structbrayns_1_1_stereo_camera.html", null ]
-    ] ],
     [ "Geometry", null, [
-      [ "brayns::ExtendedCones", "structbrayns_1_1_extended_cones.html", null ],
-      [ "brayns::ExtendedCylinders", "structbrayns_1_1_extended_cylinders.html", null ],
-      [ "brayns::ExtendedSpheres", "structbrayns_1_1_extended_spheres.html", null ]
+      [ "ospray::ExtendedCones", "structospray_1_1_extended_cones.html", null ],
+      [ "ospray::ExtendedCylinders", "structospray_1_1_extended_cylinders.html", null ],
+      [ "ospray::ExtendedSpheres", "structospray_1_1_extended_spheres.html", null ]
     ] ],
     [ "Material", null, [
       [ "brayns::obj::ExtendedOBJMaterial", "structbrayns_1_1obj_1_1_extended_o_b_j_material.html", null ]
