@@ -4,7 +4,7 @@ version: "0.6"
 major: 0
 minor: 6
 description: ITK library to sample events into regular volumes
-updated: 10/12/16
+updated: 14/01/17
 homepage: https://github.com/BlueBrain/Fivox
 repository: https://github.com/BlueBrain/Fivox.git
 issuesurl: https://github.com/BlueBrain/Fivox/issues
@@ -73,6 +73,7 @@ make
 All command line applications support the following parameters:
 
 @snippet apps/commandLineApplication.h AppParameters
+@snippet fivox/uriHandler.cpp VolumeParameters
 
 The voxelize command line tool also supports:
 

@@ -11,6 +11,7 @@ var classfivox_1_1_u_r_i_handler =
     [ "getExtendDistance", "classfivox_1_1_u_r_i_handler.html#a03c056ea9813556d5e49492f894811ce", null ],
     [ "getFunctorType", "classfivox_1_1_u_r_i_handler.html#aebf008427ee3f0db8977d93777b80b6b", null ],
     [ "getGIDs", "classfivox_1_1_u_r_i_handler.html#a7d33cf6c62be950ad8ef15cb78ea6ad5", null ],
+    [ "getHelp", "classfivox_1_1_u_r_i_handler.html#a99a17db1d362622b91bbb19ee73169fb", null ],
     [ "getInputRange", "classfivox_1_1_u_r_i_handler.html#aed19b5142e333bf6c7a49d8484d7ffd6", null ],
     [ "getMaxBlockSize", "classfivox_1_1_u_r_i_handler.html#a98ecf0123ffd1d0a10aef2c380a6e435", null ],
     [ "getPreGIDs", "classfivox_1_1_u_r_i_handler.html#af36e1db5dadda54db06c18e336abba29", null ],

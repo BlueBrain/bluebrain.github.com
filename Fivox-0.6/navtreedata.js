@@ -45,7 +45,7 @@ var NAVTREE =
 var NAVTREEINDEX =
 [
 ".html",
-"fivox_8h_source.html"
+"classitk_1_1_smart_pointer.html"
 ];
 
 var SYNCONMSG = 'click to disable panel synchronisation';
