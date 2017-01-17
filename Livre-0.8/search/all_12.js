@@ -1,5 +1,5 @@
 var searchData=
 [
-  ['worldsize',['worldSize',['../structlivre_1_1_volume_information.html#a0f07c31b2ef19bc5d504adb21ac67253',1,'livre::VolumeInformation']]],
-  ['worldspacepervoxel',['worldSpacePerVoxel',['../structlivre_1_1_volume_information.html#aa87a078506535e6dfe5b1c71c981c243',1,'livre::VolumeInformation']]]
+  ['update',['update',['../classlivre_1_1_data_source_plugin.html#a3df26fd289c14867d90a16006e18d3b8',1,'livre::DataSourcePlugin']]],
+  ['user_20guide',['User Guide',['../User_Guide.html',1,'']]]
 ];

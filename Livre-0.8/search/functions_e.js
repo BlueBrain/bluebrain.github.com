@@ -1,4 +1,6 @@
 var searchData=
 [
-  ['update',['update',['../classlivre_1_1_data_source_plugin.html#a3df26fd289c14867d90a16006e18d3b8',1,'livre::DataSourcePlugin']]]
+  ['reset',['reset',['../classlivre_1_1_clip_planes.html#a44607b4055b22567307afb3c54b0fc7a',1,'livre::ClipPlanes']]],
+  ['resize',['resize',['../classlivre_1_1_histogram.html#a1a76788fa3496d52c7c4491c4e4c2455',1,'livre::Histogram']]],
+  ['rootnode',['RootNode',['../classlivre_1_1_root_node.html#a70d4e398a21b5653fed35627576e4988',1,'livre::RootNode']]]
 ];

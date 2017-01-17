@@ -6,6 +6,7 @@ var classlivre_1_1_data_source_plugin =
     [ "DataSourcePlugin", "classlivre_1_1_data_source_plugin.html#a14482744f0b437239e437a2c6f0f403b", null ],
     [ "~DataSourcePlugin", "classlivre_1_1_data_source_plugin.html#a9311a6ffda5c4162632968217bcc33a2", null ],
     [ "DataSourcePlugin", "classlivre_1_1_data_source_plugin.html#af713f320519246c51e5e68a8f046880c", null ],
+    [ "finishGL", "classlivre_1_1_data_source_plugin.html#af748622edcc0441bebaba76be0ada608", null ],
     [ "getData", "classlivre_1_1_data_source_plugin.html#a4414349bdcac3e76a820d04ec79ddfcf", null ],
     [ "getNode", "classlivre_1_1_data_source_plugin.html#a94912dce35d46c61d454214869e8b41f", null ],
     [ "getVolumeInfo", "classlivre_1_1_data_source_plugin.html#a9f121a2fbcc31c95ea58326963dd2099", null ],

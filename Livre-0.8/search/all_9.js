@@ -1,16 +1,16 @@
 var searchData=
 [
-  ['livre',['Livre',['../index.html',1,'']]],
-  ['livrecore_5fversion_5fabi',['LIVRECORE_VERSION_ABI',['../version_8h.html#a70bc347a9599d84be08ae86d1e25a5de',1,'version.h']]],
-  ['livrecore_5fversion_5fge',['LIVRECORE_VERSION_GE',['../version_8h.html#a922dd9c7d4ea429be563a27eea94b183',1,'version.h']]],
-  ['livrecore_5fversion_5fgt',['LIVRECORE_VERSION_GT',['../version_8h.html#a70dac920a927523d96c1a076876947fb',1,'version.h']]],
-  ['livrecore_5fversion_5fle',['LIVRECORE_VERSION_LE',['../version_8h.html#ae08b586e95e6dba50dd3ab896ff855c0',1,'version.h']]],
-  ['livrecore_5fversion_5flt',['LIVRECORE_VERSION_LT',['../version_8h.html#aa7062263956f494a7793f56ff09a6937',1,'version.h']]],
-  ['livrecore_5fversion_5fmajor',['LIVRECORE_VERSION_MAJOR',['../version_8h.html#ac9852ea1b24b73320a1832e3cd440037',1,'version.h']]],
-  ['livrecore_5fversion_5fminor',['LIVRECORE_VERSION_MINOR',['../version_8h.html#a82969504e3fb17490c7619bd4d0b9420',1,'version.h']]],
-  ['livrecore_5fversion_5fpatch',['LIVRECORE_VERSION_PATCH',['../version_8h.html#aadfb91755a4d9630a233502678175531',1,'version.h']]],
-  ['livrecore_5fversion_5frevision',['LIVRECORE_VERSION_REVISION',['../version_8h.html#ad6a31dc418b4533d01581aa17deb9cc9',1,'version.h']]],
-  ['loadshaders',['loadShaders',['../classlivre_1_1_g_l_s_l_shaders.html#aaf763753a677c54f2e98361987d71754',1,'livre::GLSLShaders']]],
-  ['lodnode',['LODNode',['../classlivre_1_1_l_o_d_node.html',1,'livre']]],
-  ['lodnode',['LODNode',['../classlivre_1_1_l_o_d_node.html#a4cf4b267cb54d38abb35a134bc4c8c45',1,'livre::LODNode::LODNode()'],['../classlivre_1_1_l_o_d_node.html#aa024d23a9e0d5b7e61fb8ef72f7f68fc',1,'livre::LODNode::LODNode(const NodeId &amp;nodeId, const Vector3ui &amp;blockSize, const Vector3ui &amp;levelTotalBlockDimensions)'],['../classlivre_1_1_l_o_d_node.html#a5324f3d52f15362ef28b22f54ff43f4b',1,'livre::LODNode::LODNode(const NodeId &amp;nodeId, const Vector3ui &amp;blockSize, const Boxf &amp;worldBox)']]]
+  ['initdatat',['InitDataT',['../classlivre_1_1_data_source_plugin.html#a862a0794cdd6abf334db665583086d33',1,'livre::DataSourcePlugin']]],
+  ['initialize',['initialize',['../classlivre_1_1_parameters.html#ac1ac8f6b45254551452e0187623cf3ab',1,'livre::Parameters']]],
+  ['initialize_5f',['initialize_',['../classlivre_1_1_parameters.html#a9684ce5c27fad9db01a56108526531c9',1,'livre::Parameters']]],
+  ['initializegl',['initializeGL',['../classlivre_1_1_data_source_plugin.html#a1219e01f6a9132de4f3e0a07cf03aa50',1,'livre::DataSourcePlugin']]],
+  ['interfacet',['InterfaceT',['../classlivre_1_1_data_source_plugin.html#a77e2457796b1d27454af3349cefd3306',1,'livre::DataSourcePlugin']]],
+  ['internalnodetolodnode',['internalNodeToLODNode',['../classlivre_1_1_data_source_plugin.html#ac62bcd839931bd6cfa0c07e2615ed185',1,'livre::DataSourcePlugin']]],
+  ['ischild',['isChild',['../classlivre_1_1_node_id.html#a0f9b7337250e5c80ef39a50a7b68e640',1,'livre::NodeId']]],
+  ['isclipped',['isClipped',['../classlivre_1_1_clip_planes.html#a6c89b3f46a46be66ed1c2d6f661bdde9',1,'livre::ClipPlanes']]],
+  ['isdatauniform',['isDataUniform',['../classlivre_1_1_histogram.html#aec7bfa1fbd662c3de91aea4a4a6ba5e8',1,'livre::Histogram']]],
+  ['isempty',['isEmpty',['../classlivre_1_1_histogram.html#a12765883c0becef8b799a1e3a9fc6cc3',1,'livre::Histogram::isEmpty()'],['../classlivre_1_1_clip_planes.html#afbc97279bde5b079849b29c7330b3e5e',1,'livre::ClipPlanes::isEmpty()']]],
+  ['isparent',['isParent',['../classlivre_1_1_l_o_d_node.html#adb82e5c1d29ae1f6e370b85be6ec826e',1,'livre::LODNode::isParent()'],['../classlivre_1_1_node_id.html#addb8721d58196b914b6fea2ebc11971b',1,'livre::NodeId::isParent()']]],
+  ['isroot',['isRoot',['../classlivre_1_1_node_id.html#a498a467e132c1a8938d80ecc5540ab7d',1,'livre::NodeId']]],
+  ['isvalid',['isValid',['../classlivre_1_1_l_o_d_node.html#af49d77ed9d87141aa5c4fc8bdf140c49',1,'livre::LODNode::isValid()'],['../classlivre_1_1_node_id.html#a5ea5d3783baee8336c7518b9847c26ba',1,'livre::NodeId::isValid()']]]
 ];

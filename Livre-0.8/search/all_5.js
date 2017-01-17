@@ -1,4 +1,4 @@
 var searchData=
 [
-  ['framerange',['frameRange',['../structlivre_1_1_volume_information.html#a38580093238052e2283658bf5d778de5',1,'livre::VolumeInformation']]]
+  ['empty',['empty',['../classlivre_1_1_configuration.html#af573807598aeceabc72cc0fd5bfb89f9',1,'livre::Configuration']]]
 ];
