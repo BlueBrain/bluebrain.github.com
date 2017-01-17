@@ -4,6 +4,7 @@ var classbrion_1_1_compartment_report_plugin =
     [ "InterfaceT", "classbrion_1_1_compartment_report_plugin.html#a67349488e3350d46fbba6fff6dd75f83", null ],
     [ "~CompartmentReportPlugin", "classbrion_1_1_compartment_report_plugin.html#a8d6113681c9f6587f33360bc597892f1", null ],
     [ "clearBuffer", "classbrion_1_1_compartment_report_plugin.html#a7fe02b55cdecf384aa1ec33aff7a3620", null ],
+    [ "erase", "classbrion_1_1_compartment_report_plugin.html#a40e2f1fbf74a169f96caaf3cf5d71091", null ],
     [ "flush", "classbrion_1_1_compartment_report_plugin.html#a29f488ea011b60d69788eb5f28d39de8", null ],
     [ "getBufferSize", "classbrion_1_1_compartment_report_plugin.html#ab8a1a38a2cc4ecbd0b8a55285a61545d", null ],
     [ "getCompartmentCounts", "classbrion_1_1_compartment_report_plugin.html#a76f5e223ca77148089b09b6149a7cdf1", null ],

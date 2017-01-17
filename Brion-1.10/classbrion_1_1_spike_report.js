@@ -8,6 +8,7 @@ var classbrion_1_1_spike_report =
     [ "~SpikeReport", "classbrion_1_1_spike_report.html#a50beeeb2c939998028f2e5e32d121364", null ],
     [ "clear", "classbrion_1_1_spike_report.html#a025c64d02116e0b86e0e07cb4cc975f9", null ],
     [ "close", "classbrion_1_1_spike_report.html#a5610cfd2b4f663e5c9e6393af63a472c", null ],
+    [ "getDescriptions", "classbrion_1_1_spike_report.html#a4c0e9bb690a41e19ca9ab55da707d54f", null ],
     [ "getEndTime", "classbrion_1_1_spike_report.html#a5f90cebedf6f79bd3c8e15de3c2861aa", null ],
     [ "getLatestSpikeTime", "classbrion_1_1_spike_report.html#ab5bbe0c626970b0bde9939a2a495747a", null ],
     [ "getNextSpikeTime", "classbrion_1_1_spike_report.html#a5e366cdface09f9de23b0ef369f7d7fc", null ],

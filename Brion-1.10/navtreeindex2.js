@@ -1,5 +1,9 @@
 var NAVTREEINDEX2 =
 {
+"enums_8h.html#a0b4836d8823df1f6564115cc3271c185af06936793edbf46b4fc2117c14a1c1b6":[11,0,11,8,9],
+"enums_8h.html#a0b4836d8823df1f6564115cc3271c185af2a83d5f7b536314270de5529dcde000":[11,0,11,8,3],
+"enums_8h.html#a3b3d31e72129af0e61a78a3aa0d03a10":[11,0,11,3],
+"enums_8h.html#a3b3d31e72129af0e61a78a3aa0d03a10a0a2357d10861f5424dbc4d816380fa17":[11,0,11,3,0],
 "enums_8h.html#a3b3d31e72129af0e61a78a3aa0d03a10a13b4f71f7e82ef8a5c06d05bfd6a44db":[11,0,11,3,1],
 "enums_8h.html#a613b2690bb941a22577d0826bae6f5c5":[11,0,11,14],
 "enums_8h.html#a613b2690bb941a22577d0826bae6f5c5a51c8d9435699cb5d85974a16633a93e2":[11,0,11,14,2],
@@ -167,8 +171,8 @@ var NAVTREEINDEX2 =
 "mesh_8h_source.html":[11,0,12],
 "morphology11.html":[5,2],
 "morphology_plugin_8h_source.html":[11,0,15],
-"namespacebrain.html":[10,0,0],
 "namespacebrain.html":[9,0,0],
+"namespacebrain.html":[10,0,0],
 "namespacebrain_1_1neuron.html":[9,0,0,0],
 "namespacebrain_1_1neuron.html":[10,0,0,0],
 "namespacebrion.html":[9,0,1],

@@ -17,6 +17,7 @@ var searchData=
   ['getdecay',['getDecay',['../classbrain_1_1_synapse.html#adbbdf1a6338150cf92ed39165b421718',1,'brain::Synapse']]],
   ['getdelay',['getDelay',['../classbrain_1_1_synapse.html#ad908fbe18c8434f5d0ae094ecb405e39',1,'brain::Synapse']]],
   ['getdepression',['getDepression',['../classbrain_1_1_synapse.html#a890e234d1b1a85300a3101c17295c9b4',1,'brain::Synapse']]],
+  ['getdescriptions',['getDescriptions',['../classbrion_1_1_compartment_report.html#acb895dd1b653688292796e1f2c4377e9',1,'brion::CompartmentReport::getDescriptions()'],['../classbrion_1_1_spike_report.html#a4c0e9bb690a41e19ca9ab55da707d54f',1,'brion::SpikeReport::getDescriptions()']]],
   ['getdistancetosoma',['getDistanceToSoma',['../classbrain_1_1neuron_1_1_section.html#a929e71da9372a82ab12fc650360163e4',1,'brain::neuron::Section']]],
   ['getefferentsynapses',['getEfferentSynapses',['../classbrain_1_1_circuit.html#acd51c99352dcde8dad828891aa483b81',1,'brain::Circuit']]],
   ['getefficacy',['getEfficacy',['../classbrain_1_1_synapse.html#ab2de5165c63a310942844fe5df6adfb5',1,'brain::Synapse']]],
