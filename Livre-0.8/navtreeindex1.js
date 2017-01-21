@@ -1,6 +1,5 @@
 var NAVTREEINDEX1 =
 {
-"structlivre_1_1_shader_data.html#ab7819d59895386201e0da6f1e6be8a91":[4,0,0,18,2],
 "structlivre_1_1_shader_data.html#ae6cbf76af2b821b820fae2138c20328b":[4,0,0,18,5],
 "structlivre_1_1_volume_information.html":[4,0,0,20],
 "structlivre_1_1_volume_information.html#a0f07c31b2ef19bc5d504adb21ac67253":[4,0,0,20,14],

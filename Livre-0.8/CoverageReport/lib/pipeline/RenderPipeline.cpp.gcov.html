@@ -37,7 +37,7 @@
           </tr>
           <tr>
             <td class="headerItem">Date:</td>
-            <td class="headerValue">2017-01-17 03:08:25</td>
+            <td class="headerValue">2017-01-21 03:04:33</td>
             <td></td>
             <td class="headerItem">Functions:</td>
             <td class="headerCovTableEntry">2</td>
@@ -60,7 +60,7 @@
       <td>
 <pre class="sourceHeading">          Line data    Source code</pre>
 <pre class="source">
-<a name="1"><span class="lineNum">       1 </span>            : /* Copyright (c) 2011-2015, EPFL/Blue Brain Project</a>
+<a name="1"><span class="lineNum">       1 </span>            : /* Copyright (c) 2011-2017, EPFL/Blue Brain Project</a>
 <span class="lineNum">       2 </span>            :  *                     Ahmet Bilgili &lt;ahmet.bilgili@epfl.ch&gt;
 <span class="lineNum">       3 </span>            :  *
 <span class="lineNum">       4 </span>            :  * This file is part of Livre &lt;https://github.com/BlueBrain/Livre&gt;
@@ -168,7 +168,7 @@
 <span class="lineNum">     106 </span><span class="lineNoCov">          0 :                                     volInfo.compCount;</span>
 <span class="lineNum">     107 </span>            : 
 <span class="lineNum">     108 </span>            :         const uint32_t maxNodesPerPass =
-<span class="lineNum">     109 </span><span class="lineNoCov">          0 :                 renderParams.vrParams.getMaxGPUCacheMemoryMB() * LB_1MB / blockMemSize;</span>
+<span class="lineNum">     109 </span><span class="lineNoCov">          0 :                 renderParams.vrParams.getMaxGpuCacheMemory() * LB_1MB / blockMemSize;</span>
 <span class="lineNum">     110 </span>            : 
 <span class="lineNum">     111 </span><span class="lineNoCov">          0 :         const uint32_t numberOfPasses = std::ceil( (float)nodeIds.size() / (float)maxNodesPerPass );</span>
 <span class="lineNum">     112 </span>            : 
@@ -205,120 +205,120 @@
 <span class="lineNum">     143 </span><span class="lineNoCov">          0 :             if( numberOfPasses &gt; 1 )</span>
 <span class="lineNum">     144 </span><span class="lineNoCov">          0 :                 ++(*showProgress);</span>
 <span class="lineNum">     145 </span>            :         }
-<span class="lineNum">     146 </span><span class="lineNoCov">          0 :         sendHistogramFilter.schedule( _computeExecutor );</span>
-<span class="lineNum">     147 </span>            : 
-<span class="lineNum">     148 </span><span class="lineNoCov">          0 :         const UniqueFutureMap futures( visibleSetGenerator.getPostconditions( ));</span>
-<span class="lineNum">     149 </span><span class="lineNoCov">          0 :         availability.nAvailable = futures.get&lt; NodeIds &gt;( &quot;VisibleNodes&quot; ).size();</span>
-<span class="lineNum">     150 </span><span class="lineNoCov">          0 :         availability.nNotAvailable = 0;</span>
-<a name="151"><span class="lineNum">     151 </span><span class="lineNoCov">          0 :     }</span></a>
-<span class="lineNum">     152 </span>            : 
-<span class="lineNum">     153 </span><span class="lineNoCov">          0 :     void renderAsync( const RenderParams&amp; renderParams,</span>
-<span class="lineNum">     154 </span>            :                       PipeFilter&amp; sendHistogramFilter,
-<span class="lineNum">     155 </span>            :                       Renderer&amp; renderer,
-<span class="lineNum">     156 </span>            :                       NodeAvailability&amp; availability,
-<span class="lineNum">     157 </span>            :                       PipeFilter&amp; redrawFilter ) const
-<span class="lineNum">     158 </span>            :     {
-<span class="lineNum">     159 </span>            :         PipeFilterT&lt; HistogramFilter &gt; histogramFilter( &quot;HistogramFilter&quot;,
-<span class="lineNum">     160 </span>            :                                                         _histogramCache,
-<span class="lineNum">     161 </span>            :                                                         _dataCache,
-<span class="lineNum">     162 </span><span class="lineNoCov">          0 :                                                         _dataSource );</span>
-<span class="lineNum">     163 </span><span class="lineNoCov">          0 :         histogramFilter.getPromise( &quot;Frustum&quot; ).set( renderParams.frameInfo.frustum );</span>
-<span class="lineNum">     164 </span><span class="lineNoCov">          0 :         histogramFilter.connect( &quot;Histogram&quot;, sendHistogramFilter, &quot;Histogram&quot; );</span>
-<span class="lineNum">     165 </span><span class="lineNoCov">          0 :         histogramFilter.getPromise( &quot;RelativeViewport&quot; ).set( renderParams.viewport );</span>
-<span class="lineNum">     166 </span><span class="lineNoCov">          0 :         histogramFilter.getPromise( &quot;DataSourceRange&quot; ).set( renderParams.dataSourceRange );</span>
-<span class="lineNum">     167 </span><span class="lineNoCov">          0 :         sendHistogramFilter.getPromise( &quot;RelativeViewport&quot; ).set( renderParams.viewport );</span>
-<span class="lineNum">     168 </span><span class="lineNoCov">          0 :         sendHistogramFilter.getPromise( &quot;Id&quot; ).set( renderParams.frameInfo.frameId );</span>
-<span class="lineNum">     169 </span>            : 
-<span class="lineNum">     170 </span><span class="lineNoCov">          0 :         Pipeline renderPipeline;</span>
-<span class="lineNum">     171 </span><span class="lineNoCov">          0 :         Pipeline uploadPipeline;</span>
-<span class="lineNum">     172 </span>            : 
-<span class="lineNum">     173 </span><span class="lineNoCov">          0 :         PipeFilterT&lt; RenderFilter &gt; renderFilter( &quot;RenderFilter&quot;, _dataSource, renderer );</span>
-<span class="lineNum">     174 </span>            : 
-<span class="lineNum">     175 </span>            :         PipeFilter visibleSetGenerator =
-<span class="lineNum">     176 </span>            :                 renderPipeline.add&lt; VisibleSetGeneratorFilter &gt;(
-<span class="lineNum">     177 </span><span class="lineNoCov">          0 :                     &quot;VisibleSetGenerator&quot;, _dataSource );</span>
-<span class="lineNum">     178 </span><span class="lineNoCov">          0 :         setupVisibleGeneratorFilter( visibleSetGenerator,  renderParams );</span>
-<span class="lineNum">     179 </span>            : 
-<span class="lineNum">     180 </span>            :         PipeFilter renderingSetGenerator =
-<span class="lineNum">     181 </span>            :                 renderPipeline.add&lt; RenderingSetGeneratorFilter &gt;(
-<span class="lineNum">     182 </span><span class="lineNoCov">          0 :                     &quot;RenderingSetGenerator&quot;, _textureCache );</span>
-<span class="lineNum">     183 </span>            : 
-<span class="lineNum">     184 </span><span class="lineNoCov">          0 :         visibleSetGenerator.connect( &quot;VisibleNodes&quot;, renderingSetGenerator, &quot;VisibleNodes&quot; );</span>
-<span class="lineNum">     185 </span><span class="lineNoCov">          0 :         renderingSetGenerator.connect( &quot;CacheObjects&quot;, renderFilter, &quot;CacheObjects&quot; );</span>
-<span class="lineNum">     186 </span><span class="lineNoCov">          0 :         renderingSetGenerator.connect( &quot;CacheObjects&quot;, histogramFilter, &quot;CacheObjects&quot; );</span>
-<span class="lineNum">     187 </span><span class="lineNoCov">          0 :         renderingSetGenerator.connect( &quot;RenderingDone&quot;, redrawFilter, &quot;RenderingDone&quot; );</span>
-<span class="lineNum">     188 </span>            : 
-<span class="lineNum">     189 </span><span class="lineNoCov">          0 :         for( size_t i = 0; i &lt; nUploadThreads; ++i )</span>
-<span class="lineNum">     190 </span>            :         {
-<span class="lineNum">     191 </span><span class="lineNoCov">          0 :             std::stringstream name;</span>
-<span class="lineNum">     192 </span><span class="lineNoCov">          0 :             name &lt;&lt; &quot;DataUploader&quot; &lt;&lt; i;</span>
-<span class="lineNum">     193 </span><span class="lineNoCov">          0 :             PipeFilter uploader =  uploadPipeline.add&lt; DataUploadFilter &gt;( name.str(),</span>
-<span class="lineNum">     194 </span>            :                                                                            i,
-<span class="lineNum">     195 </span>            :                                                                            nUploadThreads,
-<span class="lineNum">     196 </span>            :                                                                            _dataCache,
-<span class="lineNum">     197 </span>            :                                                                            _textureCache,
-<span class="lineNum">     198 </span>            :                                                                            _dataSource,
-<span class="lineNum">     199 </span><span class="lineNoCov">          0 :                                                                            _texturePool );</span>
-<span class="lineNum">     200 </span>            : 
-<span class="lineNum">     201 </span><span class="lineNoCov">          0 :             visibleSetGenerator.connect( &quot;VisibleNodes&quot;, uploader, &quot;VisibleNodes&quot; );</span>
-<span class="lineNum">     202 </span><span class="lineNoCov">          0 :             visibleSetGenerator.connect( &quot;Params&quot;, uploader, &quot;Params&quot; );</span>
-<span class="lineNum">     203 </span><span class="lineNoCov">          0 :             uploader.connect( &quot;CacheObjects&quot;, redrawFilter, &quot;CacheObjects&quot; );</span>
-<span class="lineNum">     204 </span>            :         }
-<span class="lineNum">     205 </span>            : 
-<span class="lineNum">     206 </span><span class="lineNoCov">          0 :         setupRenderFilter( renderFilter, renderParams, RENDER_ALL );</span>
-<span class="lineNum">     207 </span>            : 
-<span class="lineNum">     208 </span><span class="lineNoCov">          0 :         redrawFilter.schedule( _renderExecutor );</span>
-<span class="lineNum">     209 </span><span class="lineNoCov">          0 :         renderPipeline.schedule( _renderExecutor );</span>
-<span class="lineNum">     210 </span><span class="lineNoCov">          0 :         uploadPipeline.schedule( _uploadExecutor );</span>
-<span class="lineNum">     211 </span><span class="lineNoCov">          0 :         sendHistogramFilter.schedule( _computeExecutor );</span>
-<span class="lineNum">     212 </span><span class="lineNoCov">          0 :         histogramFilter.schedule( _computeExecutor );</span>
-<span class="lineNum">     213 </span><span class="lineNoCov">          0 :         renderFilter.execute();</span>
-<span class="lineNum">     214 </span>            : 
-<span class="lineNum">     215 </span><span class="lineNoCov">          0 :         const UniqueFutureMap futures( renderingSetGenerator.getPostconditions( ));</span>
-<span class="lineNum">     216 </span><span class="lineNoCov">          0 :         availability = futures.get&lt; NodeAvailability &gt;( &quot;NodeAvailability&quot; );</span>
-<a name="217"><span class="lineNum">     217 </span><span class="lineNoCov">          0 :     }</span></a>
-<span class="lineNum">     218 </span>            : 
-<span class="lineNum">     219 </span><span class="lineNoCov">          0 :     void createAndExecuteSyncPass( NodeIds nodeIds,</span>
-<span class="lineNum">     220 </span>            :                                    const RenderParams&amp; renderParams,
-<span class="lineNum">     221 </span>            :                                    PipeFilter&amp; sendHistogramFilter,
-<span class="lineNum">     222 </span>            :                                    Renderer&amp; renderer,
-<span class="lineNum">     223 </span>            :                                    const uint32_t renderStages ) const
-<span class="lineNum">     224 </span>            :     {
-<span class="lineNum">     225 </span>            :         PipeFilterT&lt; HistogramFilter &gt; histogramFilter( &quot;HistogramFilter&quot;,
-<span class="lineNum">     226 </span>            :                                                         _histogramCache,
-<span class="lineNum">     227 </span>            :                                                         _dataCache,
-<span class="lineNum">     228 </span><span class="lineNoCov">          0 :                                                         _dataSource );</span>
-<span class="lineNum">     229 </span><span class="lineNoCov">          0 :         histogramFilter.getPromise( &quot;Frustum&quot; ).set( renderParams.frameInfo.frustum );</span>
-<span class="lineNum">     230 </span><span class="lineNoCov">          0 :         histogramFilter.connect( &quot;Histogram&quot;, sendHistogramFilter, &quot;Histogram&quot; );</span>
-<span class="lineNum">     231 </span><span class="lineNoCov">          0 :         histogramFilter.getPromise( &quot;RelativeViewport&quot; ).set( renderParams.viewport );</span>
-<span class="lineNum">     232 </span><span class="lineNoCov">          0 :         histogramFilter.getPromise( &quot;DataSourceRange&quot; ).set( renderParams.dataSourceRange );</span>
-<span class="lineNum">     233 </span>            : 
-<span class="lineNum">     234 </span><span class="lineNoCov">          0 :         Pipeline renderPipeline;</span>
-<span class="lineNum">     235 </span><span class="lineNoCov">          0 :         Pipeline uploadPipeline;</span>
-<span class="lineNum">     236 </span>            : 
-<span class="lineNum">     237 </span><span class="lineNoCov">          0 :         PipeFilterT&lt; RenderFilter &gt; renderFilter( &quot;RenderFilter&quot;, _dataSource, renderer );</span>
-<span class="lineNum">     238 </span><span class="lineNoCov">          0 :         setupRenderFilter( renderFilter, renderParams, renderStages );</span>
-<span class="lineNum">     239 </span>            : 
-<span class="lineNum">     240 </span><span class="lineNoCov">          0 :         for( size_t i = 0; i &lt; nUploadThreads; ++i )</span>
-<span class="lineNum">     241 </span>            :         {
-<span class="lineNum">     242 </span><span class="lineNoCov">          0 :             std::stringstream name;</span>
-<span class="lineNum">     243 </span><span class="lineNoCov">          0 :             name &lt;&lt; &quot;DataUploader&quot; &lt;&lt; i;</span>
-<span class="lineNum">     244 </span><span class="lineNoCov">          0 :             PipeFilter uploader = uploadPipeline.add&lt; DataUploadFilter &gt;( name.str(),</span>
-<span class="lineNum">     245 </span>            :                                                                           i,
-<span class="lineNum">     246 </span>            :                                                                           nUploadThreads,
-<span class="lineNum">     247 </span>            :                                                                           _dataCache,
-<span class="lineNum">     248 </span>            :                                                                           _textureCache,
-<span class="lineNum">     249 </span>            :                                                                           _dataSource,
-<span class="lineNum">     250 </span><span class="lineNoCov">          0 :                                                                           _texturePool );</span>
-<span class="lineNum">     251 </span>            : 
-<span class="lineNum">     252 </span><span class="lineNoCov">          0 :             uploader.getPromise( &quot;VisibleNodes&quot; ).set( nodeIds );</span>
-<span class="lineNum">     253 </span><span class="lineNoCov">          0 :             uploader.getPromise( &quot;Params&quot; ).set( renderParams.vrParams );</span>
-<span class="lineNum">     254 </span><span class="lineNoCov">          0 :             uploader.connect( &quot;CacheObjects&quot;, renderFilter, &quot;CacheObjects&quot; );</span>
-<span class="lineNum">     255 </span><span class="lineNoCov">          0 :             uploader.connect( &quot;CacheObjects&quot;, histogramFilter, &quot;CacheObjects&quot; );</span>
-<span class="lineNum">     256 </span>            :         }
-<span class="lineNum">     257 </span>            : 
-<span class="lineNum">     258 </span><span class="lineNoCov">          0 :         renderPipeline.schedule( _renderExecutor );</span>
-<span class="lineNum">     259 </span><span class="lineNoCov">          0 :         uploadPipeline.schedule( _uploadExecutor );</span>
+<span class="lineNum">     146 </span>            : 
+<span class="lineNum">     147 </span><span class="lineNoCov">          0 :         const UniqueFutureMap futures( visibleSetGenerator.getPostconditions( ));</span>
+<span class="lineNum">     148 </span><span class="lineNoCov">          0 :         availability.nAvailable = futures.get&lt; NodeIds &gt;( &quot;VisibleNodes&quot; ).size();</span>
+<span class="lineNum">     149 </span><span class="lineNoCov">          0 :         availability.nNotAvailable = 0;</span>
+<a name="150"><span class="lineNum">     150 </span><span class="lineNoCov">          0 :     }</span></a>
+<span class="lineNum">     151 </span>            : 
+<span class="lineNum">     152 </span><span class="lineNoCov">          0 :     void renderAsync( const RenderParams&amp; renderParams,</span>
+<span class="lineNum">     153 </span>            :                       PipeFilter&amp; sendHistogramFilter,
+<span class="lineNum">     154 </span>            :                       Renderer&amp; renderer,
+<span class="lineNum">     155 </span>            :                       NodeAvailability&amp; availability,
+<span class="lineNum">     156 </span>            :                       PipeFilter&amp; redrawFilter ) const
+<span class="lineNum">     157 </span>            :     {
+<span class="lineNum">     158 </span>            :         PipeFilterT&lt; HistogramFilter &gt; histogramFilter( &quot;HistogramFilter&quot;,
+<span class="lineNum">     159 </span>            :                                                         _histogramCache,
+<span class="lineNum">     160 </span>            :                                                         _dataCache,
+<span class="lineNum">     161 </span><span class="lineNoCov">          0 :                                                         _dataSource );</span>
+<span class="lineNum">     162 </span><span class="lineNoCov">          0 :         histogramFilter.getPromise( &quot;Frustum&quot; ).set( renderParams.frameInfo.frustum );</span>
+<span class="lineNum">     163 </span><span class="lineNoCov">          0 :         histogramFilter.connect( &quot;Histogram&quot;, sendHistogramFilter, &quot;Histogram&quot; );</span>
+<span class="lineNum">     164 </span><span class="lineNoCov">          0 :         histogramFilter.getPromise( &quot;RelativeViewport&quot; ).set( renderParams.viewport );</span>
+<span class="lineNum">     165 </span><span class="lineNoCov">          0 :         histogramFilter.getPromise( &quot;DataSourceRange&quot; ).set( renderParams.dataSourceRange );</span>
+<span class="lineNum">     166 </span><span class="lineNoCov">          0 :         sendHistogramFilter.getPromise( &quot;RelativeViewport&quot; ).set( renderParams.viewport );</span>
+<span class="lineNum">     167 </span><span class="lineNoCov">          0 :         sendHistogramFilter.getPromise( &quot;Id&quot; ).set( renderParams.frameInfo.frameId );</span>
+<span class="lineNum">     168 </span>            : 
+<span class="lineNum">     169 </span><span class="lineNoCov">          0 :         Pipeline renderPipeline;</span>
+<span class="lineNum">     170 </span><span class="lineNoCov">          0 :         Pipeline uploadPipeline;</span>
+<span class="lineNum">     171 </span>            : 
+<span class="lineNum">     172 </span><span class="lineNoCov">          0 :         PipeFilterT&lt; RenderFilter &gt; renderFilter( &quot;RenderFilter&quot;, _dataSource, renderer );</span>
+<span class="lineNum">     173 </span>            : 
+<span class="lineNum">     174 </span>            :         PipeFilter visibleSetGenerator =
+<span class="lineNum">     175 </span>            :                 renderPipeline.add&lt; VisibleSetGeneratorFilter &gt;(
+<span class="lineNum">     176 </span><span class="lineNoCov">          0 :                     &quot;VisibleSetGenerator&quot;, _dataSource );</span>
+<span class="lineNum">     177 </span><span class="lineNoCov">          0 :         setupVisibleGeneratorFilter( visibleSetGenerator,  renderParams );</span>
+<span class="lineNum">     178 </span>            : 
+<span class="lineNum">     179 </span>            :         PipeFilter renderingSetGenerator =
+<span class="lineNum">     180 </span>            :                 renderPipeline.add&lt; RenderingSetGeneratorFilter &gt;(
+<span class="lineNum">     181 </span><span class="lineNoCov">          0 :                     &quot;RenderingSetGenerator&quot;, _textureCache );</span>
+<span class="lineNum">     182 </span>            : 
+<span class="lineNum">     183 </span><span class="lineNoCov">          0 :         visibleSetGenerator.connect( &quot;VisibleNodes&quot;, renderingSetGenerator, &quot;VisibleNodes&quot; );</span>
+<span class="lineNum">     184 </span><span class="lineNoCov">          0 :         renderingSetGenerator.connect( &quot;CacheObjects&quot;, renderFilter, &quot;CacheObjects&quot; );</span>
+<span class="lineNum">     185 </span><span class="lineNoCov">          0 :         renderingSetGenerator.connect( &quot;CacheObjects&quot;, histogramFilter, &quot;CacheObjects&quot; );</span>
+<span class="lineNum">     186 </span><span class="lineNoCov">          0 :         renderingSetGenerator.connect( &quot;RenderingDone&quot;, redrawFilter, &quot;RenderingDone&quot; );</span>
+<span class="lineNum">     187 </span>            : 
+<span class="lineNum">     188 </span><span class="lineNoCov">          0 :         for( size_t i = 0; i &lt; nUploadThreads; ++i )</span>
+<span class="lineNum">     189 </span>            :         {
+<span class="lineNum">     190 </span><span class="lineNoCov">          0 :             std::stringstream name;</span>
+<span class="lineNum">     191 </span><span class="lineNoCov">          0 :             name &lt;&lt; &quot;DataUploader&quot; &lt;&lt; i;</span>
+<span class="lineNum">     192 </span><span class="lineNoCov">          0 :             PipeFilter uploader =  uploadPipeline.add&lt; DataUploadFilter &gt;( name.str(),</span>
+<span class="lineNum">     193 </span>            :                                                                            i,
+<span class="lineNum">     194 </span>            :                                                                            nUploadThreads,
+<span class="lineNum">     195 </span>            :                                                                            _dataCache,
+<span class="lineNum">     196 </span>            :                                                                            _textureCache,
+<span class="lineNum">     197 </span>            :                                                                            _dataSource,
+<span class="lineNum">     198 </span><span class="lineNoCov">          0 :                                                                            _texturePool );</span>
+<span class="lineNum">     199 </span>            : 
+<span class="lineNum">     200 </span><span class="lineNoCov">          0 :             visibleSetGenerator.connect( &quot;VisibleNodes&quot;, uploader, &quot;VisibleNodes&quot; );</span>
+<span class="lineNum">     201 </span><span class="lineNoCov">          0 :             visibleSetGenerator.connect( &quot;Params&quot;, uploader, &quot;Params&quot; );</span>
+<span class="lineNum">     202 </span><span class="lineNoCov">          0 :             uploader.connect( &quot;CacheObjects&quot;, redrawFilter, &quot;CacheObjects&quot; );</span>
+<span class="lineNum">     203 </span>            :         }
+<span class="lineNum">     204 </span>            : 
+<span class="lineNum">     205 </span><span class="lineNoCov">          0 :         setupRenderFilter( renderFilter, renderParams, RENDER_ALL );</span>
+<span class="lineNum">     206 </span>            : 
+<span class="lineNum">     207 </span><span class="lineNoCov">          0 :         redrawFilter.schedule( _renderExecutor );</span>
+<span class="lineNum">     208 </span><span class="lineNoCov">          0 :         renderPipeline.schedule( _renderExecutor );</span>
+<span class="lineNum">     209 </span><span class="lineNoCov">          0 :         uploadPipeline.schedule( _uploadExecutor );</span>
+<span class="lineNum">     210 </span><span class="lineNoCov">          0 :         sendHistogramFilter.schedule( _computeExecutor );</span>
+<span class="lineNum">     211 </span><span class="lineNoCov">          0 :         histogramFilter.schedule( _computeExecutor );</span>
+<span class="lineNum">     212 </span><span class="lineNoCov">          0 :         renderFilter.execute();</span>
+<span class="lineNum">     213 </span>            : 
+<span class="lineNum">     214 </span><span class="lineNoCov">          0 :         const UniqueFutureMap futures( renderingSetGenerator.getPostconditions( ));</span>
+<span class="lineNum">     215 </span><span class="lineNoCov">          0 :         availability = futures.get&lt; NodeAvailability &gt;( &quot;NodeAvailability&quot; );</span>
+<a name="216"><span class="lineNum">     216 </span><span class="lineNoCov">          0 :     }</span></a>
+<span class="lineNum">     217 </span>            : 
+<span class="lineNum">     218 </span><span class="lineNoCov">          0 :     void createAndExecuteSyncPass( NodeIds nodeIds,</span>
+<span class="lineNum">     219 </span>            :                                    const RenderParams&amp; renderParams,
+<span class="lineNum">     220 </span>            :                                    PipeFilter&amp; sendHistogramFilter,
+<span class="lineNum">     221 </span>            :                                    Renderer&amp; renderer,
+<span class="lineNum">     222 </span>            :                                    const uint32_t renderStages ) const
+<span class="lineNum">     223 </span>            :     {
+<span class="lineNum">     224 </span>            :         PipeFilterT&lt; HistogramFilter &gt; histogramFilter( &quot;HistogramFilter&quot;,
+<span class="lineNum">     225 </span>            :                                                         _histogramCache,
+<span class="lineNum">     226 </span>            :                                                         _dataCache,
+<span class="lineNum">     227 </span><span class="lineNoCov">          0 :                                                         _dataSource );</span>
+<span class="lineNum">     228 </span><span class="lineNoCov">          0 :         histogramFilter.getPromise( &quot;Frustum&quot; ).set( renderParams.frameInfo.frustum );</span>
+<span class="lineNum">     229 </span><span class="lineNoCov">          0 :         histogramFilter.connect( &quot;Histogram&quot;, sendHistogramFilter, &quot;Histogram&quot; );</span>
+<span class="lineNum">     230 </span><span class="lineNoCov">          0 :         histogramFilter.getPromise( &quot;RelativeViewport&quot; ).set( renderParams.viewport );</span>
+<span class="lineNum">     231 </span><span class="lineNoCov">          0 :         histogramFilter.getPromise( &quot;DataSourceRange&quot; ).set( renderParams.dataSourceRange );</span>
+<span class="lineNum">     232 </span>            : 
+<span class="lineNum">     233 </span><span class="lineNoCov">          0 :         Pipeline renderPipeline;</span>
+<span class="lineNum">     234 </span><span class="lineNoCov">          0 :         Pipeline uploadPipeline;</span>
+<span class="lineNum">     235 </span>            : 
+<span class="lineNum">     236 </span><span class="lineNoCov">          0 :         PipeFilterT&lt; RenderFilter &gt; renderFilter( &quot;RenderFilter&quot;, _dataSource, renderer );</span>
+<span class="lineNum">     237 </span><span class="lineNoCov">          0 :         setupRenderFilter( renderFilter, renderParams, renderStages );</span>
+<span class="lineNum">     238 </span>            : 
+<span class="lineNum">     239 </span><span class="lineNoCov">          0 :         for( size_t i = 0; i &lt; nUploadThreads; ++i )</span>
+<span class="lineNum">     240 </span>            :         {
+<span class="lineNum">     241 </span><span class="lineNoCov">          0 :             std::stringstream name;</span>
+<span class="lineNum">     242 </span><span class="lineNoCov">          0 :             name &lt;&lt; &quot;DataUploader&quot; &lt;&lt; i;</span>
+<span class="lineNum">     243 </span><span class="lineNoCov">          0 :             PipeFilter uploader = uploadPipeline.add&lt; DataUploadFilter &gt;( name.str(),</span>
+<span class="lineNum">     244 </span>            :                                                                           i,
+<span class="lineNum">     245 </span>            :                                                                           nUploadThreads,
+<span class="lineNum">     246 </span>            :                                                                           _dataCache,
+<span class="lineNum">     247 </span>            :                                                                           _textureCache,
+<span class="lineNum">     248 </span>            :                                                                           _dataSource,
+<span class="lineNum">     249 </span><span class="lineNoCov">          0 :                                                                           _texturePool );</span>
+<span class="lineNum">     250 </span>            : 
+<span class="lineNum">     251 </span><span class="lineNoCov">          0 :             uploader.getPromise( &quot;VisibleNodes&quot; ).set( nodeIds );</span>
+<span class="lineNum">     252 </span><span class="lineNoCov">          0 :             uploader.getPromise( &quot;Params&quot; ).set( renderParams.vrParams );</span>
+<span class="lineNum">     253 </span><span class="lineNoCov">          0 :             uploader.connect( &quot;CacheObjects&quot;, renderFilter, &quot;CacheObjects&quot; );</span>
+<span class="lineNum">     254 </span><span class="lineNoCov">          0 :             uploader.connect( &quot;CacheObjects&quot;, histogramFilter, &quot;CacheObjects&quot; );</span>
+<span class="lineNum">     255 </span>            :         }
+<span class="lineNum">     256 </span>            : 
+<span class="lineNum">     257 </span><span class="lineNoCov">          0 :         renderPipeline.schedule( _renderExecutor );</span>
+<span class="lineNum">     258 </span><span class="lineNoCov">          0 :         uploadPipeline.schedule( _uploadExecutor );</span>
+<span class="lineNum">     259 </span><span class="lineNoCov">          0 :         sendHistogramFilter.schedule( _computeExecutor );</span>
 <span class="lineNum">     260 </span><span class="lineNoCov">          0 :         histogramFilter.schedule( _computeExecutor );</span>
 <span class="lineNum">     261 </span><span class="lineNoCov">          0 :         renderFilter.execute();</span>
 <a name="262"><span class="lineNum">     262 </span><span class="lineNoCov">          0 :     }</span></a>
