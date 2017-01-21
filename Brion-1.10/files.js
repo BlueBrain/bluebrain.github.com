@@ -23,7 +23,6 @@ var files =
     [ "spikeReportPlugin.h", "spike_report_plugin_8h_source.html", null ],
     [ "spikeReportReader.h", "spike_report_reader_8h_source.html", null ],
     [ "spikeReportWriter.h", "spike_report_writer_8h_source.html", null ],
-    [ "spikes.h", "spikes_8h_source.html", null ],
     [ "brion/synapse.h", "brion_2synapse_8h_source.html", null ],
     [ "brain/synapse.h", "brain_2synapse_8h_source.html", null ],
     [ "synapses.h", "synapses_8h_source.html", null ],

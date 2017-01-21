@@ -4,7 +4,6 @@ var namespacebrain =
     [ "Circuit", "classbrain_1_1_circuit.html", "classbrain_1_1_circuit" ],
     [ "SpikeReportReader", "classbrain_1_1_spike_report_reader.html", "classbrain_1_1_spike_report_reader" ],
     [ "SpikeReportWriter", "classbrain_1_1_spike_report_writer.html", "classbrain_1_1_spike_report_writer" ],
-    [ "Spikes", "classbrain_1_1_spikes.html", "classbrain_1_1_spikes" ],
     [ "Synapse", "classbrain_1_1_synapse.html", "classbrain_1_1_synapse" ],
     [ "Synapses", "classbrain_1_1_synapses.html", "classbrain_1_1_synapses" ],
     [ "SynapsesIterator", "classbrain_1_1_synapses_iterator.html", "classbrain_1_1_synapses_iterator" ],

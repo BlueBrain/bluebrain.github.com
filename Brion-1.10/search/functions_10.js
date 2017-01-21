@@ -1,6 +1,6 @@
 var searchData=
 [
-  ['waituntil',['waitUntil',['../classbrion_1_1_spike_report.html#a9000f0d5acebebfcd07a99172eb7dc67',1,'brion::SpikeReport::waitUntil()'],['../classbrion_1_1_spike_report_plugin.html#a1d2cc5654162e27e0de67ef6b1c8806b',1,'brion::SpikeReportPlugin::waitUntil()']]],
+  ['write',['write',['../classbrion_1_1_spike_report.html#ab8efdf2da32129eff184b9bd260b4c49',1,'brion::SpikeReport::write()'],['../classbrion_1_1_spike_report_plugin.html#ae6c691a8519a52daabad6069dbc47176',1,'brion::SpikeReportPlugin::write()']]],
   ['writeapicals',['writeApicals',['../classbrion_1_1_morphology.html#a27999dfcdbc884321edf3374a085a531',1,'brion::Morphology::writeApicals()'],['../classbrion_1_1_morphology_plugin.html#af21f35f221ca068d5cca1a418ac0359a',1,'brion::MorphologyPlugin::writeApicals()']]],
   ['writecompartments',['writeCompartments',['../classbrion_1_1_compartment_report.html#a5bd85b1c9847c5800215e4bb8aeda1eb',1,'brion::CompartmentReport::writeCompartments()'],['../classbrion_1_1_compartment_report_plugin.html#a1ee8f2b01df7aec46ea21b8925e359eb',1,'brion::CompartmentReportPlugin::writeCompartments()']]],
   ['writeframe',['writeFrame',['../classbrion_1_1_compartment_report.html#a230e53d4d3941df80b5692b6ec627a2d',1,'brion::CompartmentReport::writeFrame()'],['../classbrion_1_1_compartment_report_plugin.html#a1a6d819ba11597e9e5b56a4b2684c634',1,'brion::CompartmentReportPlugin::writeFrame()']]],
@@ -10,7 +10,8 @@ var searchData=
   ['writepoints',['writePoints',['../classbrion_1_1_morphology.html#aae36886a00863864d2d48fe18ef73fdb',1,'brion::Morphology::writePoints()'],['../classbrion_1_1_morphology_plugin.html#a66b542efcf23d913e49ce4489e314ef4',1,'brion::MorphologyPlugin::writePoints()']]],
   ['writesections',['writeSections',['../classbrion_1_1_morphology.html#a4547ecbcf1641df1af0073638a07a04e',1,'brion::Morphology::writeSections()'],['../classbrion_1_1_morphology_plugin.html#aeb554f30f9d08646bc6af7120dd2479e',1,'brion::MorphologyPlugin::writeSections()']]],
   ['writesectiontypes',['writeSectionTypes',['../classbrion_1_1_morphology.html#a4e10777e7caed13c668b1a4428735780',1,'brion::Morphology::writeSectionTypes()'],['../classbrion_1_1_morphology_plugin.html#ab83fc61f7379ea0ffc5b7c2c26db49df',1,'brion::MorphologyPlugin::writeSectionTypes()']]],
-  ['writespikes',['writeSpikes',['../classbrion_1_1_spike_report.html#a399159966dde8dd7e8568d452ee0eaae',1,'brion::SpikeReport::writeSpikes()'],['../classbrion_1_1_spike_report_plugin.html#a9ed9e0c1033d5bd8461d120455617772',1,'brion::SpikeReportPlugin::writeSpikes()'],['../classbrain_1_1_spike_report_writer.html#a622cb89fdf6f5747f0485a0c3309de82',1,'brain::SpikeReportWriter::writeSpikes()']]],
+  ['writeseek',['writeSeek',['../classbrion_1_1_spike_report_plugin.html#ad444291f4eea4274e058d9748be2a37e',1,'brion::SpikeReportPlugin']]],
+  ['writespikes',['writeSpikes',['../classbrain_1_1_spike_report_writer.html#aedbb3ad4d80741f9b26fe468f7c8c393',1,'brain::SpikeReportWriter']]],
   ['writestructuretriangles',['writeStructureTriangles',['../classbrion_1_1_mesh.html#a6eb740ca0a36bc24f2235d1d857b03bd',1,'brion::Mesh']]],
   ['writestructuretristrip',['writeStructureTriStrip',['../classbrion_1_1_mesh.html#a7dadc6750f82db506395a63839b70baf',1,'brion::Mesh']]],
   ['writestructurevertices',['writeStructureVertices',['../classbrion_1_1_mesh.html#a36a308a361a5a788a9e222cdee99fdc7',1,'brion::Mesh']]],

@@ -1,8 +1,5 @@
 var hierarchy =
 [
-    [ "iterator_facade", null, [
-      [ "brain::Spikes::const_iterator", "classbrain_1_1_spikes_1_1const__iterator.html", null ]
-    ] ],
     [ "noncopyable", null, [
       [ "brain::neuron::Morphology", "classbrain_1_1neuron_1_1_morphology.html", null ],
       [ "brain::SpikeReportReader", "classbrain_1_1_spike_report_reader.html", null ],
@@ -22,7 +19,6 @@ var hierarchy =
     [ "brain::Circuit", "classbrain_1_1_circuit.html", null ],
     [ "brain::neuron::Section", "classbrain_1_1neuron_1_1_section.html", null ],
     [ "brain::neuron::Soma", "classbrain_1_1neuron_1_1_soma.html", null ],
-    [ "brain::Spikes", "classbrain_1_1_spikes.html", null ],
     [ "brain::Synapse", "classbrain_1_1_synapse.html", null ],
     [ "brain::Synapses", "classbrain_1_1_synapses.html", null ],
     [ "brain::Synapses::BaseImpl", "structbrain_1_1_synapses_1_1_base_impl.html", null ],

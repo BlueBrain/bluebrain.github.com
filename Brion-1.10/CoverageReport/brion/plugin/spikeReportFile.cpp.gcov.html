@@ -31,18 +31,18 @@
             <td class="headerValue">Brion</td>
             <td></td>
             <td class="headerItem">Lines:</td>
-            <td class="headerCovTableEntry">80</td>
-            <td class="headerCovTableEntry">86</td>
-            <td class="headerCovTableEntryHi">93.0 %</td>
+            <td class="headerCovTableEntry">55</td>
+            <td class="headerCovTableEntry">87</td>
+            <td class="headerCovTableEntryMed">63.2 %</td>
           </tr>
           <tr>
             <td class="headerItem">Date:</td>
-            <td class="headerValue">2017-01-17 06:11:05</td>
+            <td class="headerValue">2017-01-21 06:07:49</td>
             <td></td>
             <td class="headerItem">Functions:</td>
-            <td class="headerCovTableEntry">12</td>
+            <td class="headerCovTableEntry">8</td>
             <td class="headerCovTableEntry">13</td>
-            <td class="headerCovTableEntryHi">92.3 %</td>
+            <td class="headerCovTableEntryMed">61.5 %</td>
           </tr>
           <tr><td><img src="../../glass.png" width=3 height=3 alt=""></td></tr>
         </table>
@@ -62,253 +62,253 @@
 <pre class="source">
 <a name="1"><span class="lineNum">       1 </span>            : /* Copyright (c) 2013-2017, EPFL/Blue Brain Project</a>
 <span class="lineNum">       2 </span>            :  *                          Raphael Dumusc &lt;raphael.dumusc@epfl.ch&gt;
-<span class="lineNum">       3 </span>            :  *
-<span class="lineNum">       4 </span>            :  * This file is part of Brion &lt;https://github.com/BlueBrain/Brion&gt;
+<span class="lineNum">       3 </span>            :  *                          Juan Hernando &lt;juan.hernando@epfl.ch&gt;
+<span class="lineNum">       4 </span>            :  *                          Mohamed-Ghaith Kaabi &lt;mohamed.kaabi@epfl.ch&gt;
 <span class="lineNum">       5 </span>            :  *
-<span class="lineNum">       6 </span>            :  * This library is free software; you can redistribute it and/or modify it under
-<span class="lineNum">       7 </span>            :  * the terms of the GNU Lesser General Public License version 3.0 as published
-<span class="lineNum">       8 </span>            :  * by the Free Software Foundation.
-<span class="lineNum">       9 </span>            :  *
-<span class="lineNum">      10 </span>            :  * This library is distributed in the hope that it will be useful, but WITHOUT
-<span class="lineNum">      11 </span>            :  * ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS
-<span class="lineNum">      12 </span>            :  * FOR A PARTICULAR PURPOSE.  See the GNU Lesser General Public License for more
-<span class="lineNum">      13 </span>            :  * details.
-<span class="lineNum">      14 </span>            :  *
-<span class="lineNum">      15 </span>            :  * You should have received a copy of the GNU Lesser General Public License
-<span class="lineNum">      16 </span>            :  * along with this library; if not, write to the Free Software Foundation, Inc.,
-<span class="lineNum">      17 </span>            :  * 51 Franklin Street, Fifth Floor, Boston, MA 02110-1301 USA.
-<span class="lineNum">      18 </span>            :  */
-<span class="lineNum">      19 </span>            : 
-<span class="lineNum">      20 </span>            : #include &quot;spikeReportFile.h&quot;
-<span class="lineNum">      21 </span>            : #include &quot;../detail/skipWhiteSpace.h&quot;
-<span class="lineNum">      22 </span>            : 
-<span class="lineNum">      23 </span>            : #include &lt;lunchbox/log.h&gt;
-<span class="lineNum">      24 </span>            : #include &lt;lunchbox/stdExt.h&gt;
-<span class="lineNum">      25 </span>            : #include &lt;boost/bind.hpp&gt;
-<span class="lineNum">      26 </span>            : #include &lt;boost/filesystem.hpp&gt;
-<span class="lineNum">      27 </span>            : #include &lt;boost/lexical_cast.hpp&gt;
-<span class="lineNum">      28 </span>            : #include &lt;boost/regex.hpp&gt;
-<span class="lineNum">      29 </span>            : #include &lt;boost/version.hpp&gt;
-<span class="lineNum">      30 </span>            : #include &lt;fstream&gt;
-<span class="lineNum">      31 </span>            : 
-<span class="lineNum">      32 </span>            : namespace brion
-<span class="lineNum">      33 </span>            : {
-<span class="lineNum">      34 </span>            : namespace plugin
-<span class="lineNum">      35 </span>            : {
-<span class="lineNum">      36 </span>            : 
-<span class="lineNum">      37 </span>            : namespace
-<span class="lineNum">      38 </span>            : {
-<span class="lineNum">      39 </span>            : 
-<span class="lineNum">      40 </span>            : template&lt; typename T &gt;
-<span class="lineNum">      41 </span>            : static std::string lexical_cast( const T&amp; t )
-<span class="lineNum">      42 </span>            : {
-<span class="lineNum">      43 </span>            :     return boost::lexical_cast&lt; std::string &gt;( t );
-<span class="lineNum">      44 </span>            : }
-<span class="lineNum">      45 </span>            : 
-<span class="lineNum">      46 </span>            : // According to http://www.boost.org/doc/libs/1_56_0/doc/html/boost_lexical_cast/performance.html
-<span class="lineNum">      47 </span>            : // sscanf if faster than stringstream, and lexical_cast is faster than sscanf
-<span class="lineNum">      48 </span>            : // However, it seems that in combination with the OpenMP parallel for, the
-<a name="49"><span class="lineNum">      49 </span>            : // code with sscanf is performing slightly better than lexical_cast.</a>
-<span class="lineNum">      50 </span>            : 
-<span class="lineNum">      51 </span><span class="lineCov">       2484 : bool parseBluronLine( const std::string&amp; buffer,</span>
-<span class="lineNum">      52 </span>            :                       SpikeReportFile::Spike &amp;spike )
-<span class="lineNum">      53 </span>            : {
-<span class="lineNum">      54 </span><span class="lineCov">       2484 :     return sscanf( buffer.data( ), &quot;%20f%20ud&quot;,</span>
-<span class="lineNum">      55 </span><span class="lineCov">       3115 :                    &amp;spike.first, &amp;spike.second ) == 2;</span>
-<a name="56"><span class="lineNum">      56 </span>            : }</a>
-<span class="lineNum">      57 </span>            : 
-<span class="lineNum">      58 </span><span class="lineCov">    2432373 : bool parseNESTLine( const std::string&amp; buffer,</span>
-<span class="lineNum">      59 </span>            :                     SpikeReportFile::Spike &amp;spike )
+<span class="lineNum">       6 </span>            :  * This file is part of Brion &lt;https://github.com/BlueBrain/Brion&gt;
+<span class="lineNum">       7 </span>            :  *
+<span class="lineNum">       8 </span>            :  * This library is free software; you can redistribute it and/or modify it under
+<span class="lineNum">       9 </span>            :  * the terms of the GNU Lesser General Public License version 3.0 as published
+<span class="lineNum">      10 </span>            :  * by the Free Software Foundation.
+<span class="lineNum">      11 </span>            :  *
+<span class="lineNum">      12 </span>            :  * This library is distributed in the hope that it will be useful, but WITHOUT
+<span class="lineNum">      13 </span>            :  * ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS
+<span class="lineNum">      14 </span>            :  * FOR A PARTICULAR PURPOSE.  See the GNU Lesser General Public License for more
+<span class="lineNum">      15 </span>            :  * details.
+<span class="lineNum">      16 </span>            :  *
+<span class="lineNum">      17 </span>            :  * You should have received a copy of the GNU Lesser General Public License
+<span class="lineNum">      18 </span>            :  * along with this library; if not, write to the Free Software Foundation, Inc.,
+<span class="lineNum">      19 </span>            :  * 51 Franklin Street, Fifth Floor, Boston, MA 02110-1301 USA.
+<span class="lineNum">      20 </span>            :  */
+<span class="lineNum">      21 </span>            : 
+<span class="lineNum">      22 </span>            : #include &quot;spikeReportFile.h&quot;
+<span class="lineNum">      23 </span>            : #include &quot;../detail/skipWhiteSpace.h&quot;
+<span class="lineNum">      24 </span>            : 
+<span class="lineNum">      25 </span>            : #include &lt;lunchbox/log.h&gt;
+<span class="lineNum">      26 </span>            : #include &lt;lunchbox/stdExt.h&gt;
+<span class="lineNum">      27 </span>            : 
+<span class="lineNum">      28 </span>            : #include &lt;boost/bind.hpp&gt;
+<span class="lineNum">      29 </span>            : #include &lt;boost/filesystem.hpp&gt;
+<span class="lineNum">      30 </span>            : #include &lt;boost/lexical_cast.hpp&gt;
+<span class="lineNum">      31 </span>            : #include &lt;boost/regex.hpp&gt;
+<span class="lineNum">      32 </span>            : #include &lt;boost/version.hpp&gt;
+<span class="lineNum">      33 </span>            : 
+<span class="lineNum">      34 </span>            : #include &lt;fstream&gt;
+<span class="lineNum">      35 </span>            : 
+<span class="lineNum">      36 </span>            : namespace brion
+<span class="lineNum">      37 </span>            : {
+<span class="lineNum">      38 </span>            : namespace plugin
+<span class="lineNum">      39 </span>            : {
+<span class="lineNum">      40 </span>            : namespace
+<span class="lineNum">      41 </span>            : {
+<span class="lineNum">      42 </span>            : template&lt; typename T &gt;
+<span class="lineNum">      43 </span>            : static std::string lexical_cast( const T&amp; t )
+<span class="lineNum">      44 </span>            : {
+<span class="lineNum">      45 </span>            :     return boost::lexical_cast&lt; std::string &gt;( t );
+<span class="lineNum">      46 </span>            : }
+<span class="lineNum">      47 </span>            : 
+<span class="lineNum">      48 </span>            : // According to http://www.boost.org/doc/libs/1_56_0/doc/html/boost_lexical_cast/performance.html
+<span class="lineNum">      49 </span>            : // sscanf if faster than stringstream, and lexical_cast is faster than sscanf
+<span class="lineNum">      50 </span>            : // However, it seems that in combination with the OpenMP parallel for, the
+<a name="51"><span class="lineNum">      51 </span>            : // code with sscanf is performing slightly better than lexical_cast.</a>
+<span class="lineNum">      52 </span>            : 
+<span class="lineNum">      53 </span><span class="lineCov">       2112 : bool parseBluronLine( const std::string&amp; buffer, Spike&amp; spike )</span>
+<span class="lineNum">      54 </span>            : {
+<span class="lineNum">      55 </span><span class="lineCov">       2112 :     return sscanf( buffer.data( ), &quot;%20f%20ud&quot;,</span>
+<span class="lineNum">      56 </span><span class="lineCov">       2371 :                    &amp;spike.first, &amp;spike.second ) == 2;</span>
+<a name="57"><span class="lineNum">      57 </span>            : }</a>
+<span class="lineNum">      58 </span>            : 
+<span class="lineNum">      59 </span><span class="lineCov">    2457750 : bool parseNESTLine( const std::string&amp; buffer, Spike&amp; spike )</span>
 <span class="lineNum">      60 </span>            : {
-<span class="lineNum">      61 </span><span class="lineCov">    2432373 :     return sscanf (buffer.data( ), &quot;%20d%20f&quot;,</span>
-<span class="lineNum">      62 </span><span class="lineCov">    3761019 :                    &amp;spike.second, &amp;spike.first ) == 2;</span>
-<span class="lineNum">      63 </span>            : }
-<a name="64"><span class="lineNum">      64 </span>            : </a>
-<span class="lineNum">      65 </span>            : 
-<span class="lineNum">      66 </span><span class="lineCov">        289 : void writeBluronLine( std::fstream&amp; file,</span>
-<span class="lineNum">      67 </span>            :                       const SpikeReportFile::Spike &amp;spike  )
-<span class="lineNum">      68 </span>            : {
-<span class="lineNum">      69 </span><span class="lineCov">        289 :     file &lt;&lt; spike.first &lt;&lt; &quot; &quot; &lt;&lt; spike.second &lt;&lt; std::endl;</span>
-<a name="70"><span class="lineNum">      70 </span><span class="lineCov">        289 : }</span></a>
-<span class="lineNum">      71 </span>            : 
-<span class="lineNum">      72 </span><span class="lineCov">        279 : void writeNESTLine( std::fstream&amp; file,</span>
-<span class="lineNum">      73 </span>            :                       const SpikeReportFile::Spike &amp;spike  )
-<span class="lineNum">      74 </span>            : {
-<span class="lineNum">      75 </span><span class="lineCov">        279 :     file &lt;&lt; spike.second &lt;&lt; &quot; &quot; &lt;&lt; spike.first &lt;&lt; std::endl;</span>
-<span class="lineNum">      76 </span><span class="lineCov">        279 : }</span>
-<span class="lineNum">      77 </span>            : 
-<a name="78"><span class="lineNum">      78 </span>            : }</a>
-<span class="lineNum">      79 </span>            : 
-<span class="lineNum">      80 </span><span class="lineCov">         75 : SpikeReportFile::SpikeReportFile( const std::string&amp; filename,</span>
-<span class="lineNum">      81 </span>            :                                   const SpikeReportType rt,
-<span class="lineNum">      82 </span><span class="lineCov">         75 :                                   const int accessMode )</span>
-<span class="lineNum">      83 </span>            :     : _filename( filename )
-<span class="lineNum">      84 </span><span class="lineCov">         76 :     , _reportType( rt )</span>
-<span class="lineNum">      85 </span>            : {
-<span class="lineNum">      86 </span><span class="lineCov">         75 :     if( filename.empty( ))</span>
-<span class="lineNum">      87 </span>            :     {
-<span class="lineNum">      88 </span><span class="lineNoCov">          0 :         LBTHROW( std::runtime_error( &quot;Error opening spike times file:'&quot; +</span>
-<span class="lineNum">      89 </span>            :                                      _filename + &quot;'.&quot; ));
-<span class="lineNum">      90 </span>            :     }
-<span class="lineNum">      91 </span>            : 
-<span class="lineNum">      92 </span><span class="lineCov">         75 :     std::ios_base::openmode fileMode = std::ios_base::binary;</span>
-<span class="lineNum">      93 </span><span class="lineCov">         75 :     if( accessMode &amp; MODE_WRITE )</span>
-<span class="lineNum">      94 </span>            :     {
-<span class="lineNum">      95 </span><span class="lineCov">         28 :         if(( accessMode &amp; MODE_OVERWRITE ) != MODE_OVERWRITE</span>
-<span class="lineNum">      96 </span><span class="lineCov">         35 :                 &amp;&amp; boost::filesystem::exists( _filename ))</span>
-<span class="lineNum">      97 </span>            :         {
-<span class="lineNum">      98 </span><span class="lineCov">          1 :             LBTHROW( std::runtime_error( &quot;Cannot overwrite existing file:'&quot; +</span>
-<span class="lineNum">      99 </span>            :                                          _filename + &quot;'.&quot; ));
-<span class="lineNum">     100 </span>            :         }
-<span class="lineNum">     101 </span>            : 
-<span class="lineNum">     102 </span><span class="lineCov">          8 :         fileMode |= std::ios_base::out;</span>
-<span class="lineNum">     103 </span><span class="lineCov">          8 :         switch( _reportType )</span>
-<span class="lineNum">     104 </span>            :         {
-<span class="lineNum">     105 </span>            :         case BLURON_SPIKE_REPORT:
-<span class="lineNum">     106 </span><span class="lineCov">          6 :             _spikeWriteFunction = boost::bind( &amp;writeBluronLine, _1, _2 );</span>
-<span class="lineNum">     107 </span><span class="lineCov">          6 :             break;</span>
-<span class="lineNum">     108 </span>            :         case NEST_SPIKE_REPORT:
-<span class="lineNum">     109 </span><span class="lineCov">          2 :             _spikeWriteFunction = boost::bind( &amp;writeNESTLine, _1, _2 );</span>
-<span class="lineNum">     110 </span><span class="lineCov">          2 :             break;</span>
-<span class="lineNum">     111 </span>            :         default:
-<span class="lineNum">     112 </span><span class="lineNoCov">          0 :             LBTHROW( std::runtime_error( &quot;Report type not implemented&quot; ));</span>
-<span class="lineNum">     113 </span>            :         }
-<span class="lineNum">     114 </span>            :     }
-<span class="lineNum">     115 </span>            : 
-<span class="lineNum">     116 </span><span class="lineCov">         74 :     if( accessMode &amp; MODE_READ )</span>
-<span class="lineNum">     117 </span>            :     {
-<span class="lineNum">     118 </span><span class="lineCov">         66 :         fileMode |= std::ios_base::in;</span>
-<span class="lineNum">     119 </span><span class="lineCov">         66 :         switch( _reportType )</span>
-<span class="lineNum">     120 </span>            :         {
-<span class="lineNum">     121 </span>            :         case BLURON_SPIKE_REPORT:
-<span class="lineNum">     122 </span><span class="lineCov">         14 :             _spikeParseFunction = boost::bind( &amp;parseBluronLine, _1, _2 );</span>
-<span class="lineNum">     123 </span><span class="lineCov">         14 :             break;</span>
-<span class="lineNum">     124 </span>            :         case NEST_SPIKE_REPORT:
-<span class="lineNum">     125 </span><span class="lineCov">         52 :             _spikeParseFunction = boost::bind( &amp;parseNESTLine, _1, _2 );</span>
-<span class="lineNum">     126 </span><span class="lineCov">         52 :             break;</span>
-<span class="lineNum">     127 </span>            :         default:
-<span class="lineNum">     128 </span><span class="lineNoCov">          0 :             LBTHROW( std::runtime_error( &quot;Report type not implemented&quot; ));</span>
-<span class="lineNum">     129 </span>            :         }
-<span class="lineNum">     130 </span>            :     }
+<span class="lineNum">      61 </span><span class="lineCov">    2457750 :     return sscanf (buffer.data( ), &quot;%20d%20f&quot;,</span>
+<span class="lineNum">      62 </span><span class="lineCov">    3060812 :                    &amp;spike.second, &amp;spike.first ) == 2;</span>
+<a name="63"><span class="lineNum">      63 </span>            : }</a>
+<span class="lineNum">      64 </span>            : 
+<span class="lineNum">      65 </span><span class="lineNoCov">          0 : void writeBluronLine( std::fstream&amp; file, const Spike&amp; spike )</span>
+<span class="lineNum">      66 </span>            : {
+<span class="lineNum">      67 </span><span class="lineNoCov">          0 :     file &lt;&lt; spike.first &lt;&lt; &quot; &quot; &lt;&lt; spike.second &lt;&lt; '\n';</span>
+<a name="68"><span class="lineNum">      68 </span><span class="lineNoCov">          0 : }</span></a>
+<span class="lineNum">      69 </span>            : 
+<span class="lineNum">      70 </span><span class="lineNoCov">          0 : void writeNESTLine( std::fstream&amp; file, const Spike&amp; spike )</span>
+<span class="lineNum">      71 </span>            : {
+<span class="lineNum">      72 </span><span class="lineNoCov">          0 :     file &lt;&lt; spike.second &lt;&lt; &quot; &quot; &lt;&lt; spike.first &lt;&lt; '\n';</span>
+<span class="lineNum">      73 </span><span class="lineNoCov">          0 : }</span>
+<span class="lineNum">      74 </span>            : 
+<a name="75"><span class="lineNum">      75 </span>            : }</a>
+<span class="lineNum">      76 </span>            : 
+<span class="lineNum">      77 </span><span class="lineCov">         62 : SpikeReportFile::SpikeReportFile( const std::string&amp; filename,</span>
+<span class="lineNum">      78 </span>            :                                   const SpikeReportType rt,
+<span class="lineNum">      79 </span><span class="lineCov">         62 :                                   const int accessMode )</span>
+<span class="lineNum">      80 </span>            :     : _filename( filename )
+<span class="lineNum">      81 </span><span class="lineCov">         62 :     , _reportType( rt )</span>
+<span class="lineNum">      82 </span>            : {
+<span class="lineNum">      83 </span><span class="lineCov">         62 :     if( filename.empty( ))</span>
+<span class="lineNum">      84 </span>            :     {
+<span class="lineNum">      85 </span><span class="lineNoCov">          0 :         LBTHROW( std::runtime_error( &quot;Error opening spike times file:'&quot; +</span>
+<span class="lineNum">      86 </span>            :                                      _filename + &quot;'.&quot; ));
+<span class="lineNum">      87 </span>            :     }
+<span class="lineNum">      88 </span>            : 
+<span class="lineNum">      89 </span><span class="lineCov">         62 :     std::ios_base::openmode fileMode = std::ios_base::binary;</span>
+<span class="lineNum">      90 </span><span class="lineCov">         62 :     if( accessMode &amp; MODE_WRITE )</span>
+<span class="lineNum">      91 </span>            :     {
+<span class="lineNum">      92 </span><span class="lineNoCov">          0 :         if(( accessMode &amp; MODE_OVERWRITE ) != MODE_OVERWRITE</span>
+<span class="lineNum">      93 </span><span class="lineNoCov">          0 :                 &amp;&amp; boost::filesystem::exists( _filename ))</span>
+<span class="lineNum">      94 </span>            :         {
+<span class="lineNum">      95 </span><span class="lineNoCov">          0 :             LBTHROW( std::runtime_error( &quot;Cannot overwrite existing file:'&quot; +</span>
+<span class="lineNum">      96 </span>            :                                          _filename + &quot;'.&quot; ));
+<span class="lineNum">      97 </span>            :         }
+<span class="lineNum">      98 </span>            : 
+<span class="lineNum">      99 </span><span class="lineNoCov">          0 :         fileMode |= std::ios_base::out;</span>
+<span class="lineNum">     100 </span><span class="lineNoCov">          0 :         switch( _reportType )</span>
+<span class="lineNum">     101 </span>            :         {
+<span class="lineNum">     102 </span>            :         case BLURON_SPIKE_REPORT:
+<span class="lineNum">     103 </span><span class="lineNoCov">          0 :             _spikeWriteFunction = boost::bind( &amp;writeBluronLine, _1, _2 );</span>
+<span class="lineNum">     104 </span><span class="lineNoCov">          0 :             break;</span>
+<span class="lineNum">     105 </span>            :         case NEST_SPIKE_REPORT:
+<span class="lineNum">     106 </span><span class="lineNoCov">          0 :             _spikeWriteFunction = boost::bind( &amp;writeNESTLine, _1, _2 );</span>
+<span class="lineNum">     107 </span><span class="lineNoCov">          0 :             break;</span>
+<span class="lineNum">     108 </span>            :         default:
+<span class="lineNum">     109 </span><span class="lineNoCov">          0 :             LBTHROW( std::runtime_error( &quot;Report type not implemented&quot; ));</span>
+<span class="lineNum">     110 </span>            :         }
+<span class="lineNum">     111 </span>            :     }
+<span class="lineNum">     112 </span>            : 
+<span class="lineNum">     113 </span><span class="lineCov">         62 :     if( accessMode &amp; MODE_READ )</span>
+<span class="lineNum">     114 </span>            :     {
+<span class="lineNum">     115 </span><span class="lineCov">         62 :         fileMode |= std::ios_base::in;</span>
+<span class="lineNum">     116 </span><span class="lineCov">         62 :         switch( _reportType )</span>
+<span class="lineNum">     117 </span>            :         {
+<span class="lineNum">     118 </span>            :         case BLURON_SPIKE_REPORT:
+<span class="lineNum">     119 </span><span class="lineCov">         19 :             _spikeParseFunction = boost::bind( &amp;parseBluronLine, _1, _2 );</span>
+<span class="lineNum">     120 </span><span class="lineCov">         19 :             break;</span>
+<span class="lineNum">     121 </span>            :         case NEST_SPIKE_REPORT:
+<span class="lineNum">     122 </span><span class="lineCov">         43 :             _spikeParseFunction = boost::bind( &amp;parseNESTLine, _1, _2 );</span>
+<span class="lineNum">     123 </span><span class="lineCov">         43 :             break;</span>
+<span class="lineNum">     124 </span>            :         default:
+<span class="lineNum">     125 </span><span class="lineNoCov">          0 :             LBTHROW( std::runtime_error( &quot;Report type not implemented&quot; ));</span>
+<span class="lineNum">     126 </span>            :         }
+<span class="lineNum">     127 </span>            :     }
+<span class="lineNum">     128 </span>            : 
+<span class="lineNum">     129 </span><span class="lineCov">         62 :     _file.reset( new std::fstream( _filename.c_str(), fileMode ));</span>
+<a name="130"><span class="lineNum">     130 </span><span class="lineCov">         62 : }</span></a>
 <span class="lineNum">     131 </span>            : 
-<span class="lineNum">     132 </span><span class="lineCov">         74 :     _file.reset( new std::fstream( _filename.c_str(), fileMode ));</span>
-<a name="133"><span class="lineNum">     133 </span><span class="lineCov">         74 : }</span></a>
-<span class="lineNum">     134 </span>            : 
-<span class="lineNum">     135 </span><span class="lineCov">         74 : SpikeReportFile::~SpikeReportFile()</span>
-<span class="lineNum">     136 </span>            : {
-<a name="137"><span class="lineNum">     137 </span><span class="lineCov">         74 : }</span></a>
-<span class="lineNum">     138 </span>            : 
-<span class="lineNum">     139 </span><span class="lineCov">        193 : bool SpikeReportFile::fillReportMap( Spikes&amp; spikes, const size_t maxLines )</span>
-<span class="lineNum">     140 </span>            : {
-<span class="lineNum">     141 </span><span class="lineCov">        193 :     if( _spikeWriteFunction )</span>
-<span class="lineNum">     142 </span><span class="lineNoCov">          0 :         LBTHROW( std::runtime_error( &quot;File is not opened for reading &quot; +</span>
-<span class="lineNum">     143 </span>            :                                      _filename ));
+<span class="lineNum">     132 </span><span class="lineCov">         62 : SpikeReportFile::~SpikeReportFile()</span>
+<span class="lineNum">     133 </span>            : {
+<a name="134"><span class="lineNum">     134 </span><span class="lineCov">         62 : }</span></a>
+<span class="lineNum">     135 </span>            : 
+<span class="lineNum">     136 </span><span class="lineCov">         62 : bool SpikeReportFile::fillReportMap( SpikeMap&amp; spikes, const size_t maxLines )</span>
+<span class="lineNum">     137 </span>            : {
+<span class="lineNum">     138 </span><span class="lineCov">         62 :     if( _spikeWriteFunction )</span>
+<span class="lineNum">     139 </span><span class="lineNoCov">          0 :         LBTHROW( std::runtime_error( &quot;File is not opened for reading &quot; +</span>
+<span class="lineNum">     140 </span>            :                                      _filename ));
+<span class="lineNum">     141 </span>            : 
+<span class="lineNum">     142 </span><span class="lineCov">         62 :     size_t lineNumber = 0;</span>
+<span class="lineNum">     143 </span><span class="lineCov">         62 :     *_file &gt;&gt; detail::SkipWhiteSpace( lineNumber );</span>
 <span class="lineNum">     144 </span>            : 
-<span class="lineNum">     145 </span><span class="lineCov">        193 :     size_t lineNumber = 0;</span>
-<span class="lineNum">     146 </span><span class="lineCov">        193 :     *_file &gt;&gt; detail::SkipWhiteSpace( lineNumber );</span>
-<span class="lineNum">     147 </span>            : 
-<span class="lineNum">     148 </span><span class="lineCov">        386 :     std::vector&lt; Spike &gt; spikeArray;</span>
-<span class="lineNum">     149 </span>            : 
-<span class="lineNum">     150 </span>            : #ifdef BRION_USE_OPENMP
-<span class="lineNum">     151 </span>            :     // The batch size is divisible by all reasonable core counts between 1
-<span class="lineNum">     152 </span>            :     // and 50.
-<span class="lineNum">     153 </span><span class="lineCov">        193 :     const size_t batchSize = 554400;</span>
-<span class="lineNum">     154 </span><span class="lineCov">        193 :     size_t remaining = maxLines;</span>
-<span class="lineNum">     155 </span>            : 
-<span class="lineNum">     156 </span><span class="lineCov">        577 :     while( remaining != 0 &amp;&amp; !(*_file).fail( ))</span>
-<span class="lineNum">     157 </span>            :     {
-<span class="lineNum">     158 </span>            :         const size_t currentBatch =
-<span class="lineNum">     159 </span><span class="lineCov">        335 :             maxLines == std::numeric_limits&lt; size_t &gt;::max() ?</span>
-<span class="lineNum">     160 </span><span class="lineCov">        335 :             batchSize : std::min( remaining, batchSize );</span>
-<span class="lineNum">     161 </span>            : 
-<span class="lineNum">     162 </span>            :         // Reading a batch of strings to parse in parallel
-<span class="lineNum">     163 </span><span class="lineCov">        384 :         Strings lines( currentBatch );</span>
-<span class="lineNum">     164 </span><span class="lineCov">        192 :         size_t linesRead = 0;</span>
-<span class="lineNum">     165 </span>            : 
-<span class="lineNum">     166 </span><span class="lineCov">   11895485 :         while( linesRead != lines.size() &amp;&amp;</span>
-<span class="lineNum">     167 </span><span class="lineCov">    3965135 :                !std::getline( *_file, lines[linesRead] ).fail( ))</span>
-<span class="lineNum">     168 </span>            :         {
-<span class="lineNum">     169 </span>            :             // This check skips comments
-<span class="lineNum">     170 </span><span class="lineCov">    3965079 :             const char c = lines[linesRead][0];</span>
-<span class="lineNum">     171 </span><span class="lineCov">    3965079 :             if( c != '/' &amp;&amp; c != '#' )</span>
-<span class="lineNum">     172 </span><span class="lineCov">    3965068 :                 ++linesRead;</span>
-<span class="lineNum">     173 </span><span class="lineCov">    3965079 :             size_t skipCount = 0;</span>
-<span class="lineNum">     174 </span><span class="lineCov">    3965079 :             *_file &gt;&gt; detail::SkipWhiteSpace( skipCount );</span>
-<span class="lineNum">     175 </span>            :         }
-<span class="lineNum">     176 </span><span class="lineCov">        192 :         remaining -= std::min( remaining, linesRead );</span>
-<span class="lineNum">     177 </span>            : 
-<span class="lineNum">     178 </span><span class="lineCov">        192 :         const size_t first = spikeArray.size( );</span>
-<span class="lineNum">     179 </span><span class="lineCov">        192 :         spikeArray.resize( first + linesRead );</span>
-<a name="180"><span class="lineNum">     180 </span>            : </a>
-<span class="lineNum">     181 </span>            :         // Parsing strings
-<span class="lineNum">     182 </span><span class="lineCov">       1306 :         #pragma omp parallel for</span>
-<span class="lineNum">     183 </span><span class="lineCov">       1114 :         for( int64_t i = 0; i &lt; int64_t(linesRead); ++i )</span>
-<span class="lineNum">     184 </span>            :         {
-<span class="lineNum">     185 </span><span class="lineCov">    3793900 :             const std::string&amp; line = lines[i];</span>
-<span class="lineNum">     186 </span><span class="lineCov">    3539702 :             if( !_spikeParseFunction( line.c_str( ), spikeArray[first + i] ))</span>
-<span class="lineNum">     187 </span>            :             {
-<span class="lineNum">     188 </span>            :                 // Getting the line number right is not possible unless the
-<span class="lineNum">     189 </span>            :                 // line numbers are stored along with the strings.
-<span class="lineNum">     190 </span>            :                 // Instead of telling the line number, the full line will be
-<span class="lineNum">     191 </span>            :                 // printed. The error should be easy to spot in the file as
-<span class="lineNum">     192 </span>            :                 // it will be found at the first occurence in the file.
-<span class="lineNum">     193 </span><span class="lineNoCov">          0 :                 LBERROR &lt;&lt; &quot;Error reading spike times file: &quot; &lt;&lt; _filename</span>
-<span class="lineNum">     194 </span><span class="lineNoCov">          0 :                         &lt;&lt; &quot;, line: &quot; &lt;&lt; lines[i] &lt;&lt; std::endl;</span>
-<span class="lineNum">     195 </span>            :             }
-<span class="lineNum">     196 </span>            :         }
-<span class="lineNum">     197 </span>            :     }
-<span class="lineNum">     198 </span>            : #else
-<span class="lineNum">     199 </span>            :     std::string line;
-<span class="lineNum">     200 </span>            :     size_t remaining = maxLines;
-<span class="lineNum">     201 </span>            :     while( remaining != 0 &amp;&amp; !std::getline( *_file, line ).fail( ))
-<span class="lineNum">     202 </span>            :     {
-<span class="lineNum">     203 </span>            :         ++lineNumber;
-<span class="lineNum">     204 </span>            :         if ( line[0] == '/' || line[0] == '#' )
-<span class="lineNum">     205 </span>            :              continue;
-<span class="lineNum">     206 </span>            : 
-<span class="lineNum">     207 </span>            :         --remaining;
-<span class="lineNum">     208 </span>            :         Spike spike;
-<span class="lineNum">     209 </span>            :         if( !_spikeParseFunction( line.c_str( ), spike ))
-<span class="lineNum">     210 </span>            :         {
-<span class="lineNum">     211 </span>            :             LBTHROW( std::runtime_error( &quot;Reading spike times file: &quot; +
-<span class="lineNum">     212 </span>            :                                          _filename + &quot;, line &quot; +
-<span class="lineNum">     213 </span>            :                                          lexical_cast( lineNumber )));
-<span class="lineNum">     214 </span>            :         }
-<span class="lineNum">     215 </span>            :         spikeArray.push_back( spike );
-<span class="lineNum">     216 </span>            : 
-<span class="lineNum">     217 </span>            :         *_file &gt;&gt; detail::SkipWhiteSpace( lineNumber );
-<span class="lineNum">     218 </span>            :     }
-<span class="lineNum">     219 </span>            : #endif
-<span class="lineNum">     220 </span>            : 
-<span class="lineNum">     221 </span>            :     // Inserting a range of sorted elements is faster that inserting one
-<span class="lineNum">     222 </span>            :     // by one.
-<span class="lineNum">     223 </span><span class="lineCov">        193 :     std::sort( spikeArray.begin(), spikeArray.end( ));</span>
-<span class="lineNum">     224 </span><span class="lineCov">        193 :     spikes.insert( spikeArray.begin(), spikeArray.end( ));</span>
-<span class="lineNum">     225 </span>            : 
-<span class="lineNum">     226 </span><span class="lineCov">        193 :     if( _file-&gt;fail( ) &amp;&amp; !_file-&gt;eof( ))</span>
-<span class="lineNum">     227 </span><span class="lineCov">          1 :         LBTHROW( std::runtime_error( &quot;IO error reading spike times file: &quot; +</span>
-<span class="lineNum">     228 </span>            :                                      _filename ));
-<span class="lineNum">     229 </span><span class="lineCov">        384 :     return _file-&gt;eof();</span>
-<a name="230"><span class="lineNum">     230 </span>            : }</a>
-<span class="lineNum">     231 </span>            : 
-<span class="lineNum">     232 </span><span class="lineCov">          8 : void SpikeReportFile::writeReportMap( const Spikes&amp; spikes )</span>
-<span class="lineNum">     233 </span>            : {
-<span class="lineNum">     234 </span><span class="lineCov">          8 :     if( !_spikeWriteFunction )</span>
-<span class="lineNum">     235 </span><span class="lineCov">          2 :         LBTHROW( std::runtime_error( &quot;File is not opened for writing &quot; +</span>
-<span class="lineNum">     236 </span>            :                                      _filename ));
-<span class="lineNum">     237 </span>            : 
-<span class="lineNum">     238 </span><span class="lineCov">        574 :     for( Spikes::const_iterator it = spikes.begin(); it != spikes.end(); ++it )</span>
-<span class="lineNum">     239 </span><span class="lineCov">        568 :         _spikeWriteFunction( *_file, *it );</span>
-<a name="240"><span class="lineNum">     240 </span><span class="lineCov">          6 : }</span></a>
+<span class="lineNum">     145 </span><span class="lineCov">        124 :     std::vector&lt; Spike &gt; spikeArray;</span>
+<span class="lineNum">     146 </span>            : 
+<span class="lineNum">     147 </span>            : #ifdef BRION_USE_OPENMP
+<span class="lineNum">     148 </span>            :     // The batch size is divisible by all reasonable core counts between 1
+<span class="lineNum">     149 </span>            :     // and 50.
+<span class="lineNum">     150 </span><span class="lineCov">         62 :     const size_t batchSize = 554400;</span>
+<span class="lineNum">     151 </span><span class="lineCov">         62 :     size_t remaining = maxLines;</span>
+<span class="lineNum">     152 </span>            : 
+<span class="lineNum">     153 </span><span class="lineCov">        182 :     while( remaining != 0 &amp;&amp; !(*_file).fail( ))</span>
+<span class="lineNum">     154 </span>            :     {
+<span class="lineNum">     155 </span>            :         const size_t currentBatch =
+<span class="lineNum">     156 </span><span class="lineCov">         60 :             maxLines == std::numeric_limits&lt; size_t &gt;::max() ?</span>
+<span class="lineNum">     157 </span><span class="lineCov">         60 :             batchSize : std::min( remaining, batchSize );</span>
+<span class="lineNum">     158 </span>            : 
+<span class="lineNum">     159 </span>            :         // Reading a batch of strings to parse in parallel
+<span class="lineNum">     160 </span><span class="lineCov">        120 :         Strings lines( currentBatch );</span>
+<span class="lineNum">     161 </span><span class="lineCov">         60 :         size_t linesRead = 0;</span>
+<span class="lineNum">     162 </span>            : 
+<span class="lineNum">     163 </span><span class="lineCov">    9826704 :         while( linesRead != lines.size() &amp;&amp;</span>
+<span class="lineNum">     164 </span><span class="lineCov">    3275588 :                !std::getline( *_file, lines[linesRead] ).fail( ))</span>
+<span class="lineNum">     165 </span>            :         {
+<span class="lineNum">     166 </span>            :             // This check skips comments
+<span class="lineNum">     167 </span><span class="lineCov">    3275528 :             const char c = lines[linesRead][0];</span>
+<span class="lineNum">     168 </span><span class="lineCov">    3275528 :             if( c != '/' &amp;&amp; c != '#' )</span>
+<span class="lineNum">     169 </span><span class="lineCov">    3275520 :                 ++linesRead;</span>
+<span class="lineNum">     170 </span><span class="lineCov">    3275528 :             size_t skipCount = 0;</span>
+<span class="lineNum">     171 </span><span class="lineCov">    3275528 :             *_file &gt;&gt; detail::SkipWhiteSpace( skipCount );</span>
+<span class="lineNum">     172 </span>            :         }
+<span class="lineNum">     173 </span><span class="lineCov">         60 :         remaining -= std::min( remaining, linesRead );</span>
+<span class="lineNum">     174 </span>            : 
+<span class="lineNum">     175 </span><span class="lineCov">         60 :         const size_t first = spikeArray.size( );</span>
+<span class="lineNum">     176 </span><span class="lineCov">         60 :         spikeArray.resize( first + linesRead );</span>
+<a name="177"><span class="lineNum">     177 </span>            : </a>
+<span class="lineNum">     178 </span>            :         // Parsing strings
+<span class="lineNum">     179 </span><span class="lineCov">        405 :         #pragma omp parallel for</span>
+<span class="lineNum">     180 </span><span class="lineCov">        345 :         for( int64_t i = 0; i &lt; int64_t( linesRead ); ++i )</span>
+<span class="lineNum">     181 </span>            :         {
+<span class="lineNum">     182 </span><span class="lineCov">    3147320 :             const std::string&amp; line = lines[i];</span>
+<span class="lineNum">     183 </span><span class="lineCov">    3037392 :             if( !_spikeParseFunction( line.c_str( ), spikeArray[first + i] ))</span>
+<span class="lineNum">     184 </span>            :             {
+<span class="lineNum">     185 </span>            :                 // Getting the line number right is not possible unless the
+<span class="lineNum">     186 </span>            :                 // line numbers are stored along with the strings.
+<span class="lineNum">     187 </span>            :                 // Instead of telling the line number, the full line will be
+<span class="lineNum">     188 </span>            :                 // printed. The error should be easy to spot in the file as
+<span class="lineNum">     189 </span>            :                 // it will be found at the first occurence in the file.
+<span class="lineNum">     190 </span><span class="lineNoCov">          0 :                 LBERROR &lt;&lt; &quot;Error reading spike times file: &quot; &lt;&lt; _filename</span>
+<span class="lineNum">     191 </span><span class="lineNoCov">          0 :                         &lt;&lt; &quot;, line: &quot; &lt;&lt; lines[i] &lt;&lt; std::endl;</span>
+<span class="lineNum">     192 </span>            :             }
+<span class="lineNum">     193 </span>            :         }
+<span class="lineNum">     194 </span>            :     }
+<span class="lineNum">     195 </span>            : #else
+<span class="lineNum">     196 </span>            :     std::string line;
+<span class="lineNum">     197 </span>            :     size_t remaining = maxLines;
+<span class="lineNum">     198 </span>            :     while( remaining != 0 &amp;&amp; !std::getline( *_file, line ).fail( ))
+<span class="lineNum">     199 </span>            :     {
+<span class="lineNum">     200 </span>            :         ++lineNumber;
+<span class="lineNum">     201 </span>            :         if ( line[0] == '/' || line[0] == '#' )
+<span class="lineNum">     202 </span>            :              continue;
+<span class="lineNum">     203 </span>            : 
+<span class="lineNum">     204 </span>            :         --remaining;
+<span class="lineNum">     205 </span>            :         Spike spike;
+<span class="lineNum">     206 </span>            :         if( !_spikeParseFunction( line.c_str( ), spike ))
+<span class="lineNum">     207 </span>            :         {
+<span class="lineNum">     208 </span>            :             LBTHROW( std::runtime_error( &quot;Reading spike times file: &quot; +
+<span class="lineNum">     209 </span>            :                                          _filename + &quot;, line &quot; +
+<span class="lineNum">     210 </span>            :                                          lexical_cast( lineNumber )));
+<span class="lineNum">     211 </span>            :         }
+<span class="lineNum">     212 </span>            :         spikeArray.push_back( spike );
+<span class="lineNum">     213 </span>            : 
+<span class="lineNum">     214 </span>            :         *_file &gt;&gt; detail::SkipWhiteSpace( lineNumber );
+<span class="lineNum">     215 </span>            :     }
+<span class="lineNum">     216 </span>            : #endif
+<span class="lineNum">     217 </span>            : 
+<span class="lineNum">     218 </span>            :     // Inserting a range of sorted elements is faster that inserting one
+<span class="lineNum">     219 </span>            :     // by one.
+<span class="lineNum">     220 </span><span class="lineCov">         62 :     std::sort( spikeArray.begin(), spikeArray.end( ));</span>
+<span class="lineNum">     221 </span><span class="lineCov">         62 :     spikes.insert( spikeArray.begin(), spikeArray.end( ));</span>
+<span class="lineNum">     222 </span>            : 
+<span class="lineNum">     223 </span><span class="lineCov">         62 :     if( _file-&gt;fail( ) &amp;&amp; !_file-&gt;eof( ))</span>
+<span class="lineNum">     224 </span><span class="lineCov">          2 :         LBTHROW( std::runtime_error( &quot;IO error reading spike times file: &quot; +</span>
+<span class="lineNum">     225 </span>            :                                      _filename ));
+<span class="lineNum">     226 </span><span class="lineCov">        120 :     return _file-&gt;eof();</span>
+<span class="lineNum">     227 </span>            : }
+<a name="228"><span class="lineNum">     228 </span>            : </a>
+<span class="lineNum">     229 </span>            : 
+<span class="lineNum">     230 </span><span class="lineNoCov">          0 : void SpikeReportFile::writeReportMap( const Spikes&amp; spikes )</span>
+<span class="lineNum">     231 </span>            : {
+<span class="lineNum">     232 </span><span class="lineNoCov">          0 :     if( !_spikeWriteFunction )</span>
+<span class="lineNum">     233 </span><span class="lineNoCov">          0 :         LBTHROW( std::runtime_error( &quot;File is not opened for writing &quot; +</span>
+<span class="lineNum">     234 </span>            :                                      _filename ));
+<span class="lineNum">     235 </span>            : 
+<span class="lineNum">     236 </span><span class="lineNoCov">          0 :     for( const Spike&amp; spike : spikes )</span>
+<span class="lineNum">     237 </span><span class="lineNoCov">          0 :         _spikeWriteFunction( *_file, spike );</span>
+<span class="lineNum">     238 </span>            : 
+<span class="lineNum">     239 </span><span class="lineNoCov">          0 :     _file-&gt;flush();</span>
+<a name="240"><span class="lineNum">     240 </span><span class="lineNoCov">          0 : }</span></a>
 <span class="lineNum">     241 </span>            : 
-<span class="lineNum">     242 </span><span class="lineCov">         33 : void SpikeReportFile::close()</span>
+<span class="lineNum">     242 </span><span class="lineNoCov">          0 : void SpikeReportFile::close()</span>
 <span class="lineNum">     243 </span>            : {
-<span class="lineNum">     244 </span><span class="lineCov">         33 :     if( _file )</span>
-<span class="lineNum">     245 </span><span class="lineCov">         33 :         _file-&gt;close();</span>
-<span class="lineNum">     246 </span><span class="lineCov">         33 : }</span>
+<span class="lineNum">     244 </span><span class="lineNoCov">          0 :     if( _file )</span>
+<span class="lineNum">     245 </span><span class="lineNoCov">          0 :         _file-&gt;close();</span>
+<span class="lineNum">     246 </span><span class="lineNoCov">          0 : }</span>
 <a name="247"><span class="lineNum">     247 </span>            : </a>
 <span class="lineNum">     248 </span>            : }
-<span class="lineNum">     249 </span><span class="lineCov">         42 : }</span>
+<span class="lineNum">     249 </span><span class="lineCov">         39 : }</span>
 </pre>
       </td>
     </tr>

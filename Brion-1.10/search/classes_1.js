@@ -4,6 +4,5 @@ var searchData=
   ['circuit',['Circuit',['../classbrion_1_1_circuit.html',1,'brion']]],
   ['compartmentreport',['CompartmentReport',['../classbrion_1_1_compartment_report.html',1,'brion']]],
   ['compartmentreportinitdata',['CompartmentReportInitData',['../classbrion_1_1_compartment_report_init_data.html',1,'brion']]],
-  ['compartmentreportplugin',['CompartmentReportPlugin',['../classbrion_1_1_compartment_report_plugin.html',1,'brion']]],
-  ['const_5fiterator',['const_iterator',['../classbrain_1_1_spikes_1_1const__iterator.html',1,'brain::Spikes']]]
+  ['compartmentreportplugin',['CompartmentReportPlugin',['../classbrion_1_1_compartment_report_plugin.html',1,'brion']]]
 ];

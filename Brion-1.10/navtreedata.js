@@ -44,8 +44,8 @@ var NAVTREE =
 var NAVTREEINDEX =
 [
 "Changelog.html",
-"classbrion_1_1_blue_config.html#a15ca4b93088443b660df47d4cd865e9c",
-"enums_8h.html#a0b4836d8823df1f6564115cc3271c185af06936793edbf46b4fc2117c14a1c1b6"
+"classbrion_1_1_compartment_report.html#a1068892309907490436a2f5b23e3f252",
+"enums_8h.html#a66e583bba6f011701c4d545b1bb28533"
 ];
 
 var SYNCONMSG = 'click to disable panel synchronisation';
