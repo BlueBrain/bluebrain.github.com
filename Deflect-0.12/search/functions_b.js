@@ -1,5 +1,5 @@
 var searchData=
 [
-  ['qmlstreamer',['QmlStreamer',['../classdeflect_1_1qt_1_1_qml_streamer.html#aa9534a0231065a41b1f7b29703bcfaef',1,'deflect::qt::QmlStreamer']]],
-  ['quickrenderer',['QuickRenderer',['../classdeflect_1_1qt_1_1_quick_renderer.html#aa676d033404d13c3329b2590db82c043',1,'deflect::qt::QuickRenderer']]]
+  ['processframefinished',['processFrameFinished',['../classdeflect_1_1_frame_dispatcher.html#a71969da5de085dea8749501c8572f5b3',1,'deflect::FrameDispatcher']]],
+  ['processsegment',['processSegment',['../classdeflect_1_1_frame_dispatcher.html#a29be6885dfde466e9e7a738a04a6e945',1,'deflect::FrameDispatcher']]]
 ];

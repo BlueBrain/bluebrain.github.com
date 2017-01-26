@@ -4,6 +4,7 @@ var searchData=
   ['getbuffersize',['getBufferSize',['../structdeflect_1_1_image_wrapper.html#a1bbcaaa81b91344e9864a90c5b09fc6c',1,'deflect::ImageWrapper']]],
   ['getbytesperpixel',['getBytesPerPixel',['../structdeflect_1_1_image_wrapper.html#a6e1357a7aa3628ddc8f272a6bc340df9',1,'deflect::ImageWrapper']]],
   ['getdescriptor',['getDescriptor',['../classdeflect_1_1_stream.html#a5857ea5f888d3619222f2594cfee6a10',1,'deflect::Stream']]],
+  ['getengine',['getEngine',['../classdeflect_1_1qt_1_1_offscreen_quick_view.html#a06259d460bd4d808cdb116b006b049f9',1,'deflect::qt::OffscreenQuickView']]],
   ['getevent',['getEvent',['../classdeflect_1_1_stream.html#a8d891e83326740017b339e01162eeafc',1,'deflect::Stream']]],
   ['gethost',['getHost',['../classdeflect_1_1_stream.html#a03c95cab2ab9d04e944b6c65457e8f46',1,'deflect::Stream']]],
   ['getid',['getId',['../classdeflect_1_1_stream.html#abe0550c3b1ace7e363c3f28803dbe4e8',1,'deflect::Stream']]],
@@ -14,6 +15,8 @@ var searchData=
   ['getqmlengine',['getQmlEngine',['../classdeflect_1_1qt_1_1_qml_streamer.html#a2093b0e732c47a75a9b6951f63adb597',1,'deflect::qt::QmlStreamer']]],
   ['getrevision',['getRevision',['../classdeflectqt_1_1_version.html#a619fc2343b6b4f53cfb2145f9fd3632a',1,'deflectqt::Version::getRevision()'],['../classdeflect_1_1_version.html#af3f12dad6076c78e85cba4c791ef0292',1,'deflect::Version::getRevision()']]],
   ['getrevstring',['getRevString',['../classdeflectqt_1_1_version.html#a3e55d79cf8922c5469ffbd51bf694a1f',1,'deflectqt::Version::getRevString()'],['../classdeflect_1_1_version.html#ad5609c825783681386c5cbb295c632d4',1,'deflect::Version::getRevString()']]],
-  ['getrootitem',['getRootItem',['../classdeflect_1_1qt_1_1_qml_streamer.html#a38af8a75a8d33fcad833649ba0844c01',1,'deflect::qt::QmlStreamer']]],
+  ['getrootcontext',['getRootContext',['../classdeflect_1_1qt_1_1_offscreen_quick_view.html#ac42b3f30cd0f5a0488e5930d467cc103',1,'deflect::qt::OffscreenQuickView']]],
+  ['getrootitem',['getRootItem',['../classdeflect_1_1qt_1_1_offscreen_quick_view.html#af9116ef03dfd4aad28ddb5f644271174',1,'deflect::qt::OffscreenQuickView::getRootItem()'],['../classdeflect_1_1qt_1_1_qml_streamer.html#a38af8a75a8d33fcad833649ba0844c01',1,'deflect::qt::QmlStreamer::getRootItem()']]],
+  ['getschema',['getSchema',['../classdeflectqt_1_1_version.html#ad9b584168f230d16136c42588e7a91d5',1,'deflectqt::Version::getSchema()'],['../classdeflect_1_1_version.html#a4efebd40c76185b573c00d6f50089d3a',1,'deflect::Version::getSchema()']]],
   ['getstring',['getString',['../classdeflectqt_1_1_version.html#a07061034d741f2ac3ee2990f441c74a9',1,'deflectqt::Version::getString()'],['../classdeflect_1_1_version.html#ac87161d36ea0dd6d8cc648f3cd6408d6',1,'deflect::Version::getString()']]]
 ];

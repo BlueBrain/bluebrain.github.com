@@ -1,5 +1,5 @@
 var searchData=
 [
-  ['processframefinished',['processFrameFinished',['../classdeflect_1_1_frame_dispatcher.html#a71969da5de085dea8749501c8572f5b3',1,'deflect::FrameDispatcher']]],
-  ['processsegment',['processSegment',['../classdeflect_1_1_frame_dispatcher.html#a29be6885dfde466e9e7a738a04a6e945',1,'deflect::FrameDispatcher']]]
+  ['offscreenquickview',['OffscreenQuickView',['../classdeflect_1_1qt_1_1_offscreen_quick_view.html#a67872b984530032c74a15b89aff1d1f3',1,'deflect::qt::OffscreenQuickView']]],
+  ['openpixelstream',['openPixelStream',['../classdeflect_1_1_frame_dispatcher.html#a214dcee4ab2d21edddbbff98a77bf2ae',1,'deflect::FrameDispatcher']]]
 ];

@@ -2,6 +2,7 @@ var annotated_dup =
 [
     [ "deflect", null, [
       [ "qt", null, [
+        [ "OffscreenQuickView", "classdeflect_1_1qt_1_1_offscreen_quick_view.html", "classdeflect_1_1qt_1_1_offscreen_quick_view" ],
         [ "QmlStreamer", "classdeflect_1_1qt_1_1_qml_streamer.html", "classdeflect_1_1qt_1_1_qml_streamer" ],
         [ "QuickRenderer", "classdeflect_1_1qt_1_1_quick_renderer.html", "classdeflect_1_1qt_1_1_quick_renderer" ],
         [ "TouchInjector", "classdeflect_1_1qt_1_1_touch_injector.html", "classdeflect_1_1qt_1_1_touch_injector" ]

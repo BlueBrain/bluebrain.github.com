@@ -1,4 +1,4 @@
 var searchData=
 [
-  ['openpixelstream',['openPixelStream',['../classdeflect_1_1_frame_dispatcher.html#a214dcee4ab2d21edddbbff98a77bf2ae',1,'deflect::FrameDispatcher']]]
+  ['mtqueue',['MTQueue',['../classdeflect_1_1_m_t_queue.html#a4612c53a9d1a8ea4640dd5ba128dd480',1,'deflect::MTQueue']]]
 ];

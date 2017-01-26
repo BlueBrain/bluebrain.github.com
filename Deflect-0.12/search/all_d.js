@@ -1,9 +1,9 @@
 var searchData=
 [
-  ['registerforevents',['registerForEvents',['../classdeflect_1_1_stream.html#ac41c7f5a1389da41e2778b677138a870',1,'deflect::Stream']]],
-  ['removealltouchpoints',['removeAllTouchPoints',['../classdeflect_1_1qt_1_1_touch_injector.html#a96c53f72080981e4c3165b1d58dcbdf8',1,'deflect::qt::TouchInjector']]],
-  ['removesource',['removeSource',['../classdeflect_1_1_frame_dispatcher.html#ad26b5acc92ce3fbc61f656a9def62328',1,'deflect::FrameDispatcher']]],
-  ['removetouchpoint',['removeTouchPoint',['../classdeflect_1_1qt_1_1_touch_injector.html#a1b15ba90f5754acf4e577ed827ff4be0',1,'deflect::qt::TouchInjector']]],
-  ['render',['render',['../classdeflect_1_1qt_1_1_quick_renderer.html#a6d8dbb634c27a5bdb4abae63189861b5',1,'deflect::qt::QuickRenderer']]],
-  ['requestframe',['requestFrame',['../classdeflect_1_1_frame_dispatcher.html#a9bce9a9c691743d0589bc5c50375c1b9',1,'deflect::FrameDispatcher']]]
+  ['api_2eh',['api.h',['../qt_2api_8h.html',1,'']]],
+  ['qmlstreamer',['QmlStreamer',['../classdeflect_1_1qt_1_1_qml_streamer.html#aa9534a0231065a41b1f7b29703bcfaef',1,'deflect::qt::QmlStreamer']]],
+  ['qmlstreamer',['QmlStreamer',['../classdeflect_1_1qt_1_1_qml_streamer.html',1,'deflect::qt']]],
+  ['quickrenderer',['QuickRenderer',['../classdeflect_1_1qt_1_1_quick_renderer.html#aaeba9c5135aaafce3cc683fb0dab36df',1,'deflect::qt::QuickRenderer']]],
+  ['quickrenderer',['QuickRenderer',['../classdeflect_1_1qt_1_1_quick_renderer.html',1,'deflect::qt']]],
+  ['version_2eh',['version.h',['../qt_2version_8h.html',1,'']]]
 ];

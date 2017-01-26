@@ -7,5 +7,6 @@ var searchData=
   ['compressionpolicy',['compressionPolicy',['../structdeflect_1_1_image_wrapper.html#a117951a971e2db4500d2a01ba6ac1e58',1,'deflect::ImageWrapper']]],
   ['compressionquality',['compressionQuality',['../structdeflect_1_1_image_wrapper.html#aea79767865a32c31889e30a4c8bd5e41',1,'deflect::ImageWrapper']]],
   ['computedimensions',['computeDimensions',['../classdeflect_1_1_frame.html#a1f3b6dc77aa6b6d2848af592a1e8539f',1,'deflect::Frame']]],
-  ['context',['context',['../classdeflect_1_1qt_1_1_quick_renderer.html#aa2e49cfd27f82ad0d147a74eafd8a3e1',1,'deflect::qt::QuickRenderer']]]
+  ['context',['context',['../classdeflect_1_1qt_1_1_quick_renderer.html#aa2e49cfd27f82ad0d147a74eafd8a3e1',1,'deflect::qt::QuickRenderer']]],
+  ['create',['create',['../classdeflect_1_1qt_1_1_touch_injector.html#a7f24d1f0f9697bdcdae2663b0a9e6b59',1,'deflect::qt::TouchInjector']]]
 ];

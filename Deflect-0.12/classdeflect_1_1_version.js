@@ -7,5 +7,7 @@ var classdeflect_1_1_version =
     [ "getPatch", "classdeflect_1_1_version.html#ab2bd448e81b1014087e824efacd8fe91", null ],
     [ "getRevision", "classdeflect_1_1_version.html#af3f12dad6076c78e85cba4c791ef0292", null ],
     [ "getRevString", "classdeflect_1_1_version.html#ad5609c825783681386c5cbb295c632d4", null ],
-    [ "getString", "classdeflect_1_1_version.html#ac87161d36ea0dd6d8cc648f3cd6408d6", null ]
+    [ "getSchema", "classdeflect_1_1_version.html#a4efebd40c76185b573c00d6f50089d3a", null ],
+    [ "getString", "classdeflect_1_1_version.html#ac87161d36ea0dd6d8cc648f3cd6408d6", null ],
+    [ "toJSON", "classdeflect_1_1_version.html#aae94467b4fd09abce9c73c8f2af45add", null ]
 ];

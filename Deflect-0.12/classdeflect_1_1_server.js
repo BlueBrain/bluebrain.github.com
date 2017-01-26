@@ -10,6 +10,5 @@ var classdeflect_1_1_server =
     [ "receivedData", "classdeflect_1_1_server.html#a5414ec8f30fd8e31df05892d76c54ddc", null ],
     [ "receivedSizeHints", "classdeflect_1_1_server.html#a5c72d2d863e5eddc06e7b66a9544f5a5", null ],
     [ "registerToEvents", "classdeflect_1_1_server.html#a83a780b6966f5ca5a6c877975f8c0a52", null ],
-    [ "defaultPortNumber", "classdeflect_1_1_server.html#ad9de65318605b69ca87b786d9178bddd", null ],
-    [ "serviceName", "classdeflect_1_1_server.html#a4429d1f3f1ce07f9d2c52b54d4a69886", null ]
+    [ "defaultPortNumber", "classdeflect_1_1_server.html#ad9de65318605b69ca87b786d9178bddd", null ]
 ];

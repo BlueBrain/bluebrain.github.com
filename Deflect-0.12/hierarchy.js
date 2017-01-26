@@ -18,6 +18,9 @@ var hierarchy =
       [ "deflect::qt::QuickRenderer", "classdeflect_1_1qt_1_1_quick_renderer.html", null ],
       [ "deflect::qt::TouchInjector", "classdeflect_1_1qt_1_1_touch_injector.html", null ]
     ] ],
+    [ "QQuickWindow", null, [
+      [ "deflect::qt::OffscreenQuickView", "classdeflect_1_1qt_1_1_offscreen_quick_view.html", null ]
+    ] ],
     [ "QTcpServer", null, [
       [ "deflect::Server", "classdeflect_1_1_server.html", null ]
     ] ]

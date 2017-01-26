@@ -12,6 +12,7 @@ var files =
     [ "FrameDispatcher.h", "_frame_dispatcher_8h_source.html", null ],
     [ "ImageWrapper.h", "_image_wrapper_8h_source.html", null ],
     [ "MTQueue.h", "_m_t_queue_8h_source.html", null ],
+    [ "OffscreenQuickView.h", "_offscreen_quick_view_8h_source.html", null ],
     [ "QmlStreamer.h", "_qml_streamer_8h_source.html", null ],
     [ "qt.h", "qt_8h_source.html", null ],
     [ "QuickRenderer.h", "_quick_renderer_8h_source.html", null ],
