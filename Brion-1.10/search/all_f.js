@@ -22,7 +22,7 @@ var searchData=
   ['spikereportreader',['SpikeReportReader',['../classbrain_1_1_spike_report_reader.html',1,'brain']]],
   ['spikereportwriter',['SpikeReportWriter',['../classbrain_1_1_spike_report_writer.html#ad3b1e9aacd2ed848eda5a5f754101d7b',1,'brain::SpikeReportWriter']]],
   ['spikereportwriter',['SpikeReportWriter',['../classbrain_1_1_spike_report_writer.html',1,'brain']]],
-  ['state',['State',['../classbrion_1_1_spike_report.html#a49d4f29067cd5725c3bfeef99967d9c0',1,'brion::SpikeReport']]],
+  ['state',['State',['../classbrion_1_1_spike_report.html#a76277acf0346819dd0ead1349a020c7e',1,'brion::SpikeReport']]],
   ['synapse',['Synapse',['../classbrain_1_1_synapse.html',1,'brain']]],
   ['synapse',['Synapse',['../classbrion_1_1_synapse.html#afa0d5cf421b259daf8820890efe248c6',1,'brion::Synapse']]],
   ['synapse',['Synapse',['../classbrion_1_1_synapse.html',1,'brion']]],

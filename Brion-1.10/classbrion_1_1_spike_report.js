@@ -1,9 +1,9 @@
 var classbrion_1_1_spike_report =
 [
-    [ "State", "classbrion_1_1_spike_report.html#a49d4f29067cd5725c3bfeef99967d9c0", [
-      [ "ok", "classbrion_1_1_spike_report.html#a49d4f29067cd5725c3bfeef99967d9c0a444bcb3a3fcf8389296c49467f27e1d6", null ],
-      [ "ended", "classbrion_1_1_spike_report.html#a49d4f29067cd5725c3bfeef99967d9c0add2677d07f29951449ecbd2ab3b896eb", null ],
-      [ "failed", "classbrion_1_1_spike_report.html#a49d4f29067cd5725c3bfeef99967d9c0a26934eb377001f66e37289a5c93fe284", null ]
+    [ "State", "classbrion_1_1_spike_report.html#a76277acf0346819dd0ead1349a020c7e", [
+      [ "ok", "classbrion_1_1_spike_report.html#a76277acf0346819dd0ead1349a020c7ea444bcb3a3fcf8389296c49467f27e1d6", null ],
+      [ "ended", "classbrion_1_1_spike_report.html#a76277acf0346819dd0ead1349a020c7eadd2677d07f29951449ecbd2ab3b896eb", null ],
+      [ "failed", "classbrion_1_1_spike_report.html#a76277acf0346819dd0ead1349a020c7ea26934eb377001f66e37289a5c93fe284", null ]
     ] ],
     [ "SpikeReport", "classbrion_1_1_spike_report.html#abc848e1631c8293dbb2c0a5787656b3b", null ],
     [ "SpikeReport", "classbrion_1_1_spike_report.html#a7eec8b54b3b74f8c21bf80a8690fa780", null ],

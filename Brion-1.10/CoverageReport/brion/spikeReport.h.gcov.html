@@ -37,7 +37,7 @@
           </tr>
           <tr>
             <td class="headerItem">Date:</td>
-            <td class="headerValue">2017-01-21 06:07:49</td>
+            <td class="headerValue">2017-01-28 06:09:12</td>
             <td></td>
             <td class="headerItem">Functions:</td>
             <td class="headerCovTableEntry">0</td>
@@ -124,7 +124,7 @@
 <span class="lineNum">      62 </span>            :      * State::ended means that the report end is reached (in read mode)
 <span class="lineNum">      63 </span>            :      * State::failed means that a error occured when readyn or writing the report
 <span class="lineNum">      64 </span>            :      */
-<span class="lineNum">      65 </span>            :     enum class State : uint8_t
+<span class="lineNum">      65 </span>            :     enum class State
 <span class="lineNum">      66 </span>            :     {
 <span class="lineNum">      67 </span>            :         ok,
 <span class="lineNum">      68 </span>            :         ended,
@@ -181,196 +181,197 @@
 <span class="lineNum">     119 </span>            :      * @version 2.0
 <span class="lineNum">     120 </span>            :      */
 <span class="lineNum">     121 </span>            :     BRION_API void close();
-<span class="lineNum">     122 </span>            :     /**
-<span class="lineNum">     123 </span>            :      * \return true if the report was closed
-<span class="lineNum">     124 </span>            :      * @version 2.0
-<span class="lineNum">     125 </span>            :      */
-<span class="lineNum">     126 </span>            :     BRION_API bool isClosed() const;
-<span class="lineNum">     127 </span>            : 
-<span class="lineNum">     128 </span>            :     /**
-<span class="lineNum">     129 </span>            :      * Interrupt any pending read/seek operation.
-<span class="lineNum">     130 </span>            :      * This method is blocking.
-<span class="lineNum">     131 </span>            :      * @version 2.0
-<span class="lineNum">     132 </span>            :      */
-<span class="lineNum">     133 </span>            :     BRION_API void interrupt();
-<span class="lineNum">     134 </span>            : 
-<span class="lineNum">     135 </span>            :     /**
-<span class="lineNum">     136 </span>            :     * Get the URI used to instantiate the report. It could be different from
-<span class="lineNum">     137 </span>            :     * the input URI, depending on the plugin implementation.
-<span class="lineNum">     138 </span>            :     *
-<span class="lineNum">     139 </span>            :     * @return The URI used in the instance. It could be the same as the input
-<span class="lineNum">     140 </span>            :     * URI or a different one, depending on the implementation
-<span class="lineNum">     141 </span>            :     * @version 2.0
-<span class="lineNum">     142 </span>            :     */
-<span class="lineNum">     143 </span>            :     BRION_API const URI&amp; getURI() const;
-<span class="lineNum">     144 </span>            : 
-<span class="lineNum">     145 </span>            :     /**
-<span class="lineNum">     146 </span>            :      * @return the end time of the latest complete read/write operation or
-<span class="lineNum">     147 </span>            :      *         -inf if no operation has been issued.
-<span class="lineNum">     148 </span>            :      *
-<span class="lineNum">     149 </span>            :      * Read operations are deemed as complete when the returned future is
-<span class="lineNum">     150 </span>            :      * ready.
-<span class="lineNum">     151 </span>            :      *
-<span class="lineNum">     152 </span>            :      * The time inverval to which getCurrentTime refers is open on the
-<span class="lineNum">     153 </span>            :      * right. That means that upon completion of a read or write operation
-<span class="lineNum">     154 </span>            :      * no spike read or written may have a timestamp &gt;= getCurrentTime().
-<span class="lineNum">     155 </span>            :      * @version 2.0
-<span class="lineNum">     156 </span>            :      */
-<span class="lineNum">     157 </span>            :     BRION_API float getCurrentTime() const;
-<span class="lineNum">     158 </span>            : 
-<span class="lineNum">     159 </span>            :     /**
-<span class="lineNum">     160 </span>            :      * @return The state after the last completed operation.
-<span class="lineNum">     161 </span>            :      * @version 2.0
-<span class="lineNum">     162 </span>            :      */
-<span class="lineNum">     163 </span>            :     BRION_API State getState() const;
-<span class="lineNum">     164 </span>            : 
-<span class="lineNum">     165 </span>            :     /**
-<span class="lineNum">     166 </span>            :      * Read spikes until getCurrentTime becomes &gt; min, the end of the report
-<span class="lineNum">     167 </span>            :      * is reached or the report closed.
-<span class="lineNum">     168 </span>            :      *
-<span class="lineNum">     169 </span>            :      * This function fetches all the available data from the source.
-<span class="lineNum">     170 </span>            :      * If no error occurs and the end is not reached, the min value passed
-<span class="lineNum">     171 </span>            :      * is also guaranteed to be inside the time window of the data returned.
-<span class="lineNum">     172 </span>            :      *
-<span class="lineNum">     173 </span>            :      * Preconditions:
-<span class="lineNum">     174 </span>            :      * - r.getState() is State::ok
-<span class="lineNum">     175 </span>            :      * - The report was open in read mode.
-<span class="lineNum">     176 </span>            :      * - There is no previous read or seek operation with a pending
-<span class="lineNum">     177 </span>            :      *   future.
-<span class="lineNum">     178 </span>            :      * - min &gt;= getCurrentTime() or UNDEFINED_TIMESTAMP.
-<span class="lineNum">     179 </span>            :      *
-<span class="lineNum">     180 </span>            :      * Postconditions:
-<span class="lineNum">     181 </span>            :      * Let:
-<span class="lineNum">     182 </span>            :      *  - r be the SpikeReport
-<span class="lineNum">     183 </span>            :      *  - f be the returned future by r.read(min)
-<span class="lineNum">     184 </span>            :      *  - and s = r.getCurrentTime() before read is called:
-<span class="lineNum">     185 </span>            :      * After f.wait() returns the following are all true:
-<span class="lineNum">     186 </span>            :      *  - r.getCurrentTime() &gt;= s
-<span class="lineNum">     187 </span>            :      *  - If r.getState() == State::ok, then r.getCurrentTime() &gt; min
-<span class="lineNum">     188 </span>            :      *  - For each spike timestamp t_s in f.get(),
-<span class="lineNum">     189 </span>            :      *    s &lt;= t_s &lt; r.getCurrentTime() (Note this could collapse to an
-<span class="lineNum">     190 </span>            :      *    empty interval if r.getState() != State::ok)
-<span class="lineNum">     191 </span>            :      *
-<span class="lineNum">     192 </span>            :      * After successful f.wait_for or f.wait_until, the result is the same
-<span class="lineNum">     193 </span>            :      * as above. If they time out, no observable state changes.
-<span class="lineNum">     194 </span>            :      *
-<span class="lineNum">     195 </span>            :      * If the state is FAILED or some other operation is still pending
-<span class="lineNum">     196 </span>            :      * when read is called the result is undefined.
-<span class="lineNum">     197 </span>            :      *
-<span class="lineNum">     198 </span>            :      * @param min The minimum end time until which spikes will be read. If
-<span class="lineNum">     199 </span>            :      *        UNDEFINED_TIMESTAMP, it will be considered as -infinite. This
-<span class="lineNum">     200 </span>            :      *        means that as much data as possible will be fetched without
-<span class="lineNum">     201 </span>            :      *        a minimum.
-<span class="lineNum">     202 </span>            :      * @throw std::logic_error if one of the preconditions is not fulfilled.
-<span class="lineNum">     203 </span>            :      * @note Until the completion of this operation, the internal state of the SpikeReport
-<span class="lineNum">     204 </span>            :      * may change.
-<span class="lineNum">     205 </span>            :      * @version 2.0
-<span class="lineNum">     206 </span>            :      */
-<span class="lineNum">     207 </span>            :     BRION_API std::future&lt; Spikes &gt; read( float min );
-<span class="lineNum">     208 </span>            : 
-<span class="lineNum">     209 </span>            :     /**
-<span class="lineNum">     210 </span>            :      * Read spikes until getCurrentTime() &gt;= max, the end of the report is
-<span class="lineNum">     211 </span>            :      * reached or the report closed.
-<span class="lineNum">     212 </span>            :      *
-<span class="lineNum">     213 </span>            :      * This function is very similar to the normal read, but instead of
-<span class="lineNum">     214 </span>            :      * specifying a lower bound of getCurrentTime at return, it specifies
-<span class="lineNum">     215 </span>            :      * a requested strict value. The preconditions and postconditions
-<span class="lineNum">     216 </span>            :      * are the same except for those involving the parameter min which
-<span class="lineNum">     217 </span>            :      * become:
-<span class="lineNum">     218 </span>            :      *
-<span class="lineNum">     219 </span>            :      * Precondition: max &gt; getCurrentTime()
-<span class="lineNum">     220 </span>            :      * Postcondition: If r.getState() == State::ok, then
-<span class="lineNum">     221 </span>            :      *                r.getCurrentTime() &gt;= max
-<span class="lineNum">     222 </span>            :      * @throw std::runtime_error if the precondition does not hold.
-<span class="lineNum">     223 </span>            :      * @note Until the completion of this operation, the internal state of the SpikeReport
-<span class="lineNum">     224 </span>            :      * may change.
-<span class="lineNum">     225 </span>            :      * @sa seek()
-<span class="lineNum">     226 </span>            :      * @version 2.0
-<span class="lineNum">     227 </span>            :      */
-<span class="lineNum">     228 </span>            :     BRION_API std::future&lt; Spikes &gt; readUntil( float max );
-<span class="lineNum">     229 </span>            : 
-<span class="lineNum">     230 </span>            :     /**
-<span class="lineNum">     231 </span>            :      * Seek to a given absolute timestamp.
-<span class="lineNum">     232 </span>            :      *
-<span class="lineNum">     233 </span>            :      * If toTimestamp &gt;= getCurrentTime() and the report was open for reading,
-<span class="lineNum">     234 </span>            :      * data will be skipped forward until the timestamp is made current. In write
-<span class="lineNum">     235 </span>            :      * mode for streams, consumers are notified about the new timestamp.
-<span class="lineNum">     236 </span>            :      *
-<span class="lineNum">     237 </span>            :      * The case toTimestamp &lt; getCurrentTime() is only supported by file
-<span class="lineNum">     238 </span>            :      * based reports.
-<span class="lineNum">     239 </span>            :      * In write mode, seeks are only supported in binary reports. Forward seeking
-<span class="lineNum">     240 </span>            :      * simply updates getCurrentTime() and backward seeking followed by a write,
-<span class="lineNum">     241 </span>            :      * will overwrite the existing data.
-<span class="lineNum">     242 </span>            :      *
-<span class="lineNum">     243 </span>            :      * If the seek operation is not supported, a std::runtime_error will be
-<span class="lineNum">     244 </span>            :      * thrown if this method is called.
-<span class="lineNum">     245 </span>            :      *
-<span class="lineNum">     246 </span>            :      * Preconditions:
-<span class="lineNum">     247 </span>            :      * - There is no standing read or readUntil operation.
-<span class="lineNum">     248 </span>            :      *
-<span class="lineNum">     249 </span>            :      * Postconditions:
-<span class="lineNum">     250 </span>            :      * Let:
-<span class="lineNum">     251 </span>            :      *  - r be the SpikeReport
-<span class="lineNum">     252 </span>            :      *  - f be the returned future by r.seek(toTimestamp)
-<span class="lineNum">     253 </span>            :      * Then:
-<span class="lineNum">     254 </span>            :      *  - After f.wait() returns r.getCurrentTime() == toTimestamp.
-<span class="lineNum">     255 </span>            :      *  - The postconditions of read operations imply that in forward skips
-<span class="lineNum">     256 </span>            :      *    this function throws away the data previous to toTimestamp (or
-<span class="lineNum">     257 </span>            :      *    avoids reading it at all if possible).
-<span class="lineNum">     258 </span>            :      *
-<span class="lineNum">     259 </span>            :      * @throw std::runtime_error if a precondition does not hold or the
-<span class="lineNum">     260 </span>            :      *        operation is not supported by the implementation.
-<span class="lineNum">     261 </span>            :      * @note Until the completion of this operation, the internal state of the SpikeReport
-<span class="lineNum">     262 </span>            :      * may change.
-<span class="lineNum">     263 </span>            :      * @version 2.0
-<span class="lineNum">     264 </span>            :      */
-<span class="lineNum">     265 </span>            :     BRION_API std::future&lt; void &gt; seek( float toTimeStamp );
-<span class="lineNum">     266 </span>            : 
-<span class="lineNum">     267 </span>            :     /**
-<span class="lineNum">     268 </span>            :      * Write the given spikes to the output.
-<span class="lineNum">     269 </span>            :      *
-<span class="lineNum">     270 </span>            :      * Upon return getCurrenTime() is the greatest of all the spike times
-<span class="lineNum">     271 </span>            :      * plus an epsilon.
-<span class="lineNum">     272 </span>            :      *
-<span class="lineNum">     273 </span>            :      * @param spikes A collection of spikes sorted by timestamp in ascending
-<span class="lineNum">     274 </span>            :      *        order. For every spike, its timestamp must be &gt;= getCurrentTime().
-<span class="lineNum">     275 </span>            :      * @throw std::runtime_error if the input spikes are not sorted or a
-<span class="lineNum">     276 </span>            :      *        timestamp is &lt; getCurrentTime().
-<span class="lineNum">     277 </span>            :      * @version 2.0
-<span class="lineNum">     278 </span>            :      */
-<span class="lineNum">     279 </span>            :     BRION_API void write( const Spikes&amp; spikes );
-<span class="lineNum">     280 </span>            : 
-<span class="lineNum">     281 </span>            : private:
-<span class="lineNum">     282 </span>            :     detail::SpikeReport* _impl;
-<span class="lineNum">     283 </span>            : };
-<span class="lineNum">     284 </span>            : }
-<span class="lineNum">     285 </span>            : 
-<span class="lineNum">     286 </span>            : namespace std
-<a name="287"><span class="lineNum">     287 </span>            : {</a>
-<span class="lineNum">     288 </span>            : 
-<span class="lineNum">     289 </span><span class="lineNoCov">          0 : inline std::ostream&amp; operator&lt;&lt;( std::ostream&amp; stream,</span>
-<span class="lineNum">     290 </span>            :                                  const brion::SpikeReport::State state )
-<span class="lineNum">     291 </span>            : {
-<span class="lineNum">     292 </span>            :     using State = brion::SpikeReport::State;
-<span class="lineNum">     293 </span><span class="lineNoCov">          0 :     switch ( state )</span>
-<span class="lineNum">     294 </span>            :     {
-<span class="lineNum">     295 </span>            :     case State::ok:
-<span class="lineNum">     296 </span><span class="lineNoCov">          0 :         stream &lt;&lt; &quot;ok&quot;;</span>
-<span class="lineNum">     297 </span><span class="lineNoCov">          0 :         break;</span>
-<span class="lineNum">     298 </span>            :     case State::ended:
-<span class="lineNum">     299 </span><span class="lineNoCov">          0 :         stream &lt;&lt; &quot;ended&quot;;</span>
-<span class="lineNum">     300 </span><span class="lineNoCov">          0 :         break;</span>
-<span class="lineNum">     301 </span>            :     case State::failed:
-<span class="lineNum">     302 </span><span class="lineNoCov">          0 :         stream &lt;&lt; &quot;failed&quot;;</span>
-<span class="lineNum">     303 </span><span class="lineNoCov">          0 :         break;</span>
-<span class="lineNum">     304 </span>            :     default:
-<span class="lineNum">     305 </span><span class="lineNoCov">          0 :         break;</span>
-<span class="lineNum">     306 </span>            :     }
-<span class="lineNum">     307 </span><span class="lineNoCov">          0 :     return stream;</span>
-<span class="lineNum">     308 </span>            : }
+<span class="lineNum">     122 </span>            : 
+<span class="lineNum">     123 </span>            :     /**
+<span class="lineNum">     124 </span>            :      * \return true if the report was closed
+<span class="lineNum">     125 </span>            :      * @version 2.0
+<span class="lineNum">     126 </span>            :      */
+<span class="lineNum">     127 </span>            :     BRION_API bool isClosed() const;
+<span class="lineNum">     128 </span>            : 
+<span class="lineNum">     129 </span>            :     /**
+<span class="lineNum">     130 </span>            :      * Interrupt any pending read/seek operation.
+<span class="lineNum">     131 </span>            :      * This method is blocking.
+<span class="lineNum">     132 </span>            :      * @version 2.0
+<span class="lineNum">     133 </span>            :      */
+<span class="lineNum">     134 </span>            :     BRION_API void interrupt();
+<span class="lineNum">     135 </span>            : 
+<span class="lineNum">     136 </span>            :     /**
+<span class="lineNum">     137 </span>            :     * Get the URI used to instantiate the report. It could be different from
+<span class="lineNum">     138 </span>            :     * the input URI, depending on the plugin implementation.
+<span class="lineNum">     139 </span>            :     *
+<span class="lineNum">     140 </span>            :     * @return The URI used in the instance. It could be the same as the input
+<span class="lineNum">     141 </span>            :     * URI or a different one, depending on the implementation
+<span class="lineNum">     142 </span>            :     * @version 2.0
+<span class="lineNum">     143 </span>            :     */
+<span class="lineNum">     144 </span>            :     BRION_API const URI&amp; getURI() const;
+<span class="lineNum">     145 </span>            : 
+<span class="lineNum">     146 </span>            :     /**
+<span class="lineNum">     147 </span>            :      * @return the end time of the latest complete read/write operation or
+<span class="lineNum">     148 </span>            :      *         0 if no operation has been issued.
+<span class="lineNum">     149 </span>            :      *
+<span class="lineNum">     150 </span>            :      * Read operations are deemed as complete when the returned future is
+<span class="lineNum">     151 </span>            :      * ready.
+<span class="lineNum">     152 </span>            :      *
+<span class="lineNum">     153 </span>            :      * The time inverval to which getCurrentTime refers is open on the
+<span class="lineNum">     154 </span>            :      * right. That means that upon completion of a read or write operation
+<span class="lineNum">     155 </span>            :      * no spike read or written may have a timestamp &gt;= getCurrentTime().
+<span class="lineNum">     156 </span>            :      * @version 2.0
+<span class="lineNum">     157 </span>            :      */
+<span class="lineNum">     158 </span>            :     BRION_API float getCurrentTime() const;
+<span class="lineNum">     159 </span>            : 
+<span class="lineNum">     160 </span>            :     /**
+<span class="lineNum">     161 </span>            :      * @return The state after the last completed operation.
+<span class="lineNum">     162 </span>            :      * @version 2.0
+<span class="lineNum">     163 </span>            :      */
+<span class="lineNum">     164 </span>            :     BRION_API State getState() const;
+<span class="lineNum">     165 </span>            : 
+<span class="lineNum">     166 </span>            :     /**
+<span class="lineNum">     167 </span>            :      * Read spikes until getCurrentTime becomes &gt; min, the end of the report
+<span class="lineNum">     168 </span>            :      * is reached or the report closed.
+<span class="lineNum">     169 </span>            :      *
+<span class="lineNum">     170 </span>            :      * This function fetches all the available data from the source.
+<span class="lineNum">     171 </span>            :      * If no error occurs and the end is not reached, the min value passed
+<span class="lineNum">     172 </span>            :      * is also guaranteed to be inside the time window of the data returned.
+<span class="lineNum">     173 </span>            :      *
+<span class="lineNum">     174 </span>            :      * Preconditions:
+<span class="lineNum">     175 </span>            :      * - r.getState() is State::ok
+<span class="lineNum">     176 </span>            :      * - The report was open in read mode.
+<span class="lineNum">     177 </span>            :      * - There is no previous read or seek operation with a pending
+<span class="lineNum">     178 </span>            :      *   future.
+<span class="lineNum">     179 </span>            :      * - min &gt;= getCurrentTime() or UNDEFINED_TIMESTAMP.
+<span class="lineNum">     180 </span>            :      *
+<span class="lineNum">     181 </span>            :      * Postconditions:
+<span class="lineNum">     182 </span>            :      * Let:
+<span class="lineNum">     183 </span>            :      *  - r be the SpikeReport
+<span class="lineNum">     184 </span>            :      *  - f be the returned future by r.read(min)
+<span class="lineNum">     185 </span>            :      *  - and s = r.getCurrentTime() before read is called:
+<span class="lineNum">     186 </span>            :      * After f.wait() returns the following are all true:
+<span class="lineNum">     187 </span>            :      *  - r.getCurrentTime() &gt;= s
+<span class="lineNum">     188 </span>            :      *  - If r.getState() == State::ok, then r.getCurrentTime() &gt; min
+<span class="lineNum">     189 </span>            :      *  - For each spike timestamp t_s in f.get(),
+<span class="lineNum">     190 </span>            :      *    s &lt;= t_s &lt; r.getCurrentTime() (Note this could collapse to an
+<span class="lineNum">     191 </span>            :      *    empty interval if r.getState() != State::ok)
+<span class="lineNum">     192 </span>            :      *
+<span class="lineNum">     193 </span>            :      * After successful f.wait_for or f.wait_until, the result is the same
+<span class="lineNum">     194 </span>            :      * as above. If they time out, no observable state changes.
+<span class="lineNum">     195 </span>            :      *
+<span class="lineNum">     196 </span>            :      * If the state is FAILED or some other operation is still pending
+<span class="lineNum">     197 </span>            :      * when read is called the result is undefined.
+<span class="lineNum">     198 </span>            :      *
+<span class="lineNum">     199 </span>            :      * @param min The minimum end time until which spikes will be read. If
+<span class="lineNum">     200 </span>            :      *        UNDEFINED_TIMESTAMP, it will be considered as -infinite. This
+<span class="lineNum">     201 </span>            :      *        means that as much data as possible will be fetched without
+<span class="lineNum">     202 </span>            :      *        a minimum.
+<span class="lineNum">     203 </span>            :      * @throw std::logic_error if one of the preconditions is not fulfilled.
+<span class="lineNum">     204 </span>            :      * @note Until the completion of this operation, the internal state of the SpikeReport
+<span class="lineNum">     205 </span>            :      * may change.
+<span class="lineNum">     206 </span>            :      * @version 2.0
+<span class="lineNum">     207 </span>            :      */
+<span class="lineNum">     208 </span>            :     BRION_API std::future&lt; Spikes &gt; read( float min );
+<span class="lineNum">     209 </span>            : 
+<span class="lineNum">     210 </span>            :     /**
+<span class="lineNum">     211 </span>            :      * Read spikes until getCurrentTime() &gt;= max, the end of the report is
+<span class="lineNum">     212 </span>            :      * reached or the report closed.
+<span class="lineNum">     213 </span>            :      *
+<span class="lineNum">     214 </span>            :      * This function is very similar to the normal read, but instead of
+<span class="lineNum">     215 </span>            :      * specifying a lower bound of getCurrentTime at return, it specifies
+<span class="lineNum">     216 </span>            :      * a requested strict value. The preconditions and postconditions
+<span class="lineNum">     217 </span>            :      * are the same except for those involving the parameter min which
+<span class="lineNum">     218 </span>            :      * become:
+<span class="lineNum">     219 </span>            :      *
+<span class="lineNum">     220 </span>            :      * Precondition: max &gt; getCurrentTime()
+<span class="lineNum">     221 </span>            :      * Postcondition: If r.getState() == State::ok, then
+<span class="lineNum">     222 </span>            :      *                r.getCurrentTime() &gt;= max
+<span class="lineNum">     223 </span>            :      * @throw std::runtime_error if the precondition does not hold.
+<span class="lineNum">     224 </span>            :      * @note Until the completion of this operation, the internal state of the SpikeReport
+<span class="lineNum">     225 </span>            :      * may change.
+<span class="lineNum">     226 </span>            :      * @sa seek()
+<span class="lineNum">     227 </span>            :      * @version 2.0
+<span class="lineNum">     228 </span>            :      */
+<span class="lineNum">     229 </span>            :     BRION_API std::future&lt; Spikes &gt; readUntil( float max );
+<span class="lineNum">     230 </span>            : 
+<span class="lineNum">     231 </span>            :     /**
+<span class="lineNum">     232 </span>            :      * Seek to a given absolute timestamp.
+<span class="lineNum">     233 </span>            :      *
+<span class="lineNum">     234 </span>            :      * If toTimestamp &gt;= getCurrentTime() and the report was open for reading,
+<span class="lineNum">     235 </span>            :      * data will be skipped forward until the timestamp is made current. In write
+<span class="lineNum">     236 </span>            :      * mode for streams, consumers are notified about the new timestamp.
+<span class="lineNum">     237 </span>            :      *
+<span class="lineNum">     238 </span>            :      * The case toTimestamp &lt; getCurrentTime() is only supported by file
+<span class="lineNum">     239 </span>            :      * based reports.
+<span class="lineNum">     240 </span>            :      * In write mode, seeks are only supported in binary reports. Forward seeking
+<span class="lineNum">     241 </span>            :      * simply updates getCurrentTime() and backward seeking followed by a write,
+<span class="lineNum">     242 </span>            :      * will overwrite the existing data.
+<span class="lineNum">     243 </span>            :      *
+<span class="lineNum">     244 </span>            :      * If the seek operation is not supported, a std::runtime_error will be
+<span class="lineNum">     245 </span>            :      * thrown if this method is called.
+<span class="lineNum">     246 </span>            :      *
+<span class="lineNum">     247 </span>            :      * Preconditions:
+<span class="lineNum">     248 </span>            :      * - There is no standing read or readUntil operation.
+<span class="lineNum">     249 </span>            :      *
+<span class="lineNum">     250 </span>            :      * Postconditions:
+<span class="lineNum">     251 </span>            :      * Let:
+<span class="lineNum">     252 </span>            :      *  - r be the SpikeReport
+<span class="lineNum">     253 </span>            :      *  - f be the returned future by r.seek(toTimestamp)
+<span class="lineNum">     254 </span>            :      * Then:
+<span class="lineNum">     255 </span>            :      *  - After f.wait() returns r.getCurrentTime() == toTimestamp.
+<span class="lineNum">     256 </span>            :      *  - The postconditions of read operations imply that in forward skips
+<span class="lineNum">     257 </span>            :      *    this function throws away the data previous to toTimestamp (or
+<span class="lineNum">     258 </span>            :      *    avoids reading it at all if possible).
+<span class="lineNum">     259 </span>            :      *
+<span class="lineNum">     260 </span>            :      * @throw std::runtime_error if a precondition does not hold or the
+<span class="lineNum">     261 </span>            :      *        operation is not supported by the implementation.
+<span class="lineNum">     262 </span>            :      * @note Until the completion of this operation, the internal state of the SpikeReport
+<span class="lineNum">     263 </span>            :      * may change.
+<span class="lineNum">     264 </span>            :      * @version 2.0
+<span class="lineNum">     265 </span>            :      */
+<span class="lineNum">     266 </span>            :     BRION_API std::future&lt; void &gt; seek( float toTimeStamp );
+<span class="lineNum">     267 </span>            : 
+<span class="lineNum">     268 </span>            :     /**
+<span class="lineNum">     269 </span>            :      * Write the given spikes to the output.
+<span class="lineNum">     270 </span>            :      *
+<span class="lineNum">     271 </span>            :      * Upon return getCurrenTime() is the greatest of all the spike times
+<span class="lineNum">     272 </span>            :      * plus an epsilon.
+<span class="lineNum">     273 </span>            :      *
+<span class="lineNum">     274 </span>            :      * @param spikes A collection of spikes sorted by timestamp in ascending
+<span class="lineNum">     275 </span>            :      *        order. For every spike, its timestamp must be &gt;= getCurrentTime().
+<span class="lineNum">     276 </span>            :      * @throw std::runtime_error if the report is read-only, the input spikes
+<span class="lineNum">     277 </span>            :      *        are not sorted, or a timestamp is &lt; getCurrentTime().
+<span class="lineNum">     278 </span>            :      * @version 2.0
+<span class="lineNum">     279 </span>            :      */
+<span class="lineNum">     280 </span>            :     BRION_API void write( const Spikes&amp; spikes );
+<span class="lineNum">     281 </span>            : 
+<span class="lineNum">     282 </span>            : private:
+<span class="lineNum">     283 </span>            :     detail::SpikeReport* _impl;
+<span class="lineNum">     284 </span>            : };
+<span class="lineNum">     285 </span>            : }
+<span class="lineNum">     286 </span>            : 
+<span class="lineNum">     287 </span>            : namespace std
+<a name="288"><span class="lineNum">     288 </span>            : {</a>
+<span class="lineNum">     289 </span>            : 
+<span class="lineNum">     290 </span><span class="lineNoCov">          0 : inline std::ostream&amp; operator&lt;&lt;( std::ostream&amp; stream,</span>
+<span class="lineNum">     291 </span>            :                                  const brion::SpikeReport::State state )
+<span class="lineNum">     292 </span>            : {
+<span class="lineNum">     293 </span>            :     using State = brion::SpikeReport::State;
+<span class="lineNum">     294 </span><span class="lineNoCov">          0 :     switch ( state )</span>
+<span class="lineNum">     295 </span>            :     {
+<span class="lineNum">     296 </span>            :     case State::ok:
+<span class="lineNum">     297 </span><span class="lineNoCov">          0 :         stream &lt;&lt; &quot;ok&quot;;</span>
+<span class="lineNum">     298 </span><span class="lineNoCov">          0 :         break;</span>
+<span class="lineNum">     299 </span>            :     case State::ended:
+<span class="lineNum">     300 </span><span class="lineNoCov">          0 :         stream &lt;&lt; &quot;ended&quot;;</span>
+<span class="lineNum">     301 </span><span class="lineNoCov">          0 :         break;</span>
+<span class="lineNum">     302 </span>            :     case State::failed:
+<span class="lineNum">     303 </span><span class="lineNoCov">          0 :         stream &lt;&lt; &quot;failed&quot;;</span>
+<span class="lineNum">     304 </span><span class="lineNoCov">          0 :         break;</span>
+<span class="lineNum">     305 </span>            :     default:
+<span class="lineNum">     306 </span><span class="lineNoCov">          0 :         break;</span>
+<span class="lineNum">     307 </span>            :     }
+<span class="lineNum">     308 </span><span class="lineNoCov">          0 :     return stream;</span>
 <span class="lineNum">     309 </span>            : }
-<span class="lineNum">     310 </span>            : 
-<span class="lineNum">     311 </span>            : #endif
+<span class="lineNum">     310 </span>            : }
+<span class="lineNum">     311 </span>            : 
+<span class="lineNum">     312 </span>            : #endif
 </pre>
       </td>
     </tr>
