@@ -2,7 +2,9 @@ var NAVTREE =
 [
   [ "Brayns", "index.html", [
     [ "Changelog", "Changelog.html", null ],
+    [ "Application Help", "apps.html", "apps" ],
     [ "Todo List", "todo.html", null ],
+    [ "Modules", "modules.html", "modules" ],
     [ "Classes", "annotated.html", [
       [ "Class List", "annotated.html", "annotated_dup" ],
       [ "Class Index", "classes.html", null ],
@@ -26,10 +28,10 @@ var NAVTREE =
 var NAVTREEINDEX =
 [
 ".html",
-"classbrayns_1_1_camera.html#a0922ca991159fe5fc401bae15597230e",
-"classbrayns_1_1_morphology_loader.html#a52a11e4baa4c6c579811a83c1c9dbbd0",
-"classbrayns_1_1_scene_parameters.html#ae69b42b281f99d368ef62167a3a63a8f",
-"structbrayns_1_1obj_1_1_extended_o_b_j_material.html#ae84decba8322cd710eb05f17707dab6b"
+"classbrayns_1_1_brayns.html#a86278a6f267a457c0473e85cef65c54f",
+"classbrayns_1_1_livre_frame_buffer.html#a7fb43ca1b058923b36bd6f7a89ef7a18",
+"classbrayns_1_1_scene.html#a0056f019a5261be6f131b8eb38de2169",
+"struct_per_ray_data__radiance.html"
 ];
 
 var SYNCONMSG = 'click to disable panel synchronisation';

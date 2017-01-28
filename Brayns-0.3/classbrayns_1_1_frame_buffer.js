@@ -7,6 +7,7 @@ var classbrayns_1_1_frame_buffer =
     [ "getColorBuffer", "classbrayns_1_1_frame_buffer.html#a1857598051d290480e224812e859d12e", null ],
     [ "getColorDepth", "classbrayns_1_1_frame_buffer.html#a9e35b63038180e8657e0c2896d6229bf", null ],
     [ "getDepthBuffer", "classbrayns_1_1_frame_buffer.html#a64652fe05372231ca9d79bf898d312dc", null ],
+    [ "getFrameBufferFormat", "classbrayns_1_1_frame_buffer.html#aa49d3af204d40cbe205573ebd632448b", null ],
     [ "getSize", "classbrayns_1_1_frame_buffer.html#a5e7fb942ac37f76b90a40c8d67c31c9e", null ],
     [ "map", "classbrayns_1_1_frame_buffer.html#a1edf0c6ad75ec3102cc5549391844125", null ],
     [ "resize", "classbrayns_1_1_frame_buffer.html#ad299b7acc0823946c46d2d8c4c211921", null ],

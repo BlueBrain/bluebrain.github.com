@@ -1,4 +1,4 @@
 var searchData=
 [
-  ['changelog',['Changelog',['../Changelog.html',1,'']]]
+  ['application_20help',['Application Help',['../apps.html',1,'']]]
 ];

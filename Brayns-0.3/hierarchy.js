@@ -20,10 +20,12 @@ var hierarchy =
     [ "brayns::BasicLight", "structbrayns_1_1_basic_light.html", null ],
     [ "brayns::Brayns", "classbrayns_1_1_brayns.html", null ],
     [ "brayns::Camera", "classbrayns_1_1_camera.html", [
+      [ "brayns::LivreCamera", "classbrayns_1_1_livre_camera.html", null ],
       [ "brayns::OptiXCamera", "classbrayns_1_1_opti_x_camera.html", null ],
       [ "brayns::OSPRayCamera", "classbrayns_1_1_o_s_p_ray_camera.html", null ]
     ] ],
     [ "brayns::Engine", "classbrayns_1_1_engine.html", [
+      [ "brayns::LivreEngine", "classbrayns_1_1_livre_engine.html", null ],
       [ "brayns::OptiXEngine", "classbrayns_1_1_opti_x_engine.html", null ],
       [ "brayns::OSPRayEngine", "classbrayns_1_1_o_s_p_ray_engine.html", null ]
     ] ],
@@ -35,6 +37,7 @@ var hierarchy =
     [ "brayns::ExtensionPluginFactory", "classbrayns_1_1_extension_plugin_factory.html", null ],
     [ "brayns::FPSCounter", "structbrayns_1_1_f_p_s_counter.html", null ],
     [ "brayns::FrameBuffer", "classbrayns_1_1_frame_buffer.html", [
+      [ "brayns::LivreFrameBuffer", "classbrayns_1_1_livre_frame_buffer.html", null ],
       [ "brayns::OptiXFrameBuffer", "classbrayns_1_1_opti_x_frame_buffer.html", null ],
       [ "brayns::OSPRayFrameBuffer", "classbrayns_1_1_o_s_p_ray_frame_buffer.html", null ]
     ] ],
@@ -63,10 +66,14 @@ var hierarchy =
     [ "brayns::ParametersManager", "classbrayns_1_1_parameters_manager.html", null ],
     [ "brayns::ProteinLoader", "classbrayns_1_1_protein_loader.html", null ],
     [ "brayns::Renderer", "classbrayns_1_1_renderer.html", [
+      [ "brayns::LivreRenderer", "classbrayns_1_1_livre_renderer.html", null ],
       [ "brayns::OptiXRenderer", "classbrayns_1_1_opti_x_renderer.html", null ],
       [ "brayns::OSPRayRenderer", "classbrayns_1_1_o_s_p_ray_renderer.html", null ]
     ] ],
+    [ "brayns::RenderInput", "structbrayns_1_1_render_input.html", null ],
+    [ "brayns::RenderOutput", "structbrayns_1_1_render_output.html", null ],
     [ "brayns::Scene", "classbrayns_1_1_scene.html", [
+      [ "brayns::LivreScene", "classbrayns_1_1_livre_scene.html", null ],
       [ "brayns::OptiXScene", "classbrayns_1_1_opti_x_scene.html", null ],
       [ "brayns::OSPRayScene", "classbrayns_1_1_o_s_p_ray_scene.html", null ]
     ] ],
@@ -82,6 +89,9 @@ var hierarchy =
     [ "brayns::VolumeHandler", "classbrayns_1_1_volume_handler.html", null ],
     [ "brayns::VolumeHandler::VolumeDescriptor", "classbrayns_1_1_volume_handler_1_1_volume_descriptor.html", null ],
     [ "brayns::XYZBLoader", "classbrayns_1_1_x_y_z_b_loader.html", null ],
+    [ "Camera", null, [
+      [ "ospray::ClippedPerspectiveCamera", "structospray_1_1_clipped_perspective_camera.html", null ]
+    ] ],
     [ "Geometry", null, [
       [ "ospray::ExtendedCones", "structospray_1_1_extended_cones.html", null ],
       [ "ospray::ExtendedCylinders", "structospray_1_1_extended_cylinders.html", null ],

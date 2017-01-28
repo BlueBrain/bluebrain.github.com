@@ -30,6 +30,7 @@ var classbrayns_1_1_rendering_parameters =
     [ "setDetectionFarColor", "classbrayns_1_1_rendering_parameters.html#a3283f88f4fce17267c4a7c32f2670fcd", null ],
     [ "setDetectionNearColor", "classbrayns_1_1_rendering_parameters.html#a7de932ef3cc2b56190020bb34f7fb0a1", null ],
     [ "setDetectionOnDifferentMaterial", "classbrayns_1_1_rendering_parameters.html#a30c1061c5fab8d37c46fc4ae7ec5a16c", null ],
+    [ "setEngine", "classbrayns_1_1_rendering_parameters.html#a7009f70e88f868ca09100a8a556c448b", null ],
     [ "setEpsilon", "classbrayns_1_1_rendering_parameters.html#ab57cad985c40fe81c0d7befd3f0fd40e", null ],
     [ "setEpsilon", "classbrayns_1_1_rendering_parameters.html#abc66474540605dc0c643e1dae19027a6", null ],
     [ "setLightEmittingMaterials", "classbrayns_1_1_rendering_parameters.html#afedd73bdf09d73382a545dd0129bd995", null ],

@@ -35,6 +35,11 @@ var annotated_dup =
       [ "InspectCenterManipulator", "classbrayns_1_1_inspect_center_manipulator.html", "classbrayns_1_1_inspect_center_manipulator" ],
       [ "KeyboardHandler", "classbrayns_1_1_keyboard_handler.html", "classbrayns_1_1_keyboard_handler" ],
       [ "Light", "classbrayns_1_1_light.html", "classbrayns_1_1_light" ],
+      [ "LivreCamera", "classbrayns_1_1_livre_camera.html", "classbrayns_1_1_livre_camera" ],
+      [ "LivreEngine", "classbrayns_1_1_livre_engine.html", "classbrayns_1_1_livre_engine" ],
+      [ "LivreFrameBuffer", "classbrayns_1_1_livre_frame_buffer.html", "classbrayns_1_1_livre_frame_buffer" ],
+      [ "LivreRenderer", "classbrayns_1_1_livre_renderer.html", "classbrayns_1_1_livre_renderer" ],
+      [ "LivreScene", "classbrayns_1_1_livre_scene.html", "classbrayns_1_1_livre_scene" ],
       [ "Material", "classbrayns_1_1_material.html", "classbrayns_1_1_material" ],
       [ "MeshContainer", "structbrayns_1_1_mesh_container.html", "structbrayns_1_1_mesh_container" ],
       [ "MeshLoader", "classbrayns_1_1_mesh_loader.html", "classbrayns_1_1_mesh_loader" ],
@@ -60,6 +65,8 @@ var annotated_dup =
       [ "ProximityRenderer", "classbrayns_1_1_proximity_renderer.html", "classbrayns_1_1_proximity_renderer" ],
       [ "Renderer", "classbrayns_1_1_renderer.html", "classbrayns_1_1_renderer" ],
       [ "RenderingParameters", "classbrayns_1_1_rendering_parameters.html", "classbrayns_1_1_rendering_parameters" ],
+      [ "RenderInput", "structbrayns_1_1_render_input.html", "structbrayns_1_1_render_input" ],
+      [ "RenderOutput", "structbrayns_1_1_render_output.html", "structbrayns_1_1_render_output" ],
       [ "Scene", "classbrayns_1_1_scene.html", "classbrayns_1_1_scene" ],
       [ "SceneParameters", "classbrayns_1_1_scene_parameters.html", "classbrayns_1_1_scene_parameters" ],
       [ "ScreenSpaceProcessor", "classbrayns_1_1_screen_space_processor.html", "classbrayns_1_1_screen_space_processor" ],
@@ -81,6 +88,7 @@ var annotated_dup =
       [ "ZeroEQPlugin", "classbrayns_1_1_zero_e_q_plugin.html", "classbrayns_1_1_zero_e_q_plugin" ]
     ] ],
     [ "ospray", null, [
+      [ "ClippedPerspectiveCamera", "structospray_1_1_clipped_perspective_camera.html", "structospray_1_1_clipped_perspective_camera" ],
       [ "ExtendedCones", "structospray_1_1_extended_cones.html", "structospray_1_1_extended_cones" ],
       [ "ExtendedCylinders", "structospray_1_1_extended_cylinders.html", "structospray_1_1_extended_cylinders" ],
       [ "ExtendedSpheres", "structospray_1_1_extended_spheres.html", "structospray_1_1_extended_spheres" ]

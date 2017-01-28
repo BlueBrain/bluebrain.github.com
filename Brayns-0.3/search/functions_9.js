@@ -1,6 +1,4 @@
 var searchData=
 [
-  ['makedirty',['makeDirty',['../classbrayns_1_1_engine.html#a9e5c3ff1fe41f1454dd00f281d7b8694',1,'brayns::Engine']]],
-  ['map',['map',['../classbrayns_1_1_opti_x_frame_buffer.html#aa13ee4fab6001fa3e16341cf84b8c678',1,'brayns::OptiXFrameBuffer::map()'],['../classbrayns_1_1_volume_handler_1_1_volume_descriptor.html#a2d4b737d5b886e4ce8c3e59dc480d96a',1,'brayns::VolumeHandler::VolumeDescriptor::map()']]],
-  ['molecularsystemreader',['MolecularSystemReader',['../classbrayns_1_1_molecular_system_reader.html#ac1f51756114b9838ce9a2af3f7bdd048',1,'brayns::MolecularSystemReader']]]
+  ['loadfromfile',['loadFromFile',['../classbrayns_1_1_transfer_function_loader.html#aafdb88e5621a705836678f6d352eaf1b',1,'brayns::TransferFunctionLoader']]]
 ];
