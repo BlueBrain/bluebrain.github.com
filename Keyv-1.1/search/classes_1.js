@@ -1,4 +1,4 @@
 var searchData=
 [
-  ['version',['Version',['../classkeyv_1_1_version.html',1,'keyv']]]
+  ['plugin',['Plugin',['../classkeyv_1_1_plugin.html',1,'keyv']]]
 ];

@@ -1,5 +1,4 @@
 var searchData=
 [
-  ['setbyteswap',['setByteswap',['../classkeyv_1_1_map.html#ae0e5f17373059dd8ec8f60f60d007d11',1,'keyv::Map']]],
-  ['setqueuedepth',['setQueueDepth',['../classkeyv_1_1_map.html#a23860564004acd599b68341aa372e70b',1,'keyv::Map']]]
+  ['operator_5b_5d',['operator[]',['../classkeyv_1_1_map.html#a11c0cceb4a4d0ea849b90304848cc390',1,'keyv::Map::operator[]()'],['../classkeyv_1_1_plugin.html#adff75c71b004e7b87043f91f3ca0217a',1,'keyv::Plugin::operator[]()']]]
 ];
