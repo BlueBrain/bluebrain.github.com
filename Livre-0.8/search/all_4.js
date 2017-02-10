@@ -1,5 +1,7 @@
 var searchData=
 [
+  ['datasource',['DataSource',['../classlivre_1_1_data_source.html',1,'livre']]],
+  ['datasource',['DataSource',['../classlivre_1_1_data_source.html#a2d8117c8734040e52aef84eb41c4cf0d',1,'livre::DataSource']]],
   ['datasourceplugin',['DataSourcePlugin',['../classlivre_1_1_data_source_plugin.html',1,'livre']]],
   ['datasourceplugindata',['DataSourcePluginData',['../classlivre_1_1_data_source_plugin_data.html',1,'livre']]],
   ['datatolivretransform',['dataToLivreTransform',['../structlivre_1_1_volume_information.html#a1d41a4d1e5f1cffeb1e39b005104bcf3',1,'livre::VolumeInformation']]],

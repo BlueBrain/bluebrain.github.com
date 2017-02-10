@@ -6,6 +6,7 @@ var hierarchy =
       [ "livre::TransferFunction1D", "classlivre_1_1_transfer_function1_d.html", null ]
     ] ],
     [ "livre::Configuration", "classlivre_1_1_configuration.html", null ],
+    [ "livre::DataSource", "classlivre_1_1_data_source.html", null ],
     [ "livre::DataSourcePlugin", "classlivre_1_1_data_source_plugin.html", null ],
     [ "livre::DataSourcePluginData", "classlivre_1_1_data_source_plugin_data.html", null ],
     [ "livre::DeleteArray< T >", "structlivre_1_1_delete_array.html", null ],

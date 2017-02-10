@@ -60,7 +60,7 @@ var NAVTREE =
 var NAVTREEINDEX =
 [
 ".html",
-"structlivre_1_1_shader_data.html#ae6cbf76af2b821b820fae2138c20328b"
+"index.html"
 ];
 
 var SYNCONMSG = 'click to disable panel synchronisation';

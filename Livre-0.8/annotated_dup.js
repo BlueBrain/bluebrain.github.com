@@ -5,6 +5,7 @@ var annotated_dup =
       [ "ClipPlanes", "classlivre_1_1_clip_planes.html", "classlivre_1_1_clip_planes" ],
       [ "Configuration", "classlivre_1_1_configuration.html", "classlivre_1_1_configuration" ],
       [ "ConstMemoryUnit", "classlivre_1_1_const_memory_unit.html", "classlivre_1_1_const_memory_unit" ],
+      [ "DataSource", "classlivre_1_1_data_source.html", "classlivre_1_1_data_source" ],
       [ "DataSourcePlugin", "classlivre_1_1_data_source_plugin.html", "classlivre_1_1_data_source_plugin" ],
       [ "DataSourcePluginData", "classlivre_1_1_data_source_plugin_data.html", "classlivre_1_1_data_source_plugin_data" ],
       [ "DeleteArray", "structlivre_1_1_delete_array.html", "structlivre_1_1_delete_array" ],

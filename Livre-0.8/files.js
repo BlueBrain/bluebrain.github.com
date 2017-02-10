@@ -4,6 +4,7 @@ var files =
     [ "ClipPlanes.h", "_clip_planes_8h_source.html", null ],
     [ "Configuration.h", "_configuration_8h_source.html", null ],
     [ "core.h", "core_8h_source.html", null ],
+    [ "DataSource.h", "_data_source_8h_source.html", null ],
     [ "DataSourcePlugin.h", "_data_source_plugin_8h_source.html", null ],
     [ "defines.h", "defines_8h.html", null ],
     [ "definesLinux.h", "defines_linux_8h_source.html", null ],
