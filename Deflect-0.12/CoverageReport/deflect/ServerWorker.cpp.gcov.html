@@ -31,18 +31,18 @@
             <td class="headerValue">Deflect</td>
             <td></td>
             <td class="headerItem">Lines:</td>
-            <td class="headerCovTableEntry">96</td>
-            <td class="headerCovTableEntry">151</td>
-            <td class="headerCovTableEntryMed">63.6 %</td>
+            <td class="headerCovTableEntry">104</td>
+            <td class="headerCovTableEntry">159</td>
+            <td class="headerCovTableEntryMed">65.4 %</td>
           </tr>
           <tr>
             <td class="headerItem">Date:</td>
-            <td class="headerValue">2017-01-26 02:18:44</td>
+            <td class="headerValue">2017-02-10 02:19:58</td>
             <td></td>
             <td class="headerItem">Functions:</td>
-            <td class="headerCovTableEntry">18</td>
-            <td class="headerCovTableEntry">22</td>
-            <td class="headerCovTableEntryHi">81.8 %</td>
+            <td class="headerCovTableEntry">19</td>
+            <td class="headerCovTableEntry">23</td>
+            <td class="headerCovTableEntryHi">82.6 %</td>
           </tr>
           <tr><td><img src="../glass.png" width=3 height=3 alt=""></td></tr>
         </table>
@@ -61,7 +61,7 @@
 <pre class="sourceHeading">          Line data    Source code</pre>
 <pre class="source">
 <a name="1"><span class="lineNum">       1 </span>            : /*********************************************************************/</a>
-<span class="lineNum">       2 </span>            : /* Copyright (c) 2013-2016, EPFL/Blue Brain Project                  */
+<span class="lineNum">       2 </span>            : /* Copyright (c) 2013-2017, EPFL/Blue Brain Project                  */
 <span class="lineNum">       3 </span>            : /*                          Raphael Dumusc &lt;raphael.dumusc@epfl.ch&gt;  */
 <span class="lineNum">       4 </span>            : /*                          Daniel.Nachbaur@epfl.ch                  */
 <span class="lineNum">       5 </span>            : /* All rights reserved.                                              */
@@ -109,294 +109,306 @@
 <span class="lineNum">      47 </span>            : 
 <span class="lineNum">      48 </span>            : #include &lt;QDataStream&gt;
 <span class="lineNum">      49 </span>            : 
-<span class="lineNum">      50 </span>            : #define RECEIVE_TIMEOUT_MS 3000
-<span class="lineNum">      51 </span>            : 
-<span class="lineNum">      52 </span>            : namespace deflect
-<a name="53"><span class="lineNum">      53 </span>            : {</a>
+<span class="lineNum">      50 </span>            : namespace
+<span class="lineNum">      51 </span>            : {
+<span class="lineNum">      52 </span>            : const int RECEIVE_TIMEOUT_MS = 3000;
+<span class="lineNum">      53 </span>            : }
 <span class="lineNum">      54 </span>            : 
-<span class="lineNum">      55 </span><span class="lineCov">          2 : ServerWorker::ServerWorker( const int socketDescriptor )</span>
-<span class="lineNum">      56 </span>            :     // Ensure that tcpSocket_ parent is *this* so it gets moved to thread
-<span class="lineNum">      57 </span><span class="lineCov">          2 :     : _tcpSocket( new QTcpSocket( this ))</span>
-<span class="lineNum">      58 </span>            :     , _sourceId( socketDescriptor )
-<span class="lineNum">      59 </span><span class="lineCov">          4 :     , _registeredToEvents( false )</span>
-<span class="lineNum">      60 </span>            : {
-<span class="lineNum">      61 </span><span class="lineCov">          2 :     if( !_tcpSocket-&gt;setSocketDescriptor( socketDescriptor ))</span>
-<span class="lineNum">      62 </span>            :     {
-<span class="lineNum">      63 </span>            :         std::cerr &lt;&lt; &quot;could not set socket descriptor: &quot;
-<span class="lineNum">      64 </span><span class="lineNoCov">          0 :                   &lt;&lt; _tcpSocket-&gt;errorString().toStdString() &lt;&lt; std::endl;</span>
-<span class="lineNum">      65 </span><span class="lineNoCov">          0 :         emit( connectionClosed( ));</span>
-<span class="lineNum">      66 </span><span class="lineNoCov">          0 :         return;</span>
-<span class="lineNum">      67 </span>            :     }
-<span class="lineNum">      68 </span>            : 
-<span class="lineNum">      69 </span><span class="lineCov">          2 :     connect( _tcpSocket, &amp;QTcpSocket::disconnected,</span>
-<span class="lineNum">      70 </span><span class="lineCov">          4 :              this, &amp;ServerWorker::connectionClosed );</span>
-<span class="lineNum">      71 </span>            : 
-<span class="lineNum">      72 </span><span class="lineCov">          2 :     connect( _tcpSocket, &amp;QTcpSocket::readyRead,</span>
-<span class="lineNum">      73 </span><span class="lineCov">          4 :              this, &amp;ServerWorker::_processMessages, Qt::QueuedConnection );</span>
-<span class="lineNum">      74 </span>            :     connect( this, &amp;ServerWorker::_dataAvailable,
-<span class="lineNum">      75 </span><span class="lineCov">          2 :              this, &amp;ServerWorker::_processMessages, Qt::QueuedConnection );</span>
-<a name="76"><span class="lineNum">      76 </span>            : }</a>
-<span class="lineNum">      77 </span>            : 
-<span class="lineNum">      78 </span><span class="lineCov">          6 : ServerWorker::~ServerWorker()</span>
-<span class="lineNum">      79 </span>            : {
-<span class="lineNum">      80 </span>            :     // If the sender crashed, we may not recieve the quit message.
-<span class="lineNum">      81 </span>            :     // We still want to remove this source so that the stream does not get stuck
-<span class="lineNum">      82 </span>            :     // if other senders are still active / resp. the window gets closed if no
-<span class="lineNum">      83 </span>            :     // more senders contribute to it.
-<span class="lineNum">      84 </span><span class="lineCov">          2 :     if( !_streamId.isEmpty( ))</span>
-<span class="lineNum">      85 </span><span class="lineCov">          1 :         emit removeStreamSource( _streamId, _sourceId );</span>
-<span class="lineNum">      86 </span>            : 
-<span class="lineNum">      87 </span><span class="lineCov">          2 :     if( _isConnected( ))</span>
-<span class="lineNum">      88 </span><span class="lineCov">          1 :         _sendQuit();</span>
-<span class="lineNum">      89 </span>            : 
-<span class="lineNum">      90 </span><span class="lineCov">          2 :     delete _tcpSocket;</span>
-<a name="91"><span class="lineNum">      91 </span><span class="lineCov">          4 : }</span></a>
-<span class="lineNum">      92 </span>            : 
-<span class="lineNum">      93 </span><span class="lineNoCov">          0 : void ServerWorker::processEvent( const Event evt )</span>
-<span class="lineNum">      94 </span>            : {
-<span class="lineNum">      95 </span><span class="lineNoCov">          0 :     _events.enqueue( evt );</span>
-<span class="lineNum">      96 </span><span class="lineNoCov">          0 :     emit _dataAvailable();</span>
-<a name="97"><span class="lineNum">      97 </span><span class="lineNoCov">          0 : }</span></a>
-<span class="lineNum">      98 </span>            : 
-<span class="lineNum">      99 </span><span class="lineCov">          2 : void ServerWorker::initConnection()</span>
-<span class="lineNum">     100 </span>            : {
-<span class="lineNum">     101 </span><span class="lineCov">          2 :     _sendProtocolVersion();</span>
-<a name="102"><span class="lineNum">     102 </span><span class="lineCov">          2 : }</span></a>
-<span class="lineNum">     103 </span>            : 
-<span class="lineNum">     104 </span><span class="lineNoCov">          0 : void ServerWorker::closeConnection( const QString uri )</span>
-<span class="lineNum">     105 </span>            : {
-<span class="lineNum">     106 </span><span class="lineNoCov">          0 :     if( uri != _streamId )</span>
-<span class="lineNum">     107 </span><span class="lineNoCov">          0 :         return;</span>
-<span class="lineNum">     108 </span>            : 
-<span class="lineNum">     109 </span><span class="lineNoCov">          0 :     Event closeEvent;</span>
-<span class="lineNum">     110 </span><span class="lineNoCov">          0 :     closeEvent.type = Event::EVT_CLOSE;</span>
-<span class="lineNum">     111 </span><span class="lineNoCov">          0 :     _send( closeEvent );</span>
+<span class="lineNum">      55 </span>            : namespace deflect
+<a name="56"><span class="lineNum">      56 </span>            : {</a>
+<span class="lineNum">      57 </span>            : 
+<span class="lineNum">      58 </span><span class="lineCov">          2 : ServerWorker::ServerWorker( const int socketDescriptor )</span>
+<span class="lineNum">      59 </span>            :     // Ensure that tcpSocket_ parent is *this* so it gets moved to thread
+<span class="lineNum">      60 </span><span class="lineCov">          2 :     : _tcpSocket( new QTcpSocket( this ))</span>
+<span class="lineNum">      61 </span>            :     , _sourceId( socketDescriptor )
+<span class="lineNum">      62 </span>            :     , _clientProtocolVersion( NETWORK_PROTOCOL_VERSION )
+<span class="lineNum">      63 </span><span class="lineCov">          4 :     , _registeredToEvents( false )</span>
+<span class="lineNum">      64 </span>            : {
+<span class="lineNum">      65 </span><span class="lineCov">          2 :     if( !_tcpSocket-&gt;setSocketDescriptor( socketDescriptor ))</span>
+<span class="lineNum">      66 </span>            :     {
+<span class="lineNum">      67 </span>            :         std::cerr &lt;&lt; &quot;could not set socket descriptor: &quot;
+<span class="lineNum">      68 </span><span class="lineNoCov">          0 :                   &lt;&lt; _tcpSocket-&gt;errorString().toStdString() &lt;&lt; std::endl;</span>
+<span class="lineNum">      69 </span><span class="lineNoCov">          0 :         emit( connectionClosed( ));</span>
+<span class="lineNum">      70 </span><span class="lineNoCov">          0 :         return;</span>
+<span class="lineNum">      71 </span>            :     }
+<span class="lineNum">      72 </span>            : 
+<span class="lineNum">      73 </span><span class="lineCov">          2 :     connect( _tcpSocket, &amp;QTcpSocket::disconnected,</span>
+<span class="lineNum">      74 </span><span class="lineCov">          4 :              this, &amp;ServerWorker::connectionClosed );</span>
+<span class="lineNum">      75 </span>            : 
+<span class="lineNum">      76 </span><span class="lineCov">          2 :     connect( _tcpSocket, &amp;QTcpSocket::readyRead,</span>
+<span class="lineNum">      77 </span><span class="lineCov">          4 :              this, &amp;ServerWorker::_processMessages, Qt::QueuedConnection );</span>
+<span class="lineNum">      78 </span>            :     connect( this, &amp;ServerWorker::_dataAvailable,
+<span class="lineNum">      79 </span><span class="lineCov">          2 :              this, &amp;ServerWorker::_processMessages, Qt::QueuedConnection );</span>
+<a name="80"><span class="lineNum">      80 </span>            : }</a>
+<span class="lineNum">      81 </span>            : 
+<span class="lineNum">      82 </span><span class="lineCov">          6 : ServerWorker::~ServerWorker()</span>
+<span class="lineNum">      83 </span>            : {
+<span class="lineNum">      84 </span>            :     // If the sender crashed, we may not recieve the quit message.
+<span class="lineNum">      85 </span>            :     // We still want to remove this source so that the stream does not get stuck
+<span class="lineNum">      86 </span>            :     // if other senders are still active / resp. the window gets closed if no
+<span class="lineNum">      87 </span>            :     // more senders contribute to it.
+<span class="lineNum">      88 </span><span class="lineCov">          2 :     if( !_streamId.isEmpty( ))</span>
+<span class="lineNum">      89 </span><span class="lineCov">          1 :         emit removeStreamSource( _streamId, _sourceId );</span>
+<span class="lineNum">      90 </span>            : 
+<span class="lineNum">      91 </span><span class="lineCov">          2 :     if( _isConnected( ))</span>
+<span class="lineNum">      92 </span><span class="lineCov">          1 :         _sendQuit();</span>
+<span class="lineNum">      93 </span>            : 
+<span class="lineNum">      94 </span><span class="lineCov">          2 :     delete _tcpSocket;</span>
+<a name="95"><span class="lineNum">      95 </span><span class="lineCov">          4 : }</span></a>
+<span class="lineNum">      96 </span>            : 
+<span class="lineNum">      97 </span><span class="lineNoCov">          0 : void ServerWorker::processEvent( const Event evt )</span>
+<span class="lineNum">      98 </span>            : {
+<span class="lineNum">      99 </span><span class="lineNoCov">          0 :     _events.enqueue( evt );</span>
+<span class="lineNum">     100 </span><span class="lineNoCov">          0 :     emit _dataAvailable();</span>
+<a name="101"><span class="lineNum">     101 </span><span class="lineNoCov">          0 : }</span></a>
+<span class="lineNum">     102 </span>            : 
+<span class="lineNum">     103 </span><span class="lineCov">          2 : void ServerWorker::initConnection()</span>
+<span class="lineNum">     104 </span>            : {
+<span class="lineNum">     105 </span><span class="lineCov">          2 :     _sendProtocolVersion();</span>
+<a name="106"><span class="lineNum">     106 </span><span class="lineCov">          2 : }</span></a>
+<span class="lineNum">     107 </span>            : 
+<span class="lineNum">     108 </span><span class="lineNoCov">          0 : void ServerWorker::closeConnection( const QString uri )</span>
+<span class="lineNum">     109 </span>            : {
+<span class="lineNum">     110 </span><span class="lineNoCov">          0 :     if( uri != _streamId )</span>
+<span class="lineNum">     111 </span><span class="lineNoCov">          0 :         return;</span>
 <span class="lineNum">     112 </span>            : 
-<span class="lineNum">     113 </span><span class="lineNoCov">          0 :     emit( connectionClosed( ));</span>
-<a name="114"><span class="lineNum">     114 </span>            : }</a>
-<span class="lineNum">     115 </span>            : 
-<span class="lineNum">     116 </span><span class="lineCov">          1 : void ServerWorker::replyToEventRegistration( const QString uri,</span>
-<span class="lineNum">     117 </span>            :                                              const bool success )
-<span class="lineNum">     118 </span>            : {
-<span class="lineNum">     119 </span><span class="lineCov">          1 :     if( uri != _streamId )</span>
-<span class="lineNum">     120 </span><span class="lineNoCov">          0 :         return;</span>
-<span class="lineNum">     121 </span>            : 
-<span class="lineNum">     122 </span><span class="lineCov">          1 :     _registeredToEvents = success;</span>
-<span class="lineNum">     123 </span><span class="lineCov">          1 :     _sendBindReply( _registeredToEvents );</span>
-<a name="124"><span class="lineNum">     124 </span>            : }</a>
+<span class="lineNum">     113 </span><span class="lineNoCov">          0 :     Event closeEvent;</span>
+<span class="lineNum">     114 </span><span class="lineNoCov">          0 :     closeEvent.type = Event::EVT_CLOSE;</span>
+<span class="lineNum">     115 </span><span class="lineNoCov">          0 :     _send( closeEvent );</span>
+<span class="lineNum">     116 </span>            : 
+<span class="lineNum">     117 </span><span class="lineNoCov">          0 :     emit( connectionClosed( ));</span>
+<a name="118"><span class="lineNum">     118 </span>            : }</a>
+<span class="lineNum">     119 </span>            : 
+<span class="lineNum">     120 </span><span class="lineCov">          1 : void ServerWorker::replyToEventRegistration( const QString uri,</span>
+<span class="lineNum">     121 </span>            :                                              const bool success )
+<span class="lineNum">     122 </span>            : {
+<span class="lineNum">     123 </span><span class="lineCov">          1 :     if( uri != _streamId )</span>
+<span class="lineNum">     124 </span><span class="lineNoCov">          0 :         return;</span>
 <span class="lineNum">     125 </span>            : 
-<span class="lineNum">     126 </span><span class="lineCov">          5 : void ServerWorker::_processMessages()</span>
-<span class="lineNum">     127 </span>            : {
-<span class="lineNum">     128 </span><span class="lineCov">          5 :     const qint64 headerSize( MessageHeader::serializedSize );</span>
+<span class="lineNum">     126 </span><span class="lineCov">          1 :     _registeredToEvents = success;</span>
+<span class="lineNum">     127 </span><span class="lineCov">          1 :     _sendBindReply( _registeredToEvents );</span>
+<a name="128"><span class="lineNum">     128 </span>            : }</a>
 <span class="lineNum">     129 </span>            : 
-<span class="lineNum">     130 </span><span class="lineCov">          5 :     if( _tcpSocket-&gt;bytesAvailable() &gt;= headerSize )</span>
-<span class="lineNum">     131 </span><span class="lineCov">          5 :         _receiveMessage();</span>
-<span class="lineNum">     132 </span>            : 
-<span class="lineNum">     133 </span>            :     // Send all events
-<span class="lineNum">     134 </span><span class="lineCov">          5 :     foreach( const Event&amp; evt, _events )</span>
-<span class="lineNum">     135 </span><span class="lineNoCov">          0 :         _send( evt );</span>
-<span class="lineNum">     136 </span><span class="lineCov">          5 :     _events.clear();</span>
-<span class="lineNum">     137 </span>            : 
-<span class="lineNum">     138 </span><span class="lineCov">          5 :     _tcpSocket-&gt;flush();</span>
-<span class="lineNum">     139 </span>            : 
-<span class="lineNum">     140 </span>            :     // Finish reading messages from the socket if connection closed
-<span class="lineNum">     141 </span><span class="lineCov">          5 :     if( !_isConnected( ))</span>
-<span class="lineNum">     142 </span>            :     {
-<span class="lineNum">     143 </span><span class="lineNoCov">          0 :         while( _tcpSocket-&gt;bytesAvailable() &gt;= headerSize )</span>
-<span class="lineNum">     144 </span><span class="lineNoCov">          0 :             _receiveMessage();</span>
-<span class="lineNum">     145 </span>            : 
-<span class="lineNum">     146 </span><span class="lineNoCov">          0 :         emit( connectionClosed( ));</span>
-<span class="lineNum">     147 </span>            :     }
-<span class="lineNum">     148 </span><span class="lineCov">          5 :     else if( _tcpSocket-&gt;bytesAvailable() &gt;= headerSize )</span>
-<span class="lineNum">     149 </span><span class="lineNoCov">          0 :         emit _dataAvailable();</span>
-<a name="150"><span class="lineNum">     150 </span><span class="lineCov">          5 : }</span></a>
-<span class="lineNum">     151 </span>            : 
-<span class="lineNum">     152 </span><span class="lineCov">          5 : void ServerWorker::_receiveMessage()</span>
-<span class="lineNum">     153 </span>            : {
-<span class="lineNum">     154 </span><span class="lineCov">          5 :     const MessageHeader mh = _receiveMessageHeader();</span>
-<span class="lineNum">     155 </span><span class="lineCov">         10 :     const QByteArray messageByteArray = _receiveMessageBody( mh.size );</span>
-<span class="lineNum">     156 </span><span class="lineCov">          5 :     _handleMessage( mh, messageByteArray );</span>
-<a name="157"><span class="lineNum">     157 </span><span class="lineCov">          5 : }</span></a>
-<span class="lineNum">     158 </span>            : 
-<span class="lineNum">     159 </span><span class="lineCov">          5 : MessageHeader ServerWorker::_receiveMessageHeader()</span>
-<span class="lineNum">     160 </span>            : {
-<span class="lineNum">     161 </span><span class="lineCov">          5 :     MessageHeader messageHeader;</span>
+<span class="lineNum">     130 </span><span class="lineCov">          5 : void ServerWorker::_processMessages()</span>
+<span class="lineNum">     131 </span>            : {
+<span class="lineNum">     132 </span><span class="lineCov">          5 :     const qint64 headerSize( MessageHeader::serializedSize );</span>
+<span class="lineNum">     133 </span>            : 
+<span class="lineNum">     134 </span><span class="lineCov">          5 :     if( _tcpSocket-&gt;bytesAvailable() &gt;= headerSize )</span>
+<span class="lineNum">     135 </span><span class="lineCov">          5 :         _receiveMessage();</span>
+<span class="lineNum">     136 </span>            : 
+<span class="lineNum">     137 </span>            :     // Send all events
+<span class="lineNum">     138 </span><span class="lineCov">          5 :     foreach( const Event&amp; evt, _events )</span>
+<span class="lineNum">     139 </span><span class="lineNoCov">          0 :         _send( evt );</span>
+<span class="lineNum">     140 </span><span class="lineCov">          5 :     _events.clear();</span>
+<span class="lineNum">     141 </span>            : 
+<span class="lineNum">     142 </span><span class="lineCov">          5 :     _tcpSocket-&gt;flush();</span>
+<span class="lineNum">     143 </span>            : 
+<span class="lineNum">     144 </span>            :     // Finish reading messages from the socket if connection closed
+<span class="lineNum">     145 </span><span class="lineCov">          5 :     if( !_isConnected( ))</span>
+<span class="lineNum">     146 </span>            :     {
+<span class="lineNum">     147 </span><span class="lineNoCov">          0 :         while( _tcpSocket-&gt;bytesAvailable() &gt;= headerSize )</span>
+<span class="lineNum">     148 </span><span class="lineNoCov">          0 :             _receiveMessage();</span>
+<span class="lineNum">     149 </span>            : 
+<span class="lineNum">     150 </span><span class="lineNoCov">          0 :         emit( connectionClosed( ));</span>
+<span class="lineNum">     151 </span>            :     }
+<span class="lineNum">     152 </span><span class="lineCov">          5 :     else if( _tcpSocket-&gt;bytesAvailable() &gt;= headerSize )</span>
+<span class="lineNum">     153 </span><span class="lineNoCov">          0 :         emit _dataAvailable();</span>
+<a name="154"><span class="lineNum">     154 </span><span class="lineCov">          5 : }</span></a>
+<span class="lineNum">     155 </span>            : 
+<span class="lineNum">     156 </span><span class="lineCov">          5 : void ServerWorker::_receiveMessage()</span>
+<span class="lineNum">     157 </span>            : {
+<span class="lineNum">     158 </span><span class="lineCov">          5 :     const MessageHeader mh = _receiveMessageHeader();</span>
+<span class="lineNum">     159 </span><span class="lineCov">         10 :     const QByteArray messageByteArray = _receiveMessageBody( mh.size );</span>
+<span class="lineNum">     160 </span><span class="lineCov">          5 :     _handleMessage( mh, messageByteArray );</span>
+<a name="161"><span class="lineNum">     161 </span><span class="lineCov">          5 : }</span></a>
 <span class="lineNum">     162 </span>            : 
-<span class="lineNum">     163 </span><span class="lineCov">         10 :     QDataStream stream( _tcpSocket );</span>
-<span class="lineNum">     164 </span><span class="lineCov">          5 :     stream &gt;&gt; messageHeader;</span>
-<span class="lineNum">     165 </span>            : 
-<span class="lineNum">     166 </span><span class="lineCov">         10 :     return messageHeader;</span>
-<a name="167"><span class="lineNum">     167 </span>            : }</a>
-<span class="lineNum">     168 </span>            : 
-<span class="lineNum">     169 </span><span class="lineCov">          5 : QByteArray ServerWorker::_receiveMessageBody( const int size )</span>
-<span class="lineNum">     170 </span>            : {
-<span class="lineNum">     171 </span><span class="lineCov">         10 :     QByteArray messageByteArray;</span>
+<span class="lineNum">     163 </span><span class="lineCov">          5 : MessageHeader ServerWorker::_receiveMessageHeader()</span>
+<span class="lineNum">     164 </span>            : {
+<span class="lineNum">     165 </span><span class="lineCov">          5 :     MessageHeader messageHeader;</span>
+<span class="lineNum">     166 </span>            : 
+<span class="lineNum">     167 </span><span class="lineCov">         10 :     QDataStream stream( _tcpSocket );</span>
+<span class="lineNum">     168 </span><span class="lineCov">          5 :     stream &gt;&gt; messageHeader;</span>
+<span class="lineNum">     169 </span>            : 
+<span class="lineNum">     170 </span><span class="lineCov">         10 :     return messageHeader;</span>
+<a name="171"><span class="lineNum">     171 </span>            : }</a>
 <span class="lineNum">     172 </span>            : 
-<span class="lineNum">     173 </span><span class="lineCov">          5 :     if( size &gt; 0 )</span>
-<span class="lineNum">     174 </span>            :     {
-<span class="lineNum">     175 </span><span class="lineCov">          1 :         messageByteArray = _tcpSocket-&gt;read( size );</span>
+<span class="lineNum">     173 </span><span class="lineCov">          5 : QByteArray ServerWorker::_receiveMessageBody( const int size )</span>
+<span class="lineNum">     174 </span>            : {
+<span class="lineNum">     175 </span><span class="lineCov">         10 :     QByteArray messageByteArray;</span>
 <span class="lineNum">     176 </span>            : 
-<span class="lineNum">     177 </span><span class="lineCov">          1 :         while( messageByteArray.size() &lt; size )</span>
-<span class="lineNum">     178 </span>            :         {
-<span class="lineNum">     179 </span><span class="lineNoCov">          0 :             if( !_tcpSocket-&gt;waitForReadyRead( RECEIVE_TIMEOUT_MS ))</span>
-<span class="lineNum">     180 </span>            :             {
-<span class="lineNum">     181 </span><span class="lineNoCov">          0 :                 emit connectionClosed();</span>
-<span class="lineNum">     182 </span><span class="lineNoCov">          0 :                 return QByteArray();</span>
-<span class="lineNum">     183 </span>            :             }
-<span class="lineNum">     184 </span>            : 
-<span class="lineNum">     185 </span>            :             messageByteArray.append(
-<span class="lineNum">     186 </span><span class="lineNoCov">          0 :                         _tcpSocket-&gt;read( size - messageByteArray.size( )));</span>
-<span class="lineNum">     187 </span>            :         }
-<span class="lineNum">     188 </span>            :     }
-<span class="lineNum">     189 </span>            : 
-<span class="lineNum">     190 </span><span class="lineCov">          5 :     return messageByteArray;</span>
-<a name="191"><span class="lineNum">     191 </span>            : }</a>
-<span class="lineNum">     192 </span>            : 
-<span class="lineNum">     193 </span><span class="lineCov">          5 : void ServerWorker::_handleMessage( const MessageHeader&amp; messageHeader,</span>
-<span class="lineNum">     194 </span>            :                                    const QByteArray&amp; byteArray )
-<span class="lineNum">     195 </span>            : {
-<span class="lineNum">     196 </span><span class="lineCov">         10 :     const QString uri( messageHeader.uri );</span>
-<span class="lineNum">     197 </span><span class="lineCov">          5 :     if( uri.isEmpty( ))</span>
-<span class="lineNum">     198 </span>            :     {
-<span class="lineNum">     199 </span><span class="lineNoCov">          0 :         std::cerr &lt;&lt; &quot;Warning: rejecting streamer with empty id&quot; &lt;&lt; std::endl;</span>
-<span class="lineNum">     200 </span><span class="lineNoCov">          0 :         closeConnection( _streamId );</span>
-<span class="lineNum">     201 </span><span class="lineNoCov">          0 :         return;</span>
-<span class="lineNum">     202 </span>            :     }
-<span class="lineNum">     203 </span><span class="lineCov">          7 :     if( uri != _streamId &amp;&amp;</span>
-<span class="lineNum">     204 </span><span class="lineCov">          2 :             messageHeader.type != MESSAGE_TYPE_PIXELSTREAM_OPEN )</span>
-<span class="lineNum">     205 </span>            :     {
-<span class="lineNum">     206 </span>            :         std::cerr &lt;&lt; &quot;Warning: ingnoring message with incorrect stream id: '&quot;
-<span class="lineNum">     207 </span>            :                   &lt;&lt; messageHeader.uri &lt;&lt; &quot;', expected: '&quot;
-<span class="lineNum">     208 </span><span class="lineNoCov">          0 :                   &lt;&lt; _streamId.toStdString() &lt;&lt; &quot;'&quot; &lt;&lt;  std::endl;</span>
-<span class="lineNum">     209 </span><span class="lineNoCov">          0 :         return;</span>
-<span class="lineNum">     210 </span>            :     }
-<span class="lineNum">     211 </span>            : 
-<span class="lineNum">     212 </span><span class="lineCov">          5 :     switch( messageHeader.type )</span>
-<span class="lineNum">     213 </span>            :     {
-<span class="lineNum">     214 </span>            :     case MESSAGE_TYPE_QUIT:
-<span class="lineNum">     215 </span><span class="lineCov">          1 :         emit removeStreamSource( _streamId, _sourceId );</span>
-<span class="lineNum">     216 </span><span class="lineCov">          1 :         _streamId = QString();</span>
-<span class="lineNum">     217 </span><span class="lineCov">          1 :         break;</span>
-<span class="lineNum">     218 </span>            : 
-<span class="lineNum">     219 </span>            :     case MESSAGE_TYPE_PIXELSTREAM_OPEN:
-<span class="lineNum">     220 </span><span class="lineCov">          2 :         if( !_streamId.isEmpty( ))</span>
-<span class="lineNum">     221 </span>            :         {
-<span class="lineNum">     222 </span><span class="lineNoCov">          0 :             std::cerr &lt;&lt; &quot;Warning: PixelStream already opened!&quot; &lt;&lt; std::endl;</span>
-<span class="lineNum">     223 </span><span class="lineNoCov">          0 :             return;</span>
-<span class="lineNum">     224 </span>            :         }
-<span class="lineNum">     225 </span><span class="lineCov">          2 :         _streamId = uri;</span>
-<span class="lineNum">     226 </span><span class="lineCov">          2 :         emit addStreamSource( _streamId, _sourceId );</span>
-<span class="lineNum">     227 </span><span class="lineCov">          2 :         break;</span>
-<span class="lineNum">     228 </span>            : 
-<span class="lineNum">     229 </span>            :     case MESSAGE_TYPE_PIXELSTREAM_FINISH_FRAME:
-<span class="lineNum">     230 </span><span class="lineNoCov">          0 :         emit receivedFrameFinished( _streamId, _sourceId );</span>
-<span class="lineNum">     231 </span><span class="lineNoCov">          0 :         break;</span>
-<span class="lineNum">     232 </span>            : 
-<span class="lineNum">     233 </span>            :     case MESSAGE_TYPE_PIXELSTREAM:
-<span class="lineNum">     234 </span><span class="lineNoCov">          0 :         _handlePixelStreamMessage( byteArray );</span>
-<span class="lineNum">     235 </span><span class="lineNoCov">          0 :         break;</span>
-<span class="lineNum">     236 </span>            : 
-<span class="lineNum">     237 </span>            :     case MESSAGE_TYPE_SIZE_HINTS:
-<span class="lineNum">     238 </span>            :     {
-<span class="lineNum">     239 </span>            :         const SizeHints* hints =
-<span class="lineNum">     240 </span><span class="lineCov">          1 :                 reinterpret_cast&lt; const SizeHints* &gt;( byteArray.data( ));</span>
-<span class="lineNum">     241 </span><span class="lineCov">          1 :         emit receivedSizeHints( _streamId, SizeHints( *hints ));</span>
-<span class="lineNum">     242 </span><span class="lineCov">          1 :         break;</span>
-<span class="lineNum">     243 </span>            :     }
-<span class="lineNum">     244 </span>            : 
-<span class="lineNum">     245 </span>            :     case MESSAGE_TYPE_DATA:
-<span class="lineNum">     246 </span><span class="lineNoCov">          0 :         emit receivedData( _streamId, byteArray );</span>
-<span class="lineNum">     247 </span><span class="lineNoCov">          0 :         break;</span>
-<span class="lineNum">     248 </span>            : 
-<span class="lineNum">     249 </span>            :     case MESSAGE_TYPE_BIND_EVENTS:
-<span class="lineNum">     250 </span>            :     case MESSAGE_TYPE_BIND_EVENTS_EX:
-<span class="lineNum">     251 </span><span class="lineCov">          1 :         if( _registeredToEvents )</span>
-<span class="lineNum">     252 </span><span class="lineNoCov">          0 :             std::cerr &lt;&lt; &quot;We are already bound!!&quot; &lt;&lt; std::endl;</span>
-<span class="lineNum">     253 </span>            :         else
-<span class="lineNum">     254 </span>            :         {
-<span class="lineNum">     255 </span>            :             const bool exclusive =
-<span class="lineNum">     256 </span><span class="lineCov">          1 :                     (messageHeader.type == MESSAGE_TYPE_BIND_EVENTS_EX);</span>
-<span class="lineNum">     257 </span><span class="lineCov">          1 :             emit registerToEvents( _streamId, exclusive, this );</span>
-<span class="lineNum">     258 </span>            :         }
-<span class="lineNum">     259 </span><span class="lineCov">          1 :         break;</span>
-<span class="lineNum">     260 </span>            : 
-<span class="lineNum">     261 </span>            :     default:
-<span class="lineNum">     262 </span><span class="lineNoCov">          0 :         break;</span>
-<span class="lineNum">     263 </span>            :     }
-<a name="264"><span class="lineNum">     264 </span>            : }</a>
-<span class="lineNum">     265 </span>            : 
-<span class="lineNum">     266 </span><span class="lineNoCov">          0 : void ServerWorker::_handlePixelStreamMessage( const QByteArray&amp; byteArray )</span>
-<span class="lineNum">     267 </span>            : {
-<span class="lineNum">     268 </span>            :     const SegmentParameters* parameters =
-<span class="lineNum">     269 </span><span class="lineNoCov">          0 :             reinterpret_cast&lt; const SegmentParameters* &gt;( byteArray.data( ));</span>
-<span class="lineNum">     270 </span>            : 
-<span class="lineNum">     271 </span><span class="lineNoCov">          0 :     Segment segment;</span>
-<span class="lineNum">     272 </span><span class="lineNoCov">          0 :     segment.parameters = *parameters;</span>
-<span class="lineNum">     273 </span>            : 
-<span class="lineNum">     274 </span>            :     QByteArray imageData =
-<span class="lineNum">     275 </span><span class="lineNoCov">          0 :             byteArray.right( byteArray.size() - sizeof( SegmentParameters ));</span>
-<span class="lineNum">     276 </span><span class="lineNoCov">          0 :     segment.imageData = imageData;</span>
-<span class="lineNum">     277 </span>            : 
-<span class="lineNum">     278 </span><span class="lineNoCov">          0 :     emit( receivedSegment( _streamId, _sourceId, segment ));</span>
-<a name="279"><span class="lineNum">     279 </span><span class="lineNoCov">          0 : }</span></a>
+<span class="lineNum">     177 </span><span class="lineCov">          5 :     if( size &gt; 0 )</span>
+<span class="lineNum">     178 </span>            :     {
+<span class="lineNum">     179 </span><span class="lineCov">          3 :         messageByteArray = _tcpSocket-&gt;read( size );</span>
+<span class="lineNum">     180 </span>            : 
+<span class="lineNum">     181 </span><span class="lineCov">          3 :         while( messageByteArray.size() &lt; size )</span>
+<span class="lineNum">     182 </span>            :         {
+<span class="lineNum">     183 </span><span class="lineNoCov">          0 :             if( !_tcpSocket-&gt;waitForReadyRead( RECEIVE_TIMEOUT_MS ))</span>
+<span class="lineNum">     184 </span>            :             {
+<span class="lineNum">     185 </span><span class="lineNoCov">          0 :                 emit connectionClosed();</span>
+<span class="lineNum">     186 </span><span class="lineNoCov">          0 :                 return QByteArray();</span>
+<span class="lineNum">     187 </span>            :             }
+<span class="lineNum">     188 </span>            : 
+<span class="lineNum">     189 </span>            :             messageByteArray.append(
+<span class="lineNum">     190 </span><span class="lineNoCov">          0 :                         _tcpSocket-&gt;read( size - messageByteArray.size( )));</span>
+<span class="lineNum">     191 </span>            :         }
+<span class="lineNum">     192 </span>            :     }
+<span class="lineNum">     193 </span>            : 
+<span class="lineNum">     194 </span><span class="lineCov">          5 :     return messageByteArray;</span>
+<a name="195"><span class="lineNum">     195 </span>            : }</a>
+<span class="lineNum">     196 </span>            : 
+<span class="lineNum">     197 </span><span class="lineCov">          5 : void ServerWorker::_handleMessage( const MessageHeader&amp; messageHeader,</span>
+<span class="lineNum">     198 </span>            :                                    const QByteArray&amp; byteArray )
+<span class="lineNum">     199 </span>            : {
+<span class="lineNum">     200 </span><span class="lineCov">         10 :     const QString uri( messageHeader.uri );</span>
+<span class="lineNum">     201 </span><span class="lineCov">          5 :     if( uri.isEmpty( ))</span>
+<span class="lineNum">     202 </span>            :     {
+<span class="lineNum">     203 </span><span class="lineNoCov">          0 :         std::cerr &lt;&lt; &quot;Warning: rejecting streamer with empty id&quot; &lt;&lt; std::endl;</span>
+<span class="lineNum">     204 </span><span class="lineNoCov">          0 :         closeConnection( _streamId );</span>
+<span class="lineNum">     205 </span><span class="lineNoCov">          0 :         return;</span>
+<span class="lineNum">     206 </span>            :     }
+<span class="lineNum">     207 </span><span class="lineCov">          7 :     if( uri != _streamId &amp;&amp;</span>
+<span class="lineNum">     208 </span><span class="lineCov">          2 :             messageHeader.type != MESSAGE_TYPE_PIXELSTREAM_OPEN )</span>
+<span class="lineNum">     209 </span>            :     {
+<span class="lineNum">     210 </span>            :         std::cerr &lt;&lt; &quot;Warning: ingnoring message with incorrect stream id: '&quot;
+<span class="lineNum">     211 </span>            :                   &lt;&lt; messageHeader.uri &lt;&lt; &quot;', expected: '&quot;
+<span class="lineNum">     212 </span><span class="lineNoCov">          0 :                   &lt;&lt; _streamId.toStdString() &lt;&lt; &quot;'&quot; &lt;&lt;  std::endl;</span>
+<span class="lineNum">     213 </span><span class="lineNoCov">          0 :         return;</span>
+<span class="lineNum">     214 </span>            :     }
+<span class="lineNum">     215 </span>            : 
+<span class="lineNum">     216 </span><span class="lineCov">          5 :     switch( messageHeader.type )</span>
+<span class="lineNum">     217 </span>            :     {
+<span class="lineNum">     218 </span>            :     case MESSAGE_TYPE_QUIT:
+<span class="lineNum">     219 </span><span class="lineCov">          1 :         emit removeStreamSource( _streamId, _sourceId );</span>
+<span class="lineNum">     220 </span><span class="lineCov">          1 :         _streamId = QString();</span>
+<span class="lineNum">     221 </span><span class="lineCov">          1 :         break;</span>
+<span class="lineNum">     222 </span>            : 
+<span class="lineNum">     223 </span>            :     case MESSAGE_TYPE_PIXELSTREAM_OPEN:
+<span class="lineNum">     224 </span><span class="lineCov">          2 :         if( !_streamId.isEmpty( ))</span>
+<span class="lineNum">     225 </span>            :         {
+<span class="lineNum">     226 </span><span class="lineNoCov">          0 :             std::cerr &lt;&lt; &quot;Warning: PixelStream already opened!&quot; &lt;&lt; std::endl;</span>
+<span class="lineNum">     227 </span><span class="lineNoCov">          0 :             return;</span>
+<span class="lineNum">     228 </span>            :         }
+<span class="lineNum">     229 </span><span class="lineCov">          2 :         _streamId = uri;</span>
+<span class="lineNum">     230 </span>            :         // The version is only sent by deflect clients since v. 0.13.0
+<span class="lineNum">     231 </span><span class="lineCov">          2 :         if( !byteArray.isEmpty( ))</span>
+<span class="lineNum">     232 </span><span class="lineCov">          2 :             _parseClientProtocolVersion( byteArray );</span>
+<span class="lineNum">     233 </span><span class="lineCov">          2 :         emit addStreamSource( _streamId, _sourceId );</span>
+<span class="lineNum">     234 </span><span class="lineCov">          2 :         break;</span>
+<span class="lineNum">     235 </span>            : 
+<span class="lineNum">     236 </span>            :     case MESSAGE_TYPE_PIXELSTREAM_FINISH_FRAME:
+<span class="lineNum">     237 </span><span class="lineNoCov">          0 :         emit receivedFrameFinished( _streamId, _sourceId );</span>
+<span class="lineNum">     238 </span><span class="lineNoCov">          0 :         break;</span>
+<span class="lineNum">     239 </span>            : 
+<span class="lineNum">     240 </span>            :     case MESSAGE_TYPE_PIXELSTREAM:
+<span class="lineNum">     241 </span><span class="lineNoCov">          0 :         _handlePixelStreamMessage( byteArray );</span>
+<span class="lineNum">     242 </span><span class="lineNoCov">          0 :         break;</span>
+<span class="lineNum">     243 </span>            : 
+<span class="lineNum">     244 </span>            :     case MESSAGE_TYPE_SIZE_HINTS:
+<span class="lineNum">     245 </span>            :     {
+<span class="lineNum">     246 </span>            :         const SizeHints* hints =
+<span class="lineNum">     247 </span><span class="lineCov">          1 :                 reinterpret_cast&lt; const SizeHints* &gt;( byteArray.data( ));</span>
+<span class="lineNum">     248 </span><span class="lineCov">          1 :         emit receivedSizeHints( _streamId, SizeHints( *hints ));</span>
+<span class="lineNum">     249 </span><span class="lineCov">          1 :         break;</span>
+<span class="lineNum">     250 </span>            :     }
+<span class="lineNum">     251 </span>            : 
+<span class="lineNum">     252 </span>            :     case MESSAGE_TYPE_DATA:
+<span class="lineNum">     253 </span><span class="lineNoCov">          0 :         emit receivedData( _streamId, byteArray );</span>
+<span class="lineNum">     254 </span><span class="lineNoCov">          0 :         break;</span>
+<span class="lineNum">     255 </span>            : 
+<span class="lineNum">     256 </span>            :     case MESSAGE_TYPE_BIND_EVENTS:
+<span class="lineNum">     257 </span>            :     case MESSAGE_TYPE_BIND_EVENTS_EX:
+<span class="lineNum">     258 </span><span class="lineCov">          1 :         if( _registeredToEvents )</span>
+<span class="lineNum">     259 </span><span class="lineNoCov">          0 :             std::cerr &lt;&lt; &quot;We are already bound!!&quot; &lt;&lt; std::endl;</span>
+<span class="lineNum">     260 </span>            :         else
+<span class="lineNum">     261 </span>            :         {
+<span class="lineNum">     262 </span>            :             const bool exclusive =
+<span class="lineNum">     263 </span><span class="lineCov">          1 :                     (messageHeader.type == MESSAGE_TYPE_BIND_EVENTS_EX);</span>
+<span class="lineNum">     264 </span><span class="lineCov">          1 :             emit registerToEvents( _streamId, exclusive, this );</span>
+<span class="lineNum">     265 </span>            :         }
+<span class="lineNum">     266 </span><span class="lineCov">          1 :         break;</span>
+<span class="lineNum">     267 </span>            : 
+<span class="lineNum">     268 </span>            :     default:
+<span class="lineNum">     269 </span><span class="lineNoCov">          0 :         break;</span>
+<span class="lineNum">     270 </span>            :     }
+<a name="271"><span class="lineNum">     271 </span>            : }</a>
+<span class="lineNum">     272 </span>            : 
+<span class="lineNum">     273 </span><span class="lineCov">          2 : void ServerWorker::_parseClientProtocolVersion( const QByteArray&amp; message )</span>
+<span class="lineNum">     274 </span>            : {
+<span class="lineNum">     275 </span><span class="lineCov">          2 :     bool ok = false;</span>
+<span class="lineNum">     276 </span><span class="lineCov">          2 :     const int version = message.toInt( &amp;ok );</span>
+<span class="lineNum">     277 </span><span class="lineCov">          2 :     if( ok )</span>
+<span class="lineNum">     278 </span><span class="lineCov">          2 :         _clientProtocolVersion = version;</span>
+<a name="279"><span class="lineNum">     279 </span><span class="lineCov">          2 : }</span></a>
 <span class="lineNum">     280 </span>            : 
-<span class="lineNum">     281 </span><span class="lineCov">          2 : void ServerWorker::_sendProtocolVersion()</span>
+<span class="lineNum">     281 </span><span class="lineNoCov">          0 : void ServerWorker::_handlePixelStreamMessage( const QByteArray&amp; message )</span>
 <span class="lineNum">     282 </span>            : {
-<span class="lineNum">     283 </span><span class="lineCov">          2 :     const int32_t protocolVersion = NETWORK_PROTOCOL_VERSION;</span>
-<span class="lineNum">     284 </span><span class="lineCov">          2 :     _tcpSocket-&gt;write( (char*)&amp;protocolVersion, sizeof( int32_t ));</span>
-<span class="lineNum">     285 </span><span class="lineCov">          2 :     _flushSocket();</span>
-<a name="286"><span class="lineNum">     286 </span><span class="lineCov">          2 : }</span></a>
-<span class="lineNum">     287 </span>            : 
-<span class="lineNum">     288 </span><span class="lineCov">          1 : void ServerWorker::_sendBindReply( const bool successful )</span>
-<span class="lineNum">     289 </span>            : {
-<span class="lineNum">     290 </span><span class="lineCov">          1 :     MessageHeader mh( MESSAGE_TYPE_BIND_EVENTS_REPLY, sizeof( bool ));</span>
-<span class="lineNum">     291 </span><span class="lineCov">          1 :     _send( mh );</span>
+<span class="lineNum">     283 </span><span class="lineNoCov">          0 :     Segment segment;</span>
+<span class="lineNum">     284 </span>            : 
+<span class="lineNum">     285 </span><span class="lineNoCov">          0 :     const auto data = message.data();</span>
+<span class="lineNum">     286 </span><span class="lineNoCov">          0 :     segment.parameters = *reinterpret_cast&lt;const SegmentParameters*&gt;( data );</span>
+<span class="lineNum">     287 </span><span class="lineNoCov">          0 :     segment.imageData = message.right( message.size() -</span>
+<span class="lineNum">     288 </span><span class="lineNoCov">          0 :                                        sizeof( SegmentParameters ));</span>
+<span class="lineNum">     289 </span>            : 
+<span class="lineNum">     290 </span><span class="lineNoCov">          0 :     emit( receivedSegment( _streamId, _sourceId, segment ));</span>
+<a name="291"><span class="lineNum">     291 </span><span class="lineNoCov">          0 : }</span></a>
 <span class="lineNum">     292 </span>            : 
-<span class="lineNum">     293 </span><span class="lineCov">          1 :     _tcpSocket-&gt;write( (const char *)&amp;successful, sizeof( bool ));</span>
-<span class="lineNum">     294 </span><span class="lineCov">          1 :     _flushSocket();</span>
-<a name="295"><span class="lineNum">     295 </span><span class="lineCov">          1 : }</span></a>
-<span class="lineNum">     296 </span>            : 
-<span class="lineNum">     297 </span><span class="lineNoCov">          0 : void ServerWorker::_send( const Event&amp; evt )</span>
-<span class="lineNum">     298 </span>            : {
-<span class="lineNum">     299 </span>            :     // send message header
-<span class="lineNum">     300 </span><span class="lineNoCov">          0 :     MessageHeader mh( MESSAGE_TYPE_EVENT, Event::serializedSize );</span>
-<span class="lineNum">     301 </span><span class="lineNoCov">          0 :     _send( mh );</span>
-<span class="lineNum">     302 </span>            : 
-<span class="lineNum">     303 </span>            :     {
-<span class="lineNum">     304 </span><span class="lineNoCov">          0 :         QDataStream stream( _tcpSocket );</span>
-<span class="lineNum">     305 </span><span class="lineNoCov">          0 :         stream &lt;&lt; evt;</span>
-<span class="lineNum">     306 </span>            :     }
-<span class="lineNum">     307 </span><span class="lineNoCov">          0 :     _flushSocket();</span>
-<a name="308"><span class="lineNum">     308 </span><span class="lineNoCov">          0 : }</span></a>
-<span class="lineNum">     309 </span>            : 
-<span class="lineNum">     310 </span><span class="lineCov">          1 : void ServerWorker::_sendQuit()</span>
-<span class="lineNum">     311 </span>            : {
-<span class="lineNum">     312 </span><span class="lineCov">          1 :     MessageHeader mh( MESSAGE_TYPE_QUIT, 0 );</span>
-<span class="lineNum">     313 </span><span class="lineCov">          1 :     _send( mh );</span>
-<span class="lineNum">     314 </span><span class="lineCov">          1 :     _flushSocket();</span>
-<a name="315"><span class="lineNum">     315 </span><span class="lineCov">          1 : }</span></a>
-<span class="lineNum">     316 </span>            : 
-<span class="lineNum">     317 </span><span class="lineCov">          2 : bool ServerWorker::_send( const MessageHeader&amp; messageHeader )</span>
-<span class="lineNum">     318 </span>            : {
-<span class="lineNum">     319 </span><span class="lineCov">          4 :     QDataStream stream( _tcpSocket );</span>
-<span class="lineNum">     320 </span><span class="lineCov">          2 :     stream &lt;&lt; messageHeader;</span>
+<span class="lineNum">     293 </span><span class="lineCov">          2 : void ServerWorker::_sendProtocolVersion()</span>
+<span class="lineNum">     294 </span>            : {
+<span class="lineNum">     295 </span><span class="lineCov">          2 :     const int32_t protocolVersion = NETWORK_PROTOCOL_VERSION;</span>
+<span class="lineNum">     296 </span><span class="lineCov">          2 :     _tcpSocket-&gt;write( (char*)&amp;protocolVersion, sizeof( int32_t ));</span>
+<span class="lineNum">     297 </span><span class="lineCov">          2 :     _flushSocket();</span>
+<a name="298"><span class="lineNum">     298 </span><span class="lineCov">          2 : }</span></a>
+<span class="lineNum">     299 </span>            : 
+<span class="lineNum">     300 </span><span class="lineCov">          1 : void ServerWorker::_sendBindReply( const bool successful )</span>
+<span class="lineNum">     301 </span>            : {
+<span class="lineNum">     302 </span><span class="lineCov">          1 :     MessageHeader mh( MESSAGE_TYPE_BIND_EVENTS_REPLY, sizeof( bool ));</span>
+<span class="lineNum">     303 </span><span class="lineCov">          1 :     _send( mh );</span>
+<span class="lineNum">     304 </span>            : 
+<span class="lineNum">     305 </span><span class="lineCov">          1 :     _tcpSocket-&gt;write( (const char *)&amp;successful, sizeof( bool ));</span>
+<span class="lineNum">     306 </span><span class="lineCov">          1 :     _flushSocket();</span>
+<a name="307"><span class="lineNum">     307 </span><span class="lineCov">          1 : }</span></a>
+<span class="lineNum">     308 </span>            : 
+<span class="lineNum">     309 </span><span class="lineNoCov">          0 : void ServerWorker::_send( const Event&amp; evt )</span>
+<span class="lineNum">     310 </span>            : {
+<span class="lineNum">     311 </span>            :     // send message header
+<span class="lineNum">     312 </span><span class="lineNoCov">          0 :     MessageHeader mh( MESSAGE_TYPE_EVENT, Event::serializedSize );</span>
+<span class="lineNum">     313 </span><span class="lineNoCov">          0 :     _send( mh );</span>
+<span class="lineNum">     314 </span>            : 
+<span class="lineNum">     315 </span>            :     {
+<span class="lineNum">     316 </span><span class="lineNoCov">          0 :         QDataStream stream( _tcpSocket );</span>
+<span class="lineNum">     317 </span><span class="lineNoCov">          0 :         stream &lt;&lt; evt;</span>
+<span class="lineNum">     318 </span>            :     }
+<span class="lineNum">     319 </span><span class="lineNoCov">          0 :     _flushSocket();</span>
+<a name="320"><span class="lineNum">     320 </span><span class="lineNoCov">          0 : }</span></a>
 <span class="lineNum">     321 </span>            : 
-<span class="lineNum">     322 </span><span class="lineCov">          4 :     return stream.status() == QDataStream::Ok;</span>
-<a name="323"><span class="lineNum">     323 </span>            : }</a>
-<span class="lineNum">     324 </span>            : 
-<span class="lineNum">     325 </span><span class="lineCov">          4 : void ServerWorker::_flushSocket()</span>
-<span class="lineNum">     326 </span>            : {
-<span class="lineNum">     327 </span><span class="lineCov">          4 :     _tcpSocket-&gt;flush();</span>
-<span class="lineNum">     328 </span><span class="lineCov">          4 :     while( _tcpSocket-&gt;bytesToWrite() &gt; 0 &amp;&amp; _isConnected( ))</span>
-<span class="lineNum">     329 </span><span class="lineNoCov">          0 :         _tcpSocket-&gt;waitForBytesWritten();</span>
-<a name="330"><span class="lineNum">     330 </span><span class="lineCov">          4 : }</span></a>
-<span class="lineNum">     331 </span>            : 
-<span class="lineNum">     332 </span><span class="lineCov">          7 : bool ServerWorker::_isConnected() const</span>
-<span class="lineNum">     333 </span>            : {
-<span class="lineNum">     334 </span><span class="lineCov">          7 :     return _tcpSocket-&gt;state() == QTcpSocket::ConnectedState;</span>
+<span class="lineNum">     322 </span><span class="lineCov">          1 : void ServerWorker::_sendQuit()</span>
+<span class="lineNum">     323 </span>            : {
+<span class="lineNum">     324 </span><span class="lineCov">          1 :     MessageHeader mh( MESSAGE_TYPE_QUIT, 0 );</span>
+<span class="lineNum">     325 </span><span class="lineCov">          1 :     _send( mh );</span>
+<span class="lineNum">     326 </span><span class="lineCov">          1 :     _flushSocket();</span>
+<a name="327"><span class="lineNum">     327 </span><span class="lineCov">          1 : }</span></a>
+<span class="lineNum">     328 </span>            : 
+<span class="lineNum">     329 </span><span class="lineCov">          2 : bool ServerWorker::_send( const MessageHeader&amp; messageHeader )</span>
+<span class="lineNum">     330 </span>            : {
+<span class="lineNum">     331 </span><span class="lineCov">          4 :     QDataStream stream( _tcpSocket );</span>
+<span class="lineNum">     332 </span><span class="lineCov">          2 :     stream &lt;&lt; messageHeader;</span>
+<span class="lineNum">     333 </span>            : 
+<span class="lineNum">     334 </span><span class="lineCov">          4 :     return stream.status() == QDataStream::Ok;</span>
 <a name="335"><span class="lineNum">     335 </span>            : }</a>
 <span class="lineNum">     336 </span>            : 
-<span class="lineNum">     337 </span><span class="lineCov">         24 : }</span>
+<span class="lineNum">     337 </span><span class="lineCov">          4 : void ServerWorker::_flushSocket()</span>
+<span class="lineNum">     338 </span>            : {
+<span class="lineNum">     339 </span><span class="lineCov">          4 :     _tcpSocket-&gt;flush();</span>
+<span class="lineNum">     340 </span><span class="lineCov">          4 :     while( _tcpSocket-&gt;bytesToWrite() &gt; 0 &amp;&amp; _isConnected( ))</span>
+<span class="lineNum">     341 </span><span class="lineNoCov">          0 :         _tcpSocket-&gt;waitForBytesWritten();</span>
+<a name="342"><span class="lineNum">     342 </span><span class="lineCov">          4 : }</span></a>
+<span class="lineNum">     343 </span>            : 
+<span class="lineNum">     344 </span><span class="lineCov">          7 : bool ServerWorker::_isConnected() const</span>
+<span class="lineNum">     345 </span>            : {
+<span class="lineNum">     346 </span><span class="lineCov">          7 :     return _tcpSocket-&gt;state() == QTcpSocket::ConnectedState;</span>
+<a name="347"><span class="lineNum">     347 </span>            : }</a>
+<span class="lineNum">     348 </span>            : 
+<span class="lineNum">     349 </span><span class="lineCov">         24 : }</span>
 </pre>
       </td>
     </tr>
