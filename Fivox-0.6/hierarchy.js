@@ -10,10 +10,10 @@ var hierarchy =
     [ "fivox::EventsDeleter", "structfivox_1_1_events_deleter.html", null ],
     [ "fivox::EventSource", "classfivox_1_1_event_source.html", [
       [ "fivox::CompartmentLoader", "classfivox_1_1_compartment_loader.html", null ],
+      [ "fivox::GenericLoader", "classfivox_1_1_generic_loader.html", null ],
       [ "fivox::SomaLoader", "classfivox_1_1_soma_loader.html", null ],
       [ "fivox::SpikeLoader", "classfivox_1_1_spike_loader.html", null ],
       [ "fivox::SynapseLoader", "classfivox_1_1_synapse_loader.html", null ],
-      [ "fivox::TestLoader", "classfivox_1_1_test_loader.html", null ],
       [ "fivox::VSDLoader", "classfivox_1_1_v_s_d_loader.html", null ]
     ] ],
     [ "fivox::ScaleFilter< TImage >", "classfivox_1_1_scale_filter.html", null ],

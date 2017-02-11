@@ -4,6 +4,7 @@ var classfivox_1_1_u_r_i_handler =
     [ "~URIHandler", "classfivox_1_1_u_r_i_handler.html#a54e53bdbffa6cbe9ff8b11d65bfed0f2", null ],
     [ "getAreas", "classfivox_1_1_u_r_i_handler.html#a1db2cc9dd1163e84084c1ca71c36ef78", null ],
     [ "getConfig", "classfivox_1_1_u_r_i_handler.html#a0fdb8fe8f1c4d024d547144893bc7dae", null ],
+    [ "getConfigPath", "classfivox_1_1_u_r_i_handler.html#a5874e73748cefc849e9258767eabe51a", null ],
     [ "getCutoffDistance", "classfivox_1_1_u_r_i_handler.html#a708bdf0a86741e5a715c3235c47e50bc", null ],
     [ "getDescription", "classfivox_1_1_u_r_i_handler.html#a53abfe174aae35fefce65ad5010f2500", null ],
     [ "getDt", "classfivox_1_1_u_r_i_handler.html#a0cf08598c30cf1df02634b4a4a2aa776", null ],

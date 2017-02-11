@@ -12,7 +12,9 @@ var NAVTREE =
       [ "Release 0.1 (30-Apr-2015)", "changelog.html#Release01", null ]
     ] ],
     [ "Feature specifications", "Features.html", "Features" ],
+    [ "Generic event loading", "genericEventLoading.html", null ],
     [ "User guide", "UserGuide.html", "UserGuide" ],
+    [ "Application Help", "apps.html", "apps" ],
     [ "Namespaces", null, [
       [ "Namespace List", "namespaces.html", "namespaces" ],
       [ "Namespace Members", "namespacemembers.html", [
@@ -45,7 +47,7 @@ var NAVTREE =
 var NAVTREEINDEX =
 [
 ".html",
-"classitk_1_1_smart_pointer.html"
+"classfivox_1_1_volume_handler.html#acc3ae16e03e857bcc20f88a0ec07eceb"
 ];
 
 var SYNCONMSG = 'click to disable panel synchronisation';

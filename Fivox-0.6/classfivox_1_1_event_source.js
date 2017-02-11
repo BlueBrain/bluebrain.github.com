@@ -7,7 +7,6 @@ var classfivox_1_1_event_source =
     [ "_getNumChunks", "classfivox_1_1_event_source.html#a55b57ea62ed3d0c9999573d88c7f8db8", null ],
     [ "_getTimeRange", "classfivox_1_1_event_source.html#a6b93749e2981a953d0c85b0ea1d1340a", null ],
     [ "_getType", "classfivox_1_1_event_source.html#aab3aac43d066fb2d08abd6b3e670d782", null ],
-    [ "_hasEnded", "classfivox_1_1_event_source.html#aebf81e2bb5fd982329a4307ba11404dc", null ],
     [ "_load", "classfivox_1_1_event_source.html#a5b196eb73d7e12308f4608216c163c4f", null ],
     [ "buildRTree", "classfivox_1_1_event_source.html#afc7016527cf1f5eebd7ee0152d7c01f0", null ],
     [ "findEvents", "classfivox_1_1_event_source.html#a4ea28d127b400412bfbaf3ba1f1638f4", null ],
@@ -15,6 +14,7 @@ var classfivox_1_1_event_source =
     [ "getCurrentTime", "classfivox_1_1_event_source.html#af6dbbe8f044ddb142f2fbc1cb75b83e2", null ],
     [ "getCutOffDistance", "classfivox_1_1_event_source.html#a134f842c23cde45681f2e154a3e3498c", null ],
     [ "getDt", "classfivox_1_1_event_source.html#a8b0b9afd1cd85d9ca7d12cd81dea02fc", null ],
+    [ "getDuration", "classfivox_1_1_event_source.html#a09d64e86d6f0f75de74463f914b0e3a5", null ],
     [ "getFrameRange", "classfivox_1_1_event_source.html#aef0553017c50ba4f338c986252940c9d", null ],
     [ "getNumChunks", "classfivox_1_1_event_source.html#a0876ef2be2459951a604648b0e576b36", null ],
     [ "getNumEvents", "classfivox_1_1_event_source.html#aadafb5334f857e9f0c9294441dc73e9d", null ],
@@ -28,10 +28,12 @@ var classfivox_1_1_event_source =
     [ "load", "classfivox_1_1_event_source.html#a9a793173b9de76aa07661ac5ca55bd5b", null ],
     [ "operator=", "classfivox_1_1_event_source.html#a3e6aae9af9cbd28421f788f4359bdba4", null ],
     [ "operator[]", "classfivox_1_1_event_source.html#a3912d0b6960006420f832fd0474d2a4a", null ],
+    [ "read", "classfivox_1_1_event_source.html#a92e58d3beb0051c661a4199a1f0423c4", null ],
     [ "resize", "classfivox_1_1_event_source.html#a8d2fe69cd37db0c57e6366fd4cbebc83", null ],
     [ "setBoundingBox", "classfivox_1_1_event_source.html#a80f1761c9e83a78d1bbee97230a6432f", null ],
     [ "setDt", "classfivox_1_1_event_source.html#a7bc0e2bc80f3536ecea7e865696d1198", null ],
     [ "setFrame", "classfivox_1_1_event_source.html#adb6b3270e95ba849400723c4b5f3b5f9", null ],
     [ "setTime", "classfivox_1_1_event_source.html#ae138db1aaf78f76ba8805e03db295961", null ],
-    [ "update", "classfivox_1_1_event_source.html#ae525ad76a7bdeaa77ca5401b3705644f", null ]
+    [ "update", "classfivox_1_1_event_source.html#ae525ad76a7bdeaa77ca5401b3705644f", null ],
+    [ "write", "classfivox_1_1_event_source.html#a85a6bb40e93bb9fbcf6d0c87e79830e2", null ]
 ];

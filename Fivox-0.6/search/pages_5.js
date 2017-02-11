@@ -1,4 +1,4 @@
 var searchData=
 [
-  ['user_20guide',['User guide',['../UserGuide.html',1,'']]]
+  ['rescaling_20output_20voxel_20values',['Rescaling output voxel values',['../rescaleOutput.html',1,'Features']]]
 ];

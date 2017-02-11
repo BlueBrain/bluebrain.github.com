@@ -1,4 +1,4 @@
 var searchData=
 [
-  ['rescaling_20output_20voxel_20values',['Rescaling output voxel values',['../rescaleOutput.html',1,'Features']]]
+  ['generic_20event_20loading',['Generic event loading',['../genericEventLoading.html',1,'']]]
 ];

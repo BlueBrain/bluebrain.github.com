@@ -1,4 +1,4 @@
 var searchData=
 [
-  ['sourcetype',['SourceType',['../namespacefivox.html#afc42aa0bf971ea7c85afbcb4ed8d3455',1,'fivox']]]
+  ['functortype',['FunctorType',['../namespacefivox.html#afb62d6fb959abf801014c895658768a3',1,'fivox']]]
 ];

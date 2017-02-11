@@ -1,4 +1,4 @@
 var searchData=
 [
-  ['vsd_20computation',['VSD computation',['../computeVSD.html',1,'UserGuide']]]
+  ['sample_2dpoint',['sample-point',['../sample-point.html',1,'apps']]]
 ];
