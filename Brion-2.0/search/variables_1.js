@@ -1,4 +1,4 @@
 var searchData=
 [
-  ['resting_5fvoltage',['RESTING_VOLTAGE',['../namespacebrion.html#a8ae1d136d8ee3a42852723c5d323b9f7',1,'brion']]]
+  ['endtime',['endTime',['../structbrain_1_1_compartment_report_meta_data.html#ad93417b355223ebb6a0d4ffb552ceeef',1,'brain::CompartmentReportMetaData']]]
 ];

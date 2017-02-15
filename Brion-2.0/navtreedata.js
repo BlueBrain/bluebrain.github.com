@@ -27,6 +27,7 @@ var NAVTREE =
       [ "Class Members", "functions.html", [
         [ "All", "functions.html", "functions_dup" ],
         [ "Functions", "functions_func.html", "functions_func" ],
+        [ "Variables", "functions_vars.html", null ],
         [ "Enumerations", "functions_enum.html", null ],
         [ "Related Functions", "functions_rela.html", null ]
       ] ]
@@ -44,8 +45,8 @@ var NAVTREE =
 var NAVTREEINDEX =
 [
 "Changelog.html",
-"classbrion_1_1_circuit.html#af7ed47392549f914b7ab7625f493176e",
-"enums_8h.html#a0b4836d8823df1f6564115cc3271c185af06936793edbf46b4fc2117c14a1c1b6"
+"classbrain_1_1neuron_1_1_soma.html",
+"classbrion_1_1_version.html#a1d222a0670a0df9f7b70415ec501602a"
 ];
 
 var SYNCONMSG = 'click to disable panel synchronisation';

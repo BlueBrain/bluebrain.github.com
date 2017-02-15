@@ -9,6 +9,7 @@ var files =
     [ "brain/circuit.h", "brain_2circuit_8h_source.html", null ],
     [ "compartmentReport.h", "compartment_report_8h_source.html", null ],
     [ "compartmentReportPlugin.h", "compartment_report_plugin_8h_source.html", null ],
+    [ "compartmentReportReader.h", "compartment_report_reader_8h_source.html", null ],
     [ "defines.h", "defines_8h.html", null ],
     [ "definesLinux.h", "defines_linux_8h_source.html", null ],
     [ "enums.h", "enums_8h.html", "enums_8h" ],

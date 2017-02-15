@@ -22,6 +22,7 @@ var searchData=
   ['spikereportreader',['SpikeReportReader',['../classbrain_1_1_spike_report_reader.html',1,'brain']]],
   ['spikereportwriter',['SpikeReportWriter',['../classbrain_1_1_spike_report_writer.html#ad3b1e9aacd2ed848eda5a5f754101d7b',1,'brain::SpikeReportWriter']]],
   ['spikereportwriter',['SpikeReportWriter',['../classbrain_1_1_spike_report_writer.html',1,'brain']]],
+  ['starttime',['startTime',['../structbrain_1_1_compartment_report_meta_data.html#aaebae618728ec6e68f30a407b63b31d7',1,'brain::CompartmentReportMetaData']]],
   ['state',['State',['../classbrion_1_1_spike_report.html#a76277acf0346819dd0ead1349a020c7e',1,'brion::SpikeReport']]],
   ['supportsbackwardseek',['supportsBackwardSeek',['../classbrion_1_1_spike_report.html#aa112549e40ecbaecae371a87a054d991',1,'brion::SpikeReport::supportsBackwardSeek()'],['../classbrion_1_1_spike_report_plugin.html#ae3fa94ea29d5acd876a4dc4df0d55efc',1,'brion::SpikeReportPlugin::supportsBackwardSeek()']]],
   ['synapse',['Synapse',['../classbrain_1_1_synapse.html',1,'brain']]],
@@ -36,7 +37,7 @@ var searchData=
   ['synapses',['Synapses',['../classbrain_1_1_synapses.html#a3dd7dc84c2a1ccda1ebf6be16dbe7005',1,'brain::Synapses']]],
   ['synapsesiterator',['SynapsesIterator',['../classbrain_1_1_synapses_iterator.html',1,'brain']]],
   ['synapsesstream',['SynapsesStream',['../classbrain_1_1_synapses_stream.html',1,'brain']]],
-  ['synapsesummary',['SynapseSummary',['../classbrion_1_1_synapse_summary.html#af20d4491231e172d332a2850fb957842',1,'brion::SynapseSummary']]],
   ['synapsesummary',['SynapseSummary',['../classbrion_1_1_synapse_summary.html',1,'brion']]],
+  ['synapsesummary',['SynapseSummary',['../classbrion_1_1_synapse_summary.html#af20d4491231e172d332a2850fb957842',1,'brion::SynapseSummary']]],
   ['synapsesummarymatrix',['SynapseSummaryMatrix',['../namespacebrion.html#a8cf594eaf64c24b377d0b47bfabab145',1,'brion']]]
 ];

@@ -37,7 +37,7 @@
           </tr>
           <tr>
             <td class="headerItem">Date:</td>
-            <td class="headerValue">2017-02-10 06:04:32</td>
+            <td class="headerValue">2017-02-15 06:06:34</td>
             <td></td>
             <td class="headerItem">Functions:</td>
             <td class="headerCovTableEntry">57</td>
@@ -60,7 +60,7 @@
       <td>
 <pre class="sourceHeading">          Line data    Source code</pre>
 <pre class="source">
-<a name="1"><span class="lineNum">       1 </span>            : /* Copyright (c) 2013-2016, EPFL/Blue Brain Project</a>
+<a name="1"><span class="lineNum">       1 </span>            : /* Copyright (c) 2013-2017, EPFL/Blue Brain Project</a>
 <span class="lineNum">       2 </span>            :  *                          Juan Hernando &lt;jhernando@fi.upm.es&gt;
 <span class="lineNum">       3 </span>            :  *                          Adrien.Devresse@epfl.ch
 <span class="lineNum">       4 </span>            :  *                          Daniel.Nachbaur@epfl.ch
@@ -93,636 +93,635 @@
 <span class="lineNum">      31 </span>            : #include &lt;brion/detail/silenceHDF5.h&gt;
 <span class="lineNum">      32 </span>            : 
 <span class="lineNum">      33 </span>            : #include &lt;keyv/Map.h&gt;
-<span class="lineNum">      34 </span>            : #include &lt;lunchbox/lock.h&gt;
-<span class="lineNum">      35 </span>            : #include &lt;lunchbox/lockable.h&gt;
-<span class="lineNum">      36 </span>            : #include &lt;lunchbox/log.h&gt;
-<span class="lineNum">      37 </span>            : #include &lt;lunchbox/scopedMutex.h&gt;
-<span class="lineNum">      38 </span>            : 
-<span class="lineNum">      39 </span>            : #ifdef BRAIN_USE_MVD3
-<span class="lineNum">      40 </span>            : #  include &lt;mvd/mvd3.hpp&gt;
-<span class="lineNum">      41 </span>            : #  include &lt;mvd/mvd_generic.hpp&gt;
-<span class="lineNum">      42 </span>            : #endif
-<span class="lineNum">      43 </span>            : 
-<span class="lineNum">      44 </span>            : #include &lt;boost/filesystem.hpp&gt;
-<span class="lineNum">      45 </span>            : 
-<span class="lineNum">      46 </span>            : #include &lt;future&gt;
-<span class="lineNum">      47 </span>            : #include &lt;random&gt;
-<span class="lineNum">      48 </span>            : #include &lt;unordered_map&gt;
-<span class="lineNum">      49 </span>            : 
-<span class="lineNum">      50 </span>            : namespace fs = boost::filesystem;
-<span class="lineNum">      51 </span>            : using boost::lexical_cast;
-<span class="lineNum">      52 </span>            : 
-<span class="lineNum">      53 </span>            : namespace brain
-<span class="lineNum">      54 </span>            : {
-<span class="lineNum">      55 </span>            : 
-<span class="lineNum">      56 </span><span class="lineCov">         26 : const std::string summaryFilename( &quot;/nrn_summary.h5&quot; );</span>
-<span class="lineNum">      57 </span><span class="lineCov">         26 : const std::string afferentFilename( &quot;/nrn.h5&quot; );</span>
-<span class="lineNum">      58 </span><span class="lineCov">         26 : const std::string efferentFilename( &quot;/nrn_efferent.h5&quot; );</span>
-<span class="lineNum">      59 </span><span class="lineCov">         26 : const std::string afferentPositionsFilename( &quot;/nrn_positions.h5&quot; );</span>
-<span class="lineNum">      60 </span><span class="lineCov">         26 : const std::string efferentPositionsFilename( &quot;/nrn_positions_efferent.h5&quot; );</span>
-<span class="lineNum">      61 </span><span class="lineCov">         26 : const std::string extraFilename( &quot;/nrn_extra.h5&quot; );</span>
-<span class="lineNum">      62 </span>            : 
-<span class="lineNum">      63 </span>            : namespace
-<a name="64"><span class="lineNum">      64 </span>            : {</a>
-<span class="lineNum">      65 </span>            : #ifdef BRAIN_USE_MVD3
-<span class="lineNum">      66 </span><span class="lineCov">         10 : bool isSequence( const GIDSet&amp; gids )</span>
-<span class="lineNum">      67 </span>            : {
-<span class="lineNum">      68 </span><span class="lineCov">         10 :     return ( *gids.rbegin() - *gids.begin() + 1 ) == gids.size();</span>
-<a name="69"><span class="lineNum">      69 </span>            : }</a>
-<span class="lineNum">      70 </span>            : 
-<span class="lineNum">      71 </span><span class="lineCov">         15 : ::MVD3::Range getRange( const GIDSet&amp; gids )</span>
-<span class="lineNum">      72 </span>            : {
-<span class="lineNum">      73 </span><span class="lineCov">         15 :     const size_t offset = ( *gids.begin( ));</span>
-<span class="lineNum">      74 </span><span class="lineCov">         15 :     const size_t count = *gids.rbegin() - offset + 1;</span>
-<span class="lineNum">      75 </span><span class="lineCov">         15 :     return ::MVD3::Range( offset - 1, count );</span>
-<span class="lineNum">      76 </span>            : }
-<a name="77"><span class="lineNum">      77 </span>            : </a>
-<span class="lineNum">      78 </span>            : template&lt; typename SrcArray, typename DstArray, typename AssignOp &gt;
-<span class="lineNum">      79 </span><span class="lineCov">         10 : void assign( const ::MVD3::Range&amp; range, const GIDSet&amp; gids,</span>
-<span class="lineNum">      80 </span>            :              SrcArray&amp; src, DstArray&amp; dst, const AssignOp&amp; assignOp )
-<span class="lineNum">      81 </span>            : {
-<span class="lineNum">      82 </span><span class="lineCov">         10 :     if( isSequence( gids )) // OPT: no holes, no translation needed</span>
-<span class="lineNum">      83 </span>            :     {
-<span class="lineNum">      84 </span><span class="lineCov">          3 :         std::transform( src.begin(), src.end(), dst.begin(), assignOp );</span>
-<span class="lineNum">      85 </span><span class="lineCov">          3 :         return;</span>
-<span class="lineNum">      86 </span>            :     }
-<span class="lineNum">      87 </span>            : 
-<span class="lineNum">      88 </span><span class="lineCov">          7 :     typename DstArray::iterator dst_it = dst.begin();</span>
-<span class="lineNum">      89 </span><span class="lineCov">         27 :     for( GIDSet::const_iterator i = gids.begin(); i != gids.end(); ++i )</span>
-<span class="lineNum">      90 </span>            :     {
-<span class="lineNum">      91 </span><span class="lineCov">         32 :         typename SrcArray::const_iterator src_it = src.begin();</span>
-<span class="lineNum">      92 </span><span class="lineCov">         20 :         std::advance( src_it, *i - range.offset - 1 );</span>
-<span class="lineNum">      93 </span><span class="lineCov">         20 :         *dst_it = assignOp( *src_it );</span>
-<span class="lineNum">      94 </span><span class="lineCov">         20 :         ++dst_it;</span>
-<span class="lineNum">      95 </span>            :     }
-<a name="96"><span class="lineNum">      96 </span>            : }</a>
-<span class="lineNum">      97 </span>            : 
-<span class="lineNum">      98 </span><span class="lineCov">       2008 : Vector3f toVector3f(</span>
-<span class="lineNum">      99 </span>            :     const ::MVD3::Positions::const_subarray&lt; 1 &gt;::type&amp; subarray )
-<span class="lineNum">     100 </span>            : {
-<span class="lineNum">     101 </span><span class="lineCov">       2008 :     return Vector3f( subarray[0], subarray[1], subarray[2] );</span>
-<a name="102"><span class="lineNum">     102 </span>            : }</a>
-<span class="lineNum">     103 </span>            : 
-<span class="lineNum">     104 </span><span class="lineCov">       1004 : Quaternionf toQuaternion(</span>
-<span class="lineNum">     105 </span>            :     const ::MVD3::Rotations::const_subarray&lt; 1 &gt;::type&amp; subarray )
-<span class="lineNum">     106 </span>            : {
-<span class="lineNum">     107 </span><span class="lineCov">       1004 :     return Quaternionf( subarray[0], subarray[1], subarray[2], subarray[3] );</span>
-<a name="108"><span class="lineNum">     108 </span>            : }</a>
-<span class="lineNum">     109 </span>            : 
-<span class="lineNum">     110 </span><span class="lineCov">          4 : size_t nop( const size_t&amp; in ) { return in; }</span>
-<a name="111"><span class="lineNum">     111 </span>            : #endif</a>
-<a name="112"><span class="lineNum">     112 </span>            : </a>
-<span class="lineNum">     113 </span><span class="lineCov">         23 : std::string toString( const std::string&amp; in ) { return in; }</span>
-<span class="lineNum">     114 </span><span class="lineCov">          4 : size_t toSize_t( const std::string&amp; in ) { return std::stoul( in ); }</span>
-<a name="115"><span class="lineNum">     115 </span>            : </a>
-<span class="lineNum">     116 </span>            : template&lt;typename T&gt;
-<span class="lineNum">     117 </span><span class="lineCov">          3 : void _shuffle( T&amp; container )</span>
-<span class="lineNum">     118 </span>            : {
-<span class="lineNum">     119 </span><span class="lineCov">          6 :     std::random_device randomDevice;</span>
-<span class="lineNum">     120 </span><span class="lineCov">          3 :     std::mt19937_64 randomEngine( randomDevice( ));</span>
-<span class="lineNum">     121 </span><span class="lineCov">          3 :     const char* seedEnv = getenv( &quot;BRAIN_CIRCUIT_SEED&quot; );</span>
-<span class="lineNum">     122 </span><span class="lineCov">          3 :     if( seedEnv )</span>
-<span class="lineNum">     123 </span>            :     {
-<span class="lineNum">     124 </span>            :         try
-<span class="lineNum">     125 </span>            :         {
-<span class="lineNum">     126 </span><span class="lineNoCov">          0 :             randomEngine.seed( std::stoul( seedEnv ));</span>
-<span class="lineNum">     127 </span>            :         }
-<span class="lineNum">     128 </span><span class="lineNoCov">          0 :         catch( const std::exception&amp; exc )</span>
-<span class="lineNum">     129 </span>            :         {
-<span class="lineNum">     130 </span><span class="lineNoCov">          0 :             LBWARN &lt;&lt; &quot;Could not set BRAIN_CIRCUIT_SEED to &quot; &lt;&lt; seedEnv &lt;&lt; &quot;: &quot;</span>
-<span class="lineNum">     131 </span><span class="lineNoCov">          0 :                    &lt;&lt; exc.what() &lt;&lt; std::endl;</span>
-<span class="lineNum">     132 </span>            :         }
-<span class="lineNum">     133 </span>            :     }
-<span class="lineNum">     134 </span><span class="lineCov">          3 :     std::shuffle( container.begin(), container.end(), randomEngine );</span>
-<span class="lineNum">     135 </span><span class="lineCov">          3 : }</span>
-<span class="lineNum">     136 </span>            : 
-<span class="lineNum">     137 </span>            : typedef std::unordered_map&lt; std::string,
-<span class="lineNum">     138 </span>            :                             neuron::MorphologyPtr &gt; CachedMorphologies;
-<span class="lineNum">     139 </span>            : typedef std::unordered_map&lt; std::string,
-<span class="lineNum">     140 </span>            :                             brion::SynapseMatrix &gt; CachedSynapses;
-<span class="lineNum">     141 </span>            : } // anonymous namespace
-<span class="lineNum">     142 </span>            : 
-<span class="lineNum">     143 </span>            : class Circuit::Impl
-<a name="144"><span class="lineNum">     144 </span>            : {</a>
-<span class="lineNum">     145 </span>            : public:
-<span class="lineNum">     146 </span><span class="lineCov">         25 :     explicit Impl( const brion::BlueConfig&amp; config )</span>
-<span class="lineNum">     147 </span><span class="lineCov">         25 :         : _circuitSource( config.getCircuitSource( ))</span>
-<span class="lineNum">     148 </span>            :         , _morphologySource( config.getMorphologySource( ))
-<span class="lineNum">     149 </span>            :         , _synapseSource( config.getSynapseSource( ))
-<span class="lineNum">     150 </span>            :         , _targetSources( config.getTargetSources( ))
-<span class="lineNum">     151 </span>            :         , _cache( keyv::Map::createCache( ))
-<span class="lineNum">     152 </span><span class="lineCov">         25 :         , _synapsePositionColumns( 0 )</span>
-<span class="lineNum">     153 </span>            :     {
-<a name="154"><span class="lineNum">     154 </span><span class="lineCov">         25 :     }</span></a>
-<span class="lineNum">     155 </span>            : 
-<span class="lineNum">     156 </span><span class="lineCov">         25 :     virtual ~Impl() {}</span>
-<span class="lineNum">     157 </span>            : 
-<a name="158"><span class="lineNum">     158 </span>            :     virtual size_t getNumNeurons() const = 0;</a>
-<span class="lineNum">     159 </span>            : 
-<span class="lineNum">     160 </span><span class="lineCov">          3 :     const brion::URI&amp; getCircuitSource() const</span>
-<span class="lineNum">     161 </span>            :     {
-<span class="lineNum">     162 </span><span class="lineCov">          3 :         return _circuitSource;</span>
-<a name="163"><span class="lineNum">     163 </span>            :     }</a>
-<span class="lineNum">     164 </span>            : 
-<span class="lineNum">     165 </span><span class="lineCov">          6 :     GIDSet getGIDs() const</span>
-<span class="lineNum">     166 </span>            :     {
-<span class="lineNum">     167 </span><span class="lineCov">          6 :         brain::GIDSet gids;</span>
-<span class="lineNum">     168 </span><span class="lineCov">          6 :         brain::GIDSet::const_iterator hint = gids.begin();</span>
-<span class="lineNum">     169 </span><span class="lineCov">       5606 :         for( uint32_t i = 0; i &lt; getNumNeurons(); ++i )</span>
-<span class="lineNum">     170 </span><span class="lineCov">       5600 :             hint = gids.insert( hint, i + 1 );</span>
-<span class="lineNum">     171 </span><span class="lineCov">          6 :         return gids;</span>
-<a name="172"><span class="lineNum">     172 </span>            :     }</a>
-<span class="lineNum">     173 </span>            : 
-<span class="lineNum">     174 </span><span class="lineCov">         22 :     GIDSet getGIDs( const std::string&amp; target ) const</span>
-<span class="lineNum">     175 </span>            :     {
-<span class="lineNum">     176 </span><span class="lineCov">         22 :         if( _targetParsers.empty( ))</span>
-<span class="lineNum">     177 </span>            :         {
-<span class="lineNum">     178 </span><span class="lineCov">         33 :             for( const URI&amp; uri : _targetSources )</span>
-<span class="lineNum">     179 </span>            :             {
-<span class="lineNum">     180 </span>            :                 try
-<span class="lineNum">     181 </span>            :                 {
-<span class="lineNum">     182 </span><span class="lineCov">         22 :                     _targetParsers.push_back( brion::Target( uri.getPath( )));</span>
-<span class="lineNum">     183 </span>            :                 }
-<span class="lineNum">     184 </span><span class="lineNoCov">          0 :                 catch( const std::runtime_error&amp; exc )</span>
-<span class="lineNum">     185 </span>            :                 {
-<span class="lineNum">     186 </span><span class="lineNoCov">          0 :                     LBWARN &lt;&lt; &quot;Failed to load targets from &quot; &lt;&lt; uri.getPath()</span>
-<span class="lineNum">     187 </span><span class="lineNoCov">          0 :                            &lt;&lt; &quot;: &quot; &lt;&lt; exc.what() &lt;&lt; std::endl;</span>
-<span class="lineNum">     188 </span>            :                 }
-<span class="lineNum">     189 </span>            :             }
-<span class="lineNum">     190 </span>            :         }
-<span class="lineNum">     191 </span><span class="lineCov">         22 :         return brion::Target::parse( _targetParsers, target );</span>
-<a name="192"><span class="lineNum">     192 </span>            :     }</a>
-<span class="lineNum">     193 </span>            : 
-<span class="lineNum">     194 </span><span class="lineCov">          5 :     GIDSet getRandomGIDs( const float fraction,</span>
-<span class="lineNum">     195 </span>            :                           const std::string&amp; target ) const
-<span class="lineNum">     196 </span>            :     {
-<span class="lineNum">     197 </span><span class="lineCov">          5 :         if( fraction &lt; 0.f || fraction &gt; 1.f )</span>
-<span class="lineNum">     198 </span><span class="lineCov">          2 :             LBTHROW( std::runtime_error( &quot;Fraction for getRandomGIDs() must be &quot;</span>
-<span class="lineNum">     199 </span>            :                                          &quot;in the range [0,1]&quot; ));
-<span class="lineNum">     200 </span>            : 
-<span class="lineNum">     201 </span><span class="lineCov">          6 :         const GIDSet&amp; gids = target.empty() ? getGIDs() : getGIDs( target );</span>
-<span class="lineNum">     202 </span><span class="lineCov">          6 :         uint32_ts randomGids( gids.begin(), gids.end( ));</span>
-<span class="lineNum">     203 </span><span class="lineCov">          3 :         _shuffle( randomGids );</span>
-<span class="lineNum">     204 </span><span class="lineCov">          3 :         randomGids.resize( size_t( std::ceil( randomGids.size() * fraction )));</span>
-<span class="lineNum">     205 </span><span class="lineCov">          6 :         return GIDSet( randomGids.begin(), randomGids.end( ));</span>
-<span class="lineNum">     206 </span>            :     }
-<span class="lineNum">     207 </span>            : 
-<span class="lineNum">     208 </span>            :     virtual Vector3fs getPositions( const GIDSet&amp; gids ) const = 0;
-<span class="lineNum">     209 </span>            :     virtual size_ts getMTypes( const GIDSet&amp; gids ) const = 0;
-<span class="lineNum">     210 </span>            :     virtual Strings getMorphologyNames() const = 0;
-<span class="lineNum">     211 </span>            :     virtual size_ts getETypes( const GIDSet&amp; gids ) const = 0;
-<span class="lineNum">     212 </span>            :     virtual Strings getElectrophysiologyNames() const = 0;
-<span class="lineNum">     213 </span>            :     virtual Quaternionfs getRotations( const GIDSet&amp; gids ) const = 0;
-<a name="214"><span class="lineNum">     214 </span>            :     virtual Strings getMorphologyNames( const GIDSet&amp; gids ) const = 0;</a>
-<span class="lineNum">     215 </span>            : 
-<span class="lineNum">     216 </span><span class="lineCov">         23 :     URI getMorphologyURI( const std::string&amp; name ) const</span>
-<span class="lineNum">     217 </span>            :     {
-<span class="lineNum">     218 </span><span class="lineCov">         23 :         URI uri;</span>
-<span class="lineNum">     219 </span><span class="lineCov">         23 :         uri.setPath( _morphologySource.getPath() + &quot;/&quot; + name + &quot;.h5&quot; );</span>
-<span class="lineNum">     220 </span><span class="lineCov">         23 :         uri.setScheme( &quot;file&quot; );</span>
-<span class="lineNum">     221 </span><span class="lineCov">         23 :         return uri;</span>
-<a name="222"><span class="lineNum">     222 </span>            :     }</a>
-<span class="lineNum">     223 </span>            : 
-<span class="lineNum">     224 </span><span class="lineCov">          6 :     const brion::SynapseSummary&amp; getSynapseSummary() const</span>
-<span class="lineNum">     225 </span>            :     {
-<span class="lineNum">     226 </span><span class="lineCov">         12 :         lunchbox::ScopedWrite mutex( _synapseSummary );</span>
-<span class="lineNum">     227 </span>            : 
-<span class="lineNum">     228 </span><span class="lineCov">          6 :         if( !(*_synapseSummary ))</span>
-<span class="lineNum">     229 </span><span class="lineCov">         10 :             _synapseSummary-&gt;reset( new brion::SynapseSummary(</span>
-<span class="lineNum">     230 </span><span class="lineCov">         15 :                                _synapseSource.getPath() + summaryFilename ));</span>
-<span class="lineNum">     231 </span><span class="lineCov">         12 :         return **_synapseSummary;</span>
-<a name="232"><span class="lineNum">     232 </span>            :     }</a>
-<span class="lineNum">     233 </span>            : 
-<span class="lineNum">     234 </span><span class="lineCov">         12 :     const brion::Synapse&amp; getSynapseAttributes( const bool afferent ) const</span>
-<span class="lineNum">     235 </span>            :     {
-<span class="lineNum">     236 </span><span class="lineCov">         12 :         const size_t i = afferent ? 0 : 1;</span>
-<span class="lineNum">     237 </span><span class="lineCov">         24 :         lunchbox::ScopedWrite mutex( _synapseAttributes[i] );</span>
-<span class="lineNum">     238 </span>            : 
-<span class="lineNum">     239 </span><span class="lineCov">         12 :         if( !(*_synapseAttributes[i] ))</span>
-<span class="lineNum">     240 </span><span class="lineCov">         18 :             _synapseAttributes[i]-&gt;reset(</span>
-<span class="lineNum">     241 </span><span class="lineCov">         18 :                 new brion::Synapse( _synapseSource.getPath() + (afferent ?</span>
-<span class="lineNum">     242 </span><span class="lineCov">         18 :                                           afferentFilename : efferentFilename )));</span>
-<span class="lineNum">     243 </span><span class="lineCov">         24 :         return **_synapseAttributes[i];</span>
-<a name="244"><span class="lineNum">     244 </span>            :     }</a>
-<span class="lineNum">     245 </span>            : 
-<span class="lineNum">     246 </span><span class="lineCov">         12 :     const brion::Synapse* getSynapseExtra() const</span>
-<span class="lineNum">     247 </span>            :     {
-<span class="lineNum">     248 </span><span class="lineCov">         24 :         lunchbox::ScopedWrite mutex( _synapseExtra );</span>
-<span class="lineNum">     249 </span>            : 
-<span class="lineNum">     250 </span><span class="lineCov">         12 :         if( !(*_synapseExtra ))</span>
-<span class="lineNum">     251 </span>            :         {
-<span class="lineNum">     252 </span>            :             try
-<span class="lineNum">     253 </span>            :             {
-<span class="lineNum">     254 </span><span class="lineCov">         12 :                 _synapseExtra-&gt;reset( new brion::Synapse(</span>
-<span class="lineNum">     255 </span><span class="lineCov">         36 :                                  _synapseSource.getPath() + extraFilename ));</span>
-<span class="lineNum">     256 </span>            :             }
-<span class="lineNum">     257 </span><span class="lineCov">         24 :             catch( ... )</span>
-<span class="lineNum">     258 </span>            :             {
-<span class="lineNum">     259 </span><span class="lineCov">         12 :                 return nullptr;</span>
-<span class="lineNum">     260 </span>            :             }
-<span class="lineNum">     261 </span>            :         }
-<span class="lineNum">     262 </span><span class="lineNoCov">          0 :         return _synapseExtra-&gt;get();</span>
-<a name="263"><span class="lineNum">     263 </span>            :     }</a>
-<span class="lineNum">     264 </span>            : 
-<span class="lineNum">     265 </span><span class="lineNoCov">          0 :     const brion::Synapse&amp; getSynapsePositions( const bool afferent ) const</span>
-<span class="lineNum">     266 </span>            :     {
-<span class="lineNum">     267 </span><span class="lineNoCov">          0 :         const size_t i = afferent ? 0 : 1;</span>
-<span class="lineNum">     268 </span><span class="lineNoCov">          0 :         lunchbox::ScopedWrite mutex( _synapsePositions[i] );</span>
-<span class="lineNum">     269 </span>            : 
-<span class="lineNum">     270 </span><span class="lineNoCov">          0 :         auto&amp; positions = *_synapsePositions[i];</span>
-<span class="lineNum">     271 </span><span class="lineNoCov">          0 :         if( !positions )</span>
-<span class="lineNum">     272 </span><span class="lineNoCov">          0 :             positions.reset(</span>
-<span class="lineNum">     273 </span><span class="lineNoCov">          0 :                 new brion::Synapse( _synapseSource.getPath() + (afferent ?</span>
-<span class="lineNum">     274 </span><span class="lineNoCov">          0 :                       afferentPositionsFilename : efferentPositionsFilename )));</span>
-<span class="lineNum">     275 </span>            : 
-<span class="lineNum">     276 </span><span class="lineNoCov">          0 :         if( _synapsePositionColumns == 0 )</span>
-<span class="lineNum">     277 </span><span class="lineNoCov">          0 :             _synapsePositionColumns = positions-&gt;getNumAttributes();</span>
-<span class="lineNum">     278 </span><span class="lineNoCov">          0 :         assert(_synapsePositionColumns == positions-&gt;getNumAttributes());</span>
-<span class="lineNum">     279 </span>            : 
-<span class="lineNum">     280 </span><span class="lineNoCov">          0 :         return *positions;</span>
-<a name="281"><span class="lineNum">     281 </span>            :     }</a>
-<span class="lineNum">     282 </span>            : 
-<span class="lineNum">     283 </span><span class="lineNoCov">          0 :     void saveMorphologiesToCache( const std::string&amp; uri,</span>
-<span class="lineNum">     284 </span>            :                                   const std::string&amp; hash,
-<span class="lineNum">     285 </span>            :                                   neuron::MorphologyPtr morphology ) const
-<span class="lineNum">     286 </span>            :     {
-<span class="lineNum">     287 </span><span class="lineNoCov">          0 :         if( !_cache )</span>
-<span class="lineNum">     288 </span><span class="lineNoCov">          0 :             return;</span>
-<span class="lineNum">     289 </span>            : 
-<span class="lineNum">     290 </span><span class="lineNoCov">          0 :         servus::Serializable::Data data = morphology-&gt;toBinary();</span>
-<span class="lineNum">     291 </span><span class="lineNoCov">          0 :         if( !_cache-&gt;insert( hash, data.ptr.get(), data.size ))</span>
-<span class="lineNum">     292 </span>            :         {
-<span class="lineNum">     293 </span><span class="lineNoCov">          0 :             LBWARN &lt;&lt; &quot;Failed to insert morphology &quot; &lt;&lt; uri</span>
-<span class="lineNum">     294 </span><span class="lineNoCov">          0 :                    &lt;&lt; &quot; into cache; item size is &quot; &lt;&lt; float(data.size) / LB_1MB</span>
-<span class="lineNum">     295 </span><span class="lineNoCov">          0 :                    &lt;&lt; &quot; MB&quot; &lt;&lt; std::endl;</span>
-<span class="lineNum">     296 </span>            :         }
-<span class="lineNum">     297 </span>            :     }
-<a name="298"><span class="lineNum">     298 </span>            : </a>
-<span class="lineNum">     299 </span>            :     CachedMorphologies
-<span class="lineNum">     300 </span><span class="lineCov">          3 :     loadMorphologiesFromCache( const std::set&lt; std::string &gt;&amp; hashes ) const</span>
-<span class="lineNum">     301 </span>            :     {
-<span class="lineNum">     302 </span><span class="lineCov">          3 :         CachedMorphologies loaded;</span>
-<span class="lineNum">     303 </span><span class="lineCov">          3 :         if( !_cache )</span>
-<span class="lineNum">     304 </span><span class="lineNoCov">          0 :             return loaded;</span>
-<span class="lineNum">     305 </span>            : 
-<span class="lineNum">     306 </span><span class="lineCov">          3 :         LBDEBUG &lt;&lt; &quot;Using cache for morphology loading&quot; &lt;&lt; std::endl;</span>
-<span class="lineNum">     307 </span>            :         typedef std::future&lt; std::pair&lt; std::string,
-<span class="lineNum">     308 </span>            :                                         neuron::MorphologyPtr &gt;&gt; Future;
-<span class="lineNum">     309 </span><span class="lineCov">          6 :         std::vector&lt; Future &gt; futures;</span>
-<span class="lineNum">     310 </span>            : 
-<span class="lineNum">     311 </span><span class="lineCov">          6 :         Strings keys( hashes.begin(), hashes.end( ));</span>
-<span class="lineNum">     312 </span><span class="lineCov">          3 :         futures.reserve( keys.size( ));</span>
-<a name="313"><span class="lineNum">     313 </span>            : </a>
-<span class="lineNum">     314 </span><span class="lineCov">          6 :         _cache-&gt;takeValues( keys, [&amp;futures] ( const std::string&amp; key,</span>
-<a name="315"><span class="lineNum">     315 </span><span class="lineCov">         16 :                                                char* data, const size_t size )</span></a>
-<span class="lineNum">     316 </span><span class="lineCov">         16 :         {</span>
-<span class="lineNum">     317 </span><span class="lineCov">        128 :             futures.push_back( std::async( [key, data, size]</span>
-<span class="lineNum">     318 </span><span class="lineCov">         32 :             {</span>
-<span class="lineNum">     319 </span>            :                 neuron::MorphologyPtr morphology(
-<span class="lineNum">     320 </span><span class="lineCov">         48 :                             new neuron::Morphology( data, size ));</span>
-<span class="lineNum">     321 </span><span class="lineCov">         16 :                 std::free( data );</span>
-<span class="lineNum">     322 </span><span class="lineCov">         32 :                 return std::make_pair( key, morphology );</span>
-<span class="lineNum">     323 </span><span class="lineCov">         16 :             }));</span>
-<span class="lineNum">     324 </span><span class="lineCov">         19 :         });</span>
-<span class="lineNum">     325 </span>            : 
-<span class="lineNum">     326 </span><span class="lineCov">         19 :         for( auto&amp; future : futures )</span>
-<span class="lineNum">     327 </span><span class="lineCov">         16 :             loaded.insert( future.get( ));</span>
-<span class="lineNum">     328 </span>            : 
-<span class="lineNum">     329 </span><span class="lineCov">          9 :         LBINFO &lt;&lt; &quot;Loaded &quot; &lt;&lt; loaded.size() &lt;&lt; &quot; morphologies from cache, &quot;</span>
-<span class="lineNum">     330 </span><span class="lineCov">          6 :                &lt;&lt; &quot;loading &quot; &lt;&lt; hashes.size() - loaded.size()</span>
-<span class="lineNum">     331 </span><span class="lineCov">          9 :                &lt;&lt; &quot; remaining from file&quot; &lt;&lt; std::endl;</span>
-<span class="lineNum">     332 </span><span class="lineCov">          3 :         return loaded;</span>
-<a name="333"><span class="lineNum">     333 </span>            :     }</a>
-<span class="lineNum">     334 </span>            : 
-<span class="lineNum">     335 </span><span class="lineNoCov">          0 :     void saveSynapsePositionsToCache( const uint32_t gid,</span>
-<span class="lineNum">     336 </span>            :                                       const std::string&amp; hash,
-<span class="lineNum">     337 </span>            :                                       const brion::SynapseMatrix&amp; value ) const
-<span class="lineNum">     338 </span>            :     {
-<span class="lineNum">     339 </span><span class="lineNoCov">          0 :         if( !_cache )</span>
-<span class="lineNum">     340 </span><span class="lineNoCov">          0 :             return;</span>
-<span class="lineNum">     341 </span>            : 
-<span class="lineNum">     342 </span><span class="lineNoCov">          0 :         const size_t size = value.num_elements() * sizeof( float );</span>
-<span class="lineNum">     343 </span><span class="lineNoCov">          0 :         if( !_cache-&gt;insert( hash, value.data(), size ))</span>
-<span class="lineNum">     344 </span>            :         {
-<span class="lineNum">     345 </span><span class="lineNoCov">          0 :             LBWARN &lt;&lt; &quot;Failed to insert synapse positions for GID &quot; &lt;&lt; gid</span>
-<span class="lineNum">     346 </span><span class="lineNoCov">          0 :                    &lt;&lt; &quot; into cache; item size is &quot; &lt;&lt; float(size) / LB_1MB</span>
-<span class="lineNum">     347 </span><span class="lineNoCov">          0 :                    &lt;&lt; &quot; MB&quot; &lt;&lt; std::endl;</span>
-<span class="lineNum">     348 </span>            :         }
-<a name="349"><span class="lineNum">     349 </span>            :     }</a>
-<span class="lineNum">     350 </span>            : 
-<span class="lineNum">     351 </span><span class="lineCov">        141 :     CachedSynapses loadSynapsePositionsFromCache( const Strings&amp; keys ) const</span>
-<span class="lineNum">     352 </span>            :     {
-<span class="lineNum">     353 </span><span class="lineCov">        141 :         CachedSynapses loaded;</span>
-<span class="lineNum">     354 </span><span class="lineCov">        141 :         if( !_cache )</span>
-<span class="lineNum">     355 </span><span class="lineNoCov">          0 :             return loaded;</span>
-<span class="lineNum">     356 </span>            : 
-<span class="lineNum">     357 </span><span class="lineCov">        141 :         LBDEBUG &lt;&lt; &quot;Using cache for synapses position loading&quot; &lt;&lt; std::endl;</span>
-<span class="lineNum">     358 </span>            :         typedef std::future&lt; std::pair&lt; std::string,
-<span class="lineNum">     359 </span>            :                                         brion::SynapseMatrix &gt;&gt; Future;
-<span class="lineNum">     360 </span>            : 
-<span class="lineNum">     361 </span><span class="lineCov">        282 :         std::vector&lt; Future &gt; futures;</span>
-<span class="lineNum">     362 </span><span class="lineCov">        141 :         futures.reserve( keys.size( ));</span>
-<span class="lineNum">     363 </span>            : 
-<span class="lineNum">     364 </span><span class="lineCov">        141 :         _findSynapsePositionsColumns();</span>
-<a name="365"><span class="lineNum">     365 </span>            : </a>
-<span class="lineNum">     366 </span><span class="lineCov">        282 :         _cache-&gt;takeValues( keys, [this, &amp;futures]( const std::string&amp; key,</span>
-<a name="367"><span class="lineNum">     367 </span><span class="lineCov">        513 :                                                   char* data, const size_t size )</span></a>
-<span class="lineNum">     368 </span><span class="lineCov">       1026 :         {</span>
-<span class="lineNum">     369 </span><span class="lineCov">       4104 :             futures.push_back( std::async( [this, key, data, size]</span>
-<span class="lineNum">     370 </span><span class="lineCov">       2052 :             {</span>
-<span class="lineNum">     371 </span>            :                 // there is no constructor in multi_array which just accepts the
-<span class="lineNum">     372 </span>            :                 // size in bytes (although there's a getter for it used in
-<span class="lineNum">     373 </span>            :                 // saveSynapsePositionsToCache()), so we reconstruct the row and
-<span class="lineNum">     374 </span>            :                 // column count here.
-<span class="lineNum">     375 </span><span class="lineCov">        513 :                 const size_t numColumns = _synapsePositionColumns;</span>
-<span class="lineNum">     376 </span><span class="lineCov">        513 :                 const size_t numRows = size / sizeof(float) / numColumns;</span>
-<span class="lineNum">     377 </span>            :                 brion::SynapseMatrix values(
-<span class="lineNum">     378 </span><span class="lineCov">       1026 :                     boost::extents[numRows][numColumns]);</span>
-<span class="lineNum">     379 </span><span class="lineCov">        513 :                 ::memmove( values.data(), data, size );</span>
-<span class="lineNum">     380 </span><span class="lineCov">        513 :                 std::free( data );</span>
-<span class="lineNum">     381 </span><span class="lineCov">       1026 :                 return std::make_pair( key, values );</span>
-<span class="lineNum">     382 </span><span class="lineCov">        513 :             }));</span>
-<span class="lineNum">     383 </span><span class="lineCov">        654 :         });</span>
-<span class="lineNum">     384 </span>            : 
-<span class="lineNum">     385 </span><span class="lineCov">        654 :         for( auto&amp; future : futures )</span>
-<span class="lineNum">     386 </span><span class="lineCov">        513 :             loaded.insert( future.get( ));</span>
-<span class="lineNum">     387 </span>            : 
-<span class="lineNum">     388 </span><span class="lineCov">        423 :         LBDEBUG &lt;&lt; &quot;Loaded synapse positions for &quot; &lt;&lt; loaded.size()</span>
-<span class="lineNum">     389 </span><span class="lineCov">        282 :                 &lt;&lt; &quot; out of &quot; &lt;&lt; keys.size() &lt;&lt; &quot; neurons from cache&quot;</span>
-<span class="lineNum">     390 </span><span class="lineCov">        423 :                 &lt;&lt; std::endl;</span>
-<span class="lineNum">     391 </span><span class="lineCov">        141 :         return loaded;</span>
-<a name="392"><span class="lineNum">     392 </span>            :     }</a>
-<span class="lineNum">     393 </span>            : 
-<span class="lineNum">     394 </span><span class="lineCov">        141 :     void _findSynapsePositionsColumns() const</span>
-<span class="lineNum">     395 </span>            :     {
-<span class="lineNum">     396 </span><span class="lineCov">        282 :         lunchbox::ScopedWrite mutex( _synapsePositions[0] );</span>
-<span class="lineNum">     397 </span><span class="lineCov">        141 :         if( !(*_synapsePositions[0] ))</span>
-<span class="lineNum">     398 </span><span class="lineCov">         18 :             _synapsePositions[0]-&gt;reset(</span>
-<span class="lineNum">     399 </span><span class="lineCov">         18 :                 new brion::Synapse( _synapseSource.getPath() +</span>
-<span class="lineNum">     400 </span><span class="lineCov">         18 :                                     afferentPositionsFilename ));</span>
-<span class="lineNum">     401 </span><span class="lineCov">        141 :         _synapsePositionColumns = (*_synapsePositions[0])-&gt;getNumAttributes();</span>
-<span class="lineNum">     402 </span>            : 
-<span class="lineNum">     403 </span><span class="lineCov">        141 :     }</span>
-<span class="lineNum">     404 </span>            : 
-<span class="lineNum">     405 </span>            :     const brion::URI _circuitSource;
-<span class="lineNum">     406 </span>            :     const brion::URI _morphologySource;
-<span class="lineNum">     407 </span>            :     const brion::URI _synapseSource;
-<span class="lineNum">     408 </span>            :     const brion::URIs _targetSources;
-<span class="lineNum">     409 </span>            :     mutable brion::Targets _targetParsers;
-<span class="lineNum">     410 </span>            :     mutable keyv::MapPtr _cache;
-<span class="lineNum">     411 </span>            : 
-<span class="lineNum">     412 </span>            :     template&lt; typename T &gt;
-<span class="lineNum">     413 </span>            :     using LockPtr = lunchbox::Lockable&lt; std::unique_ptr&lt; T &gt;&gt;;
-<span class="lineNum">     414 </span>            : 
-<span class="lineNum">     415 </span>            :     mutable LockPtr&lt; brion::SynapseSummary &gt; _synapseSummary;
-<span class="lineNum">     416 </span>            :     mutable LockPtr&lt; brion::Synapse &gt; _synapseAttributes[2];
-<span class="lineNum">     417 </span>            :     mutable LockPtr&lt; brion::Synapse &gt; _synapseExtra;
-<span class="lineNum">     418 </span>            :     mutable LockPtr&lt; brion::Synapse &gt; _synapsePositions[2];
-<span class="lineNum">     419 </span>            :     mutable size_t _synapsePositionColumns;
-<a name="420"><span class="lineNum">     420 </span>            : };</a>
-<span class="lineNum">     421 </span>            : 
-<span class="lineNum">     422 </span><span class="lineCov">         16 : class MVD2 : public Circuit::Impl</span>
-<a name="423"><span class="lineNum">     423 </span>            : {</a>
-<span class="lineNum">     424 </span>            : public:
-<span class="lineNum">     425 </span><span class="lineCov">          8 :     MVD2( const brion::BlueConfig&amp; config )</span>
-<span class="lineNum">     426 </span><span class="lineCov">          8 :         : Impl( config )</span>
-<span class="lineNum">     427 </span><span class="lineCov">          8 :         , _circuit( config.getCircuitSource().getPath( ))</span>
-<a name="428"><span class="lineNum">     428 </span><span class="lineCov">          8 :     {}</span></a>
-<span class="lineNum">     429 </span>            : 
-<span class="lineNum">     430 </span><span class="lineCov">        601 :     size_t getNumNeurons() const final</span>
-<span class="lineNum">     431 </span>            :     {
-<span class="lineNum">     432 </span><span class="lineCov">        601 :         return _circuit.getNumNeurons();</span>
-<a name="433"><span class="lineNum">     433 </span>            :     }</a>
-<span class="lineNum">     434 </span>            : 
-<span class="lineNum">     435 </span><span class="lineCov">          3 :     Vector3fs getPositions( const GIDSet&amp; gids ) const final</span>
-<span class="lineNum">     436 </span>            :     {
-<span class="lineNum">     437 </span>            :         const brion::NeuronMatrix&amp; data = _circuit.get( gids,
-<span class="lineNum">     438 </span>            :             brion::NEURON_POSITION_X | brion::NEURON_POSITION_Y |
-<span class="lineNum">     439 </span><span class="lineCov">          5 :             brion::NEURON_POSITION_Z );</span>
-<a name="440"><span class="lineNum">     440 </span>            : </a>
-<span class="lineNum">     441 </span><span class="lineCov">          2 :         Vector3fs positions( gids.size( ));</span>
-<span class="lineNum">     442 </span><span class="lineCov">         13 : #pragma omp parallel for</span>
-<span class="lineNum">     443 </span><span class="lineCov">         11 :         for( size_t i = 0; i &lt; gids.size(); ++i )</span>
-<span class="lineNum">     444 </span>            :         {
-<span class="lineNum">     445 </span>            :             try
-<span class="lineNum">     446 </span>            :             {
-<span class="lineNum">     447 </span><span class="lineCov">          9 :                 positions[i] =</span>
-<span class="lineNum">     448 </span><span class="lineCov">         27 :                     brion::Vector3f( lexical_cast&lt; float &gt;( data[i][0] ),</span>
-<span class="lineNum">     449 </span><span class="lineCov">         26 :                                      lexical_cast&lt; float &gt;( data[i][1] ),</span>
-<span class="lineNum">     450 </span><span class="lineCov">         35 :                                      lexical_cast&lt; float &gt;( data[i][2] ));</span>
-<span class="lineNum">     451 </span>            :             }
-<span class="lineNum">     452 </span><span class="lineNoCov">          0 :             catch( const boost::bad_lexical_cast&amp; )</span>
-<span class="lineNum">     453 </span>            :             {
-<span class="lineNum">     454 </span><span class="lineNoCov">          0 :                 GIDSet::const_iterator gid = gids.begin();</span>
-<span class="lineNum">     455 </span><span class="lineNoCov">          0 :                 std::advance( gid, i );</span>
-<span class="lineNum">     456 </span><span class="lineNoCov">          0 :                 LBWARN &lt;&lt; &quot;Error parsing circuit position for gid &quot;</span>
-<span class="lineNum">     457 </span><span class="lineNoCov">          0 :                        &lt;&lt; *gid &lt;&lt; std::endl;</span>
-<span class="lineNum">     458 </span>            :             }
-<span class="lineNum">     459 </span>            :         }
-<span class="lineNum">     460 </span><span class="lineCov">          4 :         return positions;</span>
-<a name="461"><span class="lineNum">     461 </span>            :     }</a>
-<span class="lineNum">     462 </span>            : 
-<span class="lineNum">     463 </span><span class="lineCov">          2 :     size_ts getMTypes( const GIDSet&amp; gids ) const final</span>
-<span class="lineNum">     464 </span>            :     {
-<span class="lineNum">     465 </span>            :         const brion::NeuronMatrix&amp; matrix =  _circuit.get( gids,
-<span class="lineNum">     466 </span><span class="lineCov">          3 :                                                            brion::NEURON_MTYPE );</span>
-<span class="lineNum">     467 </span><span class="lineCov">          1 :         size_ts result( matrix.shape()[ 0 ]);</span>
-<span class="lineNum">     468 </span>            : 
-<span class="lineNum">     469 </span>            :         brion::NeuronMatrix::const_array_view&lt;1&gt;::type view =
-<span class="lineNum">     470 </span><span class="lineCov">          2 :             matrix[ boost::indices[brion::NeuronMatrix::index_range( )][ 0 ]];</span>
-<span class="lineNum">     471 </span><span class="lineCov">          1 :         std::transform( view.begin(), view.end(), result.begin(), toSize_t );</span>
-<span class="lineNum">     472 </span><span class="lineCov">          2 :         return result;</span>
-<a name="473"><span class="lineNum">     473 </span>            :     }</a>
-<span class="lineNum">     474 </span>            : 
-<span class="lineNum">     475 </span><span class="lineCov">          1 :     Strings getMorphologyNames() const final</span>
-<span class="lineNum">     476 </span>            :     {
-<span class="lineNum">     477 </span><span class="lineCov">          1 :         return _circuit.getTypes( brion::NEURONCLASS_MTYPE );</span>
-<a name="478"><span class="lineNum">     478 </span>            :     }</a>
-<span class="lineNum">     479 </span>            : 
-<span class="lineNum">     480 </span><span class="lineCov">          2 :     size_ts getETypes( const GIDSet&amp; gids ) const final</span>
-<span class="lineNum">     481 </span>            :     {
-<span class="lineNum">     482 </span>            :         const brion::NeuronMatrix&amp; matrix =  _circuit.get( gids,
-<span class="lineNum">     483 </span><span class="lineCov">          3 :                                                            brion::NEURON_ETYPE );</span>
-<span class="lineNum">     484 </span><span class="lineCov">          1 :         size_ts result( matrix.shape()[ 0 ]);</span>
-<span class="lineNum">     485 </span>            : 
-<span class="lineNum">     486 </span>            :         brion::NeuronMatrix::const_array_view&lt;1&gt;::type view =
-<span class="lineNum">     487 </span><span class="lineCov">          2 :             matrix[ boost::indices[brion::NeuronMatrix::index_range( )][ 0 ]];</span>
-<span class="lineNum">     488 </span><span class="lineCov">          1 :         std::transform( view.begin(), view.end(), result.begin(), toSize_t );</span>
-<span class="lineNum">     489 </span><span class="lineCov">          2 :         return result;</span>
-<a name="490"><span class="lineNum">     490 </span>            :     }</a>
-<span class="lineNum">     491 </span>            : 
-<span class="lineNum">     492 </span><span class="lineCov">          1 :     Strings getElectrophysiologyNames() const final</span>
-<span class="lineNum">     493 </span>            :     {
-<span class="lineNum">     494 </span><span class="lineCov">          1 :         return _circuit.getTypes( brion::NEURONCLASS_ETYPE );</span>
-<a name="495"><span class="lineNum">     495 </span>            :     }</a>
-<span class="lineNum">     496 </span>            : 
-<span class="lineNum">     497 </span><span class="lineCov">          2 :     Quaternionfs getRotations( const GIDSet&amp; gids ) const final</span>
-<span class="lineNum">     498 </span>            :     {
-<span class="lineNum">     499 </span><span class="lineCov">          2 :         const float deg2rad = float( M_PI ) / 180.f;</span>
-<span class="lineNum">     500 </span>            :         const brion::NeuronMatrix&amp; data =
-<span class="lineNum">     501 </span><span class="lineCov">          3 :             _circuit.get( gids, brion::NEURON_ROTATION );</span>
-<a name="502"><span class="lineNum">     502 </span><span class="lineCov">          1 :         Quaternionfs rotations( gids.size( ));</span></a>
-<span class="lineNum">     503 </span>            : 
-<span class="lineNum">     504 </span><span class="lineCov">          7 : #pragma omp parallel for</span>
-<span class="lineNum">     505 </span><span class="lineCov">          6 :         for( size_t i = 0; i &lt; gids.size(); ++i )</span>
-<span class="lineNum">     506 </span>            :         {
-<span class="lineNum">     507 </span>            :             try
-<span class="lineNum">     508 </span>            :             {
-<span class="lineNum">     509 </span>            :                 // transform rotation Y angle in degree into rotation quaternion
-<span class="lineNum">     510 </span><span class="lineCov">         14 :                 const float angle = lexical_cast&lt;float&gt;( data[i][0] ) * deg2rad;</span>
-<span class="lineNum">     511 </span><span class="lineCov">          6 :                 rotations[i] = Quaternionf( angle, Vector3f( 0, 1, 0 ));</span>
-<span class="lineNum">     512 </span>            :             }
-<span class="lineNum">     513 </span><span class="lineNoCov">          0 :             catch( const boost::bad_lexical_cast&amp; )</span>
-<span class="lineNum">     514 </span>            :             {
-<span class="lineNum">     515 </span><span class="lineNoCov">          0 :                 GIDSet::const_iterator gid = gids.begin();</span>
-<span class="lineNum">     516 </span><span class="lineNoCov">          0 :                 std::advance( gid, i );</span>
-<span class="lineNum">     517 </span><span class="lineNoCov">          0 :                 LBWARN &lt;&lt; &quot;Error parsing circuit orientation for gid &quot;</span>
-<span class="lineNum">     518 </span><span class="lineNoCov">          0 :                        &lt;&lt; *gid &lt;&lt; std::endl;</span>
-<span class="lineNum">     519 </span>            :             }
-<span class="lineNum">     520 </span>            :         }
-<span class="lineNum">     521 </span><span class="lineCov">          2 :         return rotations;</span>
-<a name="522"><span class="lineNum">     522 </span>            :     }</a>
-<span class="lineNum">     523 </span>            : 
-<span class="lineNum">     524 </span><span class="lineCov">          5 :     Strings getMorphologyNames( const GIDSet&amp; gids ) const final</span>
-<span class="lineNum">     525 </span>            :     {
-<span class="lineNum">     526 </span>            :         const brion::NeuronMatrix&amp; matrix =
-<span class="lineNum">     527 </span><span class="lineCov">          9 :                 _circuit.get( gids, brion::NEURON_MORPHOLOGY_NAME );</span>
-<span class="lineNum">     528 </span><span class="lineCov">          4 :         Strings result( matrix.shape()[ 0 ]);</span>
-<span class="lineNum">     529 </span>            : 
-<span class="lineNum">     530 </span>            :         brion::NeuronMatrix::const_array_view&lt;1&gt;::type view =
-<span class="lineNum">     531 </span><span class="lineCov">          8 :             matrix[ boost::indices[brion::NeuronMatrix::index_range( )][ 0 ]];</span>
-<span class="lineNum">     532 </span><span class="lineCov">          4 :         std::transform( view.begin(), view.end(), result.begin(), toString );</span>
-<span class="lineNum">     533 </span><span class="lineCov">          8 :         return result;</span>
-<span class="lineNum">     534 </span>            :     }
-<span class="lineNum">     535 </span>            : 
-<span class="lineNum">     536 </span>            : private:
-<span class="lineNum">     537 </span>            :     brion::Circuit _circuit;
-<span class="lineNum">     538 </span>            : };
-<a name="539"><span class="lineNum">     539 </span>            : </a>
-<span class="lineNum">     540 </span>            : #ifdef BRAIN_USE_MVD3
-<a name="541"><span class="lineNum">     541 </span><span class="lineCov">         34 : struct MVD3 : public Circuit::Impl</span></a>
-<span class="lineNum">     542 </span>            : {
-<span class="lineNum">     543 </span><span class="lineCov">         17 :     MVD3( const brion::BlueConfig&amp; config )</span>
-<span class="lineNum">     544 </span><span class="lineCov">         17 :         : Impl( config )</span>
-<span class="lineNum">     545 </span><span class="lineCov">         17 :         , _circuit( config.getCircuitSource().getPath( ))</span>
-<a name="546"><span class="lineNum">     546 </span><span class="lineCov">         17 :     {}</span></a>
-<span class="lineNum">     547 </span>            : 
-<span class="lineNum">     548 </span><span class="lineCov">       5006 :     size_t getNumNeurons() const final</span>
-<span class="lineNum">     549 </span>            :     {
-<span class="lineNum">     550 </span><span class="lineCov">       5006 :         return _circuit.getNbNeuron();</span>
-<a name="551"><span class="lineNum">     551 </span>            :     }</a>
-<span class="lineNum">     552 </span>            : 
-<span class="lineNum">     553 </span><span class="lineCov">          5 :     Vector3fs getPositions( const GIDSet&amp; gids ) const final</span>
-<span class="lineNum">     554 </span>            :     {
-<span class="lineNum">     555 </span><span class="lineCov">          5 :         Vector3fs results( gids.size( ));</span>
-<span class="lineNum">     556 </span><span class="lineCov">          5 :         const ::MVD3::Range&amp; range = getRange( gids );</span>
-<span class="lineNum">     557 </span>            :         try
-<span class="lineNum">     558 </span>            :         {
-<span class="lineNum">     559 </span><span class="lineCov">         10 :             brion::detail::SilenceHDF5 silence;</span>
-<span class="lineNum">     560 </span><span class="lineCov">         10 :             lunchbox::ScopedWrite mutex( brion::detail::_hdf5Lock );</span>
-<span class="lineNum">     561 </span><span class="lineCov">          9 :             const ::MVD3::Positions&amp; positions = _circuit.getPositions( range );</span>
-<span class="lineNum">     562 </span><span class="lineCov">          4 :             assign( range, gids, positions, results, toVector3f );</span>
-<span class="lineNum">     563 </span><span class="lineCov">          8 :             return results;</span>
-<span class="lineNum">     564 </span>            :         }
-<span class="lineNum">     565 </span><span class="lineCov">          2 :         catch( const HighFive::Exception&amp; e )</span>
-<span class="lineNum">     566 </span>            :         {
-<span class="lineNum">     567 </span><span class="lineCov">          1 :             LBTHROW( std::runtime_error( &quot;Exception in getPositions(): &quot; +</span>
-<span class="lineNum">     568 </span>            :                                          std::string( e.what( ))));
-<span class="lineNum">     569 </span>            :         }
-<a name="570"><span class="lineNum">     570 </span>            :     }</a>
-<span class="lineNum">     571 </span>            : 
-<span class="lineNum">     572 </span><span class="lineCov">          2 :     size_ts getMTypes( const GIDSet&amp; gids ) const final</span>
-<span class="lineNum">     573 </span>            :     {
-<span class="lineNum">     574 </span><span class="lineCov">          2 :         size_ts results( gids.size( ));</span>
-<span class="lineNum">     575 </span><span class="lineCov">          2 :         const ::MVD3::Range&amp; range = getRange( gids );</span>
-<span class="lineNum">     576 </span>            :         try
-<span class="lineNum">     577 </span>            :         {
-<span class="lineNum">     578 </span><span class="lineCov">          4 :             brion::detail::SilenceHDF5 silence;</span>
-<span class="lineNum">     579 </span><span class="lineCov">          4 :             lunchbox::ScopedWrite mutex( brion::detail::_hdf5Lock );</span>
-<span class="lineNum">     580 </span><span class="lineCov">          3 :             const size_ts&amp; mtypes = _circuit.getIndexMtypes( range );</span>
-<span class="lineNum">     581 </span><span class="lineCov">          1 :             assign( range, gids, mtypes, results, nop );</span>
-<span class="lineNum">     582 </span><span class="lineCov">          2 :             return results;</span>
-<span class="lineNum">     583 </span>            :         }
-<span class="lineNum">     584 </span><span class="lineCov">          2 :         catch( const HighFive::Exception&amp; e )</span>
-<span class="lineNum">     585 </span>            :         {
-<span class="lineNum">     586 </span><span class="lineCov">          1 :             LBTHROW( std::runtime_error( &quot;Exception in getMTypes(): &quot; +</span>
-<span class="lineNum">     587 </span>            :                                          std::string( e.what( ))));
-<span class="lineNum">     588 </span>            :         }
-<a name="589"><span class="lineNum">     589 </span>            :     }</a>
-<span class="lineNum">     590 </span>            : 
-<span class="lineNum">     591 </span><span class="lineCov">          1 :     Strings getMorphologyNames() const final</span>
-<span class="lineNum">     592 </span>            :     {
-<span class="lineNum">     593 </span><span class="lineCov">          1 :         return _circuit.listAllMtypes();</span>
-<a name="594"><span class="lineNum">     594 </span>            :     }</a>
-<span class="lineNum">     595 </span>            : 
-<span class="lineNum">     596 </span><span class="lineCov">          2 :     size_ts getETypes( const GIDSet&amp; gids ) const final</span>
-<span class="lineNum">     597 </span>            :     {
-<span class="lineNum">     598 </span><span class="lineCov">          2 :         size_ts results( gids.size( ));</span>
-<span class="lineNum">     599 </span><span class="lineCov">          2 :         const ::MVD3::Range&amp; range = getRange( gids );</span>
-<span class="lineNum">     600 </span>            :         try
-<span class="lineNum">     601 </span>            :         {
-<span class="lineNum">     602 </span><span class="lineCov">          4 :             brion::detail::SilenceHDF5 silence;</span>
-<span class="lineNum">     603 </span><span class="lineCov">          4 :             lunchbox::ScopedWrite mutex( brion::detail::_hdf5Lock );</span>
-<span class="lineNum">     604 </span><span class="lineCov">          3 :             const size_ts&amp; etypes = _circuit.getIndexEtypes( range );</span>
-<span class="lineNum">     605 </span><span class="lineCov">          1 :             assign( range, gids, etypes, results, nop );</span>
-<span class="lineNum">     606 </span><span class="lineCov">          2 :             return results;</span>
-<span class="lineNum">     607 </span>            :         }
-<span class="lineNum">     608 </span><span class="lineCov">          2 :         catch( const HighFive::Exception&amp; e )</span>
-<span class="lineNum">     609 </span>            :         {
-<span class="lineNum">     610 </span><span class="lineCov">          1 :             LBTHROW( std::runtime_error( &quot;Exception in getETypes(): &quot; +</span>
-<span class="lineNum">     611 </span>            :                                          std::string( e.what( ))));
-<span class="lineNum">     612 </span>            :         }
-<a name="613"><span class="lineNum">     613 </span>            :     }</a>
-<span class="lineNum">     614 </span>            : 
-<span class="lineNum">     615 </span><span class="lineCov">          1 :     Strings getElectrophysiologyNames() const final</span>
-<span class="lineNum">     616 </span>            :     {
-<span class="lineNum">     617 </span><span class="lineCov">          1 :         return _circuit.listAllEtypes();</span>
-<a name="618"><span class="lineNum">     618 </span>            :     }</a>
-<span class="lineNum">     619 </span>            : 
-<span class="lineNum">     620 </span><span class="lineCov">          3 :     Quaternionfs getRotations( const GIDSet&amp; gids ) const final</span>
-<span class="lineNum">     621 </span>            :     {
-<span class="lineNum">     622 </span><span class="lineCov">          3 :         Quaternionfs results( gids.size( ));</span>
-<span class="lineNum">     623 </span><span class="lineCov">          3 :         const ::MVD3::Range&amp; range = getRange( gids );</span>
-<span class="lineNum">     624 </span>            :         try
-<span class="lineNum">     625 </span>            :         {
-<span class="lineNum">     626 </span><span class="lineCov">          6 :             brion::detail::SilenceHDF5 silence;</span>
-<span class="lineNum">     627 </span><span class="lineCov">          6 :             lunchbox::ScopedWrite mutex( brion::detail::_hdf5Lock );</span>
-<span class="lineNum">     628 </span><span class="lineCov">          5 :             const ::MVD3::Rotations&amp; rotations = _circuit.getRotations( range );</span>
-<span class="lineNum">     629 </span><span class="lineCov">          2 :             assign( range, gids, rotations, results, toQuaternion );</span>
-<span class="lineNum">     630 </span><span class="lineCov">          4 :             return results;</span>
-<span class="lineNum">     631 </span>            :         }
-<span class="lineNum">     632 </span><span class="lineCov">          2 :         catch( const HighFive::Exception&amp; e )</span>
-<span class="lineNum">     633 </span>            :         {
-<span class="lineNum">     634 </span><span class="lineCov">          1 :             LBTHROW( std::runtime_error( &quot;Exception in getRotations(): &quot; +</span>
-<span class="lineNum">     635 </span>            :                                          std::string( e.what( ))));
-<span class="lineNum">     636 </span>            :         }
-<a name="637"><span class="lineNum">     637 </span>            :     }</a>
-<span class="lineNum">     638 </span>            : 
-<span class="lineNum">     639 </span><span class="lineCov">          3 :     Strings getMorphologyNames( const GIDSet&amp; gids ) const final</span>
-<span class="lineNum">     640 </span>            :     {
-<span class="lineNum">     641 </span><span class="lineCov">          3 :         Strings results( gids.size( ));</span>
-<span class="lineNum">     642 </span><span class="lineCov">          3 :         const ::MVD3::Range&amp; range = getRange( gids );</span>
-<span class="lineNum">     643 </span>            :         try
-<span class="lineNum">     644 </span>            :         {
-<span class="lineNum">     645 </span><span class="lineCov">          6 :             brion::detail::SilenceHDF5 silence;</span>
-<span class="lineNum">     646 </span><span class="lineCov">          6 :             lunchbox::ScopedWrite mutex( brion::detail::_hdf5Lock );</span>
-<span class="lineNum">     647 </span><span class="lineCov">          5 :             const Strings&amp; morphos = _circuit.getMorphologies( range );</span>
-<span class="lineNum">     648 </span><span class="lineCov">          2 :             assign( range, gids, morphos, results, toString );</span>
-<span class="lineNum">     649 </span><span class="lineCov">          4 :             return results;</span>
-<span class="lineNum">     650 </span>            :         }
-<span class="lineNum">     651 </span><span class="lineCov">          2 :         catch( const HighFive::Exception&amp; e )</span>
-<span class="lineNum">     652 </span>            :         {
-<span class="lineNum">     653 </span><span class="lineCov">          1 :             LBTHROW( std::runtime_error( &quot;Exception in getMorphologyNames(): &quot; +</span>
-<span class="lineNum">     654 </span>            :                                          std::string( e.what( ))));
-<span class="lineNum">     655 </span>            :         }
-<span class="lineNum">     656 </span>            :     }
-<span class="lineNum">     657 </span>            : 
-<span class="lineNum">     658 </span>            : private:
-<span class="lineNum">     659 </span>            :     ::MVD3::MVD3File _circuit;
-<span class="lineNum">     660 </span>            : };
-<span class="lineNum">     661 </span>            : #endif
-<span class="lineNum">     662 </span>            : 
-<span class="lineNum">     663 </span>            : }
+<span class="lineNum">      34 </span>            : #include &lt;lunchbox/lockable.h&gt;
+<span class="lineNum">      35 </span>            : #include &lt;lunchbox/log.h&gt;
+<span class="lineNum">      36 </span>            : #include &lt;lunchbox/scopedMutex.h&gt;
+<span class="lineNum">      37 </span>            : 
+<span class="lineNum">      38 </span>            : #ifdef BRAIN_USE_MVD3
+<span class="lineNum">      39 </span>            : #  include &lt;mvd/mvd3.hpp&gt;
+<span class="lineNum">      40 </span>            : #  include &lt;mvd/mvd_generic.hpp&gt;
+<span class="lineNum">      41 </span>            : #endif
+<span class="lineNum">      42 </span>            : 
+<span class="lineNum">      43 </span>            : #include &lt;boost/filesystem.hpp&gt;
+<span class="lineNum">      44 </span>            : 
+<span class="lineNum">      45 </span>            : #include &lt;future&gt;
+<span class="lineNum">      46 </span>            : #include &lt;random&gt;
+<span class="lineNum">      47 </span>            : #include &lt;unordered_map&gt;
+<span class="lineNum">      48 </span>            : 
+<span class="lineNum">      49 </span>            : namespace fs = boost::filesystem;
+<span class="lineNum">      50 </span>            : using boost::lexical_cast;
+<span class="lineNum">      51 </span>            : 
+<span class="lineNum">      52 </span>            : namespace brain
+<span class="lineNum">      53 </span>            : {
+<span class="lineNum">      54 </span>            : 
+<span class="lineNum">      55 </span><span class="lineCov">         28 : const std::string summaryFilename( &quot;/nrn_summary.h5&quot; );</span>
+<span class="lineNum">      56 </span><span class="lineCov">         28 : const std::string afferentFilename( &quot;/nrn.h5&quot; );</span>
+<span class="lineNum">      57 </span><span class="lineCov">         28 : const std::string efferentFilename( &quot;/nrn_efferent.h5&quot; );</span>
+<span class="lineNum">      58 </span><span class="lineCov">         28 : const std::string afferentPositionsFilename( &quot;/nrn_positions.h5&quot; );</span>
+<span class="lineNum">      59 </span><span class="lineCov">         28 : const std::string efferentPositionsFilename( &quot;/nrn_positions_efferent.h5&quot; );</span>
+<span class="lineNum">      60 </span><span class="lineCov">         28 : const std::string extraFilename( &quot;/nrn_extra.h5&quot; );</span>
+<span class="lineNum">      61 </span>            : 
+<span class="lineNum">      62 </span>            : namespace
+<a name="63"><span class="lineNum">      63 </span>            : {</a>
+<span class="lineNum">      64 </span>            : #ifdef BRAIN_USE_MVD3
+<span class="lineNum">      65 </span><span class="lineCov">         10 : bool isSequence( const GIDSet&amp; gids )</span>
+<span class="lineNum">      66 </span>            : {
+<span class="lineNum">      67 </span><span class="lineCov">         10 :     return ( *gids.rbegin() - *gids.begin() + 1 ) == gids.size();</span>
+<a name="68"><span class="lineNum">      68 </span>            : }</a>
+<span class="lineNum">      69 </span>            : 
+<span class="lineNum">      70 </span><span class="lineCov">         15 : ::MVD3::Range getRange( const GIDSet&amp; gids )</span>
+<span class="lineNum">      71 </span>            : {
+<span class="lineNum">      72 </span><span class="lineCov">         15 :     const size_t offset = ( *gids.begin( ));</span>
+<span class="lineNum">      73 </span><span class="lineCov">         15 :     const size_t count = *gids.rbegin() - offset + 1;</span>
+<span class="lineNum">      74 </span><span class="lineCov">         15 :     return ::MVD3::Range( offset - 1, count );</span>
+<span class="lineNum">      75 </span>            : }
+<a name="76"><span class="lineNum">      76 </span>            : </a>
+<span class="lineNum">      77 </span>            : template&lt; typename SrcArray, typename DstArray, typename AssignOp &gt;
+<span class="lineNum">      78 </span><span class="lineCov">         10 : void assign( const ::MVD3::Range&amp; range, const GIDSet&amp; gids,</span>
+<span class="lineNum">      79 </span>            :              SrcArray&amp; src, DstArray&amp; dst, const AssignOp&amp; assignOp )
+<span class="lineNum">      80 </span>            : {
+<span class="lineNum">      81 </span><span class="lineCov">         10 :     if( isSequence( gids )) // OPT: no holes, no translation needed</span>
+<span class="lineNum">      82 </span>            :     {
+<span class="lineNum">      83 </span><span class="lineCov">          3 :         std::transform( src.begin(), src.end(), dst.begin(), assignOp );</span>
+<span class="lineNum">      84 </span><span class="lineCov">          3 :         return;</span>
+<span class="lineNum">      85 </span>            :     }
+<span class="lineNum">      86 </span>            : 
+<span class="lineNum">      87 </span><span class="lineCov">          7 :     typename DstArray::iterator dst_it = dst.begin();</span>
+<span class="lineNum">      88 </span><span class="lineCov">         27 :     for( GIDSet::const_iterator i = gids.begin(); i != gids.end(); ++i )</span>
+<span class="lineNum">      89 </span>            :     {
+<span class="lineNum">      90 </span><span class="lineCov">         32 :         typename SrcArray::const_iterator src_it = src.begin();</span>
+<span class="lineNum">      91 </span><span class="lineCov">         20 :         std::advance( src_it, *i - range.offset - 1 );</span>
+<span class="lineNum">      92 </span><span class="lineCov">         20 :         *dst_it = assignOp( *src_it );</span>
+<span class="lineNum">      93 </span><span class="lineCov">         20 :         ++dst_it;</span>
+<span class="lineNum">      94 </span>            :     }
+<a name="95"><span class="lineNum">      95 </span>            : }</a>
+<span class="lineNum">      96 </span>            : 
+<span class="lineNum">      97 </span><span class="lineCov">       2008 : Vector3f toVector3f(</span>
+<span class="lineNum">      98 </span>            :     const ::MVD3::Positions::const_subarray&lt; 1 &gt;::type&amp; subarray )
+<span class="lineNum">      99 </span>            : {
+<span class="lineNum">     100 </span><span class="lineCov">       2008 :     return Vector3f( subarray[0], subarray[1], subarray[2] );</span>
+<a name="101"><span class="lineNum">     101 </span>            : }</a>
+<span class="lineNum">     102 </span>            : 
+<span class="lineNum">     103 </span><span class="lineCov">       1004 : Quaternionf toQuaternion(</span>
+<span class="lineNum">     104 </span>            :     const ::MVD3::Rotations::const_subarray&lt; 1 &gt;::type&amp; subarray )
+<span class="lineNum">     105 </span>            : {
+<span class="lineNum">     106 </span><span class="lineCov">       1004 :     return Quaternionf( subarray[0], subarray[1], subarray[2], subarray[3] );</span>
+<a name="107"><span class="lineNum">     107 </span>            : }</a>
+<span class="lineNum">     108 </span>            : 
+<span class="lineNum">     109 </span><span class="lineCov">          4 : size_t nop( const size_t&amp; in ) { return in; }</span>
+<a name="110"><span class="lineNum">     110 </span>            : #endif</a>
+<a name="111"><span class="lineNum">     111 </span>            : </a>
+<span class="lineNum">     112 </span><span class="lineCov">         23 : std::string toString( const std::string&amp; in ) { return in; }</span>
+<span class="lineNum">     113 </span><span class="lineCov">          4 : size_t toSize_t( const std::string&amp; in ) { return std::stoul( in ); }</span>
+<a name="114"><span class="lineNum">     114 </span>            : </a>
+<span class="lineNum">     115 </span>            : template&lt;typename T&gt;
+<span class="lineNum">     116 </span><span class="lineCov">          3 : void _shuffle( T&amp; container )</span>
+<span class="lineNum">     117 </span>            : {
+<span class="lineNum">     118 </span><span class="lineCov">          6 :     std::random_device randomDevice;</span>
+<span class="lineNum">     119 </span><span class="lineCov">          3 :     std::mt19937_64 randomEngine( randomDevice( ));</span>
+<span class="lineNum">     120 </span><span class="lineCov">          3 :     const char* seedEnv = getenv( &quot;BRAIN_CIRCUIT_SEED&quot; );</span>
+<span class="lineNum">     121 </span><span class="lineCov">          3 :     if( seedEnv )</span>
+<span class="lineNum">     122 </span>            :     {
+<span class="lineNum">     123 </span>            :         try
+<span class="lineNum">     124 </span>            :         {
+<span class="lineNum">     125 </span><span class="lineNoCov">          0 :             randomEngine.seed( std::stoul( seedEnv ));</span>
+<span class="lineNum">     126 </span>            :         }
+<span class="lineNum">     127 </span><span class="lineNoCov">          0 :         catch( const std::exception&amp; exc )</span>
+<span class="lineNum">     128 </span>            :         {
+<span class="lineNum">     129 </span><span class="lineNoCov">          0 :             LBWARN &lt;&lt; &quot;Could not set BRAIN_CIRCUIT_SEED to &quot; &lt;&lt; seedEnv &lt;&lt; &quot;: &quot;</span>
+<span class="lineNum">     130 </span><span class="lineNoCov">          0 :                    &lt;&lt; exc.what() &lt;&lt; std::endl;</span>
+<span class="lineNum">     131 </span>            :         }
+<span class="lineNum">     132 </span>            :     }
+<span class="lineNum">     133 </span><span class="lineCov">          3 :     std::shuffle( container.begin(), container.end(), randomEngine );</span>
+<span class="lineNum">     134 </span><span class="lineCov">          3 : }</span>
+<span class="lineNum">     135 </span>            : 
+<span class="lineNum">     136 </span>            : typedef std::unordered_map&lt; std::string,
+<span class="lineNum">     137 </span>            :                             neuron::MorphologyPtr &gt; CachedMorphologies;
+<span class="lineNum">     138 </span>            : typedef std::unordered_map&lt; std::string,
+<span class="lineNum">     139 </span>            :                             brion::SynapseMatrix &gt; CachedSynapses;
+<span class="lineNum">     140 </span>            : } // anonymous namespace
+<span class="lineNum">     141 </span>            : 
+<span class="lineNum">     142 </span>            : class Circuit::Impl
+<a name="143"><span class="lineNum">     143 </span>            : {</a>
+<span class="lineNum">     144 </span>            : public:
+<span class="lineNum">     145 </span><span class="lineCov">         25 :     explicit Impl( const brion::BlueConfig&amp; config )</span>
+<span class="lineNum">     146 </span><span class="lineCov">         25 :         : _circuitSource( config.getCircuitSource( ))</span>
+<span class="lineNum">     147 </span>            :         , _morphologySource( config.getMorphologySource( ))
+<span class="lineNum">     148 </span>            :         , _synapseSource( config.getSynapseSource( ))
+<span class="lineNum">     149 </span>            :         , _targetSources( config.getTargetSources( ))
+<span class="lineNum">     150 </span>            :         , _cache( keyv::Map::createCache( ))
+<span class="lineNum">     151 </span><span class="lineCov">         25 :         , _synapsePositionColumns( 0 )</span>
+<span class="lineNum">     152 </span>            :     {
+<a name="153"><span class="lineNum">     153 </span><span class="lineCov">         25 :     }</span></a>
+<span class="lineNum">     154 </span>            : 
+<span class="lineNum">     155 </span><span class="lineCov">         25 :     virtual ~Impl() {}</span>
+<span class="lineNum">     156 </span>            : 
+<a name="157"><span class="lineNum">     157 </span>            :     virtual size_t getNumNeurons() const = 0;</a>
+<span class="lineNum">     158 </span>            : 
+<span class="lineNum">     159 </span><span class="lineCov">          3 :     const brion::URI&amp; getCircuitSource() const</span>
+<span class="lineNum">     160 </span>            :     {
+<span class="lineNum">     161 </span><span class="lineCov">          3 :         return _circuitSource;</span>
+<a name="162"><span class="lineNum">     162 </span>            :     }</a>
+<span class="lineNum">     163 </span>            : 
+<span class="lineNum">     164 </span><span class="lineCov">          6 :     GIDSet getGIDs() const</span>
+<span class="lineNum">     165 </span>            :     {
+<span class="lineNum">     166 </span><span class="lineCov">          6 :         brain::GIDSet gids;</span>
+<span class="lineNum">     167 </span><span class="lineCov">          6 :         brain::GIDSet::const_iterator hint = gids.begin();</span>
+<span class="lineNum">     168 </span><span class="lineCov">       5606 :         for( uint32_t i = 0; i &lt; getNumNeurons(); ++i )</span>
+<span class="lineNum">     169 </span><span class="lineCov">       5600 :             hint = gids.insert( hint, i + 1 );</span>
+<span class="lineNum">     170 </span><span class="lineCov">          6 :         return gids;</span>
+<a name="171"><span class="lineNum">     171 </span>            :     }</a>
+<span class="lineNum">     172 </span>            : 
+<span class="lineNum">     173 </span><span class="lineCov">         22 :     GIDSet getGIDs( const std::string&amp; target ) const</span>
+<span class="lineNum">     174 </span>            :     {
+<span class="lineNum">     175 </span><span class="lineCov">         22 :         if( _targetParsers.empty( ))</span>
+<span class="lineNum">     176 </span>            :         {
+<span class="lineNum">     177 </span><span class="lineCov">         33 :             for( const URI&amp; uri : _targetSources )</span>
+<span class="lineNum">     178 </span>            :             {
+<span class="lineNum">     179 </span>            :                 try
+<span class="lineNum">     180 </span>            :                 {
+<span class="lineNum">     181 </span><span class="lineCov">         22 :                     _targetParsers.push_back( brion::Target( uri.getPath( )));</span>
+<span class="lineNum">     182 </span>            :                 }
+<span class="lineNum">     183 </span><span class="lineNoCov">          0 :                 catch( const std::runtime_error&amp; exc )</span>
+<span class="lineNum">     184 </span>            :                 {
+<span class="lineNum">     185 </span><span class="lineNoCov">          0 :                     LBWARN &lt;&lt; &quot;Failed to load targets from &quot; &lt;&lt; uri.getPath()</span>
+<span class="lineNum">     186 </span><span class="lineNoCov">          0 :                            &lt;&lt; &quot;: &quot; &lt;&lt; exc.what() &lt;&lt; std::endl;</span>
+<span class="lineNum">     187 </span>            :                 }
+<span class="lineNum">     188 </span>            :             }
+<span class="lineNum">     189 </span>            :         }
+<span class="lineNum">     190 </span><span class="lineCov">         22 :         return brion::Target::parse( _targetParsers, target );</span>
+<a name="191"><span class="lineNum">     191 </span>            :     }</a>
+<span class="lineNum">     192 </span>            : 
+<span class="lineNum">     193 </span><span class="lineCov">          5 :     GIDSet getRandomGIDs( const float fraction,</span>
+<span class="lineNum">     194 </span>            :                           const std::string&amp; target ) const
+<span class="lineNum">     195 </span>            :     {
+<span class="lineNum">     196 </span><span class="lineCov">          5 :         if( fraction &lt; 0.f || fraction &gt; 1.f )</span>
+<span class="lineNum">     197 </span><span class="lineCov">          2 :             LBTHROW( std::runtime_error( &quot;Fraction for getRandomGIDs() must be &quot;</span>
+<span class="lineNum">     198 </span>            :                                          &quot;in the range [0,1]&quot; ));
+<span class="lineNum">     199 </span>            : 
+<span class="lineNum">     200 </span><span class="lineCov">          6 :         const GIDSet&amp; gids = target.empty() ? getGIDs() : getGIDs( target );</span>
+<span class="lineNum">     201 </span><span class="lineCov">          6 :         uint32_ts randomGids( gids.begin(), gids.end( ));</span>
+<span class="lineNum">     202 </span><span class="lineCov">          3 :         _shuffle( randomGids );</span>
+<span class="lineNum">     203 </span><span class="lineCov">          3 :         randomGids.resize( size_t( std::ceil( randomGids.size() * fraction )));</span>
+<span class="lineNum">     204 </span><span class="lineCov">          6 :         return GIDSet( randomGids.begin(), randomGids.end( ));</span>
+<span class="lineNum">     205 </span>            :     }
+<span class="lineNum">     206 </span>            : 
+<span class="lineNum">     207 </span>            :     virtual Vector3fs getPositions( const GIDSet&amp; gids ) const = 0;
+<span class="lineNum">     208 </span>            :     virtual size_ts getMTypes( const GIDSet&amp; gids ) const = 0;
+<span class="lineNum">     209 </span>            :     virtual Strings getMorphologyNames() const = 0;
+<span class="lineNum">     210 </span>            :     virtual size_ts getETypes( const GIDSet&amp; gids ) const = 0;
+<span class="lineNum">     211 </span>            :     virtual Strings getElectrophysiologyNames() const = 0;
+<span class="lineNum">     212 </span>            :     virtual Quaternionfs getRotations( const GIDSet&amp; gids ) const = 0;
+<a name="213"><span class="lineNum">     213 </span>            :     virtual Strings getMorphologyNames( const GIDSet&amp; gids ) const = 0;</a>
+<span class="lineNum">     214 </span>            : 
+<span class="lineNum">     215 </span><span class="lineCov">         23 :     URI getMorphologyURI( const std::string&amp; name ) const</span>
+<span class="lineNum">     216 </span>            :     {
+<span class="lineNum">     217 </span><span class="lineCov">         23 :         URI uri;</span>
+<span class="lineNum">     218 </span><span class="lineCov">         23 :         uri.setPath( _morphologySource.getPath() + &quot;/&quot; + name + &quot;.h5&quot; );</span>
+<span class="lineNum">     219 </span><span class="lineCov">         23 :         uri.setScheme( &quot;file&quot; );</span>
+<span class="lineNum">     220 </span><span class="lineCov">         23 :         return uri;</span>
+<a name="221"><span class="lineNum">     221 </span>            :     }</a>
+<span class="lineNum">     222 </span>            : 
+<span class="lineNum">     223 </span><span class="lineCov">          6 :     const brion::SynapseSummary&amp; getSynapseSummary() const</span>
+<span class="lineNum">     224 </span>            :     {
+<span class="lineNum">     225 </span><span class="lineCov">         12 :         lunchbox::ScopedWrite mutex( _synapseSummary );</span>
+<span class="lineNum">     226 </span>            : 
+<span class="lineNum">     227 </span><span class="lineCov">          6 :         if( !(*_synapseSummary ))</span>
+<span class="lineNum">     228 </span><span class="lineCov">         10 :             _synapseSummary-&gt;reset( new brion::SynapseSummary(</span>
+<span class="lineNum">     229 </span><span class="lineCov">         15 :                                _synapseSource.getPath() + summaryFilename ));</span>
+<span class="lineNum">     230 </span><span class="lineCov">         12 :         return **_synapseSummary;</span>
+<a name="231"><span class="lineNum">     231 </span>            :     }</a>
+<span class="lineNum">     232 </span>            : 
+<span class="lineNum">     233 </span><span class="lineCov">         12 :     const brion::Synapse&amp; getSynapseAttributes( const bool afferent ) const</span>
+<span class="lineNum">     234 </span>            :     {
+<span class="lineNum">     235 </span><span class="lineCov">         12 :         const size_t i = afferent ? 0 : 1;</span>
+<span class="lineNum">     236 </span><span class="lineCov">         24 :         lunchbox::ScopedWrite mutex( _synapseAttributes[i] );</span>
+<span class="lineNum">     237 </span>            : 
+<span class="lineNum">     238 </span><span class="lineCov">         12 :         if( !(*_synapseAttributes[i] ))</span>
+<span class="lineNum">     239 </span><span class="lineCov">         18 :             _synapseAttributes[i]-&gt;reset(</span>
+<span class="lineNum">     240 </span><span class="lineCov">         18 :                 new brion::Synapse( _synapseSource.getPath() + (afferent ?</span>
+<span class="lineNum">     241 </span><span class="lineCov">         18 :                                           afferentFilename : efferentFilename )));</span>
+<span class="lineNum">     242 </span><span class="lineCov">         24 :         return **_synapseAttributes[i];</span>
+<a name="243"><span class="lineNum">     243 </span>            :     }</a>
+<span class="lineNum">     244 </span>            : 
+<span class="lineNum">     245 </span><span class="lineCov">         12 :     const brion::Synapse* getSynapseExtra() const</span>
+<span class="lineNum">     246 </span>            :     {
+<span class="lineNum">     247 </span><span class="lineCov">         24 :         lunchbox::ScopedWrite mutex( _synapseExtra );</span>
+<span class="lineNum">     248 </span>            : 
+<span class="lineNum">     249 </span><span class="lineCov">         12 :         if( !(*_synapseExtra ))</span>
+<span class="lineNum">     250 </span>            :         {
+<span class="lineNum">     251 </span>            :             try
+<span class="lineNum">     252 </span>            :             {
+<span class="lineNum">     253 </span><span class="lineCov">         12 :                 _synapseExtra-&gt;reset( new brion::Synapse(</span>
+<span class="lineNum">     254 </span><span class="lineCov">         36 :                                  _synapseSource.getPath() + extraFilename ));</span>
+<span class="lineNum">     255 </span>            :             }
+<span class="lineNum">     256 </span><span class="lineCov">         24 :             catch( ... )</span>
+<span class="lineNum">     257 </span>            :             {
+<span class="lineNum">     258 </span><span class="lineCov">         12 :                 return nullptr;</span>
+<span class="lineNum">     259 </span>            :             }
+<span class="lineNum">     260 </span>            :         }
+<span class="lineNum">     261 </span><span class="lineNoCov">          0 :         return _synapseExtra-&gt;get();</span>
+<a name="262"><span class="lineNum">     262 </span>            :     }</a>
+<span class="lineNum">     263 </span>            : 
+<span class="lineNum">     264 </span><span class="lineNoCov">          0 :     const brion::Synapse&amp; getSynapsePositions( const bool afferent ) const</span>
+<span class="lineNum">     265 </span>            :     {
+<span class="lineNum">     266 </span><span class="lineNoCov">          0 :         const size_t i = afferent ? 0 : 1;</span>
+<span class="lineNum">     267 </span><span class="lineNoCov">          0 :         lunchbox::ScopedWrite mutex( _synapsePositions[i] );</span>
+<span class="lineNum">     268 </span>            : 
+<span class="lineNum">     269 </span><span class="lineNoCov">          0 :         auto&amp; positions = *_synapsePositions[i];</span>
+<span class="lineNum">     270 </span><span class="lineNoCov">          0 :         if( !positions )</span>
+<span class="lineNum">     271 </span><span class="lineNoCov">          0 :             positions.reset(</span>
+<span class="lineNum">     272 </span><span class="lineNoCov">          0 :                 new brion::Synapse( _synapseSource.getPath() + (afferent ?</span>
+<span class="lineNum">     273 </span><span class="lineNoCov">          0 :                       afferentPositionsFilename : efferentPositionsFilename )));</span>
+<span class="lineNum">     274 </span>            : 
+<span class="lineNum">     275 </span><span class="lineNoCov">          0 :         if( _synapsePositionColumns == 0 )</span>
+<span class="lineNum">     276 </span><span class="lineNoCov">          0 :             _synapsePositionColumns = positions-&gt;getNumAttributes();</span>
+<span class="lineNum">     277 </span><span class="lineNoCov">          0 :         assert(_synapsePositionColumns == positions-&gt;getNumAttributes());</span>
+<span class="lineNum">     278 </span>            : 
+<span class="lineNum">     279 </span><span class="lineNoCov">          0 :         return *positions;</span>
+<a name="280"><span class="lineNum">     280 </span>            :     }</a>
+<span class="lineNum">     281 </span>            : 
+<span class="lineNum">     282 </span><span class="lineNoCov">          0 :     void saveMorphologiesToCache( const std::string&amp; uri,</span>
+<span class="lineNum">     283 </span>            :                                   const std::string&amp; hash,
+<span class="lineNum">     284 </span>            :                                   neuron::MorphologyPtr morphology ) const
+<span class="lineNum">     285 </span>            :     {
+<span class="lineNum">     286 </span><span class="lineNoCov">          0 :         if( !_cache )</span>
+<span class="lineNum">     287 </span><span class="lineNoCov">          0 :             return;</span>
+<span class="lineNum">     288 </span>            : 
+<span class="lineNum">     289 </span><span class="lineNoCov">          0 :         servus::Serializable::Data data = morphology-&gt;toBinary();</span>
+<span class="lineNum">     290 </span><span class="lineNoCov">          0 :         if( !_cache-&gt;insert( hash, data.ptr.get(), data.size ))</span>
+<span class="lineNum">     291 </span>            :         {
+<span class="lineNum">     292 </span><span class="lineNoCov">          0 :             LBWARN &lt;&lt; &quot;Failed to insert morphology &quot; &lt;&lt; uri</span>
+<span class="lineNum">     293 </span><span class="lineNoCov">          0 :                    &lt;&lt; &quot; into cache; item size is &quot; &lt;&lt; float(data.size) / LB_1MB</span>
+<span class="lineNum">     294 </span><span class="lineNoCov">          0 :                    &lt;&lt; &quot; MB&quot; &lt;&lt; std::endl;</span>
+<span class="lineNum">     295 </span>            :         }
+<span class="lineNum">     296 </span>            :     }
+<a name="297"><span class="lineNum">     297 </span>            : </a>
+<span class="lineNum">     298 </span>            :     CachedMorphologies
+<span class="lineNum">     299 </span><span class="lineCov">          3 :     loadMorphologiesFromCache( const std::set&lt; std::string &gt;&amp; hashes ) const</span>
+<span class="lineNum">     300 </span>            :     {
+<span class="lineNum">     301 </span><span class="lineCov">          3 :         CachedMorphologies loaded;</span>
+<span class="lineNum">     302 </span><span class="lineCov">          3 :         if( !_cache )</span>
+<span class="lineNum">     303 </span><span class="lineNoCov">          0 :             return loaded;</span>
+<span class="lineNum">     304 </span>            : 
+<span class="lineNum">     305 </span><span class="lineCov">          3 :         LBDEBUG &lt;&lt; &quot;Using cache for morphology loading&quot; &lt;&lt; std::endl;</span>
+<span class="lineNum">     306 </span>            :         typedef std::future&lt; std::pair&lt; std::string,
+<span class="lineNum">     307 </span>            :                                         neuron::MorphologyPtr &gt;&gt; Future;
+<span class="lineNum">     308 </span><span class="lineCov">          6 :         std::vector&lt; Future &gt; futures;</span>
+<span class="lineNum">     309 </span>            : 
+<span class="lineNum">     310 </span><span class="lineCov">          6 :         Strings keys( hashes.begin(), hashes.end( ));</span>
+<span class="lineNum">     311 </span><span class="lineCov">          3 :         futures.reserve( keys.size( ));</span>
+<a name="312"><span class="lineNum">     312 </span>            : </a>
+<span class="lineNum">     313 </span><span class="lineCov">          6 :         _cache-&gt;takeValues( keys, [&amp;futures] ( const std::string&amp; key,</span>
+<a name="314"><span class="lineNum">     314 </span><span class="lineCov">         16 :                                                char* data, const size_t size )</span></a>
+<span class="lineNum">     315 </span><span class="lineCov">         16 :         {</span>
+<span class="lineNum">     316 </span><span class="lineCov">        128 :             futures.push_back( std::async( [key, data, size]</span>
+<span class="lineNum">     317 </span><span class="lineCov">         32 :             {</span>
+<span class="lineNum">     318 </span>            :                 neuron::MorphologyPtr morphology(
+<span class="lineNum">     319 </span><span class="lineCov">         48 :                             new neuron::Morphology( data, size ));</span>
+<span class="lineNum">     320 </span><span class="lineCov">         16 :                 std::free( data );</span>
+<span class="lineNum">     321 </span><span class="lineCov">         32 :                 return std::make_pair( key, morphology );</span>
+<span class="lineNum">     322 </span><span class="lineCov">         16 :             }));</span>
+<span class="lineNum">     323 </span><span class="lineCov">         19 :         });</span>
+<span class="lineNum">     324 </span>            : 
+<span class="lineNum">     325 </span><span class="lineCov">         19 :         for( auto&amp; future : futures )</span>
+<span class="lineNum">     326 </span><span class="lineCov">         16 :             loaded.insert( future.get( ));</span>
+<span class="lineNum">     327 </span>            : 
+<span class="lineNum">     328 </span><span class="lineCov">          9 :         LBINFO &lt;&lt; &quot;Loaded &quot; &lt;&lt; loaded.size() &lt;&lt; &quot; morphologies from cache, &quot;</span>
+<span class="lineNum">     329 </span><span class="lineCov">          6 :                &lt;&lt; &quot;loading &quot; &lt;&lt; hashes.size() - loaded.size()</span>
+<span class="lineNum">     330 </span><span class="lineCov">          9 :                &lt;&lt; &quot; remaining from file&quot; &lt;&lt; std::endl;</span>
+<span class="lineNum">     331 </span><span class="lineCov">          3 :         return loaded;</span>
+<a name="332"><span class="lineNum">     332 </span>            :     }</a>
+<span class="lineNum">     333 </span>            : 
+<span class="lineNum">     334 </span><span class="lineNoCov">          0 :     void saveSynapsePositionsToCache( const uint32_t gid,</span>
+<span class="lineNum">     335 </span>            :                                       const std::string&amp; hash,
+<span class="lineNum">     336 </span>            :                                       const brion::SynapseMatrix&amp; value ) const
+<span class="lineNum">     337 </span>            :     {
+<span class="lineNum">     338 </span><span class="lineNoCov">          0 :         if( !_cache )</span>
+<span class="lineNum">     339 </span><span class="lineNoCov">          0 :             return;</span>
+<span class="lineNum">     340 </span>            : 
+<span class="lineNum">     341 </span><span class="lineNoCov">          0 :         const size_t size = value.num_elements() * sizeof( float );</span>
+<span class="lineNum">     342 </span><span class="lineNoCov">          0 :         if( !_cache-&gt;insert( hash, value.data(), size ))</span>
+<span class="lineNum">     343 </span>            :         {
+<span class="lineNum">     344 </span><span class="lineNoCov">          0 :             LBWARN &lt;&lt; &quot;Failed to insert synapse positions for GID &quot; &lt;&lt; gid</span>
+<span class="lineNum">     345 </span><span class="lineNoCov">          0 :                    &lt;&lt; &quot; into cache; item size is &quot; &lt;&lt; float(size) / LB_1MB</span>
+<span class="lineNum">     346 </span><span class="lineNoCov">          0 :                    &lt;&lt; &quot; MB&quot; &lt;&lt; std::endl;</span>
+<span class="lineNum">     347 </span>            :         }
+<a name="348"><span class="lineNum">     348 </span>            :     }</a>
+<span class="lineNum">     349 </span>            : 
+<span class="lineNum">     350 </span><span class="lineCov">        141 :     CachedSynapses loadSynapsePositionsFromCache( const Strings&amp; keys ) const</span>
+<span class="lineNum">     351 </span>            :     {
+<span class="lineNum">     352 </span><span class="lineCov">        141 :         CachedSynapses loaded;</span>
+<span class="lineNum">     353 </span><span class="lineCov">        141 :         if( !_cache )</span>
+<span class="lineNum">     354 </span><span class="lineNoCov">          0 :             return loaded;</span>
+<span class="lineNum">     355 </span>            : 
+<span class="lineNum">     356 </span><span class="lineCov">        141 :         LBDEBUG &lt;&lt; &quot;Using cache for synapses position loading&quot; &lt;&lt; std::endl;</span>
+<span class="lineNum">     357 </span>            :         typedef std::future&lt; std::pair&lt; std::string,
+<span class="lineNum">     358 </span>            :                                         brion::SynapseMatrix &gt;&gt; Future;
+<span class="lineNum">     359 </span>            : 
+<span class="lineNum">     360 </span><span class="lineCov">        282 :         std::vector&lt; Future &gt; futures;</span>
+<span class="lineNum">     361 </span><span class="lineCov">        141 :         futures.reserve( keys.size( ));</span>
+<span class="lineNum">     362 </span>            : 
+<span class="lineNum">     363 </span><span class="lineCov">        141 :         _findSynapsePositionsColumns();</span>
+<a name="364"><span class="lineNum">     364 </span>            : </a>
+<span class="lineNum">     365 </span><span class="lineCov">        282 :         _cache-&gt;takeValues( keys, [this, &amp;futures]( const std::string&amp; key,</span>
+<a name="366"><span class="lineNum">     366 </span><span class="lineCov">        513 :                                                   char* data, const size_t size )</span></a>
+<span class="lineNum">     367 </span><span class="lineCov">       1026 :         {</span>
+<span class="lineNum">     368 </span><span class="lineCov">       4104 :             futures.push_back( std::async( [this, key, data, size]</span>
+<span class="lineNum">     369 </span><span class="lineCov">       2052 :             {</span>
+<span class="lineNum">     370 </span>            :                 // there is no constructor in multi_array which just accepts the
+<span class="lineNum">     371 </span>            :                 // size in bytes (although there's a getter for it used in
+<span class="lineNum">     372 </span>            :                 // saveSynapsePositionsToCache()), so we reconstruct the row and
+<span class="lineNum">     373 </span>            :                 // column count here.
+<span class="lineNum">     374 </span><span class="lineCov">        513 :                 const size_t numColumns = _synapsePositionColumns;</span>
+<span class="lineNum">     375 </span><span class="lineCov">        513 :                 const size_t numRows = size / sizeof(float) / numColumns;</span>
+<span class="lineNum">     376 </span>            :                 brion::SynapseMatrix values(
+<span class="lineNum">     377 </span><span class="lineCov">       1026 :                     boost::extents[numRows][numColumns]);</span>
+<span class="lineNum">     378 </span><span class="lineCov">        513 :                 ::memmove( values.data(), data, size );</span>
+<span class="lineNum">     379 </span><span class="lineCov">        513 :                 std::free( data );</span>
+<span class="lineNum">     380 </span><span class="lineCov">       1025 :                 return std::make_pair( key, values );</span>
+<span class="lineNum">     381 </span><span class="lineCov">        513 :             }));</span>
+<span class="lineNum">     382 </span><span class="lineCov">        654 :         });</span>
+<span class="lineNum">     383 </span>            : 
+<span class="lineNum">     384 </span><span class="lineCov">        654 :         for( auto&amp; future : futures )</span>
+<span class="lineNum">     385 </span><span class="lineCov">        513 :             loaded.insert( future.get( ));</span>
+<span class="lineNum">     386 </span>            : 
+<span class="lineNum">     387 </span><span class="lineCov">        423 :         LBDEBUG &lt;&lt; &quot;Loaded synapse positions for &quot; &lt;&lt; loaded.size()</span>
+<span class="lineNum">     388 </span><span class="lineCov">        282 :                 &lt;&lt; &quot; out of &quot; &lt;&lt; keys.size() &lt;&lt; &quot; neurons from cache&quot;</span>
+<span class="lineNum">     389 </span><span class="lineCov">        423 :                 &lt;&lt; std::endl;</span>
+<span class="lineNum">     390 </span><span class="lineCov">        141 :         return loaded;</span>
+<a name="391"><span class="lineNum">     391 </span>            :     }</a>
+<span class="lineNum">     392 </span>            : 
+<span class="lineNum">     393 </span><span class="lineCov">        141 :     void _findSynapsePositionsColumns() const</span>
+<span class="lineNum">     394 </span>            :     {
+<span class="lineNum">     395 </span><span class="lineCov">        282 :         lunchbox::ScopedWrite mutex( _synapsePositions[0] );</span>
+<span class="lineNum">     396 </span><span class="lineCov">        141 :         if( !(*_synapsePositions[0] ))</span>
+<span class="lineNum">     397 </span><span class="lineCov">         18 :             _synapsePositions[0]-&gt;reset(</span>
+<span class="lineNum">     398 </span><span class="lineCov">         18 :                 new brion::Synapse( _synapseSource.getPath() +</span>
+<span class="lineNum">     399 </span><span class="lineCov">         18 :                                     afferentPositionsFilename ));</span>
+<span class="lineNum">     400 </span><span class="lineCov">        141 :         _synapsePositionColumns = (*_synapsePositions[0])-&gt;getNumAttributes();</span>
+<span class="lineNum">     401 </span>            : 
+<span class="lineNum">     402 </span><span class="lineCov">        141 :     }</span>
+<span class="lineNum">     403 </span>            : 
+<span class="lineNum">     404 </span>            :     const brion::URI _circuitSource;
+<span class="lineNum">     405 </span>            :     const brion::URI _morphologySource;
+<span class="lineNum">     406 </span>            :     const brion::URI _synapseSource;
+<span class="lineNum">     407 </span>            :     const brion::URIs _targetSources;
+<span class="lineNum">     408 </span>            :     mutable brion::Targets _targetParsers;
+<span class="lineNum">     409 </span>            :     mutable keyv::MapPtr _cache;
+<span class="lineNum">     410 </span>            : 
+<span class="lineNum">     411 </span>            :     template&lt; typename T &gt;
+<span class="lineNum">     412 </span>            :     using LockPtr = lunchbox::Lockable&lt; std::unique_ptr&lt; T &gt;&gt;;
+<span class="lineNum">     413 </span>            : 
+<span class="lineNum">     414 </span>            :     mutable LockPtr&lt; brion::SynapseSummary &gt; _synapseSummary;
+<span class="lineNum">     415 </span>            :     mutable LockPtr&lt; brion::Synapse &gt; _synapseAttributes[2];
+<span class="lineNum">     416 </span>            :     mutable LockPtr&lt; brion::Synapse &gt; _synapseExtra;
+<span class="lineNum">     417 </span>            :     mutable LockPtr&lt; brion::Synapse &gt; _synapsePositions[2];
+<span class="lineNum">     418 </span>            :     mutable size_t _synapsePositionColumns;
+<a name="419"><span class="lineNum">     419 </span>            : };</a>
+<span class="lineNum">     420 </span>            : 
+<span class="lineNum">     421 </span><span class="lineCov">         16 : class MVD2 : public Circuit::Impl</span>
+<a name="422"><span class="lineNum">     422 </span>            : {</a>
+<span class="lineNum">     423 </span>            : public:
+<span class="lineNum">     424 </span><span class="lineCov">          8 :     MVD2( const brion::BlueConfig&amp; config )</span>
+<span class="lineNum">     425 </span><span class="lineCov">          8 :         : Impl( config )</span>
+<span class="lineNum">     426 </span><span class="lineCov">          8 :         , _circuit( config.getCircuitSource().getPath( ))</span>
+<a name="427"><span class="lineNum">     427 </span><span class="lineCov">          8 :     {}</span></a>
+<span class="lineNum">     428 </span>            : 
+<span class="lineNum">     429 </span><span class="lineCov">        601 :     size_t getNumNeurons() const final</span>
+<span class="lineNum">     430 </span>            :     {
+<span class="lineNum">     431 </span><span class="lineCov">        601 :         return _circuit.getNumNeurons();</span>
+<a name="432"><span class="lineNum">     432 </span>            :     }</a>
+<span class="lineNum">     433 </span>            : 
+<span class="lineNum">     434 </span><span class="lineCov">          3 :     Vector3fs getPositions( const GIDSet&amp; gids ) const final</span>
+<span class="lineNum">     435 </span>            :     {
+<span class="lineNum">     436 </span>            :         const brion::NeuronMatrix&amp; data = _circuit.get( gids,
+<span class="lineNum">     437 </span>            :             brion::NEURON_POSITION_X | brion::NEURON_POSITION_Y |
+<span class="lineNum">     438 </span><span class="lineCov">          5 :             brion::NEURON_POSITION_Z );</span>
+<a name="439"><span class="lineNum">     439 </span>            : </a>
+<span class="lineNum">     440 </span><span class="lineCov">          2 :         Vector3fs positions( gids.size( ));</span>
+<span class="lineNum">     441 </span><span class="lineCov">         14 : #pragma omp parallel for</span>
+<span class="lineNum">     442 </span><span class="lineCov">         12 :         for( size_t i = 0; i &lt; gids.size(); ++i )</span>
+<span class="lineNum">     443 </span>            :         {
+<span class="lineNum">     444 </span>            :             try
+<span class="lineNum">     445 </span>            :             {
+<span class="lineNum">     446 </span><span class="lineCov">          9 :                 positions[i] =</span>
+<span class="lineNum">     447 </span><span class="lineCov">         26 :                     brion::Vector3f( lexical_cast&lt; float &gt;( data[i][0] ),</span>
+<span class="lineNum">     448 </span><span class="lineCov">         25 :                                      lexical_cast&lt; float &gt;( data[i][1] ),</span>
+<span class="lineNum">     449 </span><span class="lineCov">         36 :                                      lexical_cast&lt; float &gt;( data[i][2] ));</span>
+<span class="lineNum">     450 </span>            :             }
+<span class="lineNum">     451 </span><span class="lineNoCov">          0 :             catch( const boost::bad_lexical_cast&amp; )</span>
+<span class="lineNum">     452 </span>            :             {
+<span class="lineNum">     453 </span><span class="lineNoCov">          0 :                 GIDSet::const_iterator gid = gids.begin();</span>
+<span class="lineNum">     454 </span><span class="lineNoCov">          0 :                 std::advance( gid, i );</span>
+<span class="lineNum">     455 </span><span class="lineNoCov">          0 :                 LBWARN &lt;&lt; &quot;Error parsing circuit position for gid &quot;</span>
+<span class="lineNum">     456 </span><span class="lineNoCov">          0 :                        &lt;&lt; *gid &lt;&lt; std::endl;</span>
+<span class="lineNum">     457 </span>            :             }
+<span class="lineNum">     458 </span>            :         }
+<span class="lineNum">     459 </span><span class="lineCov">          4 :         return positions;</span>
+<a name="460"><span class="lineNum">     460 </span>            :     }</a>
+<span class="lineNum">     461 </span>            : 
+<span class="lineNum">     462 </span><span class="lineCov">          2 :     size_ts getMTypes( const GIDSet&amp; gids ) const final</span>
+<span class="lineNum">     463 </span>            :     {
+<span class="lineNum">     464 </span>            :         const brion::NeuronMatrix&amp; matrix =  _circuit.get( gids,
+<span class="lineNum">     465 </span><span class="lineCov">          3 :                                                            brion::NEURON_MTYPE );</span>
+<span class="lineNum">     466 </span><span class="lineCov">          1 :         size_ts result( matrix.shape()[ 0 ]);</span>
+<span class="lineNum">     467 </span>            : 
+<span class="lineNum">     468 </span>            :         brion::NeuronMatrix::const_array_view&lt;1&gt;::type view =
+<span class="lineNum">     469 </span><span class="lineCov">          2 :             matrix[ boost::indices[brion::NeuronMatrix::index_range( )][ 0 ]];</span>
+<span class="lineNum">     470 </span><span class="lineCov">          1 :         std::transform( view.begin(), view.end(), result.begin(), toSize_t );</span>
+<span class="lineNum">     471 </span><span class="lineCov">          2 :         return result;</span>
+<a name="472"><span class="lineNum">     472 </span>            :     }</a>
+<span class="lineNum">     473 </span>            : 
+<span class="lineNum">     474 </span><span class="lineCov">          1 :     Strings getMorphologyNames() const final</span>
+<span class="lineNum">     475 </span>            :     {
+<span class="lineNum">     476 </span><span class="lineCov">          1 :         return _circuit.getTypes( brion::NEURONCLASS_MTYPE );</span>
+<a name="477"><span class="lineNum">     477 </span>            :     }</a>
+<span class="lineNum">     478 </span>            : 
+<span class="lineNum">     479 </span><span class="lineCov">          2 :     size_ts getETypes( const GIDSet&amp; gids ) const final</span>
+<span class="lineNum">     480 </span>            :     {
+<span class="lineNum">     481 </span>            :         const brion::NeuronMatrix&amp; matrix =  _circuit.get( gids,
+<span class="lineNum">     482 </span><span class="lineCov">          3 :                                                            brion::NEURON_ETYPE );</span>
+<span class="lineNum">     483 </span><span class="lineCov">          1 :         size_ts result( matrix.shape()[ 0 ]);</span>
+<span class="lineNum">     484 </span>            : 
+<span class="lineNum">     485 </span>            :         brion::NeuronMatrix::const_array_view&lt;1&gt;::type view =
+<span class="lineNum">     486 </span><span class="lineCov">          2 :             matrix[ boost::indices[brion::NeuronMatrix::index_range( )][ 0 ]];</span>
+<span class="lineNum">     487 </span><span class="lineCov">          1 :         std::transform( view.begin(), view.end(), result.begin(), toSize_t );</span>
+<span class="lineNum">     488 </span><span class="lineCov">          2 :         return result;</span>
+<a name="489"><span class="lineNum">     489 </span>            :     }</a>
+<span class="lineNum">     490 </span>            : 
+<span class="lineNum">     491 </span><span class="lineCov">          1 :     Strings getElectrophysiologyNames() const final</span>
+<span class="lineNum">     492 </span>            :     {
+<span class="lineNum">     493 </span><span class="lineCov">          1 :         return _circuit.getTypes( brion::NEURONCLASS_ETYPE );</span>
+<a name="494"><span class="lineNum">     494 </span>            :     }</a>
+<span class="lineNum">     495 </span>            : 
+<span class="lineNum">     496 </span><span class="lineCov">          2 :     Quaternionfs getRotations( const GIDSet&amp; gids ) const final</span>
+<span class="lineNum">     497 </span>            :     {
+<span class="lineNum">     498 </span><span class="lineCov">          2 :         const float deg2rad = float( M_PI ) / 180.f;</span>
+<span class="lineNum">     499 </span>            :         const brion::NeuronMatrix&amp; data =
+<span class="lineNum">     500 </span><span class="lineCov">          3 :             _circuit.get( gids, brion::NEURON_ROTATION );</span>
+<a name="501"><span class="lineNum">     501 </span><span class="lineCov">          1 :         Quaternionfs rotations( gids.size( ));</span></a>
+<span class="lineNum">     502 </span>            : 
+<span class="lineNum">     503 </span><span class="lineCov">          4 : #pragma omp parallel for</span>
+<span class="lineNum">     504 </span><span class="lineCov">          3 :         for( size_t i = 0; i &lt; gids.size(); ++i )</span>
+<span class="lineNum">     505 </span>            :         {
+<span class="lineNum">     506 </span>            :             try
+<span class="lineNum">     507 </span>            :             {
+<span class="lineNum">     508 </span>            :                 // transform rotation Y angle in degree into rotation quaternion
+<span class="lineNum">     509 </span><span class="lineCov">         10 :                 const float angle = lexical_cast&lt;float&gt;( data[i][0] ) * deg2rad;</span>
+<span class="lineNum">     510 </span><span class="lineCov">          7 :                 rotations[i] = Quaternionf( angle, Vector3f( 0, 1, 0 ));</span>
+<span class="lineNum">     511 </span>            :             }
+<span class="lineNum">     512 </span><span class="lineNoCov">          0 :             catch( const boost::bad_lexical_cast&amp; )</span>
+<span class="lineNum">     513 </span>            :             {
+<span class="lineNum">     514 </span><span class="lineNoCov">          0 :                 GIDSet::const_iterator gid = gids.begin();</span>
+<span class="lineNum">     515 </span><span class="lineNoCov">          0 :                 std::advance( gid, i );</span>
+<span class="lineNum">     516 </span><span class="lineNoCov">          0 :                 LBWARN &lt;&lt; &quot;Error parsing circuit orientation for gid &quot;</span>
+<span class="lineNum">     517 </span><span class="lineNoCov">          0 :                        &lt;&lt; *gid &lt;&lt; std::endl;</span>
+<span class="lineNum">     518 </span>            :             }
+<span class="lineNum">     519 </span>            :         }
+<span class="lineNum">     520 </span><span class="lineCov">          2 :         return rotations;</span>
+<a name="521"><span class="lineNum">     521 </span>            :     }</a>
+<span class="lineNum">     522 </span>            : 
+<span class="lineNum">     523 </span><span class="lineCov">          5 :     Strings getMorphologyNames( const GIDSet&amp; gids ) const final</span>
+<span class="lineNum">     524 </span>            :     {
+<span class="lineNum">     525 </span>            :         const brion::NeuronMatrix&amp; matrix =
+<span class="lineNum">     526 </span><span class="lineCov">          9 :                 _circuit.get( gids, brion::NEURON_MORPHOLOGY_NAME );</span>
+<span class="lineNum">     527 </span><span class="lineCov">          4 :         Strings result( matrix.shape()[ 0 ]);</span>
+<span class="lineNum">     528 </span>            : 
+<span class="lineNum">     529 </span>            :         brion::NeuronMatrix::const_array_view&lt;1&gt;::type view =
+<span class="lineNum">     530 </span><span class="lineCov">          8 :             matrix[ boost::indices[brion::NeuronMatrix::index_range( )][ 0 ]];</span>
+<span class="lineNum">     531 </span><span class="lineCov">          4 :         std::transform( view.begin(), view.end(), result.begin(), toString );</span>
+<span class="lineNum">     532 </span><span class="lineCov">          8 :         return result;</span>
+<span class="lineNum">     533 </span>            :     }
+<span class="lineNum">     534 </span>            : 
+<span class="lineNum">     535 </span>            : private:
+<span class="lineNum">     536 </span>            :     brion::Circuit _circuit;
+<span class="lineNum">     537 </span>            : };
+<a name="538"><span class="lineNum">     538 </span>            : </a>
+<span class="lineNum">     539 </span>            : #ifdef BRAIN_USE_MVD3
+<a name="540"><span class="lineNum">     540 </span><span class="lineCov">         34 : struct MVD3 : public Circuit::Impl</span></a>
+<span class="lineNum">     541 </span>            : {
+<span class="lineNum">     542 </span><span class="lineCov">         17 :     MVD3( const brion::BlueConfig&amp; config )</span>
+<span class="lineNum">     543 </span><span class="lineCov">         17 :         : Impl( config )</span>
+<span class="lineNum">     544 </span><span class="lineCov">         17 :         , _circuit( config.getCircuitSource().getPath( ))</span>
+<a name="545"><span class="lineNum">     545 </span><span class="lineCov">         17 :     {}</span></a>
+<span class="lineNum">     546 </span>            : 
+<span class="lineNum">     547 </span><span class="lineCov">       5006 :     size_t getNumNeurons() const final</span>
+<span class="lineNum">     548 </span>            :     {
+<span class="lineNum">     549 </span><span class="lineCov">       5006 :         return _circuit.getNbNeuron();</span>
+<a name="550"><span class="lineNum">     550 </span>            :     }</a>
+<span class="lineNum">     551 </span>            : 
+<span class="lineNum">     552 </span><span class="lineCov">          5 :     Vector3fs getPositions( const GIDSet&amp; gids ) const final</span>
+<span class="lineNum">     553 </span>            :     {
+<span class="lineNum">     554 </span><span class="lineCov">          5 :         Vector3fs results( gids.size( ));</span>
+<span class="lineNum">     555 </span><span class="lineCov">          5 :         const ::MVD3::Range&amp; range = getRange( gids );</span>
+<span class="lineNum">     556 </span>            :         try
+<span class="lineNum">     557 </span>            :         {
+<span class="lineNum">     558 </span><span class="lineCov">         10 :             brion::detail::SilenceHDF5 silence;</span>
+<span class="lineNum">     559 </span><span class="lineCov">         10 :             lunchbox::ScopedWrite mutex( brion::detail::_hdf5Lock );</span>
+<span class="lineNum">     560 </span><span class="lineCov">          9 :             const ::MVD3::Positions&amp; positions = _circuit.getPositions( range );</span>
+<span class="lineNum">     561 </span><span class="lineCov">          4 :             assign( range, gids, positions, results, toVector3f );</span>
+<span class="lineNum">     562 </span><span class="lineCov">          8 :             return results;</span>
+<span class="lineNum">     563 </span>            :         }
+<span class="lineNum">     564 </span><span class="lineCov">          2 :         catch( const HighFive::Exception&amp; e )</span>
+<span class="lineNum">     565 </span>            :         {
+<span class="lineNum">     566 </span><span class="lineCov">          1 :             LBTHROW( std::runtime_error( &quot;Exception in getPositions(): &quot; +</span>
+<span class="lineNum">     567 </span>            :                                          std::string( e.what( ))));
+<span class="lineNum">     568 </span>            :         }
+<a name="569"><span class="lineNum">     569 </span>            :     }</a>
+<span class="lineNum">     570 </span>            : 
+<span class="lineNum">     571 </span><span class="lineCov">          2 :     size_ts getMTypes( const GIDSet&amp; gids ) const final</span>
+<span class="lineNum">     572 </span>            :     {
+<span class="lineNum">     573 </span><span class="lineCov">          2 :         size_ts results( gids.size( ));</span>
+<span class="lineNum">     574 </span><span class="lineCov">          2 :         const ::MVD3::Range&amp; range = getRange( gids );</span>
+<span class="lineNum">     575 </span>            :         try
+<span class="lineNum">     576 </span>            :         {
+<span class="lineNum">     577 </span><span class="lineCov">          4 :             brion::detail::SilenceHDF5 silence;</span>
+<span class="lineNum">     578 </span><span class="lineCov">          4 :             lunchbox::ScopedWrite mutex( brion::detail::_hdf5Lock );</span>
+<span class="lineNum">     579 </span><span class="lineCov">          3 :             const size_ts&amp; mtypes = _circuit.getIndexMtypes( range );</span>
+<span class="lineNum">     580 </span><span class="lineCov">          1 :             assign( range, gids, mtypes, results, nop );</span>
+<span class="lineNum">     581 </span><span class="lineCov">          2 :             return results;</span>
+<span class="lineNum">     582 </span>            :         }
+<span class="lineNum">     583 </span><span class="lineCov">          2 :         catch( const HighFive::Exception&amp; e )</span>
+<span class="lineNum">     584 </span>            :         {
+<span class="lineNum">     585 </span><span class="lineCov">          1 :             LBTHROW( std::runtime_error( &quot;Exception in getMTypes(): &quot; +</span>
+<span class="lineNum">     586 </span>            :                                          std::string( e.what( ))));
+<span class="lineNum">     587 </span>            :         }
+<a name="588"><span class="lineNum">     588 </span>            :     }</a>
+<span class="lineNum">     589 </span>            : 
+<span class="lineNum">     590 </span><span class="lineCov">          1 :     Strings getMorphologyNames() const final</span>
+<span class="lineNum">     591 </span>            :     {
+<span class="lineNum">     592 </span><span class="lineCov">          1 :         return _circuit.listAllMtypes();</span>
+<a name="593"><span class="lineNum">     593 </span>            :     }</a>
+<span class="lineNum">     594 </span>            : 
+<span class="lineNum">     595 </span><span class="lineCov">          2 :     size_ts getETypes( const GIDSet&amp; gids ) const final</span>
+<span class="lineNum">     596 </span>            :     {
+<span class="lineNum">     597 </span><span class="lineCov">          2 :         size_ts results( gids.size( ));</span>
+<span class="lineNum">     598 </span><span class="lineCov">          2 :         const ::MVD3::Range&amp; range = getRange( gids );</span>
+<span class="lineNum">     599 </span>            :         try
+<span class="lineNum">     600 </span>            :         {
+<span class="lineNum">     601 </span><span class="lineCov">          4 :             brion::detail::SilenceHDF5 silence;</span>
+<span class="lineNum">     602 </span><span class="lineCov">          4 :             lunchbox::ScopedWrite mutex( brion::detail::_hdf5Lock );</span>
+<span class="lineNum">     603 </span><span class="lineCov">          3 :             const size_ts&amp; etypes = _circuit.getIndexEtypes( range );</span>
+<span class="lineNum">     604 </span><span class="lineCov">          1 :             assign( range, gids, etypes, results, nop );</span>
+<span class="lineNum">     605 </span><span class="lineCov">          2 :             return results;</span>
+<span class="lineNum">     606 </span>            :         }
+<span class="lineNum">     607 </span><span class="lineCov">          2 :         catch( const HighFive::Exception&amp; e )</span>
+<span class="lineNum">     608 </span>            :         {
+<span class="lineNum">     609 </span><span class="lineCov">          1 :             LBTHROW( std::runtime_error( &quot;Exception in getETypes(): &quot; +</span>
+<span class="lineNum">     610 </span>            :                                          std::string( e.what( ))));
+<span class="lineNum">     611 </span>            :         }
+<a name="612"><span class="lineNum">     612 </span>            :     }</a>
+<span class="lineNum">     613 </span>            : 
+<span class="lineNum">     614 </span><span class="lineCov">          1 :     Strings getElectrophysiologyNames() const final</span>
+<span class="lineNum">     615 </span>            :     {
+<span class="lineNum">     616 </span><span class="lineCov">          1 :         return _circuit.listAllEtypes();</span>
+<a name="617"><span class="lineNum">     617 </span>            :     }</a>
+<span class="lineNum">     618 </span>            : 
+<span class="lineNum">     619 </span><span class="lineCov">          3 :     Quaternionfs getRotations( const GIDSet&amp; gids ) const final</span>
+<span class="lineNum">     620 </span>            :     {
+<span class="lineNum">     621 </span><span class="lineCov">          3 :         Quaternionfs results( gids.size( ));</span>
+<span class="lineNum">     622 </span><span class="lineCov">          3 :         const ::MVD3::Range&amp; range = getRange( gids );</span>
+<span class="lineNum">     623 </span>            :         try
+<span class="lineNum">     624 </span>            :         {
+<span class="lineNum">     625 </span><span class="lineCov">          6 :             brion::detail::SilenceHDF5 silence;</span>
+<span class="lineNum">     626 </span><span class="lineCov">          6 :             lunchbox::ScopedWrite mutex( brion::detail::_hdf5Lock );</span>
+<span class="lineNum">     627 </span><span class="lineCov">          5 :             const ::MVD3::Rotations&amp; rotations = _circuit.getRotations( range );</span>
+<span class="lineNum">     628 </span><span class="lineCov">          2 :             assign( range, gids, rotations, results, toQuaternion );</span>
+<span class="lineNum">     629 </span><span class="lineCov">          4 :             return results;</span>
+<span class="lineNum">     630 </span>            :         }
+<span class="lineNum">     631 </span><span class="lineCov">          2 :         catch( const HighFive::Exception&amp; e )</span>
+<span class="lineNum">     632 </span>            :         {
+<span class="lineNum">     633 </span><span class="lineCov">          1 :             LBTHROW( std::runtime_error( &quot;Exception in getRotations(): &quot; +</span>
+<span class="lineNum">     634 </span>            :                                          std::string( e.what( ))));
+<span class="lineNum">     635 </span>            :         }
+<a name="636"><span class="lineNum">     636 </span>            :     }</a>
+<span class="lineNum">     637 </span>            : 
+<span class="lineNum">     638 </span><span class="lineCov">          3 :     Strings getMorphologyNames( const GIDSet&amp; gids ) const final</span>
+<span class="lineNum">     639 </span>            :     {
+<span class="lineNum">     640 </span><span class="lineCov">          3 :         Strings results( gids.size( ));</span>
+<span class="lineNum">     641 </span><span class="lineCov">          3 :         const ::MVD3::Range&amp; range = getRange( gids );</span>
+<span class="lineNum">     642 </span>            :         try
+<span class="lineNum">     643 </span>            :         {
+<span class="lineNum">     644 </span><span class="lineCov">          6 :             brion::detail::SilenceHDF5 silence;</span>
+<span class="lineNum">     645 </span><span class="lineCov">          6 :             lunchbox::ScopedWrite mutex( brion::detail::_hdf5Lock );</span>
+<span class="lineNum">     646 </span><span class="lineCov">          5 :             const Strings&amp; morphos = _circuit.getMorphologies( range );</span>
+<span class="lineNum">     647 </span><span class="lineCov">          2 :             assign( range, gids, morphos, results, toString );</span>
+<span class="lineNum">     648 </span><span class="lineCov">          4 :             return results;</span>
+<span class="lineNum">     649 </span>            :         }
+<span class="lineNum">     650 </span><span class="lineCov">          2 :         catch( const HighFive::Exception&amp; e )</span>
+<span class="lineNum">     651 </span>            :         {
+<span class="lineNum">     652 </span><span class="lineCov">          1 :             LBTHROW( std::runtime_error( &quot;Exception in getMorphologyNames(): &quot; +</span>
+<span class="lineNum">     653 </span>            :                                          std::string( e.what( ))));
+<span class="lineNum">     654 </span>            :         }
+<span class="lineNum">     655 </span>            :     }
+<span class="lineNum">     656 </span>            : 
+<span class="lineNum">     657 </span>            : private:
+<span class="lineNum">     658 </span>            :     ::MVD3::MVD3File _circuit;
+<span class="lineNum">     659 </span>            : };
+<span class="lineNum">     660 </span>            : #endif
+<span class="lineNum">     661 </span>            : 
+<span class="lineNum">     662 </span>            : }
 </pre>
       </td>
     </tr>
