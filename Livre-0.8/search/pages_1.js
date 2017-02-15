@@ -1,4 +1,4 @@
 var searchData=
 [
-  ['livre',['Livre',['../index.html',1,'']]]
+  ['changelog',['Changelog',['../Changelog.html',1,'']]]
 ];

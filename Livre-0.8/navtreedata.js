@@ -35,6 +35,7 @@ var NAVTREE =
         [ "Interactive Scupercomputing Controller", "User_Guide.html#LivreGUI", null ]
       ] ]
     ] ],
+    [ "Application Help", "apps.html", "apps" ],
     [ "Classes", "annotated.html", [
       [ "Class List", "annotated.html", "annotated_dup" ],
       [ "Class Index", "classes.html", null ],
@@ -60,7 +61,7 @@ var NAVTREE =
 var NAVTREEINDEX =
 [
 ".html",
-"index.html"
+"hierarchy.html"
 ];
 
 var SYNCONMSG = 'click to disable panel synchronisation';

@@ -1,6 +1,7 @@
 var searchData=
 [
   ['livre',['Livre',['../index.html',1,'']]],
+  ['livre',['livre',['../livre.html',1,'apps']]],
   ['livrecore_5fversion_5fabi',['LIVRECORE_VERSION_ABI',['../version_8h.html#a70bc347a9599d84be08ae86d1e25a5de',1,'version.h']]],
   ['livrecore_5fversion_5fge',['LIVRECORE_VERSION_GE',['../version_8h.html#a922dd9c7d4ea429be563a27eea94b183',1,'version.h']]],
   ['livrecore_5fversion_5fgt',['LIVRECORE_VERSION_GT',['../version_8h.html#a70dac920a927523d96c1a076876947fb',1,'version.h']]],

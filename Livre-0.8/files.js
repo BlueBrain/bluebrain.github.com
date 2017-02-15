@@ -12,7 +12,6 @@ var files =
     [ "GLSLShaders.h", "_g_l_s_l_shaders_8h_source.html", null ],
     [ "Histogram.h", "_histogram_8h_source.html", null ],
     [ "LODNode.h", "_l_o_d_node_8h_source.html", null ],
-    [ "lunchboxTypes.h", "lunchbox_types_8h_source.html", null ],
     [ "MemoryUnit.h", "_memory_unit_8h_source.html", null ],
     [ "NodeId.h", "_node_id_8h_source.html", null ],
     [ "Parameters.h", "_parameters_8h_source.html", null ],
