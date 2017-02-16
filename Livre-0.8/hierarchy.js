@@ -1,8 +1,6 @@
 var hierarchy =
 [
     [ "Distributable", null, [
-      [ "livre::ClipPlanes", "classlivre_1_1_clip_planes.html", null ],
-      [ "livre::Histogram", "classlivre_1_1_histogram.html", null ],
       [ "livre::TransferFunction1D", "classlivre_1_1_transfer_function1_d.html", null ]
     ] ],
     [ "livre::Configuration", "classlivre_1_1_configuration.html", null ],

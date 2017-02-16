@@ -1,4 +1,4 @@
 var searchData=
 [
-  ['shaderdata',['ShaderData',['../structlivre_1_1_shader_data.html',1,'livre']]]
+  ['transferfunction1d',['TransferFunction1D',['../classlivre_1_1_transfer_function1_d.html',1,'livre']]]
 ];
