@@ -53,6 +53,7 @@ var files =
     [ "log.h", "log_8h_source.html", null ],
     [ "Material.h", "_material_8h_source.html", null ],
     [ "MeshLoader.h", "_mesh_loader_8h_source.html", null ],
+    [ "MetaballsGenerator.h", "_metaballs_generator_8h_source.html", null ],
     [ "MolecularSystemReader.h", "_molecular_system_reader_8h_source.html", null ],
     [ "MorphologyLoader.h", "_morphology_loader_8h_source.html", null ],
     [ "NESTLoader.h", "_n_e_s_t_loader_8h_source.html", null ],

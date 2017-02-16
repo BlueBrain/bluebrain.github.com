@@ -9,7 +9,6 @@ var searchData=
   ['renderingparameters',['RenderingParameters',['../classbrayns_1_1_rendering_parameters.html',1,'brayns']]],
   ['renderinput',['RenderInput',['../structbrayns_1_1_render_input.html',1,'brayns']]],
   ['renderoutput',['RenderOutput',['../structbrayns_1_1_render_output.html',1,'brayns']]],
-  ['resample',['resample',['../classbrayns_1_1_transfer_function.html#a651ca78899189f823637dd2a7756d9f7',1,'brayns::TransferFunction']]],
   ['reset',['reset',['../classbrayns_1_1_camera.html#a0378b8d85d011a5b524746f4e23e34e6',1,'brayns::Camera::reset()'],['../classbrayns_1_1_opti_x_scene.html#ab4142145a22dd06167d073d37af2170e',1,'brayns::OptiXScene::reset()'],['../classbrayns_1_1_o_s_p_ray_scene.html#aa17bae858b1195c11c2c44ae6d2a2b67',1,'brayns::OSPRayScene::reset()'],['../classbrayns_1_1_scene.html#a0056f019a5261be6f131b8eb38de2169',1,'brayns::Scene::reset()']]],
   ['resetmodified',['resetModified',['../classbrayns_1_1_camera.html#a4215decd15d58ff06710cca077e87c2c',1,'brayns::Camera']]],
   ['reshape',['reshape',['../classbrayns_1_1_engine.html#a840980ce1525d0e767140ca591deafb0',1,'brayns::Engine']]],

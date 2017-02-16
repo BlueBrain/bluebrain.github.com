@@ -1,0 +1,706 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+
+<html lang="en">
+
+<head>
+  <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+  <title>LCOV - Brayns - brayns/io/algorithms/MetaballsGenerator.cpp</title>
+  <link rel="stylesheet" type="text/css" href="../../../gcov.css">
+</head>
+
+<body>
+
+  <table width="100%" border=0 cellspacing=0 cellpadding=0>
+    <tr><td class="title">LCOV - code coverage report</td></tr>
+    <tr><td class="ruler"><img src="../../../glass.png" width=3 height=3 alt=""></td></tr>
+
+    <tr>
+      <td width="100%">
+        <table cellpadding=1 border=0 width="100%">
+          <tr>
+            <td width="10%" class="headerItem">Current view:</td>
+            <td width="35%" class="headerValue"><a href="../../../index.html">top level</a> - <a href="index.html">brayns/io/algorithms</a> - MetaballsGenerator.cpp<span style="font-size: 80%;"> (source / <a href="MetaballsGenerator.cpp.func-sort-c.html">functions</a>)</span></td>
+            <td width="5%"></td>
+            <td width="15%"></td>
+            <td width="10%" class="headerCovTableHead">Hit</td>
+            <td width="10%" class="headerCovTableHead">Total</td>
+            <td width="15%" class="headerCovTableHead">Coverage</td>
+          </tr>
+          <tr>
+            <td class="headerItem">Test:</td>
+            <td class="headerValue">Brayns</td>
+            <td></td>
+            <td class="headerItem">Lines:</td>
+            <td class="headerCovTableEntry">1</td>
+            <td class="headerCovTableEntry">184</td>
+            <td class="headerCovTableEntryLo">0.5 %</td>
+          </tr>
+          <tr>
+            <td class="headerItem">Date:</td>
+            <td class="headerValue">2017-02-16 01:18:28</td>
+            <td></td>
+            <td class="headerItem">Functions:</td>
+            <td class="headerCovTableEntry">2</td>
+            <td class="headerCovTableEntry">11</td>
+            <td class="headerCovTableEntryLo">18.2 %</td>
+          </tr>
+          <tr><td><img src="../../../glass.png" width=3 height=3 alt=""></td></tr>
+        </table>
+      </td>
+    </tr>
+
+    <tr><td class="ruler"><img src="../../../glass.png" width=3 height=3 alt=""></td></tr>
+  </table>
+
+  <table cellpadding=0 cellspacing=0 border=0>
+    <tr>
+      <td><br></td>
+    </tr>
+    <tr>
+      <td>
+<pre class="sourceHeading">          Line data    Source code</pre>
+<pre class="source">
+<a name="1"><span class="lineNum">       1 </span>            : /* Copyright (c) 2011-2017, EPFL/Blue Brain Project</a>
+<span class="lineNum">       2 </span>            :  *                     Cyrille Favreau &lt;cyrille.favreau@epfl.ch&gt;
+<span class="lineNum">       3 </span>            :  *
+<span class="lineNum">       4 </span>            :  * This file is part of Brayns and is based on the opengl-metaballs project
+<span class="lineNum">       5 </span>            :  * authored by Sierra Katow
+<span class="lineNum">       6 </span>            :  * https://github.com/sierrakatow/opengl-metaballs
+<span class="lineNum">       7 </span>            :  *
+<span class="lineNum">       8 </span>            :  * This library is free software; you can redistribute it and/or modify it under
+<span class="lineNum">       9 </span>            :  * the terms of the GNU Lesser General Public License version 3.0 as published
+<span class="lineNum">      10 </span>            :  * by the Free Software Foundation.
+<span class="lineNum">      11 </span>            :  *
+<span class="lineNum">      12 </span>            :  * This library is distributed in the hope that it will be useful, but WITHOUT
+<span class="lineNum">      13 </span>            :  * ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS
+<span class="lineNum">      14 </span>            :  * FOR A PARTICULAR PURPOSE.  See the GNU Lesser General Public License for more
+<span class="lineNum">      15 </span>            :  * details.
+<span class="lineNum">      16 </span>            :  *
+<span class="lineNum">      17 </span>            :  * You should have received a copy of the GNU Lesser General Public License
+<span class="lineNum">      18 </span>            :  * along with this library; if not, write to the Free Software Foundation, Inc.,
+<span class="lineNum">      19 </span>            :  * 51 Franklin Street, Fifth Floor, Boston, MA 02110-1301 USA.
+<span class="lineNum">      20 </span>            :  *
+<span class="lineNum">      21 </span>            :  */
+<span class="lineNum">      22 </span>            : 
+<span class="lineNum">      23 </span>            : #include &quot;MetaballsGenerator.h&quot;
+<span class="lineNum">      24 </span>            : 
+<span class="lineNum">      25 </span>            : #include &lt;brayns/common/log.h&gt;
+<span class="lineNum">      26 </span>            : #include &lt;brayns/common/geometry/Sphere.h&gt;
+<span class="lineNum">      27 </span>            : #include &lt;brayns/common/geometry/TrianglesMesh.h&gt;
+<span class="lineNum">      28 </span>            : #include &lt;brayns/common/material/Material.h&gt;
+<span class="lineNum">      29 </span>            : 
+<span class="lineNum">      30 </span>            : namespace brayns
+<span class="lineNum">      31 </span>            : {
+<span class="lineNum">      32 </span>            : 
+<span class="lineNum">      33 </span>            : const size_t NB_EDGES = 12;
+<span class="lineNum">      34 </span>            : 
+<span class="lineNum">      35 </span>            : const size_t METABALLS_VERTICES[ 24 ]=
+<span class="lineNum">      36 </span>            : {
+<span class="lineNum">      37 </span>            :     0, 1,
+<span class="lineNum">      38 </span>            :     1, 2,
+<span class="lineNum">      39 </span>            :     2, 3,
+<span class="lineNum">      40 </span>            :     3, 0,
+<span class="lineNum">      41 </span>            :     4, 5,
+<span class="lineNum">      42 </span>            :     5, 6,
+<span class="lineNum">      43 </span>            :     6, 7,
+<span class="lineNum">      44 </span>            :     7, 4,
+<span class="lineNum">      45 </span>            :     0, 4,
+<span class="lineNum">      46 </span>            :     1, 5,
+<span class="lineNum">      47 </span>            :     2, 6,
+<span class="lineNum">      48 </span>            :     3, 7
+<span class="lineNum">      49 </span>            : };
+<span class="lineNum">      50 </span>            : 
+<span class="lineNum">      51 </span>            : const size_t METABALLS_EDGES[ 256 ]=
+<span class="lineNum">      52 </span>            : {
+<span class="lineNum">      53 </span>            :     0x0  , 0x109, 0x203, 0x30a, 0x406, 0x50f, 0x605, 0x70c,
+<span class="lineNum">      54 </span>            :     0x80c, 0x905, 0xa0f, 0xb06, 0xc0a, 0xd03, 0xe09, 0xf00,
+<span class="lineNum">      55 </span>            :     0x190, 0x99 , 0x393, 0x29a, 0x596, 0x49f, 0x795, 0x69c,
+<span class="lineNum">      56 </span>            :     0x99c, 0x895, 0xb9f, 0xa96, 0xd9a, 0xc93, 0xf99, 0xe90,
+<span class="lineNum">      57 </span>            :     0x230, 0x339, 0x33 , 0x13a, 0x636, 0x73f, 0x435, 0x53c,
+<span class="lineNum">      58 </span>            :     0xa3c, 0xb35, 0x83f, 0x936, 0xe3a, 0xf33, 0xc39, 0xd30,
+<span class="lineNum">      59 </span>            :     0x3a0, 0x2a9, 0x1a3, 0xaa , 0x7a6, 0x6af, 0x5a5, 0x4ac,
+<span class="lineNum">      60 </span>            :     0xbac, 0xaa5, 0x9af, 0x8a6, 0xfaa, 0xea3, 0xda9, 0xca0,
+<span class="lineNum">      61 </span>            :     0x460, 0x569, 0x663, 0x76a, 0x66 , 0x16f, 0x265, 0x36c,
+<span class="lineNum">      62 </span>            :     0xc6c, 0xd65, 0xe6f, 0xf66, 0x86a, 0x963, 0xa69, 0xb60,
+<span class="lineNum">      63 </span>            :     0x5f0, 0x4f9, 0x7f3, 0x6fa, 0x1f6, 0xff , 0x3f5, 0x2fc,
+<span class="lineNum">      64 </span>            :     0xdfc, 0xcf5, 0xfff, 0xef6, 0x9fa, 0x8f3, 0xbf9, 0xaf0,
+<span class="lineNum">      65 </span>            :     0x650, 0x759, 0x453, 0x55a, 0x256, 0x35f, 0x55 , 0x15c,
+<span class="lineNum">      66 </span>            :     0xe5c, 0xf55, 0xc5f, 0xd56, 0xa5a, 0xb53, 0x859, 0x950,
+<span class="lineNum">      67 </span>            :     0x7c0, 0x6c9, 0x5c3, 0x4ca, 0x3c6, 0x2cf, 0x1c5, 0xcc ,
+<span class="lineNum">      68 </span>            :     0xfcc, 0xec5, 0xdcf, 0xcc6, 0xbca, 0xac3, 0x9c9, 0x8c0,
+<span class="lineNum">      69 </span>            :     0x8c0, 0x9c9, 0xac3, 0xbca, 0xcc6, 0xdcf, 0xec5, 0xfcc,
+<span class="lineNum">      70 </span>            :     0xcc , 0x1c5, 0x2cf, 0x3c6, 0x4ca, 0x5c3, 0x6c9, 0x7c0,
+<span class="lineNum">      71 </span>            :     0x950, 0x859, 0xb53, 0xa5a, 0xd56, 0xc5f, 0xf55, 0xe5c,
+<span class="lineNum">      72 </span>            :     0x15c, 0x55 , 0x35f, 0x256, 0x55a, 0x453, 0x759, 0x650,
+<span class="lineNum">      73 </span>            :     0xaf0, 0xbf9, 0x8f3, 0x9fa, 0xef6, 0xfff, 0xcf5, 0xdfc,
+<span class="lineNum">      74 </span>            :     0x2fc, 0x3f5, 0xff , 0x1f6, 0x6fa, 0x7f3, 0x4f9, 0x5f0,
+<span class="lineNum">      75 </span>            :     0xb60, 0xa69, 0x963, 0x86a, 0xf66, 0xe6f, 0xd65, 0xc6c,
+<span class="lineNum">      76 </span>            :     0x36c, 0x265, 0x16f, 0x66 , 0x76a, 0x663, 0x569, 0x460,
+<span class="lineNum">      77 </span>            :     0xca0, 0xda9, 0xea3, 0xfaa, 0x8a6, 0x9af, 0xaa5, 0xbac,
+<span class="lineNum">      78 </span>            :     0x4ac, 0x5a5, 0x6af, 0x7a6, 0xaa , 0x1a3, 0x2a9, 0x3a0,
+<span class="lineNum">      79 </span>            :     0xd30, 0xc39, 0xf33, 0xe3a, 0x936, 0x83f, 0xb35, 0xa3c,
+<span class="lineNum">      80 </span>            :     0x53c, 0x435, 0x73f, 0x636, 0x13a, 0x33 , 0x339, 0x230,
+<span class="lineNum">      81 </span>            :     0xe90, 0xf99, 0xc93, 0xd9a, 0xa96, 0xb9f, 0x895, 0x99c,
+<span class="lineNum">      82 </span>            :     0x69c, 0x795, 0x49f, 0x596, 0x29a, 0x393, 0x99 , 0x190,
+<span class="lineNum">      83 </span>            :     0xf00, 0xe09, 0xd03, 0xc0a, 0xb06, 0xa0f, 0x905, 0x80c,
+<span class="lineNum">      84 </span>            :     0x70c, 0x605, 0x50f, 0x406, 0x30a, 0x203, 0x109, 0x0
+<span class="lineNum">      85 </span>            : };
+<span class="lineNum">      86 </span>            : 
+<span class="lineNum">      87 </span>            : const int8_t METABALLS_TRIANGLES[ 256 ][ 16 ] =
+<span class="lineNum">      88 </span>            : {{-1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1},
+<span class="lineNum">      89 </span>            :  {0, 8, 3, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1},
+<span class="lineNum">      90 </span>            :  {0, 1, 9, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1},
+<span class="lineNum">      91 </span>            :  {1, 8, 3, 9, 8, 1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1},
+<span class="lineNum">      92 </span>            :  {1, 2, 10, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1},
+<span class="lineNum">      93 </span>            :  {0, 8, 3, 1, 2, 10, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1},
+<span class="lineNum">      94 </span>            :  {9, 2, 10, 0, 2, 9, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1},
+<span class="lineNum">      95 </span>            :  {2, 8, 3, 2, 10, 8, 10, 9, 8, -1, -1, -1, -1, -1, -1, -1},
+<span class="lineNum">      96 </span>            :  {3, 11, 2, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1},
+<span class="lineNum">      97 </span>            :  {0, 11, 2, 8, 11, 0, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1},
+<span class="lineNum">      98 </span>            :  {1, 9, 0, 2, 3, 11, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1},
+<span class="lineNum">      99 </span>            :  {1, 11, 2, 1, 9, 11, 9, 8, 11, -1, -1, -1, -1, -1, -1, -1},
+<span class="lineNum">     100 </span>            :  {3, 10, 1, 11, 10, 3, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1},
+<span class="lineNum">     101 </span>            :  {0, 10, 1, 0, 8, 10, 8, 11, 10, -1, -1, -1, -1, -1, -1, -1},
+<span class="lineNum">     102 </span>            :  {3, 9, 0, 3, 11, 9, 11, 10, 9, -1, -1, -1, -1, -1, -1, -1},
+<span class="lineNum">     103 </span>            :  {9, 8, 10, 10, 8, 11, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1},
+<span class="lineNum">     104 </span>            :  {4, 7, 8, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1},
+<span class="lineNum">     105 </span>            :  {4, 3, 0, 7, 3, 4, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1},
+<span class="lineNum">     106 </span>            :  {0, 1, 9, 8, 4, 7, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1},
+<span class="lineNum">     107 </span>            :  {4, 1, 9, 4, 7, 1, 7, 3, 1, -1, -1, -1, -1, -1, -1, -1},
+<span class="lineNum">     108 </span>            :  {1, 2, 10, 8, 4, 7, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1},
+<span class="lineNum">     109 </span>            :  {3, 4, 7, 3, 0, 4, 1, 2, 10, -1, -1, -1, -1, -1, -1, -1},
+<span class="lineNum">     110 </span>            :  {9, 2, 10, 9, 0, 2, 8, 4, 7, -1, -1, -1, -1, -1, -1, -1},
+<span class="lineNum">     111 </span>            :  {2, 10, 9, 2, 9, 7, 2, 7, 3, 7, 9, 4, -1, -1, -1, -1},
+<span class="lineNum">     112 </span>            :  {8, 4, 7, 3, 11, 2, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1},
+<span class="lineNum">     113 </span>            :  {11, 4, 7, 11, 2, 4, 2, 0, 4, -1, -1, -1, -1, -1, -1, -1},
+<span class="lineNum">     114 </span>            :  {9, 0, 1, 8, 4, 7, 2, 3, 11, -1, -1, -1, -1, -1, -1, -1},
+<span class="lineNum">     115 </span>            :  {4, 7, 11, 9, 4, 11, 9, 11, 2, 9, 2, 1, -1, -1, -1, -1},
+<span class="lineNum">     116 </span>            :  {3, 10, 1, 3, 11, 10, 7, 8, 4, -1, -1, -1, -1, -1, -1, -1},
+<span class="lineNum">     117 </span>            :  {1, 11, 10, 1, 4, 11, 1, 0, 4, 7, 11, 4, -1, -1, -1, -1},
+<span class="lineNum">     118 </span>            :  {4, 7, 8, 9, 0, 11, 9, 11, 10, 11, 0, 3, -1, -1, -1, -1},
+<span class="lineNum">     119 </span>            :  {4, 7, 11, 4, 11, 9, 9, 11, 10, -1, -1, -1, -1, -1, -1, -1},
+<span class="lineNum">     120 </span>            :  {9, 5, 4, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1},
+<span class="lineNum">     121 </span>            :  {9, 5, 4, 0, 8, 3, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1},
+<span class="lineNum">     122 </span>            :  {0, 5, 4, 1, 5, 0, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1},
+<span class="lineNum">     123 </span>            :  {8, 5, 4, 8, 3, 5, 3, 1, 5, -1, -1, -1, -1, -1, -1, -1},
+<span class="lineNum">     124 </span>            :  {1, 2, 10, 9, 5, 4, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1},
+<span class="lineNum">     125 </span>            :  {3, 0, 8, 1, 2, 10, 4, 9, 5, -1, -1, -1, -1, -1, -1, -1},
+<span class="lineNum">     126 </span>            :  {5, 2, 10, 5, 4, 2, 4, 0, 2, -1, -1, -1, -1, -1, -1, -1},
+<span class="lineNum">     127 </span>            :  {2, 10, 5, 3, 2, 5, 3, 5, 4, 3, 4, 8, -1, -1, -1, -1},
+<span class="lineNum">     128 </span>            :  {9, 5, 4, 2, 3, 11, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1},
+<span class="lineNum">     129 </span>            :  {0, 11, 2, 0, 8, 11, 4, 9, 5, -1, -1, -1, -1, -1, -1, -1},
+<span class="lineNum">     130 </span>            :  {0, 5, 4, 0, 1, 5, 2, 3, 11, -1, -1, -1, -1, -1, -1, -1},
+<span class="lineNum">     131 </span>            :  {2, 1, 5, 2, 5, 8, 2, 8, 11, 4, 8, 5, -1, -1, -1, -1},
+<span class="lineNum">     132 </span>            :  {10, 3, 11, 10, 1, 3, 9, 5, 4, -1, -1, -1, -1, -1, -1, -1},
+<span class="lineNum">     133 </span>            :  {4, 9, 5, 0, 8, 1, 8, 10, 1, 8, 11, 10, -1, -1, -1, -1},
+<span class="lineNum">     134 </span>            :  {5, 4, 0, 5, 0, 11, 5, 11, 10, 11, 0, 3, -1, -1, -1, -1},
+<span class="lineNum">     135 </span>            :  {5, 4, 8, 5, 8, 10, 10, 8, 11, -1, -1, -1, -1, -1, -1, -1},
+<span class="lineNum">     136 </span>            :  {9, 7, 8, 5, 7, 9, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1},
+<span class="lineNum">     137 </span>            :  {9, 3, 0, 9, 5, 3, 5, 7, 3, -1, -1, -1, -1, -1, -1, -1},
+<span class="lineNum">     138 </span>            :  {0, 7, 8, 0, 1, 7, 1, 5, 7, -1, -1, -1, -1, -1, -1, -1},
+<span class="lineNum">     139 </span>            :  {1, 5, 3, 3, 5, 7, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1},
+<span class="lineNum">     140 </span>            :  {9, 7, 8, 9, 5, 7, 10, 1, 2, -1, -1, -1, -1, -1, -1, -1},
+<span class="lineNum">     141 </span>            :  {10, 1, 2, 9, 5, 0, 5, 3, 0, 5, 7, 3, -1, -1, -1, -1},
+<span class="lineNum">     142 </span>            :  {8, 0, 2, 8, 2, 5, 8, 5, 7, 10, 5, 2, -1, -1, -1, -1},
+<span class="lineNum">     143 </span>            :  {2, 10, 5, 2, 5, 3, 3, 5, 7, -1, -1, -1, -1, -1, -1, -1},
+<span class="lineNum">     144 </span>            :  {7, 9, 5, 7, 8, 9, 3, 11, 2, -1, -1, -1, -1, -1, -1, -1},
+<span class="lineNum">     145 </span>            :  {9, 5, 7, 9, 7, 2, 9, 2, 0, 2, 7, 11, -1, -1, -1, -1},
+<span class="lineNum">     146 </span>            :  {2, 3, 11, 0, 1, 8, 1, 7, 8, 1, 5, 7, -1, -1, -1, -1},
+<span class="lineNum">     147 </span>            :  {11, 2, 1, 11, 1, 7, 7, 1, 5, -1, -1, -1, -1, -1, -1, -1},
+<span class="lineNum">     148 </span>            :  {9, 5, 8, 8, 5, 7, 10, 1, 3, 10, 3, 11, -1, -1, -1, -1},
+<span class="lineNum">     149 </span>            :  {5, 7, 0, 5, 0, 9, 7, 11, 0, 1, 0, 10, 11, 10, 0, -1},
+<span class="lineNum">     150 </span>            :  {11, 10, 0, 11, 0, 3, 10, 5, 0, 8, 0, 7, 5, 7, 0, -1},
+<span class="lineNum">     151 </span>            :  {11, 10, 5, 7, 11, 5, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1},
+<span class="lineNum">     152 </span>            :  {10, 6, 5, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1},
+<span class="lineNum">     153 </span>            :  {0, 8, 3, 5, 10, 6, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1},
+<span class="lineNum">     154 </span>            :  {9, 0, 1, 5, 10, 6, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1},
+<span class="lineNum">     155 </span>            :  {1, 8, 3, 1, 9, 8, 5, 10, 6, -1, -1, -1, -1, -1, -1, -1},
+<span class="lineNum">     156 </span>            :  {1, 6, 5, 2, 6, 1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1},
+<span class="lineNum">     157 </span>            :  {1, 6, 5, 1, 2, 6, 3, 0, 8, -1, -1, -1, -1, -1, -1, -1},
+<span class="lineNum">     158 </span>            :  {9, 6, 5, 9, 0, 6, 0, 2, 6, -1, -1, -1, -1, -1, -1, -1},
+<span class="lineNum">     159 </span>            :  {5, 9, 8, 5, 8, 2, 5, 2, 6, 3, 2, 8, -1, -1, -1, -1},
+<span class="lineNum">     160 </span>            :  {2, 3, 11, 10, 6, 5, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1},
+<span class="lineNum">     161 </span>            :  {11, 0, 8, 11, 2, 0, 10, 6, 5, -1, -1, -1, -1, -1, -1, -1},
+<span class="lineNum">     162 </span>            :  {0, 1, 9, 2, 3, 11, 5, 10, 6, -1, -1, -1, -1, -1, -1, -1},
+<span class="lineNum">     163 </span>            :  {5, 10, 6, 1, 9, 2, 9, 11, 2, 9, 8, 11, -1, -1, -1, -1},
+<span class="lineNum">     164 </span>            :  {6, 3, 11, 6, 5, 3, 5, 1, 3, -1, -1, -1, -1, -1, -1, -1},
+<span class="lineNum">     165 </span>            :  {0, 8, 11, 0, 11, 5, 0, 5, 1, 5, 11, 6, -1, -1, -1, -1},
+<span class="lineNum">     166 </span>            :  {3, 11, 6, 0, 3, 6, 0, 6, 5, 0, 5, 9, -1, -1, -1, -1},
+<span class="lineNum">     167 </span>            :  {6, 5, 9, 6, 9, 11, 11, 9, 8, -1, -1, -1, -1, -1, -1, -1},
+<span class="lineNum">     168 </span>            :  {5, 10, 6, 4, 7, 8, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1},
+<span class="lineNum">     169 </span>            :  {4, 3, 0, 4, 7, 3, 6, 5, 10, -1, -1, -1, -1, -1, -1, -1},
+<span class="lineNum">     170 </span>            :  {1, 9, 0, 5, 10, 6, 8, 4, 7, -1, -1, -1, -1, -1, -1, -1},
+<span class="lineNum">     171 </span>            :  {10, 6, 5, 1, 9, 7, 1, 7, 3, 7, 9, 4, -1, -1, -1, -1},
+<span class="lineNum">     172 </span>            :  {6, 1, 2, 6, 5, 1, 4, 7, 8, -1, -1, -1, -1, -1, -1, -1},
+<span class="lineNum">     173 </span>            :  {1, 2, 5, 5, 2, 6, 3, 0, 4, 3, 4, 7, -1, -1, -1, -1},
+<span class="lineNum">     174 </span>            :  {8, 4, 7, 9, 0, 5, 0, 6, 5, 0, 2, 6, -1, -1, -1, -1},
+<span class="lineNum">     175 </span>            :  {7, 3, 9, 7, 9, 4, 3, 2, 9, 5, 9, 6, 2, 6, 9, -1},
+<span class="lineNum">     176 </span>            :  {3, 11, 2, 7, 8, 4, 10, 6, 5, -1, -1, -1, -1, -1, -1, -1},
+<span class="lineNum">     177 </span>            :  {5, 10, 6, 4, 7, 2, 4, 2, 0, 2, 7, 11, -1, -1, -1, -1},
+<span class="lineNum">     178 </span>            :  {0, 1, 9, 4, 7, 8, 2, 3, 11, 5, 10, 6, -1, -1, -1, -1},
+<span class="lineNum">     179 </span>            :  {9, 2, 1, 9, 11, 2, 9, 4, 11, 7, 11, 4, 5, 10, 6, -1},
+<span class="lineNum">     180 </span>            :  {8, 4, 7, 3, 11, 5, 3, 5, 1, 5, 11, 6, -1, -1, -1, -1},
+<span class="lineNum">     181 </span>            :  {5, 1, 11, 5, 11, 6, 1, 0, 11, 7, 11, 4, 0, 4, 11, -1},
+<span class="lineNum">     182 </span>            :  {0, 5, 9, 0, 6, 5, 0, 3, 6, 11, 6, 3, 8, 4, 7, -1},
+<span class="lineNum">     183 </span>            :  {6, 5, 9, 6, 9, 11, 4, 7, 9, 7, 11, 9, -1, -1, -1, -1},
+<span class="lineNum">     184 </span>            :  {10, 4, 9, 6, 4, 10, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1},
+<span class="lineNum">     185 </span>            :  {4, 10, 6, 4, 9, 10, 0, 8, 3, -1, -1, -1, -1, -1, -1, -1},
+<span class="lineNum">     186 </span>            :  {10, 0, 1, 10, 6, 0, 6, 4, 0, -1, -1, -1, -1, -1, -1, -1},
+<span class="lineNum">     187 </span>            :  {8, 3, 1, 8, 1, 6, 8, 6, 4, 6, 1, 10, -1, -1, -1, -1},
+<span class="lineNum">     188 </span>            :  {1, 4, 9, 1, 2, 4, 2, 6, 4, -1, -1, -1, -1, -1, -1, -1},
+<span class="lineNum">     189 </span>            :  {3, 0, 8, 1, 2, 9, 2, 4, 9, 2, 6, 4, -1, -1, -1, -1},
+<span class="lineNum">     190 </span>            :  {0, 2, 4, 4, 2, 6, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1},
+<span class="lineNum">     191 </span>            :  {8, 3, 2, 8, 2, 4, 4, 2, 6, -1, -1, -1, -1, -1, -1, -1},
+<span class="lineNum">     192 </span>            :  {10, 4, 9, 10, 6, 4, 11, 2, 3, -1, -1, -1, -1, -1, -1, -1},
+<span class="lineNum">     193 </span>            :  {0, 8, 2, 2, 8, 11, 4, 9, 10, 4, 10, 6, -1, -1, -1, -1},
+<span class="lineNum">     194 </span>            :  {3, 11, 2, 0, 1, 6, 0, 6, 4, 6, 1, 10, -1, -1, -1, -1},
+<span class="lineNum">     195 </span>            :  {6, 4, 1, 6, 1, 10, 4, 8, 1, 2, 1, 11, 8, 11, 1, -1},
+<span class="lineNum">     196 </span>            :  {9, 6, 4, 9, 3, 6, 9, 1, 3, 11, 6, 3, -1, -1, -1, -1},
+<span class="lineNum">     197 </span>            :  {8, 11, 1, 8, 1, 0, 11, 6, 1, 9, 1, 4, 6, 4, 1, -1},
+<span class="lineNum">     198 </span>            :  {3, 11, 6, 3, 6, 0, 0, 6, 4, -1, -1, -1, -1, -1, -1, -1},
+<span class="lineNum">     199 </span>            :  {6, 4, 8, 11, 6, 8, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1},
+<span class="lineNum">     200 </span>            :  {7, 10, 6, 7, 8, 10, 8, 9, 10, -1, -1, -1, -1, -1, -1, -1},
+<span class="lineNum">     201 </span>            :  {0, 7, 3, 0, 10, 7, 0, 9, 10, 6, 7, 10, -1, -1, -1, -1},
+<span class="lineNum">     202 </span>            :  {10, 6, 7, 1, 10, 7, 1, 7, 8, 1, 8, 0, -1, -1, -1, -1},
+<span class="lineNum">     203 </span>            :  {10, 6, 7, 10, 7, 1, 1, 7, 3, -1, -1, -1, -1, -1, -1, -1},
+<span class="lineNum">     204 </span>            :  {1, 2, 6, 1, 6, 8, 1, 8, 9, 8, 6, 7, -1, -1, -1, -1},
+<span class="lineNum">     205 </span>            :  {2, 6, 9, 2, 9, 1, 6, 7, 9, 0, 9, 3, 7, 3, 9, -1},
+<span class="lineNum">     206 </span>            :  {7, 8, 0, 7, 0, 6, 6, 0, 2, -1, -1, -1, -1, -1, -1, -1},
+<span class="lineNum">     207 </span>            :  {7, 3, 2, 6, 7, 2, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1},
+<span class="lineNum">     208 </span>            :  {2, 3, 11, 10, 6, 8, 10, 8, 9, 8, 6, 7, -1, -1, -1, -1},
+<span class="lineNum">     209 </span>            :  {2, 0, 7, 2, 7, 11, 0, 9, 7, 6, 7, 10, 9, 10, 7, -1},
+<span class="lineNum">     210 </span>            :  {1, 8, 0, 1, 7, 8, 1, 10, 7, 6, 7, 10, 2, 3, 11, -1},
+<span class="lineNum">     211 </span>            :  {11, 2, 1, 11, 1, 7, 10, 6, 1, 6, 7, 1, -1, -1, -1, -1},
+<span class="lineNum">     212 </span>            :  {8, 9, 6, 8, 6, 7, 9, 1, 6, 11, 6, 3, 1, 3, 6, -1},
+<span class="lineNum">     213 </span>            :  {0, 9, 1, 11, 6, 7, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1},
+<span class="lineNum">     214 </span>            :  {7, 8, 0, 7, 0, 6, 3, 11, 0, 11, 6, 0, -1, -1, -1, -1},
+<span class="lineNum">     215 </span>            :  {7, 11, 6, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1},
+<span class="lineNum">     216 </span>            :  {7, 6, 11, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1},
+<span class="lineNum">     217 </span>            :  {3, 0, 8, 11, 7, 6, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1},
+<span class="lineNum">     218 </span>            :  {0, 1, 9, 11, 7, 6, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1},
+<span class="lineNum">     219 </span>            :  {8, 1, 9, 8, 3, 1, 11, 7, 6, -1, -1, -1, -1, -1, -1, -1},
+<span class="lineNum">     220 </span>            :  {10, 1, 2, 6, 11, 7, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1},
+<span class="lineNum">     221 </span>            :  {1, 2, 10, 3, 0, 8, 6, 11, 7, -1, -1, -1, -1, -1, -1, -1},
+<span class="lineNum">     222 </span>            :  {2, 9, 0, 2, 10, 9, 6, 11, 7, -1, -1, -1, -1, -1, -1, -1},
+<span class="lineNum">     223 </span>            :  {6, 11, 7, 2, 10, 3, 10, 8, 3, 10, 9, 8, -1, -1, -1, -1},
+<span class="lineNum">     224 </span>            :  {7, 2, 3, 6, 2, 7, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1},
+<span class="lineNum">     225 </span>            :  {7, 0, 8, 7, 6, 0, 6, 2, 0, -1, -1, -1, -1, -1, -1, -1},
+<span class="lineNum">     226 </span>            :  {2, 7, 6, 2, 3, 7, 0, 1, 9, -1, -1, -1, -1, -1, -1, -1},
+<span class="lineNum">     227 </span>            :  {1, 6, 2, 1, 8, 6, 1, 9, 8, 8, 7, 6, -1, -1, -1, -1},
+<span class="lineNum">     228 </span>            :  {10, 7, 6, 10, 1, 7, 1, 3, 7, -1, -1, -1, -1, -1, -1, -1},
+<span class="lineNum">     229 </span>            :  {10, 7, 6, 1, 7, 10, 1, 8, 7, 1, 0, 8, -1, -1, -1, -1},
+<span class="lineNum">     230 </span>            :  {0, 3, 7, 0, 7, 10, 0, 10, 9, 6, 10, 7, -1, -1, -1, -1},
+<span class="lineNum">     231 </span>            :  {7, 6, 10, 7, 10, 8, 8, 10, 9, -1, -1, -1, -1, -1, -1, -1},
+<span class="lineNum">     232 </span>            :  {6, 8, 4, 11, 8, 6, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1},
+<span class="lineNum">     233 </span>            :  {3, 6, 11, 3, 0, 6, 0, 4, 6, -1, -1, -1, -1, -1, -1, -1},
+<span class="lineNum">     234 </span>            :  {8, 6, 11, 8, 4, 6, 9, 0, 1, -1, -1, -1, -1, -1, -1, -1},
+<span class="lineNum">     235 </span>            :  {9, 4, 6, 9, 6, 3, 9, 3, 1, 11, 3, 6, -1, -1, -1, -1},
+<span class="lineNum">     236 </span>            :  {6, 8, 4, 6, 11, 8, 2, 10, 1, -1, -1, -1, -1, -1, -1, -1},
+<span class="lineNum">     237 </span>            :  {1, 2, 10, 3, 0, 11, 0, 6, 11, 0, 4, 6, -1, -1, -1, -1},
+<span class="lineNum">     238 </span>            :  {4, 11, 8, 4, 6, 11, 0, 2, 9, 2, 10, 9, -1, -1, -1, -1},
+<span class="lineNum">     239 </span>            :  {10, 9, 3, 10, 3, 2, 9, 4, 3, 11, 3, 6, 4, 6, 3, -1},
+<span class="lineNum">     240 </span>            :  {8, 2, 3, 8, 4, 2, 4, 6, 2, -1, -1, -1, -1, -1, -1, -1},
+<span class="lineNum">     241 </span>            :  {0, 4, 2, 4, 6, 2, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1},
+<span class="lineNum">     242 </span>            :  {1, 9, 0, 2, 3, 4, 2, 4, 6, 4, 3, 8, -1, -1, -1, -1},
+<span class="lineNum">     243 </span>            :  {1, 9, 4, 1, 4, 2, 2, 4, 6, -1, -1, -1, -1, -1, -1, -1},
+<span class="lineNum">     244 </span>            :  {8, 1, 3, 8, 6, 1, 8, 4, 6, 6, 10, 1, -1, -1, -1, -1},
+<span class="lineNum">     245 </span>            :  {10, 1, 0, 10, 0, 6, 6, 0, 4, -1, -1, -1, -1, -1, -1, -1},
+<span class="lineNum">     246 </span>            :  {4, 6, 3, 4, 3, 8, 6, 10, 3, 0, 3, 9, 10, 9, 3, -1},
+<span class="lineNum">     247 </span>            :  {10, 9, 4, 6, 10, 4, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1},
+<span class="lineNum">     248 </span>            :  {4, 9, 5, 7, 6, 11, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1},
+<span class="lineNum">     249 </span>            :  {0, 8, 3, 4, 9, 5, 11, 7, 6, -1, -1, -1, -1, -1, -1, -1},
+<span class="lineNum">     250 </span>            :  {5, 0, 1, 5, 4, 0, 7, 6, 11, -1, -1, -1, -1, -1, -1, -1},
+<span class="lineNum">     251 </span>            :  {11, 7, 6, 8, 3, 4, 3, 5, 4, 3, 1, 5, -1, -1, -1, -1},
+<span class="lineNum">     252 </span>            :  {9, 5, 4, 10, 1, 2, 7, 6, 11, -1, -1, -1, -1, -1, -1, -1},
+<span class="lineNum">     253 </span>            :  {6, 11, 7, 1, 2, 10, 0, 8, 3, 4, 9, 5, -1, -1, -1, -1},
+<span class="lineNum">     254 </span>            :  {7, 6, 11, 5, 4, 10, 4, 2, 10, 4, 0, 2, -1, -1, -1, -1},
+<span class="lineNum">     255 </span>            :  {3, 4, 8, 3, 5, 4, 3, 2, 5, 10, 5, 2, 11, 7, 6, -1},
+<span class="lineNum">     256 </span>            :  {7, 2, 3, 7, 6, 2, 5, 4, 9, -1, -1, -1, -1, -1, -1, -1},
+<span class="lineNum">     257 </span>            :  {9, 5, 4, 0, 8, 6, 0, 6, 2, 6, 8, 7, -1, -1, -1, -1},
+<span class="lineNum">     258 </span>            :  {3, 6, 2, 3, 7, 6, 1, 5, 0, 5, 4, 0, -1, -1, -1, -1},
+<span class="lineNum">     259 </span>            :  {6, 2, 8, 6, 8, 7, 2, 1, 8, 4, 8, 5, 1, 5, 8, -1},
+<span class="lineNum">     260 </span>            :  {9, 5, 4, 10, 1, 6, 1, 7, 6, 1, 3, 7, -1, -1, -1, -1},
+<span class="lineNum">     261 </span>            :  {1, 6, 10, 1, 7, 6, 1, 0, 7, 8, 7, 0, 9, 5, 4, -1},
+<span class="lineNum">     262 </span>            :  {4, 0, 10, 4, 10, 5, 0, 3, 10, 6, 10, 7, 3, 7, 10, -1},
+<span class="lineNum">     263 </span>            :  {7, 6, 10, 7, 10, 58, 5, 4, 10, 4, 8, 10, -1, -1, -1, -1},
+<span class="lineNum">     264 </span>            :  {6, 9, 5, 6, 11, 9, 11, 8, 9, -1, -1, -1, -1, -1, -1, -1},
+<span class="lineNum">     265 </span>            :  {3, 6, 11, 0, 6, 3, 0, 5, 6, 0, 9, 5, -1, -1, -1, -1},
+<span class="lineNum">     266 </span>            :  {0, 11, 8, 0, 5, 11, 0, 1, 5, 5, 6, 11, -1, -1, -1, -1},
+<span class="lineNum">     267 </span>            :  {6, 11, 3, 6, 3, 5, 5, 3, 1, -1, -1, -1, -1, -1, -1, -1},
+<span class="lineNum">     268 </span>            :  {1, 2, 10, 9, 5, 11, 9, 11, 8, 11, 5, 6, -1, -1, -1, -1},
+<span class="lineNum">     269 </span>            :  {0, 11, 3, 0, 6, 11, 0, 9, 6, 5, 6, 9, 1, 2, 10, -1},
+<span class="lineNum">     270 </span>            :  {11, 8, 5, 11, 5, 6, 8, 0, 5, 10, 5, 2, 0, 2, 5, -1},
+<span class="lineNum">     271 </span>            :  {6, 11, 3, 6, 3, 5, 2, 10, 3, 10, 5, 3, -1, -1, -1, -1},
+<span class="lineNum">     272 </span>            :  {5, 8, 9, 5, 2, 8, 5, 6, 2, 3, 8, 2, -1, -1, -1, -1},
+<span class="lineNum">     273 </span>            :  {9, 5, 6, 9, 6, 0, 0, 6, 2, -1, -1, -1, -1, -1, -1, -1},
+<span class="lineNum">     274 </span>            :  {1, 5, 8, 1, 8, 0, 5, 6, 8, 3, 8, 2, 6, 2, 8, -1},
+<span class="lineNum">     275 </span>            :  {1, 5, 6, 2, 1, 6, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1},
+<span class="lineNum">     276 </span>            :  {1, 3, 6, 1, 6, 10, 3, 8, 6, 5, 6, 9, 8, 9, 6, -1},
+<span class="lineNum">     277 </span>            :  {10, 1, 0, 10, 0, 6, 9, 5, 0, 5, 6, 0, -1, -1, -1, -1},
+<span class="lineNum">     278 </span>            :  {0, 3, 8, 5, 6, 10, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1},
+<span class="lineNum">     279 </span>            :  {10, 5, 6, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1},
+<span class="lineNum">     280 </span>            :  {11, 5, 10, 7, 5, 11, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1},
+<span class="lineNum">     281 </span>            :  {11, 5, 10, 11, 7, 5, 8, 3, 0, -1, -1, -1, -1, -1, -1, -1},
+<span class="lineNum">     282 </span>            :  {5, 11, 7, 5, 10, 11, 1, 9, 0, -1, -1, -1, -1, -1, -1, -1},
+<span class="lineNum">     283 </span>            :  {10, 7, 5, 10, 11, 7, 9, 8, 1, 8, 3, 1, -1, -1, -1, -1},
+<span class="lineNum">     284 </span>            :  {11, 1, 2, 11, 7, 1, 7, 5, 1, -1, -1, -1, -1, -1, -1, -1},
+<span class="lineNum">     285 </span>            :  {0, 8, 3, 1, 2, 7, 1, 7, 5, 7, 2, 11, -1, -1, -1, -1},
+<span class="lineNum">     286 </span>            :  {9, 7, 5, 9, 2, 7, 9, 0, 2, 2, 11, 7, -1, -1, -1, -1},
+<span class="lineNum">     287 </span>            :  {7, 5, 2, 7, 2, 11, 5, 9, 2, 3, 2, 8, 9, 8, 2, -1},
+<span class="lineNum">     288 </span>            :  {2, 5, 10, 2, 3, 5, 3, 7, 5, -1, -1, -1, -1, -1, -1, -1},
+<span class="lineNum">     289 </span>            :  {8, 2, 0, 8, 5, 2, 8, 7, 5, 10, 2, 5, -1, -1, -1, -1},
+<span class="lineNum">     290 </span>            :  {9, 0, 1, 5, 10, 3, 5, 3, 7, 3, 10, 2, -1, -1, -1, -1},
+<span class="lineNum">     291 </span>            :  {9, 8, 2, 9, 2, 1, 8, 7, 2, 10, 2, 5, 7, 5, 2, -1},
+<span class="lineNum">     292 </span>            :  {1, 3, 5, 3, 7, 5, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1},
+<span class="lineNum">     293 </span>            :  {0, 8, 7, 0, 7, 1, 1, 7, 5, -1, -1, -1, -1, -1, -1, -1},
+<span class="lineNum">     294 </span>            :  {9, 0, 3, 9, 3, 5, 5, 3, 7, -1, -1, -1, -1, -1, -1, -1},
+<span class="lineNum">     295 </span>            :  {9, 8, 7, 5, 9, 7, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1},
+<span class="lineNum">     296 </span>            :  {5, 8, 4, 5, 10, 8, 10, 11, 8, -1, -1, -1, -1, -1, -1, -1},
+<span class="lineNum">     297 </span>            :  {5, 0, 4, 5, 11, 0, 5, 10, 11, 11, 3, 0, -1, -1, -1, -1},
+<span class="lineNum">     298 </span>            :  {0, 1, 9, 8, 4, 10, 8, 10, 11, 10, 4, 5, -1, -1, -1, -1},
+<span class="lineNum">     299 </span>            :  {10, 11, 4, 10, 4, 5, 11, 3, 4, 9, 4, 1, 3, 1, 4, -1},
+<span class="lineNum">     300 </span>            :  {2, 5, 1, 2, 8, 5, 2, 11, 8, 4, 5, 8, -1, -1, -1, -1},
+<span class="lineNum">     301 </span>            :  {0, 4, 11, 0, 11, 3, 4, 5, 11, 2, 11, 1, 5, 1, 11, -1},
+<span class="lineNum">     302 </span>            :  {0, 2, 5, 0, 5, 9, 2, 11, 5, 4, 5, 8, 11, 8, 5, -1},
+<span class="lineNum">     303 </span>            :  {9, 4, 5, 2, 11, 3, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1},
+<span class="lineNum">     304 </span>            :  {2, 5, 10, 3, 5, 2, 3, 4, 5, 3, 8, 4, -1, -1, -1, -1},
+<span class="lineNum">     305 </span>            :  {5, 10, 2, 5, 2, 4, 4, 2, 0, -1, -1, -1, -1, -1, -1, -1},
+<span class="lineNum">     306 </span>            :  {3, 10, 2, 3, 5, 10, 3, 8, 5, 4, 5, 8, 0, 1, 9, -1},
+<span class="lineNum">     307 </span>            :  {5, 10, 2, 5, 2, 4, 1, 9, 2, 9, 4, 2, -1, -1, -1, -1},
+<span class="lineNum">     308 </span>            :  {8, 4, 5, 8, 5, 3, 3, 5, 1, -1, -1, -1, -1, -1, -1, -1},
+<span class="lineNum">     309 </span>            :  {0, 4, 5, 1, 0, 5, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1},
+<span class="lineNum">     310 </span>            :  {8, 4, 5, 8, 5, 3, 9, 0, 5, 0, 3, 5, -1, -1, -1, -1},
+<span class="lineNum">     311 </span>            :  {9, 4, 5, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1},
+<span class="lineNum">     312 </span>            :  {4, 11, 7, 4, 9, 11, 9, 10, 11, -1, -1, -1, -1, -1, -1, -1},
+<span class="lineNum">     313 </span>            :  {0, 8, 3, 4, 9, 7, 9, 11, 7, 9, 10, 11, -1, -1, -1, -1},
+<span class="lineNum">     314 </span>            :  {1, 10, 11, 1, 11, 4, 1, 4, 0, 7, 4, 11, -1, -1, -1, -1},
+<span class="lineNum">     315 </span>            :  {3, 1, 4, 3, 4, 8, 1, 10, 4, 7, 4, 11, 10, 11, 4, -1},
+<span class="lineNum">     316 </span>            :  {4, 11, 7, 9, 11, 4, 9, 2, 11, 9, 1, 2, -1, -1, -1, -1},
+<span class="lineNum">     317 </span>            :  {9, 7, 4, 9, 11, 7, 9, 1, 11, 2, 11, 1, 0, 8, 3, -1},
+<span class="lineNum">     318 </span>            :  {11, 7, 4, 11, 4, 2, 2, 4, 0, -1, -1, -1, -1, -1, -1, -1},
+<span class="lineNum">     319 </span>            :  {11, 7, 4, 11, 4, 2, 8, 3, 4, 3, 2, 4, -1, -1, -1, -1},
+<span class="lineNum">     320 </span>            :  {2, 9, 10, 2, 7, 9, 2, 3, 7, 7, 4, 9, -1, -1, -1, -1},
+<span class="lineNum">     321 </span>            :  {9, 10, 7, 9, 7, 4, 10, 2, 7, 8, 7, 0, 2, 0, 7, -1},
+<span class="lineNum">     322 </span>            :  {3, 7, 10, 3, 10, 2, 7, 4, 10, 1, 10, 0, 4, 0, 10, -1},
+<span class="lineNum">     323 </span>            :  {1, 10, 2, 8, 7, 4, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1},
+<span class="lineNum">     324 </span>            :  {4, 9, 1, 4, 1, 7, 7, 1, 3, -1, -1, -1, -1, -1, -1, -1},
+<span class="lineNum">     325 </span>            :  {4, 9, 1, 4, 1, 7, 0, 8, 1, 8, 7, 1, -1, -1, -1, -1},
+<span class="lineNum">     326 </span>            :  {4, 0, 3, 7, 4, 3, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1},
+<span class="lineNum">     327 </span>            :  {4, 8, 7, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1},
+<span class="lineNum">     328 </span>            :  {9, 10, 8, 10, 11, 8, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1},
+<span class="lineNum">     329 </span>            :  {3, 0, 9, 3, 9, 11, 11, 9, 10, -1, -1, -1, -1, -1, -1, -1},
+<span class="lineNum">     330 </span>            :  {0, 1, 10, 0, 10, 8, 8, 10, 11, -1, -1, -1, -1, -1, -1, -1},
+<span class="lineNum">     331 </span>            :  {3, 1, 10, 11, 3, 10, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1},
+<span class="lineNum">     332 </span>            :  {1, 2, 11, 1, 11, 9, 9, 11, 8, -1, -1, -1, -1, -1, -1, -1},
+<span class="lineNum">     333 </span>            :  {3, 0, 9, 3, 9, 11, 1, 2, 9, 2, 11, 9, -1, -1, -1, -1},
+<span class="lineNum">     334 </span>            :  {0, 2, 11, 8, 0, 11, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1},
+<span class="lineNum">     335 </span>            :  {3, 2, 11, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1},
+<span class="lineNum">     336 </span>            :  {2, 3, 8, 2, 8, 10, 10, 8, 9, -1, -1, -1, -1, -1, -1, -1},
+<span class="lineNum">     337 </span>            :  {9, 10, 2, 0, 9, 2, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1},
+<span class="lineNum">     338 </span>            :  {2, 3, 8, 2, 8, 10, 0, 1, 8, 1, 10, 8, -1, -1, -1, -1},
+<span class="lineNum">     339 </span>            :  {1, 10, 2, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1},
+<span class="lineNum">     340 </span>            :  {1, 3, 8, 9, 1, 8, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1},
+<span class="lineNum">     341 </span>            :  {0, 9, 1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1},
+<span class="lineNum">     342 </span>            :  {0, 3, 8, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1},
+<a name="343"><span class="lineNum">     343 </span>            :  {-1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1}};</a>
+<span class="lineNum">     344 </span>            : 
+<span class="lineNum">     345 </span><span class="lineNoCov">          0 : MetaballsGenerator::~MetaballsGenerator()</span>
+<span class="lineNum">     346 </span>            : {
+<span class="lineNum">     347 </span><span class="lineNoCov">          0 :     _clear();</span>
+<a name="348"><span class="lineNum">     348 </span><span class="lineNoCov">          0 : }</span></a>
+<span class="lineNum">     349 </span>            : 
+<span class="lineNum">     350 </span><span class="lineNoCov">          0 : void MetaballsGenerator::_buildVerticesAndCubes(</span>
+<span class="lineNum">     351 </span>            :     const Spheres&amp; metaballs,
+<span class="lineNum">     352 </span>            :     const size_t gridSize,
+<span class="lineNum">     353 </span>            :     const size_t defaultMaterialId,
+<span class="lineNum">     354 </span>            :     const float scale )
+<span class="lineNum">     355 </span>            : {
+<span class="lineNum">     356 </span>            :     // Determine bounding box
+<span class="lineNum">     357 </span><span class="lineNoCov">          0 :     Boxf bounds;</span>
+<span class="lineNum">     358 </span><span class="lineNoCov">          0 :     for( const auto&amp; ball: metaballs )</span>
+<span class="lineNum">     359 </span><span class="lineNoCov">          0 :         bounds.merge( ball-&gt;getCenter( ));</span>
+<span class="lineNum">     360 </span><span class="lineNoCov">          0 :     const Vector3f center = bounds.getCenter();</span>
+<span class="lineNum">     361 </span>            : 
+<span class="lineNum">     362 </span>            :     // Upscale the bounding box to make sure there is no whole in the isosurface
+<span class="lineNum">     363 </span>            :     Boxf rescaledBounds = Boxf(
+<span class="lineNum">     364 </span><span class="lineNoCov">          0 :         center - scale * bounds.getSize() / 2.f,</span>
+<span class="lineNum">     365 </span><span class="lineNoCov">          0 :         center + scale * bounds.getSize() / 2.f );</span>
+<span class="lineNum">     366 </span>            : 
+<span class="lineNum">     367 </span><span class="lineNoCov">          0 :     const auto rescaledSize = rescaledBounds.getSize();</span>
+<span class="lineNum">     368 </span><span class="lineNoCov">          0 :     const size_t incrementedSize = gridSize + 1;</span>
+<span class="lineNum">     369 </span><span class="lineNoCov">          0 :     _vertices.resize( incrementedSize * incrementedSize * incrementedSize );</span>
+<a name="370"><span class="lineNum">     370 </span>            : </a>
+<span class="lineNum">     371 </span><span class="lineNoCov">          0 :     size_t x = 0;</span>
+<span class="lineNum">     372 </span><span class="lineNoCov">          0 : #pragma omp parallel for</span>
+<span class="lineNum">     373 </span><span class="lineNoCov">          0 :     for( x = 0; x &lt; incrementedSize; ++x )</span>
+<span class="lineNum">     374 </span>            :     {
+<span class="lineNum">     375 </span><span class="lineNoCov">          0 :         for( size_t y = 0; y &lt; incrementedSize; ++y )</span>
+<span class="lineNum">     376 </span>            :         {
+<span class="lineNum">     377 </span><span class="lineNoCov">          0 :             for( size_t z = 0; z &lt; incrementedSize; ++z )</span>
+<span class="lineNum">     378 </span>            :             {
+<span class="lineNum">     379 </span><span class="lineNoCov">          0 :                 CubeGridVertex cgv;</span>
+<span class="lineNum">     380 </span><span class="lineNoCov">          0 :                 cgv.position.x() =</span>
+<span class="lineNum">     381 </span><span class="lineNoCov">          0 :                     rescaledBounds.getMin().x() +</span>
+<span class="lineNum">     382 </span><span class="lineNoCov">          0 :                     x * rescaledSize.x() / gridSize;</span>
+<span class="lineNum">     383 </span><span class="lineNoCov">          0 :                 cgv.position.y() =</span>
+<span class="lineNum">     384 </span><span class="lineNoCov">          0 :                     rescaledBounds.getMin().y() +</span>
+<span class="lineNum">     385 </span><span class="lineNoCov">          0 :                     y * rescaledSize.y() / gridSize;</span>
+<span class="lineNum">     386 </span><span class="lineNoCov">          0 :                 cgv.position.z() =</span>
+<span class="lineNum">     387 </span><span class="lineNoCov">          0 :                     rescaledBounds.getMin().z() +</span>
+<span class="lineNum">     388 </span><span class="lineNoCov">          0 :                     z * rescaledSize.z() / gridSize;</span>
+<span class="lineNum">     389 </span>            : 
+<span class="lineNum">     390 </span><span class="lineNoCov">          0 :                 cgv.texCoords.x() = static_cast&lt; float &gt;( x ) /</span>
+<span class="lineNum">     391 </span><span class="lineNoCov">          0 :                     static_cast&lt; float &gt;( gridSize );</span>
+<span class="lineNum">     392 </span><span class="lineNoCov">          0 :                 cgv.texCoords.y() = static_cast&lt; float &gt;( y ) /</span>
+<span class="lineNum">     393 </span><span class="lineNoCov">          0 :                     static_cast&lt; float &gt;( gridSize );</span>
+<span class="lineNum">     394 </span><span class="lineNoCov">          0 :                 cgv.texCoords.z() = 0.f;</span>
+<span class="lineNum">     395 </span>            : 
+<span class="lineNum">     396 </span><span class="lineNoCov">          0 :                 cgv.value = 0.f;</span>
+<span class="lineNum">     397 </span><span class="lineNoCov">          0 :                 cgv.normal = { 0.f, 0.f, 0.f };</span>
+<span class="lineNum">     398 </span>            : 
+<span class="lineNum">     399 </span><span class="lineNoCov">          0 :                 cgv.materialId = defaultMaterialId;</span>
+<span class="lineNum">     400 </span>            : 
+<span class="lineNum">     401 </span>            :                 const size_t index =
+<span class="lineNum">     402 </span><span class="lineNoCov">          0 :                     x * incrementedSize * incrementedSize +</span>
+<span class="lineNum">     403 </span><span class="lineNoCov">          0 :                     y * incrementedSize + z;</span>
+<span class="lineNum">     404 </span>            : 
+<span class="lineNum">     405 </span><span class="lineNoCov">          0 :                 _vertices[ index ] = cgv;</span>
+<span class="lineNum">     406 </span>            :             }
+<span class="lineNum">     407 </span>            :         }
+<span class="lineNum">     408 </span>            :     }
+<a name="409"><span class="lineNum">     409 </span>            : </a>
+<span class="lineNum">     410 </span><span class="lineNoCov">          0 :     _cubes.resize( gridSize * gridSize * gridSize );</span>
+<span class="lineNum">     411 </span><span class="lineNoCov">          0 : #pragma omp parallel for</span>
+<span class="lineNum">     412 </span><span class="lineNoCov">          0 :     for( x = 0; x &lt; gridSize; ++x )</span>
+<span class="lineNum">     413 </span>            :     {
+<span class="lineNum">     414 </span><span class="lineNoCov">          0 :         for( size_t y = 0; y &lt; gridSize; ++y )</span>
+<span class="lineNum">     415 </span>            :         {
+<span class="lineNum">     416 </span><span class="lineNoCov">          0 :             for( size_t z = 0; z &lt; gridSize; ++z )</span>
+<span class="lineNum">     417 </span>            :             {
+<span class="lineNum">     418 </span>            :                 CubeGridCube cgc;
+<span class="lineNum">     419 </span><span class="lineNoCov">          0 :                 cgc.vertices[ 0 ] = &amp;_vertices[</span>
+<span class="lineNum">     420 </span><span class="lineNoCov">          0 :                      ( x * incrementedSize + y ) *</span>
+<span class="lineNum">     421 </span><span class="lineNoCov">          0 :                         incrementedSize + z ];</span>
+<span class="lineNum">     422 </span><span class="lineNoCov">          0 :                 cgc.vertices[ 1 ] = &amp;_vertices[</span>
+<span class="lineNum">     423 </span><span class="lineNoCov">          0 :                     ( x * incrementedSize + y ) *</span>
+<span class="lineNum">     424 </span><span class="lineNoCov">          0 :                         incrementedSize + z + 1 ];</span>
+<span class="lineNum">     425 </span><span class="lineNoCov">          0 :                 cgc.vertices[ 2 ] = &amp;_vertices[</span>
+<span class="lineNum">     426 </span><span class="lineNoCov">          0 :                     ( x * incrementedSize + ( y + 1 )) *</span>
+<span class="lineNum">     427 </span><span class="lineNoCov">          0 :                         incrementedSize + z + 1 ];</span>
+<span class="lineNum">     428 </span><span class="lineNoCov">          0 :                 cgc.vertices[ 3 ] = &amp;_vertices[</span>
+<span class="lineNum">     429 </span><span class="lineNoCov">          0 :                     (x * incrementedSize + ( y + 1 )) *</span>
+<span class="lineNum">     430 </span><span class="lineNoCov">          0 :                         incrementedSize + z ];</span>
+<span class="lineNum">     431 </span><span class="lineNoCov">          0 :                 cgc.vertices[ 4 ] = &amp;_vertices[</span>
+<span class="lineNum">     432 </span><span class="lineNoCov">          0 :                     (( x + 1 ) * incrementedSize + y ) *</span>
+<span class="lineNum">     433 </span><span class="lineNoCov">          0 :                         incrementedSize + z ];</span>
+<span class="lineNum">     434 </span><span class="lineNoCov">          0 :                 cgc.vertices[ 5 ] = &amp;_vertices[</span>
+<span class="lineNum">     435 </span><span class="lineNoCov">          0 :                     (( x + 1 ) * incrementedSize + y ) *</span>
+<span class="lineNum">     436 </span><span class="lineNoCov">          0 :                         incrementedSize + z + 1 ];</span>
+<span class="lineNum">     437 </span><span class="lineNoCov">          0 :                 cgc.vertices[ 6 ] = &amp;_vertices[</span>
+<span class="lineNum">     438 </span><span class="lineNoCov">          0 :                     (( x + 1 ) * incrementedSize + ( y + 1 )) *</span>
+<span class="lineNum">     439 </span><span class="lineNoCov">          0 :                         incrementedSize + z + 1 ];</span>
+<span class="lineNum">     440 </span><span class="lineNoCov">          0 :                 cgc.vertices[ 7 ] = &amp;_vertices[</span>
+<span class="lineNum">     441 </span><span class="lineNoCov">          0 :                     (( x + 1 ) * incrementedSize + ( y + 1 )) *</span>
+<span class="lineNum">     442 </span><span class="lineNoCov">          0 :                         incrementedSize + z ];</span>
+<span class="lineNum">     443 </span>            : 
+<span class="lineNum">     444 </span>            :                 const size_t index =
+<span class="lineNum">     445 </span><span class="lineNoCov">          0 :                     x * gridSize * gridSize + y * gridSize + z;</span>
+<span class="lineNum">     446 </span><span class="lineNoCov">          0 :                  _cubes[ index ] = cgc;</span>
+<span class="lineNum">     447 </span>            :             }
+<span class="lineNum">     448 </span>            :         }
+<span class="lineNum">     449 </span>            :     }
+<span class="lineNum">     450 </span>            : 
+<span class="lineNum">     451 </span><span class="lineNoCov">          0 :     BRAYNS_DEBUG &lt;&lt; &quot;Nb metaballs   : &quot; &lt;&lt; metaballs.size() &lt;&lt; std::endl;</span>
+<span class="lineNum">     452 </span><span class="lineNoCov">          0 :     BRAYNS_DEBUG &lt;&lt; &quot;Nb Vertices    : &quot; &lt;&lt; _vertices.size() &lt;&lt; std::endl;</span>
+<span class="lineNum">     453 </span><span class="lineNoCov">          0 :     BRAYNS_DEBUG &lt;&lt; &quot;Nb Cubes       : &quot; &lt;&lt; _cubes.size() &lt;&lt; std::endl;</span>
+<span class="lineNum">     454 </span><span class="lineNoCov">          0 :     BRAYNS_DEBUG &lt;&lt; &quot;Grid size      : &quot; &lt;&lt; gridSize &lt;&lt; std::endl;</span>
+<span class="lineNum">     455 </span><span class="lineNoCov">          0 :     BRAYNS_DEBUG &lt;&lt; &quot;Grid dimensions: &quot; &lt;&lt; bounds &lt;&lt; &quot;/&quot;</span>
+<span class="lineNum">     456 </span><span class="lineNoCov">          0 :                  &lt;&lt; bounds.getSize() &lt;&lt; std::endl;</span>
+<a name="457"><span class="lineNum">     457 </span><span class="lineNoCov">          0 : }</span></a>
+<span class="lineNum">     458 </span>            : 
+<span class="lineNum">     459 </span><span class="lineNoCov">          0 : void MetaballsGenerator::_buildTriangles(</span>
+<span class="lineNum">     460 </span>            :     const Spheres&amp; metaballs,
+<span class="lineNum">     461 </span>            :     const float threshold,
+<span class="lineNum">     462 </span>            :     const MaterialsMap&amp; materials,
+<span class="lineNum">     463 </span>            :     const size_t defaultMaterialId,
+<a name="464"><span class="lineNum">     464 </span>            :     TrianglesMeshMap&amp; triangles )</a>
+<span class="lineNum">     465 </span>            : {
+<span class="lineNum">     466 </span><span class="lineNoCov">          0 : #pragma omp parallel</span>
+<span class="lineNum">     467 </span><span class="lineNoCov">          0 :     for( const auto metaball: metaballs )</span>
+<span class="lineNum">     468 </span>            :     {
+<span class="lineNum">     469 </span><span class="lineNoCov">          0 :         const auto radius = metaball-&gt;getRadius();</span>
+<span class="lineNum">     470 </span><span class="lineNoCov">          0 :         const auto squaredRadius = radius * radius;</span>
+<span class="lineNum">     471 </span><span class="lineNoCov">          0 :         const auto&amp; ballPosition = metaball-&gt;getCenter();</span>
+<a name="472"><span class="lineNum">     472 </span><span class="lineNoCov">          0 :         const auto materialId = metaball-&gt;getMaterialId();</span></a>
+<span class="lineNum">     473 </span>            : 
+<span class="lineNum">     474 </span><span class="lineNoCov">          0 : #pragma omp parallel</span>
+<span class="lineNum">     475 </span><span class="lineNoCov">          0 :         for( auto&amp; vertex: _vertices )</span>
+<span class="lineNum">     476 </span>            :         {
+<span class="lineNum">     477 </span>            :             const auto ballToPoint =
+<span class="lineNum">     478 </span><span class="lineNoCov">          0 :                 vertex.position - ballPosition;</span>
+<span class="lineNum">     479 </span>            : 
+<span class="lineNum">     480 </span>            :             // get squared distance from ball to point
+<span class="lineNum">     481 </span><span class="lineNoCov">          0 :             const auto distance = ballToPoint.length();</span>
+<span class="lineNum">     482 </span><span class="lineNoCov">          0 :             auto squaredDistance = distance * distance;</span>
+<span class="lineNum">     483 </span>            : 
+<span class="lineNum">     484 </span><span class="lineNoCov">          0 :             if( squaredDistance == 0.f )</span>
+<span class="lineNum">     485 </span><span class="lineNoCov">          0 :                 continue;</span>
+<span class="lineNum">     486 </span>            : 
+<span class="lineNum">     487 </span><span class="lineNoCov">          0 :             const auto normalScale = squaredRadius / squaredDistance;</span>
+<span class="lineNum">     488 </span><span class="lineNoCov">          0 :             vertex.value += normalScale;</span>
+<span class="lineNum">     489 </span>            : 
+<span class="lineNum">     490 </span><span class="lineNoCov">          0 :             if( distance &lt; threshold )</span>
+<span class="lineNum">     491 </span><span class="lineNoCov">          0 :                 vertex.materialId = materialId;</span>
+<span class="lineNum">     492 </span>            : 
+<span class="lineNum">     493 </span><span class="lineNoCov">          0 :             vertex.normal += ballToPoint * normalScale;</span>
+<span class="lineNum">     494 </span>            :         }
+<span class="lineNum">     495 </span>            :     }
+<span class="lineNum">     496 </span>            : 
+<span class="lineNum">     497 </span><span class="lineNoCov">          0 :     for( const auto&amp; cube: _cubes )</span>
+<span class="lineNum">     498 </span>            :     {
+<span class="lineNum">     499 </span><span class="lineNoCov">          0 :         unsigned char cubeIndex = 0;</span>
+<span class="lineNum">     500 </span>            : 
+<span class="lineNum">     501 </span><span class="lineNoCov">          0 :         if( cube.vertices[ 0 ]-&gt;value &gt; 0.f &amp;&amp;</span>
+<span class="lineNum">     502 </span><span class="lineNoCov">          0 :             cube.vertices[ 0 ]-&gt;value &lt; threshold )</span>
+<span class="lineNum">     503 </span><span class="lineNoCov">          0 :             cubeIndex |= 1;</span>
+<span class="lineNum">     504 </span><span class="lineNoCov">          0 :         if( cube.vertices[ 1 ]-&gt;value &gt; 0.f &amp;&amp;</span>
+<span class="lineNum">     505 </span><span class="lineNoCov">          0 :             cube.vertices[ 1 ]-&gt;value &lt; threshold )</span>
+<span class="lineNum">     506 </span><span class="lineNoCov">          0 :             cubeIndex |= 2;</span>
+<span class="lineNum">     507 </span><span class="lineNoCov">          0 :         if( cube.vertices[ 2 ]-&gt;value &gt; 0.f &amp;&amp;</span>
+<span class="lineNum">     508 </span><span class="lineNoCov">          0 :             cube.vertices[ 2 ]-&gt;value &lt; threshold )</span>
+<span class="lineNum">     509 </span><span class="lineNoCov">          0 :             cubeIndex |= 4;</span>
+<span class="lineNum">     510 </span><span class="lineNoCov">          0 :         if( cube.vertices[ 3 ]-&gt;value &gt; 0.f &amp;&amp;</span>
+<span class="lineNum">     511 </span><span class="lineNoCov">          0 :             cube.vertices[ 3 ]-&gt;value &lt; threshold )</span>
+<span class="lineNum">     512 </span><span class="lineNoCov">          0 :             cubeIndex |= 8;</span>
+<span class="lineNum">     513 </span><span class="lineNoCov">          0 :         if( cube.vertices[ 4 ]-&gt;value &gt; 0.f &amp;&amp;</span>
+<span class="lineNum">     514 </span><span class="lineNoCov">          0 :             cube.vertices[ 4 ]-&gt;value &lt; threshold )</span>
+<span class="lineNum">     515 </span><span class="lineNoCov">          0 :             cubeIndex |= 16;</span>
+<span class="lineNum">     516 </span><span class="lineNoCov">          0 :         if( cube.vertices[ 5 ]-&gt;value &gt; 0.f &amp;&amp;</span>
+<span class="lineNum">     517 </span><span class="lineNoCov">          0 :             cube.vertices[ 5 ]-&gt;value &lt; threshold )</span>
+<span class="lineNum">     518 </span><span class="lineNoCov">          0 :             cubeIndex |= 32;</span>
+<span class="lineNum">     519 </span><span class="lineNoCov">          0 :         if( cube.vertices[ 6 ]-&gt;value &gt; 0.f &amp;&amp;</span>
+<span class="lineNum">     520 </span><span class="lineNoCov">          0 :             cube.vertices[ 6 ]-&gt;value &lt; threshold )</span>
+<span class="lineNum">     521 </span><span class="lineNoCov">          0 :             cubeIndex |= 64;</span>
+<span class="lineNum">     522 </span><span class="lineNoCov">          0 :         if( cube.vertices[ 7 ]-&gt;value &gt; 0.f &amp;&amp;</span>
+<span class="lineNum">     523 </span><span class="lineNoCov">          0 :             cube.vertices[ 7 ]-&gt;value &lt; threshold )</span>
+<span class="lineNum">     524 </span><span class="lineNoCov">          0 :             cubeIndex |= 128;</span>
+<span class="lineNum">     525 </span>            : 
+<span class="lineNum">     526 </span><span class="lineNoCov">          0 :         int usedEdges = METABALLS_EDGES[ cubeIndex ];</span>
+<span class="lineNum">     527 </span>            : 
+<span class="lineNum">     528 </span><span class="lineNoCov">          0 :         if( usedEdges == 0 || usedEdges == 255 )</span>
+<span class="lineNum">     529 </span><span class="lineNoCov">          0 :             continue;</span>
+<span class="lineNum">     530 </span>            : 
+<span class="lineNum">     531 </span><span class="lineNoCov">          0 :         for( size_t currentEdge = 0; currentEdge &lt; NB_EDGES; ++currentEdge )</span>
+<span class="lineNum">     532 </span>            :         {
+<span class="lineNum">     533 </span>            :             // Check usedEdges against 1,2,4,8,16,...,2048
+<span class="lineNum">     534 </span><span class="lineNoCov">          0 :             if( usedEdges &amp; ( 1 &lt;&lt; currentEdge ))</span>
+<span class="lineNum">     535 </span>            :             {
+<span class="lineNum">     536 </span>            :                 CubeGridVertex* v1=
+<span class="lineNum">     537 </span>            :                         cube.vertices[
+<span class="lineNum">     538 </span><span class="lineNoCov">          0 :                         METABALLS_VERTICES[ currentEdge * 2 ]];</span>
+<span class="lineNum">     539 </span>            :                 CubeGridVertex* v2=
+<span class="lineNum">     540 </span>            :                         cube.vertices[
+<span class="lineNum">     541 </span><span class="lineNoCov">          0 :                         METABALLS_VERTICES[ currentEdge * 2 +  1 ]];</span>
+<span class="lineNum">     542 </span>            : 
+<span class="lineNum">     543 </span><span class="lineNoCov">          0 :                 const float denom = ( v2-&gt;value - v1-&gt;value );</span>
+<span class="lineNum">     544 </span><span class="lineNoCov">          0 :                 if( fabs( denom ) &lt; 0.00001f )</span>
+<span class="lineNum">     545 </span><span class="lineNoCov">          0 :                     continue;</span>
+<span class="lineNum">     546 </span>            : 
+<span class="lineNum">     547 </span><span class="lineNoCov">          0 :                 auto delta = ( threshold - v1-&gt;value ) / denom;</span>
+<span class="lineNum">     548 </span>            : 
+<span class="lineNum">     549 </span><span class="lineNoCov">          0 :                 Vector3f position;</span>
+<span class="lineNum">     550 </span><span class="lineNoCov">          0 :                 position.x() =</span>
+<span class="lineNum">     551 </span><span class="lineNoCov">          0 :                     v1-&gt;position.x() + delta * (</span>
+<span class="lineNum">     552 </span><span class="lineNoCov">          0 :                     v2-&gt;position.x() - v1-&gt;position.x( ));</span>
+<span class="lineNum">     553 </span><span class="lineNoCov">          0 :                 position.y() =</span>
+<span class="lineNum">     554 </span><span class="lineNoCov">          0 :                     v1-&gt;position.y() + delta * (</span>
+<span class="lineNum">     555 </span><span class="lineNoCov">          0 :                     v2-&gt;position.y() - v1-&gt;position.y( ));</span>
+<span class="lineNum">     556 </span><span class="lineNoCov">          0 :                 position.z() =</span>
+<span class="lineNum">     557 </span><span class="lineNoCov">          0 :                     v1-&gt;position.z() + delta * (</span>
+<span class="lineNum">     558 </span><span class="lineNoCov">          0 :                     v2-&gt;position.z() - v1-&gt;position.z( ));</span>
+<span class="lineNum">     559 </span>            : 
+<span class="lineNum">     560 </span><span class="lineNoCov">          0 :                 Vector3f normal;</span>
+<span class="lineNum">     561 </span><span class="lineNoCov">          0 :                 normal.x() = v1-&gt;normal.x() +</span>
+<span class="lineNum">     562 </span><span class="lineNoCov">          0 :                     delta * (v2-&gt;normal.x() - v1-&gt;normal.x( ));</span>
+<span class="lineNum">     563 </span><span class="lineNoCov">          0 :                 normal.y() = v1-&gt;normal.y() +</span>
+<span class="lineNum">     564 </span><span class="lineNoCov">          0 :                     delta * (v2-&gt;normal.y() - v1-&gt;normal.y( ));</span>
+<span class="lineNum">     565 </span><span class="lineNoCov">          0 :                 normal.z() = v1-&gt;normal.z() +</span>
+<span class="lineNum">     566 </span><span class="lineNoCov">          0 :                     delta * (v2-&gt;normal.z() - v1-&gt;normal.z( ));</span>
+<span class="lineNum">     567 </span>            : 
+<span class="lineNum">     568 </span><span class="lineNoCov">          0 :                 _edgeVertices[ currentEdge ].position = position;</span>
+<span class="lineNum">     569 </span><span class="lineNoCov">          0 :                 _edgeVertices[ currentEdge ].normal = normal;</span>
+<span class="lineNum">     570 </span><span class="lineNoCov">          0 :                 _edgeVertices[ currentEdge ].materialId = v1-&gt;materialId;</span>
+<span class="lineNum">     571 </span>            :             }
+<span class="lineNum">     572 </span>            :         }
+<span class="lineNum">     573 </span>            : 
+<span class="lineNum">     574 </span><span class="lineNoCov">          0 :         auto&amp; vertices = triangles[ defaultMaterialId ].getVertices();</span>
+<span class="lineNum">     575 </span><span class="lineNoCov">          0 :         auto&amp; normals = triangles[ defaultMaterialId ].getNormals();</span>
+<span class="lineNum">     576 </span><span class="lineNoCov">          0 :         auto&amp; indices = triangles[ defaultMaterialId ].getIndices();</span>
+<span class="lineNum">     577 </span><span class="lineNoCov">          0 :         auto&amp; colors = triangles[ defaultMaterialId ].getColors();</span>
+<span class="lineNum">     578 </span>            : 
+<span class="lineNum">     579 </span><span class="lineNoCov">          0 :         for( auto k = 0; METABALLS_TRIANGLES[ cubeIndex ][ k ] != -1; k += 3 )</span>
+<span class="lineNum">     580 </span>            :         {
+<span class="lineNum">     581 </span><span class="lineNoCov">          0 :             const auto verticesIndex = vertices.size();</span>
+<span class="lineNum">     582 </span>            : 
+<span class="lineNum">     583 </span>            :             // Create triangulated face
+<span class="lineNum">     584 </span><span class="lineNoCov">          0 :             for( auto f = 0; f &lt; 3; ++f )</span>
+<span class="lineNum">     585 </span>            :             {
+<span class="lineNum">     586 </span><span class="lineNoCov">          0 :                 const auto index = METABALLS_TRIANGLES[ cubeIndex ][ k + f ];</span>
+<span class="lineNum">     587 </span>            : 
+<span class="lineNum">     588 </span><span class="lineNoCov">          0 :                 const auto vertex = _edgeVertices[ index ].position;</span>
+<span class="lineNum">     589 </span><span class="lineNoCov">          0 :                 vertices.push_back( vertex );</span>
+<span class="lineNum">     590 </span>            : 
+<span class="lineNum">     591 </span><span class="lineNoCov">          0 :                 const auto normal = normalize( _edgeVertices[ index ].normal );</span>
+<span class="lineNum">     592 </span><span class="lineNoCov">          0 :                 normals.push_back( normal );</span>
+<span class="lineNum">     593 </span>            : 
+<span class="lineNum">     594 </span><span class="lineNoCov">          0 :                 if( defaultMaterialId == NO_MATERIAL )</span>
+<span class="lineNum">     595 </span>            :                 {
+<span class="lineNum">     596 </span><span class="lineNoCov">          0 :                     const auto materialId = _edgeVertices[ index ].materialId;</span>
+<span class="lineNum">     597 </span><span class="lineNoCov">          0 :                     if( materials.find( materialId ) != materials.end( ))</span>
+<span class="lineNum">     598 </span><span class="lineNoCov">          0 :                         colors.push_back(</span>
+<span class="lineNum">     599 </span><span class="lineNoCov">          0 :                             materials.at( materialId )-&gt;getColor( ));</span>
+<span class="lineNum">     600 </span>            :                 }
+<span class="lineNum">     601 </span>            :             }
+<span class="lineNum">     602 </span>            : 
+<span class="lineNum">     603 </span><span class="lineNoCov">          0 :             indices.push_back( Vector3ui(</span>
+<span class="lineNum">     604 </span><span class="lineNoCov">          0 :                 verticesIndex, verticesIndex + 2, verticesIndex + 1 ));</span>
+<span class="lineNum">     605 </span>            :         }
+<span class="lineNum">     606 </span>            :     }
+<a name="607"><span class="lineNum">     607 </span><span class="lineNoCov">          0 : }</span></a>
+<span class="lineNum">     608 </span>            : 
+<span class="lineNum">     609 </span><span class="lineNoCov">          0 : void MetaballsGenerator::_clear()</span>
+<span class="lineNum">     610 </span>            : {
+<span class="lineNum">     611 </span><span class="lineNoCov">          0 :     _edgeVertices.resize( NB_EDGES );</span>
+<span class="lineNum">     612 </span><span class="lineNoCov">          0 :     _vertices.clear();</span>
+<span class="lineNum">     613 </span><span class="lineNoCov">          0 :     _cubes.clear();</span>
+<a name="614"><span class="lineNum">     614 </span><span class="lineNoCov">          0 : }</span></a>
+<span class="lineNum">     615 </span>            : 
+<span class="lineNum">     616 </span><span class="lineNoCov">          0 : void MetaballsGenerator::generateMesh(</span>
+<span class="lineNum">     617 </span>            :     const Spheres&amp; metaballs,
+<span class="lineNum">     618 </span>            :     const size_t gridSize,
+<span class="lineNum">     619 </span>            :     const float threshold,
+<span class="lineNum">     620 </span>            :     const MaterialsMap&amp; materials,
+<span class="lineNum">     621 </span>            :     const size_t defaultMaterialId,
+<span class="lineNum">     622 </span>            :     TrianglesMeshMap&amp; triangles)
+<span class="lineNum">     623 </span>            : {
+<span class="lineNum">     624 </span><span class="lineNoCov">          0 :     _clear();</span>
+<span class="lineNum">     625 </span><span class="lineNoCov">          0 :     _buildVerticesAndCubes( metaballs, gridSize, defaultMaterialId );</span>
+<span class="lineNum">     626 </span>            :     _buildTriangles( metaballs, threshold, materials,
+<span class="lineNum">     627 </span><span class="lineNoCov">          0 :                      defaultMaterialId, triangles );</span>
+<a name="628"><span class="lineNum">     628 </span><span class="lineNoCov">          0 : }</span></a>
+<span class="lineNum">     629 </span>            : 
+<span class="lineNum">     630 </span><span class="lineCov">         12 : }</span>
+</pre>
+      </td>
+    </tr>
+  </table>
+  <br>
+
+  <table width="100%" border=0 cellspacing=0 cellpadding=0>
+    <tr><td class="ruler"><img src="../../../glass.png" width=3 height=3 alt=""></td></tr>
+    <tr><td class="versionInfo">Generated by: <a href="http://ltp.sourceforge.net/coverage/lcov.php" target="_parent">LCOV version 1.11</a></td></tr>
+  </table>
+  <br>
+
+</body>
+</html>
