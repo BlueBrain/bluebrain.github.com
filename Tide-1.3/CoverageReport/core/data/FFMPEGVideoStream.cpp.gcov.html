@@ -32,12 +32,12 @@
             <td></td>
             <td class="headerItem">Lines:</td>
             <td class="headerCovTableEntry">1</td>
-            <td class="headerCovTableEntry">130</td>
+            <td class="headerCovTableEntry">133</td>
             <td class="headerCovTableEntryLo">0.8 %</td>
           </tr>
           <tr>
             <td class="headerItem">Date:</td>
-            <td class="headerValue">2017-02-11 06:23:11</td>
+            <td class="headerValue">2017-02-16 06:25:22</td>
             <td></td>
             <td class="headerItem">Functions:</td>
             <td class="headerCovTableEntry">2</td>
@@ -61,8 +61,8 @@
 <pre class="sourceHeading">          Line data    Source code</pre>
 <pre class="source">
 <a name="1"><span class="lineNum">       1 </span>            : /*********************************************************************/</a>
-<span class="lineNum">       2 </span>            : /* Copyright (c) 2015, EPFL/Blue Brain Project                       */
-<span class="lineNum">       3 </span>            : /*                     Raphael Dumusc &lt;raphael.dumusc@epfl.ch&gt;       */
+<span class="lineNum">       2 </span>            : /* Copyright (c) 2015-2017, EPFL/Blue Brain Project                  */
+<span class="lineNum">       3 </span>            : /*                          Raphael Dumusc &lt;raphael.dumusc@epfl.ch&gt;  */
 <span class="lineNum">       4 </span>            : /* All rights reserved.                                              */
 <span class="lineNum">       5 </span>            : /*                                                                   */
 <span class="lineNum">       6 </span>            : /* Redistribution and use in source and binary forms, with or        */
@@ -232,168 +232,182 @@
 <span class="lineNum">     170 </span>            : 
 <span class="lineNum">     171 </span><span class="lineNoCov">          0 : double FFMPEGVideoStream::getDuration() const</span>
 <span class="lineNum">     172 </span>            : {
-<span class="lineNum">     173 </span><span class="lineNoCov">          0 :     const double duration = (double)_videoStream-&gt;duration *</span>
-<span class="lineNum">     174 </span><span class="lineNoCov">          0 :                             (double)_videoStream-&gt;time_base.num /</span>
-<span class="lineNum">     175 </span><span class="lineNoCov">          0 :                             (double)_videoStream-&gt;time_base.den;</span>
-<span class="lineNum">     176 </span><span class="lineNoCov">          0 :     return std::max( duration, 0.0 );</span>
-<a name="177"><span class="lineNum">     177 </span>            : }</a>
-<span class="lineNum">     178 </span>            : 
-<span class="lineNum">     179 </span><span class="lineNoCov">          0 : double FFMPEGVideoStream::getFrameDuration() const</span>
-<span class="lineNum">     180 </span>            : {
-<span class="lineNum">     181 </span><span class="lineNoCov">          0 :     return _frameDurationInSeconds;</span>
-<a name="182"><span class="lineNum">     182 </span>            : }</a>
-<span class="lineNum">     183 </span>            : 
-<span class="lineNum">     184 </span><span class="lineNoCov">          0 : int64_t FFMPEGVideoStream::getFrameIndex( double timePositionInSec ) const</span>
-<span class="lineNum">     185 </span>            : {
-<span class="lineNum">     186 </span><span class="lineNoCov">          0 :     const int64_t index = timePositionInSec / _frameDurationInSeconds;</span>
-<span class="lineNum">     187 </span><span class="lineNoCov">          0 :     return index;</span>
-<a name="188"><span class="lineNum">     188 </span>            : }</a>
-<span class="lineNum">     189 </span>            : 
-<span class="lineNum">     190 </span><span class="lineNoCov">          0 : int64_t FFMPEGVideoStream::getTimestamp( double timePositionInSec ) const</span>
-<span class="lineNum">     191 </span>            : {
-<span class="lineNum">     192 </span><span class="lineNoCov">          0 :     return getTimestamp( getFrameIndex( timePositionInSec ));</span>
-<a name="193"><span class="lineNum">     193 </span>            : }</a>
-<span class="lineNum">     194 </span>            : 
-<span class="lineNum">     195 </span><span class="lineNoCov">          0 : int64_t FFMPEGVideoStream::getTimestamp( int64_t frameIndex ) const</span>
-<span class="lineNum">     196 </span>            : {
-<span class="lineNum">     197 </span><span class="lineNoCov">          0 :     if( frameIndex &lt; 0 || ( _numFrames &amp;&amp; frameIndex &gt;= _numFrames ))</span>
-<span class="lineNum">     198 </span>            :     {
-<span class="lineNum">     199 </span><span class="lineNoCov">          0 :         put_flog( LOG_WARN, &quot;Invalid index: %i - valid range: [0, %i[ in: '%s'&quot;,</span>
-<span class="lineNum">     200 </span><span class="lineNoCov">          0 :                   frameIndex, _numFrames, _avFormatContext.filename );</span>
-<span class="lineNum">     201 </span>            :     }
-<span class="lineNum">     202 </span><span class="lineNoCov">          0 :     frameIndex = std::max( int64_t(0), std::min( frameIndex, _numFrames - 1 ));</span>
-<span class="lineNum">     203 </span>            : 
-<span class="lineNum">     204 </span><span class="lineNoCov">          0 :     int64_t timestamp = frameIndex * _frameDuration;</span>
+<span class="lineNum">     173 </span><span class="lineNoCov">          0 :     return std::max( _frameDurationInSeconds * _numFrames, 0.0 );</span>
+<a name="174"><span class="lineNum">     174 </span>            : }</a>
+<span class="lineNum">     175 </span>            : 
+<span class="lineNum">     176 </span><span class="lineNoCov">          0 : double FFMPEGVideoStream::getFrameDuration() const</span>
+<span class="lineNum">     177 </span>            : {
+<span class="lineNum">     178 </span><span class="lineNoCov">          0 :     return _frameDurationInSeconds;</span>
+<a name="179"><span class="lineNum">     179 </span>            : }</a>
+<span class="lineNum">     180 </span>            : 
+<span class="lineNum">     181 </span><span class="lineNoCov">          0 : int64_t FFMPEGVideoStream::getFrameIndex( const double timePositionInSec ) const</span>
+<span class="lineNum">     182 </span>            : {
+<span class="lineNum">     183 </span><span class="lineNoCov">          0 :     const int64_t index = timePositionInSec / _frameDurationInSeconds;</span>
+<span class="lineNum">     184 </span><span class="lineNoCov">          0 :     return index;</span>
+<a name="185"><span class="lineNum">     185 </span>            : }</a>
+<span class="lineNum">     186 </span>            : 
+<span class="lineNum">     187 </span><span class="lineNoCov">          0 : int64_t FFMPEGVideoStream::getTimestamp( const double timePositionInSec ) const</span>
+<span class="lineNum">     188 </span>            : {
+<span class="lineNum">     189 </span><span class="lineNoCov">          0 :     return getTimestamp( getFrameIndex( timePositionInSec ));</span>
+<a name="190"><span class="lineNum">     190 </span>            : }</a>
+<span class="lineNum">     191 </span>            : 
+<span class="lineNum">     192 </span><span class="lineNoCov">          0 : int64_t FFMPEGVideoStream::getTimestamp( int64_t frameIndex ) const</span>
+<span class="lineNum">     193 </span>            : {
+<span class="lineNum">     194 </span><span class="lineNoCov">          0 :     if( frameIndex &lt; 0 || ( _numFrames &amp;&amp; frameIndex &gt;= _numFrames ))</span>
+<span class="lineNum">     195 </span>            :     {
+<span class="lineNum">     196 </span><span class="lineNoCov">          0 :         put_flog( LOG_WARN, &quot;Invalid index: %i - valid range: [0, %i[ in: '%s'&quot;,</span>
+<span class="lineNum">     197 </span><span class="lineNoCov">          0 :                   frameIndex, _numFrames, _avFormatContext.filename );</span>
+<span class="lineNum">     198 </span>            :     }
+<span class="lineNum">     199 </span><span class="lineNoCov">          0 :     frameIndex = std::max( int64_t(0), std::min( frameIndex, _numFrames - 1 ));</span>
+<span class="lineNum">     200 </span>            : 
+<span class="lineNum">     201 </span><span class="lineNoCov">          0 :     int64_t timestamp = frameIndex * _frameDuration;</span>
+<span class="lineNum">     202 </span>            : 
+<span class="lineNum">     203 </span><span class="lineNoCov">          0 :     if( _videoStream-&gt;start_time != (int64_t)AV_NOPTS_VALUE )</span>
+<span class="lineNum">     204 </span><span class="lineNoCov">          0 :         timestamp += _videoStream-&gt;start_time;</span>
 <span class="lineNum">     205 </span>            : 
-<span class="lineNum">     206 </span><span class="lineNoCov">          0 :     if( _videoStream-&gt;start_time != (int64_t)AV_NOPTS_VALUE )</span>
-<span class="lineNum">     207 </span><span class="lineNoCov">          0 :         timestamp += _videoStream-&gt;start_time;</span>
+<span class="lineNum">     206 </span><span class="lineNoCov">          0 :     return timestamp;</span>
+<a name="207"><span class="lineNum">     207 </span>            : }</a>
 <span class="lineNum">     208 </span>            : 
-<span class="lineNum">     209 </span><span class="lineNoCov">          0 :     return timestamp;</span>
-<a name="210"><span class="lineNum">     210 </span>            : }</a>
-<span class="lineNum">     211 </span>            : 
-<span class="lineNum">     212 </span><span class="lineNoCov">          0 : int64_t FFMPEGVideoStream::getFrameIndex( int64_t timestamp ) const</span>
-<span class="lineNum">     213 </span>            : {
-<span class="lineNum">     214 </span><span class="lineNoCov">          0 :     if( _videoStream-&gt;start_time != (int64_t)AV_NOPTS_VALUE )</span>
-<span class="lineNum">     215 </span><span class="lineNoCov">          0 :         timestamp -= _videoStream-&gt;start_time;</span>
-<span class="lineNum">     216 </span>            : 
-<span class="lineNum">     217 </span><span class="lineNoCov">          0 :     const int64_t frameIndex = timestamp / _frameDuration;</span>
+<span class="lineNum">     209 </span><span class="lineNoCov">          0 : int64_t FFMPEGVideoStream::getFrameIndex( int64_t timestamp ) const</span>
+<span class="lineNum">     210 </span>            : {
+<span class="lineNum">     211 </span><span class="lineNoCov">          0 :     if( _videoStream-&gt;start_time != (int64_t)AV_NOPTS_VALUE )</span>
+<span class="lineNum">     212 </span><span class="lineNoCov">          0 :         timestamp -= _videoStream-&gt;start_time;</span>
+<span class="lineNum">     213 </span>            : 
+<span class="lineNum">     214 </span><span class="lineNoCov">          0 :     const int64_t frameIndex = timestamp / _frameDuration;</span>
+<span class="lineNum">     215 </span>            : 
+<span class="lineNum">     216 </span><span class="lineNoCov">          0 :     return frameIndex;</span>
+<a name="217"><span class="lineNum">     217 </span>            : }</a>
 <span class="lineNum">     218 </span>            : 
-<span class="lineNum">     219 </span><span class="lineNoCov">          0 :     return frameIndex;</span>
-<a name="220"><span class="lineNum">     220 </span>            : }</a>
-<span class="lineNum">     221 </span>            : 
-<span class="lineNum">     222 </span><span class="lineNoCov">          0 : double FFMPEGVideoStream::getPositionInSec( const int64_t timestamp ) const</span>
-<span class="lineNum">     223 </span>            : {
-<span class="lineNum">     224 </span><span class="lineNoCov">          0 :     return _frameDurationInSeconds * getFrameIndex( timestamp );</span>
-<a name="225"><span class="lineNum">     225 </span>            : }</a>
-<span class="lineNum">     226 </span>            : 
-<span class="lineNum">     227 </span><span class="lineNoCov">          0 : bool FFMPEGVideoStream::seekToNearestFullframe( int64_t frameIndex )</span>
-<span class="lineNum">     228 </span>            : {
-<span class="lineNum">     229 </span><span class="lineNoCov">          0 :     if( frameIndex &lt; 0 || ( _numFrames &amp;&amp; frameIndex &gt;= _numFrames ))</span>
-<span class="lineNum">     230 </span>            :     {
-<span class="lineNum">     231 </span><span class="lineNoCov">          0 :         put_flog( LOG_WARN, &quot;Invalid index: %i, range [0,%d[: '%s'&quot;,</span>
-<span class="lineNum">     232 </span><span class="lineNoCov">          0 :                   frameIndex, _numFrames, _avFormatContext.filename );</span>
-<span class="lineNum">     233 </span>            :     }
-<span class="lineNum">     234 </span>            : 
-<span class="lineNum">     235 </span><span class="lineNoCov">          0 :     frameIndex = std::max( int64_t(0), std::min( frameIndex, _numFrames - 1 ));</span>
-<span class="lineNum">     236 </span>            : 
-<span class="lineNum">     237 </span><span class="lineNoCov">          0 :     const int64_t seek_target = getTimestamp( frameIndex );</span>
-<span class="lineNum">     238 </span><span class="lineNoCov">          0 :     const int64_t seek_min = INT64_MIN;</span>
-<span class="lineNum">     239 </span><span class="lineNoCov">          0 :     const int64_t seek_max = INT64_MAX;</span>
-<span class="lineNum">     240 </span><span class="lineNoCov">          0 :     const int seek_flags = AVSEEK_FLAG_FRAME;</span>
-<span class="lineNum">     241 </span>            : 
-<span class="lineNum">     242 </span><span class="lineNoCov">          0 :     if( avformat_seek_file( &amp;_avFormatContext, _videoStream-&gt;index, seek_min,</span>
-<span class="lineNum">     243 </span>            :                             seek_target, seek_max, seek_flags ) != 0 )
-<span class="lineNum">     244 </span>            :     {
-<span class="lineNum">     245 </span><span class="lineNoCov">          0 :         put_flog( LOG_ERROR, &quot;seeking error, seeking aborted in: '%s'&quot;,</span>
-<span class="lineNum">     246 </span><span class="lineNoCov">          0 :                   _avFormatContext.filename );</span>
-<span class="lineNum">     247 </span><span class="lineNoCov">          0 :         return false;</span>
-<span class="lineNum">     248 </span>            :     }
-<span class="lineNum">     249 </span>            : 
-<span class="lineNum">     250 </span><span class="lineNoCov">          0 :     avcodec_flush_buffers( _videoCodecContext );</span>
-<span class="lineNum">     251 </span><span class="lineNoCov">          0 :     return true;</span>
-<a name="252"><span class="lineNum">     252 </span>            : }</a>
-<span class="lineNum">     253 </span>            : 
-<span class="lineNum">     254 </span><span class="lineNoCov">          0 : void FFMPEGVideoStream::_findVideoStream()</span>
-<span class="lineNum">     255 </span>            : {
-<span class="lineNum">     256 </span><span class="lineNoCov">          0 :     for( unsigned int i = 0; i &lt; _avFormatContext.nb_streams; ++i )</span>
-<span class="lineNum">     257 </span>            :     {
-<span class="lineNum">     258 </span><span class="lineNoCov">          0 :         AVStream* stream = _avFormatContext.streams[i];</span>
-<span class="lineNum">     259 </span>            : #if USE_NEW_FFMPEG_API
-<span class="lineNum">     260 </span>            :         if( stream-&gt;codecpar-&gt;codec_type == AVMEDIA_TYPE_VIDEO )
-<span class="lineNum">     261 </span>            : #else
-<span class="lineNum">     262 </span><span class="lineNoCov">          0 :         if( stream-&gt;codec-&gt;codec_type == AVMEDIA_TYPE_VIDEO )</span>
-<span class="lineNum">     263 </span>            : #endif
-<span class="lineNum">     264 </span>            :         {
-<span class="lineNum">     265 </span><span class="lineNoCov">          0 :             _videoStream = stream; // Shortcut pointer - don't free</span>
-<span class="lineNum">     266 </span><span class="lineNoCov">          0 :             return;</span>
-<span class="lineNum">     267 </span>            :         }
-<span class="lineNum">     268 </span>            :     }
+<span class="lineNum">     219 </span><span class="lineNoCov">          0 : double FFMPEGVideoStream::getPositionInSec( const int64_t timestamp ) const</span>
+<span class="lineNum">     220 </span>            : {
+<span class="lineNum">     221 </span><span class="lineNoCov">          0 :     return _frameDurationInSeconds * getFrameIndex( timestamp );</span>
+<a name="222"><span class="lineNum">     222 </span>            : }</a>
+<span class="lineNum">     223 </span>            : 
+<span class="lineNum">     224 </span><span class="lineNoCov">          0 : bool FFMPEGVideoStream::seekToNearestFullframe( int64_t frameIndex )</span>
+<span class="lineNum">     225 </span>            : {
+<span class="lineNum">     226 </span><span class="lineNoCov">          0 :     if( frameIndex &lt; 0 || ( _numFrames &amp;&amp; frameIndex &gt;= _numFrames ))</span>
+<span class="lineNum">     227 </span>            :     {
+<span class="lineNum">     228 </span><span class="lineNoCov">          0 :         put_flog( LOG_WARN, &quot;Invalid index: %i, range [0,%d[: '%s'&quot;,</span>
+<span class="lineNum">     229 </span><span class="lineNoCov">          0 :                   frameIndex, _numFrames, _avFormatContext.filename );</span>
+<span class="lineNum">     230 </span>            :     }
+<span class="lineNum">     231 </span>            : 
+<span class="lineNum">     232 </span><span class="lineNoCov">          0 :     frameIndex = std::max( int64_t(0), std::min( frameIndex, _numFrames - 1 ));</span>
+<span class="lineNum">     233 </span>            : 
+<span class="lineNum">     234 </span><span class="lineNoCov">          0 :     const int64_t seek_target = getTimestamp( frameIndex );</span>
+<span class="lineNum">     235 </span><span class="lineNoCov">          0 :     const int64_t seek_min = INT64_MIN;</span>
+<span class="lineNum">     236 </span><span class="lineNoCov">          0 :     const int64_t seek_max = INT64_MAX;</span>
+<span class="lineNum">     237 </span><span class="lineNoCov">          0 :     const int seek_flags = AVSEEK_FLAG_FRAME;</span>
+<span class="lineNum">     238 </span>            : 
+<span class="lineNum">     239 </span><span class="lineNoCov">          0 :     if( avformat_seek_file( &amp;_avFormatContext, _videoStream-&gt;index, seek_min,</span>
+<span class="lineNum">     240 </span>            :                             seek_target, seek_max, seek_flags ) != 0 )
+<span class="lineNum">     241 </span>            :     {
+<span class="lineNum">     242 </span><span class="lineNoCov">          0 :         put_flog( LOG_ERROR, &quot;seeking error, seeking aborted in: '%s'&quot;,</span>
+<span class="lineNum">     243 </span><span class="lineNoCov">          0 :                   _avFormatContext.filename );</span>
+<span class="lineNum">     244 </span><span class="lineNoCov">          0 :         return false;</span>
+<span class="lineNum">     245 </span>            :     }
+<span class="lineNum">     246 </span>            : 
+<span class="lineNum">     247 </span><span class="lineNoCov">          0 :     avcodec_flush_buffers( _videoCodecContext );</span>
+<span class="lineNum">     248 </span><span class="lineNoCov">          0 :     return true;</span>
+<a name="249"><span class="lineNum">     249 </span>            : }</a>
+<span class="lineNum">     250 </span>            : 
+<span class="lineNum">     251 </span><span class="lineNoCov">          0 : void FFMPEGVideoStream::_findVideoStream()</span>
+<span class="lineNum">     252 </span>            : {
+<span class="lineNum">     253 </span><span class="lineNoCov">          0 :     for( unsigned int i = 0; i &lt; _avFormatContext.nb_streams; ++i )</span>
+<span class="lineNum">     254 </span>            :     {
+<span class="lineNum">     255 </span><span class="lineNoCov">          0 :         AVStream* stream = _avFormatContext.streams[i];</span>
+<span class="lineNum">     256 </span>            : #if USE_NEW_FFMPEG_API
+<span class="lineNum">     257 </span>            :         if( stream-&gt;codecpar-&gt;codec_type == AVMEDIA_TYPE_VIDEO )
+<span class="lineNum">     258 </span>            : #else
+<span class="lineNum">     259 </span><span class="lineNoCov">          0 :         if( stream-&gt;codec-&gt;codec_type == AVMEDIA_TYPE_VIDEO )</span>
+<span class="lineNum">     260 </span>            : #endif
+<span class="lineNum">     261 </span>            :         {
+<span class="lineNum">     262 </span><span class="lineNoCov">          0 :             _videoStream = stream; // Shortcut pointer - don't free</span>
+<span class="lineNum">     263 </span><span class="lineNoCov">          0 :             return;</span>
+<span class="lineNum">     264 </span>            :         }
+<span class="lineNum">     265 </span>            :     }
+<span class="lineNum">     266 </span>            : 
+<span class="lineNum">     267 </span><span class="lineNoCov">          0 :     throw std::runtime_error( &quot;No video stream found in AVFormatContext&quot; );</span>
+<a name="268"><span class="lineNum">     268 </span>            : }</a>
 <span class="lineNum">     269 </span>            : 
-<span class="lineNum">     270 </span><span class="lineNoCov">          0 :     throw std::runtime_error( &quot;No video stream found in AVFormatContext&quot; );</span>
-<a name="271"><span class="lineNum">     271 </span>            : }</a>
-<span class="lineNum">     272 </span>            : 
-<span class="lineNum">     273 </span><span class="lineNoCov">          0 : void FFMPEGVideoStream::_openVideoStreamDecoder()</span>
-<span class="lineNum">     274 </span>            : {
-<span class="lineNum">     275 </span><span class="lineNoCov">          0 :     AVCodec* codec = nullptr;</span>
-<span class="lineNum">     276 </span>            : 
-<span class="lineNum">     277 </span>            : #if USE_NEW_FFMPEG_API
-<span class="lineNum">     278 </span>            :     if( !( codec = avcodec_find_decoder( _videoStream-&gt;codecpar-&gt;codec_id )))
-<span class="lineNum">     279 </span>            :         throw std::runtime_error( &quot;No decoder found for video stream&quot; );
-<span class="lineNum">     280 </span>            : 
-<span class="lineNum">     281 </span>            :     _videoCodecContext = avcodec_alloc_context3( codec );
-<span class="lineNum">     282 </span>            :     if( !_videoCodecContext )
-<span class="lineNum">     283 </span>            :         throw std::runtime_error( &quot;Could not allocate a decoding context&quot; );
-<span class="lineNum">     284 </span>            : 
-<span class="lineNum">     285 </span>            :     const int error = avcodec_parameters_to_context( _videoCodecContext,
-<span class="lineNum">     286 </span>            :                                                      _videoStream-&gt;codecpar );
-<span class="lineNum">     287 </span>            :     if( error &lt; 0 )
-<span class="lineNum">     288 </span>            :         throw std::runtime_error( &quot;Could not init context from parameters&quot; );
-<span class="lineNum">     289 </span>            : #else
-<span class="lineNum">     290 </span><span class="lineNoCov">          0 :     if( !( codec = avcodec_find_decoder( _videoStream-&gt;codec-&gt;codec_id )))</span>
-<span class="lineNum">     291 </span><span class="lineNoCov">          0 :         throw std::runtime_error( &quot;No decoder found for video stream&quot; );</span>
+<span class="lineNum">     270 </span><span class="lineNoCov">          0 : void FFMPEGVideoStream::_openVideoStreamDecoder()</span>
+<span class="lineNum">     271 </span>            : {
+<span class="lineNum">     272 </span><span class="lineNoCov">          0 :     AVCodec* codec = nullptr;</span>
+<span class="lineNum">     273 </span>            : 
+<span class="lineNum">     274 </span>            : #if USE_NEW_FFMPEG_API
+<span class="lineNum">     275 </span>            :     if( !( codec = avcodec_find_decoder( _videoStream-&gt;codecpar-&gt;codec_id )))
+<span class="lineNum">     276 </span>            :         throw std::runtime_error( &quot;No decoder found for video stream&quot; );
+<span class="lineNum">     277 </span>            : 
+<span class="lineNum">     278 </span>            :     _videoCodecContext = avcodec_alloc_context3( codec );
+<span class="lineNum">     279 </span>            :     if( !_videoCodecContext )
+<span class="lineNum">     280 </span>            :         throw std::runtime_error( &quot;Could not allocate a decoding context&quot; );
+<span class="lineNum">     281 </span>            : 
+<span class="lineNum">     282 </span>            :     const int error = avcodec_parameters_to_context( _videoCodecContext,
+<span class="lineNum">     283 </span>            :                                                      _videoStream-&gt;codecpar );
+<span class="lineNum">     284 </span>            :     if( error &lt; 0 )
+<span class="lineNum">     285 </span>            :         throw std::runtime_error( &quot;Could not init context from parameters&quot; );
+<span class="lineNum">     286 </span>            : #else
+<span class="lineNum">     287 </span><span class="lineNoCov">          0 :     if( !( codec = avcodec_find_decoder( _videoStream-&gt;codec-&gt;codec_id )))</span>
+<span class="lineNum">     288 </span><span class="lineNoCov">          0 :         throw std::runtime_error( &quot;No decoder found for video stream&quot; );</span>
+<span class="lineNum">     289 </span>            : 
+<span class="lineNum">     290 </span><span class="lineNoCov">          0 :     _videoCodecContext = _videoStream-&gt;codec; // ptr, allocated by avcodec_open2</span>
+<span class="lineNum">     291 </span>            : #endif
 <span class="lineNum">     292 </span>            : 
-<span class="lineNum">     293 </span><span class="lineNoCov">          0 :     _videoCodecContext = _videoStream-&gt;codec; // ptr, allocated by avcodec_open2</span>
-<span class="lineNum">     294 </span>            : #endif
-<span class="lineNum">     295 </span>            : 
-<span class="lineNum">     296 </span><span class="lineNoCov">          0 :     const int ret = avcodec_open2( _videoCodecContext, codec, NULL );</span>
-<span class="lineNum">     297 </span><span class="lineNoCov">          0 :     if( ret &lt; 0 )</span>
-<span class="lineNum">     298 </span>            :     {
-<span class="lineNum">     299 </span><span class="lineNoCov">          0 :         std::stringstream message;</span>
-<span class="lineNum">     300 </span><span class="lineNoCov">          0 :         message &lt;&lt; &quot;Could not open codec, error code &quot; &lt;&lt; ret &lt;&lt; &quot;: &quot; &lt;&lt;</span>
-<span class="lineNum">     301 </span><span class="lineNoCov">          0 :                    _getAvError( ret );</span>
-<span class="lineNum">     302 </span><span class="lineNoCov">          0 :         throw std::runtime_error( message.str( ));</span>
-<span class="lineNum">     303 </span>            :     }
-<a name="304"><span class="lineNum">     304 </span><span class="lineNoCov">          0 : }</span></a>
-<span class="lineNum">     305 </span>            : 
-<span class="lineNum">     306 </span><span class="lineNoCov">          0 : void FFMPEGVideoStream::_generateSeekingParameters()</span>
-<span class="lineNum">     307 </span>            : {
-<span class="lineNum">     308 </span><span class="lineNoCov">          0 :     _numFrames = _videoStream-&gt;nb_frames;</span>
-<span class="lineNum">     309 </span><span class="lineNoCov">          0 :     if( _numFrames == 0 )</span>
-<span class="lineNum">     310 </span>            :     {
-<span class="lineNum">     311 </span><span class="lineNoCov">          0 :         const int den = _videoStream-&gt;avg_frame_rate.den * _videoStream-&gt;time_base.den;</span>
-<span class="lineNum">     312 </span><span class="lineNoCov">          0 :         const int num = _videoStream-&gt;avg_frame_rate.num * _videoStream-&gt;time_base.num;</span>
-<span class="lineNum">     313 </span><span class="lineNoCov">          0 :         if( den &lt;= 0 || num &lt;= 0 )</span>
-<span class="lineNum">     314 </span><span class="lineNoCov">          0 :             throw std::runtime_error(&quot;cannot determine seeking paramters&quot; );</span>
-<span class="lineNum">     315 </span>            : 
-<span class="lineNum">     316 </span><span class="lineNoCov">          0 :         _numFrames = av_rescale( _videoStream-&gt;duration, num, den );</span>
-<span class="lineNum">     317 </span><span class="lineNoCov">          0 :         if( _numFrames == 0 )</span>
-<span class="lineNum">     318 </span><span class="lineNoCov">          0 :             throw std::runtime_error(&quot;cannot determine number of frames&quot; );</span>
-<span class="lineNum">     319 </span>            :     }
-<span class="lineNum">     320 </span>            : 
-<span class="lineNum">     321 </span><span class="lineNoCov">          0 :     _frameDuration = (double)_videoStream-&gt;duration / (double)_numFrames;</span>
-<span class="lineNum">     322 </span>            : 
-<span class="lineNum">     323 </span><span class="lineNoCov">          0 :     const double timeBase = (double)_videoStream-&gt;time_base.num/</span>
-<span class="lineNum">     324 </span><span class="lineNoCov">          0 :                             (double)_videoStream-&gt;time_base.den;</span>
-<span class="lineNum">     325 </span><span class="lineNoCov">          0 :     _frameDurationInSeconds = _frameDuration * timeBase;</span>
-<span class="lineNum">     326 </span>            : 
-<span class="lineNum">     327 </span><span class="lineNoCov">          0 :     put_flog( LOG_VERBOSE, &quot;seeking parameters: start_time = %i,&quot;</span>
-<span class="lineNum">     328 </span>            :                            &quot;duration_ = %i, numFrames_ = %i&quot;,
-<span class="lineNum">     329 </span><span class="lineNoCov">          0 :               _videoStream-&gt;start_time, _videoStream-&gt;duration, _numFrames );</span>
-<span class="lineNum">     330 </span><span class="lineNoCov">          0 :     put_flog( LOG_VERBOSE, &quot;frame_rate = %f, time_base = %f&quot;,</span>
-<span class="lineNum">     331 </span><span class="lineNoCov">          0 :               1./_frameDurationInSeconds, timeBase );</span>
-<a name="332"><span class="lineNum">     332 </span><span class="lineNoCov">          0 :     put_flog( LOG_VERBOSE, &quot;frameDurationInSeconds_ = %f&quot;,</span></a>
-<span class="lineNum">     333 </span><span class="lineNoCov">          0 :               _frameDurationInSeconds );</span>
-<span class="lineNum">     334 </span><span class="lineCov">         63 : }</span>
+<span class="lineNum">     293 </span><span class="lineNoCov">          0 :     const int ret = avcodec_open2( _videoCodecContext, codec, NULL );</span>
+<span class="lineNum">     294 </span><span class="lineNoCov">          0 :     if( ret &lt; 0 )</span>
+<span class="lineNum">     295 </span>            :     {
+<span class="lineNum">     296 </span><span class="lineNoCov">          0 :         std::stringstream message;</span>
+<span class="lineNum">     297 </span><span class="lineNoCov">          0 :         message &lt;&lt; &quot;Could not open codec, error code &quot; &lt;&lt; ret &lt;&lt; &quot;: &quot; &lt;&lt;</span>
+<span class="lineNum">     298 </span><span class="lineNoCov">          0 :                    _getAvError( ret );</span>
+<span class="lineNum">     299 </span><span class="lineNoCov">          0 :         throw std::runtime_error( message.str( ));</span>
+<span class="lineNum">     300 </span>            :     }
+<a name="301"><span class="lineNum">     301 </span><span class="lineNoCov">          0 : }</span></a>
+<span class="lineNum">     302 </span>            : 
+<span class="lineNum">     303 </span><span class="lineNoCov">          0 : void FFMPEGVideoStream::_generateSeekingParameters()</span>
+<span class="lineNum">     304 </span>            : {
+<span class="lineNum">     305 </span><span class="lineNoCov">          0 :     int64_t duration = _videoStream-&gt;duration;</span>
+<span class="lineNum">     306 </span><span class="lineNoCov">          0 :     const auto&amp; timeBase = _videoStream-&gt;time_base;</span>
+<span class="lineNum">     307 </span>            : 
+<span class="lineNum">     308 </span>            :     // Webm files do not have per-stream duration information, only global. see:
+<span class="lineNum">     309 </span>            :     // http://stackoverflow.com/questions/32532122/
+<span class="lineNum">     310 </span>            :     // finding-duration-number-of-frames-of-webm-using-ffmpeg-libavformat
+<span class="lineNum">     311 </span><span class="lineNoCov">          0 :     if( duration &lt;= 0 )</span>
+<span class="lineNum">     312 </span>            :     {
+<span class="lineNum">     313 </span>            :         // Transform AVFormatContext duration which is in AV_TIME_BASE units
+<span class="lineNum">     314 </span>            :         // (microseconds) into _videoStream-&gt;time_base units.
+<span class="lineNum">     315 </span>            :         // The resulting _frameDuration has to be in video stream units to
+<span class="lineNum">     316 </span>            :         // provide correct timestamps for avformat_seek_file() for instance.
+<span class="lineNum">     317 </span><span class="lineNoCov">          0 :         const auto num = int64_t(timeBase.den);</span>
+<span class="lineNum">     318 </span><span class="lineNoCov">          0 :         const auto den = int64_t(timeBase.num) * AV_TIME_BASE;</span>
+<span class="lineNum">     319 </span><span class="lineNoCov">          0 :         duration = av_rescale( _avFormatContext.duration, num, den );</span>
+<span class="lineNum">     320 </span>            :     }
+<span class="lineNum">     321 </span>            : 
+<span class="lineNum">     322 </span>            :     // Estimate number of frames if unavailable
+<span class="lineNum">     323 </span><span class="lineNoCov">          0 :     _numFrames = _videoStream-&gt;nb_frames;</span>
+<span class="lineNum">     324 </span><span class="lineNoCov">          0 :     if( _numFrames == 0 )</span>
+<span class="lineNum">     325 </span>            :     {
+<span class="lineNum">     326 </span><span class="lineNoCov">          0 :         const auto&amp; frameRate = _videoStream-&gt;avg_frame_rate;</span>
+<span class="lineNum">     327 </span><span class="lineNoCov">          0 :         const auto num = int64_t(frameRate.num) * int64_t(timeBase.num);</span>
+<span class="lineNum">     328 </span><span class="lineNoCov">          0 :         const auto den = int64_t(frameRate.den) * int64_t(timeBase.den);</span>
+<span class="lineNum">     329 </span><span class="lineNoCov">          0 :         if( num &lt;= 0 || den &lt;= 0 )</span>
+<span class="lineNum">     330 </span><span class="lineNoCov">          0 :             throw std::runtime_error( &quot;cannot determine seeking paramters&quot; );</span>
+<span class="lineNum">     331 </span><span class="lineNoCov">          0 :         _numFrames = av_rescale( duration, num, den );</span>
+<span class="lineNum">     332 </span>            :     }
+<span class="lineNum">     333 </span><span class="lineNoCov">          0 :     if( _numFrames &lt;= 0 )</span>
+<span class="lineNum">     334 </span><span class="lineNoCov">          0 :         throw std::runtime_error( &quot;cannot determine number of frames&quot; );</span>
+<span class="lineNum">     335 </span>            : 
+<span class="lineNum">     336 </span><span class="lineNoCov">          0 :     _frameDuration = double(duration) / double(_numFrames);</span>
+<span class="lineNum">     337 </span>            : 
+<span class="lineNum">     338 </span><span class="lineNoCov">          0 :     const auto frameDurationUnits = double(timeBase.num) / double(timeBase.den);</span>
+<span class="lineNum">     339 </span><span class="lineNoCov">          0 :     _frameDurationInSeconds = _frameDuration * frameDurationUnits;</span>
+<span class="lineNum">     340 </span>            : 
+<span class="lineNum">     341 </span><span class="lineNoCov">          0 :     put_flog( LOG_VERBOSE, &quot;seeking parameters: start_time = %i,&quot;</span>
+<span class="lineNum">     342 </span>            :                            &quot;duration = %i, numFrames = %i&quot;,
+<span class="lineNum">     343 </span><span class="lineNoCov">          0 :               _videoStream-&gt;start_time, duration, _numFrames );</span>
+<span class="lineNum">     344 </span><span class="lineNoCov">          0 :     put_flog( LOG_VERBOSE, &quot;frame_rate = %f, time_base = %f&quot;,</span>
+<span class="lineNum">     345 </span><span class="lineNoCov">          0 :               1./_frameDurationInSeconds, timeBase );</span>
+<a name="346"><span class="lineNum">     346 </span><span class="lineNoCov">          0 :     put_flog( LOG_VERBOSE, &quot;frameDurationInSeconds = %f&quot;,</span></a>
+<span class="lineNum">     347 </span><span class="lineNoCov">          0 :               _frameDurationInSeconds );</span>
+<span class="lineNum">     348 </span><span class="lineCov">         63 : }</span>
 </pre>
       </td>
     </tr>
