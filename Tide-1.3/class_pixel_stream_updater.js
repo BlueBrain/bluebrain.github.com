@@ -1,6 +1,6 @@
 var class_pixel_stream_updater =
 [
-    [ "PixelStreamUpdater", "class_pixel_stream_updater.html#a6c2d85e507658b80c95666d6b5f7c44a", null ],
+    [ "PixelStreamUpdater", "class_pixel_stream_updater.html#a0e18f8f9b614604c49e9d5ce431b6bbc", null ],
     [ "computeVisibleSet", "class_pixel_stream_updater.html#a1aa902aaf92e61697ac5310caf352fde", null ],
     [ "getMaxLod", "class_pixel_stream_updater.html#a40f19dc374572c96f4be8da497bb89d3", null ],
     [ "getNextFrame", "class_pixel_stream_updater.html#aadf125779b550179707ad6edf33f27c5", null ],

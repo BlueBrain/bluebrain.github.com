@@ -1,6 +1,6 @@
 var class_data_provider =
 [
-    [ "DataProvider", "class_data_provider.html#ab5a62940ccd4c8cb4f20262e75f34c65", null ],
+    [ "DataProvider", "class_data_provider.html#a267e1ad5b880847b11b2ed054ef4226a", null ],
     [ "~DataProvider", "class_data_provider.html#a1c76c2428e3e3f2c96401a3693366e2a", null ],
     [ "getStreamDataSource", "class_data_provider.html#a6048dded1131a79725cb2ff8aa13fe63", null ],
     [ "imageLoaded", "class_data_provider.html#a850e56f3c1c0fed4257a03d964c70244", null ],

@@ -5,6 +5,7 @@ var searchData=
   ['_7econtentcontroller',['~ContentController',['../class_content_controller.html#a163809b078fbd897aef5507a12e2b733',1,'ContentController']]],
   ['_7econtentsynchronizer',['~ContentSynchronizer',['../class_content_synchronizer.html#a68aa090a819ade8f4193c6848aa5d7c0',1,'ContentSynchronizer']]],
   ['_7econtentwindow',['~ContentWindow',['../class_content_window.html#a048c11ac7d49072c2655e7adb0737844',1,'ContentWindow']]],
+  ['_7edataprovider',['~DataProvider',['../class_data_provider.html#a1c76c2428e3e3f2c96401a3693366e2a',1,'DataProvider']]],
   ['_7edisplaygroup',['~DisplayGroup',['../class_display_group.html#ae621c03bd2408c8ece4a61237efca355',1,'DisplayGroup']]],
   ['_7effmpegframe',['~FFMPEGFrame',['../class_f_f_m_p_e_g_frame.html#ad233e8ca905bf16f4361665ba24a7661',1,'FFMPEGFrame']]],
   ['_7effmpegmovie',['~FFMPEGMovie',['../class_f_f_m_p_e_g_movie.html#ada29015e30fd77182119418abe0356cd',1,'FFMPEGMovie']]],

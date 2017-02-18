@@ -21,7 +21,7 @@ var searchData=
   ['pixelstreamer',['PixelStreamer',['../class_pixel_streamer.html#ac397a643a355ec36446edb8a55e52c81',1,'PixelStreamer']]],
   ['pixelstreamerlauncher',['PixelStreamerLauncher',['../class_pixel_streamer_launcher.html#a4e75a7d4d03297d532d969337bb93bb9',1,'PixelStreamerLauncher']]],
   ['pixelstreamsynchronizer',['PixelStreamSynchronizer',['../class_pixel_stream_synchronizer.html#a12666d81a8a86b90e41dd750027f2373',1,'PixelStreamSynchronizer']]],
-  ['pixelstreamupdater',['PixelStreamUpdater',['../class_pixel_stream_updater.html#a6c2d85e507658b80c95666d6b5f7c44a',1,'PixelStreamUpdater']]],
+  ['pixelstreamupdater',['PixelStreamUpdater',['../class_pixel_stream_updater.html#a0e18f8f9b614604c49e9d5ce431b6bbc',1,'PixelStreamUpdater']]],
   ['pixelstreamwindowmanager',['PixelStreamWindowManager',['../class_pixel_stream_window_manager.html#a8d3cae6a2b05961dac58bf22810be44a',1,'PixelStreamWindowManager']]],
   ['previouspage',['previousPage',['../class_p_d_f_content.html#a0d52e1a8ee7954872bcad5a9d74c342b',1,'PDFContent']]],
   ['probe',['probe',['../class_m_p_i_channel.html#ad3f062bbe7fc21c7bae3b5d668a2d125',1,'MPIChannel']]],

@@ -1,5 +1,6 @@
 var NAVTREEINDEX3 =
 {
+"class_keyboard_state.html#a635c9096e6455805614be41944bf7bd2":[7,0,55,4],
 "class_keyboard_state.html#a85833881e95a95b5ebd0439c6f63f822":[7,0,55,16],
 "class_keyboard_state.html#a9a55ac258aed4323066f292ff7f7e94f":[7,0,55,18],
 "class_keyboard_state.html#a9f090fa5c6ec36058d57463f678c5316":[7,0,55,7],
@@ -248,6 +249,5 @@ var NAVTREEINDEX3 =
 "class_options.html#a84616dddfb60fbd3c0ae06ff134141a8":[7,0,78,6],
 "class_options.html#a8609df990033dfe5c5e3ff5ebd3f1235":[7,0,78,51],
 "class_options.html#a87931866f0ce3ce165b7d71a401ffef6":[7,0,78,37],
-"class_options.html#a8df53ba940903e74dd23ece266182235":[7,0,78,28],
-"class_options.html#a9145a00fef3acac566dbace8d3c4964f":[7,0,78,4]
+"class_options.html#a8df53ba940903e74dd23ece266182235":[7,0,78,28]
 };

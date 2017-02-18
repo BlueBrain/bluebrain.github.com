@@ -13,6 +13,7 @@ var class_configuration =
     [ "getScreenHeight", "class_configuration.html#acac053b8e85c8e13dc1b24f829d70b25", null ],
     [ "getScreenRect", "class_configuration.html#ad9220206ff95419518e3b1eb6712b5d9", null ],
     [ "getScreenWidth", "class_configuration.html#a957a6e17a77943ca1469a599c4116987", null ],
+    [ "getString", "class_configuration.html#aa2cdb8dc594071ddcd910da4c2b192d9", null ],
     [ "getTotalHeight", "class_configuration.html#aba8af0457ab8769b5baab775ecebb8ba", null ],
     [ "getTotalScreenCountX", "class_configuration.html#aca560ac9d3b46ef39444287ab4ba800f", null ],
     [ "getTotalScreenCountY", "class_configuration.html#a0f61e23c663322c808a33b8deeab198e", null ],
