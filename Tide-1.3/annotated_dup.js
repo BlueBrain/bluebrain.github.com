@@ -50,6 +50,7 @@ var annotated_dup =
     [ "FFMPEGVideoFrameConverter", "class_f_f_m_p_e_g_video_frame_converter.html", "class_f_f_m_p_e_g_video_frame_converter" ],
     [ "FFMPEGVideoStream", "class_f_f_m_p_e_g_video_stream.html", "class_f_f_m_p_e_g_video_stream" ],
     [ "FileInfoHelper", "class_file_info_helper.html", "class_file_info_helper" ],
+    [ "FileReceiver", "class_file_receiver.html", "class_file_receiver" ],
     [ "FileSystemContent", "class_file_system_content.html", "class_file_system_content" ],
     [ "FileSystemQuery", "class_file_system_query.html", "class_file_system_query" ],
     [ "FolderThumbnailGenerator", "class_folder_thumbnail_generator.html", "class_folder_thumbnail_generator" ],

@@ -75,12 +75,14 @@ var hierarchy =
       [ "Markers", "class_markers.html", null ]
     ] ],
     [ "QApplication", null, [
-      [ "MasterApplication", "class_master_application.html", null ],
-      [ "WallApplication", "class_wall_application.html", null ]
+      [ "MasterApplication", "class_master_application.html", null ]
     ] ],
     [ "QDialog", null, [
       [ "BackgroundWidget", "class_background_widget.html", null ],
       [ "WebbrowserWidget", "class_webbrowser_widget.html", null ]
+    ] ],
+    [ "QGuiApplication", null, [
+      [ "WallApplication", "class_wall_application.html", null ]
     ] ],
     [ "QListWidget", null, [
       [ "DisplayGroupListWidget", "class_display_group_list_widget.html", null ]
@@ -136,6 +138,7 @@ var hierarchy =
       [ "DisplayGroupRenderer", "class_display_group_renderer.html", null ],
       [ "DoubleTapDetector", "class_double_tap_detector.html", null ],
       [ "FileInfoHelper", "class_file_info_helper.html", null ],
+      [ "FileReceiver", "class_file_receiver.html", null ],
       [ "HtmlSelectReplacer", "class_html_select_replacer.html", null ],
       [ "KeyboardState", "class_keyboard_state.html", null ],
       [ "LoggingUtility", "class_logging_utility.html", null ],

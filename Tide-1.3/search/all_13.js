@@ -1,7 +1,7 @@
 var searchData=
 [
   ['detail',['detail',['../namespaceserialization_1_1detail.html',1,'serialization']]],
-  ['save',['save',['../class_master_configuration.html#aa54097d7fb4f58aca81e9fe83620858d',1,'MasterConfiguration::save() const '],['../class_master_configuration.html#a51fd2b31a51c1b4aa56c0ae1527567be',1,'MasterConfiguration::save(const QString &amp;filename) const '],['../class_rest_interface.html#a1e60a9fe71f5f22c24e7232dd521e51c',1,'RestInterface::save()'],['../class_state_serialization_helper.html#a550a2065c121d963334a1b9aad23f161',1,'StateSerializationHelper::save()']]],
+  ['save',['save',['../class_master_configuration.html#aa54097d7fb4f58aca81e9fe83620858d',1,'MasterConfiguration::save() const '],['../class_master_configuration.html#a51fd2b31a51c1b4aa56c0ae1527567be',1,'MasterConfiguration::save(const QString &amp;filename) const '],['../class_rest_interface.html#a1e60a9fe71f5f22c24e7232dd521e51c',1,'RestInterface::save()'],['../class_state_serialization_helper.html#a95b442aabb87e5c008fbdb28ea2a94b2',1,'StateSerializationHelper::save()']]],
   ['savetofile',['saveToFile',['../class_state_preview.html#ab9451a422ef3233febfffae46eb82b91',1,'StatePreview']]],
   ['scale',['scale',['../class_content_window_controller.html#a0692b71b65e4d3fcae4e6648a7c2f93a',1,'ContentWindowController::scale()'],['../class_display_group_controller.html#aa76ed17f5cb0257daff3d77719edfd06',1,'DisplayGroupController::scale()']]],
   ['screenshot',['screenshot',['../class_rest_interface.html#a4e3bfdf274b1b147db00432a56e06306',1,'RestInterface']]],

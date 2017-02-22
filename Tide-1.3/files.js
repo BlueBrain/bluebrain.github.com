@@ -44,6 +44,7 @@ var files =
     [ "FFMPEGVideoFrameConverter.h", "_f_f_m_p_e_g_video_frame_converter_8h_source.html", null ],
     [ "FFMPEGVideoStream.h", "_f_f_m_p_e_g_video_stream_8h_source.html", null ],
     [ "FileInfoHelper.h", "_file_info_helper_8h_source.html", null ],
+    [ "FileReceiver.h", "_file_receiver_8h_source.html", null ],
     [ "FileSystemContent.h", "_file_system_content_8h_source.html", null ],
     [ "FileSystemQuery.h", "_file_system_query_8h_source.html", null ],
     [ "FolderThumbnailGenerator.h", "_folder_thumbnail_generator_8h_source.html", null ],
