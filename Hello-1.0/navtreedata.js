@@ -4,6 +4,7 @@ var NAVTREE =
     [ "Changelog", "Changelog.html", null ],
     [ "Documentation", "documentation.html", null ],
     [ "Feature X", "md__jenkins_04_workspace_oss.Hello.documentation_build_type_Debug_platform_cscsviz-vm_sources_doc_Feature.html", null ],
+    [ "Application Help", "apps.html", "apps" ],
     [ "Namespaces", null, [
       [ "Namespace List", "namespaces.html", "namespaces" ]
     ] ],
