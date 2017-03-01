@@ -26,7 +26,7 @@ var NAVTREEINDEX0 =
 "brain_2version_8h.html#aa9caa3a96315ec3a2f071008e61efe02":[11,0,35,9],
 "brain_2version_8h_source.html":[11,0,35],
 "brain_8h_source.html":[11,0,3],
-"brain_synapses.html":[5,4],
+"brain_synapses.html":[5,5],
 "brion_2api_8h.html":[11,0,0],
 "brion_2api_8h.html#a45e2d3e537ec7fa8ef494605d7362efc":[11,0,0,1],
 "brion_2api_8h.html#a546f0a5cc6da84dca2f1614102c630e4":[11,0,0,3],
