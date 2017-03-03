@@ -34,6 +34,7 @@ var hierarchy =
       [ "PixelStreamUpdater", "class_pixel_stream_updater.html", null ]
     ] ],
     [ "ElapsedTimer", "class_elapsed_timer.html", null ],
+    [ "FFMPEGFrame", "class_f_f_m_p_e_g_frame.html", null ],
     [ "FFMPEGMovie", "class_f_f_m_p_e_g_movie.html", null ],
     [ "FFMPEGVideoFrameConverter", "class_f_f_m_p_e_g_video_frame_converter.html", null ],
     [ "FFMPEGVideoStream", "class_f_f_m_p_e_g_video_stream.html", null ],
@@ -41,9 +42,7 @@ var hierarchy =
     [ "FpsCounter", "class_fps_counter.html", null ],
     [ "HtmlContent", "class_html_content.html", null ],
     [ "Image", "class_image.html", [
-      [ "FFMPEGFrame", "class_f_f_m_p_e_g_frame.html", [
-        [ "FFMPEGPicture", "class_f_f_m_p_e_g_picture.html", null ]
-      ] ],
+      [ "FFMPEGPicture", "class_f_f_m_p_e_g_picture.html", null ],
       [ "QtImage", "class_qt_image.html", null ],
       [ "StreamImage", "class_stream_image.html", null ],
       [ "SVGGpuImage", "class_s_v_g_gpu_image.html", null ]
@@ -194,6 +193,9 @@ var hierarchy =
     [ "QSGGeometryNode", null, [
       [ "QuadLineNode", "class_quad_line_node.html", null ]
     ] ],
+    [ "QSGNode", null, [
+      [ "TextureNodeYUV", "class_texture_node_y_u_v.html", null ]
+    ] ],
     [ "QSGSimpleTextureNode", null, [
       [ "TextureNode", "class_texture_node.html", null ]
     ] ],
@@ -236,5 +238,6 @@ var hierarchy =
     [ "VisibilityHelper", "class_visibility_helper.html", null ],
     [ "WebbrowserHistory", "class_webbrowser_history.html", null ],
     [ "WebkitHtmlSelectReplacer", "class_webkit_html_select_replacer.html", null ],
+    [ "YUVTexture", "struct_y_u_v_texture.html", null ],
     [ "ZoomHelper", "class_zoom_helper.html", null ]
 ];

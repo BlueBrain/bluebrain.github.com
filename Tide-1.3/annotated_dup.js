@@ -143,6 +143,7 @@ var annotated_dup =
     [ "TestPattern", "class_test_pattern.html", "class_test_pattern" ],
     [ "TextureContent", "class_texture_content.html", "class_texture_content" ],
     [ "TextureNode", "class_texture_node.html", "class_texture_node" ],
+    [ "TextureNodeYUV", "class_texture_node_y_u_v.html", "class_texture_node_y_u_v" ],
     [ "TextureUploader", "class_texture_uploader.html", "class_texture_uploader" ],
     [ "ThumbnailGenerator", "class_thumbnail_generator.html", "class_thumbnail_generator" ],
     [ "ThumbnailGeneratorFactory", "class_thumbnail_generator_factory.html", "class_thumbnail_generator_factory" ],
@@ -166,6 +167,7 @@ var annotated_dup =
     [ "WebkitAuthenticationHelper", "class_webkit_authentication_helper.html", "class_webkit_authentication_helper" ],
     [ "WebkitHtmlSelectReplacer", "class_webkit_html_select_replacer.html", "class_webkit_html_select_replacer" ],
     [ "WebkitPixelStreamer", "class_webkit_pixel_streamer.html", "class_webkit_pixel_streamer" ],
+    [ "YUVTexture", "struct_y_u_v_texture.html", "struct_y_u_v_texture" ],
     [ "ZoomController", "class_zoom_controller.html", "class_zoom_controller" ],
     [ "ZoomHelper", "class_zoom_helper.html", "class_zoom_helper" ]
 ];

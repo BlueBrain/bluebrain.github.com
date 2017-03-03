@@ -1,5 +1,4 @@
 var searchData=
 [
-  ['zoomcontroller',['ZoomController',['../class_zoom_controller.html',1,'']]],
-  ['zoomhelper',['ZoomHelper',['../class_zoom_helper.html',1,'']]]
+  ['yuvtexture',['YUVTexture',['../struct_y_u_v_texture.html',1,'']]]
 ];

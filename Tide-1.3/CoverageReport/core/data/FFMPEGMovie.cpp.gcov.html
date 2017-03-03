@@ -32,17 +32,17 @@
             <td></td>
             <td class="headerItem">Lines:</td>
             <td class="headerCovTableEntry">12</td>
-            <td class="headerCovTableEntry">87</td>
-            <td class="headerCovTableEntryLo">13.8 %</td>
+            <td class="headerCovTableEntry">102</td>
+            <td class="headerCovTableEntryLo">11.8 %</td>
           </tr>
           <tr>
             <td class="headerItem">Date:</td>
-            <td class="headerValue">2017-03-01 06:34:59</td>
+            <td class="headerValue">2017-03-03 12:06:53</td>
             <td></td>
             <td class="headerItem">Functions:</td>
             <td class="headerCovTableEntry">4</td>
-            <td class="headerCovTableEntry">16</td>
-            <td class="headerCovTableEntryLo">25.0 %</td>
+            <td class="headerCovTableEntry">19</td>
+            <td class="headerCovTableEntryLo">21.1 %</td>
           </tr>
           <tr><td><img src="../../glass.png" width=3 height=3 alt=""></td></tr>
         </table>
@@ -61,8 +61,8 @@
 <pre class="sourceHeading">          Line data    Source code</pre>
 <pre class="source">
 <a name="1"><span class="lineNum">       1 </span>            : /*********************************************************************/</a>
-<span class="lineNum">       2 </span>            : /* Copyright (c) 2014, EPFL/Blue Brain Project                       */
-<span class="lineNum">       3 </span>            : /*                     Raphael Dumusc &lt;raphael.dumusc@epfl.ch&gt;       */
+<span class="lineNum">       2 </span>            : /* Copyright (c) 2014-2017, EPFL/Blue Brain Project                  */
+<span class="lineNum">       3 </span>            : /*                          Raphael Dumusc &lt;raphael.dumusc@epfl.ch&gt;  */
 <span class="lineNum">       4 </span>            : /* All rights reserved.                                              */
 <span class="lineNum">       5 </span>            : /*                                                                   */
 <span class="lineNum">       6 </span>            : /* Redistribution and use in source and binary forms, with or        */
@@ -108,187 +108,223 @@
 <span class="lineNum">      46 </span>            : 
 <span class="lineNum">      47 </span>            : #include &lt;cmath&gt;
 <span class="lineNum">      48 </span>            : 
-<span class="lineNum">      49 </span>            : #define MIN_SEEK_DELTA_SEC  0.5
-<span class="lineNum">      50 </span>            : 
-<span class="lineNum">      51 </span>            : #pragma clang diagnostic ignored &quot;-Wdeprecated&quot;
-<span class="lineNum">      52 </span>            : #pragma GCC diagnostic ignored &quot;-Wdeprecated-declarations&quot;
-<a name="53"><span class="lineNum">      53 </span>            : </a>
-<span class="lineNum">      54 </span>            : // Solve FFMPEG issue &quot;insufficient thread locking around avcodec_open/close()&quot;
-<span class="lineNum">      55 </span><span class="lineCov">         42 : int ffmpegLockManagerCallback( void** mutex, enum AVLockOp op )</span>
-<span class="lineNum">      56 </span>            : {
-<span class="lineNum">      57 </span><span class="lineCov">         42 :     switch( op )</span>
-<span class="lineNum">      58 </span>            :     {
-<span class="lineNum">      59 </span>            :     case AV_LOCK_CREATE:
-<span class="lineNum">      60 </span><span class="lineCov">         42 :         *mutex = static_cast&lt;void*&gt;( new std::mutex( ));</span>
-<span class="lineNum">      61 </span><span class="lineCov">         42 :         return 0;</span>
-<span class="lineNum">      62 </span>            :     case AV_LOCK_OBTAIN:
-<span class="lineNum">      63 </span><span class="lineNoCov">          0 :         static_cast&lt;std::mutex*&gt;( *mutex )-&gt;lock();</span>
-<span class="lineNum">      64 </span><span class="lineNoCov">          0 :         return 0;</span>
-<span class="lineNum">      65 </span>            :     case AV_LOCK_RELEASE:
-<span class="lineNum">      66 </span><span class="lineNoCov">          0 :         static_cast&lt;std::mutex*&gt;( *mutex )-&gt;unlock();</span>
-<span class="lineNum">      67 </span><span class="lineNoCov">          0 :         return 0;</span>
-<span class="lineNum">      68 </span>            :     case AV_LOCK_DESTROY:
-<span class="lineNum">      69 </span><span class="lineNoCov">          0 :         delete static_cast&lt;std::mutex*&gt;( *mutex );</span>
-<span class="lineNum">      70 </span><span class="lineNoCov">          0 :         return 0;</span>
-<span class="lineNum">      71 </span>            :     default:
-<span class="lineNum">      72 </span><span class="lineNoCov">          0 :         return 1;</span>
-<span class="lineNum">      73 </span>            :     }
-<span class="lineNum">      74 </span>            : }
-<span class="lineNum">      75 </span>            : 
-<a name="76"><span class="lineNum">      76 </span>            : struct FFMPEGStaticInit</a>
-<span class="lineNum">      77 </span>            : {
-<span class="lineNum">      78 </span><span class="lineCov">         21 :     FFMPEGStaticInit()</span>
-<span class="lineNum">      79 </span>            :     {
-<span class="lineNum">      80 </span><span class="lineCov">         21 :         av_lockmgr_register( &amp;ffmpegLockManagerCallback );</span>
-<span class="lineNum">      81 </span><span class="lineCov">         21 :         av_log_set_callback( avMessageLoger );</span>
-<span class="lineNum">      82 </span><span class="lineCov">         21 :         av_log_set_level( AV_LOG_ERROR );</span>
-<span class="lineNum">      83 </span><span class="lineCov">         21 :         av_register_all();</span>
-<a name="84"><span class="lineNum">      84 </span><span class="lineCov">         21 :     }</span></a>
-<span class="lineNum">      85 </span>            : };
-<a name="86"><span class="lineNum">      86 </span><span class="lineCov">         21 : static FFMPEGStaticInit instance;</span></a>
-<span class="lineNum">      87 </span>            : 
-<span class="lineNum">      88 </span><span class="lineNoCov">          0 : FFMPEGMovie::FFMPEGMovie( const QString&amp; uri )</span>
-<span class="lineNum">      89 </span>            :     : _avFormatContext( 0 )
-<span class="lineNum">      90 </span>            :     , _streamPosition( 0.0 )
-<span class="lineNum">      91 </span><span class="lineNoCov">          0 :     , _isValid( _open( uri ))</span>
-<a name="92"><span class="lineNum">      92 </span><span class="lineNoCov">          0 : {}</span></a>
-<span class="lineNum">      93 </span>            : 
-<span class="lineNum">      94 </span><span class="lineNoCov">          0 : FFMPEGMovie::~FFMPEGMovie()</span>
-<span class="lineNum">      95 </span>            : {
-<span class="lineNum">      96 </span><span class="lineNoCov">          0 :     _videoStream.reset();</span>
-<span class="lineNum">      97 </span><span class="lineNoCov">          0 :     _releaseAvFormatContext();</span>
-<a name="98"><span class="lineNum">      98 </span><span class="lineNoCov">          0 : }</span></a>
-<span class="lineNum">      99 </span>            : 
-<span class="lineNum">     100 </span><span class="lineNoCov">          0 : bool FFMPEGMovie::_open( const QString&amp; uri )</span>
-<span class="lineNum">     101 </span>            : {
-<span class="lineNum">     102 </span><span class="lineNoCov">          0 :     if( !_createAvFormatContext( uri ))</span>
-<span class="lineNum">     103 </span><span class="lineNoCov">          0 :         return false;</span>
-<span class="lineNum">     104 </span>            : 
-<span class="lineNum">     105 </span>            :     try
-<span class="lineNum">     106 </span>            :     {
-<span class="lineNum">     107 </span><span class="lineNoCov">          0 :         _videoStream.reset( new FFMPEGVideoStream( *_avFormatContext ));</span>
-<span class="lineNum">     108 </span>            :     }
-<span class="lineNum">     109 </span><span class="lineNoCov">          0 :     catch( const std::runtime_error&amp; e )</span>
-<span class="lineNum">     110 </span>            :     {
-<span class="lineNum">     111 </span><span class="lineNoCov">          0 :         put_flog( LOG_FATAL, &quot;Error opening file %s : '%s'&quot;,</span>
-<span class="lineNum">     112 </span><span class="lineNoCov">          0 :                   uri.toLocal8Bit().constData(), e.what( ));</span>
-<span class="lineNum">     113 </span><span class="lineNoCov">          0 :         _releaseAvFormatContext();</span>
-<span class="lineNum">     114 </span><span class="lineNoCov">          0 :         return false;</span>
-<span class="lineNum">     115 </span>            :     }
-<span class="lineNum">     116 </span>            : 
-<span class="lineNum">     117 </span><span class="lineNoCov">          0 :     return true;</span>
-<a name="118"><span class="lineNum">     118 </span>            : }</a>
-<span class="lineNum">     119 </span>            : 
-<span class="lineNum">     120 </span><span class="lineNoCov">          0 : bool FFMPEGMovie::_createAvFormatContext( const QString&amp; uri )</span>
-<span class="lineNum">     121 </span>            : {
-<span class="lineNum">     122 </span>            :     // Read movie header information into _avFormatContext and allocate it
-<span class="lineNum">     123 </span><span class="lineNoCov">          0 :     if( avformat_open_input( &amp;_avFormatContext, uri.toLatin1(), 0, 0 ) != 0 )</span>
-<span class="lineNum">     124 </span>            :     {
-<span class="lineNum">     125 </span><span class="lineNoCov">          0 :         put_flog( LOG_ERROR, &quot;error reading movie headers: '%s'&quot;,</span>
-<span class="lineNum">     126 </span><span class="lineNoCov">          0 :                   uri.toLocal8Bit().constData( ));</span>
-<span class="lineNum">     127 </span><span class="lineNoCov">          0 :         return false;</span>
-<span class="lineNum">     128 </span>            :     }
+<span class="lineNum">      49 </span>            : #pragma clang diagnostic ignored &quot;-Wdeprecated&quot;
+<span class="lineNum">      50 </span>            : #pragma GCC diagnostic ignored &quot;-Wdeprecated-declarations&quot;
+<span class="lineNum">      51 </span>            : 
+<span class="lineNum">      52 </span>            : namespace
+<span class="lineNum">      53 </span>            : {
+<span class="lineNum">      54 </span>            : const double MIN_SEEK_DELTA_SEC = 0.5;
+<a name="55"><span class="lineNum">      55 </span>            : </a>
+<span class="lineNum">      56 </span>            : // Solve FFMPEG issue &quot;insufficient thread locking around avcodec_open/close()&quot;
+<span class="lineNum">      57 </span><span class="lineCov">         42 : int ffmpegLockManagerCallback( void** mutex, enum AVLockOp op )</span>
+<span class="lineNum">      58 </span>            : {
+<span class="lineNum">      59 </span><span class="lineCov">         42 :     switch( op )</span>
+<span class="lineNum">      60 </span>            :     {
+<span class="lineNum">      61 </span>            :     case AV_LOCK_CREATE:
+<span class="lineNum">      62 </span><span class="lineCov">         42 :         *mutex = static_cast&lt;void*&gt;( new std::mutex( ));</span>
+<span class="lineNum">      63 </span><span class="lineCov">         42 :         return 0;</span>
+<span class="lineNum">      64 </span>            :     case AV_LOCK_OBTAIN:
+<span class="lineNum">      65 </span><span class="lineNoCov">          0 :         static_cast&lt;std::mutex*&gt;( *mutex )-&gt;lock();</span>
+<span class="lineNum">      66 </span><span class="lineNoCov">          0 :         return 0;</span>
+<span class="lineNum">      67 </span>            :     case AV_LOCK_RELEASE:
+<span class="lineNum">      68 </span><span class="lineNoCov">          0 :         static_cast&lt;std::mutex*&gt;( *mutex )-&gt;unlock();</span>
+<span class="lineNum">      69 </span><span class="lineNoCov">          0 :         return 0;</span>
+<span class="lineNum">      70 </span>            :     case AV_LOCK_DESTROY:
+<span class="lineNum">      71 </span><span class="lineNoCov">          0 :         delete static_cast&lt;std::mutex*&gt;( *mutex );</span>
+<span class="lineNum">      72 </span><span class="lineNoCov">          0 :         return 0;</span>
+<span class="lineNum">      73 </span>            :     default:
+<span class="lineNum">      74 </span><span class="lineNoCov">          0 :         return 1;</span>
+<span class="lineNum">      75 </span>            :     }
+<a name="76"><span class="lineNum">      76 </span>            : }</a>
+<span class="lineNum">      77 </span>            : 
+<span class="lineNum">      78 </span><span class="lineNoCov">          0 : TextureFormat _determineOutputFormat( const AVPixelFormat fileFormat,</span>
+<span class="lineNum">      79 </span>            :                                       const QString&amp; uri )
+<span class="lineNum">      80 </span>            : {
+<span class="lineNum">      81 </span><span class="lineNoCov">          0 :     switch( fileFormat )</span>
+<span class="lineNum">      82 </span>            :     {
+<span class="lineNum">      83 </span>            :     case AV_PIX_FMT_RGBA:
+<span class="lineNum">      84 </span><span class="lineNoCov">          0 :         return TextureFormat::rgba;</span>
+<span class="lineNum">      85 </span>            :     case AV_PIX_FMT_YUV420P:
+<span class="lineNum">      86 </span>            :     case AV_PIX_FMT_YUVJ420P:
+<span class="lineNum">      87 </span><span class="lineNoCov">          0 :         return TextureFormat::yuv420;</span>
+<span class="lineNum">      88 </span>            :     case AV_PIX_FMT_YUV422P:
+<span class="lineNum">      89 </span>            :     case AV_PIX_FMT_YUVJ422P:
+<span class="lineNum">      90 </span><span class="lineNoCov">          0 :         return TextureFormat::yuv422;</span>
+<span class="lineNum">      91 </span>            :     case AV_PIX_FMT_YUV444P:
+<span class="lineNum">      92 </span>            :     case AV_PIX_FMT_YUVJ444P:
+<span class="lineNum">      93 </span><span class="lineNoCov">          0 :         return TextureFormat::yuv444;</span>
+<span class="lineNum">      94 </span>            :     default:
+<span class="lineNum">      95 </span><span class="lineNoCov">          0 :         put_flog( LOG_DEBUG, &quot;Performance info: AV input format '%d' for file &quot;</span>
+<span class="lineNum">      96 </span>            :                              &quot;'%s' will be converted in software to 'rgba'&quot;,
+<span class="lineNum">      97 </span><span class="lineNoCov">          0 :                   fileFormat, uri.toLocal8Bit().constData( ));</span>
+<span class="lineNum">      98 </span><span class="lineNoCov">          0 :         return TextureFormat::rgba;</span>
+<span class="lineNum">      99 </span>            :     }
+<span class="lineNum">     100 </span>            : }
+<span class="lineNum">     101 </span>            : 
+<a name="102"><span class="lineNum">     102 </span>            : struct FFMPEGStaticInit</a>
+<span class="lineNum">     103 </span>            : {
+<span class="lineNum">     104 </span><span class="lineCov">         21 :     FFMPEGStaticInit()</span>
+<span class="lineNum">     105 </span>            :     {
+<span class="lineNum">     106 </span><span class="lineCov">         21 :         av_lockmgr_register( &amp;ffmpegLockManagerCallback );</span>
+<span class="lineNum">     107 </span><span class="lineCov">         21 :         av_log_set_callback( avMessageLoger );</span>
+<span class="lineNum">     108 </span><span class="lineCov">         21 :         av_log_set_level( AV_LOG_ERROR );</span>
+<span class="lineNum">     109 </span><span class="lineCov">         21 :         av_register_all();</span>
+<a name="110"><span class="lineNum">     110 </span><span class="lineCov">         21 :     }</span></a>
+<span class="lineNum">     111 </span>            : };
+<span class="lineNum">     112 </span><span class="lineCov">         21 : static FFMPEGStaticInit instance;</span>
+<a name="113"><span class="lineNum">     113 </span>            : }</a>
+<span class="lineNum">     114 </span>            : 
+<span class="lineNum">     115 </span><span class="lineNoCov">          0 : FFMPEGMovie::FFMPEGMovie( const QString&amp; uri )</span>
+<span class="lineNum">     116 </span><span class="lineNoCov">          0 :     : _isValid( _open( uri ))</span>
+<a name="117"><span class="lineNum">     117 </span><span class="lineNoCov">          0 : {}</span></a>
+<span class="lineNum">     118 </span>            : 
+<span class="lineNum">     119 </span><span class="lineNoCov">          0 : FFMPEGMovie::~FFMPEGMovie()</span>
+<span class="lineNum">     120 </span>            : {
+<span class="lineNum">     121 </span><span class="lineNoCov">          0 :     _videoStream.reset();</span>
+<span class="lineNum">     122 </span><span class="lineNoCov">          0 :     _releaseAvFormatContext();</span>
+<a name="123"><span class="lineNum">     123 </span><span class="lineNoCov">          0 : }</span></a>
+<span class="lineNum">     124 </span>            : 
+<span class="lineNum">     125 </span><span class="lineNoCov">          0 : bool FFMPEGMovie::_open( const QString&amp; uri )</span>
+<span class="lineNum">     126 </span>            : {
+<span class="lineNum">     127 </span><span class="lineNoCov">          0 :     if( !_createAvFormatContext( uri ))</span>
+<span class="lineNum">     128 </span><span class="lineNoCov">          0 :         return false;</span>
 <span class="lineNum">     129 </span>            : 
-<span class="lineNum">     130 </span>            :     // Read stream information into _avFormatContext-&gt;streams
-<span class="lineNum">     131 </span><span class="lineNoCov">          0 :     if( avformat_find_stream_info( _avFormatContext, NULL ) &lt; 0 )</span>
-<span class="lineNum">     132 </span>            :     {
-<span class="lineNum">     133 </span><span class="lineNoCov">          0 :         put_flog( LOG_ERROR, &quot;error reading stream information: '%s'&quot;,</span>
-<span class="lineNum">     134 </span><span class="lineNoCov">          0 :                   uri.toLocal8Bit().constData( ));</span>
-<span class="lineNum">     135 </span><span class="lineNoCov">          0 :         return false;</span>
-<span class="lineNum">     136 </span>            :     }
-<span class="lineNum">     137 </span>            : 
-<span class="lineNum">     138 </span>            : #if LOG_THRESHOLD &lt;= LOG_VERBOSE
-<span class="lineNum">     139 </span>            :     // print detail information about the input or output format
-<span class="lineNum">     140 </span>            :     av_dump_format( _avFormatContext, 0, uri.toLatin1(), 0 );
-<span class="lineNum">     141 </span>            : #endif
-<span class="lineNum">     142 </span><span class="lineNoCov">          0 :     return true;</span>
-<a name="143"><span class="lineNum">     143 </span>            : }</a>
-<span class="lineNum">     144 </span>            : 
-<span class="lineNum">     145 </span><span class="lineNoCov">          0 : void FFMPEGMovie::_releaseAvFormatContext()</span>
-<span class="lineNum">     146 </span>            : {
-<span class="lineNum">     147 </span><span class="lineNoCov">          0 :     if( _avFormatContext )</span>
-<span class="lineNum">     148 </span><span class="lineNoCov">          0 :         avformat_close_input( &amp;_avFormatContext );</span>
-<a name="149"><span class="lineNum">     149 </span><span class="lineNoCov">          0 : }</span></a>
-<span class="lineNum">     150 </span>            : 
-<span class="lineNum">     151 </span><span class="lineNoCov">          0 : bool FFMPEGMovie::isValid() const</span>
-<span class="lineNum">     152 </span>            : {
-<span class="lineNum">     153 </span><span class="lineNoCov">          0 :     return _isValid;</span>
-<a name="154"><span class="lineNum">     154 </span>            : }</a>
+<span class="lineNum">     130 </span>            :     try
+<span class="lineNum">     131 </span>            :     {
+<span class="lineNum">     132 </span><span class="lineNoCov">          0 :         _videoStream.reset( new FFMPEGVideoStream( *_avFormatContext ));</span>
+<span class="lineNum">     133 </span><span class="lineNoCov">          0 :         _format = _determineOutputFormat( _videoStream-&gt;getAVFormat(), uri );</span>
+<span class="lineNum">     134 </span>            :     }
+<span class="lineNum">     135 </span><span class="lineNoCov">          0 :     catch( const std::runtime_error&amp; e )</span>
+<span class="lineNum">     136 </span>            :     {
+<span class="lineNum">     137 </span><span class="lineNoCov">          0 :         put_flog( LOG_FATAL, &quot;Error opening file %s : '%s'&quot;,</span>
+<span class="lineNum">     138 </span><span class="lineNoCov">          0 :                   uri.toLocal8Bit().constData(), e.what( ));</span>
+<span class="lineNum">     139 </span><span class="lineNoCov">          0 :         _releaseAvFormatContext();</span>
+<span class="lineNum">     140 </span><span class="lineNoCov">          0 :         return false;</span>
+<span class="lineNum">     141 </span>            :     }
+<span class="lineNum">     142 </span>            : 
+<span class="lineNum">     143 </span><span class="lineNoCov">          0 :     return true;</span>
+<a name="144"><span class="lineNum">     144 </span>            : }</a>
+<span class="lineNum">     145 </span>            : 
+<span class="lineNum">     146 </span><span class="lineNoCov">          0 : bool FFMPEGMovie::_createAvFormatContext( const QString&amp; uri )</span>
+<span class="lineNum">     147 </span>            : {
+<span class="lineNum">     148 </span>            :     // Read movie header information into _avFormatContext and allocate it
+<span class="lineNum">     149 </span><span class="lineNoCov">          0 :     if( avformat_open_input( &amp;_avFormatContext, uri.toLatin1(), 0, 0 ) != 0 )</span>
+<span class="lineNum">     150 </span>            :     {
+<span class="lineNum">     151 </span><span class="lineNoCov">          0 :         put_flog( LOG_ERROR, &quot;error reading movie headers: '%s'&quot;,</span>
+<span class="lineNum">     152 </span><span class="lineNoCov">          0 :                   uri.toLocal8Bit().constData( ));</span>
+<span class="lineNum">     153 </span><span class="lineNoCov">          0 :         return false;</span>
+<span class="lineNum">     154 </span>            :     }
 <span class="lineNum">     155 </span>            : 
-<span class="lineNum">     156 </span><span class="lineNoCov">          0 : unsigned int FFMPEGMovie::getWidth() const</span>
-<span class="lineNum">     157 </span>            : {
-<span class="lineNum">     158 </span><span class="lineNoCov">          0 :     return _videoStream-&gt;getWidth();</span>
-<a name="159"><span class="lineNum">     159 </span>            : }</a>
-<span class="lineNum">     160 </span>            : 
-<span class="lineNum">     161 </span><span class="lineNoCov">          0 : unsigned int FFMPEGMovie::getHeight() const</span>
-<span class="lineNum">     162 </span>            : {
-<span class="lineNum">     163 </span><span class="lineNoCov">          0 :     return _videoStream-&gt;getHeight();</span>
-<a name="164"><span class="lineNum">     164 </span>            : }</a>
-<span class="lineNum">     165 </span>            : 
-<span class="lineNum">     166 </span><span class="lineNoCov">          0 : double FFMPEGMovie::getPosition() const</span>
-<span class="lineNum">     167 </span>            : {
-<span class="lineNum">     168 </span><span class="lineNoCov">          0 :     return _streamPosition;</span>
+<span class="lineNum">     156 </span>            :     // Read stream information into _avFormatContext-&gt;streams
+<span class="lineNum">     157 </span><span class="lineNoCov">          0 :     if( avformat_find_stream_info( _avFormatContext, NULL ) &lt; 0 )</span>
+<span class="lineNum">     158 </span>            :     {
+<span class="lineNum">     159 </span><span class="lineNoCov">          0 :         put_flog( LOG_ERROR, &quot;error reading stream information: '%s'&quot;,</span>
+<span class="lineNum">     160 </span><span class="lineNoCov">          0 :                   uri.toLocal8Bit().constData( ));</span>
+<span class="lineNum">     161 </span><span class="lineNoCov">          0 :         return false;</span>
+<span class="lineNum">     162 </span>            :     }
+<span class="lineNum">     163 </span>            : 
+<span class="lineNum">     164 </span>            : #if LOG_THRESHOLD &lt;= LOG_VERBOSE
+<span class="lineNum">     165 </span>            :     // print detail information about the input or output format
+<span class="lineNum">     166 </span>            :     av_dump_format( _avFormatContext, 0, uri.toLatin1(), 0 );
+<span class="lineNum">     167 </span>            : #endif
+<span class="lineNum">     168 </span><span class="lineNoCov">          0 :     return true;</span>
 <a name="169"><span class="lineNum">     169 </span>            : }</a>
 <span class="lineNum">     170 </span>            : 
-<span class="lineNum">     171 </span><span class="lineNoCov">          0 : double FFMPEGMovie::getDuration() const</span>
+<span class="lineNum">     171 </span><span class="lineNoCov">          0 : void FFMPEGMovie::_releaseAvFormatContext()</span>
 <span class="lineNum">     172 </span>            : {
-<span class="lineNum">     173 </span><span class="lineNoCov">          0 :     return _videoStream-&gt;getDuration();</span>
-<a name="174"><span class="lineNum">     174 </span>            : }</a>
-<span class="lineNum">     175 </span>            : 
-<span class="lineNum">     176 </span><span class="lineNoCov">          0 : double FFMPEGMovie::getFrameDuration() const</span>
-<span class="lineNum">     177 </span>            : {
-<span class="lineNum">     178 </span><span class="lineNoCov">          0 :     return _videoStream-&gt;getFrameDuration();</span>
-<a name="179"><span class="lineNum">     179 </span>            : }</a>
-<span class="lineNum">     180 </span>            : 
-<span class="lineNum">     181 </span><span class="lineNoCov">          0 : PicturePtr FFMPEGMovie::getFrame( double posInSeconds )</span>
-<span class="lineNum">     182 </span>            : {
-<span class="lineNum">     183 </span><span class="lineNoCov">          0 :     posInSeconds = std::max( 0.0, std::min( posInSeconds, getDuration( )));</span>
-<span class="lineNum">     184 </span>            : 
-<span class="lineNum">     185 </span>            :     // Seek back for loop or forward if too far away
-<span class="lineNum">     186 </span><span class="lineNoCov">          0 :     const double streamDelta = posInSeconds - _streamPosition;</span>
-<span class="lineNum">     187 </span><span class="lineNoCov">          0 :     if( streamDelta &lt; 0 || std::abs( streamDelta ) &gt; MIN_SEEK_DELTA_SEC )</span>
-<span class="lineNum">     188 </span>            :     {
-<span class="lineNum">     189 </span><span class="lineNoCov">          0 :         const double frameDuration = _videoStream-&gt;getFrameDuration();</span>
-<span class="lineNum">     190 </span><span class="lineNoCov">          0 :         const double target = std::max( 0.0, posInSeconds - frameDuration );</span>
-<span class="lineNum">     191 </span><span class="lineNoCov">          0 :         const int64_t frameIndex = _videoStream-&gt;getFrameIndex( target );</span>
-<span class="lineNum">     192 </span><span class="lineNoCov">          0 :         if( !_videoStream-&gt;seekToNearestFullframe( frameIndex ))</span>
-<span class="lineNum">     193 </span><span class="lineNoCov">          0 :             return PicturePtr();</span>
-<span class="lineNum">     194 </span>            :     }
-<span class="lineNum">     195 </span>            : 
-<span class="lineNum">     196 </span><span class="lineNoCov">          0 :     PicturePtr picture;</span>
-<span class="lineNum">     197 </span><span class="lineNoCov">          0 :     const int64_t targetTimestamp = _videoStream-&gt;getTimestamp( posInSeconds );</span>
-<span class="lineNum">     198 </span>            : 
-<span class="lineNum">     199 </span>            :     AVPacket packet;
-<span class="lineNum">     200 </span><span class="lineNoCov">          0 :     av_init_packet( &amp;packet );</span>
+<span class="lineNum">     173 </span><span class="lineNoCov">          0 :     if( _avFormatContext )</span>
+<span class="lineNum">     174 </span><span class="lineNoCov">          0 :         avformat_close_input( &amp;_avFormatContext );</span>
+<a name="175"><span class="lineNum">     175 </span><span class="lineNoCov">          0 : }</span></a>
+<span class="lineNum">     176 </span>            : 
+<span class="lineNum">     177 </span><span class="lineNoCov">          0 : bool FFMPEGMovie::isValid() const</span>
+<span class="lineNum">     178 </span>            : {
+<span class="lineNum">     179 </span><span class="lineNoCov">          0 :     return _isValid;</span>
+<a name="180"><span class="lineNum">     180 </span>            : }</a>
+<span class="lineNum">     181 </span>            : 
+<span class="lineNum">     182 </span><span class="lineNoCov">          0 : unsigned int FFMPEGMovie::getWidth() const</span>
+<span class="lineNum">     183 </span>            : {
+<span class="lineNum">     184 </span><span class="lineNoCov">          0 :     return _videoStream-&gt;getWidth();</span>
+<a name="185"><span class="lineNum">     185 </span>            : }</a>
+<span class="lineNum">     186 </span>            : 
+<span class="lineNum">     187 </span><span class="lineNoCov">          0 : unsigned int FFMPEGMovie::getHeight() const</span>
+<span class="lineNum">     188 </span>            : {
+<span class="lineNum">     189 </span><span class="lineNoCov">          0 :     return _videoStream-&gt;getHeight();</span>
+<a name="190"><span class="lineNum">     190 </span>            : }</a>
+<span class="lineNum">     191 </span>            : 
+<span class="lineNum">     192 </span><span class="lineNoCov">          0 : double FFMPEGMovie::getPosition() const</span>
+<span class="lineNum">     193 </span>            : {
+<span class="lineNum">     194 </span><span class="lineNoCov">          0 :     return _streamPosition;</span>
+<a name="195"><span class="lineNum">     195 </span>            : }</a>
+<span class="lineNum">     196 </span>            : 
+<span class="lineNum">     197 </span><span class="lineNoCov">          0 : double FFMPEGMovie::getDuration() const</span>
+<span class="lineNum">     198 </span>            : {
+<span class="lineNum">     199 </span><span class="lineNoCov">          0 :     return _videoStream-&gt;getDuration();</span>
+<a name="200"><span class="lineNum">     200 </span>            : }</a>
 <span class="lineNum">     201 </span>            : 
-<span class="lineNum">     202 </span><span class="lineNoCov">          0 :     int avReadStatus = 0;</span>
-<span class="lineNum">     203 </span><span class="lineNoCov">          0 :     while( (avReadStatus = av_read_frame( _avFormatContext, &amp;packet )) &gt;= 0 )</span>
-<span class="lineNum">     204 </span>            :     {
-<span class="lineNum">     205 </span><span class="lineNoCov">          0 :         const int64_t timestamp = _videoStream-&gt;decodeTimestamp( packet );</span>
-<span class="lineNum">     206 </span><span class="lineNoCov">          0 :         if( timestamp &gt;= targetTimestamp )</span>
-<span class="lineNum">     207 </span>            :         {
-<span class="lineNum">     208 </span><span class="lineNoCov">          0 :             picture = _videoStream-&gt;decodePictureForLastPacket();</span>
-<span class="lineNum">     209 </span>            :             // This validity check is to prevent against rare decoding errors
-<span class="lineNum">     210 </span>            :             // and is not inherently part of the seeking process.
-<span class="lineNum">     211 </span><span class="lineNoCov">          0 :             if( picture )</span>
-<span class="lineNum">     212 </span>            :             {
-<span class="lineNum">     213 </span><span class="lineNoCov">          0 :                 _streamPosition = _videoStream-&gt;getPositionInSec( timestamp );</span>
-<span class="lineNum">     214 </span>            : 
-<span class="lineNum">     215 </span>            :                 // free the packet that was allocated by av_read_frame
-<span class="lineNum">     216 </span><span class="lineNoCov">          0 :                 av_free_packet( &amp;packet );</span>
-<span class="lineNum">     217 </span><span class="lineNoCov">          0 :                 break;</span>
-<span class="lineNum">     218 </span>            :             }
-<span class="lineNum">     219 </span>            :         }
-<span class="lineNum">     220 </span>            :         // free the packet that was allocated by av_read_frame
-<span class="lineNum">     221 </span><span class="lineNoCov">          0 :         av_free_packet( &amp;packet );</span>
-<span class="lineNum">     222 </span>            :     }
-<span class="lineNum">     223 </span>            : 
-<span class="lineNum">     224 </span>            :     // handle (rare) EOF case
-<span class="lineNum">     225 </span><span class="lineNoCov">          0 :     if( avReadStatus &lt; 0 )</span>
-<span class="lineNum">     226 </span><span class="lineNoCov">          0 :         picture = PicturePtr();</span>
-<a name="227"><span class="lineNum">     227 </span>            : </a>
-<span class="lineNum">     228 </span><span class="lineNoCov">          0 :     return picture;</span>
-<span class="lineNum">     229 </span><span class="lineCov">         63 : }</span>
+<span class="lineNum">     202 </span><span class="lineNoCov">          0 : double FFMPEGMovie::getFrameDuration() const</span>
+<span class="lineNum">     203 </span>            : {
+<span class="lineNum">     204 </span><span class="lineNoCov">          0 :     return _videoStream-&gt;getFrameDuration();</span>
+<a name="205"><span class="lineNum">     205 </span>            : }</a>
+<span class="lineNum">     206 </span>            : 
+<span class="lineNum">     207 </span><span class="lineNoCov">          0 : TextureFormat FFMPEGMovie::getFormat() const</span>
+<span class="lineNum">     208 </span>            : {
+<span class="lineNum">     209 </span><span class="lineNoCov">          0 :     return _format;</span>
+<a name="210"><span class="lineNum">     210 </span>            : }</a>
+<span class="lineNum">     211 </span>            : 
+<span class="lineNum">     212 </span><span class="lineNoCov">          0 : void FFMPEGMovie::setFormat( const TextureFormat format )</span>
+<span class="lineNum">     213 </span>            : {
+<span class="lineNum">     214 </span><span class="lineNoCov">          0 :     _format = format;</span>
+<a name="215"><span class="lineNum">     215 </span><span class="lineNoCov">          0 : }</span></a>
+<span class="lineNum">     216 </span>            : 
+<span class="lineNum">     217 </span><span class="lineNoCov">          0 : PicturePtr FFMPEGMovie::getFrame( double posInSeconds )</span>
+<span class="lineNum">     218 </span>            : {
+<span class="lineNum">     219 </span><span class="lineNoCov">          0 :     posInSeconds = std::max( 0.0, std::min( posInSeconds, getDuration( )));</span>
+<span class="lineNum">     220 </span>            : 
+<span class="lineNum">     221 </span>            :     // Seek back for loop or forward if too far away
+<span class="lineNum">     222 </span><span class="lineNoCov">          0 :     const double streamDelta = posInSeconds - _streamPosition;</span>
+<span class="lineNum">     223 </span><span class="lineNoCov">          0 :     if( streamDelta &lt; 0 || std::abs( streamDelta ) &gt; MIN_SEEK_DELTA_SEC )</span>
+<span class="lineNum">     224 </span>            :     {
+<span class="lineNum">     225 </span><span class="lineNoCov">          0 :         const double frameDuration = _videoStream-&gt;getFrameDuration();</span>
+<span class="lineNum">     226 </span><span class="lineNoCov">          0 :         const double target = std::max( 0.0, posInSeconds - frameDuration );</span>
+<span class="lineNum">     227 </span><span class="lineNoCov">          0 :         const int64_t frameIndex = _videoStream-&gt;getFrameIndex( target );</span>
+<span class="lineNum">     228 </span><span class="lineNoCov">          0 :         if( !_videoStream-&gt;seekToNearestFullframe( frameIndex ))</span>
+<span class="lineNum">     229 </span><span class="lineNoCov">          0 :             return PicturePtr();</span>
+<span class="lineNum">     230 </span>            :     }
+<span class="lineNum">     231 </span>            : 
+<span class="lineNum">     232 </span><span class="lineNoCov">          0 :     PicturePtr picture;</span>
+<span class="lineNum">     233 </span><span class="lineNoCov">          0 :     const int64_t targetTimestamp = _videoStream-&gt;getTimestamp( posInSeconds );</span>
+<span class="lineNum">     234 </span>            : 
+<span class="lineNum">     235 </span>            :     AVPacket packet;
+<span class="lineNum">     236 </span><span class="lineNoCov">          0 :     av_init_packet( &amp;packet );</span>
+<span class="lineNum">     237 </span>            : 
+<span class="lineNum">     238 </span><span class="lineNoCov">          0 :     int avReadStatus = 0;</span>
+<span class="lineNum">     239 </span><span class="lineNoCov">          0 :     while( (avReadStatus = av_read_frame( _avFormatContext, &amp;packet )) &gt;= 0 )</span>
+<span class="lineNum">     240 </span>            :     {
+<span class="lineNum">     241 </span><span class="lineNoCov">          0 :         const int64_t timestamp = _videoStream-&gt;decodeTimestamp( packet );</span>
+<span class="lineNum">     242 </span><span class="lineNoCov">          0 :         if( timestamp &gt;= targetTimestamp )</span>
+<span class="lineNum">     243 </span>            :         {
+<span class="lineNum">     244 </span><span class="lineNoCov">          0 :             picture = _videoStream-&gt;decodePictureForLastPacket( _format );</span>
+<span class="lineNum">     245 </span>            :             // This validity check is to prevent against rare decoding errors
+<span class="lineNum">     246 </span>            :             // and is not inherently part of the seeking process.
+<span class="lineNum">     247 </span><span class="lineNoCov">          0 :             if( picture )</span>
+<span class="lineNum">     248 </span>            :             {
+<span class="lineNum">     249 </span><span class="lineNoCov">          0 :                 _streamPosition = _videoStream-&gt;getPositionInSec( timestamp );</span>
+<span class="lineNum">     250 </span>            : 
+<span class="lineNum">     251 </span>            :                 // free the packet that was allocated by av_read_frame
+<span class="lineNum">     252 </span><span class="lineNoCov">          0 :                 av_free_packet( &amp;packet );</span>
+<span class="lineNum">     253 </span><span class="lineNoCov">          0 :                 break;</span>
+<span class="lineNum">     254 </span>            :             }
+<span class="lineNum">     255 </span>            :         }
+<span class="lineNum">     256 </span>            :         // free the packet that was allocated by av_read_frame
+<span class="lineNum">     257 </span><span class="lineNoCov">          0 :         av_free_packet( &amp;packet );</span>
+<span class="lineNum">     258 </span>            :     }
+<span class="lineNum">     259 </span>            : 
+<span class="lineNum">     260 </span>            :     // handle (rare) EOF case
+<span class="lineNum">     261 </span><span class="lineNoCov">          0 :     if( avReadStatus &lt; 0 )</span>
+<span class="lineNum">     262 </span><span class="lineNoCov">          0 :         picture = PicturePtr();</span>
+<a name="263"><span class="lineNum">     263 </span>            : </a>
+<span class="lineNum">     264 </span><span class="lineNoCov">          0 :     return picture;</span>
+<span class="lineNum">     265 </span><span class="lineCov">         63 : }</span>
 </pre>
       </td>
     </tr>

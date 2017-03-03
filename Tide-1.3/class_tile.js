@@ -4,9 +4,11 @@ var class_tile =
       [ "AdjustToTexture", "class_tile.html#afee3e01756efdd64fd4f67c105bd2e42a3dfe48881cacf7d40429e796c13dee9b", null ],
       [ "FillParent", "class_tile.html#afee3e01756efdd64fd4f67c105bd2e42a0af1d58167c44096cabf601f02d9f07d", null ]
     ] ],
-    [ "Tile", "class_tile.html#a41ea6d041ad065dfc8c85fb75980d636", null ],
+    [ "Tile", "class_tile.html#a157ab4d4151eabddb20f2f3012a065c7", null ],
     [ "getBackGlTexture", "class_tile.html#a5b1a939bc985b19447bc00162ed060fd", null ],
     [ "getBackGlTextureSize", "class_tile.html#a804cbccc790850dacb8f7aab4382c27d", null ],
+    [ "getBackGlTextureYUV", "class_tile.html#acc2f5e86334676d7a2f3c481bc20aae3", null ],
+    [ "getFormat", "class_tile.html#adc4979d538e92fb17071aa11807de0e9", null ],
     [ "getId", "class_tile.html#a6a653b4a1bfe89750a133644af00cc72", null ],
     [ "getShowBorder", "class_tile.html#a0fbceb037e1e468b30a8a5fa492f47fa", null ],
     [ "setShowBorder", "class_tile.html#a6bad45f0c243e03d3ff7cca96eb2a3a8", null ],

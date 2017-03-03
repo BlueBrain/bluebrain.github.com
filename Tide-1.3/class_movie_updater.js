@@ -5,6 +5,7 @@ var class_movie_updater =
     [ "advanceToNextFrame", "class_movie_updater.html#a688f6c611c42889541677bac8e9001b8", null ],
     [ "canRequestNewFrame", "class_movie_updater.html#ac2ae41e78a4829c30ce5d7c496cf00e9", null ],
     [ "computeVisibleSet", "class_movie_updater.html#af8e637fc5ad5ad7b9e8171cc946687c0", null ],
+    [ "getFormat", "class_movie_updater.html#a7f735fab507e8c677d210cbf7adf946e", null ],
     [ "getMaxLod", "class_movie_updater.html#ad0d0db9d5a58c91530f904feb395aeb2", null ],
     [ "getPosition", "class_movie_updater.html#a5c4bd1ea41b30f51960ce2e765f9e077", null ],
     [ "getSkipPosition", "class_movie_updater.html#a6d839c68bbe698546222d0bb27b02255", null ],

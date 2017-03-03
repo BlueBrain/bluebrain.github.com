@@ -2,9 +2,10 @@ var class_f_f_m_p_e_g_video_stream =
 [
     [ "FFMPEGVideoStream", "class_f_f_m_p_e_g_video_stream.html#a3462dbb6d35dbca8ae9692320765ea70", null ],
     [ "~FFMPEGVideoStream", "class_f_f_m_p_e_g_video_stream.html#ac156456c4ed8b05d38a475d562de746e", null ],
-    [ "decode", "class_f_f_m_p_e_g_video_stream.html#a740cc6e53585987ed948ce75de986b1b", null ],
-    [ "decodePictureForLastPacket", "class_f_f_m_p_e_g_video_stream.html#a3ee83f7561e1fc56cceb14bc613f5b0e", null ],
+    [ "decode", "class_f_f_m_p_e_g_video_stream.html#a401eb81c2b7086288db2a0a11e1c8492", null ],
+    [ "decodePictureForLastPacket", "class_f_f_m_p_e_g_video_stream.html#a2e9c261871fbc6f0ec10555a5b065ef4", null ],
     [ "decodeTimestamp", "class_f_f_m_p_e_g_video_stream.html#a59a72231402aae3c00200f20129329b3", null ],
+    [ "getAVFormat", "class_f_f_m_p_e_g_video_stream.html#a6f51c0db6880c85f285b193dd6372bab", null ],
     [ "getDuration", "class_f_f_m_p_e_g_video_stream.html#a6751a0e306c8f0c176681496d5448982", null ],
     [ "getFrameDuration", "class_f_f_m_p_e_g_video_stream.html#a6aa24924ff435f71adf39625d0a4f8a4", null ],
     [ "getFrameIndex", "class_f_f_m_p_e_g_video_stream.html#afd2dc7e4aca544cf9e63604be3640560", null ],
