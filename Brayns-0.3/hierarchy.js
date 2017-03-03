@@ -19,6 +19,7 @@ var hierarchy =
     [ "brayns::BaseWindow", "classbrayns_1_1_base_window.html", null ],
     [ "brayns::BasicLight", "structbrayns_1_1_basic_light.html", null ],
     [ "brayns::Brayns", "classbrayns_1_1_brayns.html", null ],
+    [ "brayns::CADiffusionSimulationHandler", "classbrayns_1_1_c_a_diffusion_simulation_handler.html", null ],
     [ "brayns::Camera", "classbrayns_1_1_camera.html", [
       [ "brayns::LivreCamera", "classbrayns_1_1_livre_camera.html", null ],
       [ "brayns::OptiXCamera", "classbrayns_1_1_opti_x_camera.html", null ],
@@ -57,7 +58,6 @@ var hierarchy =
       [ "brayns::PointLight", "classbrayns_1_1_point_light.html", null ]
     ] ],
     [ "brayns::Material", "classbrayns_1_1_material.html", null ],
-    [ "brayns::MeshContainer", "structbrayns_1_1_mesh_container.html", null ],
     [ "brayns::MeshLoader", "classbrayns_1_1_mesh_loader.html", null ],
     [ "brayns::MetaballsGenerator", "classbrayns_1_1_metaballs_generator.html", null ],
     [ "brayns::MolecularSystemReader", "classbrayns_1_1_molecular_system_reader.html", null ],

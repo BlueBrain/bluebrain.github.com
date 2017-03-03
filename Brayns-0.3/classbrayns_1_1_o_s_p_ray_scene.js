@@ -11,5 +11,6 @@ var classbrayns_1_1_o_s_p_ray_scene =
     [ "isVolumeSupported", "classbrayns_1_1_o_s_p_ray_scene.html#ae4904bea5fbd897256145650bfbebbe2", null ],
     [ "modelImpl", "classbrayns_1_1_o_s_p_ray_scene.html#a0f7fcf94277124436958d53b4993748b", null ],
     [ "reset", "classbrayns_1_1_o_s_p_ray_scene.html#aa17bae858b1195c11c2c44ae6d2a2b67", null ],
-    [ "saveSceneToCacheFile", "classbrayns_1_1_o_s_p_ray_scene.html#ad9ea4a411a09d9f76af6ad5f428b4762", null ]
+    [ "saveSceneToCacheFile", "classbrayns_1_1_o_s_p_ray_scene.html#ad9ea4a411a09d9f76af6ad5f428b4762", null ],
+    [ "serializeGeometry", "classbrayns_1_1_o_s_p_ray_scene.html#a42e388f6a471df981eb93842d9be6fd5", null ]
 ];

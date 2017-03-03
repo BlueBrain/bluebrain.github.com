@@ -11,5 +11,6 @@ var classbrayns_1_1_opti_x_scene =
     [ "commitVolumeData", "classbrayns_1_1_opti_x_scene.html#aabc1d5e3e24845a20d5e74fea75b25a3", null ],
     [ "isVolumeSupported", "classbrayns_1_1_opti_x_scene.html#a331ff16e52f9706cec948385933bef82", null ],
     [ "reset", "classbrayns_1_1_opti_x_scene.html#ab4142145a22dd06167d073d37af2170e", null ],
-    [ "saveSceneToCacheFile", "classbrayns_1_1_opti_x_scene.html#a6bb8367f6b887be1c4528c349098d786", null ]
+    [ "saveSceneToCacheFile", "classbrayns_1_1_opti_x_scene.html#a6bb8367f6b887be1c4528c349098d786", null ],
+    [ "serializeGeometry", "classbrayns_1_1_opti_x_scene.html#a83dd7d1fac3ec8d67a17ac3696628a62", null ]
 ];
