@@ -1,6 +1,6 @@
 var searchData=
 [
-  ['the_20perspective_20camera_20_28_22clipped_5fperspective_22_29',['The Perspective Camera (&quot;clipped_perspective&quot;)',['../group__clipped__perspective__camera.html',1,'']]],
+  ['the_20perspective_20camera',['The Perspective Camera',['../group__clipped__perspective__camera.html',1,'']]],
   ['texture2d',['Texture2D',['../classbrayns_1_1_texture2_d.html',1,'brayns']]],
   ['textureloader',['TextureLoader',['../classbrayns_1_1_texture_loader.html',1,'brayns']]],
   ['todo_20list',['Todo List',['../todo.html',1,'']]],

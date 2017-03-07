@@ -4,8 +4,8 @@ var classbrayns_1_1_keyboard_handler =
     [ "handle", "classbrayns_1_1_keyboard_handler.html#ac8794dfb8b9de592c37801770afd954d", null ],
     [ "handleKeyboardShortcut", "classbrayns_1_1_keyboard_handler.html#aedb8a810a846045ce3a08acfd87f69ba", null ],
     [ "help", "classbrayns_1_1_keyboard_handler.html#a9f39c4ac5fd8c57fb5ba6f39037d7a3c", null ],
-    [ "registerKeyboardShortcut", "classbrayns_1_1_keyboard_handler.html#a8e2f0f1945e434a48b064b7cbe3cc386", null ],
-    [ "registerSpecialKey", "classbrayns_1_1_keyboard_handler.html#a026f2dc3fe87f3a70c2340577c6f060c", null ],
+    [ "registerKeyboardShortcut", "classbrayns_1_1_keyboard_handler.html#a77c77b89adefaf9cb47a67d833f18854", null ],
+    [ "registerSpecialKey", "classbrayns_1_1_keyboard_handler.html#ac32a13132f82e36b1b45c82921dd77df", null ],
     [ "unregisterKeyboardShortcut", "classbrayns_1_1_keyboard_handler.html#ae64300a09cc5b3e182966a8e9de518c0", null ],
     [ "unregisterSpecialKey", "classbrayns_1_1_keyboard_handler.html#afbba49463b302102914acc01880324ee", null ]
 ];

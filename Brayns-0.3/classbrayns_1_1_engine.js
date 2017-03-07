@@ -28,5 +28,5 @@ var classbrayns_1_1_engine =
     [ "_parametersManager", "classbrayns_1_1_engine.html#a77bf3f51d3038e7fdeaf9194a2abdc7e", null ],
     [ "_renderers", "classbrayns_1_1_engine.html#a2d38cf1c8d61f255773a900c367e8182", null ],
     [ "_scene", "classbrayns_1_1_engine.html#a254b9a96346ee4bd3a0a71125975c22d", null ],
-    [ "recreate", "classbrayns_1_1_engine.html#a7d50c16e107f4399d320ba6b2783d8fa", null ]
+    [ "recreate", "classbrayns_1_1_engine.html#af73ce5c200238ee584ac21e3a394d420", null ]
 ];

@@ -1,6 +1,6 @@
 var searchData=
 [
-  ['recreate',['recreate',['../classbrayns_1_1_engine.html#a7d50c16e107f4399d320ba6b2783d8fa',1,'brayns::Engine']]],
+  ['recreate',['recreate',['../classbrayns_1_1_engine.html#af73ce5c200238ee584ac21e3a394d420',1,'brayns::Engine']]],
   ['registerparameters',['registerParameters',['../classbrayns_1_1_parameters_manager.html#af1446cfbea9a2fb9348a8625bd69bb18',1,'brayns::ParametersManager']]],
   ['remove',['remove',['../classbrayns_1_1_engine_factory.html#a1dfcc78f09bfdd74dcef4307c0547964',1,'brayns::EngineFactory::remove()'],['../classbrayns_1_1_extension_plugin_factory.html#aed9a3a7689696f8e6c82eeb64fd52c21',1,'brayns::ExtensionPluginFactory::remove()']]],
   ['removelight',['removeLight',['../classbrayns_1_1_scene.html#a681a8a7e95f279226a0ac02f2b8f4201',1,'brayns::Scene']]],

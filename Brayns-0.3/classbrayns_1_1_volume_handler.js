@@ -1,7 +1,7 @@
 var classbrayns_1_1_volume_handler =
 [
     [ "VolumeDescriptor", "classbrayns_1_1_volume_handler_1_1_volume_descriptor.html", "classbrayns_1_1_volume_handler_1_1_volume_descriptor" ],
-    [ "VolumeDescriptorPtr", "classbrayns_1_1_volume_handler.html#a80b3c5bf101915f307ac92d6b061b787", null ],
+    [ "VolumeDescriptorPtr", "classbrayns_1_1_volume_handler.html#ad4bd4b61f3c350ad20172376337c77c2", null ],
     [ "VolumeHandler", "classbrayns_1_1_volume_handler.html#a09212f57bdf367e12b7d039894d68a40", null ],
     [ "~VolumeHandler", "classbrayns_1_1_volume_handler.html#ac499d28a2370eaf6938be7ef69e4d87f", null ],
     [ "attachVolumeToFile", "classbrayns_1_1_volume_handler.html#add889082843fb91f5d2d545e9595edeb", null ],

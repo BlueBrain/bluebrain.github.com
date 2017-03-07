@@ -4,7 +4,7 @@ var structospray_1_1_extended_cylinders =
     [ "finalize", "structospray_1_1_extended_cylinders.html#ac9cd0a4315111f5aa95873e423cd2293", null ],
     [ "toString", "structospray_1_1_extended_cylinders.html#aa0364575cb1d7a9c90c356573a23cfd3", null ],
     [ "bytesPerCylinder", "structospray_1_1_extended_cylinders.html#a4492602fc1cad680b1da015962665135", null ],
-    [ "data", "structospray_1_1_extended_cylinders.html#a3d052f68dca5fb65d208e8572c16694e", null ],
+    [ "data", "structospray_1_1_extended_cylinders.html#a64639598b0f1e4e85bf33c604c210376", null ],
     [ "materialID", "structospray_1_1_extended_cylinders.html#a0f6e73cbe94d7885a0057e34b045fcdc", null ],
     [ "numExtendedCylinders", "structospray_1_1_extended_cylinders.html#a78a0011b75c45742359b54a6d2607648", null ],
     [ "offset_materialID", "structospray_1_1_extended_cylinders.html#ae8926af525c696db61a261fe05936ff8", null ],
