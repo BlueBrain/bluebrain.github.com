@@ -74,7 +74,7 @@ var searchData=
   ['getreader',['getReader',['../classbrain_1_1_compartment_report_view.html#a6b3fa66c2963a29f758bb21fa306864e',1,'brain::CompartmentReportView']]],
   ['getremaining',['getRemaining',['../classbrain_1_1_synapses_stream.html#a755792a56bcc3607e480b41e159098f4',1,'brain::SynapsesStream']]],
   ['getreportsource',['getReportSource',['../classbrion_1_1_blue_config.html#a30f64c0386fc846429a3dda70b5214cb',1,'brion::BlueConfig']]],
-  ['getrevision',['getRevision',['../classbrion_1_1_version.html#a6f481c7090688eeb4742a22a53982c14',1,'brion::Version::getRevision()'],['../classbrain_1_1_version.html#acd963337a677b3a381fecdfdbf16872f',1,'brain::Version::getRevision()']]],
+  ['getrevision',['getRevision',['../classbrion_1_1_version.html#ad3457e9ccb29f7cb33a0aaaa88db1ab2',1,'brion::Version::getRevision()'],['../classbrain_1_1_version.html#afbc17aacb199a42ca23b5a4a17df9615',1,'brain::Version::getRevision()']]],
   ['getrevstring',['getRevString',['../classbrion_1_1_version.html#a0529b8442a3578b60213b46007be4624',1,'brion::Version::getRevString()'],['../classbrain_1_1_version.html#a7f55ce56cbfa739ce329161583a0f5ef',1,'brain::Version::getRevString()']]],
   ['getrotations',['getRotations',['../classbrain_1_1_circuit.html#a457e6f64353f0b20bb1a6524c88ea3af',1,'brain::Circuit']]],
   ['getsampledistancestosoma',['getSampleDistancesToSoma',['../classbrain_1_1neuron_1_1_section.html#aa05f5214f028540b0d8bd84f35087ed3',1,'brain::neuron::Section']]],

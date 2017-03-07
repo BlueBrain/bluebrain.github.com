@@ -8,6 +8,7 @@ var NAVTREE =
     [ "Data models", "data.html", "data" ],
     [ "RFCs", "rfcs.html", "rfcs" ],
     [ "Caching support", "md__jenkins_02_workspace_oss.Brion.documentation_build_type_Debug_platform_cscsviz-vm_sources_doc_user_caching.html", null ],
+    [ "Application Help", "apps.html", "apps" ],
     [ "Environment Variables", "env.html", null ],
     [ "Deprecated List", "deprecated.html", null ],
     [ "Namespaces", null, [
@@ -45,8 +46,9 @@ var NAVTREE =
 var NAVTREEINDEX =
 [
 "Changelog.html",
-"classbrain_1_1neuron_1_1_soma.html",
-"classbrion_1_1_version.html#a1d222a0670a0df9f7b70415ec501602a"
+"classbrain_1_1neuron_1_1_section.html#af729520de464e3ad975ca256c9954cfd",
+"classbrion_1_1_version.html#a08a68ae8561176060e77710c79cad778",
+"synapses_stream_8h_source.html"
 ];
 
 var SYNCONMSG = 'click to disable panel synchronisation';

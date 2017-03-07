@@ -1,5 +1,5 @@
 var searchData=
 [
-  ['synapse_20support_20in_20brain',['Synapse support in Brain',['../brain_synapses.html',1,'rfcs']]],
-  ['spike_20report_20data_20model',['Spike report data model',['../data_spikes.html',1,'data']]]
+  ['rfcs',['RFCs',['../rfcs.html',1,'']]],
+  ['redesign_20of_20the_20spikereport_20and_20spikes_20container',['Redesign of the SpikeReport and Spikes container',['../spike_reports.html',1,'rfcs']]]
 ];

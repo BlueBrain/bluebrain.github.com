@@ -24,6 +24,7 @@ var classbrion_1_1_compartment_report =
     [ "setBufferSize", "classbrion_1_1_compartment_report.html#a8721d04fa5ef8d8b1c69b8865fcb0917", null ],
     [ "updateMapping", "classbrion_1_1_compartment_report.html#a6ee6420e43db4ac5319a86b074d94ba4", null ],
     [ "writeCompartments", "classbrion_1_1_compartment_report.html#a5bd85b1c9847c5800215e4bb8aeda1eb", null ],
-    [ "writeFrame", "classbrion_1_1_compartment_report.html#a230e53d4d3941df80b5692b6ec627a2d", null ],
+    [ "writeFrame", "classbrion_1_1_compartment_report.html#a837605b1c593cc8eb039f804726e9a15", null ],
+    [ "writeFrame", "classbrion_1_1_compartment_report.html#af1bebcdeb4e2076bc4c4818e27f31226", null ],
     [ "writeHeader", "classbrion_1_1_compartment_report.html#a5dd9a3b9cb25b6d6cfe6d6e6200579d9", null ]
 ];

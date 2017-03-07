@@ -13,6 +13,7 @@ var searchData=
   ['size',['size',['../classbrain_1_1_synapses.html#a0b9ad156a0f451db5eada7365451f7e9',1,'brain::Synapses']]],
   ['soma',['Soma',['../classbrain_1_1neuron_1_1_soma.html',1,'brain::neuron']]],
   ['spike',['Spike',['../namespacebrion.html#a9967e859937226870c81c8fc786cf2be',1,'brion']]],
+  ['spikeconverter',['spikeConverter',['../spikeConverter.html',1,'apps']]],
   ['spikemap',['SpikeMap',['../namespacebrion.html#a9ae32d296e387b3fd9425513d15a0465',1,'brion']]],
   ['spikereport',['SpikeReport',['../classbrion_1_1_spike_report.html#abc848e1631c8293dbb2c0a5787656b3b',1,'brion::SpikeReport::SpikeReport(const URI &amp;uri, int mode=MODE_READ)'],['../classbrion_1_1_spike_report.html#a7eec8b54b3b74f8c21bf80a8690fa780',1,'brion::SpikeReport::SpikeReport(const URI &amp;uri, const GIDSet &amp;ids)']]],
   ['spikereport',['SpikeReport',['../classbrion_1_1_spike_report.html',1,'brion']]],
@@ -33,11 +34,11 @@ var searchData=
   ['synapsematrix',['SynapseMatrix',['../namespacebrion.html#aaf229f5bbc92e020d24f6e92b15cd45b',1,'brion']]],
   ['synapsepositions',['SynapsePositions',['../enums_8h.html#a66e583bba6f011701c4d545b1bb28533',1,'brion::enums']]],
   ['synapseprefetch',['SynapsePrefetch',['../namespacebrain.html#a9465fc0a732855959304f34a970b3a21',1,'brain']]],
-  ['synapses',['Synapses',['../classbrain_1_1_synapses.html',1,'brain']]],
   ['synapses',['Synapses',['../classbrain_1_1_synapses.html#a3dd7dc84c2a1ccda1ebf6be16dbe7005',1,'brain::Synapses']]],
+  ['synapses',['Synapses',['../classbrain_1_1_synapses.html',1,'brain']]],
   ['synapsesiterator',['SynapsesIterator',['../classbrain_1_1_synapses_iterator.html',1,'brain']]],
   ['synapsesstream',['SynapsesStream',['../classbrain_1_1_synapses_stream.html',1,'brain']]],
-  ['synapsesummary',['SynapseSummary',['../classbrion_1_1_synapse_summary.html',1,'brion']]],
   ['synapsesummary',['SynapseSummary',['../classbrion_1_1_synapse_summary.html#af20d4491231e172d332a2850fb957842',1,'brion::SynapseSummary']]],
+  ['synapsesummary',['SynapseSummary',['../classbrion_1_1_synapse_summary.html',1,'brion']]],
   ['synapsesummarymatrix',['SynapseSummaryMatrix',['../namespacebrion.html#a8cf594eaf64c24b377d0b47bfabab145',1,'brion']]]
 ];

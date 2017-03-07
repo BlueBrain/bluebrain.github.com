@@ -23,6 +23,6 @@ var classbrion_1_1_compartment_report_plugin =
     [ "setBufferSize", "classbrion_1_1_compartment_report_plugin.html#afd8862671b3a459bb0d891e96ff1ee24", null ],
     [ "updateMapping", "classbrion_1_1_compartment_report_plugin.html#a979a0f56cfe3fc560eadc776dd865910", null ],
     [ "writeCompartments", "classbrion_1_1_compartment_report_plugin.html#a1ee8f2b01df7aec46ea21b8925e359eb", null ],
-    [ "writeFrame", "classbrion_1_1_compartment_report_plugin.html#a1a6d819ba11597e9e5b56a4b2684c634", null ],
+    [ "writeFrame", "classbrion_1_1_compartment_report_plugin.html#ad3d70d5d37cbcecc426652d026e74c60", null ],
     [ "writeHeader", "classbrion_1_1_compartment_report_plugin.html#a1f4097c67462043601b6736e9c349706", null ]
 ];
