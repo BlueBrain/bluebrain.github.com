@@ -1,7 +1,5 @@
 var NAVTREEINDEX1 =
 {
-"structlivre_1_1_volume_information.html#a3afc8abaf0803c82c837604d3b45cfcc":[5,0,0,19,12],
-"structlivre_1_1_volume_information.html#a4ac1a3924b611e51bf6b06e0a33b3793":[5,0,0,19,9],
 "structlivre_1_1_volume_information.html#a5eefe6afe0a60b20c4672efbc78da1af":[5,0,0,19,0],
 "structlivre_1_1_volume_information.html#a73e99fefb8c72b146af1b8cfe03d5212":[5,0,0,19,3],
 "structlivre_1_1_volume_information.html#a7accaca6d02ccdf79c117a3df56c533e":[5,0,0,19,5],

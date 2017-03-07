@@ -13,6 +13,7 @@ var searchData=
   ['getdescriptionmap_5f',['getDescriptionMap_',['../classlivre_1_1_configuration.html#a668a54266dae7480d20f7d5650f1b5b4',1,'livre::Configuration']]],
   ['getdescriptions',['getDescriptions',['../classlivre_1_1_data_source.html#acdcdc9c3a02cdc54f066200d58518332',1,'livre::DataSource']]],
   ['getlevel',['getLevel',['../classlivre_1_1_node_id.html#a55a71a3b1fa35f1a0b564c1e9b11cd0b',1,'livre::NodeId']]],
+  ['getlut',['getLUT',['../classlivre_1_1_transfer_function1_d.html#a9f1ca721f4f0229b1d65ee48d6b8c2af',1,'livre::TransferFunction1D']]],
   ['getmajor',['getMajor',['../classlivrecore_1_1_version.html#ac7fae924c506e38def00f88cbe924d97',1,'livrecore::Version']]],
   ['getminor',['getMinor',['../classlivrecore_1_1_version.html#a70a2b01332da98f450cada3b37cadc9d',1,'livrecore::Version']]],
   ['getnode',['getNode',['../classlivre_1_1_data_source.html#a8f5566d9dcc2727f4bec1153e87c68da',1,'livre::DataSource::getNode()'],['../classlivre_1_1_data_source_plugin.html#a94912dce35d46c61d454214869e8b41f',1,'livre::DataSourcePlugin::getNode()']]],
