@@ -23,6 +23,6 @@ var classfivox_1_1_u_r_i_handler =
     [ "getSpikes", "classfivox_1_1_u_r_i_handler.html#abb682a65e3544a28adf31156e0b0cdf2", null ],
     [ "getType", "classfivox_1_1_u_r_i_handler.html#abf6d8df653ba4dafbca65b47f9cf389f", null ],
     [ "newEventSource", "classfivox_1_1_u_r_i_handler.html#aaf2cd09ffd22d4a9ab90810c917f683b", null ],
-    [ "newFunctor", "classfivox_1_1_u_r_i_handler.html#a1a3a6485f94f0bf0e8ce74230b636643", null ],
-    [ "newImageSource", "classfivox_1_1_u_r_i_handler.html#a5828eaa334f6cdce1ffb2b6a82470382", null ]
+    [ "newFunctor", "classfivox_1_1_u_r_i_handler.html#a47d1a8c6b5e0d0f9ae1530f269a4bd48", null ],
+    [ "newImageSource", "classfivox_1_1_u_r_i_handler.html#a69dbce5865547e9abd01005cf05503c7", null ]
 ];
