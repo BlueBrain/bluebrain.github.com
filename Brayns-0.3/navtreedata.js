@@ -2,6 +2,7 @@ var NAVTREE =
 [
   [ "Brayns", "index.html", [
     [ "Changelog", "Changelog.html", null ],
+    [ "Brayns user guide", "md__jenkins_03_workspace_oss.Brayns.documentation_build_type_Debug_platform_cscsviz-vm_sources_doc_UserGuide.html", null ],
     [ "Application Help", "apps.html", "apps" ],
     [ "Todo List", "todo.html", null ],
     [ "Modules", "modules.html", "modules" ],
