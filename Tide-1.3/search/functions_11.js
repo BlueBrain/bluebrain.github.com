@@ -29,7 +29,6 @@ var searchData=
   ['setbackgroundcontent',['setBackgroundContent',['../class_options.html#adaef915fef86c8fc6f06fcaece08aeaa',1,'Options']]],
   ['setbackgroundtile',['setBackgroundTile',['../class_lod_synchronizer.html#a81e10f2ecb83c92a9183c9c50e4b4bfc',1,'LodSynchronizer']]],
   ['setbackgrounduri',['setBackgroundUri',['../class_options.html#a07da8d28e6cb1c6b7d2098dd40fc217f',1,'Options::setBackgroundUri()'],['../class_master_configuration.html#a10c504ed2c3553c900b7605233c7421d',1,'MasterConfiguration::setBackgroundUri()']]],
-  ['setbacktexturesize',['setBackTextureSize',['../class_texture_node.html#a16ad4cad8dcb8d491954ba81a71ae404',1,'TextureNode::setBackTextureSize()'],['../class_texture_node_y_u_v.html#a2f2104028b18a2fe9bb9298276162e2e',1,'TextureNodeYUV::setBackTextureSize()']]],
   ['setcaptureinteraction',['setCaptureInteraction',['../class_content.html#a18477814caa57d8f9aa0330fd19487ab',1,'Content']]],
   ['setcolor',['setColor',['../class_quad_line_node.html#a0e35d866e0dd76e2d56a8ee02516c4ef',1,'QuadLineNode']]],
   ['setcontent',['setContent',['../class_content_window.html#ad6d59fb6f13898f2f12bc027672cda0f',1,'ContentWindow']]],

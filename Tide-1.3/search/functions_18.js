@@ -20,6 +20,7 @@ var searchData=
   ['_7epdfbackend',['~PDFBackend',['../class_p_d_f_backend.html#aa210c01b3297241fd5740ebaa23c2cd4',1,'PDFBackend']]],
   ['_7epdfpopplerqtbackend',['~PDFPopplerQtBackend',['../class_p_d_f_poppler_qt_backend.html#af21b0b8a9b2163bad7f9c68a2fca57eb',1,'PDFPopplerQtBackend']]],
   ['_7epixelstreamer',['~PixelStreamer',['../class_pixel_streamer.html#ac9d996a5dadc05b54dcfa0824eb1a573',1,'PixelStreamer']]],
+  ['_7epixelstreamupdater',['~PixelStreamUpdater',['../class_pixel_stream_updater.html#abec2decfa2660dc4c37523b31dd30892',1,'PixelStreamUpdater']]],
   ['_7eqmlwindowrenderer',['~QmlWindowRenderer',['../class_qml_window_renderer.html#a64b49a4fef3f1bd26e2f2b1a6fa4db3c',1,'QmlWindowRenderer']]],
   ['_7erestinterface',['~RestInterface',['../class_rest_interface.html#aeafc0fc94ce9d822611933385bfa9325',1,'RestInterface']]],
   ['_7erestserver',['~RestServer',['../class_rest_server.html#a77cdfc5fd29b0c314ff39f7e0cd7780e',1,'RestServer']]],

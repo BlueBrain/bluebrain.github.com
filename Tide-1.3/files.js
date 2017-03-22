@@ -182,6 +182,7 @@ var files =
     [ "WebkitPixelStreamer.h", "_webkit_pixel_streamer_8h_source.html", null ],
     [ "xmlMacros.h", "xml_macros_8h_source.html", null ],
     [ "yuv.h", "yuv_8h_source.html", null ],
+    [ "YUVImage.h", "_y_u_v_image_8h_source.html", null ],
     [ "YUVTexture.h", "_y_u_v_texture_8h_source.html", null ],
     [ "ZoomController.h", "_zoom_controller_8h_source.html", null ],
     [ "ZoomHelper.h", "_zoom_helper_8h_source.html", null ]

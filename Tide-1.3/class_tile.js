@@ -17,7 +17,7 @@ var class_tile =
     [ "swapImage", "class_tile.html#aa25c497af8534d86245f6fced15579eb", null ],
     [ "textureReady", "class_tile.html#af4a65319df0b8bf8f04deb7188376b16", null ],
     [ "textureUpdated", "class_tile.html#abae1e7053ffc4d4f2ae9f8352bbe7011", null ],
-    [ "update", "class_tile.html#aa32d44a7e8b178afd2a05b326acfc899", null ],
+    [ "update", "class_tile.html#ac9dec52a7b4fca2150a4f8e916137a03", null ],
     [ "updatePaintNode", "class_tile.html#a4bf3b822a2cec71a85b4d1188998485f", null ],
     [ "id", "class_tile.html#addadeaa25a1196787c2becb00c3f6800", null ],
     [ "showBorder", "class_tile.html#a2ba76258d5a35d5cacafd1ec8e8e9859", null ]

@@ -16,7 +16,7 @@ var class_content_synchronizer =
     [ "synchronize", "class_content_synchronizer.html#a7d31a22c5564f6ef79ea3b39c071d938", null ],
     [ "tilesAreaChanged", "class_content_synchronizer.html#aac807a9cb073a52d88a80ceca93b34a3", null ],
     [ "update", "class_content_synchronizer.html#ae364f07df110634b5f1999ae6f0d3ac6", null ],
-    [ "updateTile", "class_content_synchronizer.html#aba03b3c5af16950946e91c893d20eeaf", null ],
+    [ "updateTile", "class_content_synchronizer.html#a251600c9a20234b97b91209682ece2b9", null ],
     [ "zoomContextTileChanged", "class_content_synchronizer.html#a936e9892ccd99cef73b82282b1d291e2", null ],
     [ "statistics", "class_content_synchronizer.html#a80f1ed66688a9f37bf2e12587088820e", null ],
     [ "tilesArea", "class_content_synchronizer.html#aa88620136e432e919f64bd8d24348a66", null ]

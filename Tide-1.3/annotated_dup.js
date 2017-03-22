@@ -167,6 +167,7 @@ var annotated_dup =
     [ "WebkitAuthenticationHelper", "class_webkit_authentication_helper.html", "class_webkit_authentication_helper" ],
     [ "WebkitHtmlSelectReplacer", "class_webkit_html_select_replacer.html", "class_webkit_html_select_replacer" ],
     [ "WebkitPixelStreamer", "class_webkit_pixel_streamer.html", "class_webkit_pixel_streamer" ],
+    [ "YUVImage", "class_y_u_v_image.html", "class_y_u_v_image" ],
     [ "YUVTexture", "struct_y_u_v_texture.html", "struct_y_u_v_texture" ],
     [ "ZoomController", "class_zoom_controller.html", "class_zoom_controller" ],
     [ "ZoomHelper", "class_zoom_helper.html", "class_zoom_helper" ]

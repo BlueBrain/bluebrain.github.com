@@ -42,10 +42,12 @@ var hierarchy =
     [ "FpsCounter", "class_fps_counter.html", null ],
     [ "HtmlContent", "class_html_content.html", null ],
     [ "Image", "class_image.html", [
-      [ "FFMPEGPicture", "class_f_f_m_p_e_g_picture.html", null ],
       [ "QtImage", "class_qt_image.html", null ],
-      [ "StreamImage", "class_stream_image.html", null ],
-      [ "SVGGpuImage", "class_s_v_g_gpu_image.html", null ]
+      [ "SVGGpuImage", "class_s_v_g_gpu_image.html", null ],
+      [ "YUVImage", "class_y_u_v_image.html", [
+        [ "FFMPEGPicture", "class_f_f_m_p_e_g_picture.html", null ],
+        [ "StreamImage", "class_stream_image.html", null ]
+      ] ]
     ] ],
     [ "is_bitwise_serializable", null, [
       [ "boost::serialization::is_bitwise_serializable< std::chrono::duration< Rep, Period > >", "structboost_1_1serialization_1_1is__bitwise__serializable_3_01std_1_1chrono_1_1duration_3_01_rep_00_01_period_01_4_01_4.html", null ],
