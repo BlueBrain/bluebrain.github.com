@@ -2,7 +2,7 @@ var classbrion_1_1_spike_report_plugin =
 [
     [ "InitDataT", "classbrion_1_1_spike_report_plugin.html#accea7c70e3116f2ff919b575cde3cc91", null ],
     [ "InterfaceT", "classbrion_1_1_spike_report_plugin.html#ac2e07183f7c976046953f6c38b99a4d8", null ],
-    [ "SpikeInsertFunction", "classbrion_1_1_spike_report_plugin.html#a140794d52e448c30ebde1df681d56519", null ],
+    [ "SpikeInsertFunction", "classbrion_1_1_spike_report_plugin.html#abe76867da9095c367f69d9eedab20764", null ],
     [ "State", "classbrion_1_1_spike_report_plugin.html#af3738004aea210cd390b827b97dabdcf", null ],
     [ "SpikeReportPlugin", "classbrion_1_1_spike_report_plugin.html#a1a8c966316b1241592c863b702f5ac8d", null ],
     [ "~SpikeReportPlugin", "classbrion_1_1_spike_report_plugin.html#a7a64cb34b8c0f4dd53b695b9ea228ca3", null ],

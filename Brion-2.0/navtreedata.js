@@ -1,9 +1,6 @@
 var NAVTREE =
 [
   [ "Brion", "index.html", [
-    [ "Introduction", "index.html#Introduction", null ],
-    [ "Features", "index.html#Features", null ],
-    [ "Building", "index.html#Building", null ],
     [ "Changelog", "Changelog.html", null ],
     [ "Data models", "data.html", "data" ],
     [ "RFCs", "rfcs.html", "rfcs" ],
@@ -46,9 +43,9 @@ var NAVTREE =
 var NAVTREEINDEX =
 [
 "Changelog.html",
-"classbrain_1_1neuron_1_1_section.html#af729520de464e3ad975ca256c9954cfd",
-"classbrion_1_1_version.html#a08a68ae8561176060e77710c79cad778",
-"synapses_stream_8h_source.html"
+"classbrain_1_1neuron_1_1_section.html#ac34c25b88f6e3acf9b524ed0fe2a67b8",
+"classbrion_1_1_target.html#af9dfd3b852d9a457e627d05ffb5bf30c",
+"synapses_iterator_8h_source.html"
 ];
 
 var SYNCONMSG = 'click to disable panel synchronisation';

@@ -1,4 +1,4 @@
 var searchData=
 [
-  ['compartmentcounts',['CompartmentCounts',['../namespacebrion.html#ab990cd6483c3e4237375b0b8098b2f42',1,'brion']]]
+  ['compartmentcounts',['CompartmentCounts',['../namespacebrion.html#a84184b855330ee09971e540d456f33da',1,'brion']]]
 ];

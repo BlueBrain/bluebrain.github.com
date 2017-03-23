@@ -18,9 +18,9 @@ var classbrion_1_1_spike_report =
     [ "interrupt", "classbrion_1_1_spike_report.html#acad20c31f6b65356a837051ad6378fbb", null ],
     [ "isClosed", "classbrion_1_1_spike_report.html#aabe018d69760b2546f886877d267fcf7", null ],
     [ "operator=", "classbrion_1_1_spike_report.html#a40ada8bffcf4ddf112a460925544be7c", null ],
-    [ "read", "classbrion_1_1_spike_report.html#a3f361bdc30b0078e24c1673d36c51b5e", null ],
-    [ "readUntil", "classbrion_1_1_spike_report.html#a9e1f2b21e4fa446bbc08241860886c2d", null ],
-    [ "seek", "classbrion_1_1_spike_report.html#a948239b0c8bd3cf4cc95fb846f30e794", null ],
+    [ "read", "classbrion_1_1_spike_report.html#a0cf6257a24b2e1608e0a2a2a72e3e6cf", null ],
+    [ "readUntil", "classbrion_1_1_spike_report.html#a19ae7991ad9563d38d0060f43e839258", null ],
+    [ "seek", "classbrion_1_1_spike_report.html#a2e1f18b9e172bec7c5aaf495f1edc590", null ],
     [ "supportsBackwardSeek", "classbrion_1_1_spike_report.html#aa112549e40ecbaecae371a87a054d991", null ],
     [ "write", "classbrion_1_1_spike_report.html#ab8efdf2da32129eff184b9bd260b4c49", null ]
 ];

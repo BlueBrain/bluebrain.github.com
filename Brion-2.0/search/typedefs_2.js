@@ -1,4 +1,4 @@
 var searchData=
 [
-  ['neuronmatrix',['NeuronMatrix',['../namespacebrion.html#ab1f9b96868836e9d2bcb7ac14d04ae59',1,'brion']]]
+  ['neuronmatrix',['NeuronMatrix',['../namespacebrion.html#abf82853aadcb10654d3f2838a78ed9ed',1,'brion']]]
 ];

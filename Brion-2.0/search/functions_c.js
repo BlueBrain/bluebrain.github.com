@@ -1,6 +1,6 @@
 var searchData=
 [
-  ['read',['read',['../classbrion_1_1_spike_report.html#a3f361bdc30b0078e24c1673d36c51b5e',1,'brion::SpikeReport::read()'],['../classbrion_1_1_spike_report_plugin.html#a20b5f1d4e25470ba33ef0fce77f4d327',1,'brion::SpikeReportPlugin::read()'],['../classbrion_1_1_synapse.html#a62371ecb873ea2ff7be426306fb5d6db',1,'brion::Synapse::read()'],['../classbrion_1_1_synapse_summary.html#a267ab334b59f7bda02f91c259ed7767b',1,'brion::SynapseSummary::read()'],['../classbrain_1_1_synapses_stream.html#a5fc152fe2eb7b5751082edd8529f4380',1,'brain::SynapsesStream::read()']]],
+  ['read',['read',['../classbrion_1_1_spike_report.html#a0cf6257a24b2e1608e0a2a2a72e3e6cf',1,'brion::SpikeReport::read()'],['../classbrion_1_1_spike_report_plugin.html#a20b5f1d4e25470ba33ef0fce77f4d327',1,'brion::SpikeReportPlugin::read()'],['../classbrion_1_1_synapse.html#a62371ecb873ea2ff7be426306fb5d6db',1,'brion::Synapse::read()'],['../classbrion_1_1_synapse_summary.html#a267ab334b59f7bda02f91c259ed7767b',1,'brion::SynapseSummary::read()'],['../classbrain_1_1_synapses_stream.html#a6797d5dba82d6ea60cfe60ca838211d2',1,'brain::SynapsesStream::read()']]],
   ['readapicals',['readApicals',['../classbrion_1_1_morphology.html#a8bc8172057581f9e03b72ab1da560eb7',1,'brion::Morphology::readApicals()'],['../classbrion_1_1_morphology_plugin.html#a3a2cf2407d5f36796c2471a322afd0a6',1,'brion::MorphologyPlugin::readApicals()']]],
   ['readnormals',['readNormals',['../classbrion_1_1_mesh.html#a9369029be5c50db3851b02159f9da018',1,'brion::Mesh']]],
   ['readperimeters',['readPerimeters',['../classbrion_1_1_morphology.html#acebbe28ddcd0d9493536b088a878b6c2',1,'brion::Morphology::readPerimeters()'],['../classbrion_1_1_morphology_plugin.html#ab3412d7dfc11d6a290da995b8de6e886',1,'brion::MorphologyPlugin::readPerimeters()']]],
@@ -15,7 +15,7 @@ var searchData=
   ['readtriangles',['readTriangles',['../classbrion_1_1_mesh.html#af195ee3aaffc21d69443969c89a7169a',1,'brion::Mesh']]],
   ['readtrianglesections',['readTriangleSections',['../classbrion_1_1_mesh.html#ac4ff32aa44c10d0913c74edc94214c27',1,'brion::Mesh']]],
   ['readtristrip',['readTriStrip',['../classbrion_1_1_mesh.html#a93a549722a2c9ac3fcf9383556bebc54',1,'brion::Mesh']]],
-  ['readuntil',['readUntil',['../classbrion_1_1_spike_report.html#a9e1f2b21e4fa446bbc08241860886c2d',1,'brion::SpikeReport::readUntil()'],['../classbrion_1_1_spike_report_plugin.html#afd5f606b2e1cf96b7fbb89cbac5645f9',1,'brion::SpikeReportPlugin::readUntil()']]],
+  ['readuntil',['readUntil',['../classbrion_1_1_spike_report.html#a19ae7991ad9563d38d0060f43e839258',1,'brion::SpikeReport::readUntil()'],['../classbrion_1_1_spike_report_plugin.html#afd5f606b2e1cf96b7fbb89cbac5645f9',1,'brion::SpikeReportPlugin::readUntil()']]],
   ['readvertexdistances',['readVertexDistances',['../classbrion_1_1_mesh.html#ae55ff5c5a296ee5594b7c463ac28a1bf',1,'brion::Mesh']]],
   ['readvertexsections',['readVertexSections',['../classbrion_1_1_mesh.html#a8030c1ee2238659ae3dfe7a9749011e4',1,'brion::Mesh']]],
   ['readvertices',['readVertices',['../classbrion_1_1_mesh.html#ad26774b45b0182cffe3398622a8be1e6',1,'brion::Mesh']]]

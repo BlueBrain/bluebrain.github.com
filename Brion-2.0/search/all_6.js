@@ -36,7 +36,7 @@ var searchData=
   ['getmajor',['getMajor',['../classbrion_1_1_version.html#a7724662e5f6b8e067440ac22acec9657',1,'brion::Version::getMajor()'],['../classbrain_1_1_version.html#a91407ad262621f2b25c4174398fa7f61',1,'brain::Version::getMajor()']]],
   ['getmapping',['getMapping',['../classbrain_1_1_compartment_report_view.html#a1f605897e864167866815d5e512787df',1,'brain::CompartmentReportView']]],
   ['getmeanradius',['getMeanRadius',['../classbrain_1_1neuron_1_1_soma.html#a87541ea5e6f8fb237a1b94105e55a8fd',1,'brain::neuron::Soma']]],
-  ['getmetadata',['getMetaData',['../classbrain_1_1_compartment_report_reader.html#a5eeedd3e6c67b544338e79827e79831e',1,'brain::CompartmentReportReader']]],
+  ['getmetadata',['getMetaData',['../classbrain_1_1_compartment_report.html#afa6aea2ede3b80934f32945eb8e17419',1,'brain::CompartmentReport']]],
   ['getminor',['getMinor',['../classbrion_1_1_version.html#abfeb86012f499e974116645aa4682830',1,'brion::Version::getMinor()'],['../classbrain_1_1_version.html#a276cd79796e68f291ecb809b93f656d0',1,'brain::Version::getMinor()']]],
   ['getmorphologysource',['getMorphologySource',['../classbrion_1_1_blue_config.html#a759864b8fa6bcd76d756e1043eaa107d',1,'brion::BlueConfig']]],
   ['getmorphologytypenames',['getMorphologyTypeNames',['../classbrain_1_1_circuit.html#a85ab1b14918ec3d2015d9fe4e79c457b',1,'brain::Circuit']]],
@@ -71,7 +71,7 @@ var searchData=
   ['getprofilepoints',['getProfilePoints',['../classbrain_1_1neuron_1_1_soma.html#a4afc335bd476f8e9992359740ee49715',1,'brain::neuron::Soma']]],
   ['getprojectedsynapses',['getProjectedSynapses',['../classbrain_1_1_circuit.html#a8096625c8fd6ab4d40a2ab672bc62fbd',1,'brain::Circuit']]],
   ['getrandomgids',['getRandomGIDs',['../classbrain_1_1_circuit.html#a6780629e47b81063a4893f7b7cd5e415',1,'brain::Circuit::getRandomGIDs(float fraction, const std::string &amp;target) const '],['../classbrain_1_1_circuit.html#aa822f3a660884ad01a8e1622c7dbd860',1,'brain::Circuit::getRandomGIDs(float fraction) const ']]],
-  ['getreader',['getReader',['../classbrain_1_1_compartment_report_view.html#a6b3fa66c2963a29f758bb21fa306864e',1,'brain::CompartmentReportView']]],
+  ['getreader',['getReader',['../classbrain_1_1_compartment_report_view.html#ab663f8c8ebee9b8eb37e2b4523610be2',1,'brain::CompartmentReportView']]],
   ['getremaining',['getRemaining',['../classbrain_1_1_synapses_stream.html#a755792a56bcc3607e480b41e159098f4',1,'brain::SynapsesStream']]],
   ['getreportsource',['getReportSource',['../classbrion_1_1_blue_config.html#a30f64c0386fc846429a3dda70b5214cb',1,'brion::BlueConfig']]],
   ['getrevision',['getRevision',['../classbrion_1_1_version.html#ad3457e9ccb29f7cb33a0aaaa88db1ab2',1,'brion::Version::getRevision()'],['../classbrain_1_1_version.html#afbc17aacb199a42ca23b5a4a17df9615',1,'brain::Version::getRevision()']]],
@@ -95,7 +95,7 @@ var searchData=
   ['gettargetnames',['getTargetNames',['../classbrion_1_1_target.html#a92130c8c0608723dcb538a9e4d4c317c',1,'brion::Target']]],
   ['gettargets',['getTargets',['../classbrion_1_1_blue_config.html#ad7a6a9a938e57413802e8022df62a198',1,'brion::BlueConfig']]],
   ['gettargetsources',['getTargetSources',['../classbrion_1_1_blue_config.html#a9ea0c357557e7e6c3c6f7fbd7ccc4ec6',1,'brion::BlueConfig']]],
-  ['gettimestamp',['getTimestamp',['../classbrain_1_1_compartment_report_frame.html#a3839d8a1e506d8802f7354c8ddb748fc',1,'brain::CompartmentReportFrame']]],
+  ['gettimestamp',['getTimestamp',['../classbrain_1_1_compartment_report_frame.html#a1b11d1ffe188b61151c0afddfc06820f',1,'brain::CompartmentReportFrame']]],
   ['gettimestep',['getTimestep',['../classbrion_1_1_blue_config.html#a2e3c4ab0dcd34d3639c4e58a16d68767',1,'brion::BlueConfig::getTimestep()'],['../classbrion_1_1_compartment_report.html#a9eb569f6bf02eb22139f56c364a58436',1,'brion::CompartmentReport::getTimestep()'],['../classbrion_1_1_compartment_report_plugin.html#a9fd222011b8aa7dee3cbdb8580e57c9a',1,'brion::CompartmentReportPlugin::getTimestep()']]],
   ['gettimeunit',['getTimeUnit',['../classbrion_1_1_compartment_report.html#aa52854139ec3214ba63da0a0cf568b1f',1,'brion::CompartmentReport::getTimeUnit()'],['../classbrion_1_1_compartment_report_plugin.html#adc2bbece2d1d8bd8498c30a7f0f171ae',1,'brion::CompartmentReportPlugin::getTimeUnit()']]],
   ['gettransformation',['getTransformation',['../classbrain_1_1neuron_1_1_morphology.html#af58a9add66624770aa386286d7b85239',1,'brain::neuron::Morphology']]],
@@ -106,5 +106,5 @@ var searchData=
   ['geturi',['getURI',['../classbrion_1_1_plugin_init_data.html#a5e5dff9830e0e4d7adfd9e3aead696fc',1,'brion::PluginInitData::getURI()'],['../classbrion_1_1_spike_report.html#a4dc05e732f005032f8080f88e88bd168',1,'brion::SpikeReport::getURI()'],['../classbrain_1_1_spike_report_writer.html#a52b1aad09aa330ee9bafd347f4a9c666',1,'brain::SpikeReportWriter::getURI()']]],
   ['getutilization',['getUtilization',['../classbrain_1_1_synapse.html#af9a396b4d5875737ee3de0132e3260e4',1,'brain::Synapse']]],
   ['getversion',['getVersion',['../classbrion_1_1_mesh.html#a4d91f35bc6ddc7e0d6d381db1c2ca44b',1,'brion::Mesh']]],
-  ['gidset',['GIDSet',['../namespacebrion.html#a0f53c74f86d04c704c228013a096ef72',1,'brion']]]
+  ['gidset',['GIDSet',['../namespacebrion.html#a357e1817d1c46828b8a3d2ac91f635bc',1,'brion']]]
 ];

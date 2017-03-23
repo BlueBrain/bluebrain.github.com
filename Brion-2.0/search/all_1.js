@@ -27,6 +27,7 @@ var searchData=
   ['brion_5fversion_5fminor',['BRION_VERSION_MINOR',['../brion_2version_8h.html#aa5a2357f391cbb650d1d8894ee1b526f',1,'version.h']]],
   ['brion_5fversion_5fpatch',['BRION_VERSION_PATCH',['../brion_2version_8h.html#ab7df48db132552459d856511d31fec71',1,'version.h']]],
   ['brion_5fversion_5frevision',['BRION_VERSION_REVISION',['../brion_2version_8h.html#a6044ab3ac01614da058254ed01b5b206',1,'version.h']]],
+  ['brion',['Brion',['../index.html',1,'']]],
   ['neuron',['neuron',['../namespacebrain_1_1neuron.html',1,'brain']]],
   ['version_2eh',['version.h',['../brion_2version_8h.html',1,'']]],
   ['version_2eh',['version.h',['../brain_2version_8h.html',1,'']]]

@@ -16,11 +16,11 @@ var hierarchy =
       [ "brion::SynapseSummary", "classbrion_1_1_synapse_summary.html", null ]
     ] ],
     [ "brain::Circuit", "classbrain_1_1_circuit.html", null ],
+    [ "brain::CompartmentReport", "classbrain_1_1_compartment_report.html", null ],
     [ "brain::CompartmentReportFrame", "classbrain_1_1_compartment_report_frame.html", null ],
     [ "brain::CompartmentReportMapping", "classbrain_1_1_compartment_report_mapping.html", null ],
     [ "brain::CompartmentReportMapping::IndexEntry", "structbrain_1_1_compartment_report_mapping_1_1_index_entry.html", null ],
     [ "brain::CompartmentReportMetaData", "structbrain_1_1_compartment_report_meta_data.html", null ],
-    [ "brain::CompartmentReportReader", "classbrain_1_1_compartment_report_reader.html", null ],
     [ "brain::CompartmentReportView", "classbrain_1_1_compartment_report_view.html", null ],
     [ "brain::neuron::Section", "classbrain_1_1neuron_1_1_section.html", null ],
     [ "brain::neuron::Soma", "classbrain_1_1neuron_1_1_soma.html", null ],

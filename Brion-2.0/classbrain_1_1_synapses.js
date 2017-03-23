@@ -42,5 +42,5 @@ var classbrain_1_1_synapses =
     [ "size", "classbrain_1_1_synapses.html#a0b9ad156a0f451db5eada7365451f7e9", null ],
     [ "utilizations", "classbrain_1_1_synapses.html#a080f16f481d0fc569eabaa746ef4aba9", null ],
     [ "detail::SynapsesStream", "classbrain_1_1_synapses.html#a100aa4f2a36aeae0baa3436d989dbf19", null ],
-    [ "_impl", "classbrain_1_1_synapses.html#aeb354f59de120442b8f6cd8b5c3cb926", null ]
+    [ "_impl", "classbrain_1_1_synapses.html#a1309527d6280816d723db185fe70b28c", null ]
 ];
