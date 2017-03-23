@@ -1,5 +1,7 @@
 var NAVTREEINDEX3 =
 {
+"classbrayns_1_1_rendering_parameters.html#a6013e0702744ee1aacb367602811d890":[5,0,0,62,25],
+"classbrayns_1_1_rendering_parameters.html#a67a5b5e70f8fe46f1ff7926180318ae1":[5,0,0,62,49],
 "classbrayns_1_1_rendering_parameters.html#a67ce2e084ca0d971a5f2d18d429233a2":[5,0,0,62,42],
 "classbrayns_1_1_rendering_parameters.html#a69db083648ef7e764fdf63b64678e718":[5,0,0,62,46],
 "classbrayns_1_1_rendering_parameters.html#a6e398cbd42338b7af0613f2959e7b6ca":[5,0,0,62,9],
@@ -151,9 +153,9 @@ var NAVTREEINDEX3 =
 "classbrayns_1_1_transfer_function.html#a3b1c4ce9d79a704b4f0ae0bcf0c86e19":[5,0,0,76,6],
 "classbrayns_1_1_transfer_function.html#a4dd7b9c4ac8e4942617a50f412bc6d44":[5,0,0,76,1],
 "classbrayns_1_1_transfer_function.html#a6c19db0df6b4efa4c4f6fb1b3b6d7380":[5,0,0,76,0],
-"classbrayns_1_1_transfer_function.html#a95b81f63fd306da29b23f7eb00eb5060":[5,0,0,76,4],
 "classbrayns_1_1_transfer_function.html#a9fdca1da05c29e8c725b033c9cdb6ac5":[5,0,0,76,2],
 "classbrayns_1_1_transfer_function.html#aa6fe90fcf4c6ce0b4658d069f11a0650":[5,0,0,76,5],
+"classbrayns_1_1_transfer_function.html#af3ed3fbc1159fb885c3123cf6da05253":[5,0,0,76,4],
 "classbrayns_1_1_transfer_function_loader.html":[5,0,0,77],
 "classbrayns_1_1_transfer_function_loader.html#a1ded2452afc9b31f9fdcfaad6df623c3":[5,0,0,77,0],
 "classbrayns_1_1_transfer_function_loader.html#aafdb88e5621a705836678f6d352eaf1b":[5,0,0,77,1],
@@ -180,7 +182,7 @@ var NAVTREEINDEX3 =
 "classbrayns_1_1_volume_handler.html#a09212f57bdf367e12b7d039894d68a40":[5,0,0,80,2],
 "classbrayns_1_1_volume_handler.html#a0e887bb0dca2c2df76e3340b51d2197c":[5,0,0,80,17],
 "classbrayns_1_1_volume_handler.html#a16720b2fe81f275d2c2f2f49132dfbd8":[5,0,0,80,6],
-"classbrayns_1_1_volume_handler.html#a49d3212de5c1b45bf1689540cad01642":[5,0,0,80,9],
+"classbrayns_1_1_volume_handler.html#a508760653b12b02644c719fcd58b8240":[5,0,0,80,9],
 "classbrayns_1_1_volume_handler.html#a66235cbdf2b90d7e47593a166ea890e1":[5,0,0,80,16],
 "classbrayns_1_1_volume_handler.html#a8d79cfa8b0080820d6fc9d664bbbe669":[5,0,0,80,7],
 "classbrayns_1_1_volume_handler.html#a96bf2720442dd32493cffe4beaccf77c":[5,0,0,80,14],
@@ -241,13 +243,11 @@ var NAVTREEINDEX3 =
 "defines_linux_8h_source.html":[6,0,24],
 "exceptions_8h_source.html":[6,0,29],
 "files.html":[6,0],
-"functions.html":[5,3,0],
 "functions.html":[5,3,0,0],
+"functions.html":[5,3,0],
 "functions_0x7e.html":[5,3,0,20],
 "functions_a.html":[5,3,0,1],
 "functions_b.html":[5,3,0,2],
 "functions_c.html":[5,3,0,3],
-"functions_d.html":[5,3,0,4],
-"functions_e.html":[5,3,0,5],
-"functions_f.html":[5,3,0,6]
+"functions_d.html":[5,3,0,4]
 };
