@@ -31,13 +31,13 @@
             <td class="headerValue">Livre</td>
             <td></td>
             <td class="headerItem">Lines:</td>
-            <td class="headerCovTableEntry">102</td>
-            <td class="headerCovTableEntry">128</td>
-            <td class="headerCovTableEntryMed">79.7 %</td>
+            <td class="headerCovTableEntry">104</td>
+            <td class="headerCovTableEntry">130</td>
+            <td class="headerCovTableEntryHi">80.0 %</td>
           </tr>
           <tr>
             <td class="headerItem">Date:</td>
-            <td class="headerValue">2017-03-10 03:09:04</td>
+            <td class="headerValue">2017-04-01 03:04:50</td>
             <td></td>
             <td class="headerItem">Functions:</td>
             <td class="headerCovTableEntry">27</td>
@@ -60,7 +60,7 @@
       <td>
 <pre class="sourceHeading">          Line data    Source code</pre>
 <pre class="source">
-<a name="1"><span class="lineNum">       1 </span>            : /* Copyright (c) 2011-2014, EPFL/Blue Brain Project</a>
+<a name="1"><span class="lineNum">       1 </span>            : /* Copyright (c) 2011-2017, EPFL/Blue Brain Project</a>
 <span class="lineNum">       2 </span>            :  *                     Ahmet Bilgili &lt;ahmet.bilgili@epfl.ch&gt;
 <span class="lineNum">       3 </span>            :  *
 <span class="lineNum">       4 </span>            :  * This file is part of Livre &lt;https://github.com/BlueBrain/Livre&gt;
@@ -222,109 +222,113 @@
 <span class="lineNum">     160 </span><span class="lineCov">         24 :         ReadLock readLock(_mutex);</span>
 <span class="lineNum">     161 </span><span class="lineCov">         12 :         ConstCacheMap::const_iterator it = _cacheMap.find(cacheId);</span>
 <span class="lineNum">     162 </span><span class="lineCov">         12 :         if (it == _cacheMap.end())</span>
-<span class="lineNum">     163 </span><span class="lineCov">          7 :             return CacheObjectPtr();</span>
-<span class="lineNum">     164 </span>            : 
-<span class="lineNum">     165 </span><span class="lineCov">          5 :         return it-&gt;second;</span>
-<a name="166"><span class="lineNum">     166 </span>            :     }</a>
+<span class="lineNum">     163 </span>            :         {
+<span class="lineNum">     164 </span><span class="lineCov">          7 :             _statistics.notifyMiss();</span>
+<span class="lineNum">     165 </span><span class="lineCov">          7 :             return CacheObjectPtr();</span>
+<span class="lineNum">     166 </span>            :         }
 <span class="lineNum">     167 </span>            : 
-<span class="lineNum">     168 </span><span class="lineNoCov">          0 :     bool unload(const CacheId&amp; cacheId)</span>
-<span class="lineNum">     169 </span>            :     {
-<span class="lineNum">     170 </span><span class="lineNoCov">          0 :         WriteLock lock(_mutex);</span>
-<span class="lineNum">     171 </span><span class="lineNoCov">          0 :         return unloadFromCache(cacheId);</span>
-<a name="172"><span class="lineNum">     172 </span>            :     }</a>
-<span class="lineNum">     173 </span>            : 
-<span class="lineNum">     174 </span><span class="lineCov">         12 :     ConstCacheObjectPtr get(const CacheId&amp; cacheId) const</span>
-<span class="lineNum">     175 </span>            :     {
-<span class="lineNum">     176 </span><span class="lineCov">         12 :         return getFromMap(cacheId);</span>
-<a name="177"><span class="lineNum">     177 </span>            :     }</a>
-<span class="lineNum">     178 </span>            : 
-<span class="lineNum">     179 </span><span class="lineCov">          8 :     size_t getCount() const</span>
-<span class="lineNum">     180 </span>            :     {
-<span class="lineNum">     181 </span><span class="lineCov">         16 :         ReadLock lock(_mutex);</span>
-<span class="lineNum">     182 </span><span class="lineCov">         16 :         return _cacheMap.size();</span>
-<a name="183"><span class="lineNum">     183 </span>            :     }</a>
-<span class="lineNum">     184 </span>            : 
-<span class="lineNum">     185 </span><span class="lineCov">          1 :     void purge()</span>
-<span class="lineNum">     186 </span>            :     {
-<span class="lineNum">     187 </span><span class="lineCov">          2 :         WriteLock lock(_mutex);</span>
-<span class="lineNum">     188 </span><span class="lineCov">          1 :         _statistics.clear();</span>
-<span class="lineNum">     189 </span><span class="lineCov">          1 :         _policy.clear();</span>
-<span class="lineNum">     190 </span><span class="lineCov">          1 :         _cacheMap.clear();</span>
-<a name="191"><span class="lineNum">     191 </span><span class="lineCov">          1 :     }</span></a>
-<span class="lineNum">     192 </span>            : 
-<span class="lineNum">     193 </span><span class="lineNoCov">          0 :     void purge(const CacheId&amp; cacheId)</span>
-<span class="lineNum">     194 </span>            :     {
-<span class="lineNum">     195 </span><span class="lineNoCov">          0 :         WriteLock lock(_mutex);</span>
-<span class="lineNum">     196 </span><span class="lineNoCov">          0 :         _cacheMap.erase(cacheId);</span>
-<span class="lineNum">     197 </span><span class="lineNoCov">          0 :     }</span>
-<span class="lineNum">     198 </span>            : 
-<span class="lineNum">     199 </span>            :     mutable LRUCachePolicy _policy;
-<span class="lineNum">     200 </span>            :     Cache&amp; _cache;
-<span class="lineNum">     201 </span>            :     mutable CacheStatistics _statistics;
-<span class="lineNum">     202 </span>            :     ConstCacheMap _cacheMap;
-<span class="lineNum">     203 </span>            :     mutable ReadWriteMutex _mutex;
-<span class="lineNum">     204 </span>            :     const std::type_index _cacheObjectType;
-<a name="205"><span class="lineNum">     205 </span>            : };</a>
-<span class="lineNum">     206 </span>            : 
-<span class="lineNum">     207 </span><span class="lineCov">          3 : Cache::Cache(const std::string&amp; name, size_t maxMemBytes,</span>
-<span class="lineNum">     208 </span><span class="lineCov">          3 :              const std::type_index&amp; cacheObjectType)</span>
-<span class="lineNum">     209 </span><span class="lineCov">          3 :     : _impl(new Cache::Impl(*this, name, maxMemBytes, cacheObjectType))</span>
-<span class="lineNum">     210 </span>            : {
-<a name="211"><span class="lineNum">     211 </span><span class="lineCov">          3 : }</span></a>
-<span class="lineNum">     212 </span>            : 
-<span class="lineNum">     213 </span><span class="lineCov">          3 : Cache::~Cache()</span>
+<span class="lineNum">     168 </span><span class="lineCov">          5 :         _statistics.notifyHit();</span>
+<span class="lineNum">     169 </span><span class="lineCov">          5 :         return it-&gt;second;</span>
+<a name="170"><span class="lineNum">     170 </span>            :     }</a>
+<span class="lineNum">     171 </span>            : 
+<span class="lineNum">     172 </span><span class="lineNoCov">          0 :     bool unload(const CacheId&amp; cacheId)</span>
+<span class="lineNum">     173 </span>            :     {
+<span class="lineNum">     174 </span><span class="lineNoCov">          0 :         WriteLock lock(_mutex);</span>
+<span class="lineNum">     175 </span><span class="lineNoCov">          0 :         return unloadFromCache(cacheId);</span>
+<a name="176"><span class="lineNum">     176 </span>            :     }</a>
+<span class="lineNum">     177 </span>            : 
+<span class="lineNum">     178 </span><span class="lineCov">         12 :     ConstCacheObjectPtr get(const CacheId&amp; cacheId) const</span>
+<span class="lineNum">     179 </span>            :     {
+<span class="lineNum">     180 </span><span class="lineCov">         12 :         return getFromMap(cacheId);</span>
+<a name="181"><span class="lineNum">     181 </span>            :     }</a>
+<span class="lineNum">     182 </span>            : 
+<span class="lineNum">     183 </span><span class="lineCov">          8 :     size_t getCount() const</span>
+<span class="lineNum">     184 </span>            :     {
+<span class="lineNum">     185 </span><span class="lineCov">         16 :         ReadLock lock(_mutex);</span>
+<span class="lineNum">     186 </span><span class="lineCov">         16 :         return _cacheMap.size();</span>
+<a name="187"><span class="lineNum">     187 </span>            :     }</a>
+<span class="lineNum">     188 </span>            : 
+<span class="lineNum">     189 </span><span class="lineCov">          1 :     void purge()</span>
+<span class="lineNum">     190 </span>            :     {
+<span class="lineNum">     191 </span><span class="lineCov">          2 :         WriteLock lock(_mutex);</span>
+<span class="lineNum">     192 </span><span class="lineCov">          1 :         _statistics.clear();</span>
+<span class="lineNum">     193 </span><span class="lineCov">          1 :         _policy.clear();</span>
+<span class="lineNum">     194 </span><span class="lineCov">          1 :         _cacheMap.clear();</span>
+<a name="195"><span class="lineNum">     195 </span><span class="lineCov">          1 :     }</span></a>
+<span class="lineNum">     196 </span>            : 
+<span class="lineNum">     197 </span><span class="lineNoCov">          0 :     void purge(const CacheId&amp; cacheId)</span>
+<span class="lineNum">     198 </span>            :     {
+<span class="lineNum">     199 </span><span class="lineNoCov">          0 :         WriteLock lock(_mutex);</span>
+<span class="lineNum">     200 </span><span class="lineNoCov">          0 :         _cacheMap.erase(cacheId);</span>
+<span class="lineNum">     201 </span><span class="lineNoCov">          0 :     }</span>
+<span class="lineNum">     202 </span>            : 
+<span class="lineNum">     203 </span>            :     mutable LRUCachePolicy _policy;
+<span class="lineNum">     204 </span>            :     Cache&amp; _cache;
+<span class="lineNum">     205 </span>            :     mutable CacheStatistics _statistics;
+<span class="lineNum">     206 </span>            :     ConstCacheMap _cacheMap;
+<span class="lineNum">     207 </span>            :     mutable ReadWriteMutex _mutex;
+<span class="lineNum">     208 </span>            :     const std::type_index _cacheObjectType;
+<a name="209"><span class="lineNum">     209 </span>            : };</a>
+<span class="lineNum">     210 </span>            : 
+<span class="lineNum">     211 </span><span class="lineCov">          3 : Cache::Cache(const std::string&amp; name, size_t maxMemBytes,</span>
+<span class="lineNum">     212 </span><span class="lineCov">          3 :              const std::type_index&amp; cacheObjectType)</span>
+<span class="lineNum">     213 </span><span class="lineCov">          3 :     : _impl(new Cache::Impl(*this, name, maxMemBytes, cacheObjectType))</span>
 <span class="lineNum">     214 </span>            : {
 <a name="215"><span class="lineNum">     215 </span><span class="lineCov">          3 : }</span></a>
 <span class="lineNum">     216 </span>            : 
-<span class="lineNum">     217 </span><span class="lineCov">          5 : ConstCacheObjectPtr Cache::_load(ConstCacheObjectPtr obj)</span>
+<span class="lineNum">     217 </span><span class="lineCov">          3 : Cache::~Cache()</span>
 <span class="lineNum">     218 </span>            : {
-<span class="lineNum">     219 </span><span class="lineCov">          5 :     if (obj-&gt;getId() == INVALID_CACHE_ID)</span>
-<span class="lineNum">     220 </span><span class="lineNoCov">          0 :         return ConstCacheObjectPtr();</span>
-<span class="lineNum">     221 </span>            : 
-<span class="lineNum">     222 </span><span class="lineCov">          5 :     return _impl-&gt;load(obj);</span>
-<a name="223"><span class="lineNum">     223 </span>            : }</a>
-<span class="lineNum">     224 </span>            : 
-<span class="lineNum">     225 </span><span class="lineNoCov">          0 : bool Cache::unload(const CacheId&amp; cacheId)</span>
-<span class="lineNum">     226 </span>            : {
-<span class="lineNum">     227 </span><span class="lineNoCov">          0 :     if (cacheId == INVALID_CACHE_ID)</span>
-<span class="lineNum">     228 </span><span class="lineNoCov">          0 :         return false;</span>
-<span class="lineNum">     229 </span>            : 
-<span class="lineNum">     230 </span><span class="lineNoCov">          0 :     return _impl-&gt;unload(cacheId);</span>
-<a name="231"><span class="lineNum">     231 </span>            : }</a>
-<span class="lineNum">     232 </span>            : 
-<span class="lineNum">     233 </span><span class="lineCov">         13 : ConstCacheObjectPtr Cache::get(const CacheId&amp; cacheId) const</span>
-<span class="lineNum">     234 </span>            : {
-<span class="lineNum">     235 </span><span class="lineCov">         13 :     if (cacheId == INVALID_CACHE_ID)</span>
-<span class="lineNum">     236 </span><span class="lineCov">          1 :         return ConstCacheObjectPtr();</span>
-<span class="lineNum">     237 </span>            : 
-<span class="lineNum">     238 </span><span class="lineCov">         12 :     return _impl-&gt;get(cacheId);</span>
-<a name="239"><span class="lineNum">     239 </span>            : }</a>
-<span class="lineNum">     240 </span>            : 
-<span class="lineNum">     241 </span><span class="lineCov">         16 : const std::type_index&amp; Cache::_getCacheObjectType() const</span>
-<span class="lineNum">     242 </span>            : {
-<span class="lineNum">     243 </span><span class="lineCov">         16 :     return _impl-&gt;_cacheObjectType;</span>
-<a name="244"><span class="lineNum">     244 </span>            : }</a>
-<span class="lineNum">     245 </span>            : 
-<span class="lineNum">     246 </span><span class="lineCov">          8 : size_t Cache::getCount() const</span>
-<span class="lineNum">     247 </span>            : {
-<span class="lineNum">     248 </span><span class="lineCov">          8 :     return _impl-&gt;getCount();</span>
-<a name="249"><span class="lineNum">     249 </span>            : }</a>
-<span class="lineNum">     250 </span>            : 
-<span class="lineNum">     251 </span><span class="lineCov">         15 : const CacheStatistics&amp; Cache::getStatistics() const</span>
-<span class="lineNum">     252 </span>            : {
-<span class="lineNum">     253 </span><span class="lineCov">         15 :     return _impl-&gt;_statistics;</span>
-<a name="254"><span class="lineNum">     254 </span>            : }</a>
-<span class="lineNum">     255 </span>            : 
-<span class="lineNum">     256 </span><span class="lineCov">          1 : void Cache::purge()</span>
-<span class="lineNum">     257 </span>            : {
-<span class="lineNum">     258 </span><span class="lineCov">          1 :     _impl-&gt;purge();</span>
-<a name="259"><span class="lineNum">     259 </span><span class="lineCov">          1 : }</span></a>
-<span class="lineNum">     260 </span>            : 
-<span class="lineNum">     261 </span><span class="lineNoCov">          0 : void Cache::purge(const CacheId&amp; cacheId)</span>
-<span class="lineNum">     262 </span>            : {
-<a name="263"><span class="lineNum">     263 </span><span class="lineNoCov">          0 :     _impl-&gt;purge(cacheId);</span></a>
-<span class="lineNum">     264 </span><span class="lineNoCov">          0 : }</span>
-<span class="lineNum">     265 </span><span class="lineCov">         36 : }</span>
+<a name="219"><span class="lineNum">     219 </span><span class="lineCov">          3 : }</span></a>
+<span class="lineNum">     220 </span>            : 
+<span class="lineNum">     221 </span><span class="lineCov">          5 : ConstCacheObjectPtr Cache::_load(ConstCacheObjectPtr obj)</span>
+<span class="lineNum">     222 </span>            : {
+<span class="lineNum">     223 </span><span class="lineCov">          5 :     if (obj-&gt;getId() == INVALID_CACHE_ID)</span>
+<span class="lineNum">     224 </span><span class="lineNoCov">          0 :         return ConstCacheObjectPtr();</span>
+<span class="lineNum">     225 </span>            : 
+<span class="lineNum">     226 </span><span class="lineCov">          5 :     return _impl-&gt;load(obj);</span>
+<a name="227"><span class="lineNum">     227 </span>            : }</a>
+<span class="lineNum">     228 </span>            : 
+<span class="lineNum">     229 </span><span class="lineNoCov">          0 : bool Cache::unload(const CacheId&amp; cacheId)</span>
+<span class="lineNum">     230 </span>            : {
+<span class="lineNum">     231 </span><span class="lineNoCov">          0 :     if (cacheId == INVALID_CACHE_ID)</span>
+<span class="lineNum">     232 </span><span class="lineNoCov">          0 :         return false;</span>
+<span class="lineNum">     233 </span>            : 
+<span class="lineNum">     234 </span><span class="lineNoCov">          0 :     return _impl-&gt;unload(cacheId);</span>
+<a name="235"><span class="lineNum">     235 </span>            : }</a>
+<span class="lineNum">     236 </span>            : 
+<span class="lineNum">     237 </span><span class="lineCov">         13 : ConstCacheObjectPtr Cache::get(const CacheId&amp; cacheId) const</span>
+<span class="lineNum">     238 </span>            : {
+<span class="lineNum">     239 </span><span class="lineCov">         13 :     if (cacheId == INVALID_CACHE_ID)</span>
+<span class="lineNum">     240 </span><span class="lineCov">          1 :         return ConstCacheObjectPtr();</span>
+<span class="lineNum">     241 </span>            : 
+<span class="lineNum">     242 </span><span class="lineCov">         12 :     return _impl-&gt;get(cacheId);</span>
+<a name="243"><span class="lineNum">     243 </span>            : }</a>
+<span class="lineNum">     244 </span>            : 
+<span class="lineNum">     245 </span><span class="lineCov">         16 : const std::type_index&amp; Cache::_getCacheObjectType() const</span>
+<span class="lineNum">     246 </span>            : {
+<span class="lineNum">     247 </span><span class="lineCov">         16 :     return _impl-&gt;_cacheObjectType;</span>
+<a name="248"><span class="lineNum">     248 </span>            : }</a>
+<span class="lineNum">     249 </span>            : 
+<span class="lineNum">     250 </span><span class="lineCov">          8 : size_t Cache::getCount() const</span>
+<span class="lineNum">     251 </span>            : {
+<span class="lineNum">     252 </span><span class="lineCov">          8 :     return _impl-&gt;getCount();</span>
+<a name="253"><span class="lineNum">     253 </span>            : }</a>
+<span class="lineNum">     254 </span>            : 
+<span class="lineNum">     255 </span><span class="lineCov">         15 : const CacheStatistics&amp; Cache::getStatistics() const</span>
+<span class="lineNum">     256 </span>            : {
+<span class="lineNum">     257 </span><span class="lineCov">         15 :     return _impl-&gt;_statistics;</span>
+<a name="258"><span class="lineNum">     258 </span>            : }</a>
+<span class="lineNum">     259 </span>            : 
+<span class="lineNum">     260 </span><span class="lineCov">          1 : void Cache::purge()</span>
+<span class="lineNum">     261 </span>            : {
+<span class="lineNum">     262 </span><span class="lineCov">          1 :     _impl-&gt;purge();</span>
+<a name="263"><span class="lineNum">     263 </span><span class="lineCov">          1 : }</span></a>
+<span class="lineNum">     264 </span>            : 
+<span class="lineNum">     265 </span><span class="lineNoCov">          0 : void Cache::purge(const CacheId&amp; cacheId)</span>
+<span class="lineNum">     266 </span>            : {
+<a name="267"><span class="lineNum">     267 </span><span class="lineNoCov">          0 :     _impl-&gt;purge(cacheId);</span></a>
+<span class="lineNum">     268 </span><span class="lineNoCov">          0 : }</span>
+<span class="lineNum">     269 </span><span class="lineCov">         36 : }</span>
 </pre>
       </td>
     </tr>

@@ -37,7 +37,7 @@
           </tr>
           <tr>
             <td class="headerItem">Date:</td>
-            <td class="headerValue">2017-03-10 03:09:04</td>
+            <td class="headerValue">2017-04-01 03:04:50</td>
             <td></td>
             <td class="headerItem">Functions:</td>
             <td class="headerCovTableEntry">6</td>
@@ -60,7 +60,7 @@
       <td>
 <pre class="sourceHeading">          Line data    Source code</pre>
 <pre class="source">
-<a name="1"><span class="lineNum">       1 </span>            : /* Copyright (c) 2011-2014, EPFL/Blue Brain Project</a>
+<a name="1"><span class="lineNum">       1 </span>            : /* Copyright (c) 2011-2017, EPFL/Blue Brain Project</a>
 <span class="lineNum">       2 </span>            :  *                     Ahmet Bilgili &lt;ahmet.bilgili@epfl.ch&gt;
 <span class="lineNum">       3 </span>            :  *
 <span class="lineNum">       4 </span>            :  * This file is part of Livre &lt;https://github.com/BlueBrain/Livre&gt;
@@ -151,10 +151,10 @@
 <span class="lineNum">      89 </span>            : class ConstMemoryUnit : public MemoryUnit
 <span class="lineNum">      90 </span>            : {
 <a name="91"><span class="lineNum">      91 </span>            : public:</a>
-<span class="lineNum">      92 </span>            :     explicit ConstMemoryUnit(const uint8_t* ptr);
+<span class="lineNum">      92 </span>            :     ConstMemoryUnit(const uint8_t* ptr, size_t size);
 <a name="93"><span class="lineNum">      93 </span><span class="lineNoCov">          0 :     ~ConstMemoryUnit() {}</span></a>
 <span class="lineNum">      94 </span>            : protected:
-<a name="95"><span class="lineNum">      95 </span><span class="lineNoCov">          0 :     size_t getAllocSize() const final { return 0; }</span></a>
+<a name="95"><span class="lineNum">      95 </span><span class="lineNoCov">          0 :     size_t getAllocSize() const final { return size_; }</span></a>
 <span class="lineNum">      96 </span>            :     const uint8_t* _getData() const final;
 <span class="lineNum">      97 </span><span class="lineNoCov">          0 :     uint8_t* _getData() final</span>
 <span class="lineNum">      98 </span>            :     {
@@ -162,73 +162,74 @@
 <span class="lineNum">     100 </span><span class="lineNoCov">          0 :         return 0;</span>
 <span class="lineNum">     101 </span>            :     }
 <span class="lineNum">     102 </span>            :     const uint8_t* const ptr_;
-<span class="lineNum">     103 </span>            : };
-<span class="lineNum">     104 </span>            : 
-<span class="lineNum">     105 </span>            : /**
-<span class="lineNum">     106 </span>            :  * The AllocMemoryUnit class shows an allocated memory pointer to keep track of
-<span class="lineNum">     107 </span>            :  * memory consumption.
-<span class="lineNum">     108 </span>            :  * Memory is cleaned on destruction.
-<span class="lineNum">     109 </span>            :  */
-<span class="lineNum">     110 </span>            : class AllocMemoryUnit : public MemoryUnit
-<span class="lineNum">     111 </span>            : {
-<span class="lineNum">     112 </span>            : public:
-<span class="lineNum">     113 </span>            :     /**
-<span class="lineNum">     114 </span>            :      * Allocate and copy the data from the given source and size
-<span class="lineNum">     115 </span>            :      * @param sourceData Source data ptr.
-<span class="lineNum">     116 </span>            :      * @param size Number of the elements in the source data ptr.
-<span class="lineNum">     117 </span>            :      */
-<span class="lineNum">     118 </span>            :     template &lt;typename T&gt;
-<span class="lineNum">     119 </span>            :     AllocMemoryUnit(const T* sourceData, const size_t size)
-<span class="lineNum">     120 </span>            :     {
-<span class="lineNum">     121 </span>            :         _allocAndSetData(sourceData, size);
-<span class="lineNum">     122 </span>            :     }
-<span class="lineNum">     123 </span>            : 
-<span class="lineNum">     124 </span>            :     /** &quot;void&quot; specialization of the constructor */
-<span class="lineNum">     125 </span>            :     LIVRECORE_API AllocMemoryUnit(const void* sourceData, const size_t size)
-<span class="lineNum">     126 </span>            :     {
-<span class="lineNum">     127 </span>            :         _allocAndSetData(static_cast&lt;const uint8_t*&gt;(sourceData), size);
-<span class="lineNum">     128 </span>            :     }
-<span class="lineNum">     129 </span>            : 
-<span class="lineNum">     130 </span>            :     /**
-<span class="lineNum">     131 </span>            :      * Allocate and copy the data from the given source and size
-<span class="lineNum">     132 </span>            :      * @param sourceData Source data vector.
-<a name="133"><span class="lineNum">     133 </span>            :      */</a>
-<span class="lineNum">     134 </span>            :     template &lt;typename T&gt;
-<span class="lineNum">     135 </span><span class="lineNoCov">          0 :     explicit AllocMemoryUnit(const std::vector&lt;T&gt;&amp; sourceData)</span>
-<span class="lineNum">     136 </span><span class="lineNoCov">          0 :     {</span>
-<span class="lineNum">     137 </span><span class="lineNoCov">          0 :         _allocAndSetData(&amp;sourceData[0], sourceData.size());</span>
-<span class="lineNum">     138 </span><span class="lineNoCov">          0 :     }</span>
-<span class="lineNum">     139 </span>            : 
-<span class="lineNum">     140 </span>            :     /**
-<span class="lineNum">     141 </span>            :      * Allocates memory in bytes in given size
-<a name="142"><span class="lineNum">     142 </span>            :      * @param size memory size</a>
-<span class="lineNum">     143 </span>            :      */
-<span class="lineNum">     144 </span><span class="lineCov">          2 :     LIVRECORE_API explicit AllocMemoryUnit(const size_t size) { _alloc(size); }</span>
-<span class="lineNum">     145 </span>            :     LIVRECORE_API ~AllocMemoryUnit();
-<span class="lineNum">     146 </span>            :     LIVRECORE_API size_t getAllocSize() const final;
-<span class="lineNum">     147 </span>            : 
-<span class="lineNum">     148 </span>            : private:
-<span class="lineNum">     149 </span>            :     AllocMemoryUnit(const AllocMemoryUnit&amp;) = delete;
-<span class="lineNum">     150 </span>            :     AllocMemoryUnit&amp; operator=(const AllocMemoryUnit&amp;) = delete;
-<a name="151"><span class="lineNum">     151 </span>            : </a>
-<span class="lineNum">     152 </span>            :     template &lt;class T&gt;
-<span class="lineNum">     153 </span><span class="lineNoCov">          0 :     void _allocAndSetData(const T* sourceData, const size_t size)</span>
-<span class="lineNum">     154 </span>            :     {
-<span class="lineNum">     155 </span><span class="lineNoCov">          0 :         _alloc(sizeof(T) * size);</span>
-<span class="lineNum">     156 </span><span class="lineNoCov">          0 :         ::memcpy(_rawData.getData(), sourceData, size * sizeof(T));</span>
-<span class="lineNum">     157 </span><span class="lineNoCov">          0 :     }</span>
-<span class="lineNum">     158 </span>            : 
-<span class="lineNum">     159 </span>            :     void _alloc(size_t nBytes);
-<span class="lineNum">     160 </span>            : 
-<span class="lineNum">     161 </span>            :     const uint8_t* _getData() const final;
-<span class="lineNum">     162 </span>            :     uint8_t* _getData() final;
-<a name="163"><span class="lineNum">     163 </span>            : </a>
-<span class="lineNum">     164 </span>            :     lunchbox::Bufferb _rawData;
-<span class="lineNum">     165 </span><span class="lineCov">          4 :     LB_TS_VAR(thread_);</span>
-<span class="lineNum">     166 </span>            : };
-<span class="lineNum">     167 </span>            : }
-<span class="lineNum">     168 </span>            : 
-<span class="lineNum">     169 </span>            : #endif // _MemoryUnit_h_
+<span class="lineNum">     103 </span>            :     const size_t size_;
+<span class="lineNum">     104 </span>            : };
+<span class="lineNum">     105 </span>            : 
+<span class="lineNum">     106 </span>            : /**
+<span class="lineNum">     107 </span>            :  * The AllocMemoryUnit class shows an allocated memory pointer to keep track of
+<span class="lineNum">     108 </span>            :  * memory consumption.
+<span class="lineNum">     109 </span>            :  * Memory is cleaned on destruction.
+<span class="lineNum">     110 </span>            :  */
+<span class="lineNum">     111 </span>            : class AllocMemoryUnit : public MemoryUnit
+<span class="lineNum">     112 </span>            : {
+<span class="lineNum">     113 </span>            : public:
+<span class="lineNum">     114 </span>            :     /**
+<span class="lineNum">     115 </span>            :      * Allocate and copy the data from the given source and size
+<span class="lineNum">     116 </span>            :      * @param sourceData Source data ptr.
+<span class="lineNum">     117 </span>            :      * @param size Number of the elements in the source data ptr.
+<span class="lineNum">     118 </span>            :      */
+<span class="lineNum">     119 </span>            :     template &lt;typename T&gt;
+<span class="lineNum">     120 </span>            :     AllocMemoryUnit(const T* sourceData, const size_t size)
+<span class="lineNum">     121 </span>            :     {
+<span class="lineNum">     122 </span>            :         _allocAndSetData(sourceData, size);
+<span class="lineNum">     123 </span>            :     }
+<span class="lineNum">     124 </span>            : 
+<span class="lineNum">     125 </span>            :     /** &quot;void&quot; specialization of the constructor */
+<span class="lineNum">     126 </span>            :     LIVRECORE_API AllocMemoryUnit(const void* sourceData, const size_t size)
+<span class="lineNum">     127 </span>            :     {
+<span class="lineNum">     128 </span>            :         _allocAndSetData(static_cast&lt;const uint8_t*&gt;(sourceData), size);
+<span class="lineNum">     129 </span>            :     }
+<span class="lineNum">     130 </span>            : 
+<span class="lineNum">     131 </span>            :     /**
+<span class="lineNum">     132 </span>            :      * Allocate and copy the data from the given source and size
+<span class="lineNum">     133 </span>            :      * @param sourceData Source data vector.
+<a name="134"><span class="lineNum">     134 </span>            :      */</a>
+<span class="lineNum">     135 </span>            :     template &lt;typename T&gt;
+<span class="lineNum">     136 </span><span class="lineNoCov">          0 :     explicit AllocMemoryUnit(const std::vector&lt;T&gt;&amp; sourceData)</span>
+<span class="lineNum">     137 </span><span class="lineNoCov">          0 :     {</span>
+<span class="lineNum">     138 </span><span class="lineNoCov">          0 :         _allocAndSetData(&amp;sourceData[0], sourceData.size());</span>
+<span class="lineNum">     139 </span><span class="lineNoCov">          0 :     }</span>
+<span class="lineNum">     140 </span>            : 
+<span class="lineNum">     141 </span>            :     /**
+<span class="lineNum">     142 </span>            :      * Allocates memory in bytes in given size
+<a name="143"><span class="lineNum">     143 </span>            :      * @param size memory size</a>
+<span class="lineNum">     144 </span>            :      */
+<span class="lineNum">     145 </span><span class="lineCov">          2 :     LIVRECORE_API explicit AllocMemoryUnit(const size_t size) { _alloc(size); }</span>
+<span class="lineNum">     146 </span>            :     LIVRECORE_API ~AllocMemoryUnit();
+<span class="lineNum">     147 </span>            :     LIVRECORE_API size_t getAllocSize() const final;
+<span class="lineNum">     148 </span>            : 
+<span class="lineNum">     149 </span>            : private:
+<span class="lineNum">     150 </span>            :     AllocMemoryUnit(const AllocMemoryUnit&amp;) = delete;
+<span class="lineNum">     151 </span>            :     AllocMemoryUnit&amp; operator=(const AllocMemoryUnit&amp;) = delete;
+<a name="152"><span class="lineNum">     152 </span>            : </a>
+<span class="lineNum">     153 </span>            :     template &lt;class T&gt;
+<span class="lineNum">     154 </span><span class="lineNoCov">          0 :     void _allocAndSetData(const T* sourceData, const size_t size)</span>
+<span class="lineNum">     155 </span>            :     {
+<span class="lineNum">     156 </span><span class="lineNoCov">          0 :         _alloc(sizeof(T) * size);</span>
+<span class="lineNum">     157 </span><span class="lineNoCov">          0 :         ::memcpy(_rawData.getData(), sourceData, size * sizeof(T));</span>
+<span class="lineNum">     158 </span><span class="lineNoCov">          0 :     }</span>
+<span class="lineNum">     159 </span>            : 
+<span class="lineNum">     160 </span>            :     void _alloc(size_t nBytes);
+<span class="lineNum">     161 </span>            : 
+<span class="lineNum">     162 </span>            :     const uint8_t* _getData() const final;
+<span class="lineNum">     163 </span>            :     uint8_t* _getData() final;
+<a name="164"><span class="lineNum">     164 </span>            : </a>
+<span class="lineNum">     165 </span>            :     lunchbox::Bufferb _rawData;
+<span class="lineNum">     166 </span><span class="lineCov">          4 :     LB_TS_VAR(thread_);</span>
+<span class="lineNum">     167 </span>            : };
+<span class="lineNum">     168 </span>            : }
+<span class="lineNum">     169 </span>            : 
+<span class="lineNum">     170 </span>            : #endif // _MemoryUnit_h_
 </pre>
       </td>
     </tr>

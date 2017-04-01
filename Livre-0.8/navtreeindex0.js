@@ -71,10 +71,11 @@ var NAVTREEINDEX0 =
 "classlivre_1_1_configuration.html#ad916e3c1fa15b09c2df487a710ec9bc0":[5,0,0,1,3],
 "classlivre_1_1_configuration.html#af573807598aeceabc72cc0fd5bfb89f9":[5,0,0,1,6],
 "classlivre_1_1_const_memory_unit.html":[5,0,0,2],
+"classlivre_1_1_const_memory_unit.html#a2eaa5028110a3a7833f8ee684bf5bc19":[5,0,0,2,6],
+"classlivre_1_1_const_memory_unit.html#a3fa0a55a2e3fe05a7a343b9f989b7468":[5,0,0,2,0],
 "classlivre_1_1_const_memory_unit.html#a42af63510d3647a9b6fd23fd7b2bd11d":[5,0,0,2,4],
 "classlivre_1_1_const_memory_unit.html#a6c2b11528cac49833d196968409ca69d":[5,0,0,2,2],
 "classlivre_1_1_const_memory_unit.html#ad52cfb396c5e717871fced78b956816a":[5,0,0,2,3],
-"classlivre_1_1_const_memory_unit.html#adb973865c0905b49b57a2c2ed4fd5e9b":[5,0,0,2,0],
 "classlivre_1_1_const_memory_unit.html#ae06e744a16c67efec5cad2207507b191":[5,0,0,2,5],
 "classlivre_1_1_const_memory_unit.html#aedc414835ea4801398cd2fce802e00b4":[5,0,0,2,1],
 "classlivre_1_1_data_source.html":[5,0,0,3],
@@ -248,6 +249,5 @@ var NAVTREEINDEX0 =
 "structlivre_1_1_volume_information.html#a1d41a4d1e5f1cffeb1e39b005104bcf3":[5,0,0,19,4],
 "structlivre_1_1_volume_information.html#a275946016782c16d2f79afabbd67b9ca":[5,0,0,19,2],
 "structlivre_1_1_volume_information.html#a38580093238052e2283658bf5d778de5":[5,0,0,19,7],
-"structlivre_1_1_volume_information.html#a3afc8abaf0803c82c837604d3b45cfcc":[5,0,0,19,12],
-"structlivre_1_1_volume_information.html#a4ac1a3924b611e51bf6b06e0a33b3793":[5,0,0,19,9]
+"structlivre_1_1_volume_information.html#a3afc8abaf0803c82c837604d3b45cfcc":[5,0,0,19,12]
 };

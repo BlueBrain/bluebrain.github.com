@@ -61,7 +61,7 @@ var NAVTREE =
 var NAVTREEINDEX =
 [
 ".html",
-"structlivre_1_1_volume_information.html#a5eefe6afe0a60b20c4672efbc78da1af"
+"structlivre_1_1_volume_information.html#a4ac1a3924b611e51bf6b06e0a33b3793"
 ];
 
 var SYNCONMSG = 'click to disable panel synchronisation';
