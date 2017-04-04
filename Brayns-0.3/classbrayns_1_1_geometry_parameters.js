@@ -36,12 +36,14 @@ var classbrayns_1_1_geometry_parameters =
     [ "getSplashSceneFolder", "classbrayns_1_1_geometry_parameters.html#ae097976dc034f7c5226d3790d0ddb855", null ],
     [ "getStartSimulationTime", "classbrayns_1_1_geometry_parameters.html#aaa3026263f728daccc76d391a24797f8", null ],
     [ "getTarget", "classbrayns_1_1_geometry_parameters.html#aa0c7b6bdb7d00fc38f39b96d9d4e76a7", null ],
+    [ "getUseSimulationModel", "classbrayns_1_1_geometry_parameters.html#a45a6abf861832e8ad74ba5f2d3f222de", null ],
     [ "getXYZBFile", "classbrayns_1_1_geometry_parameters.html#ae0eb93242f0b1fb5fade76c3e75f9c2a", null ],
     [ "print", "classbrayns_1_1_geometry_parameters.html#a8c92a909fef870a14d015a6e838f3f63", null ],
     [ "setColorScheme", "classbrayns_1_1_geometry_parameters.html#ac3d56648894b68b774500ac58c4eb2c1", null ],
     [ "setRadiusCorrection", "classbrayns_1_1_geometry_parameters.html#a6bbfa8e688f9395347b8d3d535b93834", null ],
     [ "setRadiusMultiplier", "classbrayns_1_1_geometry_parameters.html#a39e145c39048b4ae3c8be29999bb89a4", null ],
     [ "setSplashSceneFolder", "classbrayns_1_1_geometry_parameters.html#ad4fef2d48a0d138c284cc407a0b9c02d", null ],
+    [ "setUseSimulationModel", "classbrayns_1_1_geometry_parameters.html#a3ab9f71712b2a44c9bbb90ec26dfe529", null ],
     [ "useMetaballs", "classbrayns_1_1_geometry_parameters.html#ab67a0a3cdf808cc2fcf7b6a77ca3d173", null ],
     [ "_circuitConfig", "classbrayns_1_1_geometry_parameters.html#af4ffd68e66207ee51dc6bf1a3ab1cc9f", null ],
     [ "_colorScheme", "classbrayns_1_1_geometry_parameters.html#a65110075a27c9aa3c6fd9d7e07bb9aa2", null ],
@@ -75,5 +77,6 @@ var classbrayns_1_1_geometry_parameters =
     [ "_splashSceneFolder", "classbrayns_1_1_geometry_parameters.html#adbfe32e7cc0323f8fe655e98f1c1df80", null ],
     [ "_startSimulationTime", "classbrayns_1_1_geometry_parameters.html#afa2f67c31256356e7174a4140acd5a0a", null ],
     [ "_target", "classbrayns_1_1_geometry_parameters.html#a1e045b1c4c59f0cb6d0c4a6aa9f75cac", null ],
+    [ "_useSimulationModel", "classbrayns_1_1_geometry_parameters.html#a4dabf2036e25867d2ac96a1d9bb69dd8", null ],
     [ "_xyzbFile", "classbrayns_1_1_geometry_parameters.html#a228a1dcc789debe51ca7195402fb3019", null ]
 ];

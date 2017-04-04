@@ -1,5 +1,9 @@
 var NAVTREEINDEX3 =
 {
+"classbrayns_1_1_rendering_parameters.html#a590271e7939f2f5c4767056ec07738f5":[5,0,0,62,26],
+"classbrayns_1_1_rendering_parameters.html#a59da280f420719c169f81144aabe97a4":[5,0,0,62,23],
+"classbrayns_1_1_rendering_parameters.html#a5a0b99764433a5484679dcde5489fd89":[5,0,0,62,12],
+"classbrayns_1_1_rendering_parameters.html#a5bec7f121f568bbe48a1611e30a2a4c7":[5,0,0,62,16],
 "classbrayns_1_1_rendering_parameters.html#a6013e0702744ee1aacb367602811d890":[5,0,0,62,25],
 "classbrayns_1_1_rendering_parameters.html#a67a5b5e70f8fe46f1ff7926180318ae1":[5,0,0,62,49],
 "classbrayns_1_1_rendering_parameters.html#a67ce2e084ca0d971a5f2d18d429233a2":[5,0,0,62,42],
@@ -243,11 +247,7 @@ var NAVTREEINDEX3 =
 "defines_linux_8h_source.html":[6,0,24],
 "exceptions_8h_source.html":[6,0,29],
 "files.html":[6,0],
-"functions.html":[5,3,0,0],
 "functions.html":[5,3,0],
-"functions_0x7e.html":[5,3,0,20],
-"functions_a.html":[5,3,0,1],
-"functions_b.html":[5,3,0,2],
-"functions_c.html":[5,3,0,3],
-"functions_d.html":[5,3,0,4]
+"functions.html":[5,3,0,0],
+"functions_0x7e.html":[5,3,0,20]
 };

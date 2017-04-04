@@ -111,6 +111,7 @@ var searchData=
   ['gettrianglemeshes',['getTriangleMeshes',['../classbrayns_1_1_scene.html#a2ebeb48191b7b81d19d5f7ef104af35c',1,'brayns::Scene']]],
   ['gettype',['getType',['../classbrayns_1_1_camera.html#a0922ca991159fe5fc401bae15597230e',1,'brayns::Camera']]],
   ['getup',['getUp',['../classbrayns_1_1_camera.html#a6d8afdc1b8b755bef0b0a13691de115a',1,'brayns::Camera']]],
+  ['getusesimulationmodel',['getUseSimulationModel',['../classbrayns_1_1_geometry_parameters.html#a45a6abf861832e8ad74ba5f2d3f222de',1,'brayns::GeometryParameters']]],
   ['getvaluesrange',['getValuesRange',['../classbrayns_1_1_transfer_function.html#aa6fe90fcf4c6ce0b4658d069f11a0650',1,'brayns::TransferFunction']]],
   ['getvolumehandler',['getVolumeHandler',['../classbrayns_1_1_scene.html#a5074d2cb2ed54551637fdcd21b25809c',1,'brayns::Scene']]],
   ['getvolumeparameters',['getVolumeParameters',['../classbrayns_1_1_parameters_manager.html#af96aa3d61e0e96870b7027570c832829',1,'brayns::ParametersManager']]],
