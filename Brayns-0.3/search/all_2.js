@@ -14,6 +14,7 @@ var searchData=
   ['brayns_5fversion_5fminor',['BRAYNS_VERSION_MINOR',['../version_8h.html#ad1d30abb92c583df9555702986df6cd5',1,'version.h']]],
   ['brayns_5fversion_5fpatch',['BRAYNS_VERSION_PATCH',['../version_8h.html#aec3b431747b4611d046a5be799c36a85',1,'version.h']]],
   ['brayns_5fversion_5frevision',['BRAYNS_VERSION_REVISION',['../version_8h.html#a4d697b7dac7e97b28fecf7714fea4d8f',1,'version.h']]],
+  ['braynsbenchmark',['braynsBenchmark',['../braynsBenchmark.html',1,'apps']]],
   ['braynsservice',['braynsService',['../braynsService.html',1,'apps']]],
   ['braynsviewer',['braynsViewer',['../braynsViewer.html',1,'apps']]],
   ['builddefault',['buildDefault',['../classbrayns_1_1_scene.html#a13667f2db068b46530102270f3b0e0ce',1,'brayns::Scene']]],

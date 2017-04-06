@@ -1,5 +1,14 @@
 var NAVTREEINDEX2 =
 {
+"classbrayns_1_1_inspect_center_manipulator.html":[5,0,0,30],
+"classbrayns_1_1_inspect_center_manipulator.html#a600010c4634e16a54db7732e2befeffa":[5,0,0,30,0],
+"classbrayns_1_1_inspect_center_manipulator.html#aa9de0f2f759d0c6889dd4c44501e677f":[5,0,0,30,1],
+"classbrayns_1_1_keyboard_handler.html":[5,0,0,31],
+"classbrayns_1_1_keyboard_handler.html#a05f9071eb3e65a35c06290071cdccfae":[5,0,0,31,0],
+"classbrayns_1_1_keyboard_handler.html#a77c77b89adefaf9cb47a67d833f18854":[5,0,0,31,4],
+"classbrayns_1_1_keyboard_handler.html#a9f39c4ac5fd8c57fb5ba6f39037d7a3c":[5,0,0,31,3],
+"classbrayns_1_1_keyboard_handler.html#ac32a13132f82e36b1b45c82921dd77df":[5,0,0,31,5],
+"classbrayns_1_1_keyboard_handler.html#ac8794dfb8b9de592c37801770afd954d":[5,0,0,31,1],
 "classbrayns_1_1_keyboard_handler.html#ae64300a09cc5b3e182966a8e9de518c0":[5,0,0,31,6],
 "classbrayns_1_1_keyboard_handler.html#aedb8a810a846045ce3a08acfd87f69ba":[5,0,0,31,2],
 "classbrayns_1_1_keyboard_handler.html#afbba49463b302102914acc01880324ee":[5,0,0,31,7],
@@ -240,14 +249,5 @@ var NAVTREEINDEX2 =
 "classbrayns_1_1_rendering_parameters.html#a25ef04f2741d3931b9a024fb933df22d":[5,0,0,62,13],
 "classbrayns_1_1_rendering_parameters.html#a308deaa41e01b30bd0a92e2a8bcc36dd":[5,0,0,62,22],
 "classbrayns_1_1_rendering_parameters.html#a30c1061c5fab8d37c46fc4ae7ec5a16c":[5,0,0,62,29],
-"classbrayns_1_1_rendering_parameters.html#a3283f88f4fce17267c4a7c32f2670fcd":[5,0,0,62,27],
-"classbrayns_1_1_rendering_parameters.html#a32a712c082135bfe6d201d24bcd2a36e":[5,0,0,62,6],
-"classbrayns_1_1_rendering_parameters.html#a33b0fbe0cc1dc508517e0cc2f4f45eab":[5,0,0,62,36],
-"classbrayns_1_1_rendering_parameters.html#a3a32a9dbae70efeab2d8d668e4bd6a6f":[5,0,0,62,18],
-"classbrayns_1_1_rendering_parameters.html#a43c856e23a727ae0bf395fa2c8951f42":[5,0,0,62,53],
-"classbrayns_1_1_rendering_parameters.html#a46cad31b05368d857493adbd64a219ad":[5,0,0,62,50],
-"classbrayns_1_1_rendering_parameters.html#a4c01720746de6ba46178db830d24e1d1":[5,0,0,62,17],
-"classbrayns_1_1_rendering_parameters.html#a52c01d07a3ee59d4ac44fe3f345c1f2a":[5,0,0,62,45],
-"classbrayns_1_1_rendering_parameters.html#a5539459b8bc8462f6ed0b83267dd1b4c":[5,0,0,62,1],
-"classbrayns_1_1_rendering_parameters.html#a571fb8ee17c36ccf8af40025067edda3":[5,0,0,62,48]
+"classbrayns_1_1_rendering_parameters.html#a3283f88f4fce17267c4a7c32f2670fcd":[5,0,0,62,27]
 };

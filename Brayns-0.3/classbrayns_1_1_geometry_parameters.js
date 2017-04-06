@@ -2,6 +2,7 @@ var classbrayns_1_1_geometry_parameters =
 [
     [ "GeometryParameters", "classbrayns_1_1_geometry_parameters.html#a96a7875f7d452448da35b193921725dc", null ],
     [ "_parse", "classbrayns_1_1_geometry_parameters.html#ad11f92d3fafcca441e3140f8aef7578d", null ],
+    [ "getCircuitConcentration", "classbrayns_1_1_geometry_parameters.html#a20c7ccc60439b7efcff7a1d311e8dcee", null ],
     [ "getCircuitConfiguration", "classbrayns_1_1_geometry_parameters.html#ab7bb21c279fa084747beabae49b5942a", null ],
     [ "getColorScheme", "classbrayns_1_1_geometry_parameters.html#a0cefb9cea6665e61900ebc08846bc6e3", null ],
     [ "getColorSchemeAsString", "classbrayns_1_1_geometry_parameters.html#a99a83bec26057f4d2898ad246edd1ee0", null ],
@@ -45,6 +46,7 @@ var classbrayns_1_1_geometry_parameters =
     [ "setSplashSceneFolder", "classbrayns_1_1_geometry_parameters.html#ad4fef2d48a0d138c284cc407a0b9c02d", null ],
     [ "setUseSimulationModel", "classbrayns_1_1_geometry_parameters.html#a3ab9f71712b2a44c9bbb90ec26dfe529", null ],
     [ "useMetaballs", "classbrayns_1_1_geometry_parameters.html#ab67a0a3cdf808cc2fcf7b6a77ca3d173", null ],
+    [ "_circuitConcentration", "classbrayns_1_1_geometry_parameters.html#a1201589f6fa178afee4aa9687e5f60c5", null ],
     [ "_circuitConfig", "classbrayns_1_1_geometry_parameters.html#af4ffd68e66207ee51dc6bf1a3ab1cc9f", null ],
     [ "_colorScheme", "classbrayns_1_1_geometry_parameters.html#a65110075a27c9aa3c6fd9d7e07bb9aa2", null ],
     [ "_endSimulationTime", "classbrayns_1_1_geometry_parameters.html#a63f44a3353bcdfb2be1169b916c62a69", null ],
