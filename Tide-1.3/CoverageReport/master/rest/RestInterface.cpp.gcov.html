@@ -32,17 +32,17 @@
             <td></td>
             <td class="headerItem">Lines:</td>
             <td class="headerCovTableEntry">1</td>
-            <td class="headerCovTableEntry">84</td>
-            <td class="headerCovTableEntryLo">1.2 %</td>
+            <td class="headerCovTableEntry">97</td>
+            <td class="headerCovTableEntryLo">1.0 %</td>
           </tr>
           <tr>
             <td class="headerItem">Date:</td>
-            <td class="headerValue">2017-03-25 06:33:09</td>
+            <td class="headerValue">2017-04-07 06:24:06</td>
             <td></td>
             <td class="headerItem">Functions:</td>
             <td class="headerCovTableEntry">2</td>
-            <td class="headerCovTableEntry">12</td>
-            <td class="headerCovTableEntryLo">16.7 %</td>
+            <td class="headerCovTableEntry">27</td>
+            <td class="headerCovTableEntryLo">7.4 %</td>
           </tr>
           <tr><td><img src="../../glass.png" width=3 height=3 alt=""></td></tr>
         </table>
@@ -61,8 +61,8 @@
 <pre class="sourceHeading">          Line data    Source code</pre>
 <pre class="source">
 <a name="1"><span class="lineNum">       1 </span>            : /*********************************************************************/</a>
-<span class="lineNum">       2 </span>            : /* Copyright (c) 2016, EPFL/Blue Brain Project                       */
-<span class="lineNum">       3 </span>            : /*                     Raphael Dumusc &lt;raphael.dumusc@epfl.ch&gt;       */
+<span class="lineNum">       2 </span>            : /* Copyright (c) 2016-2017, EPFL/Blue Brain Project                  */
+<span class="lineNum">       3 </span>            : /*                          Raphael Dumusc &lt;raphael.dumusc@epfl.ch&gt;  */
 <span class="lineNum">       4 </span>            : /* All rights reserved.                                              */
 <span class="lineNum">       5 </span>            : /*                                                                   */
 <span class="lineNum">       6 </span>            : /* Redistribution and use in source and binary forms, with or        */
@@ -101,163 +101,214 @@
 <span class="lineNum">      39 </span>            : 
 <span class="lineNum">      40 </span>            : #include &quot;RestInterface.h&quot;
 <span class="lineNum">      41 </span>            : 
-<span class="lineNum">      42 </span>            : #include &quot;FileSystemQuery.h&quot;
-<span class="lineNum">      43 </span>            : #include &quot;HtmlContent.h&quot;
-<span class="lineNum">      44 </span>            : #include &quot;JsonOptions.h&quot;
-<span class="lineNum">      45 </span>            : #include &quot;MasterConfiguration.h&quot;
-<span class="lineNum">      46 </span>            : #include &quot;FileReceiver.h&quot;
-<span class="lineNum">      47 </span>            : #include &quot;RestCommand.h&quot;
-<span class="lineNum">      48 </span>            : #include &quot;RestConfiguration.h&quot;
-<span class="lineNum">      49 </span>            : #include &quot;RestController.h&quot;
-<span class="lineNum">      50 </span>            : #include &quot;RestLogger.h&quot;
-<span class="lineNum">      51 </span>            : #include &quot;RestServer.h&quot;
-<span class="lineNum">      52 </span>            : #include &quot;RestWindows.h&quot;
-<span class="lineNum">      53 </span>            : #include &quot;StaticContent.h&quot;
-<span class="lineNum">      54 </span>            : 
-<span class="lineNum">      55 </span>            : #include &lt;tide/master/version.h&gt;
-<span class="lineNum">      56 </span>            : 
-<a name="57"><span class="lineNum">      57 </span>            : #include &lt;QDir&gt;</a>
-<span class="lineNum">      58 </span>            : 
-<span class="lineNum">      59 </span><span class="lineNoCov">          0 : class RestInterface::Impl</span>
-<a name="60"><span class="lineNum">      60 </span>            : {</a>
-<span class="lineNum">      61 </span>            : public:
-<span class="lineNum">      62 </span><span class="lineNoCov">          0 :     Impl( const int port, OptionsPtr options_,</span>
-<span class="lineNum">      63 </span>            :           const MasterConfiguration&amp; config )
-<span class="lineNum">      64 </span><span class="lineNoCov">          0 :         : httpServer{ port }</span>
-<span class="lineNum">      65 </span>            :         , options{ options_ }
-<span class="lineNum">      66 </span><span class="lineNoCov">          0 :         , sizeProperty{ config.getTotalSize() }</span>
-<span class="lineNum">      67 </span>            :     {
-<span class="lineNum">      68 </span><span class="lineNoCov">          0 :         auto&amp; server = httpServer.get();</span>
-<span class="lineNum">      69 </span><span class="lineNoCov">          0 :         server.handleGET( &quot;tide/version&quot;, tide::Version::getSchema(),</span>
-<span class="lineNum">      70 </span><span class="lineNoCov">          0 :                           &amp;tide::Version::toJSON );</span>
-<span class="lineNum">      71 </span><span class="lineNoCov">          0 :         server.handlePUT( browseCmd );</span>
-<span class="lineNum">      72 </span><span class="lineNoCov">          0 :         server.handlePUT( openCmd );</span>
-<span class="lineNum">      73 </span><span class="lineNoCov">          0 :         server.handlePUT( loadCmd );</span>
-<span class="lineNum">      74 </span><span class="lineNoCov">          0 :         server.handlePUT( saveCmd );</span>
-<span class="lineNum">      75 </span><span class="lineNoCov">          0 :         server.handlePUT( closeCmd );</span>
-<span class="lineNum">      76 </span><span class="lineNoCov">          0 :         server.handlePUT( whiteboardCmd );</span>
-<span class="lineNum">      77 </span><span class="lineNoCov">          0 :         server.handlePUT( screenshotCmd );</span>
-<span class="lineNum">      78 </span><span class="lineNoCov">          0 :         server.handlePUT( exitCmd );</span>
-<span class="lineNum">      79 </span><span class="lineNoCov">          0 :         server.handle( options );</span>
-<span class="lineNum">      80 </span><span class="lineNoCov">          0 :         server.handleGET( sizeProperty );</span>
-<span class="lineNum">      81 </span><span class="lineNoCov">          0 :     }</span>
-<span class="lineNum">      82 </span>            : 
-<span class="lineNum">      83 </span>            :     RestServer httpServer;
-<span class="lineNum">      84 </span>            :     RestCommand browseCmd{ &quot;tide/browse&quot; };
-<span class="lineNum">      85 </span>            :     RestCommand openCmd{ &quot;tide/open&quot; };
-<span class="lineNum">      86 </span>            :     RestCommand closeCmd{ &quot;tide/close&quot; };
-<span class="lineNum">      87 </span>            :     RestCommand loadCmd{ &quot;tide/load&quot; };
-<span class="lineNum">      88 </span>            :     RestCommand saveCmd{ &quot;tide/save&quot; };
-<span class="lineNum">      89 </span>            :     RestCommand whiteboardCmd{ &quot;tide/whiteboard&quot;, false };
-<span class="lineNum">      90 </span>            :     RestCommand screenshotCmd{ &quot;tide/screenshot&quot; };
-<span class="lineNum">      91 </span>            :     RestCommand exitCmd{ &quot;tide/exit&quot;, false };
-<span class="lineNum">      92 </span>            : 
-<span class="lineNum">      93 </span>            :     JsonOptions options;
-<span class="lineNum">      94 </span>            :     JsonSize sizeProperty;
-<span class="lineNum">      95 </span>            : 
-<span class="lineNum">      96 </span>            :     std::unique_ptr&lt;FileSystemQuery&gt; contentDirQuery;
-<span class="lineNum">      97 </span>            :     std::unique_ptr&lt;FileSystemQuery&gt; sessionsDirQuery;
-<span class="lineNum">      98 </span>            :     std::unique_ptr&lt;FileReceiver&gt; fileReceiver;
-<span class="lineNum">      99 </span>            :     std::unique_ptr&lt;RestLogger&gt; logContent;
-<span class="lineNum">     100 </span>            :     std::unique_ptr&lt;HtmlContent&gt; htmlContent;
-<span class="lineNum">     101 </span>            :     std::unique_ptr&lt;RestController&gt; sceneController;
-<span class="lineNum">     102 </span>            :     std::unique_ptr&lt;RestWindows&gt; windowsContent;
-<span class="lineNum">     103 </span>            :     std::unique_ptr&lt;RestConfiguration&gt; configurationContent;
-<a name="104"><span class="lineNum">     104 </span>            : };</a>
-<span class="lineNum">     105 </span>            : 
-<span class="lineNum">     106 </span><span class="lineNoCov">          0 : RestInterface::RestInterface( const int port, OptionsPtr options,</span>
-<span class="lineNum">     107 </span><span class="lineNoCov">          0 :                               const MasterConfiguration&amp; config )</span>
-<span class="lineNum">     108 </span><span class="lineNoCov">          0 :     : _impl( new Impl( port, options, config ))</span>
-<span class="lineNum">     109 </span><span class="lineNoCov">          0 :     , _config( config )</span>
-<span class="lineNum">     110 </span>            : {
-<span class="lineNum">     111 </span>            :     // Note: using same formatting as TUIO instead of put_flog() here
-<span class="lineNum">     112 </span><span class="lineNoCov">          0 :     std::cout &lt;&lt; &quot;listening to REST messages on TCP port &quot; &lt;&lt;</span>
-<span class="lineNum">     113 </span><span class="lineNoCov">          0 :                  _impl-&gt;httpServer.getPort() &lt;&lt; std::endl;</span>
-<span class="lineNum">     114 </span>            : 
-<span class="lineNum">     115 </span><span class="lineNoCov">          0 :     connect( &amp;_impl-&gt;browseCmd, &amp;RestCommand::received,</span>
-<span class="lineNum">     116 </span><span class="lineNoCov">          0 :              this, &amp;RestInterface::browse );</span>
-<span class="lineNum">     117 </span>            : 
-<span class="lineNum">     118 </span><span class="lineNoCov">          0 :     connect( &amp;_impl-&gt;whiteboardCmd, &amp;RestCommand::received,</span>
-<span class="lineNum">     119 </span><span class="lineNoCov">          0 :              this, &amp;RestInterface::whiteboard );</span>
-<a name="120"><span class="lineNum">     120 </span>            : </a>
-<span class="lineNum">     121 </span><span class="lineNoCov">          0 :     connect( &amp;_impl-&gt;openCmd, &amp;RestCommand::received,</span>
-<span class="lineNum">     122 </span><span class="lineNoCov">          0 :              [this]( const QString uri )</span>
-<span class="lineNum">     123 </span><span class="lineNoCov">          0 :     {</span>
-<span class="lineNum">     124 </span><span class="lineNoCov">          0 :          if( QDir::isRelativePath( uri ))</span>
-<span class="lineNum">     125 </span><span class="lineNoCov">          0 :             emit open( _config.getContentDir() + &quot;/&quot; + uri );</span>
-<span class="lineNum">     126 </span>            :         else
-<span class="lineNum">     127 </span><span class="lineNoCov">          0 :             emit open( uri );</span>
-<span class="lineNum">     128 </span><span class="lineNoCov">          0 :     });</span>
-<a name="129"><span class="lineNum">     129 </span>            : </a>
-<span class="lineNum">     130 </span><span class="lineNoCov">          0 :     connect( &amp;_impl-&gt;loadCmd, &amp;RestCommand::received,</span>
-<span class="lineNum">     131 </span><span class="lineNoCov">          0 :              [this]( const QString uri )</span>
-<span class="lineNum">     132 </span><span class="lineNoCov">          0 :     {</span>
-<span class="lineNum">     133 </span><span class="lineNoCov">          0 :         if( uri.isEmpty( ))</span>
-<span class="lineNum">     134 </span><span class="lineNoCov">          0 :             emit clear();</span>
-<span class="lineNum">     135 </span><span class="lineNoCov">          0 :         else if( QDir::isRelativePath( uri ))</span>
-<span class="lineNum">     136 </span><span class="lineNoCov">          0 :             emit load( _config.getSessionsDir() + &quot;/&quot; + uri );</span>
-<span class="lineNum">     137 </span>            :         else
-<span class="lineNum">     138 </span><span class="lineNoCov">          0 :             emit load( uri );</span>
+<span class="lineNum">      42 </span>            : #include &quot;FileReceiver.h&quot;
+<span class="lineNum">      43 </span>            : #include &quot;FileSystemQuery.h&quot;
+<span class="lineNum">      44 </span>            : #include &quot;HtmlContent.h&quot;
+<span class="lineNum">      45 </span>            : #include &quot;JsonOptions.h&quot;
+<span class="lineNum">      46 </span>            : #include &quot;json.h&quot;
+<span class="lineNum">      47 </span>            : #include &quot;MasterConfiguration.h&quot;
+<span class="lineNum">      48 </span>            : #include &quot;RestCommand.h&quot;
+<span class="lineNum">      49 </span>            : #include &quot;RestConfiguration.h&quot;
+<span class="lineNum">      50 </span>            : #include &quot;RestController.h&quot;
+<span class="lineNum">      51 </span>            : #include &quot;RestLogger.h&quot;
+<span class="lineNum">      52 </span>            : #include &quot;RestServer.h&quot;
+<span class="lineNum">      53 </span>            : #include &quot;RestWindows.h&quot;
+<span class="lineNum">      54 </span>            : #include &quot;scene/ContentFactory.h&quot;
+<span class="lineNum">      55 </span>            : 
+<span class="lineNum">      56 </span>            : #include &lt;tide/master/version.h&gt;
+<span class="lineNum">      57 </span>            : 
+<span class="lineNum">      58 </span>            : #include &lt;zeroeq/http/helpers.h&gt;
+<span class="lineNum">      59 </span>            : 
+<span class="lineNum">      60 </span>            : #include &lt;functional&gt;
+<span class="lineNum">      61 </span>            : #include &lt;QDir&gt;
+<span class="lineNum">      62 </span>            : 
+<span class="lineNum">      63 </span>            : using namespace std::placeholders;
+<span class="lineNum">      64 </span>            : using namespace zeroeq;
+<span class="lineNum">      65 </span>            : 
+<a name="66"><span class="lineNum">      66 </span>            : namespace</a>
+<span class="lineNum">      67 </span>            : {
+<a name="68"><span class="lineNum">      68 </span><span class="lineNoCov">          0 : struct HtmlInterface</span></a>
+<span class="lineNum">      69 </span>            : {
+<span class="lineNum">      70 </span><span class="lineNoCov">          0 :     HtmlInterface( http::Server&amp; server, DisplayGroup&amp; group,</span>
+<span class="lineNum">      71 </span>            :                    const MasterConfiguration&amp; config )
+<span class="lineNum">      72 </span><span class="lineNoCov">          0 :         : htmlContent{ server }</span>
+<span class="lineNum">      73 </span>            :         , jsonConfig{ config }
+<span class="lineNum">      74 </span>            :         , windowsContent{ group }
+<span class="lineNum">      75 </span>            :         , sceneController{ server, group }
+<span class="lineNum">      76 </span>            :         , contentDirQuery{ config.getContentDir(),
+<span class="lineNum">      77 </span>            :                            ContentFactory::getSupportedFilesFilter() }
+<span class="lineNum">      78 </span><span class="lineNoCov">          0 :         , sessionDirQuery{ config.getSessionsDir(), QStringList{ &quot;*.dcx&quot; }}</span>
+<span class="lineNum">      79 </span>            :     {
+<span class="lineNum">      80 </span><span class="lineNoCov">          0 :         server.handleGET( jsonConfig );</span>
+<span class="lineNum">      81 </span>            : 
+<span class="lineNum">      82 </span><span class="lineNoCov">          0 :         server.handle( http::Method::GET, &quot;tide/windows&quot;,</span>
+<span class="lineNum">      83 </span><span class="lineNoCov">          0 :                        std::bind( &amp;RestWindows::getWindowList, &amp;windowsContent,</span>
+<span class="lineNum">      84 </span><span class="lineNoCov">          0 :                                   std::placeholders::_1 ) );</span>
+<span class="lineNum">      85 </span>            : 
+<span class="lineNum">      86 </span><span class="lineNoCov">          0 :         server.handle( http::Method::GET, &quot;tide/windows/&quot;,</span>
+<span class="lineNum">      87 </span><span class="lineNoCov">          0 :                        std::bind( &amp;RestWindows::getWindowInfo, &amp;windowsContent,</span>
+<span class="lineNum">      88 </span><span class="lineNoCov">          0 :                                   std::placeholders::_1 ));</span>
+<span class="lineNum">      89 </span>            : 
+<span class="lineNum">      90 </span><span class="lineNoCov">          0 :         server.handle( http::Method::POST, &quot;tide/upload&quot;,</span>
+<span class="lineNum">      91 </span><span class="lineNoCov">          0 :                        std::bind( &amp;FileReceiver::prepareUpload, &amp;fileReceiver,</span>
+<span class="lineNum">      92 </span><span class="lineNoCov">          0 :                                   std::placeholders::_1 ));</span>
+<span class="lineNum">      93 </span>            : 
+<span class="lineNum">      94 </span><span class="lineNoCov">          0 :         server.handle( http::Method::PUT, &quot;tide/upload/&quot;,</span>
+<span class="lineNum">      95 </span><span class="lineNoCov">          0 :                        std::bind( &amp;FileReceiver::handleUpload, &amp;fileReceiver,</span>
+<span class="lineNum">      96 </span><span class="lineNoCov">          0 :                                   std::placeholders::_1 ));</span>
+<span class="lineNum">      97 </span>            : 
+<span class="lineNum">      98 </span><span class="lineNoCov">          0 :         server.handle( http::Method::GET, &quot;tide/files/&quot;,</span>
+<span class="lineNum">      99 </span><span class="lineNoCov">          0 :                        std::bind( &amp;FileSystemQuery::list, &amp;contentDirQuery,</span>
+<span class="lineNum">     100 </span><span class="lineNoCov">          0 :                                   std::placeholders::_1 ));</span>
+<span class="lineNum">     101 </span>            : 
+<span class="lineNum">     102 </span><span class="lineNoCov">          0 :         server.handle( http::Method::GET, &quot;tide/sessions/&quot;,</span>
+<span class="lineNum">     103 </span><span class="lineNoCov">          0 :                        std::bind( &amp;FileSystemQuery::list, &amp;sessionDirQuery,</span>
+<span class="lineNum">     104 </span><span class="lineNoCov">          0 :                                   std::placeholders::_1 ));</span>
+<span class="lineNum">     105 </span><span class="lineNoCov">          0 :     }</span>
+<span class="lineNum">     106 </span>            : 
+<span class="lineNum">     107 </span>            :     HtmlContent htmlContent;
+<span class="lineNum">     108 </span>            :     RestConfiguration jsonConfig;
+<span class="lineNum">     109 </span>            :     RestWindows windowsContent;
+<span class="lineNum">     110 </span>            :     RestController sceneController;
+<span class="lineNum">     111 </span>            :     FileSystemQuery contentDirQuery;
+<span class="lineNum">     112 </span>            :     FileSystemQuery sessionDirQuery;
+<span class="lineNum">     113 </span>            :     FileReceiver fileReceiver;
+<span class="lineNum">     114 </span>            : };
+<a name="115"><span class="lineNum">     115 </span>            : </a>
+<span class="lineNum">     116 </span>            : using AsyncAction = std::function&lt;void(QString, promisePtr)&gt;;
+<span class="lineNum">     117 </span><span class="lineNoCov">          0 : std::future&lt;http::Response&gt; _handleUriRequest( const http::Request&amp; request,</span>
+<span class="lineNum">     118 </span>            :                                                AsyncAction action,
+<span class="lineNum">     119 </span>            :                                                const QString&amp; baseDir )
+<span class="lineNum">     120 </span>            : {
+<span class="lineNum">     121 </span><span class="lineNoCov">          0 :     const auto obj = json::toObject( request.body );</span>
+<span class="lineNum">     122 </span><span class="lineNoCov">          0 :     if( obj.empty() || !obj[&quot;uri&quot;].isString( ))</span>
+<span class="lineNum">     123 </span><span class="lineNoCov">          0 :         return http::make_ready_response( http::Code::BAD_REQUEST );</span>
+<span class="lineNum">     124 </span>            : 
+<span class="lineNum">     125 </span><span class="lineNoCov">          0 :     auto uri = obj[&quot;uri&quot;].toString();</span>
+<span class="lineNum">     126 </span><span class="lineNoCov">          0 :     if( QDir::isRelativePath( uri ))</span>
+<a name="127"><span class="lineNum">     127 </span><span class="lineNoCov">          0 :         uri = baseDir + &quot;/&quot; + uri;</span></a>
+<span class="lineNum">     128 </span>            : 
+<span class="lineNum">     129 </span><span class="lineNoCov">          0 :     return std::async( std::launch::deferred, [action, uri]()</span>
+<span class="lineNum">     130 </span>            :     {
+<span class="lineNum">     131 </span><span class="lineNoCov">          0 :         auto promise = std::make_shared&lt;std::promise&lt;bool&gt;&gt;();</span>
+<span class="lineNum">     132 </span><span class="lineNoCov">          0 :         auto future = promise-&gt;get_future();</span>
+<span class="lineNum">     133 </span>            : 
+<span class="lineNum">     134 </span><span class="lineNoCov">          0 :         action( uri, std::move( promise ));</span>
+<span class="lineNum">     135 </span>            : 
+<span class="lineNum">     136 </span><span class="lineNoCov">          0 :         if( !future.get( ))</span>
+<span class="lineNum">     137 </span><span class="lineNoCov">          0 :             return http::Response{ http::Code::INTERNAL_SERVER_ERROR };</span>
+<span class="lineNum">     138 </span><span class="lineNoCov">          0 :         return http::Response{ http::Code::OK };</span>
 <span class="lineNum">     139 </span><span class="lineNoCov">          0 :     });</span>
-<a name="140"><span class="lineNum">     140 </span>            : </a>
-<span class="lineNum">     141 </span><span class="lineNoCov">          0 :     connect( &amp;_impl-&gt;saveCmd, &amp;RestCommand::received,</span>
-<span class="lineNum">     142 </span><span class="lineNoCov">          0 :              [this] ( const QString uri )</span>
-<span class="lineNum">     143 </span><span class="lineNoCov">          0 :     {</span>
-<span class="lineNum">     144 </span><span class="lineNoCov">          0 :         if( QDir::isRelativePath( uri ))</span>
-<span class="lineNum">     145 </span><span class="lineNoCov">          0 :             emit save( _config.getSessionsDir() + &quot;/&quot; + uri );</span>
-<span class="lineNum">     146 </span>            :         else
-<span class="lineNum">     147 </span><span class="lineNoCov">          0 :             emit save( uri );</span>
-<span class="lineNum">     148 </span><span class="lineNoCov">          0 :     });</span>
-<span class="lineNum">     149 </span>            : 
-<span class="lineNum">     150 </span><span class="lineNoCov">          0 :     connect( &amp;_impl-&gt;screenshotCmd, &amp;RestCommand::received,</span>
-<span class="lineNum">     151 </span><span class="lineNoCov">          0 :              this, &amp;RestInterface::screenshot );</span>
-<span class="lineNum">     152 </span>            : 
-<span class="lineNum">     153 </span><span class="lineNoCov">          0 :     connect( &amp;_impl-&gt;exitCmd, &amp;RestCommand::received,</span>
-<span class="lineNum">     154 </span><span class="lineNoCov">          0 :              this, &amp;RestInterface::exit );</span>
-<span class="lineNum">     155 </span>            : 
-<span class="lineNum">     156 </span><span class="lineNoCov">          0 :     connect( &amp;_impl-&gt;closeCmd, &amp;RestCommand::received,</span>
-<span class="lineNum">     157 </span><span class="lineNoCov">          0 :              this, &amp;RestInterface::close );</span>
-<a name="158"><span class="lineNum">     158 </span><span class="lineNoCov">          0 : }</span></a>
-<span class="lineNum">     159 </span>            : 
-<a name="160"><span class="lineNum">     160 </span><span class="lineNoCov">          0 : RestInterface::~RestInterface() {}</span></a>
-<span class="lineNum">     161 </span>            : 
-<span class="lineNum">     162 </span><span class="lineNoCov">          0 : void RestInterface::exposeStatistics( const LoggingUtility&amp; logger ) const</span>
-<span class="lineNum">     163 </span>            : {
-<span class="lineNum">     164 </span><span class="lineNoCov">          0 :     _impl-&gt;logContent.reset( new RestLogger( logger ));</span>
-<span class="lineNum">     165 </span><span class="lineNoCov">          0 :     _impl-&gt;httpServer.get().handleGET( *_impl-&gt;logContent );</span>
-<a name="166"><span class="lineNum">     166 </span><span class="lineNoCov">          0 : }</span></a>
+<span class="lineNum">     140 </span>            : }
+<a name="141"><span class="lineNum">     141 </span>            : }</a>
+<span class="lineNum">     142 </span>            : 
+<span class="lineNum">     143 </span><span class="lineNoCov">          0 : class RestInterface::Impl</span>
+<a name="144"><span class="lineNum">     144 </span>            : {</a>
+<span class="lineNum">     145 </span>            : public:
+<span class="lineNum">     146 </span><span class="lineNoCov">          0 :     Impl( const int port, OptionsPtr options,</span>
+<span class="lineNum">     147 </span>            :           const MasterConfiguration&amp; config_ )
+<span class="lineNum">     148 </span><span class="lineNoCov">          0 :         : httpServer{ port }</span>
+<span class="lineNum">     149 </span>            :         , jsonOptions{ options }
+<span class="lineNum">     150 </span><span class="lineNoCov">          0 :         , jsonSize{ config_.getTotalSize() }</span>
+<span class="lineNum">     151 </span>            :     {
+<span class="lineNum">     152 </span><span class="lineNoCov">          0 :         auto&amp; server = httpServer.get();</span>
+<span class="lineNum">     153 </span><span class="lineNoCov">          0 :         server.handleGET( &quot;tide/version&quot;, tide::Version::getSchema(),</span>
+<span class="lineNum">     154 </span><span class="lineNoCov">          0 :                           &amp;tide::Version::toJSON );</span>
+<span class="lineNum">     155 </span><span class="lineNoCov">          0 :         server.handlePUT( browseCmd );</span>
+<span class="lineNum">     156 </span><span class="lineNoCov">          0 :         server.handlePUT( clearCmd );</span>
+<span class="lineNum">     157 </span><span class="lineNoCov">          0 :         server.handlePUT( exitCmd );</span>
+<span class="lineNum">     158 </span><span class="lineNoCov">          0 :         server.handlePUT( screenshotCmd );</span>
+<span class="lineNum">     159 </span><span class="lineNoCov">          0 :         server.handlePUT( whiteboardCmd );</span>
+<span class="lineNum">     160 </span>            : 
+<span class="lineNum">     161 </span><span class="lineNoCov">          0 :         server.handle( jsonOptions );</span>
+<span class="lineNum">     162 </span>            : 
+<span class="lineNum">     163 </span><span class="lineNoCov">          0 :         server.handleGET( jsonSize );</span>
+<span class="lineNum">     164 </span><span class="lineNoCov">          0 :     }</span>
+<span class="lineNum">     165 </span>            : 
+<span class="lineNum">     166 </span>            :     RestServer httpServer;
 <span class="lineNum">     167 </span>            : 
-<span class="lineNum">     168 </span><span class="lineNoCov">          0 : void RestInterface::setupHtmlInterface( DisplayGroup&amp; displayGroup,</span>
-<span class="lineNum">     169 </span>            :                                    const MasterConfiguration&amp; config )
-<span class="lineNum">     170 </span>            : {
-<span class="lineNum">     171 </span><span class="lineNoCov">          0 :     _impl-&gt;htmlContent.reset( new HtmlContent( _impl-&gt;httpServer.get( )));</span>
-<span class="lineNum">     172 </span>            : 
-<span class="lineNum">     173 </span><span class="lineNoCov">          0 :     _impl-&gt;windowsContent.reset( new RestWindows( _impl-&gt;httpServer.get(),</span>
-<span class="lineNum">     174 </span><span class="lineNoCov">          0 :                                                   displayGroup ));</span>
-<span class="lineNum">     175 </span>            : 
-<span class="lineNum">     176 </span><span class="lineNoCov">          0 :     _impl-&gt;configurationContent.reset( new RestConfiguration( config ));</span>
-<span class="lineNum">     177 </span>            : 
-<span class="lineNum">     178 </span><span class="lineNoCov">          0 :     _impl-&gt;sceneController.reset( new RestController( _impl-&gt;httpServer.get(),</span>
-<span class="lineNum">     179 </span><span class="lineNoCov">          0 :                                                       displayGroup ));</span>
+<span class="lineNum">     168 </span>            :     RestCommand browseCmd{ &quot;tide/browse&quot; };
+<span class="lineNum">     169 </span>            :     RestCommand clearCmd{ &quot;tide/clear&quot;, false };
+<span class="lineNum">     170 </span>            :     RestCommand exitCmd{ &quot;tide/exit&quot;, false };
+<span class="lineNum">     171 </span>            :     RestCommand screenshotCmd{ &quot;tide/screenshot&quot; };
+<span class="lineNum">     172 </span>            :     RestCommand whiteboardCmd{ &quot;tide/whiteboard&quot;, false };
+<span class="lineNum">     173 </span>            : 
+<span class="lineNum">     174 </span>            :     JsonOptions jsonOptions;
+<span class="lineNum">     175 </span>            :     JsonSize jsonSize;
+<span class="lineNum">     176 </span>            : 
+<span class="lineNum">     177 </span>            :     std::unique_ptr&lt;RestLogger&gt; logContent; // Statistics (optional)
+<span class="lineNum">     178 </span>            :     std::unique_ptr&lt;HtmlInterface&gt; htmlInterface; // HTML interface (optional)
+<a name="179"><span class="lineNum">     179 </span>            : };</a>
 <span class="lineNum">     180 </span>            : 
-<span class="lineNum">     181 </span><span class="lineNoCov">          0 :     _impl-&gt;fileReceiver.reset( new FileReceiver( _impl-&gt;httpServer.get( )));</span>
-<span class="lineNum">     182 </span>            : 
-<span class="lineNum">     183 </span><span class="lineNoCov">          0 :     connect( _impl-&gt;fileReceiver.get(), &amp;FileReceiver::open,</span>
-<span class="lineNum">     184 </span><span class="lineNoCov">          0 :              this, &amp;RestInterface::open );</span>
-<span class="lineNum">     185 </span>            : 
-<span class="lineNum">     186 </span><span class="lineNoCov">          0 :     _impl-&gt;sessionsDirQuery.reset(</span>
-<span class="lineNum">     187 </span><span class="lineNoCov">          0 :                 new FileSystemQuery( _impl-&gt;httpServer.get(),</span>
-<span class="lineNum">     188 </span><span class="lineNoCov">          0 :                                      _config.getSessionsDir(),</span>
-<span class="lineNum">     189 </span><span class="lineNoCov">          0 :                                      FileSystemQuery::Type::SESSIONS ));</span>
-<span class="lineNum">     190 </span>            : 
-<span class="lineNum">     191 </span><span class="lineNoCov">          0 :     _impl-&gt;contentDirQuery.reset(</span>
-<span class="lineNum">     192 </span><span class="lineNoCov">          0 :                 new FileSystemQuery( _impl-&gt;httpServer.get(),</span>
-<span class="lineNum">     193 </span><span class="lineNoCov">          0 :                                      _config.getContentDir(),</span>
-<span class="lineNum">     194 </span><span class="lineNoCov">          0 :                                      FileSystemQuery::Type::FILES ));</span>
-<span class="lineNum">     195 </span>            : 
-<a name="196"><span class="lineNum">     196 </span><span class="lineNoCov">          0 :    _impl-&gt;httpServer.get().handleGET( *_impl-&gt;configurationContent );</span></a>
-<span class="lineNum">     197 </span><span class="lineNoCov">          0 :    _impl-&gt;httpServer.get().handleGET( *_impl-&gt;windowsContent );</span>
-<span class="lineNum">     198 </span><span class="lineCov">         66 : }</span>
+<span class="lineNum">     181 </span><span class="lineNoCov">          0 : RestInterface::RestInterface( const int port, OptionsPtr options,</span>
+<span class="lineNum">     182 </span><span class="lineNoCov">          0 :                               const MasterConfiguration&amp; config )</span>
+<span class="lineNum">     183 </span><span class="lineNoCov">          0 :     : _impl( new Impl( port, options, config ))</span>
+<span class="lineNum">     184 </span>            : {
+<span class="lineNum">     185 </span>            :     // Note: using same formatting as TUIO instead of put_flog() here
+<span class="lineNum">     186 </span><span class="lineNoCov">          0 :     std::cout &lt;&lt; &quot;listening to REST messages on TCP port &quot; &lt;&lt;</span>
+<span class="lineNum">     187 </span><span class="lineNoCov">          0 :                  _impl-&gt;httpServer.getPort() &lt;&lt; std::endl;</span>
+<span class="lineNum">     188 </span>            : 
+<span class="lineNum">     189 </span><span class="lineNoCov">          0 :     connect( &amp;_impl-&gt;browseCmd, &amp;RestCommand::received,</span>
+<span class="lineNum">     190 </span><span class="lineNoCov">          0 :              this, &amp;RestInterface::browse );</span>
+<span class="lineNum">     191 </span>            : 
+<span class="lineNum">     192 </span><span class="lineNoCov">          0 :     connect( &amp;_impl-&gt;clearCmd, &amp;RestCommand::received,</span>
+<span class="lineNum">     193 </span><span class="lineNoCov">          0 :              this, &amp;RestInterface::clear );</span>
+<span class="lineNum">     194 </span>            : 
+<span class="lineNum">     195 </span><span class="lineNoCov">          0 :     connect( &amp;_impl-&gt;exitCmd, &amp;RestCommand::received,</span>
+<span class="lineNum">     196 </span><span class="lineNoCov">          0 :              this, &amp;RestInterface::exit );</span>
+<span class="lineNum">     197 </span>            : 
+<span class="lineNum">     198 </span><span class="lineNoCov">          0 :     connect( &amp;_impl-&gt;screenshotCmd, &amp;RestCommand::received,</span>
+<span class="lineNum">     199 </span><span class="lineNoCov">          0 :              this, &amp;RestInterface::screenshot );</span>
+<span class="lineNum">     200 </span>            : 
+<span class="lineNum">     201 </span><span class="lineNoCov">          0 :     connect( &amp;_impl-&gt;whiteboardCmd, &amp;RestCommand::received,</span>
+<span class="lineNum">     202 </span><span class="lineNoCov">          0 :              this, &amp;RestInterface::whiteboard );</span>
+<span class="lineNum">     203 </span>            : 
+<span class="lineNum">     204 </span><span class="lineNoCov">          0 :     const auto contentDir = config.getContentDir();</span>
+<span class="lineNum">     205 </span><span class="lineNoCov">          0 :     const auto sessionsDir = config.getSessionsDir();</span>
+<span class="lineNum">     206 </span>            : 
+<span class="lineNum">     207 </span><span class="lineNoCov">          0 :     const auto openFunc = std::bind( &amp;RestInterface::open, this, _1, QPointF(),</span>
+<span class="lineNum">     208 </span><span class="lineNoCov">          0 :                                      _2 );</span>
+<span class="lineNum">     209 </span><span class="lineNoCov">          0 :     const auto loadFunc = std::bind( &amp;RestInterface::load, this, _1, _2 );</span>
+<span class="lineNum">     210 </span><span class="lineNoCov">          0 :     const auto saveFunc = std::bind( &amp;RestInterface::save, this, _1, _2 );</span>
+<span class="lineNum">     211 </span>            : 
+<span class="lineNum">     212 </span><span class="lineNoCov">          0 :     auto&amp; server = _impl-&gt;httpServer.get();</span>
+<a name="213"><span class="lineNum">     213 </span>            : </a>
+<span class="lineNum">     214 </span><span class="lineNoCov">          0 :     server.handle( http::Method::PUT, &quot;tide/open&quot;,</span>
+<span class="lineNum">     215 </span><span class="lineNoCov">          0 :                    [openFunc, contentDir]( const http::Request&amp; request )</span>
+<span class="lineNum">     216 </span>            :     {
+<span class="lineNum">     217 </span>            :         return _handleUriRequest( request, openFunc, contentDir );
+<span class="lineNum">     218 </span><span class="lineNoCov">          0 :     });</span>
+<a name="219"><span class="lineNum">     219 </span>            : </a>
+<span class="lineNum">     220 </span><span class="lineNoCov">          0 :     server.handle( http::Method::PUT, &quot;tide/load&quot;,</span>
+<span class="lineNum">     221 </span><span class="lineNoCov">          0 :                    [loadFunc, sessionsDir]( const http::Request&amp; request )</span>
+<span class="lineNum">     222 </span>            :     {
+<span class="lineNum">     223 </span>            :         return _handleUriRequest( request, loadFunc, sessionsDir );
+<span class="lineNum">     224 </span><span class="lineNoCov">          0 :     });</span>
+<a name="225"><span class="lineNum">     225 </span>            : </a>
+<span class="lineNum">     226 </span><span class="lineNoCov">          0 :     server.handle( http::Method::PUT, &quot;tide/save&quot;,</span>
+<span class="lineNum">     227 </span><span class="lineNoCov">          0 :                    [saveFunc, sessionsDir]( const http::Request&amp; request )</span>
+<span class="lineNum">     228 </span>            :     {
+<span class="lineNum">     229 </span>            :         return _handleUriRequest( request, saveFunc, sessionsDir );
+<span class="lineNum">     230 </span><span class="lineNoCov">          0 :     });</span>
+<a name="231"><span class="lineNum">     231 </span><span class="lineNoCov">          0 : }</span></a>
+<span class="lineNum">     232 </span>            : 
+<a name="233"><span class="lineNum">     233 </span><span class="lineNoCov">          0 : RestInterface::~RestInterface() {}</span></a>
+<span class="lineNum">     234 </span>            : 
+<span class="lineNum">     235 </span><span class="lineNoCov">          0 : void RestInterface::exposeStatistics( const LoggingUtility&amp; logger ) const</span>
+<span class="lineNum">     236 </span>            : {
+<span class="lineNum">     237 </span><span class="lineNoCov">          0 :     _impl-&gt;logContent.reset( new RestLogger( logger ));</span>
+<span class="lineNum">     238 </span><span class="lineNoCov">          0 :     _impl-&gt;httpServer.get().handleGET( *_impl-&gt;logContent );</span>
+<a name="239"><span class="lineNum">     239 </span><span class="lineNoCov">          0 : }</span></a>
+<span class="lineNum">     240 </span>            : 
+<span class="lineNum">     241 </span><span class="lineNoCov">          0 : void RestInterface::setupHtmlInterface( DisplayGroup&amp; group,</span>
+<span class="lineNum">     242 </span>            :                                         const MasterConfiguration&amp; config )
+<span class="lineNum">     243 </span>            : {
+<span class="lineNum">     244 </span><span class="lineNoCov">          0 :     auto&amp; server = _impl-&gt;httpServer.get();</span>
+<span class="lineNum">     245 </span><span class="lineNoCov">          0 :     _impl-&gt;htmlInterface.reset( new HtmlInterface( server, group, config ));</span>
+<span class="lineNum">     246 </span>            : 
+<a name="247"><span class="lineNum">     247 </span><span class="lineNoCov">          0 :     connect( &amp;_impl-&gt;htmlInterface-&gt;fileReceiver, &amp;FileReceiver::open,</span></a>
+<span class="lineNum">     248 </span><span class="lineNoCov">          0 :              this, &amp;RestInterface::open );</span>
+<span class="lineNum">     249 </span><span class="lineCov">         72 : }</span>
 </pre>
       </td>
     </tr>

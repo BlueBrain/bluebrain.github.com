@@ -7,7 +7,6 @@ var searchData=
   ['statepreview',['StatePreview',['../class_state_preview.html',1,'']]],
   ['stateserializationhelper',['StateSerializationHelper',['../class_state_serialization_helper.html',1,'']]],
   ['statethumbnailgenerator',['StateThumbnailGenerator',['../class_state_thumbnail_generator.html',1,'']]],
-  ['staticcontent',['StaticContent',['../class_static_content.html',1,'']]],
   ['streamimage',['StreamImage',['../class_stream_image.html',1,'']]],
   ['svg',['SVG',['../class_s_v_g.html',1,'']]],
   ['svgbackend',['SVGBackend',['../class_s_v_g_backend.html',1,'']]],

@@ -6,7 +6,6 @@ var searchData=
   ['checked',['checked',['../class_content_action.html#a563fe54bba76599da58a0da5d1eaf21e',1,'ContentAction']]],
   ['checkversion',['checkVersion',['../class_wall_to_wall_channel.html#addd62ca5f6199f4ca0c31c23d282066d',1,'WallToWallChannel']]],
   ['clear',['clear',['../class_display_group.html#a0c10092c41d5dee217dd49f52c7e2302',1,'DisplayGroup::clear()'],['../class_rest_interface.html#a50bdbfca3ff5afa3af1f387616915729',1,'RestInterface::clear()']]],
-  ['close',['close',['../class_rest_interface.html#ae3bddcbaf78b8f74661e39aab32acf3f',1,'RestInterface']]],
   ['commandlineoptions',['CommandLineOptions',['../class_command_line_options.html#ad470c893b63d2f91ebf0b65824473727',1,'CommandLineOptions::CommandLineOptions()'],['../class_command_line_options.html#a84c6e39f06d06092317684fb5cc42d64',1,'CommandLineOptions::CommandLineOptions(int argc, char **argv)']]],
   ['commandlineparameters',['CommandLineParameters',['../class_command_line_parameters.html#a6feba967b7930dbe2f3091177edb31e2',1,'CommandLineParameters']]],
   ['commandlineparser',['CommandLineParser',['../class_command_line_parser.html#a9bbf0d70950652b7944f12f0564014ac',1,'CommandLineParser']]],

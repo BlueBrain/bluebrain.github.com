@@ -16,7 +16,7 @@ var searchData=
   ['moveto',['moveTo',['../class_content_window_controller.html#ac675e17bebe6711f1f35e0a8e499756e',1,'ContentWindowController']]],
   ['movetofront',['moveToFront',['../class_display_group.html#affef735493d9c20218a3ca6b5b2b7c77',1,'DisplayGroup']]],
   ['movetothread',['moveToThread',['../class_display_group.html#a8273099bf01b9991adb9c454ba576836',1,'DisplayGroup::moveToThread()'],['../class_options.html#aaaa45e028fcd2f39732a6b361946073e',1,'Options::moveToThread()']]],
-  ['movewindowtofront',['moveWindowToFront',['../class_display_group_controller.html#ade1b64873ebf1b035a0a2524645a1262',1,'DisplayGroupController']]],
+  ['movewindowtofront',['moveWindowToFront',['../class_display_group_controller.html#ab4d84074045fb7d20a06c12ea80edab9',1,'DisplayGroupController']]],
   ['moviecontent',['MovieContent',['../class_movie_content.html#a156808cda9a564dd70229ad2fe203e9c',1,'MovieContent']]],
   ['moviesynchronizer',['MovieSynchronizer',['../class_movie_synchronizer.html#a17e0bdee24b8c040dbfc82a889610c33',1,'MovieSynchronizer']]],
   ['moviethumbnailgenerator',['MovieThumbnailGenerator',['../class_movie_thumbnail_generator.html#a600c5485ccb796ef25b8d8a160e2904f',1,'MovieThumbnailGenerator']]],

@@ -165,7 +165,6 @@ var hierarchy =
       [ "RestCommand", "class_rest_command.html", null ],
       [ "RestController", "class_rest_controller.html", null ],
       [ "RestInterface", "class_rest_interface.html", null ],
-      [ "RestWindows", "class_rest_windows.html", null ],
       [ "ScreenshotAssembler", "class_screenshot_assembler.html", null ],
       [ "SwipeDetector", "class_swipe_detector.html", null ],
       [ "TapAndHoldDetector", "class_tap_and_hold_detector.html", null ],
@@ -202,17 +201,15 @@ var hierarchy =
       [ "TextureNode", "class_texture_node.html", null ]
     ] ],
     [ "RestServer", "class_rest_server.html", null ],
+    [ "RestWindows", "class_rest_windows.html", null ],
     [ "serialization::detail::serialize< N >", "structserialization_1_1detail_1_1serialize.html", null ],
     [ "serialization::detail::serialize< 0 >", "structserialization_1_1detail_1_1serialize_3_010_01_4.html", null ],
     [ "Serializable", null, [
-      [ "FileSystemContent", "class_file_system_content.html", null ],
       [ "JsonOptions", "class_json_options.html", null ],
       [ "JsonSize", "class_json_size.html", null ],
       [ "RestCommand", "class_rest_command.html", null ],
       [ "RestConfiguration", "class_rest_configuration.html", null ],
-      [ "RestLogger", "class_rest_logger.html", null ],
-      [ "RestWindows", "class_rest_windows.html", null ],
-      [ "StaticContent", "class_static_content.html", null ]
+      [ "RestLogger", "class_rest_logger.html", null ]
     ] ],
     [ "State", "class_state.html", null ],
     [ "StatePreview", "class_state_preview.html", null ],
