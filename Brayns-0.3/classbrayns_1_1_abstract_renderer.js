@@ -16,8 +16,8 @@ var classbrayns_1_1_abstract_renderer =
     [ "_materialPtr", "classbrayns_1_1_abstract_renderer.html#a3b1b56226fec25f7e3fbcc22ad1f8be6", null ],
     [ "_randomNumber", "classbrayns_1_1_abstract_renderer.html#af77d95a809cc22a992d1d0edaa795fd3", null ],
     [ "_shadingEnabled", "classbrayns_1_1_abstract_renderer.html#ac6f8f4242c1188347c738ffa1c7f6a54", null ],
-    [ "_shadowsEnabled", "classbrayns_1_1_abstract_renderer.html#af8fb6ab9eece22f6b5ad46cb479d69df", null ],
-    [ "_softShadowsEnabled", "classbrayns_1_1_abstract_renderer.html#ac194109b81eb4574eb167e7af4d923d3", null ],
+    [ "_shadows", "classbrayns_1_1_abstract_renderer.html#a3e31cb2ad285c5500660df8b00bcb326", null ],
+    [ "_softShadows", "classbrayns_1_1_abstract_renderer.html#a192bb89b0c8808d27d24d0bc5595839f", null ],
     [ "_spp", "classbrayns_1_1_abstract_renderer.html#a44aa588dc7b7693f707235bb3e6cd483", null ],
     [ "_timestamp", "classbrayns_1_1_abstract_renderer.html#a1c38f23aa98be5702157d7ddb5d631fb", null ],
     [ "_world", "classbrayns_1_1_abstract_renderer.html#a10e22661b268a3180de5db2aa888e6df", null ]

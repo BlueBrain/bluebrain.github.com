@@ -31,13 +31,13 @@
             <td class="headerValue">Brayns</td>
             <td></td>
             <td class="headerItem">Lines:</td>
-            <td class="headerCovTableEntry">120</td>
-            <td class="headerCovTableEntry">155</td>
-            <td class="headerCovTableEntryMed">77.4 %</td>
+            <td class="headerCovTableEntry">122</td>
+            <td class="headerCovTableEntry">157</td>
+            <td class="headerCovTableEntryMed">77.7 %</td>
           </tr>
           <tr>
             <td class="headerItem">Date:</td>
-            <td class="headerValue">2017-04-07 01:22:57</td>
+            <td class="headerValue">2017-04-14 01:24:31</td>
             <td></td>
             <td class="headerItem">Functions:</td>
             <td class="headerCovTableEntry">11</td>
@@ -129,8 +129,8 @@
 <span class="lineNum">      67 </span>            :     , _shading(ShadingType::diffuse)
 <span class="lineNum">      68 </span>            :     , _lightEmittingMaterials(false)
 <span class="lineNum">      69 </span>            :     , _spp(1)
-<span class="lineNum">      70 </span>            :     , _shadows(false)
-<span class="lineNum">      71 </span>            :     , _softShadows(false)
+<span class="lineNum">      70 </span>            :     , _shadows(0.f)
+<span class="lineNum">      71 </span>            :     , _softShadows(0.f)
 <span class="lineNum">      72 </span>            :     , _backgroundColor(Vector3f(0.f, 0.f, 0.f))
 <span class="lineNum">      73 </span>            :     , _detectionDistance(1.f)
 <span class="lineNum">      74 </span>            :     , _detectionOnDifferentMaterial(true)
@@ -150,10 +150,10 @@
 <span class="lineNum">      88 </span><span class="lineCov">         20 :         &quot;Number of samples per pixel [int]&quot;)(</span>
 <span class="lineNum">      89 </span><span class="lineCov">         10 :         PARAM_AMBIENT_OCCLUSION.c_str(), po::value&lt;float&gt;(),</span>
 <span class="lineNum">      90 </span><span class="lineCov">         20 :         &quot;Ambient occlusion strength [float]&quot;)(PARAM_SHADOWS.c_str(),</span>
-<span class="lineNum">      91 </span><span class="lineCov">         10 :                                               po::value&lt;bool&gt;(),</span>
-<span class="lineNum">      92 </span><span class="lineCov">         20 :                                               &quot;Enable/Disable shadows [bool]&quot;)(</span>
-<span class="lineNum">      93 </span><span class="lineCov">         10 :         PARAM_SOFT_SHADOWS.c_str(), po::value&lt;bool&gt;(),</span>
-<span class="lineNum">      94 </span><span class="lineCov">         20 :         &quot;Enable/Disable soft shadows [bool]&quot;)(</span>
+<span class="lineNum">      91 </span><span class="lineCov">         10 :                                               po::value&lt;float&gt;(),</span>
+<span class="lineNum">      92 </span><span class="lineCov">         20 :                                               &quot;Shadows intensity [float]&quot;)(</span>
+<span class="lineNum">      93 </span><span class="lineCov">         10 :         PARAM_SOFT_SHADOWS.c_str(), po::value&lt;float&gt;(),</span>
+<span class="lineNum">      94 </span><span class="lineCov">         20 :         &quot;Soft shadows strength [float]&quot;)(</span>
 <span class="lineNum">      95 </span><span class="lineCov">         10 :         PARAM_SHADING.c_str(), po::value&lt;std::string&gt;(),</span>
 <span class="lineNum">      96 </span><span class="lineCov">         20 :         &quot;Shading type [none|diffuse|electron]&quot;)(</span>
 <span class="lineNum">      97 </span><span class="lineCov">         10 :         PARAM_RADIANCE.c_str(), po::value&lt;bool&gt;(),</span>
@@ -202,9 +202,9 @@
 <span class="lineNum">     140 </span><span class="lineCov">         10 :     if (vm.count(PARAM_AMBIENT_OCCLUSION))</span>
 <span class="lineNum">     141 </span><span class="lineNoCov">          0 :         _ambientOcclusionStrength = vm[PARAM_AMBIENT_OCCLUSION].as&lt;float&gt;();</span>
 <span class="lineNum">     142 </span><span class="lineCov">         10 :     if (vm.count(PARAM_SHADOWS))</span>
-<span class="lineNum">     143 </span><span class="lineNoCov">          0 :         _shadows = vm[PARAM_SHADOWS].as&lt;bool&gt;();</span>
+<span class="lineNum">     143 </span><span class="lineNoCov">          0 :         _shadows = vm[PARAM_SHADOWS].as&lt;float&gt;();</span>
 <span class="lineNum">     144 </span><span class="lineCov">         10 :     if (vm.count(PARAM_SOFT_SHADOWS))</span>
-<span class="lineNum">     145 </span><span class="lineNoCov">          0 :         _softShadows = vm[PARAM_SOFT_SHADOWS].as&lt;bool&gt;();</span>
+<span class="lineNum">     145 </span><span class="lineNoCov">          0 :         _softShadows = vm[PARAM_SOFT_SHADOWS].as&lt;float&gt;();</span>
 <span class="lineNum">     146 </span><span class="lineCov">         10 :     if (vm.count(PARAM_SHADING))</span>
 <span class="lineNum">     147 </span>            :     {
 <span class="lineNum">     148 </span><span class="lineNoCov">          0 :         _shading = ShadingType::diffuse;</span>
@@ -268,10 +268,10 @@
 <span class="lineNum">     206 </span><span class="lineCov">         10 :     BRAYNS_INFO &lt;&lt; &quot;Samples per pixel                 :&quot; &lt;&lt; _spp &lt;&lt; std::endl;</span>
 <span class="lineNum">     207 </span><span class="lineCov">         10 :     BRAYNS_INFO &lt;&lt; &quot;Ambient occlusion strength        :&quot;</span>
 <span class="lineNum">     208 </span><span class="lineCov">         20 :                 &lt;&lt; _ambientOcclusionStrength &lt;&lt; std::endl;</span>
-<span class="lineNum">     209 </span>            :     BRAYNS_INFO &lt;&lt; &quot;Shadows                           :&quot;
-<span class="lineNum">     210 </span><span class="lineCov">         10 :                 &lt;&lt; (_shadows ? &quot;on&quot; : &quot;off&quot;) &lt;&lt; std::endl;</span>
-<span class="lineNum">     211 </span>            :     BRAYNS_INFO &lt;&lt; &quot;Soft shadows                      :&quot;
-<span class="lineNum">     212 </span><span class="lineCov">         10 :                 &lt;&lt; (_softShadows ? &quot;on&quot; : &quot;off&quot;) &lt;&lt; std::endl;</span>
+<span class="lineNum">     209 </span><span class="lineCov">         10 :     BRAYNS_INFO &lt;&lt; &quot;Shadows                           :&quot; &lt;&lt; _shadows</span>
+<span class="lineNum">     210 </span><span class="lineCov">         10 :                 &lt;&lt; std::endl;</span>
+<span class="lineNum">     211 </span><span class="lineCov">         10 :     BRAYNS_INFO &lt;&lt; &quot;Soft shadows                      :&quot; &lt;&lt; _softShadows</span>
+<span class="lineNum">     212 </span><span class="lineCov">         10 :                 &lt;&lt; std::endl;</span>
 <span class="lineNum">     213 </span>            :     BRAYNS_INFO &lt;&lt; &quot;Shading                           :&quot;
 <span class="lineNum">     214 </span><span class="lineCov">         10 :                 &lt;&lt; getShadingAsString(_shading) &lt;&lt; std::endl;</span>
 <span class="lineNum">     215 </span><span class="lineCov">         10 :     BRAYNS_INFO &lt;&lt; &quot;Background color                  :&quot; &lt;&lt; _backgroundColor</span>

@@ -17,6 +17,7 @@ var classbrayns_1_1_abstract_simulation_handler =
     [ "writeHeader", "classbrayns_1_1_abstract_simulation_handler.html#a4d0f24d63fde4da927ac66a274322ef9", null ],
     [ "_cacheFileDescriptor", "classbrayns_1_1_abstract_simulation_handler.html#aa9e893ecac0dc62f6427234d2f6b0ee2", null ],
     [ "_currentFrame", "classbrayns_1_1_abstract_simulation_handler.html#af497187c397aef964899e538a0c5a55f", null ],
+    [ "_frameData", "classbrayns_1_1_abstract_simulation_handler.html#a6b07fb26bf40519d1e867c931016ad24", null ],
     [ "_frameSize", "classbrayns_1_1_abstract_simulation_handler.html#a003c5a99b9c1d0d1f2cd0794d231fc8b", null ],
     [ "_geometryParameters", "classbrayns_1_1_abstract_simulation_handler.html#ae74cdef039fd8630e189f453afbb0067", null ],
     [ "_headerSize", "classbrayns_1_1_abstract_simulation_handler.html#a7d8682d296cac3db1182363747a369e7", null ],

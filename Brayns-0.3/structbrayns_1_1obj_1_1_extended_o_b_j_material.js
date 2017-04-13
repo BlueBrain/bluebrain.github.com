@@ -4,6 +4,7 @@ var structbrayns_1_1obj_1_1_extended_o_b_j_material =
     [ "toString", "structbrayns_1_1obj_1_1_extended_o_b_j_material.html#abb15b4991885df4f2f6c49b7a9d030de", null ],
     [ "a", "structbrayns_1_1obj_1_1_extended_o_b_j_material.html#ad06827305cfc945abda03b624a6554ce", null ],
     [ "d", "structbrayns_1_1obj_1_1_extended_o_b_j_material.html#aa888ef3d0a26516f5785c8b9d99beb37", null ],
+    [ "g", "structbrayns_1_1obj_1_1_extended_o_b_j_material.html#a7d932e025a1b4d7679a5234a0e599195", null ],
     [ "Kd", "structbrayns_1_1obj_1_1_extended_o_b_j_material.html#aece2f6aeb28f9528283b2a8502aaca59", null ],
     [ "Ks", "structbrayns_1_1obj_1_1_extended_o_b_j_material.html#a64a08d6dd571156bd131945a107102ee", null ],
     [ "map_a", "structbrayns_1_1obj_1_1_extended_o_b_j_material.html#a3a85e2c595afb0fb62dd70d921f3adc7", null ],
