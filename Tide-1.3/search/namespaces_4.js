@@ -1,4 +1,4 @@
 var searchData=
 [
-  ['yuv',['yuv',['../namespaceyuv.html',1,'']]]
+  ['thumbnail',['thumbnail',['../namespacethumbnail.html',1,'']]]
 ];
