@@ -1,7 +1,0 @@
-set(DISPLAYCLUSTER_MATURITY "EP")
-set(DISPLAYCLUSTER_DESCRIPTION "The DisplayCluster project")
-set(DISPLAYCLUSTER_GIT_ROOT_URL "https://github.com/BlueBrain/DisplayCluster.git")
-set(DISPLAYCLUSTER_PACKAGE_URL "https://github.com/BlueBrain/DisplayCluster/releases")
-set(DISPLAYCLUSTER_CI_URL "https://travis-ci.org/BlueBrain/DisplayCluster")
-set(DISPLAYCLUSTER_CI_PNG "https://travis-ci.org/BlueBrain/DisplayCluster.png")
-set(DISPLAYCLUSTER_ISSUES_URL "https://bbpteam.epfl.ch/project/issues/browse/DISCL")
