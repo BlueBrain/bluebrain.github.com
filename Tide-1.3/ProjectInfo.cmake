@@ -1,5 +1,5 @@
 set(TIDE_MATURITY "EP")
-set(TIDE_DESCRIPTION "A Tiled Interactive DisplayWall Environment")
+set(TIDE_DESCRIPTION "Tiled Interactive DisplayWall Environment")
 set(TIDE_GIT_ROOT_URL "https://github.com/BlueBrain/Tide.git")
 set(TIDE_PACKAGE_URL "")
 set(TIDE_CI_URL "https://travis-ci.org/BlueBrain/Tide")
