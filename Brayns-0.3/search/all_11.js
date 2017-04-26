@@ -53,9 +53,8 @@ var searchData=
   ['setup',['setUp',['../classbrayns_1_1_camera.html#a60ad67b14e8b2ddc80e15a15cff132d8',1,'brayns::Camera']]],
   ['setupcameramanipulator',['setupCameraManipulator',['../classbrayns_1_1_engine.html#a746f4218b387abf7f497a51945bf510e',1,'brayns::Engine']]],
   ['shortcutinformation',['ShortcutInformation',['../structbrayns_1_1_shortcut_information.html',1,'brayns']]],
-  ['simulationinformation',['SimulationInformation',['../structbrayns_1_1_simulation_information.html',1,'brayns']]],
   ['simulationrenderer',['SimulationRenderer',['../classbrayns_1_1_simulation_renderer.html',1,'brayns']]],
   ['sphere',['Sphere',['../classbrayns_1_1_sphere.html',1,'brayns']]],
-  ['spikesimulationhandler',['SpikeSimulationHandler',['../classbrayns_1_1_spike_simulation_handler.html',1,'brayns']]],
-  ['spikesimulationhandler',['SpikeSimulationHandler',['../classbrayns_1_1_spike_simulation_handler.html#aae5dc41c31d6b1a5473075eaf0c54fc9',1,'brayns::SpikeSimulationHandler']]]
+  ['spikesimulationhandler',['SpikeSimulationHandler',['../classbrayns_1_1_spike_simulation_handler.html#aae5dc41c31d6b1a5473075eaf0c54fc9',1,'brayns::SpikeSimulationHandler']]],
+  ['spikesimulationhandler',['SpikeSimulationHandler',['../classbrayns_1_1_spike_simulation_handler.html',1,'brayns']]]
 ];

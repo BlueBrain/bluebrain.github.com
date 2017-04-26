@@ -57,6 +57,8 @@ var searchData=
   ['gethistogram',['getHistogram',['../classbrayns_1_1_abstract_simulation_handler.html#a06da93216571bc02dd5e04c556be79a9',1,'brayns::AbstractSimulationHandler::getHistogram()'],['../classbrayns_1_1_volume_handler.html#a508760653b12b02644c719fcd58b8240',1,'brayns::VolumeHandler::getHistogram()']]],
   ['getjpegsize',['getJpegSize',['../classbrayns_1_1_application_parameters.html#ad8d3a90aba5289d9a8dcdd488fbd016c',1,'brayns::ApplicationParameters']]],
   ['getkeyboardhandler',['getKeyboardHandler',['../classbrayns_1_1_brayns.html#a8af015ef5e738482177f3e4a9dfc4699',1,'brayns::Brayns']]],
+  ['getlastoperation',['getLastOperation',['../classbrayns_1_1_engine.html#a3e2bfaba8b7dd58f6233725ca015ac47',1,'brayns::Engine']]],
+  ['getlastprogress',['getLastProgress',['../classbrayns_1_1_engine.html#a908d7ed1babfd302fd03f848a51bbf45',1,'brayns::Engine']]],
   ['getlight',['getLight',['../classbrayns_1_1_scene.html#aa918d868eaed44684a990f669b333249',1,'brayns::Scene']]],
   ['getlightemittingmaterials',['getLightEmittingMaterials',['../classbrayns_1_1_rendering_parameters.html#a25ef04f2741d3931b9a024fb933df22d',1,'brayns::RenderingParameters']]],
   ['getloadcachefile',['getLoadCacheFile',['../classbrayns_1_1_geometry_parameters.html#a5d8d0e635fc3ccc9b177958b356899a5',1,'brayns::GeometryParameters']]],

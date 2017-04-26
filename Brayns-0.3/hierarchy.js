@@ -81,7 +81,6 @@ var hierarchy =
     [ "brayns::ScreenSpaceProcessor", "classbrayns_1_1_screen_space_processor.html", null ],
     [ "brayns::ScreenSpaceProcessorData", "structbrayns_1_1_screen_space_processor_data.html", null ],
     [ "brayns::ShortcutInformation", "structbrayns_1_1_shortcut_information.html", null ],
-    [ "brayns::SimulationInformation", "structbrayns_1_1_simulation_information.html", null ],
     [ "brayns::Texture2D", "classbrayns_1_1_texture2_d.html", null ],
     [ "brayns::TextureLoader", "classbrayns_1_1_texture_loader.html", null ],
     [ "brayns::TransferFunction", "classbrayns_1_1_transfer_function.html", null ],

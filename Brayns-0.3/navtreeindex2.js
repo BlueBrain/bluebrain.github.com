@@ -1,5 +1,9 @@
 var NAVTREEINDEX2 =
 {
+"classbrayns_1_1_geometry_parameters.html#adf2b7384675461501f7b712b5bea521a":[5,0,0,27,12],
+"classbrayns_1_1_geometry_parameters.html#ae097976dc034f7c5226d3790d0ddb855":[5,0,0,27,36],
+"classbrayns_1_1_geometry_parameters.html#ae0eb93242f0b1fb5fade76c3e75f9c2a":[5,0,0,27,40],
+"classbrayns_1_1_geometry_parameters.html#ae1bdb65074988e108d6b3a7410bf3155":[5,0,0,27,74],
 "classbrayns_1_1_geometry_parameters.html#aeb6f71ab6b7b1dfcdefd6964dcca76ef":[5,0,0,27,25],
 "classbrayns_1_1_geometry_parameters.html#aebfe119d1c5ed25022b65e15b8fcadff":[5,0,0,27,54],
 "classbrayns_1_1_geometry_parameters.html#aeda5c92115f4758bfb098cddc1290b4d":[5,0,0,27,7],
@@ -102,10 +106,9 @@ var NAVTREEINDEX2 =
 "classbrayns_1_1_molecular_system_reader.html#ac1f51756114b9838ce9a2af3f7bdd048":[5,0,0,41,0],
 "classbrayns_1_1_morphology_loader.html":[5,0,0,43],
 "classbrayns_1_1_morphology_loader.html#a52a11e4baa4c6c579811a83c1c9dbbd0":[5,0,0,43,0],
-"classbrayns_1_1_morphology_loader.html#a9a91bdb7ddeb4ee2ddd443b1856578a4":[5,0,0,43,3],
+"classbrayns_1_1_morphology_loader.html#a9a91bdb7ddeb4ee2ddd443b1856578a4":[5,0,0,43,2],
 "classbrayns_1_1_morphology_loader.html#aa1f8b5cd33101e9af4d0f10f1be14d6c":[5,0,0,43,1],
-"classbrayns_1_1_morphology_loader.html#ab8a541051c3ffe30fe20b2bd7b3f6c0b":[5,0,0,43,2],
-"classbrayns_1_1_morphology_loader.html#aeff1dbf39954c539606a3e519220b6c0":[5,0,0,43,4],
+"classbrayns_1_1_morphology_loader.html#aeff1dbf39954c539606a3e519220b6c0":[5,0,0,43,3],
 "classbrayns_1_1_n_e_s_t_loader.html":[5,0,0,44],
 "classbrayns_1_1_n_e_s_t_loader.html#a8b118d89d5f8183070e597529ba92df2":[5,0,0,44,1],
 "classbrayns_1_1_n_e_s_t_loader.html#ade2f9a6adf69468e725edf4bb04073ff":[5,0,0,44,2],
@@ -246,8 +249,5 @@ var NAVTREEINDEX2 =
 "classbrayns_1_1_renderer.html#ac92634b04e092fadc0e2f97cb7640adb":[5,0,0,61,0],
 "classbrayns_1_1_renderer.html#acc42ee6fc5216125da49bf60b63ccbbf":[5,0,0,61,4],
 "classbrayns_1_1_renderer.html#ad1070cea5cea2e97c8f5c705b9db7fa6":[5,0,0,61,6],
-"classbrayns_1_1_renderer.html#aef2788be943e1ea431b6621508f244ce":[5,0,0,61,2],
-"classbrayns_1_1_rendering_parameters.html":[5,0,0,62],
-"classbrayns_1_1_rendering_parameters.html#a01604655a31239042e5fd9f9214e1b15":[5,0,0,62,24],
-"classbrayns_1_1_rendering_parameters.html#a080d078bf7fe2f1da78c69026b96ddd7":[5,0,0,62,10]
+"classbrayns_1_1_renderer.html#aef2788be943e1ea431b6621508f244ce":[5,0,0,61,2]
 };
