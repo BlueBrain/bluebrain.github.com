@@ -31,13 +31,13 @@
             <td class="headerValue">Tide</td>
             <td></td>
             <td class="headerItem">Lines:</td>
-            <td class="headerCovTableEntry">53</td>
-            <td class="headerCovTableEntry">58</td>
-            <td class="headerCovTableEntryHi">91.4 %</td>
+            <td class="headerCovTableEntry">54</td>
+            <td class="headerCovTableEntry">59</td>
+            <td class="headerCovTableEntryHi">91.5 %</td>
           </tr>
           <tr>
             <td class="headerItem">Date:</td>
-            <td class="headerValue">2017-04-25 06:27:10</td>
+            <td class="headerValue">2017-04-27 06:25:50</td>
             <td></td>
             <td class="headerItem">Functions:</td>
             <td class="headerCovTableEntry">26</td>
@@ -113,163 +113,167 @@
 <span class="lineNum">      51 </span>            :  */
 <span class="lineNum">      52 </span>            : namespace serialization
 <span class="lineNum">      53 </span>            : {
-<span class="lineNum">      54 </span>            : 
-<span class="lineNum">      55 </span>            : /** Implementation details (template metaprograming). */
-<span class="lineNum">      56 </span>            : namespace detail
-<span class="lineNum">      57 </span>            : {
-<span class="lineNum">      58 </span>            : /** Recursive method to serialize n arguments into an archive. */
-<span class="lineNum">      59 </span>            : template&lt;uint N&gt;
-<span class="lineNum">      60 </span>            : struct serialize
-<a name="61"><span class="lineNum">      61 </span>            : {</a>
-<span class="lineNum">      62 </span>            :     template&lt;class Archive, typename Arg0, typename... Args&gt;
-<span class="lineNum">      63 </span><span class="lineCov">         16 :     serialize( Archive&amp; ar, Arg0&amp; arg0, Args&amp;... args )</span>
-<span class="lineNum">      64 </span>            :     {
+<span class="lineNum">      54 </span>            : /** Implementation details (template metaprograming). */
+<span class="lineNum">      55 </span>            : namespace detail
+<span class="lineNum">      56 </span>            : {
+<span class="lineNum">      57 </span>            : /** Recursive method to serialize n arguments into an archive. */
+<span class="lineNum">      58 </span>            : template &lt;uint N&gt;
+<span class="lineNum">      59 </span>            : struct serialize
+<a name="60"><span class="lineNum">      60 </span>            : {</a>
+<span class="lineNum">      61 </span>            :     template &lt;class Archive, typename Arg0, typename... Args&gt;
+<span class="lineNum">      62 </span><span class="lineCov">         16 :     serialize(Archive&amp; ar, Arg0&amp; arg0, Args&amp;... args)</span>
+<span class="lineNum">      63 </span>            :     {
+<span class="lineNum">      64 </span>            :         // clang-format off
 <span class="lineNum">      65 </span><span class="lineCov">         16 :         ar &amp; arg0;</span>
-<span class="lineNum">      66 </span><span class="lineCov">         16 :         serialize&lt;N-1u&gt;( ar, args... );</span>
-<span class="lineNum">      67 </span><span class="lineCov">         16 :     }</span>
-<span class="lineNum">      68 </span>            : };
-<span class="lineNum">      69 </span>            : /** End of recursion. */
-<span class="lineNum">      70 </span>            : template&lt;&gt;
-<a name="71"><span class="lineNum">      71 </span>            : struct serialize&lt;0&gt;</a>
-<span class="lineNum">      72 </span>            : {
-<span class="lineNum">      73 </span><span class="lineCov">          8 :     template&lt;class Archive&gt; serialize( Archive&amp; ) {}</span>
-<span class="lineNum">      74 </span>            : };
-<span class="lineNum">      75 </span>            : }
-<span class="lineNum">      76 </span>            : 
-<span class="lineNum">      77 </span>            : /**
-<span class="lineNum">      78 </span>            :  * Get an object of type T, stored in a container in binary serialized form.
-<a name="79"><span class="lineNum">      79 </span>            :  */</a>
-<span class="lineNum">      80 </span>            : template &lt;typename T, typename Container&gt;
-<span class="lineNum">      81 </span><span class="lineCov">          4 : T get( Container&amp; container )</span>
-<span class="lineNum">      82 </span>            : {
-<span class="lineNum">      83 </span><span class="lineCov">          8 :     std::istringstream iss( std::istringstream::binary );</span>
-<span class="lineNum">      84 </span>            : #ifdef __APPLE__
-<span class="lineNum">      85 </span>            :     // pubsetbuf() does nothing on OSX (and probably on Windows too).
-<span class="lineNum">      86 </span>            :     // so an intermediate copy of the data is required.
-<span class="lineNum">      87 </span>            :     const std::string dataStr( container.data(), container.size( ));
-<span class="lineNum">      88 </span>            :     iss.str( dataStr );
-<span class="lineNum">      89 </span>            : #else
-<span class="lineNum">      90 </span><span class="lineCov">          4 :     iss.rdbuf()-&gt;pubsetbuf( container.data(), container.size( ));</span>
-<span class="lineNum">      91 </span>            : #endif
-<span class="lineNum">      92 </span><span class="lineCov">          1 :     T object;</span>
-<span class="lineNum">      93 </span>            :     {
-<span class="lineNum">      94 </span><span class="lineCov">          8 :         boost::archive::binary_iarchive ia( iss );</span>
-<span class="lineNum">      95 </span><span class="lineCov">          4 :         ia &gt;&gt; object;</span>
-<span class="lineNum">      96 </span>            :     }
-<span class="lineNum">      97 </span><span class="lineCov">          8 :     return object;</span>
-<span class="lineNum">      98 </span>            : }
-<span class="lineNum">      99 </span>            : 
-<span class="lineNum">     100 </span>            : /**
-<span class="lineNum">     101 </span>            :  * Deserialize object(s) from a string of binary serialized data.
-<a name="102"><span class="lineNum">     102 </span>            :  */</a>
-<span class="lineNum">     103 </span>            : template&lt;typename... Args&gt;
-<span class="lineNum">     104 </span><span class="lineCov">          2 : void fromBinary( const std::string&amp; data, Args&amp;... args )</span>
-<span class="lineNum">     105 </span>            : {
-<span class="lineNum">     106 </span><span class="lineCov">          4 :     std::istringstream iss{ data, std::istringstream::binary };</span>
-<span class="lineNum">     107 </span><span class="lineCov">          4 :     boost::archive::binary_iarchive ia{ iss };</span>
-<span class="lineNum">     108 </span><span class="lineCov">          2 :     detail::serialize&lt;sizeof...(Args)&gt;( ia, args... );</span>
-<span class="lineNum">     109 </span><span class="lineCov">          2 : }</span>
-<span class="lineNum">     110 </span>            : 
-<span class="lineNum">     111 </span>            : /**
-<span class="lineNum">     112 </span>            :  * Serialize object(s) to a string of binary serialized data.
-<a name="113"><span class="lineNum">     113 </span>            :  */</a>
-<span class="lineNum">     114 </span>            : template&lt;typename... Args&gt;
-<span class="lineNum">     115 </span><span class="lineCov">          6 : std::string toBinary( Args&amp;... args )</span>
-<span class="lineNum">     116 </span>            : {
-<span class="lineNum">     117 </span><span class="lineCov">         12 :     std::ostringstream stream{ std::ostringstream::binary };</span>
-<span class="lineNum">     118 </span>            :     {
-<span class="lineNum">     119 </span><span class="lineCov">         12 :         boost::archive::binary_oarchive oa{ stream };</span>
-<span class="lineNum">     120 </span><span class="lineCov">          6 :         detail::serialize&lt;sizeof...(Args)&gt;( oa, args... );</span>
-<span class="lineNum">     121 </span>            :     }
-<span class="lineNum">     122 </span><span class="lineCov">         12 :     return stream.str();</span>
-<span class="lineNum">     123 </span>            : }
-<span class="lineNum">     124 </span>            : 
-<span class="lineNum">     125 </span>            : /**
-<span class="lineNum">     126 </span>            :  * Copy an object using its binary serialization + deserialization methods.
-<a name="127"><span class="lineNum">     127 </span>            :  */</a>
-<span class="lineNum">     128 </span>            : template &lt;typename T&gt;
-<span class="lineNum">     129 </span><span class="lineCov">          1 : T binaryCopy( const T&amp; source )</span>
-<span class="lineNum">     130 </span>            : {
-<span class="lineNum">     131 </span><span class="lineCov">          2 :     std::stringstream oss;</span>
-<span class="lineNum">     132 </span>            :     {
-<span class="lineNum">     133 </span><span class="lineCov">          2 :         boost::archive::binary_oarchive oa( oss );</span>
-<span class="lineNum">     134 </span><span class="lineCov">          1 :         oa &lt;&lt; source;</span>
-<span class="lineNum">     135 </span>            :     }
-<span class="lineNum">     136 </span><span class="lineCov">          1 :     T copy;</span>
-<span class="lineNum">     137 </span>            :     {
-<span class="lineNum">     138 </span><span class="lineCov">          2 :         boost::archive::binary_iarchive ia( oss );</span>
-<span class="lineNum">     139 </span><span class="lineCov">          1 :         ia &gt;&gt; copy;</span>
-<span class="lineNum">     140 </span>            :     }
-<span class="lineNum">     141 </span><span class="lineCov">          2 :     return copy;</span>
-<span class="lineNum">     142 </span>            : }
-<span class="lineNum">     143 </span>            : 
-<span class="lineNum">     144 </span>            : /**
-<span class="lineNum">     145 </span>            :  * Copy an object using its xml serialization + deserialization methods.
-<a name="146"><span class="lineNum">     146 </span>            :  */</a>
-<span class="lineNum">     147 </span>            : template &lt;typename T&gt;
-<span class="lineNum">     148 </span><span class="lineCov">          4 : T xmlCopy( const T&amp; source )</span>
-<span class="lineNum">     149 </span>            : {
-<span class="lineNum">     150 </span><span class="lineCov">          8 :     std::stringstream oss;</span>
-<span class="lineNum">     151 </span>            :     {
-<span class="lineNum">     152 </span><span class="lineCov">          8 :         boost::archive::xml_oarchive oa( oss );</span>
-<span class="lineNum">     153 </span><span class="lineCov">          4 :         oa &lt;&lt; BOOST_SERIALIZATION_NVP( source );</span>
-<span class="lineNum">     154 </span>            :     }
-<span class="lineNum">     155 </span><span class="lineCov">          4 :     T copy;</span>
-<span class="lineNum">     156 </span>            :     {
-<span class="lineNum">     157 </span><span class="lineCov">          8 :         boost::archive::xml_iarchive ia( oss );</span>
-<span class="lineNum">     158 </span><span class="lineCov">          4 :         ia &gt;&gt; BOOST_SERIALIZATION_NVP( copy );</span>
-<span class="lineNum">     159 </span>            :     }
-<span class="lineNum">     160 </span><span class="lineCov">          8 :     return copy;</span>
-<span class="lineNum">     161 </span>            : }
-<span class="lineNum">     162 </span>            : 
-<span class="lineNum">     163 </span>            : /**
-<span class="lineNum">     164 </span>            :  * Restore an object that was previously serialized to the given xml file.
-<a name="165"><span class="lineNum">     165 </span>            :  */</a>
-<span class="lineNum">     166 </span>            : template &lt;typename T&gt;
-<span class="lineNum">     167 </span><span class="lineCov">          8 : bool fromXmlFile( T&amp; object, const std::string&amp; filename )</span>
-<span class="lineNum">     168 </span>            : {
-<span class="lineNum">     169 </span><span class="lineCov">         16 :     std::ifstream ifs( filename );</span>
-<span class="lineNum">     170 </span><span class="lineCov">          8 :     if( !ifs.good( ))</span>
-<span class="lineNum">     171 </span><span class="lineNoCov">          0 :         return false;</span>
-<span class="lineNum">     172 </span>            :     try
-<span class="lineNum">     173 </span>            :     {
-<span class="lineNum">     174 </span><span class="lineCov">         16 :         boost::archive::xml_iarchive ia( ifs );</span>
-<span class="lineNum">     175 </span><span class="lineCov">          9 :         ia &gt;&gt; BOOST_SERIALIZATION_NVP( object );</span>
-<span class="lineNum">     176 </span>            :     }
-<span class="lineNum">     177 </span><span class="lineCov">          2 :     catch( const boost::archive::archive_exception&amp; e )</span>
-<span class="lineNum">     178 </span>            :     {
-<span class="lineNum">     179 </span><span class="lineCov">          1 :         put_flog( LOG_ERROR, &quot;Could not restore from file: '%s': %s&quot;,</span>
-<span class="lineNum">     180 </span>            :                   filename.c_str(), e.what( ));
-<span class="lineNum">     181 </span><span class="lineCov">          1 :         return false;</span>
-<span class="lineNum">     182 </span>            :     }
-<span class="lineNum">     183 </span><span class="lineNoCov">          0 :     catch( const std::exception&amp; e )</span>
-<span class="lineNum">     184 </span>            :     {
-<span class="lineNum">     185 </span><span class="lineNoCov">          0 :         put_flog( LOG_ERROR, &quot;Could not restore from file '%s'',&quot;</span>
-<span class="lineNum">     186 </span>            :                              &quot;wrong file format: %s&quot;,
-<span class="lineNum">     187 </span>            :                   filename.c_str(), e.what( ));
-<span class="lineNum">     188 </span><span class="lineNoCov">          0 :         return false;</span>
-<span class="lineNum">     189 </span>            :     }
-<span class="lineNum">     190 </span><span class="lineCov">          7 :     return true;</span>
-<span class="lineNum">     191 </span>            : }
-<span class="lineNum">     192 </span>            : 
-<span class="lineNum">     193 </span>            : /**
-<span class="lineNum">     194 </span>            :  * Store an object to a target xml file.
-<a name="195"><span class="lineNum">     195 </span>            :  */</a>
-<span class="lineNum">     196 </span>            : template &lt;typename T&gt;
-<span class="lineNum">     197 </span><span class="lineCov">          3 : bool toXmlFile( const T&amp; object, const std::string&amp; filename )</span>
-<span class="lineNum">     198 </span>            : {
-<span class="lineNum">     199 </span><span class="lineCov">          6 :     std::ofstream ofs( filename );</span>
-<span class="lineNum">     200 </span><span class="lineCov">          3 :     if( !ofs.good( ))</span>
-<span class="lineNum">     201 </span><span class="lineNoCov">          0 :         return false;</span>
-<span class="lineNum">     202 </span>            : 
-<span class="lineNum">     203 </span><span class="lineCov">          6 :     boost::archive::xml_oarchive oa( ofs );</span>
-<span class="lineNum">     204 </span><span class="lineCov">          3 :     oa &lt;&lt; BOOST_SERIALIZATION_NVP( object );</span>
-<span class="lineNum">     205 </span><span class="lineCov">          3 :     return true;</span>
-<span class="lineNum">     206 </span>            : }
+<span class="lineNum">      66 </span>            :         // clang-format on
+<span class="lineNum">      67 </span><span class="lineCov">         16 :         serialize&lt;N - 1u&gt;(ar, args...);</span>
+<span class="lineNum">      68 </span><span class="lineCov">         16 :     }</span>
+<span class="lineNum">      69 </span>            : };
+<span class="lineNum">      70 </span>            : /** End of recursion. */
+<span class="lineNum">      71 </span>            : template &lt;&gt;
+<span class="lineNum">      72 </span>            : struct serialize&lt;0&gt;
+<a name="73"><span class="lineNum">      73 </span>            : {</a>
+<span class="lineNum">      74 </span>            :     template &lt;class Archive&gt;
+<span class="lineNum">      75 </span><span class="lineCov">          8 :     serialize(Archive&amp;)</span>
+<span class="lineNum">      76 </span>            :     {
+<span class="lineNum">      77 </span><span class="lineCov">          8 :     }</span>
+<span class="lineNum">      78 </span>            : };
+<span class="lineNum">      79 </span>            : }
+<span class="lineNum">      80 </span>            : 
+<span class="lineNum">      81 </span>            : /**
+<span class="lineNum">      82 </span>            :  * Get an object of type T, stored in a container in binary serialized form.
+<a name="83"><span class="lineNum">      83 </span>            :  */</a>
+<span class="lineNum">      84 </span>            : template &lt;typename T, typename Container&gt;
+<span class="lineNum">      85 </span><span class="lineCov">          4 : T get(Container&amp; container)</span>
+<span class="lineNum">      86 </span>            : {
+<span class="lineNum">      87 </span><span class="lineCov">          8 :     std::istringstream iss(std::istringstream::binary);</span>
+<span class="lineNum">      88 </span>            : #ifdef __APPLE__
+<span class="lineNum">      89 </span>            :     // pubsetbuf() does nothing on OSX (and probably on Windows too).
+<span class="lineNum">      90 </span>            :     // so an intermediate copy of the data is required.
+<span class="lineNum">      91 </span>            :     const std::string dataStr(container.data(), container.size());
+<span class="lineNum">      92 </span>            :     iss.str(dataStr);
+<span class="lineNum">      93 </span>            : #else
+<span class="lineNum">      94 </span><span class="lineCov">          4 :     iss.rdbuf()-&gt;pubsetbuf(container.data(), container.size());</span>
+<span class="lineNum">      95 </span>            : #endif
+<span class="lineNum">      96 </span><span class="lineCov">          1 :     T object;</span>
+<span class="lineNum">      97 </span>            :     {
+<span class="lineNum">      98 </span><span class="lineCov">          8 :         boost::archive::binary_iarchive ia(iss);</span>
+<span class="lineNum">      99 </span><span class="lineCov">          4 :         ia &gt;&gt; object;</span>
+<span class="lineNum">     100 </span>            :     }
+<span class="lineNum">     101 </span><span class="lineCov">          8 :     return object;</span>
+<span class="lineNum">     102 </span>            : }
+<span class="lineNum">     103 </span>            : 
+<span class="lineNum">     104 </span>            : /**
+<span class="lineNum">     105 </span>            :  * Deserialize object(s) from a string of binary serialized data.
+<a name="106"><span class="lineNum">     106 </span>            :  */</a>
+<span class="lineNum">     107 </span>            : template &lt;typename... Args&gt;
+<span class="lineNum">     108 </span><span class="lineCov">          2 : void fromBinary(const std::string&amp; data, Args&amp;... args)</span>
+<span class="lineNum">     109 </span>            : {
+<span class="lineNum">     110 </span><span class="lineCov">          4 :     std::istringstream iss{data, std::istringstream::binary};</span>
+<span class="lineNum">     111 </span><span class="lineCov">          4 :     boost::archive::binary_iarchive ia{iss};</span>
+<span class="lineNum">     112 </span><span class="lineCov">          2 :     detail::serialize&lt;sizeof...(Args)&gt;(ia, args...);</span>
+<span class="lineNum">     113 </span><span class="lineCov">          2 : }</span>
+<span class="lineNum">     114 </span>            : 
+<span class="lineNum">     115 </span>            : /**
+<span class="lineNum">     116 </span>            :  * Serialize object(s) to a string of binary serialized data.
+<a name="117"><span class="lineNum">     117 </span>            :  */</a>
+<span class="lineNum">     118 </span>            : template &lt;typename... Args&gt;
+<span class="lineNum">     119 </span><span class="lineCov">          6 : std::string toBinary(Args&amp;... args)</span>
+<span class="lineNum">     120 </span>            : {
+<span class="lineNum">     121 </span><span class="lineCov">         12 :     std::ostringstream stream{std::ostringstream::binary};</span>
+<span class="lineNum">     122 </span>            :     {
+<span class="lineNum">     123 </span><span class="lineCov">         12 :         boost::archive::binary_oarchive oa{stream};</span>
+<span class="lineNum">     124 </span><span class="lineCov">          6 :         detail::serialize&lt;sizeof...(Args)&gt;(oa, args...);</span>
+<span class="lineNum">     125 </span>            :     }
+<span class="lineNum">     126 </span><span class="lineCov">         12 :     return stream.str();</span>
+<span class="lineNum">     127 </span>            : }
+<span class="lineNum">     128 </span>            : 
+<span class="lineNum">     129 </span>            : /**
+<span class="lineNum">     130 </span>            :  * Copy an object using its binary serialization + deserialization methods.
+<a name="131"><span class="lineNum">     131 </span>            :  */</a>
+<span class="lineNum">     132 </span>            : template &lt;typename T&gt;
+<span class="lineNum">     133 </span><span class="lineCov">          1 : T binaryCopy(const T&amp; source)</span>
+<span class="lineNum">     134 </span>            : {
+<span class="lineNum">     135 </span><span class="lineCov">          2 :     std::stringstream oss;</span>
+<span class="lineNum">     136 </span>            :     {
+<span class="lineNum">     137 </span><span class="lineCov">          2 :         boost::archive::binary_oarchive oa(oss);</span>
+<span class="lineNum">     138 </span><span class="lineCov">          1 :         oa &lt;&lt; source;</span>
+<span class="lineNum">     139 </span>            :     }
+<span class="lineNum">     140 </span><span class="lineCov">          1 :     T copy;</span>
+<span class="lineNum">     141 </span>            :     {
+<span class="lineNum">     142 </span><span class="lineCov">          2 :         boost::archive::binary_iarchive ia(oss);</span>
+<span class="lineNum">     143 </span><span class="lineCov">          1 :         ia &gt;&gt; copy;</span>
+<span class="lineNum">     144 </span>            :     }
+<span class="lineNum">     145 </span><span class="lineCov">          2 :     return copy;</span>
+<span class="lineNum">     146 </span>            : }
+<span class="lineNum">     147 </span>            : 
+<span class="lineNum">     148 </span>            : /**
+<span class="lineNum">     149 </span>            :  * Copy an object using its xml serialization + deserialization methods.
+<a name="150"><span class="lineNum">     150 </span>            :  */</a>
+<span class="lineNum">     151 </span>            : template &lt;typename T&gt;
+<span class="lineNum">     152 </span><span class="lineCov">          4 : T xmlCopy(const T&amp; source)</span>
+<span class="lineNum">     153 </span>            : {
+<span class="lineNum">     154 </span><span class="lineCov">          8 :     std::stringstream oss;</span>
+<span class="lineNum">     155 </span>            :     {
+<span class="lineNum">     156 </span><span class="lineCov">          8 :         boost::archive::xml_oarchive oa(oss);</span>
+<span class="lineNum">     157 </span><span class="lineCov">          4 :         oa &lt;&lt; BOOST_SERIALIZATION_NVP(source);</span>
+<span class="lineNum">     158 </span>            :     }
+<span class="lineNum">     159 </span><span class="lineCov">          4 :     T copy;</span>
+<span class="lineNum">     160 </span>            :     {
+<span class="lineNum">     161 </span><span class="lineCov">          8 :         boost::archive::xml_iarchive ia(oss);</span>
+<span class="lineNum">     162 </span><span class="lineCov">          4 :         ia &gt;&gt; BOOST_SERIALIZATION_NVP(copy);</span>
+<span class="lineNum">     163 </span>            :     }
+<span class="lineNum">     164 </span><span class="lineCov">          8 :     return copy;</span>
+<span class="lineNum">     165 </span>            : }
+<span class="lineNum">     166 </span>            : 
+<span class="lineNum">     167 </span>            : /**
+<span class="lineNum">     168 </span>            :  * Restore an object that was previously serialized to the given xml file.
+<a name="169"><span class="lineNum">     169 </span>            :  */</a>
+<span class="lineNum">     170 </span>            : template &lt;typename T&gt;
+<span class="lineNum">     171 </span><span class="lineCov">          8 : bool fromXmlFile(T&amp; object, const std::string&amp; filename)</span>
+<span class="lineNum">     172 </span>            : {
+<span class="lineNum">     173 </span><span class="lineCov">         16 :     std::ifstream ifs(filename);</span>
+<span class="lineNum">     174 </span><span class="lineCov">          8 :     if (!ifs.good())</span>
+<span class="lineNum">     175 </span><span class="lineNoCov">          0 :         return false;</span>
+<span class="lineNum">     176 </span>            :     try
+<span class="lineNum">     177 </span>            :     {
+<span class="lineNum">     178 </span><span class="lineCov">         16 :         boost::archive::xml_iarchive ia(ifs);</span>
+<span class="lineNum">     179 </span><span class="lineCov">          9 :         ia &gt;&gt; BOOST_SERIALIZATION_NVP(object);</span>
+<span class="lineNum">     180 </span>            :     }
+<span class="lineNum">     181 </span><span class="lineCov">          2 :     catch (const boost::archive::archive_exception&amp; e)</span>
+<span class="lineNum">     182 </span>            :     {
+<span class="lineNum">     183 </span><span class="lineCov">          1 :         put_flog(LOG_ERROR, &quot;Could not restore from file: '%s': %s&quot;,</span>
+<span class="lineNum">     184 </span>            :                  filename.c_str(), e.what());
+<span class="lineNum">     185 </span><span class="lineCov">          1 :         return false;</span>
+<span class="lineNum">     186 </span>            :     }
+<span class="lineNum">     187 </span><span class="lineNoCov">          0 :     catch (const std::exception&amp; e)</span>
+<span class="lineNum">     188 </span>            :     {
+<span class="lineNum">     189 </span><span class="lineNoCov">          0 :         put_flog(LOG_ERROR,</span>
+<span class="lineNum">     190 </span>            :                  &quot;Could not restore from file '%s'',&quot;
+<span class="lineNum">     191 </span>            :                  &quot;wrong file format: %s&quot;,
+<span class="lineNum">     192 </span>            :                  filename.c_str(), e.what());
+<span class="lineNum">     193 </span><span class="lineNoCov">          0 :         return false;</span>
+<span class="lineNum">     194 </span>            :     }
+<span class="lineNum">     195 </span><span class="lineCov">          7 :     return true;</span>
+<span class="lineNum">     196 </span>            : }
+<span class="lineNum">     197 </span>            : 
+<span class="lineNum">     198 </span>            : /**
+<span class="lineNum">     199 </span>            :  * Store an object to a target xml file.
+<a name="200"><span class="lineNum">     200 </span>            :  */</a>
+<span class="lineNum">     201 </span>            : template &lt;typename T&gt;
+<span class="lineNum">     202 </span><span class="lineCov">          3 : bool toXmlFile(const T&amp; object, const std::string&amp; filename)</span>
+<span class="lineNum">     203 </span>            : {
+<span class="lineNum">     204 </span><span class="lineCov">          6 :     std::ofstream ofs(filename);</span>
+<span class="lineNum">     205 </span><span class="lineCov">          3 :     if (!ofs.good())</span>
+<span class="lineNum">     206 </span><span class="lineNoCov">          0 :         return false;</span>
 <span class="lineNum">     207 </span>            : 
-<span class="lineNum">     208 </span>            : }
-<span class="lineNum">     209 </span>            : 
-<span class="lineNum">     210 </span>            : #endif
+<span class="lineNum">     208 </span><span class="lineCov">          6 :     boost::archive::xml_oarchive oa(ofs);</span>
+<span class="lineNum">     209 </span><span class="lineCov">          3 :     oa &lt;&lt; BOOST_SERIALIZATION_NVP(object);</span>
+<span class="lineNum">     210 </span><span class="lineCov">          3 :     return true;</span>
+<span class="lineNum">     211 </span>            : }
+<span class="lineNum">     212 </span>            : }
+<span class="lineNum">     213 </span>            : 
+<span class="lineNum">     214 </span>            : #endif
 </pre>
       </td>
     </tr>

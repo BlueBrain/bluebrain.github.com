@@ -1,7 +1,7 @@
 var class_configuration =
 [
     [ "Configuration", "class_configuration.html#a4f41abbe40c7e1345a325369c86aaaca", null ],
-    [ "~Configuration", "class_configuration.html#a1226f87dc3c27be16eb16e53301eb2f3", null ],
+    [ "~Configuration", "class_configuration.html#a4f365eded377e740d1e2457fe7ade448", null ],
     [ "getAspectRatio", "class_configuration.html#a1031736dbddf1becee943184afb27dda", null ],
     [ "getBool", "class_configuration.html#a8dbc17cce4965ffcdb6632adbb98585f", null ],
     [ "getDouble", "class_configuration.html#a6eb03db6204ebfc4c5d2e02840427bd4", null ],

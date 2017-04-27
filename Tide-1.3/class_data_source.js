@@ -1,6 +1,6 @@
 var class_data_source =
 [
-    [ "~DataSource", "class_data_source.html#ac10dfa9f15001db2b04c65feaa3ac9fa", null ],
+    [ "~DataSource", "class_data_source.html#a9043a2373b4572ab8119d93a92eb0a4b", null ],
     [ "computeVisibleSet", "class_data_source.html#ab59bf5635293498714d550df5f3dd4bb", null ],
     [ "getMaxLod", "class_data_source.html#a2431b476c507172fbbef0d5c69f9c03a", null ],
     [ "getTileFormat", "class_data_source.html#ab93e1030248e599d68e1d93e278a7bb4", null ],

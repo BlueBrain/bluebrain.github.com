@@ -1,6 +1,6 @@
 var class_image =
 [
-    [ "~Image", "class_image.html#a46561cd7dcf7e203e9579737e8ace4eb", null ],
+    [ "~Image", "class_image.html#ac12bacfcfa4247af6e4ff8918fe84df0", null ],
     [ "generateGpuImage", "class_image.html#a8284c68a45d845a6ffd8eb81a4544092", null ],
     [ "getData", "class_image.html#abcd77ea99f53831911ded4b8467be0b6", null ],
     [ "getFormat", "class_image.html#a7444680c426d1e73fe370287bf45e2ad", null ],
