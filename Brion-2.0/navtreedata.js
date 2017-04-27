@@ -43,9 +43,9 @@ var NAVTREE =
 var NAVTREEINDEX =
 [
 "Changelog.html",
-"classbrain_1_1neuron_1_1_section.html#ac34c25b88f6e3acf9b524ed0fe2a67b8",
-"classbrion_1_1_target.html#af9dfd3b852d9a457e627d05ffb5bf30c",
-"synapses_iterator_8h_source.html"
+"classbrain_1_1neuron_1_1_section.html#ab9eb3ac85be533e42f8a05914be383ac",
+"classbrion_1_1_target.html#ab8d2a8b976e2b52b4b8617edfc8e6a2f",
+"structbrain_1_1_synapses_1_1_base_impl.html#ab2fce8cd0804be7c6867777ce3747db1"
 ];
 
 var SYNCONMSG = 'click to disable panel synchronisation';

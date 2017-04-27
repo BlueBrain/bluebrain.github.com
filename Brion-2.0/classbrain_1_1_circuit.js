@@ -11,6 +11,7 @@ var classbrain_1_1_circuit =
     [ "getEfferentSynapses", "classbrain_1_1_circuit.html#acd51c99352dcde8dad828891aa483b81", null ],
     [ "getElectrophysiologyTypeNames", "classbrain_1_1_circuit.html#a55e006f47d22c19b383752e55e04ec19", null ],
     [ "getElectrophysiologyTypes", "classbrain_1_1_circuit.html#a1ef23f6f2ca7e62bf1102b5b31324bc6", null ],
+    [ "getExternalAfferentSynapses", "classbrain_1_1_circuit.html#a9b6e7545ef29d0214544f6ec2d975aed", null ],
     [ "getGIDs", "classbrain_1_1_circuit.html#a36ee80e8f35795978c648acfd79253a5", null ],
     [ "getGIDs", "classbrain_1_1_circuit.html#a5480f86410d5c4aff618735090f98cf5", null ],
     [ "getMorphologyTypeNames", "classbrain_1_1_circuit.html#a85ab1b14918ec3d2015d9fe4e79c457b", null ],

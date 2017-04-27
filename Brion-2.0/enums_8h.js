@@ -10,9 +10,10 @@ var enums_8h =
     [ "BlueConfigSection", "enums_8h.html#a969f557406a58a03cd42097c6485c3fc", [
       [ "CONFIGSECTION_RUN", "enums_8h.html#a969f557406a58a03cd42097c6485c3fcafd5eea0f14590bc82036e0d760c4e174", null ],
       [ "CONFIGSECTION_CONNECTION", "enums_8h.html#a969f557406a58a03cd42097c6485c3fca1adf2ce8886fd6ef74dae7731c11dd71", null ],
+      [ "CONFIGSECTION_PROJECTION", "enums_8h.html#a969f557406a58a03cd42097c6485c3fcadc053b831113826f8f3693b6b409f06a", null ],
+      [ "CONFIGSECTION_REPORT", "enums_8h.html#a969f557406a58a03cd42097c6485c3fca680467c1758b1dabc637fd0ab60cf250", null ],
       [ "CONFIGSECTION_STIMULUS", "enums_8h.html#a969f557406a58a03cd42097c6485c3fcaaa1920f5fa9c6497672d4470c2c0df2e", null ],
       [ "CONFIGSECTION_STIMULUSINJECT", "enums_8h.html#a969f557406a58a03cd42097c6485c3fca2f14f1bb691940d11a1ada751c3b4014", null ],
-      [ "CONFIGSECTION_REPORT", "enums_8h.html#a969f557406a58a03cd42097c6485c3fca680467c1758b1dabc637fd0ab60cf250", null ],
       [ "CONFIGSECTION_UNKNOWN", "enums_8h.html#a969f557406a58a03cd42097c6485c3fca1bbd799ed00b231970f85ada911f46b8", null ],
       [ "CONFIGSECTION_ALL", "enums_8h.html#a969f557406a58a03cd42097c6485c3fca6f1a6dcb32b0f1eb564108a35f8c6754", null ]
     ] ],

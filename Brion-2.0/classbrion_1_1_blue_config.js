@@ -7,6 +7,7 @@ var classbrion_1_1_blue_config =
     [ "getCircuitSource", "classbrion_1_1_blue_config.html#a6c9d6dd253e94e73800b474b446822b3", null ],
     [ "getCircuitTarget", "classbrion_1_1_blue_config.html#ae46b4d84d8ececad808bcde505973271", null ],
     [ "getMorphologySource", "classbrion_1_1_blue_config.html#a759864b8fa6bcd76d756e1043eaa107d", null ],
+    [ "getProjectionSource", "classbrion_1_1_blue_config.html#a0d172776265bfdd7d0866d5f2bef6cc7", null ],
     [ "getReportSource", "classbrion_1_1_blue_config.html#a30f64c0386fc846429a3dda70b5214cb", null ],
     [ "getSectionNames", "classbrion_1_1_blue_config.html#a5a98e5c0ba84ee166cc28dc73a14d447", null ],
     [ "getSpikeSource", "classbrion_1_1_blue_config.html#a50d0101e7336a7f04259124ea91da51d", null ],
