@@ -135,6 +135,7 @@ var files =
     [ "StateSerializationHelper.h", "_state_serialization_helper_8h_source.html", null ],
     [ "StateThumbnailGenerator.h", "_state_thumbnail_generator_8h_source.html", null ],
     [ "StreamImage.h", "_stream_image_8h_source.html", null ],
+    [ "StreamThumbnailGenerator.h", "_stream_thumbnail_generator_8h_source.html", null ],
     [ "SVG.h", "_s_v_g_8h_source.html", null ],
     [ "SVGBackend.h", "_s_v_g_backend_8h_source.html", null ],
     [ "SVGContent.h", "_s_v_g_content_8h_source.html", null ],

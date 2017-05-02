@@ -128,6 +128,7 @@ var annotated_dup =
     [ "StateSerializationHelper", "class_state_serialization_helper.html", "class_state_serialization_helper" ],
     [ "StateThumbnailGenerator", "class_state_thumbnail_generator.html", "class_state_thumbnail_generator" ],
     [ "StreamImage", "class_stream_image.html", "class_stream_image" ],
+    [ "StreamThumbnailGenerator", "class_stream_thumbnail_generator.html", "class_stream_thumbnail_generator" ],
     [ "SVG", "class_s_v_g.html", "class_s_v_g" ],
     [ "SVGBackend", "class_s_v_g_backend.html", "class_s_v_g_backend" ],
     [ "SVGContent", "class_s_v_g_content.html", "class_s_v_g_content" ],

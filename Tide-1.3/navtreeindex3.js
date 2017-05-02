@@ -1,5 +1,6 @@
 var NAVTREEINDEX3 =
 {
+"class_json_size.html#a5146bc45e032c915673459dc33c601d5":[7,0,54,2],
 "class_json_size.html#a54891b6d5e968dcc7f9f6be5ee04e582":[7,0,54,0],
 "class_json_size.html#ad00dc4b9bdccd936887bb36b6174adae":[7,0,54,1],
 "class_keyboard_state.html":[7,0,55],
@@ -248,6 +249,5 @@ var NAVTREEINDEX3 =
 "class_options.html#a191125dc0870bed5f5ead8df753a8afb":[7,0,78,9],
 "class_options.html#a1fff74d7ec400b4cd7c120b291aec490":[7,0,78,45],
 "class_options.html#a2bdf02c3e00fe1945d209543f9374034":[7,0,78,5],
-"class_options.html#a3e04e1898508371ce5f2051554902bd7":[7,0,78,29],
-"class_options.html#a3fa6a7dee05582eb932f4fc068575216":[7,0,78,41]
+"class_options.html#a3e04e1898508371ce5f2051554902bd7":[7,0,78,29]
 };

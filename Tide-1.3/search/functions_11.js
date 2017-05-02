@@ -86,6 +86,7 @@ var searchData=
   ['statisticschanged',['statisticsChanged',['../class_content_synchronizer.html#a8b2131d6b3874d8d932a101ec3dcde05',1,'ContentSynchronizer']]],
   ['stop',['stop',['../class_texture_uploader.html#a2bd2570b84aeb95d7d8c005f07848579',1,'TextureUploader']]],
   ['streamimage',['StreamImage',['../class_stream_image.html#a255b8ab37b846ff1368fde57753efc32',1,'StreamImage']]],
+  ['streamthumbnailgenerator',['StreamThumbnailGenerator',['../class_stream_thumbnail_generator.html#ae3cf7031ee0ff78ee6bc18d374e270f3',1,'StreamThumbnailGenerator']]],
   ['streamwindowclosed',['streamWindowClosed',['../class_pixel_stream_window_manager.html#a7ddea42df9209eb399a2844bb36bd97e',1,'PixelStreamWindowManager']]],
   ['svg',['SVG',['../class_s_v_g.html#a3474f26fa7ac0b471564acd9c7b13721',1,'SVG::SVG(const QString &amp;uri)'],['../class_s_v_g.html#af34129c53df4a18f880e4f2ebfcb9cd8',1,'SVG::SVG(const QByteArray &amp;svgData)']]],
   ['svgcontent',['SVGContent',['../class_s_v_g_content.html#a9813e8e86203ad9d19507fbc0ef7b6fb',1,'SVGContent']]],

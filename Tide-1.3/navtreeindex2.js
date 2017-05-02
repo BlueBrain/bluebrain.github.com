@@ -1,5 +1,6 @@
 var NAVTREEINDEX2 =
 {
+"class_content_window_controller.html#a3a20b4c22eb64fa0c094a44df766c138":[7,0,21,12],
 "class_content_window_controller.html#a42007dfd0544667544dcaef7e3fea231":[7,0,21,2],
 "class_content_window_controller.html#a5346e75efa6c702cb3bd76e24f528ffb":[7,0,21,14],
 "class_content_window_controller.html#a80f6b7670c649a74c30809d417b12815":[7,0,21,7],
@@ -248,6 +249,5 @@ var NAVTREEINDEX2 =
 "class_json_options.html#a0d51936e344aa40d97ffdd0ebb2ec338":[7,0,53,1],
 "class_json_options.html#a41f9b68c8beeff875f72c31e16f88ae1":[7,0,53,0],
 "class_json_options.html#a894182ee1be246f49106d15c62b7d6b6":[7,0,53,2],
-"class_json_size.html":[7,0,54],
-"class_json_size.html#a5146bc45e032c915673459dc33c601d5":[7,0,54,2]
+"class_json_size.html":[7,0,54]
 };

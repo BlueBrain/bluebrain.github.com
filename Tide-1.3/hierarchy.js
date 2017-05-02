@@ -229,6 +229,7 @@ var hierarchy =
       [ "ImageThumbnailGenerator", "class_image_thumbnail_generator.html", null ],
       [ "MovieThumbnailGenerator", "class_movie_thumbnail_generator.html", null ],
       [ "StateThumbnailGenerator", "class_state_thumbnail_generator.html", null ],
+      [ "StreamThumbnailGenerator", "class_stream_thumbnail_generator.html", null ],
       [ "WebbrowserThumbnailGenerator", "class_webbrowser_thumbnail_generator.html", null ]
     ] ],
     [ "ThumbnailGeneratorFactory", "class_thumbnail_generator_factory.html", null ],
