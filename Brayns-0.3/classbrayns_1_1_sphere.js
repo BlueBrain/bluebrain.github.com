@@ -1,6 +1,6 @@
 var classbrayns_1_1_sphere =
 [
-    [ "Sphere", "classbrayns_1_1_sphere.html#a5aa364199fb292761c9f2f35e1bdceb3", null ],
+    [ "Sphere", "classbrayns_1_1_sphere.html#a786a7f80d0735ad662d53a87e629c846", null ],
     [ "getCenter", "classbrayns_1_1_sphere.html#ae9af33a93f1baf06c354b81cd88d7327", null ],
     [ "getRadius", "classbrayns_1_1_sphere.html#a18e41311ab3fd172d0e3a6bc95b52d0f", null ],
     [ "getSerializationSize", "classbrayns_1_1_sphere.html#a1901f74bb00229ca5e5694050a65d617", null ],

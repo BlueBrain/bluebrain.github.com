@@ -30,7 +30,7 @@ var NAVTREEINDEX =
 [
 ".html",
 "classbrayns_1_1_base_window.html#ad48767e29d5da27b070d6a7dc30e9193",
-"classbrayns_1_1_geometry_parameters.html#adf2b7384675461501f7b712b5bea521a",
+"classbrayns_1_1_geometry_parameters.html#ad4fef2d48a0d138c284cc407a0b9c02d",
 "classbrayns_1_1_rendering_parameters.html",
 "classbrayns_1_1_volume_parameters.html#ae8eb99f1718e213b31a051ad8864d677"
 ];

@@ -1,6 +1,6 @@
 var classbrayns_1_1_cone =
 [
-    [ "Cone", "classbrayns_1_1_cone.html#a0ffc6e77b6b47103be659af7859a7368", null ],
+    [ "Cone", "classbrayns_1_1_cone.html#a81811789d1f6220e940e77b719dbfc0d", null ],
     [ "getCenter", "classbrayns_1_1_cone.html#a642ab5a0e5507af6d01a4216cb7b71a9", null ],
     [ "getCenterRadius", "classbrayns_1_1_cone.html#a18f1558966160ba15171bb0078dbae1e", null ],
     [ "getSerializationSize", "classbrayns_1_1_cone.html#aa4dcf03d38949a3076447ad155561a14", null ],
