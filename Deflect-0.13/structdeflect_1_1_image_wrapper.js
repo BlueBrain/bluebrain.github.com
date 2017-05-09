@@ -9,6 +9,7 @@ var structdeflect_1_1_image_wrapper =
     [ "data", "structdeflect_1_1_image_wrapper.html#a36c9098b98a8086e903ed777ebee9a35", null ],
     [ "height", "structdeflect_1_1_image_wrapper.html#ae94eda15c61b09f3874a23b2a93fe0f9", null ],
     [ "pixelFormat", "structdeflect_1_1_image_wrapper.html#ad2d409293b0c361bf47a76b9ac5f4330", null ],
+    [ "subsampling", "structdeflect_1_1_image_wrapper.html#a311f8928041b91a31d5e19f548f5699e", null ],
     [ "view", "structdeflect_1_1_image_wrapper.html#a9429316b8075a05b80634aafa9caaa6b", null ],
     [ "width", "structdeflect_1_1_image_wrapper.html#a628b197165c3e428e4b895e3fbd18146", null ],
     [ "x", "structdeflect_1_1_image_wrapper.html#a9390a77359e5104598c1d5a8afc51df5", null ],

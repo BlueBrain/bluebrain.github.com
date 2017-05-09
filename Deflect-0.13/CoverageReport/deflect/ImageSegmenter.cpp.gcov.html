@@ -31,17 +31,17 @@
             <td class="headerValue">Deflect</td>
             <td></td>
             <td class="headerItem">Lines:</td>
-            <td class="headerCovTableEntry">84</td>
-            <td class="headerCovTableEntry">86</td>
-            <td class="headerCovTableEntryHi">97.7 %</td>
+            <td class="headerCovTableEntry">97</td>
+            <td class="headerCovTableEntry">108</td>
+            <td class="headerCovTableEntryHi">89.8 %</td>
           </tr>
           <tr>
             <td class="headerItem">Date:</td>
-            <td class="headerValue">2017-03-01 02:18:57</td>
+            <td class="headerValue">2017-05-09 09:43:38</td>
             <td></td>
             <td class="headerItem">Functions:</td>
-            <td class="headerCovTableEntry">9</td>
-            <td class="headerCovTableEntry">9</td>
+            <td class="headerCovTableEntry">11</td>
+            <td class="headerCovTableEntry">11</td>
             <td class="headerCovTableEntryHi">100.0 %</td>
           </tr>
           <tr><td><img src="../glass.png" width=3 height=3 alt=""></td></tr>
@@ -61,7 +61,7 @@
 <pre class="sourceHeading">          Line data    Source code</pre>
 <pre class="source">
 <a name="1"><span class="lineNum">       1 </span>            : /*********************************************************************/</a>
-<span class="lineNum">       2 </span>            : /* Copyright (c) 2013-2016, EPFL/Blue Brain Project                  */
+<span class="lineNum">       2 </span>            : /* Copyright (c) 2013-2017, EPFL/Blue Brain Project                  */
 <span class="lineNum">       3 </span>            : /*                          Raphael Dumusc &lt;raphael.dumusc@epfl.ch&gt;  */
 <span class="lineNum">       4 </span>            : /*                          Stefan.Eilemann@epfl.ch                  */
 <span class="lineNum">       5 </span>            : /* All rights reserved.                                              */
@@ -107,232 +107,223 @@
 <span class="lineNum">      45 </span>            : #include &quot;ImageJpegCompressor.h&quot;
 <span class="lineNum">      46 </span>            : #endif
 <span class="lineNum">      47 </span>            : 
-<span class="lineNum">      48 </span>            : #include &lt;QtConcurrentMap&gt;
-<span class="lineNum">      49 </span>            : #include &lt;functional&gt;
-<span class="lineNum">      50 </span>            : #include &lt;iostream&gt;
-<span class="lineNum">      51 </span>            : 
-<a name="52"><span class="lineNum">      52 </span>            : namespace deflect</a>
-<span class="lineNum">      53 </span>            : {
-<span class="lineNum">      54 </span><span class="lineCov">         21 : ImageSegmenter::ImageSegmenter()</span>
-<span class="lineNum">      55 </span>            :     : _nominalSegmentWidth(0)
-<span class="lineNum">      56 </span><span class="lineCov">         21 :     , _nominalSegmentHeight(0)</span>
+<span class="lineNum">      48 </span>            : #include &lt;QThreadStorage&gt;
+<span class="lineNum">      49 </span>            : #include &lt;QtConcurrentMap&gt;
+<span class="lineNum">      50 </span>            : 
+<span class="lineNum">      51 </span>            : #include &lt;iostream&gt;
+<span class="lineNum">      52 </span>            : #include &lt;stdexcept&gt;
+<span class="lineNum">      53 </span>            : 
+<span class="lineNum">      54 </span>            : namespace deflect
+<span class="lineNum">      55 </span>            : {
+<a name="56"><span class="lineNum">      56 </span>            : namespace</a>
 <span class="lineNum">      57 </span>            : {
-<a name="58"><span class="lineNum">      58 </span><span class="lineCov">         21 : }</span></a>
-<span class="lineNum">      59 </span>            : 
-<span class="lineNum">      60 </span><span class="lineCov">          7 : bool ImageSegmenter::generate(const ImageWrapper&amp; image, const Handler&amp; handler)</span>
-<span class="lineNum">      61 </span>            : {
-<span class="lineNum">      62 </span><span class="lineCov">          7 :     if (image.compressionPolicy == COMPRESSION_ON)</span>
-<span class="lineNum">      63 </span><span class="lineCov">          1 :         return _generateJpeg(image, handler);</span>
-<span class="lineNum">      64 </span><span class="lineCov">          6 :     return _generateRaw(image, handler);</span>
-<a name="65"><span class="lineNum">      65 </span>            : }</a>
-<span class="lineNum">      66 </span>            : 
-<span class="lineNum">      67 </span><span class="lineCov">          1 : bool ImageSegmenter::_generateJpeg(const ImageWrapper&amp; image,</span>
-<span class="lineNum">      68 </span>            :                                    const Handler&amp; handler)
-<span class="lineNum">      69 </span>            : {
-<span class="lineNum">      70 </span>            : #ifdef DEFLECT_USE_LIBJPEGTURBO
-<span class="lineNum">      71 </span><span class="lineCov">          2 :     const SegmentParametersList&amp; params = _generateSegmentParameters(image);</span>
-<span class="lineNum">      72 </span>            : 
-<span class="lineNum">      73 </span>            :     // The resulting Jpeg segments
-<span class="lineNum">      74 </span><span class="lineCov">          2 :     std::vector&lt;Segment&gt; segments;</span>
-<span class="lineNum">      75 </span><span class="lineCov">          2 :     for (const auto&amp; param : params)</span>
-<span class="lineNum">      76 </span>            :     {
-<span class="lineNum">      77 </span><span class="lineCov">          2 :         Segment segment;</span>
-<span class="lineNum">      78 </span><span class="lineCov">          1 :         segment.parameters = param;</span>
-<span class="lineNum">      79 </span><span class="lineCov">          1 :         segment.sourceImage = &amp;image;</span>
-<span class="lineNum">      80 </span><span class="lineCov">          1 :         segments.push_back(segment);</span>
-<span class="lineNum">      81 </span>            :     }
-<span class="lineNum">      82 </span>            : 
-<span class="lineNum">      83 </span>            :     // create JPEGs for each segment, in parallel
-<span class="lineNum">      84 </span><span class="lineCov">          2 :     QtConcurrent::map(segments, std::bind(&amp;ImageSegmenter::_computeJpeg, this,</span>
-<span class="lineNum">      85 </span><span class="lineCov">          1 :                                           std::placeholders::_1));</span>
-<span class="lineNum">      86 </span>            : 
-<span class="lineNum">      87 </span>            :     // send ready compressed jpeg images from here. It's the thread where the
-<span class="lineNum">      88 </span>            :     // socket lives, and Qt insists on that to not violate this contract.
-<span class="lineNum">      89 </span><span class="lineCov">          1 :     bool result = true;</span>
-<span class="lineNum">      90 </span><span class="lineCov">          2 :     for (size_t i = 0; i &lt; segments.size(); ++i)</span>
-<span class="lineNum">      91 </span><span class="lineCov">          1 :         if (!handler(_sendQueue.dequeue()))</span>
-<span class="lineNum">      92 </span><span class="lineNoCov">          0 :             result = false;</span>
-<span class="lineNum">      93 </span><span class="lineCov">          2 :     return result;</span>
-<span class="lineNum">      94 </span>            : #else
-<span class="lineNum">      95 </span>            :     static bool first = true;
-<span class="lineNum">      96 </span>            :     if (first)
-<span class="lineNum">      97 </span>            :     {
-<span class="lineNum">      98 </span>            :         first = false;
-<span class="lineNum">      99 </span>            :         std::cerr &lt;&lt; &quot;LibJpegTurbo not available, not using compression&quot;
-<span class="lineNum">     100 </span>            :                   &lt;&lt; std::endl;
-<span class="lineNum">     101 </span>            :     }
-<span class="lineNum">     102 </span>            :     return generateRaw(image, handler);
-<span class="lineNum">     103 </span>            : #endif
-<a name="104"><span class="lineNum">     104 </span>            : }</a>
-<span class="lineNum">     105 </span>            : 
-<span class="lineNum">     106 </span><span class="lineCov">          1 : void ImageSegmenter::_computeJpeg(Segment&amp; segment)</span>
-<span class="lineNum">     107 </span>            : {
-<span class="lineNum">     108 </span>            : #ifdef DEFLECT_USE_LIBJPEGTURBO
-<span class="lineNum">     109 </span><span class="lineCov">          1 :     QRect imageRegion(segment.parameters.x - segment.sourceImage-&gt;x,</span>
-<span class="lineNum">     110 </span><span class="lineCov">          1 :                       segment.parameters.y - segment.sourceImage-&gt;y,</span>
-<span class="lineNum">     111 </span><span class="lineCov">          3 :                       segment.parameters.width, segment.parameters.height);</span>
-<span class="lineNum">     112 </span>            : 
-<span class="lineNum">     113 </span><span class="lineCov">          2 :     ImageJpegCompressor compressor;</span>
-<span class="lineNum">     114 </span>            :     segment.imageData =
-<span class="lineNum">     115 </span><span class="lineCov">          1 :         compressor.computeJpeg(*segment.sourceImage, imageRegion);</span>
-<span class="lineNum">     116 </span><span class="lineCov">          1 :     _sendQueue.enqueue(segment);</span>
-<span class="lineNum">     117 </span>            : #endif
-<a name="118"><span class="lineNum">     118 </span><span class="lineCov">          1 : }</span></a>
-<span class="lineNum">     119 </span>            : 
-<span class="lineNum">     120 </span><span class="lineCov">          6 : bool ImageSegmenter::_generateRaw(const ImageWrapper&amp; image,</span>
-<span class="lineNum">     121 </span>            :                                   const Handler&amp; handler) const
-<span class="lineNum">     122 </span>            : {
-<span class="lineNum">     123 </span><span class="lineCov">         12 :     const SegmentParametersList&amp; paramList = _generateSegmentParameters(image);</span>
-<span class="lineNum">     124 </span>            : 
-<span class="lineNum">     125 </span>            :     // resulting Raw segments
-<span class="lineNum">     126 </span><span class="lineCov">         84 :     for (SegmentParametersList::const_iterator it = paramList.begin();</span>
-<span class="lineNum">     127 </span><span class="lineCov">         56 :          it != paramList.end(); ++it)</span>
-<span class="lineNum">     128 </span>            :     {
-<span class="lineNum">     129 </span><span class="lineCov">         44 :         Segment segment;</span>
-<span class="lineNum">     130 </span><span class="lineCov">         22 :         segment.parameters = *it;</span>
-<span class="lineNum">     131 </span><span class="lineCov">         66 :         segment.imageData.reserve(segment.parameters.width *</span>
-<span class="lineNum">     132 </span><span class="lineCov">         44 :                                   segment.parameters.height *</span>
-<span class="lineNum">     133 </span><span class="lineCov">         44 :                                   image.getBytesPerPixel());</span>
-<span class="lineNum">     134 </span>            : 
-<span class="lineNum">     135 </span><span class="lineCov">         22 :         if (paramList.size() == 1)</span>
-<span class="lineNum">     136 </span>            :         {
-<span class="lineNum">     137 </span>            :             // If we are not segmenting the image, just append the image data
-<span class="lineNum">     138 </span><span class="lineCov">          2 :             segment.imageData.append((const char*)image.data,</span>
-<span class="lineNum">     139 </span><span class="lineCov">          4 :                                      int(image.getBufferSize()));</span>
-<span class="lineNum">     140 </span>            :         }
-<span class="lineNum">     141 </span>            :         else // Copy the image subregion
-<span class="lineNum">     142 </span>            :         {
-<span class="lineNum">     143 </span>            :             // assume imageBuffer isn't padded
-<span class="lineNum">     144 </span><span class="lineCov">         20 :             const size_t imagePitch = image.width * image.getBytesPerPixel();</span>
-<span class="lineNum">     145 </span>            :             const size_t offset =
-<span class="lineNum">     146 </span><span class="lineCov">         20 :                 segment.parameters.y * imagePitch +</span>
-<span class="lineNum">     147 </span><span class="lineCov">         20 :                 segment.parameters.x * image.getBytesPerPixel();</span>
-<span class="lineNum">     148 </span><span class="lineCov">         20 :             const char* lineData = (const char*)image.data + offset;</span>
-<span class="lineNum">     149 </span>            : 
-<span class="lineNum">     150 </span><span class="lineCov">         84 :             for (unsigned int i = 0; i &lt; segment.parameters.height; ++i)</span>
-<span class="lineNum">     151 </span>            :             {
-<span class="lineNum">     152 </span>            :                 segment.imageData.append(lineData,
-<span class="lineNum">     153 </span><span class="lineCov">        128 :                                          segment.parameters.width *</span>
-<span class="lineNum">     154 </span><span class="lineCov">        128 :                                              image.getBytesPerPixel());</span>
-<span class="lineNum">     155 </span><span class="lineCov">         64 :                 lineData += imagePitch;</span>
-<span class="lineNum">     156 </span>            :             }
-<span class="lineNum">     157 </span>            :         }
+<span class="lineNum">      58 </span><span class="lineCov">         21 : bool _isOnRightSideOfSideBySideImage(const Segment&amp; segment)</span>
+<span class="lineNum">      59 </span>            : {
+<span class="lineNum">      60 </span><span class="lineCov">         21 :     return segment.sourceImage-&gt;view == View::side_by_side &amp;&amp;</span>
+<span class="lineNum">      61 </span><span class="lineCov">         21 :            segment.view == View::right_eye;</span>
+<span class="lineNum">      62 </span>            : }
+<a name="63"><span class="lineNum">      63 </span>            : }</a>
+<span class="lineNum">      64 </span>            : 
+<span class="lineNum">      65 </span><span class="lineCov">          7 : bool ImageSegmenter::generate(const ImageWrapper&amp; image, const Handler&amp; handler)</span>
+<span class="lineNum">      66 </span>            : {
+<span class="lineNum">      67 </span><span class="lineCov">          7 :     if (image.compressionPolicy == COMPRESSION_ON)</span>
+<span class="lineNum">      68 </span><span class="lineCov">          1 :         return _generateJpeg(image, handler);</span>
+<span class="lineNum">      69 </span><span class="lineCov">          6 :     return _generateRaw(image, handler);</span>
+<a name="70"><span class="lineNum">      70 </span>            : }</a>
+<span class="lineNum">      71 </span>            : 
+<span class="lineNum">      72 </span><span class="lineCov">         18 : void ImageSegmenter::setNominalSegmentDimensions(const uint width,</span>
+<span class="lineNum">      73 </span>            :                                                  const uint height)
+<span class="lineNum">      74 </span>            : {
+<span class="lineNum">      75 </span><span class="lineCov">         18 :     _nominalSegmentWidth = width;</span>
+<span class="lineNum">      76 </span><span class="lineCov">         18 :     _nominalSegmentHeight = height;</span>
+<a name="77"><span class="lineNum">      77 </span><span class="lineCov">         18 : }</span></a>
+<span class="lineNum">      78 </span>            : 
+<span class="lineNum">      79 </span><span class="lineCov">          1 : bool ImageSegmenter::_generateJpeg(const ImageWrapper&amp; image,</span>
+<span class="lineNum">      80 </span>            :                                    const Handler&amp; handler)
+<span class="lineNum">      81 </span>            : {
+<span class="lineNum">      82 </span>            : #ifdef DEFLECT_USE_LIBJPEGTURBO
+<span class="lineNum">      83 </span>            :     // The resulting Jpeg segments
+<span class="lineNum">      84 </span><span class="lineCov">          2 :     auto segments = _generateSegments(image);</span>
+<span class="lineNum">      85 </span>            : 
+<span class="lineNum">      86 </span>            :     // start creating JPEGs for each segment, in parallel
+<span class="lineNum">      87 </span><span class="lineCov">          2 :     QtConcurrent::map(segments, std::bind(&amp;ImageSegmenter::_computeJpeg, this,</span>
+<span class="lineNum">      88 </span><span class="lineCov">          1 :                                           std::placeholders::_1));</span>
+<span class="lineNum">      89 </span>            : 
+<span class="lineNum">      90 </span>            :     // Sending compressed jpeg segments while they arrive in the queue.
+<span class="lineNum">      91 </span>            :     // Note: Qt insists that sending (by calling handler()) should happen
+<span class="lineNum">      92 </span>            :     // exclusively from the QThread where the socket lives. Sending from the
+<span class="lineNum">      93 </span>            :     // worker threads triggers a qWarning.
+<span class="lineNum">      94 </span><span class="lineCov">          1 :     bool result = true;</span>
+<span class="lineNum">      95 </span><span class="lineCov">          2 :     for (size_t i = 0; i &lt; segments.size(); ++i)</span>
+<span class="lineNum">      96 </span><span class="lineCov">          1 :         if (!handler(_sendQueue.dequeue()))</span>
+<span class="lineNum">      97 </span><span class="lineNoCov">          0 :             result = false;</span>
+<span class="lineNum">      98 </span><span class="lineCov">          2 :     return result;</span>
+<span class="lineNum">      99 </span>            : #else
+<span class="lineNum">     100 </span>            :     static bool first = true;
+<span class="lineNum">     101 </span>            :     if (first)
+<span class="lineNum">     102 </span>            :     {
+<span class="lineNum">     103 </span>            :         first = false;
+<span class="lineNum">     104 </span>            :         std::cerr &lt;&lt; &quot;LibJpegTurbo not available, not using compression&quot;
+<span class="lineNum">     105 </span>            :                   &lt;&lt; std::endl;
+<span class="lineNum">     106 </span>            :     }
+<span class="lineNum">     107 </span>            :     return generateRaw(image, handler);
+<span class="lineNum">     108 </span>            : #endif
+<a name="109"><span class="lineNum">     109 </span>            : }</a>
+<span class="lineNum">     110 </span>            : 
+<span class="lineNum">     111 </span><span class="lineCov">          1 : void ImageSegmenter::_computeJpeg(Segment&amp; segment)</span>
+<span class="lineNum">     112 </span>            : {
+<span class="lineNum">     113 </span>            : #ifdef DEFLECT_USE_LIBJPEGTURBO
+<span class="lineNum">     114 </span><span class="lineCov">          1 :     QRect imageRegion(segment.parameters.x - segment.sourceImage-&gt;x,</span>
+<span class="lineNum">     115 </span><span class="lineCov">          1 :                       segment.parameters.y - segment.sourceImage-&gt;y,</span>
+<span class="lineNum">     116 </span><span class="lineCov">          3 :                       segment.parameters.width, segment.parameters.height);</span>
+<span class="lineNum">     117 </span>            : 
+<span class="lineNum">     118 </span><span class="lineCov">          1 :     if (_isOnRightSideOfSideBySideImage(segment))</span>
+<span class="lineNum">     119 </span><span class="lineNoCov">          0 :         imageRegion.translate(segment.sourceImage-&gt;width / 2, 0);</span>
+<span class="lineNum">     120 </span>            : 
+<span class="lineNum">     121 </span>            :     // turbojpeg handles need to be per thread, and this function is called from
+<span class="lineNum">     122 </span>            :     // multiple threads by QtConcurrent::map
+<span class="lineNum">     123 </span><span class="lineCov">          1 :     static QThreadStorage&lt;ImageJpegCompressor&gt; compressor;</span>
+<span class="lineNum">     124 </span>            :     segment.imageData =
+<span class="lineNum">     125 </span><span class="lineCov">          1 :         compressor.localData().computeJpeg(*segment.sourceImage, imageRegion);</span>
+<span class="lineNum">     126 </span><span class="lineCov">          1 :     segment.parameters.dataType = DataType::jpeg;</span>
+<span class="lineNum">     127 </span><span class="lineCov">          1 :     _sendQueue.enqueue(segment);</span>
+<span class="lineNum">     128 </span>            : #endif
+<a name="129"><span class="lineNum">     129 </span><span class="lineCov">          1 : }</span></a>
+<span class="lineNum">     130 </span>            : 
+<span class="lineNum">     131 </span><span class="lineCov">          6 : bool ImageSegmenter::_generateRaw(const ImageWrapper&amp; image,</span>
+<span class="lineNum">     132 </span>            :                                   const Handler&amp; handler) const
+<span class="lineNum">     133 </span>            : {
+<span class="lineNum">     134 </span><span class="lineCov">         12 :     auto segments = _generateSegments(image);</span>
+<span class="lineNum">     135 </span><span class="lineCov">         28 :     for (auto&amp; segment : segments)</span>
+<span class="lineNum">     136 </span>            :     {
+<span class="lineNum">     137 </span><span class="lineCov">         66 :         segment.imageData.reserve(segment.parameters.width *</span>
+<span class="lineNum">     138 </span><span class="lineCov">         44 :                                   segment.parameters.height *</span>
+<span class="lineNum">     139 </span><span class="lineCov">         44 :                                   image.getBytesPerPixel());</span>
+<span class="lineNum">     140 </span><span class="lineCov">         22 :         segment.parameters.dataType = DataType::rgba;</span>
+<span class="lineNum">     141 </span>            : 
+<span class="lineNum">     142 </span><span class="lineCov">         22 :         if (segments.size() == 1)</span>
+<span class="lineNum">     143 </span>            :         {
+<span class="lineNum">     144 </span>            :             // If we are not segmenting the image, just append the image data
+<span class="lineNum">     145 </span><span class="lineCov">          2 :             segment.imageData.append((const char*)image.data,</span>
+<span class="lineNum">     146 </span><span class="lineCov">          4 :                                      int(image.getBufferSize()));</span>
+<span class="lineNum">     147 </span>            :         }
+<span class="lineNum">     148 </span>            :         else // Copy the image subregion
+<span class="lineNum">     149 </span>            :         {
+<span class="lineNum">     150 </span>            :             // assume imageBuffer isn't padded
+<span class="lineNum">     151 </span><span class="lineCov">         20 :             const auto bytesPerPixel = image.getBytesPerPixel();</span>
+<span class="lineNum">     152 </span><span class="lineCov">         20 :             const size_t imagePitch = image.width * bytesPerPixel;</span>
+<span class="lineNum">     153 </span><span class="lineCov">         20 :             size_t offset = segment.parameters.y * imagePitch +</span>
+<span class="lineNum">     154 </span><span class="lineCov">         20 :                             segment.parameters.x * bytesPerPixel;</span>
+<span class="lineNum">     155 </span>            : 
+<span class="lineNum">     156 </span><span class="lineCov">         20 :             if (_isOnRightSideOfSideBySideImage(segment))</span>
+<span class="lineNum">     157 </span><span class="lineNoCov">          0 :                 offset += segment.sourceImage-&gt;width / 2 * bytesPerPixel;</span>
 <span class="lineNum">     158 </span>            : 
-<span class="lineNum">     159 </span><span class="lineCov">         22 :         if (!handler(segment))</span>
-<span class="lineNum">     160 </span><span class="lineNoCov">          0 :             return false;</span>
-<span class="lineNum">     161 </span>            :     }
-<span class="lineNum">     162 </span>            : 
-<span class="lineNum">     163 </span><span class="lineCov">          6 :     return true;</span>
-<a name="164"><span class="lineNum">     164 </span>            : }</a>
-<span class="lineNum">     165 </span>            : 
-<span class="lineNum">     166 </span><span class="lineCov">         18 : void ImageSegmenter::setNominalSegmentDimensions(const unsigned int width,</span>
-<span class="lineNum">     167 </span>            :                                                  const unsigned int height)
-<span class="lineNum">     168 </span>            : {
-<span class="lineNum">     169 </span><span class="lineCov">         18 :     _nominalSegmentWidth = width;</span>
-<span class="lineNum">     170 </span><span class="lineCov">         18 :     _nominalSegmentHeight = height;</span>
-<span class="lineNum">     171 </span><span class="lineCov">         18 : }</span>
+<span class="lineNum">     159 </span><span class="lineCov">         20 :             const char* lineData = (const char*)image.data + offset;</span>
+<span class="lineNum">     160 </span>            : 
+<span class="lineNum">     161 </span><span class="lineCov">         84 :             for (uint i = 0; i &lt; segment.parameters.height; ++i)</span>
+<span class="lineNum">     162 </span>            :             {
+<span class="lineNum">     163 </span><span class="lineCov">         64 :                 segment.imageData.append(lineData, segment.parameters.width *</span>
+<span class="lineNum">     164 </span><span class="lineCov">         64 :                                                        bytesPerPixel);</span>
+<span class="lineNum">     165 </span><span class="lineCov">         64 :                 lineData += imagePitch;</span>
+<span class="lineNum">     166 </span>            :             }
+<span class="lineNum">     167 </span>            :         }
+<span class="lineNum">     168 </span>            : 
+<span class="lineNum">     169 </span><span class="lineCov">         22 :         if (!handler(segment))</span>
+<span class="lineNum">     170 </span><span class="lineNoCov">          0 :             return false;</span>
+<span class="lineNum">     171 </span>            :     }
 <span class="lineNum">     172 </span>            : 
-<span class="lineNum">     173 </span>            : #ifdef UNIORM_SEGMENT_WIDTH
-<span class="lineNum">     174 </span>            : SegmentParametersList ImageSegmenter::generateSegmentParameters(
-<span class="lineNum">     175 </span>            :     const ImageWrapper&amp; image) const
-<span class="lineNum">     176 </span>            : {
-<span class="lineNum">     177 </span>            :     unsigned int numSubdivisionsX = 1;
-<span class="lineNum">     178 </span>            :     unsigned int numSubdivisionsY = 1;
-<span class="lineNum">     179 </span>            : 
-<span class="lineNum">     180 </span>            :     unsigned int uniformSegmentWidth = image.width;
-<span class="lineNum">     181 </span>            :     unsigned int uniformSegmentHeight = image.height;
-<span class="lineNum">     182 </span>            : 
-<span class="lineNum">     183 </span>            :     bool segmentImage = (nominalSegmentWidth_ &gt; 0 &amp;&amp; nominalSegmentHeight_ &gt; 0);
-<span class="lineNum">     184 </span>            :     if (segmentImage)
-<span class="lineNum">     185 </span>            :     {
-<span class="lineNum">     186 </span>            :         numSubdivisionsX = (unsigned int)floor(
-<span class="lineNum">     187 </span>            :             (float)image.width / (float)nominalSegmentWidth_ + 0.5);
-<span class="lineNum">     188 </span>            :         numSubdivisionsY = (unsigned int)floor(
-<span class="lineNum">     189 </span>            :             (float)image.height / (float)nominalSegmentHeight_ + 0.5);
-<span class="lineNum">     190 </span>            : 
-<span class="lineNum">     191 </span>            :         uniformSegmentWidth =
-<span class="lineNum">     192 </span>            :             (unsigned int)((float)image.width / (float)numSubdivisionsX);
-<span class="lineNum">     193 </span>            :         uniformSegmentHeight =
-<span class="lineNum">     194 </span>            :             (unsigned int)((float)image.height / (float)numSubdivisionsY);
-<span class="lineNum">     195 </span>            :     }
-<span class="lineNum">     196 </span>            : 
-<span class="lineNum">     197 </span>            :     // now, create parameters for each segment
-<span class="lineNum">     198 </span>            :     SegmentParametersList parameters;
-<span class="lineNum">     199 </span>            : 
-<span class="lineNum">     200 </span>            :     for (unsigned int i = 0; i &lt; numSubdivisionsX; ++i)
-<span class="lineNum">     201 </span>            :     {
-<span class="lineNum">     202 </span>            :         for (unsigned int j = 0; j &lt; numSubdivisionsY; ++j)
-<span class="lineNum">     203 </span>            :         {
-<span class="lineNum">     204 </span>            :             SegmentParameters p;
+<span class="lineNum">     173 </span><span class="lineCov">          6 :     return true;</span>
+<a name="174"><span class="lineNum">     174 </span>            : }</a>
+<span class="lineNum">     175 </span>            : 
+<span class="lineNum">     176 </span><span class="lineCov">          7 : Segments ImageSegmenter::_generateSegments(const ImageWrapper&amp; image) const</span>
+<span class="lineNum">     177 </span>            : {
+<span class="lineNum">     178 </span><span class="lineCov">          7 :     Segments segments;</span>
+<span class="lineNum">     179 </span><span class="lineCov">         30 :     for (const auto&amp; params : _makeSegmentParameters(image))</span>
+<span class="lineNum">     180 </span>            :     {
+<span class="lineNum">     181 </span><span class="lineCov">         46 :         Segment segment;</span>
+<span class="lineNum">     182 </span><span class="lineCov">         23 :         segment.parameters = params;</span>
+<span class="lineNum">     183 </span><span class="lineCov">         23 :         segment.view =</span>
+<span class="lineNum">     184 </span><span class="lineCov">         23 :             image.view == View::side_by_side ? View::left_eye : image.view;</span>
+<span class="lineNum">     185 </span><span class="lineCov">         23 :         segment.sourceImage = &amp;image;</span>
+<span class="lineNum">     186 </span><span class="lineCov">         23 :         segments.push_back(segment);</span>
+<span class="lineNum">     187 </span>            :     }
+<span class="lineNum">     188 </span>            : 
+<span class="lineNum">     189 </span><span class="lineCov">          7 :     if (image.view == View::side_by_side)</span>
+<span class="lineNum">     190 </span>            :     {
+<span class="lineNum">     191 </span><span class="lineNoCov">          0 :         if (image.width % 2 != 0)</span>
+<span class="lineNum">     192 </span><span class="lineNoCov">          0 :             throw std::runtime_error(&quot;side_by_side image width must be even!&quot;);</span>
+<span class="lineNum">     193 </span>            : 
+<span class="lineNum">     194 </span>            :         // create copy of segments for right view
+<span class="lineNum">     195 </span><span class="lineNoCov">          0 :         auto segmentsRight = segments;</span>
+<span class="lineNum">     196 </span><span class="lineNoCov">          0 :         for (auto&amp; segment : segmentsRight)</span>
+<span class="lineNum">     197 </span><span class="lineNoCov">          0 :             segment.view = View::right_eye;</span>
+<span class="lineNum">     198 </span>            : 
+<span class="lineNum">     199 </span><span class="lineNoCov">          0 :         segments.insert(segments.end(), segmentsRight.begin(),</span>
+<span class="lineNum">     200 </span><span class="lineNoCov">          0 :                         segmentsRight.end());</span>
+<span class="lineNum">     201 </span>            :     }
+<span class="lineNum">     202 </span>            : 
+<span class="lineNum">     203 </span><span class="lineCov">          7 :     return segments;</span>
+<a name="204"><span class="lineNum">     204 </span>            : }</a>
 <span class="lineNum">     205 </span>            : 
-<span class="lineNum">     206 </span>            :             p.x = image.x + i * uniformSegmentWidth;
-<span class="lineNum">     207 </span>            :             p.y = image.y + j * uniformSegmentHeight;
-<span class="lineNum">     208 </span>            :             p.width = uniformSegmentWidth;
-<span class="lineNum">     209 </span>            :             p.height = uniformSegmentHeight;
-<span class="lineNum">     210 </span>            :             p.compressed = (image.compressionPolicy == COMPRESSION_ON);
-<span class="lineNum">     211 </span>            : 
-<span class="lineNum">     212 </span>            :             parameters.push_back(p);
-<span class="lineNum">     213 </span>            :         }
-<span class="lineNum">     214 </span>            :     }
-<span class="lineNum">     215 </span>            : 
-<span class="lineNum">     216 </span>            :     return parameters;
-<a name="217"><span class="lineNum">     217 </span>            : }</a>
-<span class="lineNum">     218 </span>            : #else
-<span class="lineNum">     219 </span><span class="lineCov">          7 : SegmentParametersList ImageSegmenter::_generateSegmentParameters(</span>
-<span class="lineNum">     220 </span>            :     const ImageWrapper&amp; image) const
-<span class="lineNum">     221 </span>            : {
-<span class="lineNum">     222 </span><span class="lineCov">          7 :     unsigned int numSubdivisionsX = 1;</span>
-<span class="lineNum">     223 </span><span class="lineCov">          7 :     unsigned int numSubdivisionsY = 1;</span>
-<span class="lineNum">     224 </span>            : 
-<span class="lineNum">     225 </span><span class="lineCov">          7 :     unsigned int lastSegmentWidth = image.width;</span>
-<span class="lineNum">     226 </span><span class="lineCov">          7 :     unsigned int lastSegmentHeight = image.height;</span>
-<span class="lineNum">     227 </span>            : 
-<span class="lineNum">     228 </span><span class="lineCov">          7 :     bool segmentImage = (_nominalSegmentWidth &gt; 0 &amp;&amp; _nominalSegmentHeight &gt; 0);</span>
-<span class="lineNum">     229 </span><span class="lineCov">          7 :     if (segmentImage)</span>
-<span class="lineNum">     230 </span>            :     {
-<span class="lineNum">     231 </span><span class="lineCov">          4 :         numSubdivisionsX = image.width / _nominalSegmentWidth + 1;</span>
-<span class="lineNum">     232 </span><span class="lineCov">          4 :         numSubdivisionsY = image.height / _nominalSegmentHeight + 1;</span>
-<span class="lineNum">     233 </span>            : 
-<span class="lineNum">     234 </span><span class="lineCov">          4 :         lastSegmentWidth = image.width % _nominalSegmentWidth;</span>
-<span class="lineNum">     235 </span><span class="lineCov">          4 :         lastSegmentHeight = image.height % _nominalSegmentHeight;</span>
+<span class="lineNum">     206 </span><span class="lineCov">          7 : SegmentParametersList ImageSegmenter::_makeSegmentParameters(</span>
+<span class="lineNum">     207 </span>            :     const ImageWrapper&amp; image) const
+<span class="lineNum">     208 </span>            : {
+<span class="lineNum">     209 </span><span class="lineCov">          7 :     const auto info = _makeSegmentationInfo(image);</span>
+<span class="lineNum">     210 </span>            : 
+<span class="lineNum">     211 </span><span class="lineCov">          7 :     SegmentParametersList parameters;</span>
+<span class="lineNum">     212 </span><span class="lineCov">         20 :     for (uint j = 0; j &lt; info.countY; ++j)</span>
+<span class="lineNum">     213 </span>            :     {
+<span class="lineNum">     214 </span><span class="lineCov">         36 :         for (uint i = 0; i &lt; info.countX; ++i)</span>
+<span class="lineNum">     215 </span>            :         {
+<span class="lineNum">     216 </span><span class="lineCov">         23 :             SegmentParameters p;</span>
+<span class="lineNum">     217 </span><span class="lineCov">         23 :             p.x = image.x + i * info.width;</span>
+<span class="lineNum">     218 </span><span class="lineCov">         23 :             p.y = image.y + j * info.height;</span>
+<span class="lineNum">     219 </span><span class="lineCov">         23 :             p.width = (i &lt; info.countX - 1) ? info.width : info.lastWidth;</span>
+<span class="lineNum">     220 </span><span class="lineCov">         23 :             p.height = (j &lt; info.countY - 1) ? info.height : info.lastHeight;</span>
+<span class="lineNum">     221 </span><span class="lineCov">         23 :             parameters.push_back(p);</span>
+<span class="lineNum">     222 </span>            :         }
+<span class="lineNum">     223 </span>            :     }
+<span class="lineNum">     224 </span><span class="lineCov">          7 :     return parameters;</span>
+<a name="225"><span class="lineNum">     225 </span>            : }</a>
+<span class="lineNum">     226 </span>            : 
+<span class="lineNum">     227 </span><span class="lineCov">          7 : ImageSegmenter::SegmentationInfo ImageSegmenter::_makeSegmentationInfo(</span>
+<span class="lineNum">     228 </span>            :     const ImageWrapper&amp; image) const
+<span class="lineNum">     229 </span>            : {
+<span class="lineNum">     230 </span>            :     const auto imageWidth =
+<span class="lineNum">     231 </span><span class="lineCov">          7 :         image.view == View::side_by_side ? image.width / 2 : image.width;</span>
+<span class="lineNum">     232 </span>            : 
+<span class="lineNum">     233 </span><span class="lineCov">          7 :     SegmentationInfo info;</span>
+<span class="lineNum">     234 </span><span class="lineCov">          7 :     info.width = _nominalSegmentWidth;</span>
+<span class="lineNum">     235 </span><span class="lineCov">          7 :     info.height = _nominalSegmentHeight;</span>
 <span class="lineNum">     236 </span>            : 
-<span class="lineNum">     237 </span><span class="lineCov">          4 :         if (lastSegmentWidth == 0)</span>
-<span class="lineNum">     238 </span>            :         {
-<span class="lineNum">     239 </span><span class="lineCov">          2 :             lastSegmentWidth = _nominalSegmentWidth;</span>
-<span class="lineNum">     240 </span><span class="lineCov">          2 :             --numSubdivisionsX;</span>
-<span class="lineNum">     241 </span>            :         }
-<span class="lineNum">     242 </span><span class="lineCov">          4 :         if (lastSegmentHeight == 0)</span>
-<span class="lineNum">     243 </span>            :         {
-<span class="lineNum">     244 </span><span class="lineCov">          2 :             lastSegmentHeight = _nominalSegmentHeight;</span>
-<span class="lineNum">     245 </span><span class="lineCov">          2 :             --numSubdivisionsY;</span>
-<span class="lineNum">     246 </span>            :         }
-<span class="lineNum">     247 </span>            :     }
+<span class="lineNum">     237 </span><span class="lineCov">          7 :     if (_nominalSegmentWidth == 0 || _nominalSegmentHeight == 0)</span>
+<span class="lineNum">     238 </span>            :     {
+<span class="lineNum">     239 </span><span class="lineCov">          3 :         info.countX = 1;</span>
+<span class="lineNum">     240 </span><span class="lineCov">          3 :         info.countY = 1;</span>
+<span class="lineNum">     241 </span><span class="lineCov">          3 :         info.lastWidth = imageWidth;</span>
+<span class="lineNum">     242 </span><span class="lineCov">          3 :         info.lastHeight = image.height;</span>
+<span class="lineNum">     243 </span><span class="lineCov">          3 :         return info;</span>
+<span class="lineNum">     244 </span>            :     }
+<span class="lineNum">     245 </span>            : 
+<span class="lineNum">     246 </span><span class="lineCov">          4 :     info.countX = imageWidth / _nominalSegmentWidth + 1;</span>
+<span class="lineNum">     247 </span><span class="lineCov">          4 :     info.countY = image.height / _nominalSegmentHeight + 1;</span>
 <span class="lineNum">     248 </span>            : 
-<span class="lineNum">     249 </span>            :     // now, create parameters for each segment
-<span class="lineNum">     250 </span><span class="lineCov">          7 :     SegmentParametersList parameters;</span>
+<span class="lineNum">     249 </span><span class="lineCov">          4 :     info.lastWidth = imageWidth % _nominalSegmentWidth;</span>
+<span class="lineNum">     250 </span><span class="lineCov">          4 :     info.lastHeight = image.height % _nominalSegmentHeight;</span>
 <span class="lineNum">     251 </span>            : 
-<span class="lineNum">     252 </span><span class="lineCov">         20 :     for (unsigned int j = 0; j &lt; numSubdivisionsY; ++j)</span>
+<span class="lineNum">     252 </span><span class="lineCov">          4 :     if (info.lastWidth == 0)</span>
 <span class="lineNum">     253 </span>            :     {
-<span class="lineNum">     254 </span><span class="lineCov">         36 :         for (unsigned int i = 0; i &lt; numSubdivisionsX; ++i)</span>
-<span class="lineNum">     255 </span>            :         {
-<span class="lineNum">     256 </span><span class="lineCov">         23 :             SegmentParameters p;</span>
-<span class="lineNum">     257 </span>            : 
-<span class="lineNum">     258 </span><span class="lineCov">         23 :             p.x = image.x + i * _nominalSegmentWidth;</span>
-<span class="lineNum">     259 </span><span class="lineCov">         23 :             p.y = image.y + j * _nominalSegmentHeight;</span>
-<span class="lineNum">     260 </span><span class="lineCov">         23 :             p.width = (i &lt; numSubdivisionsX - 1) ? _nominalSegmentWidth</span>
-<span class="lineNum">     261 </span>            :                                                  : lastSegmentWidth;
-<span class="lineNum">     262 </span><span class="lineCov">         23 :             p.height = (j &lt; numSubdivisionsY - 1) ? _nominalSegmentHeight</span>
-<span class="lineNum">     263 </span>            :                                                   : lastSegmentHeight;
-<span class="lineNum">     264 </span><span class="lineCov">         23 :             p.compressed = (image.compressionPolicy == COMPRESSION_ON);</span>
-<span class="lineNum">     265 </span>            : 
-<span class="lineNum">     266 </span><span class="lineCov">         23 :             parameters.push_back(p);</span>
-<span class="lineNum">     267 </span>            :         }
-<span class="lineNum">     268 </span>            :     }
-<span class="lineNum">     269 </span>            : 
-<span class="lineNum">     270 </span><span class="lineCov">          7 :     return parameters;</span>
-<a name="271"><span class="lineNum">     271 </span>            : }</a>
-<span class="lineNum">     272 </span>            : #endif
-<span class="lineNum">     273 </span><span class="lineCov">         24 : }</span>
+<span class="lineNum">     254 </span><span class="lineCov">          2 :         info.lastWidth = _nominalSegmentWidth;</span>
+<span class="lineNum">     255 </span><span class="lineCov">          2 :         --info.countX;</span>
+<span class="lineNum">     256 </span>            :     }
+<span class="lineNum">     257 </span><span class="lineCov">          4 :     if (info.lastHeight == 0)</span>
+<span class="lineNum">     258 </span>            :     {
+<span class="lineNum">     259 </span><span class="lineCov">          2 :         info.lastHeight = _nominalSegmentHeight;</span>
+<span class="lineNum">     260 </span><span class="lineCov">          2 :         --info.countY;</span>
+<span class="lineNum">     261 </span>            :     }
+<a name="262"><span class="lineNum">     262 </span><span class="lineCov">          4 :     return info;</span></a>
+<span class="lineNum">     263 </span>            : }
+<span class="lineNum">     264 </span><span class="lineCov">         24 : }</span>
 </pre>
       </td>
     </tr>

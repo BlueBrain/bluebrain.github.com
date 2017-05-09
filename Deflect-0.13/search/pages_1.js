@@ -1,4 +1,4 @@
 var searchData=
 [
-  ['deflect',['Deflect',['../index.html',1,'']]]
+  ['changelog',['Changelog',['../Changelog.html',1,'']]]
 ];

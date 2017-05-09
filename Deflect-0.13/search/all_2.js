@@ -1,7 +1,10 @@
 var searchData=
 [
   ['data',['data',['../structdeflect_1_1_image_wrapper.html#a36c9098b98a8086e903ed777ebee9a35',1,'deflect::ImageWrapper']]],
+  ['datatype',['dataType',['../structdeflect_1_1_segment_parameters.html#ac7c4d67999b9716253360dbbcc7c608c',1,'deflect::SegmentParameters']]],
   ['decode',['decode',['../classdeflect_1_1_segment_decoder.html#a4894a1c487eee14f898261fe50bca5c4',1,'deflect::SegmentDecoder']]],
+  ['decodetoyuv',['decodeToYUV',['../classdeflect_1_1_segment_decoder.html#ab6eeb80c7ab347651570ce6325f9a955',1,'deflect::SegmentDecoder']]],
+  ['decodetype',['decodeType',['../classdeflect_1_1_segment_decoder.html#ad912b0d415a48883744a429cf3ad033b',1,'deflect::SegmentDecoder']]],
   ['defaultportnumber',['defaultPortNumber',['../classdeflect_1_1_server.html#ad9de65318605b69ca87b786d9178bddd',1,'deflect::Server']]],
   ['defines_2eh',['defines.h',['../defines_8h.html',1,'']]],
   ['deflect_5fversion_5fabi',['DEFLECT_VERSION_ABI',['../version_8h.html#aab0ced3f934c8c127ad7678102776039',1,'version.h']]],
@@ -22,6 +25,7 @@ var searchData=
   ['deflectqt_5fversion_5fminor',['DEFLECTQT_VERSION_MINOR',['../qt_2version_8h.html#a25a7f5f60624872de0ef7ad6731bc477',1,'version.h']]],
   ['deflectqt_5fversion_5fpatch',['DEFLECTQT_VERSION_PATCH',['../qt_2version_8h.html#aa11681985e42693dbff55d1f457917ec',1,'version.h']]],
   ['deflectqt_5fversion_5frevision',['DEFLECTQT_VERSION_REVISION',['../qt_2version_8h.html#a4070fc13376581c19b9e3a94208d3487',1,'version.h']]],
+  ['deprecated_20list',['Deprecated List',['../deprecated.html',1,'']]],
   ['dequeue',['dequeue',['../classdeflect_1_1_m_t_queue.html#af694237052ea1ddc9e1a4ad3c7f7811f',1,'deflect::MTQueue']]],
   ['dx',['dx',['../structdeflect_1_1_event.html#a16b046b14e8d6f66685cc3db5f669f7d',1,'deflect::Event']]],
   ['dy',['dy',['../structdeflect_1_1_event.html#a2a2dcc09ecccae9283d91290b2e33ced',1,'deflect::Event']]],

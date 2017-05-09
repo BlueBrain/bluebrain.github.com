@@ -1,7 +1,8 @@
 var searchData=
 [
   ['segmentdecoder',['SegmentDecoder',['../classdeflect_1_1_segment_decoder.html#a27136dcbc7c0447aa638a41e00afd46d',1,'deflect::SegmentDecoder']]],
-  ['send',['send',['../classdeflect_1_1_stream.html#a31fd6e85be950b8799f557be71ef787d',1,'deflect::Stream']]],
+  ['send',['send',['../classdeflect_1_1_stream.html#a4eec165c648025bd37802e2eec0fd6d3',1,'deflect::Stream']]],
+  ['sendandfinish',['sendAndFinish',['../classdeflect_1_1_stream.html#aa5c6fb788f4272115a3dd10fa4e6640b',1,'deflect::Stream']]],
   ['senddata',['sendData',['../classdeflect_1_1qt_1_1_qml_streamer.html#a813f38f626cb1785b02784d44f962303',1,'deflect::qt::QmlStreamer::sendData()'],['../classdeflect_1_1_stream.html#ad4d57fc018a327a553c985ec7de390dc',1,'deflect::Stream::sendData()']]],
   ['sendsizehints',['sendSizeHints',['../classdeflect_1_1_stream.html#ae580afe8ed6e374789be1b088667e1d9',1,'deflect::Stream']]],
   ['server',['Server',['../classdeflect_1_1_server.html#a5c0d102c85af38a8c9731e46afc4ee51',1,'deflect::Server']]],

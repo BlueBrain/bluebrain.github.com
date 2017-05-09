@@ -116,12 +116,17 @@ $(document).ready(function(){initNavTree('md__jenkins_04_workspace_oss.Deflect.d
 Stereo streaming overview</div></div>
  <h2>API</h2>
 <p>New view enum in <a class="el" href="types_8h_source.html">deflect/types.h</a>: </p><pre class="fragment">enum class View : std::int8_t { mono, left_eye, right_eye };
-</pre><p>On the client side, no changes to the Stream API. The ImageWrapper takes an additional View parameter.</p>
-<p>On the server side, no changes to the Server API (except some cleanups). Each Frame dispatched now contains the View information.</p>
+</pre><p>The ImageWrapper takes an additional View parameter.</p>
+<p>API changes to the Stream class:</p><ul>
+<li>asyncSend is renamed to sendAndFinish, asyncSend forwards and is deprecated</li>
+<li>send and finish are now asynchronous and return a future instead of bool</li>
+</ul>
+<p>The send operation sends one tile of one eye pass to the server. The finishFrame operation completes the whole frame for all eye passes, that is, send is analogous to an OpenGL draw pass (GL_BACK, GL_BACK_LEFT, GL_BACK_RIGHT), and finishFrame is analogous to a swap buffer call, with the extension that all client's finish is synchronized by the server.</p>
+<p>On the server side, no changes to the Server API (except some cleanups). Each Segment dispatched now with a Frame contains the View information. A frame is considered complete when all connected clients have send a finish.</p>
 <h2>Protocol</h2>
 <p>The Stream send an additional View information message before each image payload. This message is silently ignored by older Servers.</p>
 <h2>Examples</h2>
-<p>Example of a stereo 3D client application using the blocking Stream API: </p><pre class="fragment">deflect::Stream stream( ... );
+<p>Example of a stereo 3D client application using synchronous operations: </p><pre class="fragment">deflect::Stream stream( ... );
 
 /** ...synchronize start with other render clients (network barrier)... */
 
@@ -131,47 +136,42 @@ renderLoop()
 
 deflect::ImageWrapper leftImage( data, width, height, deflect::RGBA );
 leftImage.view = deflect::View::left_eye;
-deflectStream-&gt;send( leftImage );
+deflectStream-&gt;send( leftImage ).wait();
 
 /** ...render right image... */
 
 deflect::ImageWrapper rightImage( data, width, height, deflect::RGBA );
 rightImage.view = deflect::View::right_eye;
-deflectStream-&gt;send( rightImage );
+deflectStream-&gt;send( rightImage ).wait();
 
-deflectStream-&gt;finishFrame();
+deflectStream-&gt;finishFrame().wait();
 
 /** ...synchronize with other render clients (network barrier)... */
 }
-</pre><p>Example of a stereo 3D client application using the asynchronous Stream API: </p><pre class="fragment">deflect::Stream stream( ... );
+</pre><p>Example of a stereo 3D client application using the asynchronous operations: </p><pre class="fragment">deflect::Stream stream( ... );
 
 /** ...synchronize start with other render clients (network barrier)... */
-
-delfect::Stream::Future leftFuture, rightFuture;
-leftFuture = deflect::qt::make_ready_future&lt;bool&gt;( true );
-rightFuture = deflect::qt::make_ready_future&lt;bool&gt;( true );
-
-ImageData leftData, rightData; // must remain valid until sending completes
-
+std::vector&lt; std::future&lt; bool &gt;&gt; futures;
 renderLoop()
 {
-if( !leftFuture.valid() || !leftFuture.get( ))
-   return;
+for( auto&amp; future : futures )
+    if( !future.get( ))
+        return;
+futures.clear();
 
 /** ...render left image... */
 
 deflect::ImageWrapper leftImage( leftData, width, height, deflect::RGBA );
 leftImage.view = deflect::View::left_eye;
-leftFuture = deflectStream-&gt;asyncSend( leftImage );
-
-if( !rightFuture.valid() || !rightFuture.get( ))
-   return;
+futures.emplace_back( deflectStream-&gt;send( leftImage ));
 
 /** ...render right image... */
 
 deflect::ImageWrapper rightImage( rightData, width, height, deflect::RGBA );
 rightImage.view = deflect::View::right_eye;
-rightFuture = deflectStream-&gt;send( rightImage );
+futures.emplace_back( deflectStream-&gt;send( rightImage ));
+
+futures.emplace_back( deflectStream-&gt;finishFrame( ));
 
 /** ...synchronize with other render clients (network barrier)... */
 }
@@ -184,7 +184,7 @@ rightFuture = deflectStream-&gt;send( rightImage );
 <!-- start footer part -->
 <div id="nav-path" class="navpath"><!-- id is needed for treeview function! -->
   <ul>
-    <li class="footer">Generated on Wed Mar 1 2017 02:18:58 for Deflect by
+    <li class="footer">Generated on Tue May 9 2017 09:43:39 for Deflect by
     <a href="http://www.doxygen.org/index.html">
     <img class="footer" src="doxygen.png" alt="doxygen"/></a> 1.8.11 </li>
   </ul>
