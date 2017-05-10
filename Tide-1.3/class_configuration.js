@@ -3,6 +3,8 @@ var class_configuration =
     [ "Configuration", "class_configuration.html#a4f41abbe40c7e1345a325369c86aaaca", null ],
     [ "~Configuration", "class_configuration.html#a4f365eded377e740d1e2457fe7ade448", null ],
     [ "getAspectRatio", "class_configuration.html#a1031736dbddf1becee943184afb27dda", null ],
+    [ "getBezelsPerScreenX", "class_configuration.html#abb8e3d6f5f2c7f53715aa98ec0bded2d", null ],
+    [ "getBezelsPerScreenY", "class_configuration.html#a711da45e1808fe09f2b26c02f36fc450", null ],
     [ "getBool", "class_configuration.html#a8dbc17cce4965ffcdb6632adbb98585f", null ],
     [ "getDouble", "class_configuration.html#a6eb03db6204ebfc4c5d2e02840427bd4", null ],
     [ "getFilename", "class_configuration.html#ae479e2755c17646c271292b1f101e5da", null ],
