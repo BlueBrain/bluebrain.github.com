@@ -4,7 +4,7 @@ version: "0.13"
 major: 0
 minor: 13
 description: A fast C++ library for streaming pixels and events
-updated: 09/05/17
+updated: 11/05/17
 homepage: https://github.com/BlueBrain/Deflect
 repository: https://github.com/BlueBrain/Deflect.git
 issuesurl: https://github.com/BlueBrain/Deflect/issues
@@ -20,6 +20,10 @@ readmetype: text/x-markdown
 Welcome to Deflect, a C++ library for streaming pixels to other Deflect-based
 applications, for example [Tide](https://github.com/BlueBrain/Tide).
 Deflect offers a stable API marked with version 1.6 (for the client part).
+
+## Overview
+
+![Deflect features overview](doc/overview.png)
 
 ## Features
 
