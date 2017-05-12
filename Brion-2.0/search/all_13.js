@@ -1,6 +1,6 @@
 var searchData=
 [
-  ['write',['write',['../classbrion_1_1_spike_report.html#ab8efdf2da32129eff184b9bd260b4c49',1,'brion::SpikeReport::write()'],['../classbrion_1_1_spike_report_plugin.html#ae6c691a8519a52daabad6069dbc47176',1,'brion::SpikeReportPlugin::write()']]],
+  ['write',['write',['../classbrion_1_1_spike_report.html#aebaf37ef98890cdcf0ca8585d035ab5f',1,'brion::SpikeReport::write(const Spike *spikes, size_t size)'],['../classbrion_1_1_spike_report.html#ab8efdf2da32129eff184b9bd260b4c49',1,'brion::SpikeReport::write(const Spikes &amp;spikes)'],['../classbrion_1_1_spike_report_plugin.html#aa36ef7da3208326fa705959f49592df3',1,'brion::SpikeReportPlugin::write()']]],
   ['writeapicals',['writeApicals',['../classbrion_1_1_morphology.html#a27999dfcdbc884321edf3374a085a531',1,'brion::Morphology::writeApicals()'],['../classbrion_1_1_morphology_plugin.html#af21f35f221ca068d5cca1a418ac0359a',1,'brion::MorphologyPlugin::writeApicals()']]],
   ['writecompartments',['writeCompartments',['../classbrion_1_1_compartment_report.html#a5bd85b1c9847c5800215e4bb8aeda1eb',1,'brion::CompartmentReport::writeCompartments()'],['../classbrion_1_1_compartment_report_plugin.html#a1ee8f2b01df7aec46ea21b8925e359eb',1,'brion::CompartmentReportPlugin::writeCompartments()']]],
   ['writeframe',['writeFrame',['../classbrion_1_1_compartment_report.html#a837605b1c593cc8eb039f804726e9a15',1,'brion::CompartmentReport::writeFrame()'],['../classbrion_1_1_compartment_report_plugin.html#ad3d70d5d37cbcecc426652d026e74c60',1,'brion::CompartmentReportPlugin::writeFrame()']]],

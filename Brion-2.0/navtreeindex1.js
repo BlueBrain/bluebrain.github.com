@@ -1,5 +1,6 @@
 var NAVTREEINDEX1 =
 {
+"classbrain_1_1neuron_1_1_section.html#aaa07b7b364b620b9a781f30a5cd9f5ea":[8,0,0,0,1,17],
 "classbrain_1_1neuron_1_1_section.html#ab9eb3ac85be533e42f8a05914be383ac":[8,0,0,0,1,13],
 "classbrain_1_1neuron_1_1_section.html#ac34c25b88f6e3acf9b524ed0fe2a67b8":[8,0,0,0,1,3],
 "classbrain_1_1neuron_1_1_section.html#adae5e321c2b1c6c0e711d1817e7e762f":[8,0,0,0,1,0],
@@ -199,9 +200,10 @@ var NAVTREEINDEX1 =
 "classbrion_1_1_spike_report.html#aa112549e40ecbaecae371a87a054d991":[8,0,1,10,17],
 "classbrion_1_1_spike_report.html#aabe018d69760b2546f886877d267fcf7":[8,0,1,10,12],
 "classbrion_1_1_spike_report.html#ab199bcf8e3244591b88ada47fb8162b3":[8,0,1,10,6],
-"classbrion_1_1_spike_report.html#ab8efdf2da32129eff184b9bd260b4c49":[8,0,1,10,18],
+"classbrion_1_1_spike_report.html#ab8efdf2da32129eff184b9bd260b4c49":[8,0,1,10,19],
 "classbrion_1_1_spike_report.html#abc848e1631c8293dbb2c0a5787656b3b":[8,0,1,10,1],
 "classbrion_1_1_spike_report.html#acad20c31f6b65356a837051ad6378fbb":[8,0,1,10,11],
+"classbrion_1_1_spike_report.html#aebaf37ef98890cdcf0ca8585d035ab5f":[8,0,1,10,18],
 "classbrion_1_1_spike_report_plugin.html":[8,0,1,11],
 "classbrion_1_1_spike_report_plugin.html#a1a6bddb0d89b405fe16500a4f34492d1":[8,0,1,11,29],
 "classbrion_1_1_spike_report_plugin.html#a1a8c966316b1241592c863b702f5ac8d":[8,0,1,11,4],
@@ -219,6 +221,7 @@ var NAVTREEINDEX1 =
 "classbrion_1_1_spike_report_plugin.html#a8cf2cad16f4c246be8475147e372385a":[8,0,1,11,27],
 "classbrion_1_1_spike_report_plugin.html#a972c34269c7b114a27f01d13363bddad":[8,0,1,11,7],
 "classbrion_1_1_spike_report_plugin.html#a9d8a3fb046511cc3724b0a039a56496d":[8,0,1,11,28],
+"classbrion_1_1_spike_report_plugin.html#aa36ef7da3208326fa705959f49592df3":[8,0,1,11,21],
 "classbrion_1_1_spike_report_plugin.html#aa40cda81df60b1348e956d7d637debd7":[8,0,1,11,25],
 "classbrion_1_1_spike_report_plugin.html#abd2c871be4ea6cdf3095e1094d51e015":[8,0,1,11,12],
 "classbrion_1_1_spike_report_plugin.html#abdd8acc36f7a0c86699d050916c90891":[8,0,1,11,14],
@@ -229,7 +232,6 @@ var NAVTREEINDEX1 =
 "classbrion_1_1_spike_report_plugin.html#ad444291f4eea4274e058d9748be2a37e":[8,0,1,11,22],
 "classbrion_1_1_spike_report_plugin.html#adde974cbcfaca500eee30f7518658dfb":[8,0,1,11,6],
 "classbrion_1_1_spike_report_plugin.html#ae3fa94ea29d5acd876a4dc4df0d55efc":[8,0,1,11,20],
-"classbrion_1_1_spike_report_plugin.html#ae6c691a8519a52daabad6069dbc47176":[8,0,1,11,21],
 "classbrion_1_1_spike_report_plugin.html#af3738004aea210cd390b827b97dabdcf":[8,0,1,11,3],
 "classbrion_1_1_spike_report_plugin.html#af59c21f82f4872914c370fa8d59298fd":[8,0,1,11,13],
 "classbrion_1_1_spike_report_plugin.html#afd5f606b2e1cf96b7fbb89cbac5645f9":[8,0,1,11,18],
@@ -247,7 +249,5 @@ var NAVTREEINDEX1 =
 "classbrion_1_1_target.html#a2c1de15976a2e1f569b0083bb56d0480":[8,0,1,14,2],
 "classbrion_1_1_target.html#a413c895cc24f25e7c85ed00818395d90":[8,0,1,14,4],
 "classbrion_1_1_target.html#a5ee36b021b1a08f7baf94651822be7fc":[8,0,1,14,6],
-"classbrion_1_1_target.html#a92130c8c0608723dcb538a9e4d4c317c":[8,0,1,14,5],
-"classbrion_1_1_target.html#a967607b68d715c7191d56cf2d19ad6ca":[8,0,1,14,0],
-"classbrion_1_1_target.html#aa58924378a7389ae2a44867ce5e8be20":[8,0,1,14,3]
+"classbrion_1_1_target.html#a92130c8c0608723dcb538a9e4d4c317c":[8,0,1,14,5]
 };

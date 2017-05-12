@@ -21,7 +21,7 @@ var classbrion_1_1_spike_report_plugin =
     [ "readUntil", "classbrion_1_1_spike_report_plugin.html#afd5f606b2e1cf96b7fbb89cbac5645f9", null ],
     [ "setFilter", "classbrion_1_1_spike_report_plugin.html#a4669c2545a0eda9b8697b07aa4205a81", null ],
     [ "supportsBackwardSeek", "classbrion_1_1_spike_report_plugin.html#ae3fa94ea29d5acd876a4dc4df0d55efc", null ],
-    [ "write", "classbrion_1_1_spike_report_plugin.html#ae6c691a8519a52daabad6069dbc47176", null ],
+    [ "write", "classbrion_1_1_spike_report_plugin.html#aa36ef7da3208326fa705959f49592df3", null ],
     [ "writeSeek", "classbrion_1_1_spike_report_plugin.html#ad444291f4eea4274e058d9748be2a37e", null ],
     [ "::brion::SpikeReport", "classbrion_1_1_spike_report_plugin.html#a71fd80d377a3f7707d226f721d3a8743", null ],
     [ "_accessMode", "classbrion_1_1_spike_report_plugin.html#ac2f7f9f054f1dd3c99bd0bfb43d953cb", null ],

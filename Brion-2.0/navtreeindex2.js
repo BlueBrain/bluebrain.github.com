@@ -1,5 +1,7 @@
 var NAVTREEINDEX2 =
 {
+"classbrion_1_1_target.html#a967607b68d715c7191d56cf2d19ad6ca":[8,0,1,14,0],
+"classbrion_1_1_target.html#aa58924378a7389ae2a44867ce5e8be20":[8,0,1,14,3],
 "classbrion_1_1_target.html#ab8d2a8b976e2b52b4b8617edfc8e6a2f":[8,0,1,14,1],
 "classbrion_1_1_target.html#aea9917cbbc18242f7738a1e57ff70274":[8,0,1,14,8],
 "classbrion_1_1_target.html#af9dfd3b852d9a457e627d05ffb5bf30c":[8,0,1,14,7],
@@ -165,8 +167,8 @@ var NAVTREEINDEX2 =
 "enums_8h_source.html":[9,0,15],
 "env.html":[5],
 "files.html":[9,0],
-"functions.html":[8,3,0,0],
 "functions.html":[8,3,0],
+"functions.html":[8,3,0,0],
 "functions_0x7e.html":[8,3,0,17],
 "functions_c.html":[8,3,0,1],
 "functions_d.html":[8,3,0,2],
@@ -215,8 +217,8 @@ var NAVTREEINDEX2 =
 "morphology11.html":[2,3],
 "morphologyConverter.html":[4,1],
 "morphology_plugin_8h_source.html":[9,0,19],
-"namespacebrain.html":[8,0,0],
 "namespacebrain.html":[7,0,0],
+"namespacebrain.html":[8,0,0],
 "namespacebrain_1_1neuron.html":[8,0,0,0],
 "namespacebrain_1_1neuron.html":[7,0,0,0],
 "namespacebrion.html":[7,0,1],
@@ -247,7 +249,5 @@ var NAVTREEINDEX2 =
 "structbrain_1_1_compartment_report_meta_data.html#a31d41273774f94c41ff11107d1bc4830":[8,0,0,5,1],
 "structbrain_1_1_compartment_report_meta_data.html#a392795c6c7f60bc5b402dd850b0cf474":[8,0,0,5,2],
 "structbrain_1_1_compartment_report_meta_data.html#a95054dbda30be63a7de378e725134832":[8,0,0,5,3],
-"structbrain_1_1_compartment_report_meta_data.html#aafb4d6d47cfdecf4bf1aeb6312a59a19":[8,0,0,5,0],
-"structbrain_1_1_compartment_report_meta_data.html#ae37c7d5288f710c42f5c0f9925951d54":[8,0,0,5,4],
-"structbrain_1_1_synapses_1_1_base_impl.html":[8,0,0,10,0]
+"structbrain_1_1_compartment_report_meta_data.html#aafb4d6d47cfdecf4bf1aeb6312a59a19":[8,0,0,5,0]
 };

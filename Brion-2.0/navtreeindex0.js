@@ -122,6 +122,7 @@ var NAVTREEINDEX0 =
 "classbrain_1_1_spike_report_reader.html#aefb0598576af03e0470ee99cdf74d23f":[8,0,0,7,3],
 "classbrain_1_1_spike_report_writer.html":[8,0,0,8],
 "classbrain_1_1_spike_report_writer.html#a22226ecc396de2fa8443d34c533f0a21":[8,0,0,8,1],
+"classbrain_1_1_spike_report_writer.html#a2d6f57124691fd67d9ff721f71011401":[8,0,0,8,5],
 "classbrain_1_1_spike_report_writer.html#a490d30db02568611990cfff67b4adb5d":[8,0,0,8,2],
 "classbrain_1_1_spike_report_writer.html#a52b1aad09aa330ee9bafd347f4a9c666":[8,0,0,8,3],
 "classbrain_1_1_spike_report_writer.html#a622cb89fdf6f5747f0485a0c3309de82":[8,0,0,8,4],
@@ -248,6 +249,5 @@ var NAVTREEINDEX0 =
 "classbrain_1_1neuron_1_1_section.html#a6fbaa7cab1e35634cf70d3f356c71265":[8,0,0,0,1,16],
 "classbrain_1_1neuron_1_1_section.html#a7a4724ee3a8483293cf7af337bf5114e":[8,0,0,0,1,5],
 "classbrain_1_1neuron_1_1_section.html#a929e71da9372a82ab12fc650360163e4":[8,0,0,0,1,4],
-"classbrain_1_1neuron_1_1_section.html#aa05f5214f028540b0d8bd84f35087ed3":[8,0,0,0,1,8],
-"classbrain_1_1neuron_1_1_section.html#aaa07b7b364b620b9a781f30a5cd9f5ea":[8,0,0,0,1,17]
+"classbrain_1_1neuron_1_1_section.html#aa05f5214f028540b0d8bd84f35087ed3":[8,0,0,0,1,8]
 };

@@ -22,5 +22,6 @@ var classbrion_1_1_spike_report =
     [ "readUntil", "classbrion_1_1_spike_report.html#a19ae7991ad9563d38d0060f43e839258", null ],
     [ "seek", "classbrion_1_1_spike_report.html#a2e1f18b9e172bec7c5aaf495f1edc590", null ],
     [ "supportsBackwardSeek", "classbrion_1_1_spike_report.html#aa112549e40ecbaecae371a87a054d991", null ],
+    [ "write", "classbrion_1_1_spike_report.html#aebaf37ef98890cdcf0ca8585d035ab5f", null ],
     [ "write", "classbrion_1_1_spike_report.html#ab8efdf2da32129eff184b9bd260b4c49", null ]
 ];
