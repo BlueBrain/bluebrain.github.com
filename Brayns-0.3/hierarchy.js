@@ -1,6 +1,9 @@
 var hierarchy =
 [
     [ "BasicLight", "struct_basic_light.html", null ],
+    [ "progress_display", null, [
+      [ "Progress", "class_progress.html", null ]
+    ] ],
     [ "brayns::AbstractManipulator", "classbrayns_1_1_abstract_manipulator.html", [
       [ "brayns::FlyingModeManipulator", "classbrayns_1_1_flying_mode_manipulator.html", null ],
       [ "brayns::InspectCenterManipulator", "classbrayns_1_1_inspect_center_manipulator.html", null ]

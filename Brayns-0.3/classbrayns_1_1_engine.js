@@ -16,7 +16,7 @@ var classbrayns_1_1_engine =
     [ "getRenderer", "classbrayns_1_1_engine.html#af961a55c58767fdc61b67497abcbf7bb", null ],
     [ "getScene", "classbrayns_1_1_engine.html#aa7447c013f31279eecf99d3420ce641d", null ],
     [ "getSupportedFrameSize", "classbrayns_1_1_engine.html#aedca0a1a4aa034e53e51a3ebaeb5f6a3", null ],
-    [ "initializeMaterials", "classbrayns_1_1_engine.html#ab15768665d0716298349adae973db1b2", null ],
+    [ "initializeMaterials", "classbrayns_1_1_engine.html#a653f2aa1e6003342b6bdc91ca6972b51", null ],
     [ "name", "classbrayns_1_1_engine.html#ae715b4d4dca8458191d9762d42e94e75", null ],
     [ "postRender", "classbrayns_1_1_engine.html#a75dcc0f335ea1f2b268d0085ad2f4ce1", null ],
     [ "preRender", "classbrayns_1_1_engine.html#ae4df6a7c3480fd5a2c99d2669d7ddbee", null ],

@@ -1,5 +1,7 @@
 var NAVTREEINDEX2 =
 {
+"classbrayns_1_1_geometry_parameters.html#ace161e62a3faa72c980e176dd7a39a6e":[5,0,0,27,21],
+"classbrayns_1_1_geometry_parameters.html#ad11f92d3fafcca441e3140f8aef7578d":[5,0,0,27,1],
 "classbrayns_1_1_geometry_parameters.html#ad4fef2d48a0d138c284cc407a0b9c02d":[5,0,0,27,47],
 "classbrayns_1_1_geometry_parameters.html#adbfe32e7cc0323f8fe655e98f1c1df80":[5,0,0,27,83],
 "classbrayns_1_1_geometry_parameters.html#adf2b7384675461501f7b712b5bea521a":[5,0,0,27,13],
@@ -102,18 +104,18 @@ var NAVTREEINDEX2 =
 "classbrayns_1_1_metaballs_generator.html":[5,0,0,40],
 "classbrayns_1_1_metaballs_generator.html#a16ceb0836437ce3ebd0cdf2ee76e0105":[5,0,0,40,1],
 "classbrayns_1_1_metaballs_generator.html#a9a4656a57d04979e434a2a621882d2cc":[5,0,0,40,0],
-"classbrayns_1_1_metaballs_generator.html#af475d205c3b668523cc2ca3a187da872":[5,0,0,40,2],
+"classbrayns_1_1_metaballs_generator.html#ad9cffbfc87cdeed4d0e206043671d0b8":[5,0,0,40,2],
 "classbrayns_1_1_molecular_system_reader.html":[5,0,0,41],
 "classbrayns_1_1_molecular_system_reader.html#a636bd7b06dc0b7934a83889769c53ff8":[5,0,0,41,1],
 "classbrayns_1_1_molecular_system_reader.html#ac1f51756114b9838ce9a2af3f7bdd048":[5,0,0,41,0],
 "classbrayns_1_1_morphology_loader.html":[5,0,0,43],
 "classbrayns_1_1_morphology_loader.html#a52a11e4baa4c6c579811a83c1c9dbbd0":[5,0,0,43,0],
+"classbrayns_1_1_morphology_loader.html#a7424c8e01cf0e7acd9f17e4d0b0f3e02":[5,0,0,43,1],
 "classbrayns_1_1_morphology_loader.html#a9a91bdb7ddeb4ee2ddd443b1856578a4":[5,0,0,43,2],
-"classbrayns_1_1_morphology_loader.html#aa1f8b5cd33101e9af4d0f10f1be14d6c":[5,0,0,43,1],
 "classbrayns_1_1_morphology_loader.html#aeff1dbf39954c539606a3e519220b6c0":[5,0,0,43,3],
 "classbrayns_1_1_n_e_s_t_loader.html":[5,0,0,44],
 "classbrayns_1_1_n_e_s_t_loader.html#a8b118d89d5f8183070e597529ba92df2":[5,0,0,44,1],
-"classbrayns_1_1_n_e_s_t_loader.html#ade2f9a6adf69468e725edf4bb04073ff":[5,0,0,44,2],
+"classbrayns_1_1_n_e_s_t_loader.html#ad4269586dda8f9e5384c102797adcc51":[5,0,0,44,2],
 "classbrayns_1_1_n_e_s_t_loader.html#af7b48f226e63f2e2969a79e3865ad817":[5,0,0,44,0],
 "classbrayns_1_1_o_s_p_ray_camera.html":[5,0,0,50],
 "classbrayns_1_1_o_s_p_ray_camera.html#a4d0d1cd0dc21287c004888322417da9f":[5,0,0,50,1],
@@ -247,7 +249,5 @@ var NAVTREEINDEX2 =
 "classbrayns_1_1_renderer.html#a4e27e9499fa4bd6b9497859222e9b8cf":[5,0,0,61,7],
 "classbrayns_1_1_renderer.html#a78355a8f89df7bea8c6cfaa099c09b44":[5,0,0,61,5],
 "classbrayns_1_1_renderer.html#ac92634b04e092fadc0e2f97cb7640adb":[5,0,0,61,0],
-"classbrayns_1_1_renderer.html#acc42ee6fc5216125da49bf60b63ccbbf":[5,0,0,61,4],
-"classbrayns_1_1_renderer.html#ad1070cea5cea2e97c8f5c705b9db7fa6":[5,0,0,61,6],
-"classbrayns_1_1_renderer.html#aef2788be943e1ea431b6621508f244ce":[5,0,0,61,2]
+"classbrayns_1_1_renderer.html#acc42ee6fc5216125da49bf60b63ccbbf":[5,0,0,61,4]
 };

@@ -12,7 +12,6 @@ var classbrayns_1_1_camera =
     [ "getModified", "classbrayns_1_1_camera.html#acb0d7fd498efcabe617152ddbd198b13", null ],
     [ "getPosition", "classbrayns_1_1_camera.html#af2a3a1200c668a03daeaa9f80255c6c2", null ],
     [ "getRotationMatrix", "classbrayns_1_1_camera.html#a696c4a2880726ac4dec01974168ad0e7", null ],
-    [ "getSerializable", "classbrayns_1_1_camera.html#a2f23e2260a19ad81e160cb69574a111f", null ],
     [ "getStereoMode", "classbrayns_1_1_camera.html#a984359963515fe34b6f12fadf105f86e", null ],
     [ "getTarget", "classbrayns_1_1_camera.html#a87ddb41917ebae248c1ea6a81bb161ee", null ],
     [ "getType", "classbrayns_1_1_camera.html#a0922ca991159fe5fc401bae15597230e", null ],

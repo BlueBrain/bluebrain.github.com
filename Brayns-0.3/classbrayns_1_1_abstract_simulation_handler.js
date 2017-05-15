@@ -8,6 +8,7 @@ var classbrayns_1_1_abstract_simulation_handler =
     [ "getFrameSize", "classbrayns_1_1_abstract_simulation_handler.html#a94eb882faba3d4a6f4cecdfa7f3af5d8", null ],
     [ "getHistogram", "classbrayns_1_1_abstract_simulation_handler.html#a06da93216571bc02dd5e04c556be79a9", null ],
     [ "getNbFrames", "classbrayns_1_1_abstract_simulation_handler.html#af47ad371626f6abbe71cf266a2d7f34d", null ],
+    [ "getTimestamp", "classbrayns_1_1_abstract_simulation_handler.html#aa5ddcd9137de7b9028c04cc4a92cab08", null ],
     [ "histogramChanged", "classbrayns_1_1_abstract_simulation_handler.html#acb55af876243483839a70e8d0d8d98ac", null ],
     [ "setCurrentFrame", "classbrayns_1_1_abstract_simulation_handler.html#a33363a14c14c7415863dfdb34259c131", null ],
     [ "setFrameSize", "classbrayns_1_1_abstract_simulation_handler.html#a8fa6e6c15ed6b6aad1e30004cf2c2983", null ],

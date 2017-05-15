@@ -95,5 +95,6 @@ var annotated_dup =
     ] ],
     [ "BasicLight", "struct_basic_light.html", "struct_basic_light" ],
     [ "PerRayData_radiance", "struct_per_ray_data__radiance.html", "struct_per_ray_data__radiance" ],
-    [ "PerRayData_shadow", "struct_per_ray_data__shadow.html", "struct_per_ray_data__shadow" ]
+    [ "PerRayData_shadow", "struct_per_ray_data__shadow.html", "struct_per_ray_data__shadow" ],
+    [ "Progress", "class_progress.html", "class_progress" ]
 ];
