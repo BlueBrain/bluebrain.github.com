@@ -62,7 +62,6 @@ var searchData=
   ['setselectionstart',['setSelectionStart',['../class_address_bar.html#a86671d5e6d7f52ea85b55826d8046588',1,'AddressBar']]],
   ['setshiftactive',['setShiftActive',['../class_keyboard_state.html#adbcd5243dfbf48c6fda05b09463633bd',1,'KeyboardState']]],
   ['setshowborder',['setShowBorder',['../class_tile.html#a6bad45f0c243e03d3ff7cca96eb2a3a8',1,'Tile']]],
-  ['setshowwindowtitles',['setShowWindowTitles',['../class_display_group.html#a4dd36607509226c8a2be889c044bd288',1,'DisplayGroup']]],
   ['setsize',['setSize',['../class_receive_buffer.html#a6b622d169bf946d289176a53b18850ec',1,'ReceiveBuffer']]],
   ['setsizehints',['setSizeHints',['../class_content.html#a70292d652fb37ee21640801fce53c186',1,'Content']]],
   ['setsizepolicy',['setSizePolicy',['../class_tile.html#a441cb2fbdf0fbc0792693a2713a2bfad',1,'Tile']]],
