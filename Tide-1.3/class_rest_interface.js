@@ -8,6 +8,7 @@ var class_rest_interface =
     [ "exposeStatistics", "class_rest_interface.html#a14be8391d82a562fcd2f0ce561e0ece5", null ],
     [ "load", "class_rest_interface.html#af3f3b899f71ddefdc84e45a501c4b0bd", null ],
     [ "open", "class_rest_interface.html#a63e4f6dc9a0a7ac6582cc3dc1a5f7375", null ],
+    [ "powerOff", "class_rest_interface.html#a2383efe5765c2543d2bd73ff31da6009", null ],
     [ "save", "class_rest_interface.html#aa5df3da5806279776ef891c84a344646", null ],
     [ "screenshot", "class_rest_interface.html#ae9b88adda80d81ad7ea828bb6a0b43a2", null ],
     [ "setupHtmlInterface", "class_rest_interface.html#aa9ebbcf6dff96c388525d70e3bf3c07e", null ],

@@ -9,6 +9,7 @@ var class_master_configuration =
     [ "getDemoServiceUrl", "class_master_configuration.html#aed8e72f877a93c14ac153e8dcbd2a376", null ],
     [ "getHeadless", "class_master_configuration.html#a5e099760abaaba78f1ddd1a653fb8462", null ],
     [ "getLauncherDisplay", "class_master_configuration.html#a8d210bd05849a09ef2692bf143fd6f87", null ],
+    [ "getPlanarSerialPort", "class_master_configuration.html#a4cdeb86af6d5af86b85543d33a0dc637", null ],
     [ "getSessionsDir", "class_master_configuration.html#a4985b2568e33198f6e283ddf9fa8e2ca", null ],
     [ "getUploadDir", "class_master_configuration.html#a332aefb4b3600a524dc0332a39578d7b", null ],
     [ "getWebBrowserDefaultURL", "class_master_configuration.html#a7786132d2c47c7575b7cd682752d1b3c", null ],

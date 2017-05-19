@@ -23,6 +23,8 @@ var searchData=
   ['pixelstreamsynchronizer',['PixelStreamSynchronizer',['../class_pixel_stream_synchronizer.html#a12666d81a8a86b90e41dd750027f2373',1,'PixelStreamSynchronizer']]],
   ['pixelstreamupdater',['PixelStreamUpdater',['../class_pixel_stream_updater.html#a0e18f8f9b614604c49e9d5ce431b6bbc',1,'PixelStreamUpdater']]],
   ['pixelstreamwindowmanager',['PixelStreamWindowManager',['../class_pixel_stream_window_manager.html#a8d3cae6a2b05961dac58bf22810be44a',1,'PixelStreamWindowManager']]],
+  ['poweroff',['powerOff',['../class_rest_interface.html#a2383efe5765c2543d2bd73ff31da6009',1,'RestInterface']]],
+  ['powerstatechanged',['powerStateChanged',['../class_logging_utility.html#a397d3f0be5faa1962f9129da577d6fe9',1,'LoggingUtility']]],
   ['preparebacktexture',['prepareBackTexture',['../class_texture_node.html#aea8f64681828f07d1d50518a7ea8bde4',1,'TextureNode::prepareBackTexture()'],['../class_texture_node_y_u_v.html#ac736788923d066abb982bf78990c3d8d',1,'TextureNodeYUV::prepareBackTexture()']]],
   ['prepareupload',['prepareUpload',['../class_file_receiver.html#a8b1ce76b10b2c8d925ecd1f8ec0a0f5b',1,'FileReceiver']]],
   ['previouspage',['previousPage',['../class_p_d_f_content.html#a0d52e1a8ee7954872bcad5a9d74c342b',1,'PDFContent']]],

@@ -8,5 +8,8 @@ var class_logging_utility =
     [ "getInteractionCount", "class_logging_utility.html#ac02c26b1ba446e25db8226fa2d09cd61", null ],
     [ "getLastInteraction", "class_logging_utility.html#ab7423d3e44b7481a8735aa85e7d09dfa", null ],
     [ "getLastInteractionTime", "class_logging_utility.html#aa715077f4a9d558a5cd0c7a6a4a4bf79", null ],
-    [ "getWindowCount", "class_logging_utility.html#aaf9f91a24f75a993fa0318795a95ebbe", null ]
+    [ "getLastScreenStateChanged", "class_logging_utility.html#ab4bf5a65d73f43ab26e3a5ec52a7fffe", null ],
+    [ "getScreenState", "class_logging_utility.html#a0c335272ef9dd4052ba5896ce35eb014", null ],
+    [ "getWindowCount", "class_logging_utility.html#aaf9f91a24f75a993fa0318795a95ebbe", null ],
+    [ "powerStateChanged", "class_logging_utility.html#a397d3f0be5faa1962f9129da577d6fe9", null ]
 ];
