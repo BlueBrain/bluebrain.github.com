@@ -9,7 +9,6 @@ var files =
     [ "brain/circuit.h", "brain_2circuit_8h_source.html", null ],
     [ "brion/compartmentReport.h", "brion_2compartment_report_8h_source.html", null ],
     [ "brain/compartmentReport.h", "brain_2compartment_report_8h_source.html", null ],
-    [ "compartmentReportFrame.h", "compartment_report_frame_8h_source.html", null ],
     [ "compartmentReportMapping.h", "compartment_report_mapping_8h_source.html", null ],
     [ "compartmentReportPlugin.h", "compartment_report_plugin_8h_source.html", null ],
     [ "compartmentReportView.h", "compartment_report_view_8h_source.html", null ],

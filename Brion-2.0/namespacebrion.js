@@ -5,6 +5,8 @@ var namespacebrion =
     [ "CompartmentReport", "classbrion_1_1_compartment_report.html", "classbrion_1_1_compartment_report" ],
     [ "CompartmentReportInitData", "classbrion_1_1_compartment_report_init_data.html", "classbrion_1_1_compartment_report_init_data" ],
     [ "CompartmentReportPlugin", "classbrion_1_1_compartment_report_plugin.html", "classbrion_1_1_compartment_report_plugin" ],
+    [ "Frame", "structbrion_1_1_frame.html", "structbrion_1_1_frame" ],
+    [ "Frames", "structbrion_1_1_frames.html", "structbrion_1_1_frames" ],
     [ "Mesh", "classbrion_1_1_mesh.html", "classbrion_1_1_mesh" ],
     [ "Morphology", "classbrion_1_1_morphology.html", "classbrion_1_1_morphology" ],
     [ "MorphologyInitData", "classbrion_1_1_morphology_init_data.html", "classbrion_1_1_morphology_init_data" ],

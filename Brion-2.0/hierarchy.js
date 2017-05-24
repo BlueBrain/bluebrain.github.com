@@ -17,7 +17,6 @@ var hierarchy =
     ] ],
     [ "brain::Circuit", "classbrain_1_1_circuit.html", null ],
     [ "brain::CompartmentReport", "classbrain_1_1_compartment_report.html", null ],
-    [ "brain::CompartmentReportFrame", "classbrain_1_1_compartment_report_frame.html", null ],
     [ "brain::CompartmentReportMapping", "classbrain_1_1_compartment_report_mapping.html", null ],
     [ "brain::CompartmentReportMapping::IndexEntry", "structbrain_1_1_compartment_report_mapping_1_1_index_entry.html", null ],
     [ "brain::CompartmentReportMetaData", "structbrain_1_1_compartment_report_meta_data.html", null ],
@@ -29,6 +28,8 @@ var hierarchy =
     [ "brain::Synapses::BaseImpl", "structbrain_1_1_synapses_1_1_base_impl.html", null ],
     [ "brain::SynapsesStream", "classbrain_1_1_synapses_stream.html", null ],
     [ "brain::Version", "classbrain_1_1_version.html", null ],
+    [ "brion::Frame", "structbrion_1_1_frame.html", null ],
+    [ "brion::Frames", "structbrion_1_1_frames.html", null ],
     [ "brion::PluginInitData", "classbrion_1_1_plugin_init_data.html", [
       [ "brion::CompartmentReportInitData", "classbrion_1_1_compartment_report_init_data.html", null ],
       [ "brion::MorphologyInitData", "classbrion_1_1_morphology_init_data.html", null ]

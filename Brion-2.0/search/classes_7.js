@@ -1,5 +1,4 @@
 var searchData=
 [
-  ['version',['Version',['../classbrain_1_1_version.html',1,'brain']]],
-  ['version',['Version',['../classbrion_1_1_version.html',1,'brion']]]
+  ['target',['Target',['../classbrion_1_1_target.html',1,'brion']]]
 ];

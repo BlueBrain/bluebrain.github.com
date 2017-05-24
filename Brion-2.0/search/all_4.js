@@ -1,7 +1,7 @@
 var searchData=
 [
   ['efficacies',['efficacies',['../classbrain_1_1_synapses.html#ae82c0dbf439f38c502751472ddf18892',1,'brain::Synapses']]],
-  ['empty',['empty',['../classbrain_1_1_compartment_report_frame.html#a87eb3398d37ba2bff8fc869116e7c4e5',1,'brain::CompartmentReportFrame::empty()'],['../classbrain_1_1_synapses.html#a7e678a61149c15e862817857837b2d49',1,'brain::Synapses::empty()']]],
+  ['empty',['empty',['../classbrain_1_1_synapses.html#a7e678a61149c15e862817857837b2d49',1,'brain::Synapses']]],
   ['end',['end',['../classbrain_1_1_synapses.html#ae1389b3ea053954ebdda1a96baacff30',1,'brain::Synapses']]],
   ['endtime',['endTime',['../structbrain_1_1_compartment_report_meta_data.html#a31d41273774f94c41ff11107d1bc4830',1,'brain::CompartmentReportMetaData']]],
   ['enums_2eh',['enums.h',['../enums_8h.html',1,'']]],
