@@ -1,5 +1,7 @@
 var NAVTREEINDEX4 =
 {
+"classbrayns_1_1_volume_parameters.html#aa3e9951f078660fa251b9fdceebc0f1d":[5,0,0,80,1],
+"classbrayns_1_1_volume_parameters.html#aac205c6e87fabd2c003a14b59292d221":[5,0,0,80,2],
 "classbrayns_1_1_volume_parameters.html#ab7143e2f875fab737555d9dd8215a096":[5,0,0,80,5],
 "classbrayns_1_1_volume_parameters.html#ac6c3bc4efbe1911303f056e5d3c112eb":[5,0,0,80,14],
 "classbrayns_1_1_volume_parameters.html#adc41b4462bd0d948f71faf63c4a62966":[5,0,0,80,16],
@@ -32,8 +34,8 @@ var NAVTREEINDEX4 =
 "functions_d.html":[5,3,0,4],
 "functions_e.html":[5,3,0,5],
 "functions_f.html":[5,3,0,6],
-"functions_func.html":[5,3,1],
 "functions_func.html":[5,3,1,0],
+"functions_func.html":[5,3,1],
 "functions_func_0x7e.html":[5,3,1,19],
 "functions_func_b.html":[5,3,1,1],
 "functions_func_c.html":[5,3,1,2],

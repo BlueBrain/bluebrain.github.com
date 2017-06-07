@@ -66,6 +66,7 @@ var searchData=
   ['getmemorymapptr',['getMemoryMapPtr',['../classbrayns_1_1_volume_handler_1_1_volume_descriptor.html#aea105288818eeb73c6a06d0f59286b47',1,'brayns::VolumeHandler::VolumeDescriptor']]],
   ['getmemorymode',['getMemoryMode',['../classbrayns_1_1_geometry_parameters.html#a42ed816fb28e78cdb9322c70f1ac4ff4',1,'brayns::GeometryParameters']]],
   ['getmeshedmorphologiesfolder',['getMeshedMorphologiesFolder',['../classbrayns_1_1_geometry_parameters.html#adf2b7384675461501f7b712b5bea521a',1,'brayns::GeometryParameters']]],
+  ['getmeshfile',['getMeshFile',['../classbrayns_1_1_geometry_parameters.html#a3b3bafdf11e83a33f401f14128915440',1,'brayns::GeometryParameters']]],
   ['getmeshfolder',['getMeshFolder',['../classbrayns_1_1_geometry_parameters.html#abb3c4e24aafb3052a009a1da12124050',1,'brayns::GeometryParameters']]],
   ['getmetaballsgridsize',['getMetaballsGridSize',['../classbrayns_1_1_geometry_parameters.html#af08fd8f25c3ad8caf65c121fad5c5419',1,'brayns::GeometryParameters']]],
   ['getmetaballssamplesfromsoma',['getMetaballsSamplesFromSoma',['../classbrayns_1_1_geometry_parameters.html#ac1a28b8320f3b27633cdc5621f259ae8',1,'brayns::GeometryParameters']]],
