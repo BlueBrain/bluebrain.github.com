@@ -1,4 +1,4 @@
 var searchData=
 [
-  ['handles',['handles',['../classlivre_1_1_data_source.html#a8368cfdc1be69e8f5ae37e9f5145ba3b',1,'livre::DataSource']]]
+  ['operator_3c_3c',['operator&lt;&lt;',['../classlivre_1_1_configuration.html#aaacf502158abba042903c7a9e842d382',1,'livre::Configuration']]]
 ];

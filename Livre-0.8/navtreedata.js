@@ -44,7 +44,6 @@ var NAVTREE =
         [ "All", "functions.html", null ],
         [ "Functions", "functions_func.html", null ],
         [ "Variables", "functions_vars.html", null ],
-        [ "Typedefs", "functions_type.html", null ],
         [ "Related Functions", "functions_rela.html", null ]
       ] ]
     ] ],
@@ -60,8 +59,7 @@ var NAVTREE =
 
 var NAVTREEINDEX =
 [
-".html",
-"structlivre_1_1_volume_information.html#a4ac1a3924b611e51bf6b06e0a33b3793"
+".html"
 ];
 
 var SYNCONMSG = 'click to disable panel synchronisation';

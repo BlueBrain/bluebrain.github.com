@@ -1,4 +1,6 @@
 var searchData=
 [
-  ['_5fgetdata',['_getData',['../classlivre_1_1_memory_unit.html#a79cabea93060ae9f7cfad5568e70a7de',1,'livre::MemoryUnit::_getData() const  =0'],['../classlivre_1_1_memory_unit.html#a73ca4bb80738eb20b7733a15df356d86',1,'livre::MemoryUnit::_getData()=0'],['../classlivre_1_1_const_memory_unit.html#a6c2b11528cac49833d196968409ca69d',1,'livre::ConstMemoryUnit::_getData() const  final'],['../classlivre_1_1_const_memory_unit.html#ad52cfb396c5e717871fced78b956816a',1,'livre::ConstMemoryUnit::_getData() final']]]
+  ['adddescription',['addDescription',['../classlivre_1_1_configuration.html#a504d9fffb96d0b7a4150106b72f790ac',1,'livre::Configuration::addDescription(const std::string &amp;groupName, const std::string &amp;shortDesc, const std::string &amp;longDesc)'],['../classlivre_1_1_configuration.html#a31ee550c1bb8eb849a01bf9234251456',1,'livre::Configuration::addDescription(const std::string &amp;groupName, const std::string &amp;shortDesc, const std::string &amp;longDesc, T defaultValue)'],['../classlivre_1_1_configuration.html#ad916e3c1fa15b09c2df487a710ec9bc0',1,'livre::Configuration::addDescription(const std::string &amp;groupName, const std::string &amp;shortDesc, const std::string &amp;longDesc, T defaultValue, T implicitValue)'],['../classlivre_1_1_configuration.html#a4703c9d2d80658edd98bad3545c18760',1,'livre::Configuration::addDescription(const Configuration &amp;config)']]],
+  ['api_2eh',['api.h',['../api_8h.html',1,'']]],
+  ['application_20help',['Application Help',['../apps.html',1,'']]]
 ];

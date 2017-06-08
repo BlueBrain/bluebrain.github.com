@@ -1,0 +1,342 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+
+<html lang="en">
+
+<head>
+  <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+  <title>LCOV - Livre - data/RawDataSource.cpp</title>
+  <link rel="stylesheet" type="text/css" href="../gcov.css">
+</head>
+
+<body>
+
+  <table width="100%" border=0 cellspacing=0 cellpadding=0>
+    <tr><td class="title">LCOV - code coverage report</td></tr>
+    <tr><td class="ruler"><img src="../glass.png" width=3 height=3 alt=""></td></tr>
+
+    <tr>
+      <td width="100%">
+        <table cellpadding=1 border=0 width="100%">
+          <tr>
+            <td width="10%" class="headerItem">Current view:</td>
+            <td width="35%" class="headerValue"><a href="../index.html">top level</a> - <a href="index.html">data</a> - RawDataSource.cpp<span style="font-size: 80%;"> (source / <a href="RawDataSource.cpp.func-sort-c.html">functions</a>)</span></td>
+            <td width="5%"></td>
+            <td width="15%"></td>
+            <td width="10%" class="headerCovTableHead">Hit</td>
+            <td width="10%" class="headerCovTableHead">Total</td>
+            <td width="15%" class="headerCovTableHead">Coverage</td>
+          </tr>
+          <tr>
+            <td class="headerItem">Test:</td>
+            <td class="headerValue">Livre</td>
+            <td></td>
+            <td class="headerItem">Lines:</td>
+            <td class="headerCovTableEntry">73</td>
+            <td class="headerCovTableEntry">130</td>
+            <td class="headerCovTableEntryMed">56.2 %</td>
+          </tr>
+          <tr>
+            <td class="headerItem">Date:</td>
+            <td class="headerValue">2017-06-08 03:06:02</td>
+            <td></td>
+            <td class="headerItem">Functions:</td>
+            <td class="headerCovTableEntry">11</td>
+            <td class="headerCovTableEntry">23</td>
+            <td class="headerCovTableEntryMed">47.8 %</td>
+          </tr>
+          <tr><td><img src="../glass.png" width=3 height=3 alt=""></td></tr>
+        </table>
+      </td>
+    </tr>
+
+    <tr><td class="ruler"><img src="../glass.png" width=3 height=3 alt=""></td></tr>
+  </table>
+
+  <table cellpadding=0 cellspacing=0 border=0>
+    <tr>
+      <td><br></td>
+    </tr>
+    <tr>
+      <td>
+<pre class="sourceHeading">          Line data    Source code</pre>
+<pre class="source">
+<a name="1"><span class="lineNum">       1 </span>            : </a>
+<span class="lineNum">       2 </span>            : /* Copyright (c) 2016-2017, EPFL/Blue Brain Project
+<span class="lineNum">       3 </span>            :  *                          Ahmet Bilgili &lt;ahmet.bilgili@epfl.ch&gt;
+<span class="lineNum">       4 </span>            :  *                          Stefan.Eilemann@epfl.ch
+<span class="lineNum">       5 </span>            :  *
+<span class="lineNum">       6 </span>            :  * This file is part of Livre &lt;https://github.com/BlueBrain/Livre&gt;
+<span class="lineNum">       7 </span>            :  *
+<span class="lineNum">       8 </span>            :  * This library is free software; you can redistribute it and/or modify it under
+<span class="lineNum">       9 </span>            :  * the terms of the GNU Lesser General Public License version 3.0 as published
+<span class="lineNum">      10 </span>            :  * by the Free Software Foundation.
+<span class="lineNum">      11 </span>            :  *
+<span class="lineNum">      12 </span>            :  * This library is distributed in the hope that it will be useful, but WITHOUT
+<span class="lineNum">      13 </span>            :  * ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS
+<span class="lineNum">      14 </span>            :  * FOR A PARTICULAR PURPOSE.  See the GNU Lesser General Public License for more
+<span class="lineNum">      15 </span>            :  * details.
+<span class="lineNum">      16 </span>            :  *
+<span class="lineNum">      17 </span>            :  * You should have received a copy of the GNU Lesser General Public License
+<span class="lineNum">      18 </span>            :  * along with this library; if not, write to the Free Software Foundation, Inc.,
+<span class="lineNum">      19 </span>            :  * 51 Franklin Street, Fifth Floor, Boston, MA 02110-1301 USA.
+<span class="lineNum">      20 </span>            :  */
+<span class="lineNum">      21 </span>            : 
+<span class="lineNum">      22 </span>            : #include &lt;livre/data/LODNode.h&gt;
+<span class="lineNum">      23 </span>            : #include &lt;livre/data/MemoryUnit.h&gt;
+<span class="lineNum">      24 </span>            : #include &lt;livre/data/RawDataSource.h&gt;
+<span class="lineNum">      25 </span>            : 
+<span class="lineNum">      26 </span>            : #include &lt;lunchbox/memoryMap.h&gt;
+<span class="lineNum">      27 </span>            : #include &lt;lunchbox/pluginRegisterer.h&gt;
+<span class="lineNum">      28 </span>            : 
+<span class="lineNum">      29 </span>            : #include &quot;nrrd/nrrd.hxx&quot;
+<span class="lineNum">      30 </span>            : 
+<span class="lineNum">      31 </span>            : #include &lt;boost/algorithm/string.hpp&gt;
+<span class="lineNum">      32 </span>            : #include &lt;boost/filesystem.hpp&gt;
+<span class="lineNum">      33 </span>            : #include &lt;boost/lexical_cast.hpp&gt;
+<span class="lineNum">      34 </span>            : 
+<span class="lineNum">      35 </span>            : #include &lt;fcntl.h&gt;
+<span class="lineNum">      36 </span>            : #include &lt;sys/mman.h&gt;
+<span class="lineNum">      37 </span>            : #include &lt;sys/stat.h&gt;
+<span class="lineNum">      38 </span>            : 
+<span class="lineNum">      39 </span>            : namespace livre
+<span class="lineNum">      40 </span>            : {
+<a name="41"><span class="lineNum">      41 </span>            : namespace</a>
+<span class="lineNum">      42 </span>            : {
+<span class="lineNum">      43 </span><span class="lineCov">         12 : lunchbox::PluginRegisterer&lt;RawDataSource&gt; registerer;</span>
+<a name="44"><span class="lineNum">      44 </span>            : </a>
+<span class="lineNum">      45 </span>            : template &lt;class I, class O&gt;
+<span class="lineNum">      46 </span><span class="lineNoCov">          0 : void _scale(</span>
+<span class="lineNum">      47 </span>            :     const I* in, O* out, const ssize_t nElems,
+<span class="lineNum">      48 </span>            :     typename std::enable_if&lt;(sizeof(I) &gt; sizeof(O)), void&gt;::type* = nullptr)
+<a name="49"><span class="lineNum">      49 </span>            : {</a>
+<span class="lineNum">      50 </span><span class="lineNoCov">          0 :     constexpr size_t shift = (sizeof(I) - sizeof(O)) * 8;</span>
+<span class="lineNum">      51 </span><span class="lineNoCov">          0 : #pragma omp parallel for</span>
+<span class="lineNum">      52 </span><span class="lineNoCov">          0 :     for (ssize_t i = 0; i &lt; nElems; ++i)</span>
+<span class="lineNum">      53 </span><span class="lineNoCov">          0 :         out[i] = in[i] &gt;&gt; shift;</span>
+<span class="lineNum">      54 </span><span class="lineNoCov">          0 : }</span>
+<a name="55"><span class="lineNum">      55 </span>            : </a>
+<span class="lineNum">      56 </span>            : template &lt;class I, class O&gt;
+<span class="lineNum">      57 </span><span class="lineNoCov">          0 : MemoryUnitPtr _scale(const uint8_t* ptr, const size_t size)</span>
+<span class="lineNum">      58 </span>            : {
+<span class="lineNum">      59 </span><span class="lineNoCov">          0 :     const ssize_t nElems = size / sizeof(O);</span>
+<span class="lineNum">      60 </span><span class="lineNoCov">          0 :     auto memory = MemoryUnitPtr(new AllocMemoryUnit(size));</span>
+<span class="lineNum">      61 </span><span class="lineNoCov">          0 :     const I* in = reinterpret_cast&lt;const I*&gt;(ptr);</span>
+<span class="lineNum">      62 </span><span class="lineNoCov">          0 :     O* out = memory-&gt;getData&lt;O&gt;();</span>
+<span class="lineNum">      63 </span>            : 
+<span class="lineNum">      64 </span><span class="lineNoCov">          0 :     _scale(in, out, nElems);</span>
+<span class="lineNum">      65 </span><span class="lineNoCov">          0 :     return memory;</span>
+<span class="lineNum">      66 </span>            : }
+<span class="lineNum">      67 </span>            : }
+<span class="lineNum">      68 </span>            : 
+<span class="lineNum">      69 </span>            : using boost::lexical_cast;
+<span class="lineNum">      70 </span>            : 
+<a name="71"><span class="lineNum">      71 </span>            : struct RawDataSource::Impl</a>
+<span class="lineNum">      72 </span>            : {
+<span class="lineNum">      73 </span><span class="lineCov">          2 :     Impl(const DataSourcePluginData&amp; initData, VolumeInformation&amp; volInfo)</span>
+<span class="lineNum">      74 </span><span class="lineCov">          2 :         : _headerSize(0)</span>
+<span class="lineNum">      75 </span>            :         , _inputType(DT_UINT8)
+<span class="lineNum">      76 </span><span class="lineCov">          2 :         , _outputType(DT_UINT8)</span>
+<span class="lineNum">      77 </span>            :     {
+<span class="lineNum">      78 </span><span class="lineCov">          2 :         const servus::URI&amp; uri = initData.getURI();</span>
+<span class="lineNum">      79 </span><span class="lineCov">          2 :         const std::string&amp; path = uri.getPath();</span>
+<span class="lineNum">      80 </span><span class="lineCov">          3 :         const bool isExtensionRaw = boost::algorithm::ends_with(path, &quot;.raw&quot;) ||</span>
+<span class="lineNum">      81 </span><span class="lineCov">          3 :                                     boost::algorithm::ends_with(path, &quot;.img&quot;);</span>
+<span class="lineNum">      82 </span><span class="lineCov">          2 :         const bool isExtensionNrrd = boost::algorithm::ends_with(path, &quot;.nrrd&quot;);</span>
+<span class="lineNum">      83 </span>            : 
+<span class="lineNum">      84 </span><span class="lineCov">          2 :         if (!isExtensionRaw &amp;&amp; !isExtensionNrrd)</span>
+<span class="lineNum">      85 </span><span class="lineNoCov">          0 :             LBTHROW(std::runtime_error(</span>
+<span class="lineNum">      86 </span>            :                 &quot;Volume extension does not include raw or nrrd&quot;));
+<span class="lineNum">      87 </span>            : 
+<span class="lineNum">      88 </span><span class="lineCov">          2 :         if (isExtensionRaw)</span>
+<span class="lineNum">      89 </span><span class="lineCov">          1 :             parseRawData(uri.getPath(), volInfo, uri.getFragment());</span>
+<span class="lineNum">      90 </span><span class="lineCov">          1 :         else if (isExtensionNrrd)</span>
+<span class="lineNum">      91 </span><span class="lineCov">          1 :             parseNRRDData(uri.getPath(), volInfo);</span>
+<span class="lineNum">      92 </span>            : 
+<span class="lineNum">      93 </span><span class="lineCov">          2 :         volInfo.frameRange = Vector2ui(0u, 1u);</span>
+<span class="lineNum">      94 </span><span class="lineCov">          2 :         volInfo.compCount = 1;</span>
+<span class="lineNum">      95 </span><span class="lineCov">          2 :         volInfo.worldSpacePerVoxel = 1.0f / float(volInfo.voxels.find_max());</span>
+<span class="lineNum">      96 </span>            :         volInfo.worldSize =
+<span class="lineNum">      97 </span><span class="lineCov">          4 :             Vector3f(volInfo.voxels[0], volInfo.voxels[1], volInfo.voxels[2]) *</span>
+<span class="lineNum">      98 </span><span class="lineCov">          4 :             volInfo.worldSpacePerVoxel;</span>
+<span class="lineNum">      99 </span>            : 
+<span class="lineNum">     100 </span><span class="lineCov">          2 :         volInfo.overlap = Vector3ui(0u);</span>
+<span class="lineNum">     101 </span><span class="lineCov">          2 :         volInfo.rootNode = RootNode(1, Vector3ui(1));</span>
+<span class="lineNum">     102 </span><span class="lineCov">          2 :         volInfo.maximumBlockSize = volInfo.voxels;</span>
+<span class="lineNum">     103 </span>            : 
+<span class="lineNum">     104 </span><span class="lineCov">          2 :         _inputType = volInfo.dataType;</span>
+<span class="lineNum">     105 </span><span class="lineCov">          2 :         const auto output = uri.findQuery(&quot;output&quot;);</span>
+<span class="lineNum">     106 </span><span class="lineCov">          2 :         if (output == uri.queryEnd())</span>
+<span class="lineNum">     107 </span><span class="lineCov">          2 :             _outputType = _inputType;</span>
+<span class="lineNum">     108 </span>            :         else
+<span class="lineNum">     109 </span>            :         {
+<span class="lineNum">     110 </span><span class="lineNoCov">          0 :             _outputType = getDataType(output-&gt;second);</span>
+<span class="lineNum">     111 </span><span class="lineNoCov">          0 :             volInfo.dataType = _outputType;</span>
+<span class="lineNum">     112 </span>            :         }
+<a name="113"><span class="lineNum">     113 </span><span class="lineCov">          2 :     }</span></a>
+<a name="114"><span class="lineNum">     114 </span>            : </a>
+<span class="lineNum">     115 </span><span class="lineCov">          2 :     ~Impl() {}</span>
+<span class="lineNum">     116 </span><span class="lineNoCov">          0 :     MemoryUnitPtr getData(const LODNode&amp; node)</span>
+<span class="lineNum">     117 </span>            :     {
+<span class="lineNum">     118 </span><span class="lineNoCov">          0 :         const size_t size = node.getBlockSize().product();</span>
+<span class="lineNum">     119 </span><span class="lineNoCov">          0 :         const uint8_t* ptr = _mmap.getAddress&lt;uint8_t&gt;() + _headerSize;</span>
+<span class="lineNum">     120 </span><span class="lineNoCov">          0 :         if (_inputType == _outputType)</span>
+<span class="lineNum">     121 </span><span class="lineNoCov">          0 :             return MemoryUnitPtr(new ConstMemoryUnit(ptr, size));</span>
+<span class="lineNum">     122 </span>            : 
+<span class="lineNum">     123 </span>            :         // only unsigned integer conversions are supported!
+<span class="lineNum">     124 </span><span class="lineNoCov">          0 :         if (_inputType == DT_UINT16 &amp;&amp; _outputType == DT_UINT8)</span>
+<span class="lineNum">     125 </span><span class="lineNoCov">          0 :             return _scale&lt;uint16_t, uint8_t&gt;(ptr, size);</span>
+<span class="lineNum">     126 </span><span class="lineNoCov">          0 :         if (_inputType == DT_UINT32 &amp;&amp; _outputType == DT_UINT8)</span>
+<span class="lineNum">     127 </span><span class="lineNoCov">          0 :             return _scale&lt;uint32_t, uint8_t&gt;(ptr, size);</span>
+<span class="lineNum">     128 </span><span class="lineNoCov">          0 :         if (_inputType == DT_UINT32 &amp;&amp; _outputType == DT_UINT16)</span>
+<span class="lineNum">     129 </span><span class="lineNoCov">          0 :             return _scale&lt;uint32_t, uint16_t&gt;(ptr, size);</span>
+<span class="lineNum">     130 </span>            : 
+<span class="lineNum">     131 </span><span class="lineNoCov">          0 :         LBTHROW(std::runtime_error(&quot;Unsupported data conversion&quot;));</span>
+<a name="132"><span class="lineNum">     132 </span>            :     }</a>
+<span class="lineNum">     133 </span>            : 
+<span class="lineNum">     134 </span><span class="lineCov">          2 :     DataType getDataType(const std::string&amp; dataType)</span>
+<span class="lineNum">     135 </span>            :     {
+<span class="lineNum">     136 </span><span class="lineCov">          2 :         if (dataType == &quot;char&quot; || dataType == &quot;int8&quot;)</span>
+<span class="lineNum">     137 </span><span class="lineNoCov">          0 :             return DT_INT8;</span>
+<span class="lineNum">     138 </span><span class="lineCov">          2 :         if (dataType == &quot;unsigned char&quot; || dataType == &quot;uint8&quot;)</span>
+<span class="lineNum">     139 </span><span class="lineCov">          2 :             return DT_UINT8;</span>
+<span class="lineNum">     140 </span><span class="lineNoCov">          0 :         if (dataType == &quot;short&quot; || dataType == &quot;int16&quot;)</span>
+<span class="lineNum">     141 </span><span class="lineNoCov">          0 :             return DT_INT16;</span>
+<span class="lineNum">     142 </span><span class="lineNoCov">          0 :         if (dataType == &quot;unsigned short&quot; || dataType == &quot;uint16&quot;)</span>
+<span class="lineNum">     143 </span><span class="lineNoCov">          0 :             return DT_UINT16;</span>
+<span class="lineNum">     144 </span><span class="lineNoCov">          0 :         if (dataType == &quot;int&quot; || dataType == &quot;int32&quot;)</span>
+<span class="lineNum">     145 </span><span class="lineNoCov">          0 :             return DT_INT32;</span>
+<span class="lineNum">     146 </span><span class="lineNoCov">          0 :         if (dataType == &quot;unsigned int&quot; || dataType == &quot;uint32&quot;)</span>
+<span class="lineNum">     147 </span><span class="lineNoCov">          0 :             return DT_UINT32;</span>
+<span class="lineNum">     148 </span><span class="lineNoCov">          0 :         if (dataType == &quot;float&quot;)</span>
+<span class="lineNum">     149 </span><span class="lineNoCov">          0 :             return DT_FLOAT;</span>
+<span class="lineNum">     150 </span><span class="lineNoCov">          0 :         LBTHROW(std::runtime_error(&quot;Unsupported data format &quot; + dataType));</span>
+<a name="151"><span class="lineNum">     151 </span>            :     }</a>
+<span class="lineNum">     152 </span>            : 
+<span class="lineNum">     153 </span><span class="lineCov">          1 :     void parseRawData(const std::string&amp; filename, VolumeInformation&amp; volInfo,</span>
+<span class="lineNum">     154 </span>            :                       const std::string&amp; fragment)
+<span class="lineNum">     155 </span>            :     {
+<span class="lineNum">     156 </span><span class="lineCov">          1 :         if (!_mmap.map(filename))</span>
+<span class="lineNum">     157 </span><span class="lineNoCov">          0 :             LBTHROW(std::runtime_error(&quot;Cannot mmap file&quot;));</span>
+<span class="lineNum">     158 </span>            : 
+<span class="lineNum">     159 </span><span class="lineCov">          2 :         std::vector&lt;std::string&gt; parameters;</span>
+<span class="lineNum">     160 </span><span class="lineCov">          1 :         boost::algorithm::split(parameters, fragment, boost::is_any_of(&quot;,&quot;));</span>
+<span class="lineNum">     161 </span>            : 
+<span class="lineNum">     162 </span><span class="lineCov">          1 :         if (parameters.size() &lt; 3) // use defaults</span>
+<span class="lineNum">     163 </span>            :         {
+<span class="lineNum">     164 </span><span class="lineNoCov">          0 :             LBTHROW(</span>
+<span class="lineNum">     165 </span>            :                 std::runtime_error(&quot;Not enough parameters for the raw file&quot;));
+<span class="lineNum">     166 </span>            :         }
+<span class="lineNum">     167 </span>            :         else
+<span class="lineNum">     168 </span>            :         {
+<span class="lineNum">     169 </span>            :             try
+<span class="lineNum">     170 </span>            :             {
+<span class="lineNum">     171 </span><span class="lineCov">          1 :                 volInfo.voxels[0] = lexical_cast&lt;uint32_t&gt;(parameters[0]);</span>
+<span class="lineNum">     172 </span><span class="lineCov">          1 :                 volInfo.voxels[1] = lexical_cast&lt;uint32_t&gt;(parameters[1]);</span>
+<span class="lineNum">     173 </span><span class="lineCov">          1 :                 volInfo.voxels[2] = lexical_cast&lt;uint32_t&gt;(parameters[2]);</span>
+<span class="lineNum">     174 </span><span class="lineCov">          1 :                 if (parameters.size() &gt; 3)</span>
+<span class="lineNum">     175 </span><span class="lineCov">          1 :                     volInfo.dataType = getDataType(parameters[3]);</span>
+<span class="lineNum">     176 </span>            :                 else
+<span class="lineNum">     177 </span><span class="lineNoCov">          0 :                     volInfo.dataType = DT_UINT8;</span>
+<span class="lineNum">     178 </span>            :             }
+<span class="lineNum">     179 </span><span class="lineNoCov">          0 :             catch (boost::bad_lexical_cast&amp; except)</span>
+<span class="lineNum">     180 </span>            :             {
+<span class="lineNum">     181 </span><span class="lineNoCov">          0 :                 LBTHROW(std::runtime_error(except.what()));</span>
+<span class="lineNum">     182 </span>            :             }
+<span class="lineNum">     183 </span>            :         }
+<a name="184"><span class="lineNum">     184 </span><span class="lineCov">          1 :     }</span></a>
+<span class="lineNum">     185 </span>            : 
+<span class="lineNum">     186 </span><span class="lineCov">          1 :     void parseNRRDData(const std::string&amp; filename, VolumeInformation&amp; volInfo)</span>
+<span class="lineNum">     187 </span>            :     {
+<span class="lineNum">     188 </span><span class="lineCov">          2 :         std::map&lt;std::string, std::string&gt; dataInfo;</span>
+<span class="lineNum">     189 </span><span class="lineCov">          1 :         _headerSize = ::NRRD::parseHeader(filename, dataInfo);</span>
+<span class="lineNum">     190 </span><span class="lineCov">          1 :         if (_headerSize == 0)</span>
+<span class="lineNum">     191 </span><span class="lineNoCov">          0 :             LBTHROW(std::runtime_error(&quot;Cannot parse nrrd file&quot;));</span>
+<span class="lineNum">     192 </span>            : 
+<span class="lineNum">     193 </span><span class="lineCov">          2 :         std::string dataFile = filename;</span>
+<span class="lineNum">     194 </span><span class="lineCov">          1 :         if (dataInfo.count(&quot;datafile&quot;) &gt; 0)</span>
+<span class="lineNum">     195 </span>            :         {
+<span class="lineNum">     196 </span>            :             boost::filesystem::path dataFilePath =
+<span class="lineNum">     197 </span><span class="lineCov">          2 :                 boost::filesystem::path(filename).parent_path();</span>
+<span class="lineNum">     198 </span><span class="lineCov">          1 :             dataFilePath /= dataInfo[&quot;datafile&quot;];</span>
+<span class="lineNum">     199 </span><span class="lineCov">          1 :             dataFile = dataFilePath.string();</span>
+<span class="lineNum">     200 </span>            :         }
+<span class="lineNum">     201 </span>            : 
+<span class="lineNum">     202 </span><span class="lineCov">          1 :         if (!_mmap.map(dataFile))</span>
+<span class="lineNum">     203 </span><span class="lineNoCov">          0 :             LBTHROW(std::runtime_error(&quot;Cannot mmap file&quot;));</span>
+<span class="lineNum">     204 </span>            : 
+<span class="lineNum">     205 </span><span class="lineCov">          1 :         volInfo.dataType = getDataType(dataInfo[&quot;type&quot;]);</span>
+<span class="lineNum">     206 </span>            : 
+<span class="lineNum">     207 </span>            :         try
+<span class="lineNum">     208 </span>            :         {
+<span class="lineNum">     209 </span><span class="lineCov">          1 :             if (lexical_cast&lt;size_t&gt;(dataInfo[&quot;dimension&quot;]) != 3u)</span>
+<span class="lineNum">     210 </span><span class="lineNoCov">          0 :                 LBTHROW(std::runtime_error(</span>
+<span class="lineNum">     211 </span>            :                     std::runtime_error(&quot;NRRD is not 3D data&quot;)))
+<span class="lineNum">     212 </span>            :         }
+<span class="lineNum">     213 </span><span class="lineNoCov">          0 :         catch (boost::bad_lexical_cast&amp; except)</span>
+<span class="lineNum">     214 </span>            :         {
+<span class="lineNum">     215 </span><span class="lineNoCov">          0 :             LBTHROW(std::runtime_error(except.what()));</span>
+<span class="lineNum">     216 </span>            :         }
+<span class="lineNum">     217 </span>            : 
+<span class="lineNum">     218 </span><span class="lineCov">          2 :         const auto&amp; vec = stringToVector&lt;int&gt;(dataInfo[&quot;sizes&quot;]);</span>
+<span class="lineNum">     219 </span><span class="lineCov">          1 :         volInfo.voxels[0] = vec[0];</span>
+<span class="lineNum">     220 </span><span class="lineCov">          1 :         volInfo.voxels[1] = vec[1];</span>
+<span class="lineNum">     221 </span><span class="lineCov">          1 :         volInfo.voxels[2] = vec[2];</span>
+<span class="lineNum">     222 </span><span class="lineCov">          1 :         volInfo.bigEndian = dataInfo[&quot;endian&quot;] == &quot;big&quot;;</span>
+<span class="lineNum">     223 </span><span class="lineCov">          1 :     }</span>
+<span class="lineNum">     224 </span>            : 
+<span class="lineNum">     225 </span>            :     lunchbox::MemoryMap _mmap;
+<span class="lineNum">     226 </span>            :     size_t _headerSize;
+<span class="lineNum">     227 </span>            :     DataType _inputType;
+<span class="lineNum">     228 </span>            :     DataType _outputType;
+<a name="229"><span class="lineNum">     229 </span>            : };</a>
+<span class="lineNum">     230 </span>            : 
+<span class="lineNum">     231 </span><span class="lineCov">          2 : RawDataSource::RawDataSource(const DataSourcePluginData&amp; initData)</span>
+<span class="lineNum">     232 </span><span class="lineCov">          2 :     : _impl(new RawDataSource::Impl(initData, _volumeInfo))</span>
+<span class="lineNum">     233 </span>            : {
+<a name="234"><span class="lineNum">     234 </span><span class="lineCov">          2 : }</span></a>
+<span class="lineNum">     235 </span>            : 
+<span class="lineNum">     236 </span><span class="lineCov">          4 : RawDataSource::~RawDataSource()</span>
+<span class="lineNum">     237 </span>            : {
+<a name="238"><span class="lineNum">     238 </span><span class="lineCov">          4 : }</span></a>
+<span class="lineNum">     239 </span>            : 
+<span class="lineNum">     240 </span><span class="lineNoCov">          0 : MemoryUnitPtr RawDataSource::getData(const LODNode&amp; node)</span>
+<span class="lineNum">     241 </span>            : {
+<span class="lineNum">     242 </span><span class="lineNoCov">          0 :     return _impl-&gt;getData(node);</span>
+<a name="243"><span class="lineNum">     243 </span>            : }</a>
+<span class="lineNum">     244 </span>            : 
+<span class="lineNum">     245 </span><span class="lineCov">          3 : bool RawDataSource::handles(const DataSourcePluginData&amp; initData)</span>
+<span class="lineNum">     246 </span>            : {
+<span class="lineNum">     247 </span><span class="lineCov">          3 :     const servus::URI&amp; uri = initData.getURI();</span>
+<span class="lineNum">     248 </span><span class="lineCov">          3 :     if (uri.getScheme() == &quot;raw&quot;)</span>
+<span class="lineNum">     249 </span><span class="lineCov">          2 :         return true;</span>
+<span class="lineNum">     250 </span>            : 
+<span class="lineNum">     251 </span><span class="lineCov">          1 :     if (!uri.getScheme().empty())</span>
+<span class="lineNum">     252 </span><span class="lineCov">          1 :         return false;</span>
+<span class="lineNum">     253 </span>            : 
+<span class="lineNum">     254 </span><span class="lineNoCov">          0 :     return boost::algorithm::ends_with(uri.getPath(), &quot;.raw&quot;) ||</span>
+<span class="lineNum">     255 </span><span class="lineNoCov">          0 :            boost::algorithm::ends_with(uri.getPath(), &quot;.img&quot;) ||</span>
+<span class="lineNum">     256 </span><span class="lineNoCov">          0 :            boost::algorithm::ends_with(uri.getPath(), &quot;.nrrd&quot;);</span>
+<a name="257"><span class="lineNum">     257 </span>            : }</a>
+<span class="lineNum">     258 </span>            : 
+<span class="lineNum">     259 </span><span class="lineNoCov">          0 : std::string RawDataSource::getDescription()</span>
+<span class="lineNum">     260 </span>            : {
+<span class="lineNum">     261 </span><span class="lineNoCov">          0 :     return R&quot;(Raw volume: [raw://]/filename.[raw|img|nrrd](?output=format)#1024,1024,1024(,input format)</span>
+<span class="lineNum">     262 </span>            :   with formats being one of: char, int8, unsigned char, uint8, short, int16, unsigned short, uint16, int, int32, unsigned int, uint32, float
+<span class="lineNum">     263 </span>            :   The default input format is uint8, the default output format is the input
+<a name="264"><span class="lineNum">     264 </span>            :   format.)&quot;;</a>
+<span class="lineNum">     265 </span>            : }
+<span class="lineNum">     266 </span><span class="lineCov">         36 : }</span>
+</pre>
+      </td>
+    </tr>
+  </table>
+  <br>
+
+  <table width="100%" border=0 cellspacing=0 cellpadding=0>
+    <tr><td class="ruler"><img src="../glass.png" width=3 height=3 alt=""></td></tr>
+    <tr><td class="versionInfo">Generated by: <a href="http://ltp.sourceforge.net/coverage/lcov.php" target="_parent">LCOV version 1.11</a></td></tr>
+  </table>
+  <br>
+
+</body>
+</html>

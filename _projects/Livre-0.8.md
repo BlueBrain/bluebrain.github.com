@@ -4,7 +4,7 @@ version: "0.8"
 major: 0
 minor: 8
 description: Largescale Interactive Volume Rendering Engine (Livre)
-updated: 05/04/17
+updated: 08/06/17
 homepage: https://github.com/BlueBrain/Livre
 repository: https://github.com/BlueBrain/Livre.git
 issuesurl: https://github.com/BlueBrain/Livre/issues
@@ -12,7 +12,7 @@ packageurl:
 license: LGPL
 maturity: EP
 maintainers: Blue Brain Project (bbp-open-source@googlegroups.com)
-contributors: Raphael Dumusc
+contributors: Daniel Nachbaur
 readmetype: text/x-markdown
 ---
 # Livre
@@ -49,4 +49,14 @@ The following platforms and build environments are tested:
 
 The [API documentation](http://bluebrain.github.io/Livre-0.5/index.html)
 can be found on [bluebrain.github.io](http://bluebrain.github.io/).
+
+## Building
+
+Building from source is as simple as:
+
+    git clone --recursive https://github.com/BlueBrain/Livre/
+    mkdir Livre/Build
+    cd Livre/Build
+    cmake -GNinja -DCLONE_SUBPROJECTS=ON ..
+    ninja
 

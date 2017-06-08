@@ -1,4 +1,4 @@
 var searchData=
 [
-  ['handles',['handles',['../classlivre_1_1_data_source.html#a8368cfdc1be69e8f5ae37e9f5145ba3b',1,'livre::DataSource']]]
+  ['makecurrent',['makeCurrent',['../classlivre_1_1_g_l_context.html#a19ff075882cba25a29393a8af8e024c4',1,'livre::GLContext']]]
 ];

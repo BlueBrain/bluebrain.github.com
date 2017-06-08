@@ -1,4 +1,5 @@
 var searchData=
 [
-  ['empty',['empty',['../classlivre_1_1_configuration.html#af573807598aeceabc72cc0fd5bfb89f9',1,'livre::Configuration']]]
+  ['initialize',['initialize',['../classlivre_1_1_parameters.html#ac1ac8f6b45254551452e0187623cf3ab',1,'livre::Parameters']]],
+  ['initialize_5f',['initialize_',['../classlivre_1_1_parameters.html#a9684ce5c27fad9db01a56108526531c9',1,'livre::Parameters']]]
 ];

@@ -1,4 +1,5 @@
 var searchData=
 [
-  ['finishgl',['finishGL',['../classlivre_1_1_data_source.html#a4ce512eb0c0ef45e13d9a2c61b382b0e',1,'livre::DataSource::finishGL()'],['../classlivre_1_1_data_source_plugin.html#af748622edcc0441bebaba76be0ada608',1,'livre::DataSourcePlugin::finishGL()']]]
+  ['initialize',['initialize',['../classlivre_1_1_parameters.html#ac1ac8f6b45254551452e0187623cf3ab',1,'livre::Parameters']]],
+  ['initialize_5f',['initialize_',['../classlivre_1_1_parameters.html#a9684ce5c27fad9db01a56108526531c9',1,'livre::Parameters']]]
 ];
