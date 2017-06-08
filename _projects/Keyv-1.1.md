@@ -4,7 +4,7 @@ version: "1.1"
 major: 1
 minor: 1
 description: Key-Value based storage and caching using a variety of backends
-updated: 10/02/17
+updated: 08/06/17
 homepage: https://github.com/BlueBrain/Keyv
 repository: https://github.com/BlueBrain/Keyv.git
 issuesurl: https://github.com/BlueBrain/Keyv/issues
@@ -12,7 +12,7 @@ packageurl:
 license: LGPL
 maturity: EP
 maintainers: Blue Brain Project (bbp-open-source@googlegroups.com)
-contributors: Stefan Eilemann
+contributors: hernando
 readmetype: text/x-markdown
 ---
 /ˈkiːwi/
@@ -36,9 +36,9 @@ build environments are tested:
 
 Building from source is as simple as:
 
-    git clone https://github.com/BlueBrain/Keyv.git
+    git clone --recursive https://github.com/BlueBrain/Keyv.git
     mkdir Keyv/build
     cd Keyv/build
-    cmake -GNinja ..
+    cmake -GNinja -DCLONE_SUBPROJECTS=ON ..
     ninja
 
