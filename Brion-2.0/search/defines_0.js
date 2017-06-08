@@ -1,5 +1,6 @@
 var searchData=
 [
+  ['brain_5frev_5fstring',['BRAIN_REV_STRING',['../brain_2version_8h.html#a4e62f27c19693c1f33fc31c4cb650af0',1,'version.h']]],
   ['brain_5fversion_5fabi',['BRAIN_VERSION_ABI',['../brain_2version_8h.html#a43f616dc38b671e3b6afa09ea65d6ed0',1,'version.h']]],
   ['brain_5fversion_5fge',['BRAIN_VERSION_GE',['../brain_2version_8h.html#a12bdd529113976a8e97f0886e5855ca7',1,'version.h']]],
   ['brain_5fversion_5fgt',['BRAIN_VERSION_GT',['../brain_2version_8h.html#a16578e1b8002c2a9fe11a530f1c14b3f',1,'version.h']]],
@@ -9,6 +10,8 @@ var searchData=
   ['brain_5fversion_5fminor',['BRAIN_VERSION_MINOR',['../brain_2version_8h.html#a5136efd056f5d33648833945fdc64898',1,'version.h']]],
   ['brain_5fversion_5fpatch',['BRAIN_VERSION_PATCH',['../brain_2version_8h.html#a3418e370c6278025871bd9f779f63cc4',1,'version.h']]],
   ['brain_5fversion_5frevision',['BRAIN_VERSION_REVISION',['../brain_2version_8h.html#aa9caa3a96315ec3a2f071008e61efe02',1,'version.h']]],
+  ['brain_5fversion_5fstring',['BRAIN_VERSION_STRING',['../brain_2version_8h.html#ae9c214383c4f1971ca9725bc816b26c5',1,'version.h']]],
+  ['brion_5frev_5fstring',['BRION_REV_STRING',['../brion_2version_8h.html#a24a2f48d5e561f636d87d0627f514936',1,'version.h']]],
   ['brion_5fversion_5fabi',['BRION_VERSION_ABI',['../brion_2version_8h.html#a7920884b61851f5f7492f448ee8bc30a',1,'version.h']]],
   ['brion_5fversion_5fge',['BRION_VERSION_GE',['../brion_2version_8h.html#a570eddc11c0836577c6e34d667fae3c7',1,'version.h']]],
   ['brion_5fversion_5fgt',['BRION_VERSION_GT',['../brion_2version_8h.html#aaa5bc7bf409d096ebd5fb23a6affc8a1',1,'version.h']]],
@@ -17,5 +20,6 @@ var searchData=
   ['brion_5fversion_5fmajor',['BRION_VERSION_MAJOR',['../brion_2version_8h.html#aa5be9a4351e20d44fa19574e589b2fb3',1,'version.h']]],
   ['brion_5fversion_5fminor',['BRION_VERSION_MINOR',['../brion_2version_8h.html#aa5a2357f391cbb650d1d8894ee1b526f',1,'version.h']]],
   ['brion_5fversion_5fpatch',['BRION_VERSION_PATCH',['../brion_2version_8h.html#ab7df48db132552459d856511d31fec71',1,'version.h']]],
-  ['brion_5fversion_5frevision',['BRION_VERSION_REVISION',['../brion_2version_8h.html#a6044ab3ac01614da058254ed01b5b206',1,'version.h']]]
+  ['brion_5fversion_5frevision',['BRION_VERSION_REVISION',['../brion_2version_8h.html#a6044ab3ac01614da058254ed01b5b206',1,'version.h']]],
+  ['brion_5fversion_5fstring',['BRION_VERSION_STRING',['../brion_2version_8h.html#ac67e444e6ce8ed20647801f3173b440a',1,'version.h']]]
 ];

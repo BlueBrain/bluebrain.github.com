@@ -4,7 +4,7 @@ version: "2.0"
 major: 2
 minor: 0
 description: The Blue Brain C++ I/O library
-updated: 24/05/17
+updated: 08/06/17
 homepage: https://github.com/BlueBrain/Brion
 repository: https://github.com/BlueBrain/Brion.git
 issuesurl: https://github.com/BlueBrain/Brion/issues
@@ -12,7 +12,7 @@ packageurl:
 license: LGPL
 maturity: EP
 maintainers: Blue Brain Project (bbp-open-source@googlegroups.com)
-contributors: Juan Hernando Vieites
+contributors: Daniel Nachbaur
 readmetype: text/x-markdown
 ---
 # Brion
@@ -85,9 +85,9 @@ environments are tested:
 
 Building from source is as simple as:
 
-    git clone https://github.com/BlueBrain/Brion.git
+    git clone --recursive https://github.com/BlueBrain/Brion.git
     mkdir Brion/build
     cd Brion/build
-    cmake -GNinja ..
+    cmake -GNinja -DCLONE_SUBPROJECTS=ON ..
     ninja
 
