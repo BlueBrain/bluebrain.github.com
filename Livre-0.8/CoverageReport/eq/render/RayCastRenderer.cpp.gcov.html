@@ -32,12 +32,12 @@
             <td></td>
             <td class="headerItem">Lines:</td>
             <td class="headerCovTableEntry">1</td>
-            <td class="headerCovTableEntry">373</td>
+            <td class="headerCovTableEntry">375</td>
             <td class="headerCovTableEntryLo">0.3 %</td>
           </tr>
           <tr>
             <td class="headerItem">Date:</td>
-            <td class="headerValue">2017-06-08 03:06:02</td>
+            <td class="headerValue">2017-06-09 03:05:35</td>
             <td></td>
             <td class="headerItem">Functions:</td>
             <td class="headerCovTableEntry">2</td>
@@ -529,242 +529,245 @@
 <span class="lineNum">     467 </span>            : 
 <span class="lineNum">     468 </span><span class="lineNoCov">          0 :     void onFrameRender(const NodeIds&amp; bricks)</span>
 <span class="lineNum">     469 </span>            :     {
-<span class="lineNum">     470 </span><span class="lineNoCov">          0 :         const GLuint posVBO = createAndFillVertexBuffer(bricks);</span>
-<span class="lineNum">     471 </span>            : 
-<span class="lineNum">     472 </span><span class="lineNoCov">          0 :         size_t index = 0;</span>
-<span class="lineNum">     473 </span><span class="lineNoCov">          0 :         for (const NodeId&amp; brick : bricks)</span>
-<span class="lineNum">     474 </span><span class="lineNoCov">          0 :             renderBrick(brick, index++, posVBO);</span>
-<span class="lineNum">     475 </span>            : 
-<span class="lineNum">     476 </span><span class="lineNoCov">          0 :         glDeleteBuffers(1, &amp;posVBO);</span>
-<span class="lineNum">     477 </span>            : 
-<span class="lineNum">     478 </span>            :         // The flush is needed because the textures are loaded asynchronously by
-<span class="lineNum">     479 </span>            :         // a thread pool.
-<span class="lineNum">     480 </span><span class="lineNoCov">          0 :         glFlush();</span>
-<a name="481"><span class="lineNum">     481 </span><span class="lineNoCov">          0 :     }</span></a>
-<span class="lineNum">     482 </span>            : 
-<span class="lineNum">     483 </span><span class="lineNoCov">          0 :     void renderBrickVBO(const size_t index, const GLuint posVBO, bool front,</span>
-<span class="lineNum">     484 </span>            :                         bool back)
-<span class="lineNum">     485 </span>            :     {
-<span class="lineNum">     486 </span><span class="lineNoCov">          0 :         if (!front &amp;&amp; !back)</span>
-<span class="lineNum">     487 </span><span class="lineNoCov">          0 :             return;</span>
-<span class="lineNum">     488 </span><span class="lineNoCov">          0 :         else if (front &amp;&amp; !back)</span>
-<span class="lineNum">     489 </span><span class="lineNoCov">          0 :             glCullFace(GL_BACK);</span>
-<span class="lineNum">     490 </span><span class="lineNoCov">          0 :         else if (!front &amp;&amp; back)</span>
-<span class="lineNum">     491 </span><span class="lineNoCov">          0 :             glCullFace(GL_FRONT);</span>
-<span class="lineNum">     492 </span>            : 
-<span class="lineNum">     493 </span><span class="lineNoCov">          0 :         glBindBuffer(GL_ARRAY_BUFFER, posVBO);</span>
-<span class="lineNum">     494 </span><span class="lineNoCov">          0 :         glEnableVertexAttribArray(0);</span>
-<span class="lineNum">     495 </span><span class="lineNoCov">          0 :         glVertexAttribPointer(0, 3, GL_FLOAT, GL_FALSE, 0, NULL);</span>
-<span class="lineNum">     496 </span>            : 
-<span class="lineNum">     497 </span><span class="lineNoCov">          0 :         glDrawArrays(GL_TRIANGLES, index * nVerticesRenderBrick,</span>
-<span class="lineNum">     498 </span><span class="lineNoCov">          0 :                      nVerticesRenderBrick);</span>
-<span class="lineNum">     499 </span>            : 
-<span class="lineNum">     500 </span><span class="lineNoCov">          0 :         glDisableVertexAttribArray(0);</span>
-<a name="501"><span class="lineNum">     501 </span>            :     }</a>
-<span class="lineNum">     502 </span>            : 
-<span class="lineNum">     503 </span><span class="lineNoCov">          0 :     void renderBrick(const NodeId&amp; rb, const size_t index, const GLuint posVBO)</span>
-<span class="lineNum">     504 </span>            :     {
-<span class="lineNum">     505 </span><span class="lineNoCov">          0 :         GLSLShaders::Handle program = _rayCastShaders.getProgram();</span>
-<span class="lineNum">     506 </span><span class="lineNoCov">          0 :         LBASSERT(program);</span>
-<span class="lineNum">     507 </span>            : 
-<span class="lineNum">     508 </span>            :         // Enable shaders
-<span class="lineNum">     509 </span><span class="lineNoCov">          0 :         glUseProgram(program);</span>
-<span class="lineNum">     510 </span>            : 
-<span class="lineNum">     511 </span>            :         const ConstTextureObjectPtr textureObj =
-<span class="lineNum">     512 </span>            :             std::static_pointer_cast&lt;const TextureObject&gt;(
-<span class="lineNum">     513 </span><span class="lineNoCov">          0 :                 _textureCache.get(rb.getId()));</span>
-<span class="lineNum">     514 </span><span class="lineNoCov">          0 :         const TextureState&amp; texState = textureObj-&gt;getTextureState();</span>
-<span class="lineNum">     515 </span><span class="lineNoCov">          0 :         const LODNode&amp; lodNode = _dataSource.getNode(rb);</span>
-<span class="lineNum">     516 </span>            : 
-<span class="lineNum">     517 </span><span class="lineNoCov">          0 :         if (texState.textureId == INVALID_TEXTURE_ID)</span>
-<span class="lineNum">     518 </span>            :         {
-<span class="lineNum">     519 </span><span class="lineNoCov">          0 :             LBERROR &lt;&lt; &quot;Invalid texture for node : &quot; &lt;&lt; lodNode.getNodeId()</span>
-<span class="lineNum">     520 </span><span class="lineNoCov">          0 :                     &lt;&lt; std::endl;</span>
-<span class="lineNum">     521 </span><span class="lineNoCov">          0 :             return;</span>
-<span class="lineNum">     522 </span>            :         }
-<span class="lineNum">     523 </span>            : 
-<span class="lineNum">     524 </span><span class="lineNoCov">          0 :         GLint tParamNameGL = glGetUniformLocation(program, &quot;aabbMin&quot;);</span>
-<span class="lineNum">     525 </span><span class="lineNoCov">          0 :         glUniform3fv(tParamNameGL, 1, lodNode.getWorldBox().getMin().array);</span>
-<span class="lineNum">     526 </span>            : 
-<span class="lineNum">     527 </span><span class="lineNoCov">          0 :         tParamNameGL = glGetUniformLocation(program, &quot;aabbMax&quot;);</span>
-<span class="lineNum">     528 </span><span class="lineNoCov">          0 :         glUniform3fv(tParamNameGL, 1, lodNode.getWorldBox().getMax().array);</span>
-<span class="lineNum">     529 </span>            : 
-<span class="lineNum">     530 </span><span class="lineNoCov">          0 :         tParamNameGL = glGetUniformLocation(program, &quot;textureMin&quot;);</span>
-<span class="lineNum">     531 </span><span class="lineNoCov">          0 :         glUniform3fv(tParamNameGL, 1, texState.textureCoordsMin.array);</span>
-<span class="lineNum">     532 </span>            : 
-<span class="lineNum">     533 </span><span class="lineNoCov">          0 :         tParamNameGL = glGetUniformLocation(program, &quot;textureMax&quot;);</span>
-<span class="lineNum">     534 </span><span class="lineNoCov">          0 :         glUniform3fv(tParamNameGL, 1, texState.textureCoordsMax.array);</span>
-<span class="lineNum">     535 </span>            : 
-<span class="lineNum">     536 </span>            :         const Vector3f&amp; voxSize =
-<span class="lineNum">     537 </span><span class="lineNoCov">          0 :             texState.textureSize / lodNode.getWorldBox().getSize();</span>
-<span class="lineNum">     538 </span><span class="lineNoCov">          0 :         tParamNameGL = glGetUniformLocation(program, &quot;voxelSpacePerWorldSpace&quot;);</span>
-<span class="lineNum">     539 </span><span class="lineNoCov">          0 :         glUniform3fv(tParamNameGL, 1, voxSize.array);</span>
-<span class="lineNum">     540 </span>            : 
-<span class="lineNum">     541 </span><span class="lineNoCov">          0 :         glActiveTexture(GL_TEXTURE0);</span>
-<span class="lineNum">     542 </span><span class="lineNoCov">          0 :         texState.bind();</span>
-<span class="lineNum">     543 </span>            : 
-<span class="lineNum">     544 </span><span class="lineNoCov">          0 :         glTexParameteri(GL_TEXTURE_3D, GL_TEXTURE_MIN_FILTER,</span>
-<span class="lineNum">     545 </span><span class="lineNoCov">          0 :                         _linearFiltering ? GL_LINEAR : GL_NEAREST);</span>
-<span class="lineNum">     546 </span><span class="lineNoCov">          0 :         glTexParameteri(GL_TEXTURE_3D, GL_TEXTURE_MAG_FILTER,</span>
-<span class="lineNum">     547 </span><span class="lineNoCov">          0 :                         _linearFiltering ? GL_LINEAR : GL_NEAREST);</span>
-<span class="lineNum">     548 </span>            : 
-<span class="lineNum">     549 </span><span class="lineNoCov">          0 :         tParamNameGL = glGetUniformLocation(program, &quot;volumeTexUint&quot;);</span>
-<span class="lineNum">     550 </span><span class="lineNoCov">          0 :         glUniform1i(tParamNameGL, 0);</span>
-<span class="lineNum">     551 </span>            : 
-<span class="lineNum">     552 </span><span class="lineNoCov">          0 :         tParamNameGL = glGetUniformLocation(program, &quot;volumeTexInt&quot;);</span>
-<span class="lineNum">     553 </span><span class="lineNoCov">          0 :         glUniform1i(tParamNameGL, 0);</span>
-<span class="lineNum">     554 </span>            : 
-<span class="lineNum">     555 </span><span class="lineNoCov">          0 :         tParamNameGL = glGetUniformLocation(program, &quot;volumeTexFloat&quot;);</span>
-<span class="lineNum">     556 </span><span class="lineNoCov">          0 :         glUniform1i(tParamNameGL, 0);</span>
-<span class="lineNum">     557 </span>            : 
-<span class="lineNum">     558 </span><span class="lineNoCov">          0 :         const uint32_t refLevel = lodNode.getRefLevel();</span>
-<span class="lineNum">     559 </span>            : 
-<span class="lineNum">     560 </span><span class="lineNoCov">          0 :         tParamNameGL = glGetUniformLocation(program, &quot;refLevel&quot;);</span>
-<span class="lineNum">     561 </span><span class="lineNoCov">          0 :         glUniform1i(tParamNameGL, refLevel);</span>
-<span class="lineNum">     562 </span>            : 
-<span class="lineNum">     563 </span><span class="lineNoCov">          0 :         _usedTextures[1].push_back(texState.textureId);</span>
-<span class="lineNum">     564 </span>            : 
-<span class="lineNum">     565 </span>            :         renderBrickVBO(index, posVBO, false /* draw front */,
-<span class="lineNum">     566 </span><span class="lineNoCov">          0 :                        true /* cull back */);</span>
-<span class="lineNum">     567 </span><span class="lineNoCov">          0 :         glMemoryBarrier(GL_SHADER_IMAGE_ACCESS_BARRIER_BIT);</span>
-<span class="lineNum">     568 </span>            : 
-<span class="lineNum">     569 </span><span class="lineNoCov">          0 :         glUseProgram(0);</span>
-<a name="570"><span class="lineNum">     570 </span>            :     }</a>
-<span class="lineNum">     571 </span>            : 
-<span class="lineNum">     572 </span><span class="lineNoCov">          0 :     void copyTexToFrameBufAndClear()</span>
-<span class="lineNum">     573 </span>            :     {
-<span class="lineNum">     574 </span><span class="lineNoCov">          0 :         GLSLShaders::Handle program = _texCopyShaders.getProgram();</span>
-<span class="lineNum">     575 </span><span class="lineNoCov">          0 :         LBASSERT(program);</span>
-<span class="lineNum">     576 </span>            : 
-<span class="lineNum">     577 </span><span class="lineNoCov">          0 :         glUseProgram(program);</span>
-<span class="lineNum">     578 </span><span class="lineNoCov">          0 :         GLint tParamNameGL = glGetUniformLocation(program, &quot;renderTexture&quot;);</span>
-<span class="lineNum">     579 </span><span class="lineNoCov">          0 :         glUniform1i(tParamNameGL, 0);</span>
-<span class="lineNum">     580 </span>            : 
-<span class="lineNum">     581 </span><span class="lineNoCov">          0 :         glBindBuffer(GL_ARRAY_BUFFER, _quadVBO);</span>
-<span class="lineNum">     582 </span><span class="lineNoCov">          0 :         glEnableVertexAttribArray(0);</span>
-<span class="lineNum">     583 </span><span class="lineNoCov">          0 :         glVertexAttribPointer(0, 3, GL_FLOAT, GL_FALSE, 0, NULL);</span>
-<span class="lineNum">     584 </span>            : 
-<span class="lineNum">     585 </span><span class="lineNoCov">          0 :         glDisable(GL_CULL_FACE);</span>
-<span class="lineNum">     586 </span><span class="lineNoCov">          0 :         glDrawArrays(GL_TRIANGLES, 0, 6);</span>
-<span class="lineNum">     587 </span>            : 
-<span class="lineNum">     588 </span><span class="lineNoCov">          0 :         glUseProgram(0);</span>
-<a name="589"><span class="lineNum">     589 </span><span class="lineNoCov">          0 :     }</span></a>
-<span class="lineNum">     590 </span>            : 
-<span class="lineNum">     591 </span><span class="lineNoCov">          0 :     void renderAxis(const Frustum&amp; frustum)</span>
-<span class="lineNum">     592 </span>            :     {
-<span class="lineNum">     593 </span><span class="lineNoCov">          0 :         GLSLShaders::Handle program = _axisShaders.getProgram();</span>
-<span class="lineNum">     594 </span><span class="lineNoCov">          0 :         LBASSERT(program);</span>
-<span class="lineNum">     595 </span><span class="lineNoCov">          0 :         glUseProgram(program);</span>
-<span class="lineNum">     596 </span>            : 
-<span class="lineNum">     597 </span><span class="lineNoCov">          0 :         GLint tParamNameGL = glGetUniformLocation(program, &quot;renderTexture&quot;);</span>
-<span class="lineNum">     598 </span><span class="lineNoCov">          0 :         glUniform1i(tParamNameGL, 0);</span>
-<span class="lineNum">     599 </span>            : 
-<span class="lineNum">     600 </span>            :         tParamNameGL =
-<span class="lineNum">     601 </span><span class="lineNoCov">          0 :             glGetUniformLocation(program, &quot;modelViewProjectionMatrix&quot;);</span>
-<span class="lineNum">     602 </span>            :         glUniformMatrix4fv(tParamNameGL, 1, false,
-<span class="lineNum">     603 </span><span class="lineNoCov">          0 :                            frustum.getMVPMatrix().array);</span>
-<span class="lineNum">     604 </span>            : 
-<span class="lineNum">     605 </span><span class="lineNoCov">          0 :         tParamNameGL = glGetUniformLocation(program, &quot;modelView&quot;);</span>
-<span class="lineNum">     606 </span><span class="lineNoCov">          0 :         glUniformMatrix4fv(tParamNameGL, 1, false, frustum.getMVMatrix().array);</span>
-<span class="lineNum">     607 </span>            : 
-<span class="lineNum">     608 </span><span class="lineNoCov">          0 :         tParamNameGL = glGetUniformLocation(program, &quot;normalMatrix&quot;);</span>
-<span class="lineNum">     609 </span>            :         glUniformMatrix4fv(tParamNameGL, 1, false,
-<span class="lineNum">     610 </span><span class="lineNoCov">          0 :                            frustum.getNormalMatrix().array);</span>
-<span class="lineNum">     611 </span>            : 
-<span class="lineNum">     612 </span><span class="lineNoCov">          0 :         _axis.draw();</span>
+<span class="lineNum">     470 </span><span class="lineNoCov">          0 :         _visibleNodes.clear();</span>
+<span class="lineNum">     471 </span><span class="lineNoCov">          0 :         const GLuint posVBO = createAndFillVertexBuffer(bricks);</span>
+<span class="lineNum">     472 </span>            : 
+<span class="lineNum">     473 </span><span class="lineNoCov">          0 :         size_t index = 0;</span>
+<span class="lineNum">     474 </span><span class="lineNoCov">          0 :         for (const NodeId&amp; brick : bricks)</span>
+<span class="lineNum">     475 </span><span class="lineNoCov">          0 :             renderBrick(brick, index++, posVBO);</span>
+<span class="lineNum">     476 </span>            : 
+<span class="lineNum">     477 </span><span class="lineNoCov">          0 :         glDeleteBuffers(1, &amp;posVBO);</span>
+<span class="lineNum">     478 </span>            : 
+<span class="lineNum">     479 </span>            :         // The flush is needed because the textures are loaded asynchronously by
+<span class="lineNum">     480 </span>            :         // a thread pool.
+<span class="lineNum">     481 </span><span class="lineNoCov">          0 :         glFlush();</span>
+<a name="482"><span class="lineNum">     482 </span><span class="lineNoCov">          0 :     }</span></a>
+<span class="lineNum">     483 </span>            : 
+<span class="lineNum">     484 </span><span class="lineNoCov">          0 :     void renderBrickVBO(const size_t index, const GLuint posVBO, bool front,</span>
+<span class="lineNum">     485 </span>            :                         bool back)
+<span class="lineNum">     486 </span>            :     {
+<span class="lineNum">     487 </span><span class="lineNoCov">          0 :         if (!front &amp;&amp; !back)</span>
+<span class="lineNum">     488 </span><span class="lineNoCov">          0 :             return;</span>
+<span class="lineNum">     489 </span><span class="lineNoCov">          0 :         else if (front &amp;&amp; !back)</span>
+<span class="lineNum">     490 </span><span class="lineNoCov">          0 :             glCullFace(GL_BACK);</span>
+<span class="lineNum">     491 </span><span class="lineNoCov">          0 :         else if (!front &amp;&amp; back)</span>
+<span class="lineNum">     492 </span><span class="lineNoCov">          0 :             glCullFace(GL_FRONT);</span>
+<span class="lineNum">     493 </span>            : 
+<span class="lineNum">     494 </span><span class="lineNoCov">          0 :         glBindBuffer(GL_ARRAY_BUFFER, posVBO);</span>
+<span class="lineNum">     495 </span><span class="lineNoCov">          0 :         glEnableVertexAttribArray(0);</span>
+<span class="lineNum">     496 </span><span class="lineNoCov">          0 :         glVertexAttribPointer(0, 3, GL_FLOAT, GL_FALSE, 0, NULL);</span>
+<span class="lineNum">     497 </span>            : 
+<span class="lineNum">     498 </span><span class="lineNoCov">          0 :         glDrawArrays(GL_TRIANGLES, index * nVerticesRenderBrick,</span>
+<span class="lineNum">     499 </span><span class="lineNoCov">          0 :                      nVerticesRenderBrick);</span>
+<span class="lineNum">     500 </span>            : 
+<span class="lineNum">     501 </span><span class="lineNoCov">          0 :         glDisableVertexAttribArray(0);</span>
+<a name="502"><span class="lineNum">     502 </span>            :     }</a>
+<span class="lineNum">     503 </span>            : 
+<span class="lineNum">     504 </span><span class="lineNoCov">          0 :     void renderBrick(const NodeId&amp; rb, const size_t index, const GLuint posVBO)</span>
+<span class="lineNum">     505 </span>            :     {
+<span class="lineNum">     506 </span><span class="lineNoCov">          0 :         GLSLShaders::Handle program = _rayCastShaders.getProgram();</span>
+<span class="lineNum">     507 </span><span class="lineNoCov">          0 :         LBASSERT(program);</span>
+<span class="lineNum">     508 </span>            : 
+<span class="lineNum">     509 </span>            :         // Enable shaders
+<span class="lineNum">     510 </span><span class="lineNoCov">          0 :         glUseProgram(program);</span>
+<span class="lineNum">     511 </span>            : 
+<span class="lineNum">     512 </span>            :         const ConstTextureObjectPtr textureObj =
+<span class="lineNum">     513 </span>            :             std::static_pointer_cast&lt;const TextureObject&gt;(
+<span class="lineNum">     514 </span><span class="lineNoCov">          0 :                 _textureCache.get(rb.getId()));</span>
+<span class="lineNum">     515 </span><span class="lineNoCov">          0 :         const TextureState&amp; texState = textureObj-&gt;getTextureState();</span>
+<span class="lineNum">     516 </span><span class="lineNoCov">          0 :         const LODNode&amp; lodNode = _dataSource.getNode(rb);</span>
+<span class="lineNum">     517 </span>            : 
+<span class="lineNum">     518 </span><span class="lineNoCov">          0 :         if (texState.textureId == INVALID_TEXTURE_ID)</span>
+<span class="lineNum">     519 </span>            :         {
+<span class="lineNum">     520 </span><span class="lineNoCov">          0 :             LBERROR &lt;&lt; &quot;Invalid texture for node : &quot; &lt;&lt; lodNode.getNodeId()</span>
+<span class="lineNum">     521 </span><span class="lineNoCov">          0 :                     &lt;&lt; std::endl;</span>
+<span class="lineNum">     522 </span><span class="lineNoCov">          0 :             return;</span>
+<span class="lineNum">     523 </span>            :         }
+<span class="lineNum">     524 </span>            : 
+<span class="lineNum">     525 </span><span class="lineNoCov">          0 :         GLint tParamNameGL = glGetUniformLocation(program, &quot;aabbMin&quot;);</span>
+<span class="lineNum">     526 </span><span class="lineNoCov">          0 :         glUniform3fv(tParamNameGL, 1, lodNode.getWorldBox().getMin().array);</span>
+<span class="lineNum">     527 </span>            : 
+<span class="lineNum">     528 </span><span class="lineNoCov">          0 :         tParamNameGL = glGetUniformLocation(program, &quot;aabbMax&quot;);</span>
+<span class="lineNum">     529 </span><span class="lineNoCov">          0 :         glUniform3fv(tParamNameGL, 1, lodNode.getWorldBox().getMax().array);</span>
+<span class="lineNum">     530 </span>            : 
+<span class="lineNum">     531 </span><span class="lineNoCov">          0 :         tParamNameGL = glGetUniformLocation(program, &quot;textureMin&quot;);</span>
+<span class="lineNum">     532 </span><span class="lineNoCov">          0 :         glUniform3fv(tParamNameGL, 1, texState.textureCoordsMin.array);</span>
+<span class="lineNum">     533 </span>            : 
+<span class="lineNum">     534 </span><span class="lineNoCov">          0 :         tParamNameGL = glGetUniformLocation(program, &quot;textureMax&quot;);</span>
+<span class="lineNum">     535 </span><span class="lineNoCov">          0 :         glUniform3fv(tParamNameGL, 1, texState.textureCoordsMax.array);</span>
+<span class="lineNum">     536 </span>            : 
+<span class="lineNum">     537 </span>            :         const Vector3f&amp; voxSize =
+<span class="lineNum">     538 </span><span class="lineNoCov">          0 :             texState.textureSize / lodNode.getWorldBox().getSize();</span>
+<span class="lineNum">     539 </span><span class="lineNoCov">          0 :         tParamNameGL = glGetUniformLocation(program, &quot;voxelSpacePerWorldSpace&quot;);</span>
+<span class="lineNum">     540 </span><span class="lineNoCov">          0 :         glUniform3fv(tParamNameGL, 1, voxSize.array);</span>
+<span class="lineNum">     541 </span>            : 
+<span class="lineNum">     542 </span><span class="lineNoCov">          0 :         glActiveTexture(GL_TEXTURE0);</span>
+<span class="lineNum">     543 </span><span class="lineNoCov">          0 :         texState.bind();</span>
+<span class="lineNum">     544 </span>            : 
+<span class="lineNum">     545 </span><span class="lineNoCov">          0 :         glTexParameteri(GL_TEXTURE_3D, GL_TEXTURE_MIN_FILTER,</span>
+<span class="lineNum">     546 </span><span class="lineNoCov">          0 :                         _linearFiltering ? GL_LINEAR : GL_NEAREST);</span>
+<span class="lineNum">     547 </span><span class="lineNoCov">          0 :         glTexParameteri(GL_TEXTURE_3D, GL_TEXTURE_MAG_FILTER,</span>
+<span class="lineNum">     548 </span><span class="lineNoCov">          0 :                         _linearFiltering ? GL_LINEAR : GL_NEAREST);</span>
+<span class="lineNum">     549 </span>            : 
+<span class="lineNum">     550 </span><span class="lineNoCov">          0 :         tParamNameGL = glGetUniformLocation(program, &quot;volumeTexUint&quot;);</span>
+<span class="lineNum">     551 </span><span class="lineNoCov">          0 :         glUniform1i(tParamNameGL, 0);</span>
+<span class="lineNum">     552 </span>            : 
+<span class="lineNum">     553 </span><span class="lineNoCov">          0 :         tParamNameGL = glGetUniformLocation(program, &quot;volumeTexInt&quot;);</span>
+<span class="lineNum">     554 </span><span class="lineNoCov">          0 :         glUniform1i(tParamNameGL, 0);</span>
+<span class="lineNum">     555 </span>            : 
+<span class="lineNum">     556 </span><span class="lineNoCov">          0 :         tParamNameGL = glGetUniformLocation(program, &quot;volumeTexFloat&quot;);</span>
+<span class="lineNum">     557 </span><span class="lineNoCov">          0 :         glUniform1i(tParamNameGL, 0);</span>
+<span class="lineNum">     558 </span>            : 
+<span class="lineNum">     559 </span><span class="lineNoCov">          0 :         const uint32_t refLevel = lodNode.getRefLevel();</span>
+<span class="lineNum">     560 </span>            : 
+<span class="lineNum">     561 </span><span class="lineNoCov">          0 :         tParamNameGL = glGetUniformLocation(program, &quot;refLevel&quot;);</span>
+<span class="lineNum">     562 </span><span class="lineNoCov">          0 :         glUniform1i(tParamNameGL, refLevel);</span>
+<span class="lineNum">     563 </span>            : 
+<span class="lineNum">     564 </span><span class="lineNoCov">          0 :         _usedTextures[1].push_back(texState.textureId);</span>
+<span class="lineNum">     565 </span><span class="lineNoCov">          0 :         _visibleNodes.push_back(rb);</span>
+<span class="lineNum">     566 </span>            : 
+<span class="lineNum">     567 </span>            :         renderBrickVBO(index, posVBO, false /* draw front */,
+<span class="lineNum">     568 </span><span class="lineNoCov">          0 :                        true /* cull back */);</span>
+<span class="lineNum">     569 </span><span class="lineNoCov">          0 :         glMemoryBarrier(GL_SHADER_IMAGE_ACCESS_BARRIER_BIT);</span>
+<span class="lineNum">     570 </span>            : 
+<span class="lineNum">     571 </span><span class="lineNoCov">          0 :         glUseProgram(0);</span>
+<a name="572"><span class="lineNum">     572 </span>            :     }</a>
+<span class="lineNum">     573 </span>            : 
+<span class="lineNum">     574 </span><span class="lineNoCov">          0 :     void copyTexToFrameBufAndClear()</span>
+<span class="lineNum">     575 </span>            :     {
+<span class="lineNum">     576 </span><span class="lineNoCov">          0 :         GLSLShaders::Handle program = _texCopyShaders.getProgram();</span>
+<span class="lineNum">     577 </span><span class="lineNoCov">          0 :         LBASSERT(program);</span>
+<span class="lineNum">     578 </span>            : 
+<span class="lineNum">     579 </span><span class="lineNoCov">          0 :         glUseProgram(program);</span>
+<span class="lineNum">     580 </span><span class="lineNoCov">          0 :         GLint tParamNameGL = glGetUniformLocation(program, &quot;renderTexture&quot;);</span>
+<span class="lineNum">     581 </span><span class="lineNoCov">          0 :         glUniform1i(tParamNameGL, 0);</span>
+<span class="lineNum">     582 </span>            : 
+<span class="lineNum">     583 </span><span class="lineNoCov">          0 :         glBindBuffer(GL_ARRAY_BUFFER, _quadVBO);</span>
+<span class="lineNum">     584 </span><span class="lineNoCov">          0 :         glEnableVertexAttribArray(0);</span>
+<span class="lineNum">     585 </span><span class="lineNoCov">          0 :         glVertexAttribPointer(0, 3, GL_FLOAT, GL_FALSE, 0, NULL);</span>
+<span class="lineNum">     586 </span>            : 
+<span class="lineNum">     587 </span><span class="lineNoCov">          0 :         glDisable(GL_CULL_FACE);</span>
+<span class="lineNum">     588 </span><span class="lineNoCov">          0 :         glDrawArrays(GL_TRIANGLES, 0, 6);</span>
+<span class="lineNum">     589 </span>            : 
+<span class="lineNum">     590 </span><span class="lineNoCov">          0 :         glUseProgram(0);</span>
+<a name="591"><span class="lineNum">     591 </span><span class="lineNoCov">          0 :     }</span></a>
+<span class="lineNum">     592 </span>            : 
+<span class="lineNum">     593 </span><span class="lineNoCov">          0 :     void renderAxis(const Frustum&amp; frustum)</span>
+<span class="lineNum">     594 </span>            :     {
+<span class="lineNum">     595 </span><span class="lineNoCov">          0 :         GLSLShaders::Handle program = _axisShaders.getProgram();</span>
+<span class="lineNum">     596 </span><span class="lineNoCov">          0 :         LBASSERT(program);</span>
+<span class="lineNum">     597 </span><span class="lineNoCov">          0 :         glUseProgram(program);</span>
+<span class="lineNum">     598 </span>            : 
+<span class="lineNum">     599 </span><span class="lineNoCov">          0 :         GLint tParamNameGL = glGetUniformLocation(program, &quot;renderTexture&quot;);</span>
+<span class="lineNum">     600 </span><span class="lineNoCov">          0 :         glUniform1i(tParamNameGL, 0);</span>
+<span class="lineNum">     601 </span>            : 
+<span class="lineNum">     602 </span>            :         tParamNameGL =
+<span class="lineNum">     603 </span><span class="lineNoCov">          0 :             glGetUniformLocation(program, &quot;modelViewProjectionMatrix&quot;);</span>
+<span class="lineNum">     604 </span>            :         glUniformMatrix4fv(tParamNameGL, 1, false,
+<span class="lineNum">     605 </span><span class="lineNoCov">          0 :                            frustum.getMVPMatrix().array);</span>
+<span class="lineNum">     606 </span>            : 
+<span class="lineNum">     607 </span><span class="lineNoCov">          0 :         tParamNameGL = glGetUniformLocation(program, &quot;modelView&quot;);</span>
+<span class="lineNum">     608 </span><span class="lineNoCov">          0 :         glUniformMatrix4fv(tParamNameGL, 1, false, frustum.getMVMatrix().array);</span>
+<span class="lineNum">     609 </span>            : 
+<span class="lineNum">     610 </span><span class="lineNoCov">          0 :         tParamNameGL = glGetUniformLocation(program, &quot;normalMatrix&quot;);</span>
+<span class="lineNum">     611 </span>            :         glUniformMatrix4fv(tParamNameGL, 1, false,
+<span class="lineNum">     612 </span><span class="lineNoCov">          0 :                            frustum.getNormalMatrix().array);</span>
 <span class="lineNum">     613 </span>            : 
-<span class="lineNum">     614 </span><span class="lineNoCov">          0 :         glUseProgram(0);</span>
-<a name="615"><span class="lineNum">     615 </span><span class="lineNoCov">          0 :     }</span></a>
-<span class="lineNum">     616 </span>            : 
-<span class="lineNum">     617 </span><span class="lineNoCov">          0 :     void onFrameEnd(const Frustum&amp; frustum)</span>
-<span class="lineNum">     618 </span>            :     {
-<span class="lineNum">     619 </span><span class="lineNoCov">          0 :         if (_drawAxis)</span>
-<span class="lineNum">     620 </span><span class="lineNoCov">          0 :             renderAxis(frustum);</span>
-<span class="lineNum">     621 </span>            : 
-<span class="lineNum">     622 </span><span class="lineNoCov">          0 :         std::sort(_usedTextures[1].begin(), _usedTextures[1].end());</span>
-<span class="lineNum">     623 </span>            : #ifdef LIVRE_DEBUG_RENDERING
-<span class="lineNum">     624 </span><span class="lineNoCov">          0 :         if (_usedTextures[0] != _usedTextures[1])</span>
-<span class="lineNum">     625 </span>            :         {
-<span class="lineNum">     626 </span><span class="lineNoCov">          0 :             std::cout &lt;&lt; &quot;Rendered &quot;;</span>
-<span class="lineNum">     627 </span>            :             std::copy(_usedTextures[1].begin(), _usedTextures[1].end(),
-<span class="lineNum">     628 </span><span class="lineNoCov">          0 :                       std::ostream_iterator&lt;uint32_t&gt;(std::cout, &quot; &quot;));</span>
-<span class="lineNum">     629 </span><span class="lineNoCov">          0 :             std::cout &lt;&lt; &quot; in &quot; &lt;&lt; (void*)this &lt;&lt; std::endl;</span>
-<span class="lineNum">     630 </span>            :         }
-<span class="lineNum">     631 </span>            : #endif
-<span class="lineNum">     632 </span><span class="lineNoCov">          0 :         _usedTextures[0].swap(_usedTextures[1]);</span>
-<span class="lineNum">     633 </span><span class="lineNoCov">          0 :         _usedTextures[1].clear();</span>
-<span class="lineNum">     634 </span>            : 
-<span class="lineNum">     635 </span><span class="lineNoCov">          0 :         glDrawBuffer(_drawBuffer);</span>
-<span class="lineNum">     636 </span><span class="lineNoCov">          0 :         copyTexToFrameBufAndClear();</span>
-<span class="lineNum">     637 </span><span class="lineNoCov">          0 :     }</span>
-<span class="lineNum">     638 </span>            : 
-<span class="lineNum">     639 </span>            :     eq::util::Texture _renderTexture;
-<span class="lineNum">     640 </span>            :     GLSLShaders _rayCastShaders;
-<span class="lineNum">     641 </span>            :     GLSLShaders _texCopyShaders;
-<span class="lineNum">     642 </span>            :     GLSLShaders _axisShaders;
-<span class="lineNum">     643 </span>            :     uint32_t _nSamplesPerRay;
-<span class="lineNum">     644 </span>            :     uint32_t _computedSamplesPerRay;
-<span class="lineNum">     645 </span>            :     uint32_t _transferFunctionTexture;
-<span class="lineNum">     646 </span>            :     std::vector&lt;uint32_t&gt; _usedTextures[2]; // last, current frame
-<span class="lineNum">     647 </span>            :     const Cache&amp; _textureCache;
-<span class="lineNum">     648 </span>            :     const DataSource&amp; _dataSource;
-<span class="lineNum">     649 </span>            :     const VolumeInformation&amp; _volInfo;
-<span class="lineNum">     650 </span>            :     GLuint _quadVBO;
-<span class="lineNum">     651 </span>            :     BoundingAxis _axis;
-<span class="lineNum">     652 </span>            :     GLint _drawBuffer;
-<span class="lineNum">     653 </span>            :     bool _drawAxis;
-<span class="lineNum">     654 </span>            :     bool _linearFiltering{false};
-<span class="lineNum">     655 </span>            :     Vector2f _dataSourceRange;
-<a name="656"><span class="lineNum">     656 </span>            : };</a>
-<span class="lineNum">     657 </span>            : 
-<span class="lineNum">     658 </span><span class="lineNoCov">          0 : RayCastRenderer::RayCastRenderer(const DataSource&amp; dataSource,</span>
-<span class="lineNum">     659 </span>            :                                  const Cache&amp; textureCache,
-<span class="lineNum">     660 </span><span class="lineNoCov">          0 :                                  const uint32_t samplesPerRay)</span>
-<span class="lineNum">     661 </span><span class="lineNoCov">          0 :     : _impl(new RayCastRenderer::Impl(dataSource, textureCache, samplesPerRay))</span>
-<span class="lineNum">     662 </span>            : {
-<a name="663"><span class="lineNum">     663 </span><span class="lineNoCov">          0 : }</span></a>
-<span class="lineNum">     664 </span>            : 
-<span class="lineNum">     665 </span><span class="lineNoCov">          0 : RayCastRenderer::~RayCastRenderer()</span>
-<span class="lineNum">     666 </span>            : {
-<a name="667"><span class="lineNum">     667 </span><span class="lineNoCov">          0 : }</span></a>
-<span class="lineNum">     668 </span>            : 
-<span class="lineNum">     669 </span><span class="lineNoCov">          0 : void RayCastRenderer::update(const FrameData&amp; frameData)</span>
-<span class="lineNum">     670 </span>            : {
-<span class="lineNum">     671 </span><span class="lineNoCov">          0 :     _impl-&gt;update(frameData);</span>
-<a name="672"><span class="lineNum">     672 </span><span class="lineNoCov">          0 : }</span></a>
-<span class="lineNum">     673 </span>            : 
-<span class="lineNum">     674 </span><span class="lineNoCov">          0 : NodeIds RayCastRenderer::order(const NodeIds&amp; bricks,</span>
-<span class="lineNum">     675 </span>            :                                const Frustum&amp; frustum) const
-<span class="lineNum">     676 </span>            : {
-<span class="lineNum">     677 </span><span class="lineNoCov">          0 :     return _impl-&gt;order(bricks, frustum);</span>
-<a name="678"><span class="lineNum">     678 </span>            : }</a>
-<span class="lineNum">     679 </span>            : 
-<span class="lineNum">     680 </span><span class="lineNoCov">          0 : void RayCastRenderer::_onFrameStart(const Frustum&amp; frustum,</span>
-<span class="lineNum">     681 </span>            :                                     const ClipPlanes&amp; planes,
-<span class="lineNum">     682 </span>            :                                     const PixelViewport&amp;,
-<span class="lineNum">     683 </span>            :                                     const NodeIds&amp; renderBricks)
-<span class="lineNum">     684 </span>            : {
-<span class="lineNum">     685 </span><span class="lineNoCov">          0 :     _impl-&gt;onFrameStart(frustum, planes, renderBricks);</span>
-<a name="686"><span class="lineNum">     686 </span><span class="lineNoCov">          0 : }</span></a>
-<span class="lineNum">     687 </span>            : 
-<span class="lineNum">     688 </span><span class="lineNoCov">          0 : void RayCastRenderer::_onFrameRender(const Frustum&amp;, const ClipPlanes&amp;,</span>
-<span class="lineNum">     689 </span>            :                                      const PixelViewport&amp;,
-<span class="lineNum">     690 </span>            :                                      const NodeIds&amp; orderedBricks)
-<span class="lineNum">     691 </span>            : {
-<span class="lineNum">     692 </span><span class="lineNoCov">          0 :     _impl-&gt;onFrameRender(orderedBricks);</span>
-<a name="693"><span class="lineNum">     693 </span><span class="lineNoCov">          0 : }</span></a>
-<span class="lineNum">     694 </span>            : 
-<span class="lineNum">     695 </span><span class="lineNoCov">          0 : void RayCastRenderer::_onFrameEnd(const Frustum&amp; frustum, const ClipPlanes&amp;,</span>
-<span class="lineNum">     696 </span>            :                                   const PixelViewport&amp;, const NodeIds&amp;)
-<span class="lineNum">     697 </span>            : {
-<span class="lineNum">     698 </span><span class="lineNoCov">          0 :     _impl-&gt;onFrameEnd(frustum);</span>
-<a name="699"><span class="lineNum">     699 </span><span class="lineNoCov">          0 : }</span></a>
-<span class="lineNum">     700 </span>            : 
-<span class="lineNum">     701 </span><span class="lineNoCov">          0 : size_t RayCastRenderer::getNumBricksUsed() const</span>
-<span class="lineNum">     702 </span>            : {
-<a name="703"><span class="lineNum">     703 </span><span class="lineNoCov">          0 :     return _impl-&gt;_usedTextures[0].size();</span></a>
-<span class="lineNum">     704 </span>            : }
-<span class="lineNum">     705 </span><span class="lineCov">         36 : }</span>
+<span class="lineNum">     614 </span><span class="lineNoCov">          0 :         _axis.draw();</span>
+<span class="lineNum">     615 </span>            : 
+<span class="lineNum">     616 </span><span class="lineNoCov">          0 :         glUseProgram(0);</span>
+<a name="617"><span class="lineNum">     617 </span><span class="lineNoCov">          0 :     }</span></a>
+<span class="lineNum">     618 </span>            : 
+<span class="lineNum">     619 </span><span class="lineNoCov">          0 :     void onFrameEnd(const Frustum&amp; frustum)</span>
+<span class="lineNum">     620 </span>            :     {
+<span class="lineNum">     621 </span><span class="lineNoCov">          0 :         if (_drawAxis)</span>
+<span class="lineNum">     622 </span><span class="lineNoCov">          0 :             renderAxis(frustum);</span>
+<span class="lineNum">     623 </span>            : 
+<span class="lineNum">     624 </span><span class="lineNoCov">          0 :         std::sort(_usedTextures[1].begin(), _usedTextures[1].end());</span>
+<span class="lineNum">     625 </span>            : #ifdef LIVRE_DEBUG_RENDERING
+<span class="lineNum">     626 </span><span class="lineNoCov">          0 :         if (_usedTextures[0] != _usedTextures[1])</span>
+<span class="lineNum">     627 </span>            :         {
+<span class="lineNum">     628 </span><span class="lineNoCov">          0 :             std::cout &lt;&lt; &quot;Rendered &quot;;</span>
+<span class="lineNum">     629 </span>            :             std::copy(_usedTextures[1].begin(), _usedTextures[1].end(),
+<span class="lineNum">     630 </span><span class="lineNoCov">          0 :                       std::ostream_iterator&lt;uint32_t&gt;(std::cout, &quot; &quot;));</span>
+<span class="lineNum">     631 </span><span class="lineNoCov">          0 :             std::cout &lt;&lt; &quot; in &quot; &lt;&lt; (void*)this &lt;&lt; std::endl;</span>
+<span class="lineNum">     632 </span>            :         }
+<span class="lineNum">     633 </span>            : #endif
+<span class="lineNum">     634 </span><span class="lineNoCov">          0 :         _usedTextures[0].swap(_usedTextures[1]);</span>
+<span class="lineNum">     635 </span><span class="lineNoCov">          0 :         _usedTextures[1].clear();</span>
+<span class="lineNum">     636 </span>            : 
+<span class="lineNum">     637 </span><span class="lineNoCov">          0 :         glDrawBuffer(_drawBuffer);</span>
+<span class="lineNum">     638 </span><span class="lineNoCov">          0 :         copyTexToFrameBufAndClear();</span>
+<span class="lineNum">     639 </span><span class="lineNoCov">          0 :     }</span>
+<span class="lineNum">     640 </span>            : 
+<span class="lineNum">     641 </span>            :     eq::util::Texture _renderTexture;
+<span class="lineNum">     642 </span>            :     GLSLShaders _rayCastShaders;
+<span class="lineNum">     643 </span>            :     GLSLShaders _texCopyShaders;
+<span class="lineNum">     644 </span>            :     GLSLShaders _axisShaders;
+<span class="lineNum">     645 </span>            :     uint32_t _nSamplesPerRay;
+<span class="lineNum">     646 </span>            :     uint32_t _computedSamplesPerRay;
+<span class="lineNum">     647 </span>            :     uint32_t _transferFunctionTexture;
+<span class="lineNum">     648 </span>            :     std::vector&lt;uint32_t&gt; _usedTextures[2]; // last, current frame
+<span class="lineNum">     649 </span>            :     NodeIds _visibleNodes;
+<span class="lineNum">     650 </span>            :     const Cache&amp; _textureCache;
+<span class="lineNum">     651 </span>            :     const DataSource&amp; _dataSource;
+<span class="lineNum">     652 </span>            :     const VolumeInformation&amp; _volInfo;
+<span class="lineNum">     653 </span>            :     GLuint _quadVBO;
+<span class="lineNum">     654 </span>            :     BoundingAxis _axis;
+<span class="lineNum">     655 </span>            :     GLint _drawBuffer;
+<span class="lineNum">     656 </span>            :     bool _drawAxis;
+<span class="lineNum">     657 </span>            :     bool _linearFiltering{false};
+<span class="lineNum">     658 </span>            :     Vector2f _dataSourceRange;
+<a name="659"><span class="lineNum">     659 </span>            : };</a>
+<span class="lineNum">     660 </span>            : 
+<span class="lineNum">     661 </span><span class="lineNoCov">          0 : RayCastRenderer::RayCastRenderer(const DataSource&amp; dataSource,</span>
+<span class="lineNum">     662 </span>            :                                  const Cache&amp; textureCache,
+<span class="lineNum">     663 </span><span class="lineNoCov">          0 :                                  const uint32_t samplesPerRay)</span>
+<span class="lineNum">     664 </span><span class="lineNoCov">          0 :     : _impl(new RayCastRenderer::Impl(dataSource, textureCache, samplesPerRay))</span>
+<span class="lineNum">     665 </span>            : {
+<a name="666"><span class="lineNum">     666 </span><span class="lineNoCov">          0 : }</span></a>
+<span class="lineNum">     667 </span>            : 
+<span class="lineNum">     668 </span><span class="lineNoCov">          0 : RayCastRenderer::~RayCastRenderer()</span>
+<span class="lineNum">     669 </span>            : {
+<a name="670"><span class="lineNum">     670 </span><span class="lineNoCov">          0 : }</span></a>
+<span class="lineNum">     671 </span>            : 
+<span class="lineNum">     672 </span><span class="lineNoCov">          0 : void RayCastRenderer::update(const FrameData&amp; frameData)</span>
+<span class="lineNum">     673 </span>            : {
+<span class="lineNum">     674 </span><span class="lineNoCov">          0 :     _impl-&gt;update(frameData);</span>
+<a name="675"><span class="lineNum">     675 </span><span class="lineNoCov">          0 : }</span></a>
+<span class="lineNum">     676 </span>            : 
+<span class="lineNum">     677 </span><span class="lineNoCov">          0 : NodeIds RayCastRenderer::order(const NodeIds&amp; bricks,</span>
+<span class="lineNum">     678 </span>            :                                const Frustum&amp; frustum) const
+<span class="lineNum">     679 </span>            : {
+<span class="lineNum">     680 </span><span class="lineNoCov">          0 :     return _impl-&gt;order(bricks, frustum);</span>
+<a name="681"><span class="lineNum">     681 </span>            : }</a>
+<span class="lineNum">     682 </span>            : 
+<span class="lineNum">     683 </span><span class="lineNoCov">          0 : void RayCastRenderer::_onFrameStart(const Frustum&amp; frustum,</span>
+<span class="lineNum">     684 </span>            :                                     const ClipPlanes&amp; planes,
+<span class="lineNum">     685 </span>            :                                     const PixelViewport&amp;,
+<span class="lineNum">     686 </span>            :                                     const NodeIds&amp; renderBricks)
+<span class="lineNum">     687 </span>            : {
+<span class="lineNum">     688 </span><span class="lineNoCov">          0 :     _impl-&gt;onFrameStart(frustum, planes, renderBricks);</span>
+<a name="689"><span class="lineNum">     689 </span><span class="lineNoCov">          0 : }</span></a>
+<span class="lineNum">     690 </span>            : 
+<span class="lineNum">     691 </span><span class="lineNoCov">          0 : void RayCastRenderer::_onFrameRender(const Frustum&amp;, const ClipPlanes&amp;,</span>
+<span class="lineNum">     692 </span>            :                                      const PixelViewport&amp;,
+<span class="lineNum">     693 </span>            :                                      const NodeIds&amp; orderedBricks)
+<span class="lineNum">     694 </span>            : {
+<span class="lineNum">     695 </span><span class="lineNoCov">          0 :     _impl-&gt;onFrameRender(orderedBricks);</span>
+<a name="696"><span class="lineNum">     696 </span><span class="lineNoCov">          0 : }</span></a>
+<span class="lineNum">     697 </span>            : 
+<span class="lineNum">     698 </span><span class="lineNoCov">          0 : void RayCastRenderer::_onFrameEnd(const Frustum&amp; frustum, const ClipPlanes&amp;,</span>
+<span class="lineNum">     699 </span>            :                                   const PixelViewport&amp;, const NodeIds&amp;)
+<span class="lineNum">     700 </span>            : {
+<span class="lineNum">     701 </span><span class="lineNoCov">          0 :     _impl-&gt;onFrameEnd(frustum);</span>
+<a name="702"><span class="lineNum">     702 </span><span class="lineNoCov">          0 : }</span></a>
+<span class="lineNum">     703 </span>            : 
+<span class="lineNum">     704 </span><span class="lineNoCov">          0 : const NodeIds&amp; RayCastRenderer::getVisibleNodes() const</span>
+<span class="lineNum">     705 </span>            : {
+<a name="706"><span class="lineNum">     706 </span><span class="lineNoCov">          0 :     return _impl-&gt;_visibleNodes;</span></a>
+<span class="lineNum">     707 </span>            : }
+<span class="lineNum">     708 </span><span class="lineCov">         36 : }</span>
 </pre>
       </td>
     </tr>
