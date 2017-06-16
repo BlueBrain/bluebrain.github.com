@@ -103,7 +103,7 @@ var searchData=
   ['gettristriplength',['getTriStripLength',['../classbrion_1_1_mesh.html#a636ec40aaad18512e451d7ec89c6cdfd',1,'brion::Mesh']]],
   ['gettype',['getType',['../classbrain_1_1neuron_1_1_section.html#af729520de464e3ad975ca256c9954cfd',1,'brain::neuron::Section']]],
   ['gettypes',['getTypes',['../classbrion_1_1_circuit.html#aeed587930d6b50536bc915e62c7c2fbd',1,'brion::Circuit']]],
-  ['geturi',['getURI',['../classbrion_1_1_plugin_init_data.html#a5e5dff9830e0e4d7adfd9e3aead696fc',1,'brion::PluginInitData::getURI()'],['../classbrion_1_1_spike_report.html#a4dc05e732f005032f8080f88e88bd168',1,'brion::SpikeReport::getURI()'],['../classbrain_1_1_spike_report_writer.html#a52b1aad09aa330ee9bafd347f4a9c666',1,'brain::SpikeReportWriter::getURI()']]],
+  ['geturi',['getURI',['../classbrion_1_1_plugin_init_data.html#a5e5dff9830e0e4d7adfd9e3aead696fc',1,'brion::PluginInitData::getURI()'],['../classbrion_1_1_spike_report.html#a4dc05e732f005032f8080f88e88bd168',1,'brion::SpikeReport::getURI()'],['../classbrain_1_1_spike_report_writer.html#af6f6ca3908b9fd93b00cc15637f0b6ae',1,'brain::SpikeReportWriter::getURI()']]],
   ['getutilization',['getUtilization',['../classbrain_1_1_synapse.html#af9a396b4d5875737ee3de0132e3260e4',1,'brain::Synapse']]],
   ['getversion',['getVersion',['../classbrion_1_1_mesh.html#a4d91f35bc6ddc7e0d6d381db1c2ca44b',1,'brion::Mesh']]]
 ];

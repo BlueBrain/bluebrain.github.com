@@ -21,6 +21,7 @@ var searchData=
   ['brain_5fversion_5fstring',['BRAIN_VERSION_STRING',['../brain_2version_8h.html#ae9c214383c4f1971ca9725bc816b26c5',1,'version.h']]],
   ['brion',['brion',['../namespacebrion.html',1,'']]],
   ['brion_5frev_5fstring',['BRION_REV_STRING',['../brion_2version_8h.html#a24a2f48d5e561f636d87d0627f514936',1,'version.h']]],
+  ['brion_5funused',['BRION_UNUSED',['../namespacebrion.html#a17ee7a3b17c2d5b010266d860f56b3d8',1,'brion']]],
   ['brion_5fversion_5fabi',['BRION_VERSION_ABI',['../brion_2version_8h.html#a7920884b61851f5f7492f448ee8bc30a',1,'version.h']]],
   ['brion_5fversion_5fge',['BRION_VERSION_GE',['../brion_2version_8h.html#a570eddc11c0836577c6e34d667fae3c7',1,'version.h']]],
   ['brion_5fversion_5fgt',['BRION_VERSION_GT',['../brion_2version_8h.html#aaa5bc7bf409d096ebd5fb23a6affc8a1',1,'version.h']]],

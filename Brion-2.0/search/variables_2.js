@@ -1,4 +1,4 @@
 var searchData=
 [
-  ['minimum_5fvoltage',['MINIMUM_VOLTAGE',['../namespacebrion.html#a5bd25464986914e035b86467e29dee94',1,'brion']]]
+  ['endtime',['endTime',['../structbrain_1_1_compartment_report_meta_data.html#a31d41273774f94c41ff11107d1bc4830',1,'brain::CompartmentReportMetaData']]]
 ];

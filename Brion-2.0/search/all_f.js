@@ -21,7 +21,7 @@ var searchData=
   ['spikereportplugin',['SpikeReportPlugin',['../classbrion_1_1_spike_report_plugin.html',1,'brion']]],
   ['spikereportreader',['SpikeReportReader',['../classbrain_1_1_spike_report_reader.html#a9669093776a1285091c5a2d4632d3990',1,'brain::SpikeReportReader::SpikeReportReader(const brion::URI &amp;uri)'],['../classbrain_1_1_spike_report_reader.html#a7407e8549d22155752a4b6f216b88ff7',1,'brain::SpikeReportReader::SpikeReportReader(const brion::URI &amp;uri, const GIDSet &amp;subset)']]],
   ['spikereportreader',['SpikeReportReader',['../classbrain_1_1_spike_report_reader.html',1,'brain']]],
-  ['spikereportwriter',['SpikeReportWriter',['../classbrain_1_1_spike_report_writer.html#ad3b1e9aacd2ed848eda5a5f754101d7b',1,'brain::SpikeReportWriter']]],
+  ['spikereportwriter',['SpikeReportWriter',['../classbrain_1_1_spike_report_writer.html#a91f0dc222032343ea3dcd34f66950f7c',1,'brain::SpikeReportWriter']]],
   ['spikereportwriter',['SpikeReportWriter',['../classbrain_1_1_spike_report_writer.html',1,'brain']]],
   ['starttime',['startTime',['../structbrain_1_1_compartment_report_meta_data.html#a392795c6c7f60bc5b402dd850b0cf474',1,'brain::CompartmentReportMetaData']]],
   ['state',['State',['../classbrion_1_1_spike_report.html#a76277acf0346819dd0ead1349a020c7e',1,'brion::SpikeReport']]],

@@ -20,7 +20,7 @@ var classbrion_1_1_compartment_report_plugin =
     [ "getTimeUnit", "classbrion_1_1_compartment_report_plugin.html#adc2bbece2d1d8bd8498c30a7f0f171ae", null ],
     [ "loadFrame", "classbrion_1_1_compartment_report_plugin.html#aa0a68314967409a13c0425c18fe181e2", null ],
     [ "loadFrames", "classbrion_1_1_compartment_report_plugin.html#a61e685c1fa482cd0150e0073a0ddd837", null ],
-    [ "loadNeuron", "classbrion_1_1_compartment_report_plugin.html#aa7a61195aa5f2b8cceb444162178bc25", null ],
+    [ "loadNeuron", "classbrion_1_1_compartment_report_plugin.html#a1b1c7c8032cd7280ab7151a83f9c503b", null ],
     [ "setBufferSize", "classbrion_1_1_compartment_report_plugin.html#afd8862671b3a459bb0d891e96ff1ee24", null ],
     [ "updateMapping", "classbrion_1_1_compartment_report_plugin.html#a979a0f56cfe3fc560eadc776dd865910", null ],
     [ "writeCompartments", "classbrion_1_1_compartment_report_plugin.html#a1ee8f2b01df7aec46ea21b8925e359eb", null ],

@@ -37,7 +37,7 @@
           </tr>
           <tr>
             <td class="headerItem">Date:</td>
-            <td class="headerValue">2017-06-08 06:06:57</td>
+            <td class="headerValue">2017-06-16 06:06:52</td>
             <td></td>
             <td class="headerItem">Functions:</td>
             <td class="headerCovTableEntry">19</td>
@@ -84,547 +84,546 @@
 <span class="lineNum">      22 </span>            : 
 <span class="lineNum">      23 </span>            : #include &quot;../detail/skipWhiteSpace.h&quot;
 <span class="lineNum">      24 </span>            : 
-<span class="lineNum">      25 </span>            : #include &lt;boost/foreach.hpp&gt;
-<span class="lineNum">      26 </span>            : #include &lt;fstream&gt;
-<span class="lineNum">      27 </span>            : #include &lt;list&gt;
-<span class="lineNum">      28 </span>            : #include &lt;lunchbox/debug.h&gt;
-<span class="lineNum">      29 </span>            : #include &lt;lunchbox/log.h&gt;
-<span class="lineNum">      30 </span>            : #include &lt;lunchbox/pluginRegisterer.h&gt;
-<span class="lineNum">      31 </span>            : 
-<span class="lineNum">      32 </span>            : namespace brion
-<span class="lineNum">      33 </span>            : {
-<span class="lineNum">      34 </span>            : namespace plugin
-<span class="lineNum">      35 </span>            : {
-<span class="lineNum">      36 </span>            : namespace
-<span class="lineNum">      37 </span>            : {
-<span class="lineNum">      38 </span>            : // It's not clear if -1 is the only way of identifying a root section.
-<span class="lineNum">      39 </span>            : const int SWC_UNDEFINED_PARENT = -1;
-<span class="lineNum">      40 </span>            : 
-<span class="lineNum">      41 </span>            : enum SWCSectionType
-<span class="lineNum">      42 </span>            : {
-<span class="lineNum">      43 </span>            :     SWC_SECTION_UNDEFINED = 0,
-<span class="lineNum">      44 </span>            :     SWC_SECTION_SOMA = 1,
-<span class="lineNum">      45 </span>            :     SWC_SECTION_AXON = 2,
-<span class="lineNum">      46 </span>            :     SWC_SECTION_DENDRITE = 3,
-<span class="lineNum">      47 </span>            :     SWC_SECTION_APICAL_DENDRITE = 4,
-<span class="lineNum">      48 </span>            :     SWC_SECTION_FORK_POINT = 5,
-<span class="lineNum">      49 </span>            :     SWC_SECTION_END_POINT = 6,
-<span class="lineNum">      50 </span>            :     SWC_SECTION_CUSTOM = 7
-<a name="51"><span class="lineNum">      51 </span>            : };</a>
-<span class="lineNum">      52 </span>            : 
-<a name="53"><span class="lineNum">      53 </span><span class="lineCov">       1830 : struct Sample</span></a>
-<span class="lineNum">      54 </span>            : {
-<span class="lineNum">      55 </span><span class="lineCov">       1862 :     Sample()</span>
-<span class="lineNum">      56 </span><span class="lineCov">       1862 :         : valid(false)</span>
-<span class="lineNum">      57 </span>            :         , type(SWC_SECTION_UNDEFINED)
-<span class="lineNum">      58 </span>            :         , parent(-1)
-<span class="lineNum">      59 </span>            :         , nextID(-1)
-<span class="lineNum">      60 </span>            :         , siblingID(-1)
-<span class="lineNum">      61 </span><span class="lineCov">       1862 :         , parentSection(-1)</span>
-<span class="lineNum">      62 </span>            :     {
-<a name="63"><span class="lineNum">      63 </span><span class="lineCov">       1862 :     }</span></a>
-<span class="lineNum">      64 </span>            : 
-<span class="lineNum">      65 </span><span class="lineCov">       1830 :     explicit Sample(const char* line)</span>
-<span class="lineNum">      66 </span><span class="lineCov">       1830 :         : nextID(-1)</span>
-<span class="lineNum">      67 </span>            :         , siblingID(-1)
-<span class="lineNum">      68 </span><span class="lineCov">       1830 :         , parentSection(-1)</span>
-<span class="lineNum">      69 </span>            :     {
-<span class="lineNum">      70 </span>            :         float radius;
-<span class="lineNum">      71 </span><span class="lineCov">       1830 :         valid =</span>
-<span class="lineNum">      72 </span><span class="lineCov">       3660 :             sscanf(line, &quot;%20d%20f%20f%20f%20f%20d&quot;, (int*)&amp;type, &amp;point.x(),</span>
-<span class="lineNum">      73 </span><span class="lineCov">       3660 :                    &amp;point.y(), &amp;point.z(), &amp;radius, &amp;parent) == 6;</span>
-<span class="lineNum">      74 </span><span class="lineCov">       1830 :         point.w() = radius * 2; // The point array stores diameters.</span>
-<span class="lineNum">      75 </span>            : 
-<span class="lineNum">      76 </span><span class="lineCov">       1830 :         if (type &gt;= SWC_SECTION_CUSTOM)</span>
-<span class="lineNum">      77 </span><span class="lineNoCov">          0 :             valid = false; // Unknown section type, custom samples are also</span>
-<span class="lineNum">      78 </span>            :                            // Regarded as unknown.
-<span class="lineNum">      79 </span><span class="lineCov">       1830 :     }</span>
-<span class="lineNum">      80 </span>            : 
-<span class="lineNum">      81 </span>            :     bool valid;
-<span class="lineNum">      82 </span>            :     Vector4f point; // x, y, z and diameter
-<span class="lineNum">      83 </span>            :     SWCSectionType type;
-<span class="lineNum">      84 </span>            :     int parent;
-<span class="lineNum">      85 </span>            :     int nextID;
-<span class="lineNum">      86 </span>            :     int siblingID;
-<span class="lineNum">      87 </span>            :     int parentSection; // Only meaningful for the first sample of each
-<span class="lineNum">      88 </span>            :                        // section
-<span class="lineNum">      89 </span>            : };
-<a name="90"><span class="lineNum">      90 </span>            : typedef std::vector&lt;Sample&gt; Samples;</a>
-<span class="lineNum">      91 </span>            : 
-<span class="lineNum">      92 </span><span class="lineCov">         28 : lunchbox::PluginRegisterer&lt;MorphologySWC&gt; registerer;</span>
-<a name="93"><span class="lineNum">      93 </span>            : </a>
-<span class="lineNum">      94 </span>            : template &lt;typename T&gt;
-<span class="lineNum">      95 </span><span class="lineCov">          4 : inline std::string string_cast(const T&amp; t)</span>
-<span class="lineNum">      96 </span>            : {
-<span class="lineNum">      97 </span><span class="lineCov">          4 :     return boost::lexical_cast&lt;std::string&gt;(t);</span>
-<a name="98"><span class="lineNum">      98 </span>            : }</a>
-<span class="lineNum">      99 </span>            : 
-<span class="lineNum">     100 </span><span class="lineCov">       1822 : void _correctSampleType(Sample&amp; sample, const Samples&amp; samples)</span>
-<span class="lineNum">     101 </span>            : {
-<span class="lineNum">     102 </span><span class="lineCov">       1822 :     SWCSectionType type = sample.type;</span>
-<span class="lineNum">     103 </span>            :     // Fork and end point sample types don't make much sense for Brion.
-<span class="lineNum">     104 </span>            :     // The sample type will be corrected to be that of the parent section.
-<span class="lineNum">     105 </span>            :     // If the parent is the soma or doesn't exist, the final type will be
-<span class="lineNum">     106 </span>            :     // undefined. If the parent is also a fork point, the traversal will
-<span class="lineNum">     107 </span>            :     // continue.
-<span class="lineNum">     108 </span><span class="lineCov">       1822 :     int parentID = sample.parent;</span>
-<span class="lineNum">     109 </span><span class="lineCov">       1854 :     while (type == SWC_SECTION_FORK_POINT || type == SWC_SECTION_END_POINT)</span>
-<span class="lineNum">     110 </span>            :     {
-<span class="lineNum">     111 </span><span class="lineCov">         24 :         if (parentID == SWC_UNDEFINED_PARENT)</span>
-<span class="lineNum">     112 </span>            :         {
-<span class="lineNum">     113 </span><span class="lineCov">          4 :             sample.type = SWC_SECTION_UNDEFINED;</span>
-<span class="lineNum">     114 </span><span class="lineCov">          4 :             return;</span>
-<span class="lineNum">     115 </span>            :         }
-<span class="lineNum">     116 </span>            : 
-<span class="lineNum">     117 </span><span class="lineCov">         20 :         type = samples[parentID].type;</span>
-<span class="lineNum">     118 </span><span class="lineCov">         20 :         parentID = samples[parentID].parent;</span>
-<span class="lineNum">     119 </span>            : 
-<span class="lineNum">     120 </span><span class="lineCov">         20 :         if (type == SWC_SECTION_SOMA || type == SWC_SECTION_UNDEFINED)</span>
-<span class="lineNum">     121 </span>            :         {
-<span class="lineNum">     122 </span><span class="lineCov">          4 :             sample.type = SWC_SECTION_UNDEFINED;</span>
-<span class="lineNum">     123 </span><span class="lineCov">          4 :             return;</span>
-<span class="lineNum">     124 </span>            :         }
-<span class="lineNum">     125 </span>            :     }
-<span class="lineNum">     126 </span>            : 
-<span class="lineNum">     127 </span><span class="lineCov">       1814 :     sample.type = type;</span>
-<span class="lineNum">     128 </span>            : }
-<a name="129"><span class="lineNum">     129 </span>            : }</a>
-<span class="lineNum">     130 </span>            : 
-<a name="131"><span class="lineNum">     131 </span><span class="lineCov">         32 : struct MorphologySWC::RawSWCInfo</span></a>
-<span class="lineNum">     132 </span>            : {
-<span class="lineNum">     133 </span><span class="lineCov">         32 :     RawSWCInfo()</span>
-<span class="lineNum">     134 </span><span class="lineCov">         32 :         : totalValidSamples(0)</span>
-<span class="lineNum">     135 </span><span class="lineCov">         32 :         , numSections(0)</span>
-<span class="lineNum">     136 </span>            :     {
-<span class="lineNum">     137 </span><span class="lineCov">         32 :     }</span>
-<span class="lineNum">     138 </span>            : 
-<span class="lineNum">     139 </span>            :     std::string filename;
-<span class="lineNum">     140 </span>            : 
-<span class="lineNum">     141 </span>            :     // This is the raw sample array. It will have gaps for those ids that
-<span class="lineNum">     142 </span>            :     // are missing in the input file.
-<span class="lineNum">     143 </span>            :     Samples samples;
-<span class="lineNum">     144 </span>            :     size_t totalValidSamples;
-<span class="lineNum">     145 </span>            : 
-<span class="lineNum">     146 </span>            :     // Depending on the input file there might be one or more samples with
-<span class="lineNum">     147 </span>            :     // no parent. This structure is used to be able to do a depth first
-<span class="lineNum">     148 </span>            :     // traversal from the soma. The first root is the soma and only one
-<span class="lineNum">     149 </span>            :     // root sample is allowed to be of type soma.
-<span class="lineNum">     150 </span>            :     std::vector&lt;size_t&gt; roots;
-<span class="lineNum">     151 </span>            : 
-<span class="lineNum">     152 </span>            :     size_t numSections;
-<a name="153"><span class="lineNum">     153 </span>            : };</a>
-<span class="lineNum">     154 </span>            : 
-<span class="lineNum">     155 </span><span class="lineCov">         32 : MorphologySWC::MorphologySWC(const MorphologyInitData&amp; initData)</span>
-<span class="lineNum">     156 </span><span class="lineCov">         32 :     : _points(new Vector4fs)</span>
-<span class="lineNum">     157 </span><span class="lineCov">         32 :     , _sections(new Vector2is)</span>
-<span class="lineNum">     158 </span><span class="lineCov">        106 :     , _types(new SectionTypes)</span>
-<span class="lineNum">     159 </span>            : {
-<span class="lineNum">     160 </span>            :     // Parsing SWC according to this specification:
-<span class="lineNum">     161 </span>            :     // http://www.neuronland.org/NLMorphologyConverter/MorphologyFormats/SWC/Spec.html
-<span class="lineNum">     162 </span>            :     // Sample numbers may not be contiguous and parent samples can appear
-<span class="lineNum">     163 </span>            :     // later than child ones. Both things shouldn't happen, but the &quot;spec&quot;
-<span class="lineNum">     164 </span>            :     // doesn't enforce it, only gives recommendations.
-<span class="lineNum">     165 </span>            :     // This code takes that possibility into account.
-<span class="lineNum">     166 </span>            : 
-<span class="lineNum">     167 </span><span class="lineCov">         64 :     RawSWCInfo info;</span>
-<span class="lineNum">     168 </span><span class="lineCov">         32 :     info.filename = initData.getURI().getPath();</span>
-<span class="lineNum">     169 </span>            : 
-<span class="lineNum">     170 </span><span class="lineCov">         32 :     if (initData.getAccessMode() != MODE_READ)</span>
-<span class="lineNum">     171 </span><span class="lineNoCov">          0 :         LBTHROW(std::runtime_error(&quot;Could not open morphology file &quot; +</span>
-<span class="lineNum">     172 </span>            :                                    info.filename + &quot;: Invalid access mode&quot;));
-<span class="lineNum">     173 </span>            : 
-<span class="lineNum">     174 </span><span class="lineCov">         32 :     _readSamples(info);</span>
-<span class="lineNum">     175 </span><span class="lineCov">         28 :     _buildSampleTree(info);</span>
-<span class="lineNum">     176 </span><span class="lineCov">         22 :     _buildStructure(info);</span>
-<a name="177"><span class="lineNum">     177 </span><span class="lineCov">         22 : }</span></a>
-<span class="lineNum">     178 </span>            : 
-<span class="lineNum">     179 </span><span class="lineCov">         40 : bool MorphologySWC::handles(const MorphologyInitData&amp; initData)</span>
-<span class="lineNum">     180 </span>            : {
-<span class="lineNum">     181 </span><span class="lineCov">         80 :     const std::string path = initData.getURI().getPath();</span>
-<span class="lineNum">     182 </span><span class="lineCov">         40 :     const size_t pos = path.find_last_of(&quot;.&quot;);</span>
-<span class="lineNum">     183 </span><span class="lineCov">         40 :     if (pos == std::string::npos)</span>
-<span class="lineNum">     184 </span><span class="lineCov">          6 :         return false;</span>
-<span class="lineNum">     185 </span><span class="lineCov">         34 :     return path.substr(pos) == &quot;.swc&quot;;</span>
-<a name="186"><span class="lineNum">     186 </span>            : }</a>
-<span class="lineNum">     187 </span>            : 
-<span class="lineNum">     188 </span><span class="lineNoCov">          0 : std::string MorphologySWC::getDescription()</span>
-<span class="lineNum">     189 </span>            : {
-<span class="lineNum">     190 </span>            :     return &quot;SWC morphologies:\n&quot;
-<span class="lineNum">     191 </span><span class="lineNoCov">          0 :            &quot;  [file://]/path/to/morphology.swc&quot;;</span>
-<a name="192"><span class="lineNum">     192 </span>            : }</a>
-<span class="lineNum">     193 </span>            : 
-<span class="lineNum">     194 </span><span class="lineCov">          2 : CellFamily MorphologySWC::getCellFamily() const</span>
-<span class="lineNum">     195 </span>            : {
-<span class="lineNum">     196 </span><span class="lineCov">          2 :     return FAMILY_NEURON;</span>
-<a name="197"><span class="lineNum">     197 </span>            : }</a>
-<span class="lineNum">     198 </span>            : 
-<span class="lineNum">     199 </span><span class="lineCov">         18 : Vector4fsPtr MorphologySWC::readPoints(MorphologyRepairStage) const</span>
-<span class="lineNum">     200 </span>            : {
-<span class="lineNum">     201 </span><span class="lineCov">         18 :     return _points;</span>
-<a name="202"><span class="lineNum">     202 </span>            : }</a>
-<span class="lineNum">     203 </span>            : 
-<span class="lineNum">     204 </span><span class="lineCov">         20 : Vector2isPtr MorphologySWC::readSections(MorphologyRepairStage) const</span>
-<span class="lineNum">     205 </span>            : {
-<span class="lineNum">     206 </span><span class="lineCov">         20 :     return _sections;</span>
-<a name="207"><span class="lineNum">     207 </span>            : }</a>
-<span class="lineNum">     208 </span>            : 
-<span class="lineNum">     209 </span><span class="lineCov">         20 : SectionTypesPtr MorphologySWC::readSectionTypes() const</span>
-<span class="lineNum">     210 </span>            : {
-<span class="lineNum">     211 </span><span class="lineCov">         20 :     return _types;</span>
-<a name="212"><span class="lineNum">     212 </span>            : }</a>
-<span class="lineNum">     213 </span>            : 
-<span class="lineNum">     214 </span><span class="lineNoCov">          0 : Vector2isPtr MorphologySWC::readApicals() const</span>
-<span class="lineNum">     215 </span>            : {
-<span class="lineNum">     216 </span>            :     // Can these points be inferred? Should it be done at all?
-<span class="lineNum">     217 </span><span class="lineNoCov">          0 :     return Vector2isPtr(new Vector2is());</span>
-<a name="218"><span class="lineNum">     218 </span>            : }</a>
-<span class="lineNum">     219 </span>            : 
-<span class="lineNum">     220 </span><span class="lineCov">          2 : floatsPtr MorphologySWC::readPerimeters() const</span>
-<span class="lineNum">     221 </span>            : {
-<span class="lineNum">     222 </span><span class="lineCov">          2 :     return floatsPtr(new floats());</span>
-<a name="223"><span class="lineNum">     223 </span>            : }</a>
-<span class="lineNum">     224 </span>            : 
-<span class="lineNum">     225 </span><span class="lineNoCov">          0 : MorphologyVersion MorphologySWC::getVersion() const</span>
-<span class="lineNum">     226 </span>            : {
-<span class="lineNum">     227 </span><span class="lineNoCov">          0 :     return MORPHOLOGY_VERSION_SWC_1;</span>
-<a name="228"><span class="lineNum">     228 </span>            : }</a>
-<span class="lineNum">     229 </span>            : 
-<span class="lineNum">     230 </span><span class="lineNoCov">          0 : void MorphologySWC::writePoints(const Vector4fs&amp;, const MorphologyRepairStage)</span>
-<span class="lineNum">     231 </span>            : {
-<span class="lineNum">     232 </span><span class="lineNoCov">          0 :     LBUNIMPLEMENTED</span>
-<a name="233"><span class="lineNum">     233 </span><span class="lineNoCov">          0 : }</span></a>
-<span class="lineNum">     234 </span>            : 
-<span class="lineNum">     235 </span><span class="lineNoCov">          0 : void MorphologySWC::writeSections(const Vector2is&amp;, const MorphologyRepairStage)</span>
-<span class="lineNum">     236 </span>            : {
-<span class="lineNum">     237 </span><span class="lineNoCov">          0 :     LBUNIMPLEMENTED</span>
-<a name="238"><span class="lineNum">     238 </span><span class="lineNoCov">          0 : }</span></a>
-<span class="lineNum">     239 </span>            : 
-<span class="lineNum">     240 </span><span class="lineNoCov">          0 : void MorphologySWC::writeSectionTypes(const SectionTypes&amp;)</span>
-<span class="lineNum">     241 </span>            : {
-<span class="lineNum">     242 </span><span class="lineNoCov">          0 :     LBUNIMPLEMENTED</span>
-<a name="243"><span class="lineNum">     243 </span><span class="lineNoCov">          0 : }</span></a>
-<span class="lineNum">     244 </span>            : 
-<span class="lineNum">     245 </span><span class="lineNoCov">          0 : void MorphologySWC::writeApicals(const Vector2is&amp;)</span>
-<span class="lineNum">     246 </span>            : {
-<span class="lineNum">     247 </span><span class="lineNoCov">          0 :     LBUNIMPLEMENTED</span>
-<a name="248"><span class="lineNum">     248 </span><span class="lineNoCov">          0 : }</span></a>
-<span class="lineNum">     249 </span>            : 
-<span class="lineNum">     250 </span><span class="lineNoCov">          0 : void MorphologySWC::writePerimeters(const floats&amp;)</span>
-<span class="lineNum">     251 </span>            : {
-<span class="lineNum">     252 </span><span class="lineNoCov">          0 :     LBUNIMPLEMENTED</span>
-<a name="253"><span class="lineNum">     253 </span><span class="lineNoCov">          0 : }</span></a>
-<span class="lineNum">     254 </span>            : 
-<span class="lineNum">     255 </span><span class="lineNoCov">          0 : void MorphologySWC::flush()</span>
-<span class="lineNum">     256 </span>            : {
-<span class="lineNum">     257 </span><span class="lineNoCov">          0 :     LBUNIMPLEMENTED</span>
-<a name="258"><span class="lineNum">     258 </span><span class="lineNoCov">          0 : }</span></a>
-<span class="lineNum">     259 </span>            : 
-<span class="lineNum">     260 </span><span class="lineCov">         32 : void MorphologySWC::_readSamples(RawSWCInfo&amp; info)</span>
-<span class="lineNum">     261 </span>            : {
-<span class="lineNum">     262 </span><span class="lineCov">         64 :     std::ifstream file(info.filename.c_str());</span>
-<span class="lineNum">     263 </span><span class="lineCov">         32 :     if (file.fail())</span>
-<span class="lineNum">     264 </span><span class="lineCov">          2 :         LBTHROW(std::runtime_error(&quot;Error opening morphology file: &quot; +</span>
-<span class="lineNum">     265 </span>            :                                    info.filename));
-<span class="lineNum">     266 </span>            : 
-<span class="lineNum">     267 </span><span class="lineCov">         30 :     Samples&amp; samples = info.samples;</span>
-<span class="lineNum">     268 </span>            : 
-<span class="lineNum">     269 </span><span class="lineCov">         30 :     size_t lineNumber = 0;</span>
-<span class="lineNum">     270 </span><span class="lineCov">         30 :     file &gt;&gt; detail::SkipWhiteSpace(lineNumber);</span>
-<span class="lineNum">     271 </span><span class="lineCov">         60 :     std::string line;</span>
-<span class="lineNum">     272 </span><span class="lineCov">         30 :     size_t totalSamples = 0;</span>
-<span class="lineNum">     273 </span><span class="lineCov">       3846 :     while (!std::getline(file, line).fail())</span>
-<span class="lineNum">     274 </span>            :     {
-<span class="lineNum">     275 </span><span class="lineCov">       1910 :         ++lineNumber;</span>
-<span class="lineNum">     276 </span>            :         // Fix #4: Subsequent non-empty lines each represent a single neuron
-<span class="lineNum">     277 </span>            :         // sample point with seven data items.
-<span class="lineNum">     278 </span><span class="lineCov">       1910 :         if (line[0] == '#' || line.empty())</span>
-<span class="lineNum">     279 </span><span class="lineCov">         78 :             continue;</span>
-<span class="lineNum">     280 </span>            : 
-<span class="lineNum">     281 </span>            :         char* data;
-<span class="lineNum">     282 </span><span class="lineCov">       1832 :         const unsigned int id = strtol(line.data(), &amp;data, 10);</span>
-<span class="lineNum">     283 </span><span class="lineCov">       1832 :         if (*data != ' ')</span>
-<span class="lineNum">     284 </span>            :         {
-<span class="lineNum">     285 </span><span class="lineCov">          2 :             LBTHROW(std::runtime_error(</span>
-<span class="lineNum">     286 </span>            :                 &quot;Reading swc morphology file: &quot; + info.filename +
-<span class="lineNum">     287 </span>            :                 &quot;, parse error at line &quot; + string_cast(lineNumber)));
-<span class="lineNum">     288 </span>            :         }
-<span class="lineNum">     289 </span><span class="lineCov">       1830 :         samples.resize(std::max(samples.size(), size_t(id + 1)));</span>
-<span class="lineNum">     290 </span><span class="lineCov">       1830 :         if (samples[id].valid)</span>
-<span class="lineNum">     291 </span>            :         {
-<span class="lineNum">     292 </span><span class="lineNoCov">          0 :             LBWARN &lt;&lt; &quot;Reading swc morphology file: &quot; &lt;&lt; info.filename</span>
-<span class="lineNum">     293 </span><span class="lineNoCov">          0 :                    &lt;&lt; &quot;, repeated sample id &quot; &lt;&lt; id &lt;&lt; &quot; at line &quot;</span>
-<span class="lineNum">     294 </span><span class="lineNoCov">          0 :                    &lt;&lt; string_cast(lineNumber) &lt;&lt; std::endl;</span>
-<span class="lineNum">     295 </span>            :         }
-<span class="lineNum">     296 </span>            :         else
-<span class="lineNum">     297 </span>            :         {
-<span class="lineNum">     298 </span><span class="lineCov">       1830 :             samples[id] = Sample(data);</span>
-<span class="lineNum">     299 </span><span class="lineCov">       1830 :             ++totalSamples;</span>
-<span class="lineNum">     300 </span><span class="lineCov">       1830 :             if (!samples[id].valid)</span>
-<span class="lineNum">     301 </span>            :             {
-<span class="lineNum">     302 </span><span class="lineNoCov">          0 :                 LBTHROW(std::runtime_error(</span>
-<span class="lineNum">     303 </span>            :                     &quot;Reading swc morphology file: &quot; + info.filename +
-<span class="lineNum">     304 </span>            :                     &quot;, parse error at line &quot; + string_cast(lineNumber)));
-<span class="lineNum">     305 </span>            :             }
-<span class="lineNum">     306 </span>            :         }
-<span class="lineNum">     307 </span>            : 
-<span class="lineNum">     308 </span><span class="lineCov">       1830 :         file &gt;&gt; detail::SkipWhiteSpace(lineNumber);</span>
-<span class="lineNum">     309 </span>            :     }
-<span class="lineNum">     310 </span><span class="lineCov">         28 :     info.totalValidSamples = totalSamples;</span>
-<a name="311"><span class="lineNum">     311 </span><span class="lineCov">         28 : }</span></a>
-<span class="lineNum">     312 </span>            : 
-<span class="lineNum">     313 </span><span class="lineCov">         28 : void MorphologySWC::_buildSampleTree(RawSWCInfo&amp; info)</span>
-<span class="lineNum">     314 </span>            : {
-<span class="lineNum">     315 </span>            :     // To connect the samples in a descending tree the easiest thing is to
-<span class="lineNum">     316 </span>            :     // start with the last sample (assumed to be and end-point as no other
-<span class="lineNum">     317 </span>            :     // can have it as parent without making a loop) and traverse the
-<span class="lineNum">     318 </span>            :     // morphology tree backwards until we find a sample with no
-<span class="lineNum">     319 </span>            :     // parent. Then, the next sample in the input vector which hasn't
-<span class="lineNum">     320 </span>            :     // still been processed is searched and the traversal continues from
-<span class="lineNum">     321 </span>            :     // there. If at any moment a sample which has already been visited is
-<span class="lineNum">     322 </span>            :     // hit, the loop goes back to search the next end point.
-<span class="lineNum">     323 </span><span class="lineCov">         56 :     std::vector&lt;bool&gt; visited;</span>
-<span class="lineNum">     324 </span><span class="lineCov">         28 :     Samples&amp; samples = info.samples;</span>
-<span class="lineNum">     325 </span><span class="lineCov">       1886 :     BOOST_FOREACH (Sample&amp; sample, samples)</span>
-<span class="lineNum">     326 </span><span class="lineCov">       1858 :         visited.push_back(!sample.valid);</span>
-<span class="lineNum">     327 </span>            : 
-<span class="lineNum">     328 </span><span class="lineCov">         28 :     if (samples.empty())</span>
-<span class="lineNum">     329 </span><span class="lineNoCov">          0 :         LBTHROW(std::runtime_error(&quot;Reading swc morphology file: &quot; +</span>
-<span class="lineNum">     330 </span>            :                                    info.filename + &quot;, no soma section found&quot;));
-<span class="lineNum">     331 </span>            : 
-<span class="lineNum">     332 </span><span class="lineCov">         28 :     size_t currentSample = samples.size() - 1;</span>
-<span class="lineNum">     333 </span><span class="lineCov">         28 :     size_t currentEndPoint = samples.size() - 1;</span>
-<span class="lineNum">     334 </span><span class="lineCov">         28 :     size_t samplesLeft = info.totalValidSamples;</span>
-<span class="lineNum">     335 </span><span class="lineCov">         28 :     assert(!visited[currentSample]); // It's impossible that the last</span>
-<span class="lineNum">     336 </span>            :                                      // sample array is not valid
-<span class="lineNum">     337 </span>            : 
-<span class="lineNum">     338 </span><span class="lineCov">         28 :     bool hasSoma = false;</span>
-<span class="lineNum">     339 </span>            : 
-<span class="lineNum">     340 </span><span class="lineCov">       3664 :     while (samplesLeft--)</span>
-<span class="lineNum">     341 </span>            :     {
-<span class="lineNum">     342 </span><span class="lineCov">       1822 :         Sample&amp; sample = samples[currentSample];</span>
-<span class="lineNum">     343 </span><span class="lineCov">       1822 :         visited[currentSample] = true;</span>
-<span class="lineNum">     344 </span>            : 
-<span class="lineNum">     345 </span><span class="lineCov">       1822 :         _correctSampleType(sample, samples);</span>
-<span class="lineNum">     346 </span>            : 
-<span class="lineNum">     347 </span>            :         // Moving to the parent if not visited yet, otherwise searching
-<span class="lineNum">     348 </span>            :         // for the next end point.
-<span class="lineNum">     349 </span><span class="lineCov">       1822 :         const bool root = sample.parent == SWC_UNDEFINED_PARENT;</span>
-<span class="lineNum">     350 </span>            : 
-<span class="lineNum">     351 </span><span class="lineCov">       1822 :         if (!root)</span>
-<span class="lineNum">     352 </span>            :         {
-<span class="lineNum">     353 </span><span class="lineCov">       1786 :             if (sample.parent == int(currentSample))</span>
-<span class="lineNum">     354 </span>            :             {
-<span class="lineNum">     355 </span><span class="lineNoCov">          0 :                 LBTHROW(std::runtime_error(&quot;Reading swc morphology file: &quot; +</span>
-<span class="lineNum">     356 </span>            :                                            info.filename +
-<span class="lineNum">     357 </span>            :                                            &quot;, found a sample point to itself&quot;));
-<span class="lineNum">     358 </span>            :             }
-<span class="lineNum">     359 </span><span class="lineCov">       1786 :             Sample* parent = &amp;samples[sample.parent];</span>
-<span class="lineNum">     360 </span><span class="lineCov">       1786 :             if (!parent-&gt;valid)</span>
-<span class="lineNum">     361 </span>            :             {
-<span class="lineNum">     362 </span><span class="lineCov">          4 :                 std::stringstream msg;</span>
-<span class="lineNum">     363 </span>            :                 msg &lt;&lt; &quot;Reading swc morphology file: &quot; &lt;&lt; info.filename
-<span class="lineNum">     364 </span><span class="lineCov">          2 :                     &lt;&lt; &quot;, broken tree (missing sample  &quot; &lt;&lt; sample.parent &lt;&lt; &quot;)&quot;</span>
-<span class="lineNum">     365 </span><span class="lineCov">          2 :                     &lt;&lt; std::endl;</span>
-<span class="lineNum">     366 </span><span class="lineCov">          2 :                 LBTHROW(std::runtime_error(msg.str()));</span>
-<span class="lineNum">     367 </span>            :             }
-<span class="lineNum">     368 </span>            : 
-<span class="lineNum">     369 </span><span class="lineCov">       1784 :             if (parent-&gt;type == SWC_SECTION_SOMA)</span>
-<span class="lineNum">     370 </span>            :             {
-<span class="lineNum">     371 </span>            :                 // When the parent is the soma we have to handle it differently
-<span class="lineNum">     372 </span>            :                 // as we don't want to split a soma ring where neurites
-<span class="lineNum">     373 </span>            :                 // connect to arbitrary soma points in multiple sections.
-<span class="lineNum">     374 </span><span class="lineCov">         54 :                 if (sample.type == SWC_SECTION_SOMA)</span>
-<span class="lineNum">     375 </span>            :                 {
-<span class="lineNum">     376 </span><span class="lineCov">         20 :                     if (parent-&gt;nextID != -1)</span>
-<span class="lineNum">     377 </span>            :                     {
-<span class="lineNum">     378 </span><span class="lineCov">          6 :                         LBWARN</span>
-<span class="lineNum">     379 </span>            :                             &lt;&lt; &quot;Reading swc morphology file: &quot; &lt;&lt; info.filename
-<span class="lineNum">     380 </span><span class="lineCov">          6 :                             &lt;&lt; &quot;, found bifurcation in soma section&quot;;</span>
-<span class="lineNum">     381 </span><span class="lineCov">          2 :                         sample.siblingID = parent-&gt;nextID;</span>
-<span class="lineNum">     382 </span>            :                     }
-<span class="lineNum">     383 </span>            :                     // Linking the parent to this sample.
-<span class="lineNum">     384 </span><span class="lineCov">         20 :                     parent-&gt;nextID = int(currentSample);</span>
-<span class="lineNum">     385 </span>            :                 }
-<span class="lineNum">     386 </span>            :                 else
-<span class="lineNum">     387 </span>            :                 {
-<span class="lineNum">     388 </span><span class="lineCov">         34 :                     info.roots.push_back(currentSample);</span>
-<span class="lineNum">     389 </span>            :                     // Sections whose parent is the soma need their parent
-<span class="lineNum">     390 </span>            :                     // section to be assigned at this point.
-<span class="lineNum">     391 </span><span class="lineCov">         34 :                     sample.parentSection = 0;</span>
-<span class="lineNum">     392 </span>            :                 }
-<span class="lineNum">     393 </span>            :             }
-<span class="lineNum">     394 </span>            :             else
-<span class="lineNum">     395 </span>            :             {
-<span class="lineNum">     396 </span><span class="lineCov">       1730 :                 if (sample.type == SWC_SECTION_SOMA)</span>
-<span class="lineNum">     397 </span>            :                 {
-<span class="lineNum">     398 </span><span class="lineNoCov">          0 :                     LBTHROW(std::runtime_error(</span>
-<span class="lineNum">     399 </span>            :                         &quot;Reading swc morphology file: &quot; + info.filename +
-<span class="lineNum">     400 </span>            :                         &quot;, found soma sample with neurite parent&quot;));
-<span class="lineNum">     401 </span>            :                 }
-<span class="lineNum">     402 </span><span class="lineCov">       1730 :                 if (parent-&gt;nextID != -1)</span>
-<span class="lineNum">     403 </span>            :                 {
-<span class="lineNum">     404 </span>            :                     // The parent was already connected. Linking this sample
-<span class="lineNum">     405 </span>            :                     // to its sibling.
-<span class="lineNum">     406 </span><span class="lineCov">         86 :                     sample.siblingID = parent-&gt;nextID;</span>
-<span class="lineNum">     407 </span>            :                     // This also means that a sequence of samples is now split
-<span class="lineNum">     408 </span>            :                     // in three different sections (a parent and two children).
-<span class="lineNum">     409 </span><span class="lineCov">         86 :                     info.numSections += 2;</span>
-<span class="lineNum">     410 </span>            :                 }
-<span class="lineNum">     411 </span>            :                 // Linking the parent to this sample.
-<span class="lineNum">     412 </span><span class="lineCov">       1730 :                 parent-&gt;nextID = int(currentSample);</span>
-<span class="lineNum">     413 </span>            :             }
-<span class="lineNum">     414 </span>            :         }
-<span class="lineNum">     415 </span>            :         else
-<span class="lineNum">     416 </span>            :         {
-<span class="lineNum">     417 </span><span class="lineCov">         36 :             ++info.numSections;</span>
-<span class="lineNum">     418 </span><span class="lineCov">         36 :             if (sample.type == SWC_SECTION_SOMA)</span>
-<span class="lineNum">     419 </span>            :             {
-<span class="lineNum">     420 </span>            :                 // Only one soma section is permitted. If a previous
-<span class="lineNum">     421 </span>            :                 // one is detected, then throw.
-<span class="lineNum">     422 </span><span class="lineCov">         46 :                 if (info.roots.size() &amp;&amp;</span>
-<span class="lineNum">     423 </span><span class="lineCov">         20 :                     samples[info.roots[0]].type == SWC_SECTION_SOMA)</span>
-<span class="lineNum">     424 </span>            :                 {
-<span class="lineNum">     425 </span><span class="lineCov">          2 :                     LBTHROW(std::runtime_error(&quot;Reading swc morphology file: &quot; +</span>
-<span class="lineNum">     426 </span>            :                                                info.filename +
-<span class="lineNum">     427 </span>            :                                                &quot;, found two soma sections&quot;));
-<span class="lineNum">     428 </span>            :                 }
-<span class="lineNum">     429 </span><span class="lineCov">         24 :                 info.roots.insert(info.roots.begin(), currentSample);</span>
-<span class="lineNum">     430 </span><span class="lineCov">         24 :                 hasSoma = true;</span>
-<span class="lineNum">     431 </span>            :             }
-<span class="lineNum">     432 </span>            :             else
-<span class="lineNum">     433 </span>            :             {
-<span class="lineNum">     434 </span><span class="lineCov">         10 :                 info.roots.push_back(currentSample);</span>
-<span class="lineNum">     435 </span>            :                 // Non soma root sections get their parent section
-<span class="lineNum">     436 </span>            :                 // assigned to the soma at this point.
-<span class="lineNum">     437 </span><span class="lineCov">         10 :                 sample.parentSection = 0;</span>
-<span class="lineNum">     438 </span>            :                 // If the sample type is fork or end point, we convert it
-<span class="lineNum">     439 </span>            :                 // into undefined because we don't really know which is the
-<span class="lineNum">     440 </span>            :                 // type of the section.
-<span class="lineNum">     441 </span><span class="lineCov">         20 :                 if (sample.type == SWC_SECTION_FORK_POINT ||</span>
-<span class="lineNum">     442 </span><span class="lineCov">         10 :                     sample.type == SWC_SECTION_END_POINT)</span>
-<span class="lineNum">     443 </span>            :                 {
-<span class="lineNum">     444 </span><span class="lineNoCov">          0 :                     sample.type = SWC_SECTION_UNDEFINED;</span>
-<span class="lineNum">     445 </span>            :                 }
-<span class="lineNum">     446 </span>            :             }
-<span class="lineNum">     447 </span>            :         }
-<span class="lineNum">     448 </span>            : 
-<span class="lineNum">     449 </span><span class="lineCov">       1818 :         if (samplesLeft)</span>
-<span class="lineNum">     450 </span>            :         {
-<span class="lineNum">     451 </span><span class="lineCov">       1794 :             if (root || visited[sample.parent])</span>
-<span class="lineNum">     452 </span>            :             {
-<span class="lineNum">     453 </span>            :                 // This loop and the external loop guarantee that every
-<span class="lineNum">     454 </span>            :                 // sample after currentEndPoint has been already visited (or
-<span class="lineNum">     455 </span>            :                 // is invalid).
-<span class="lineNum">     456 </span><span class="lineCov">       3572 :                 while (visited[currentEndPoint])</span>
-<span class="lineNum">     457 </span>            :                 {
-<span class="lineNum">     458 </span><span class="lineCov">       1728 :                     assert(currentEndPoint != 0);</span>
-<span class="lineNum">     459 </span><span class="lineCov">       1728 :                     --currentEndPoint;</span>
-<span class="lineNum">     460 </span>            :                 }
-<span class="lineNum">     461 </span><span class="lineCov">        116 :                 currentSample = currentEndPoint;</span>
-<span class="lineNum">     462 </span>            :             }
-<span class="lineNum">     463 </span>            :             else
-<span class="lineNum">     464 </span><span class="lineCov">       1678 :                 currentSample = sample.parent;</span>
-<span class="lineNum">     465 </span>            :         }
-<span class="lineNum">     466 </span>            :     }
-<span class="lineNum">     467 </span><span class="lineCov">         24 :     if (!hasSoma)</span>
-<span class="lineNum">     468 </span><span class="lineCov">          2 :         LBTHROW(std::runtime_error(&quot;Reading swc morphology file: &quot; +</span>
-<span class="lineNum">     469 </span>            :                                    info.filename + &quot;, no soma section found&quot;));
-<a name="470"><span class="lineNum">     470 </span><span class="lineCov">         22 : }</span></a>
-<span class="lineNum">     471 </span>            : 
-<span class="lineNum">     472 </span><span class="lineCov">         22 : void MorphologySWC::_buildStructure(RawSWCInfo&amp; info)</span>
-<span class="lineNum">     473 </span>            : {
-<span class="lineNum">     474 </span><span class="lineCov">         44 :     std::list&lt;size_t&gt; sectionQueue(info.roots.begin(), info.roots.end());</span>
-<span class="lineNum">     475 </span>            : 
-<span class="lineNum">     476 </span><span class="lineCov">         22 :     int section = 0;</span>
-<span class="lineNum">     477 </span>            :     // All sections except the soma section and the first order sections
-<span class="lineNum">     478 </span>            :     // repeat the parent point in the point list. This is a &quot;feature&quot; to
-<span class="lineNum">     479 </span>            :     // stay compatible with the binary layout of the .h5 file format.
-<span class="lineNum">     480 </span>            :     // The size reservation is an upper estimate because it's not easy to
-<span class="lineNum">     481 </span>            :     // detect all first order sections (some may connect to the soma point
-<span class="lineNum">     482 </span>            :     // or ring and some may not).
-<span class="lineNum">     483 </span><span class="lineCov">         44 :     _points-&gt;reserve(info.totalValidSamples + info.numSections -</span>
-<span class="lineNum">     484 </span><span class="lineCov">         44 :                      info.roots.size());</span>
-<span class="lineNum">     485 </span><span class="lineCov">         22 :     _sections-&gt;reserve(info.numSections);</span>
-<span class="lineNum">     486 </span><span class="lineCov">         22 :     _types-&gt;reserve(info.numSections);</span>
-<span class="lineNum">     487 </span><span class="lineCov">         22 :     Samples&amp; samples = info.samples;</span>
-<span class="lineNum">     488 </span>            : 
-<span class="lineNum">     489 </span><span class="lineCov">         22 :     Sample* sample = &amp;samples[sectionQueue.front()];</span>
-<span class="lineNum">     490 </span><span class="lineCov">         22 :     sectionQueue.pop_front();</span>
-<span class="lineNum">     491 </span><span class="lineCov">        506 :     while (sample)</span>
-<span class="lineNum">     492 </span>            :     {
-<span class="lineNum">     493 </span><span class="lineCov">        242 :         _sections-&gt;push_back(</span>
-<span class="lineNum">     494 </span><span class="lineCov">        484 :             Vector2i(int(_points-&gt;size()), sample-&gt;parentSection));</span>
-<span class="lineNum">     495 </span><span class="lineCov">        242 :         _types-&gt;push_back(SectionType(sample-&gt;type));</span>
-<span class="lineNum">     496 </span>            : 
-<span class="lineNum">     497 </span>            :         // Pushing first point of the section using the parent sample
-<span class="lineNum">     498 </span>            :         // if necessary
-<span class="lineNum">     499 </span><span class="lineCov">        242 :         if (sample-&gt;parent != SWC_UNDEFINED_PARENT)</span>
-<span class="lineNum">     500 </span>            :         {
-<span class="lineNum">     501 </span><span class="lineCov">        212 :             const Sample* parent = &amp;samples[sample-&gt;parent];</span>
-<span class="lineNum">     502 </span>            :             // If the parent sections is the soma, we connect this section
-<span class="lineNum">     503 </span>            :             // to the soma only if the soma is described with more than
-<span class="lineNum">     504 </span>            :             // one sample (that is, sections are not connected to point somas).
-<span class="lineNum">     505 </span><span class="lineCov">        230 :             if (parent-&gt;type != SWC_SECTION_SOMA || parent-&gt;nextID != -1 ||</span>
-<span class="lineNum">     506 </span><span class="lineCov">         18 :                 parent-&gt;parent != -1)</span>
-<span class="lineNum">     507 </span>            :             {
-<span class="lineNum">     508 </span><span class="lineCov">        194 :                 _points-&gt;push_back(parent-&gt;point);</span>
-<span class="lineNum">     509 </span>            :             }
-<span class="lineNum">     510 </span>            :         }
-<span class="lineNum">     511 </span>            : 
-<span class="lineNum">     512 </span>            :         // Iterate while we stay on the same section and push points
-<span class="lineNum">     513 </span>            :         // to the point vector.
-<span class="lineNum">     514 </span><span class="lineCov">       5670 :         while (sample &amp;&amp; sample-&gt;siblingID == -1 &amp;&amp;</span>
-<span class="lineNum">     515 </span>            :                // We also cut into sections when the sample type changes.
-<span class="lineNum">     516 </span>            :                // There are degenerated cases where this is absolutely
-<span class="lineNum">     517 </span>            :                // needed (e.g. a morphology with only one first order
-<span class="lineNum">     518 </span>            :                // section a point soma).
-<span class="lineNum">     519 </span><span class="lineCov">       1812 :                sample-&gt;type == SWCSectionType(_types-&gt;back()))</span>
-<span class="lineNum">     520 </span>            :         {
-<span class="lineNum">     521 </span><span class="lineCov">       1808 :             _points-&gt;push_back(sample-&gt;point);</span>
-<span class="lineNum">     522 </span><span class="lineCov">       1808 :             sample = sample-&gt;nextID == -1 ? 0 : &amp;samples[sample-&gt;nextID];</span>
-<span class="lineNum">     523 </span>            :         }
-<span class="lineNum">     524 </span>            : 
-<span class="lineNum">     525 </span>            :         // Finished iterating a section
-<span class="lineNum">     526 </span><span class="lineCov">        242 :         if (sample)</span>
-<span class="lineNum">     527 </span>            :         {
-<span class="lineNum">     528 </span>            :             // We reached a bifurcation or a section type change, pushing
-<span class="lineNum">     529 </span>            :             // the sibling (if any) to the sectionQeueue and continuing
-<span class="lineNum">     530 </span>            :             // traversing the current section
-<span class="lineNum">     531 </span><span class="lineCov">         92 :             assert(sample-&gt;siblingID != -1 ||</span>
-<span class="lineNum">     532 </span>            :                    sample-&gt;type != SWCSectionType(_types-&gt;back()));
-<span class="lineNum">     533 </span>            : 
-<span class="lineNum">     534 </span>            :             // Assigning the parent section to the current sample, this
-<span class="lineNum">     535 </span>            :             // will be stored in the section array at the beginning of
-<span class="lineNum">     536 </span>            :             // the next iteration.
-<span class="lineNum">     537 </span><span class="lineCov">         92 :             sample-&gt;parentSection = section;</span>
-<span class="lineNum">     538 </span>            : 
-<span class="lineNum">     539 </span>            :             // Pushing all siblings into the queue and unlinking them
-<span class="lineNum">     540 </span><span class="lineCov">         92 :             int siblingID = sample-&gt;siblingID;</span>
-<span class="lineNum">     541 </span><span class="lineCov">         92 :             sample-&gt;siblingID = -1;</span>
-<span class="lineNum">     542 </span><span class="lineCov">        268 :             while (siblingID != -1)</span>
-<span class="lineNum">     543 </span>            :             {
-<span class="lineNum">     544 </span>            :                 // We do push_front to continue on the same subtree and
-<span class="lineNum">     545 </span>            :                 // do a depth-first traversal.
-<span class="lineNum">     546 </span><span class="lineCov">         88 :                 sectionQueue.push_front(siblingID);</span>
-<span class="lineNum">     547 </span><span class="lineCov">         88 :                 Sample* sibling = &amp;samples[siblingID];</span>
-<span class="lineNum">     548 </span>            :                 // Assigning the parent section to the sibling
-<span class="lineNum">     549 </span><span class="lineCov">         88 :                 sibling-&gt;parentSection = section;</span>
-<span class="lineNum">     550 </span><span class="lineCov">         88 :                 siblingID = sibling-&gt;siblingID;</span>
-<span class="lineNum">     551 </span><span class="lineCov">         88 :                 sibling-&gt;siblingID = -1;</span>
-<span class="lineNum">     552 </span>            :             }
-<span class="lineNum">     553 </span>            :         }
-<span class="lineNum">     554 </span><span class="lineCov">        150 :         else if (!sectionQueue.empty())</span>
-<span class="lineNum">     555 </span>            :         {
-<span class="lineNum">     556 </span>            :             // Reached an end point. Starting the next section from
-<span class="lineNum">     557 </span>            :             // the sectionQueue if not empty
-<span class="lineNum">     558 </span><span class="lineCov">        128 :             sample = &amp;samples[sectionQueue.front()];</span>
-<span class="lineNum">     559 </span><span class="lineCov">        128 :             sectionQueue.pop_front();</span>
-<span class="lineNum">     560 </span>            :         }
-<span class="lineNum">     561 </span><span class="lineCov">        242 :         ++section;</span>
-<span class="lineNum">     562 </span>            :     }
-<a name="563"><span class="lineNum">     563 </span><span class="lineCov">         22 : }</span></a>
-<span class="lineNum">     564 </span>            : }
-<span class="lineNum">     565 </span><span class="lineCov">         84 : }</span>
+<span class="lineNum">      25 </span>            : #include &lt;fstream&gt;
+<span class="lineNum">      26 </span>            : #include &lt;list&gt;
+<span class="lineNum">      27 </span>            : #include &lt;lunchbox/debug.h&gt;
+<span class="lineNum">      28 </span>            : #include &lt;lunchbox/log.h&gt;
+<span class="lineNum">      29 </span>            : #include &lt;lunchbox/pluginRegisterer.h&gt;
+<span class="lineNum">      30 </span>            : 
+<span class="lineNum">      31 </span>            : namespace brion
+<span class="lineNum">      32 </span>            : {
+<span class="lineNum">      33 </span>            : namespace plugin
+<span class="lineNum">      34 </span>            : {
+<span class="lineNum">      35 </span>            : namespace
+<span class="lineNum">      36 </span>            : {
+<span class="lineNum">      37 </span>            : // It's not clear if -1 is the only way of identifying a root section.
+<span class="lineNum">      38 </span>            : const int SWC_UNDEFINED_PARENT = -1;
+<span class="lineNum">      39 </span>            : 
+<span class="lineNum">      40 </span>            : enum SWCSectionType
+<span class="lineNum">      41 </span>            : {
+<span class="lineNum">      42 </span>            :     SWC_SECTION_UNDEFINED = 0,
+<span class="lineNum">      43 </span>            :     SWC_SECTION_SOMA = 1,
+<span class="lineNum">      44 </span>            :     SWC_SECTION_AXON = 2,
+<span class="lineNum">      45 </span>            :     SWC_SECTION_DENDRITE = 3,
+<span class="lineNum">      46 </span>            :     SWC_SECTION_APICAL_DENDRITE = 4,
+<span class="lineNum">      47 </span>            :     SWC_SECTION_FORK_POINT = 5,
+<span class="lineNum">      48 </span>            :     SWC_SECTION_END_POINT = 6,
+<span class="lineNum">      49 </span>            :     SWC_SECTION_CUSTOM = 7
+<a name="50"><span class="lineNum">      50 </span>            : };</a>
+<span class="lineNum">      51 </span>            : 
+<a name="52"><span class="lineNum">      52 </span><span class="lineCov">       1830 : struct Sample</span></a>
+<span class="lineNum">      53 </span>            : {
+<span class="lineNum">      54 </span><span class="lineCov">       1862 :     Sample()</span>
+<span class="lineNum">      55 </span><span class="lineCov">       1862 :         : valid(false)</span>
+<span class="lineNum">      56 </span>            :         , type(SWC_SECTION_UNDEFINED)
+<span class="lineNum">      57 </span>            :         , parent(-1)
+<span class="lineNum">      58 </span>            :         , nextID(-1)
+<span class="lineNum">      59 </span>            :         , siblingID(-1)
+<span class="lineNum">      60 </span><span class="lineCov">       1862 :         , parentSection(-1)</span>
+<span class="lineNum">      61 </span>            :     {
+<a name="62"><span class="lineNum">      62 </span><span class="lineCov">       1862 :     }</span></a>
+<span class="lineNum">      63 </span>            : 
+<span class="lineNum">      64 </span><span class="lineCov">       1830 :     explicit Sample(const char* line)</span>
+<span class="lineNum">      65 </span><span class="lineCov">       1830 :         : nextID(-1)</span>
+<span class="lineNum">      66 </span>            :         , siblingID(-1)
+<span class="lineNum">      67 </span><span class="lineCov">       1830 :         , parentSection(-1)</span>
+<span class="lineNum">      68 </span>            :     {
+<span class="lineNum">      69 </span>            :         float radius;
+<span class="lineNum">      70 </span><span class="lineCov">       1830 :         valid =</span>
+<span class="lineNum">      71 </span><span class="lineCov">       3660 :             sscanf(line, &quot;%20d%20f%20f%20f%20f%20d&quot;, (int*)&amp;type, &amp;point.x(),</span>
+<span class="lineNum">      72 </span><span class="lineCov">       3660 :                    &amp;point.y(), &amp;point.z(), &amp;radius, &amp;parent) == 6;</span>
+<span class="lineNum">      73 </span><span class="lineCov">       1830 :         point.w() = radius * 2; // The point array stores diameters.</span>
+<span class="lineNum">      74 </span>            : 
+<span class="lineNum">      75 </span><span class="lineCov">       1830 :         if (type &gt;= SWC_SECTION_CUSTOM)</span>
+<span class="lineNum">      76 </span><span class="lineNoCov">          0 :             valid = false; // Unknown section type, custom samples are also</span>
+<span class="lineNum">      77 </span>            :                            // Regarded as unknown.
+<span class="lineNum">      78 </span><span class="lineCov">       1830 :     }</span>
+<span class="lineNum">      79 </span>            : 
+<span class="lineNum">      80 </span>            :     bool valid;
+<span class="lineNum">      81 </span>            :     Vector4f point; // x, y, z and diameter
+<span class="lineNum">      82 </span>            :     SWCSectionType type;
+<span class="lineNum">      83 </span>            :     int parent;
+<span class="lineNum">      84 </span>            :     int nextID;
+<span class="lineNum">      85 </span>            :     int siblingID;
+<span class="lineNum">      86 </span>            :     int parentSection; // Only meaningful for the first sample of each
+<span class="lineNum">      87 </span>            :                        // section
+<span class="lineNum">      88 </span>            : };
+<a name="89"><span class="lineNum">      89 </span>            : typedef std::vector&lt;Sample&gt; Samples;</a>
+<span class="lineNum">      90 </span>            : 
+<span class="lineNum">      91 </span><span class="lineCov">         28 : lunchbox::PluginRegisterer&lt;MorphologySWC&gt; registerer;</span>
+<a name="92"><span class="lineNum">      92 </span>            : </a>
+<span class="lineNum">      93 </span>            : template &lt;typename T&gt;
+<span class="lineNum">      94 </span><span class="lineCov">          4 : inline std::string string_cast(const T&amp; t)</span>
+<span class="lineNum">      95 </span>            : {
+<span class="lineNum">      96 </span><span class="lineCov">          4 :     return boost::lexical_cast&lt;std::string&gt;(t);</span>
+<a name="97"><span class="lineNum">      97 </span>            : }</a>
+<span class="lineNum">      98 </span>            : 
+<span class="lineNum">      99 </span><span class="lineCov">       1822 : void _correctSampleType(Sample&amp; sample, const Samples&amp; samples)</span>
+<span class="lineNum">     100 </span>            : {
+<span class="lineNum">     101 </span><span class="lineCov">       1822 :     SWCSectionType type = sample.type;</span>
+<span class="lineNum">     102 </span>            :     // Fork and end point sample types don't make much sense for Brion.
+<span class="lineNum">     103 </span>            :     // The sample type will be corrected to be that of the parent section.
+<span class="lineNum">     104 </span>            :     // If the parent is the soma or doesn't exist, the final type will be
+<span class="lineNum">     105 </span>            :     // undefined. If the parent is also a fork point, the traversal will
+<span class="lineNum">     106 </span>            :     // continue.
+<span class="lineNum">     107 </span><span class="lineCov">       1822 :     int parentID = sample.parent;</span>
+<span class="lineNum">     108 </span><span class="lineCov">       1854 :     while (type == SWC_SECTION_FORK_POINT || type == SWC_SECTION_END_POINT)</span>
+<span class="lineNum">     109 </span>            :     {
+<span class="lineNum">     110 </span><span class="lineCov">         24 :         if (parentID == SWC_UNDEFINED_PARENT)</span>
+<span class="lineNum">     111 </span>            :         {
+<span class="lineNum">     112 </span><span class="lineCov">          4 :             sample.type = SWC_SECTION_UNDEFINED;</span>
+<span class="lineNum">     113 </span><span class="lineCov">          4 :             return;</span>
+<span class="lineNum">     114 </span>            :         }
+<span class="lineNum">     115 </span>            : 
+<span class="lineNum">     116 </span><span class="lineCov">         20 :         type = samples[parentID].type;</span>
+<span class="lineNum">     117 </span><span class="lineCov">         20 :         parentID = samples[parentID].parent;</span>
+<span class="lineNum">     118 </span>            : 
+<span class="lineNum">     119 </span><span class="lineCov">         20 :         if (type == SWC_SECTION_SOMA || type == SWC_SECTION_UNDEFINED)</span>
+<span class="lineNum">     120 </span>            :         {
+<span class="lineNum">     121 </span><span class="lineCov">          4 :             sample.type = SWC_SECTION_UNDEFINED;</span>
+<span class="lineNum">     122 </span><span class="lineCov">          4 :             return;</span>
+<span class="lineNum">     123 </span>            :         }
+<span class="lineNum">     124 </span>            :     }
+<span class="lineNum">     125 </span>            : 
+<span class="lineNum">     126 </span><span class="lineCov">       1814 :     sample.type = type;</span>
+<span class="lineNum">     127 </span>            : }
+<a name="128"><span class="lineNum">     128 </span>            : }</a>
+<span class="lineNum">     129 </span>            : 
+<a name="130"><span class="lineNum">     130 </span><span class="lineCov">         32 : struct MorphologySWC::RawSWCInfo</span></a>
+<span class="lineNum">     131 </span>            : {
+<span class="lineNum">     132 </span><span class="lineCov">         32 :     RawSWCInfo()</span>
+<span class="lineNum">     133 </span><span class="lineCov">         32 :         : totalValidSamples(0)</span>
+<span class="lineNum">     134 </span><span class="lineCov">         32 :         , numSections(0)</span>
+<span class="lineNum">     135 </span>            :     {
+<span class="lineNum">     136 </span><span class="lineCov">         32 :     }</span>
+<span class="lineNum">     137 </span>            : 
+<span class="lineNum">     138 </span>            :     std::string filename;
+<span class="lineNum">     139 </span>            : 
+<span class="lineNum">     140 </span>            :     // This is the raw sample array. It will have gaps for those ids that
+<span class="lineNum">     141 </span>            :     // are missing in the input file.
+<span class="lineNum">     142 </span>            :     Samples samples;
+<span class="lineNum">     143 </span>            :     size_t totalValidSamples;
+<span class="lineNum">     144 </span>            : 
+<span class="lineNum">     145 </span>            :     // Depending on the input file there might be one or more samples with
+<span class="lineNum">     146 </span>            :     // no parent. This structure is used to be able to do a depth first
+<span class="lineNum">     147 </span>            :     // traversal from the soma. The first root is the soma and only one
+<span class="lineNum">     148 </span>            :     // root sample is allowed to be of type soma.
+<span class="lineNum">     149 </span>            :     std::vector&lt;size_t&gt; roots;
+<span class="lineNum">     150 </span>            : 
+<span class="lineNum">     151 </span>            :     size_t numSections;
+<a name="152"><span class="lineNum">     152 </span>            : };</a>
+<span class="lineNum">     153 </span>            : 
+<span class="lineNum">     154 </span><span class="lineCov">         32 : MorphologySWC::MorphologySWC(const MorphologyInitData&amp; initData)</span>
+<span class="lineNum">     155 </span><span class="lineCov">         32 :     : _points(new Vector4fs)</span>
+<span class="lineNum">     156 </span><span class="lineCov">         32 :     , _sections(new Vector2is)</span>
+<span class="lineNum">     157 </span><span class="lineCov">        106 :     , _types(new SectionTypes)</span>
+<span class="lineNum">     158 </span>            : {
+<span class="lineNum">     159 </span>            :     // Parsing SWC according to this specification:
+<span class="lineNum">     160 </span>            :     // http://www.neuronland.org/NLMorphologyConverter/MorphologyFormats/SWC/Spec.html
+<span class="lineNum">     161 </span>            :     // Sample numbers may not be contiguous and parent samples can appear
+<span class="lineNum">     162 </span>            :     // later than child ones. Both things shouldn't happen, but the &quot;spec&quot;
+<span class="lineNum">     163 </span>            :     // doesn't enforce it, only gives recommendations.
+<span class="lineNum">     164 </span>            :     // This code takes that possibility into account.
+<span class="lineNum">     165 </span>            : 
+<span class="lineNum">     166 </span><span class="lineCov">         64 :     RawSWCInfo info;</span>
+<span class="lineNum">     167 </span><span class="lineCov">         32 :     info.filename = initData.getURI().getPath();</span>
+<span class="lineNum">     168 </span>            : 
+<span class="lineNum">     169 </span><span class="lineCov">         32 :     if (initData.getAccessMode() != MODE_READ)</span>
+<span class="lineNum">     170 </span><span class="lineNoCov">          0 :         LBTHROW(std::runtime_error(&quot;Could not open morphology file &quot; +</span>
+<span class="lineNum">     171 </span>            :                                    info.filename + &quot;: Invalid access mode&quot;));
+<span class="lineNum">     172 </span>            : 
+<span class="lineNum">     173 </span><span class="lineCov">         32 :     _readSamples(info);</span>
+<span class="lineNum">     174 </span><span class="lineCov">         28 :     _buildSampleTree(info);</span>
+<span class="lineNum">     175 </span><span class="lineCov">         22 :     _buildStructure(info);</span>
+<a name="176"><span class="lineNum">     176 </span><span class="lineCov">         22 : }</span></a>
+<span class="lineNum">     177 </span>            : 
+<span class="lineNum">     178 </span><span class="lineCov">         40 : bool MorphologySWC::handles(const MorphologyInitData&amp; initData)</span>
+<span class="lineNum">     179 </span>            : {
+<span class="lineNum">     180 </span><span class="lineCov">         80 :     const std::string path = initData.getURI().getPath();</span>
+<span class="lineNum">     181 </span><span class="lineCov">         40 :     const size_t pos = path.find_last_of(&quot;.&quot;);</span>
+<span class="lineNum">     182 </span><span class="lineCov">         40 :     if (pos == std::string::npos)</span>
+<span class="lineNum">     183 </span><span class="lineCov">          6 :         return false;</span>
+<span class="lineNum">     184 </span><span class="lineCov">         34 :     return path.substr(pos) == &quot;.swc&quot;;</span>
+<a name="185"><span class="lineNum">     185 </span>            : }</a>
+<span class="lineNum">     186 </span>            : 
+<span class="lineNum">     187 </span><span class="lineNoCov">          0 : std::string MorphologySWC::getDescription()</span>
+<span class="lineNum">     188 </span>            : {
+<span class="lineNum">     189 </span>            :     return &quot;SWC morphologies:\n&quot;
+<span class="lineNum">     190 </span><span class="lineNoCov">          0 :            &quot;  [file://]/path/to/morphology.swc&quot;;</span>
+<a name="191"><span class="lineNum">     191 </span>            : }</a>
+<span class="lineNum">     192 </span>            : 
+<span class="lineNum">     193 </span><span class="lineCov">          2 : CellFamily MorphologySWC::getCellFamily() const</span>
+<span class="lineNum">     194 </span>            : {
+<span class="lineNum">     195 </span><span class="lineCov">          2 :     return FAMILY_NEURON;</span>
+<a name="196"><span class="lineNum">     196 </span>            : }</a>
+<span class="lineNum">     197 </span>            : 
+<span class="lineNum">     198 </span><span class="lineCov">         18 : Vector4fsPtr MorphologySWC::readPoints(MorphologyRepairStage) const</span>
+<span class="lineNum">     199 </span>            : {
+<span class="lineNum">     200 </span><span class="lineCov">         18 :     return _points;</span>
+<a name="201"><span class="lineNum">     201 </span>            : }</a>
+<span class="lineNum">     202 </span>            : 
+<span class="lineNum">     203 </span><span class="lineCov">         20 : Vector2isPtr MorphologySWC::readSections(MorphologyRepairStage) const</span>
+<span class="lineNum">     204 </span>            : {
+<span class="lineNum">     205 </span><span class="lineCov">         20 :     return _sections;</span>
+<a name="206"><span class="lineNum">     206 </span>            : }</a>
+<span class="lineNum">     207 </span>            : 
+<span class="lineNum">     208 </span><span class="lineCov">         20 : SectionTypesPtr MorphologySWC::readSectionTypes() const</span>
+<span class="lineNum">     209 </span>            : {
+<span class="lineNum">     210 </span><span class="lineCov">         20 :     return _types;</span>
+<a name="211"><span class="lineNum">     211 </span>            : }</a>
+<span class="lineNum">     212 </span>            : 
+<span class="lineNum">     213 </span><span class="lineNoCov">          0 : Vector2isPtr MorphologySWC::readApicals() const</span>
+<span class="lineNum">     214 </span>            : {
+<span class="lineNum">     215 </span>            :     // Can these points be inferred? Should it be done at all?
+<span class="lineNum">     216 </span><span class="lineNoCov">          0 :     return Vector2isPtr(new Vector2is());</span>
+<a name="217"><span class="lineNum">     217 </span>            : }</a>
+<span class="lineNum">     218 </span>            : 
+<span class="lineNum">     219 </span><span class="lineCov">          2 : floatsPtr MorphologySWC::readPerimeters() const</span>
+<span class="lineNum">     220 </span>            : {
+<span class="lineNum">     221 </span><span class="lineCov">          2 :     return floatsPtr(new floats());</span>
+<a name="222"><span class="lineNum">     222 </span>            : }</a>
+<span class="lineNum">     223 </span>            : 
+<span class="lineNum">     224 </span><span class="lineNoCov">          0 : MorphologyVersion MorphologySWC::getVersion() const</span>
+<span class="lineNum">     225 </span>            : {
+<span class="lineNum">     226 </span><span class="lineNoCov">          0 :     return MORPHOLOGY_VERSION_SWC_1;</span>
+<a name="227"><span class="lineNum">     227 </span>            : }</a>
+<span class="lineNum">     228 </span>            : 
+<span class="lineNum">     229 </span><span class="lineNoCov">          0 : void MorphologySWC::writePoints(const Vector4fs&amp;, const MorphologyRepairStage)</span>
+<span class="lineNum">     230 </span>            : {
+<span class="lineNum">     231 </span><span class="lineNoCov">          0 :     LBUNIMPLEMENTED</span>
+<a name="232"><span class="lineNum">     232 </span><span class="lineNoCov">          0 : }</span></a>
+<span class="lineNum">     233 </span>            : 
+<span class="lineNum">     234 </span><span class="lineNoCov">          0 : void MorphologySWC::writeSections(const Vector2is&amp;, const MorphologyRepairStage)</span>
+<span class="lineNum">     235 </span>            : {
+<span class="lineNum">     236 </span><span class="lineNoCov">          0 :     LBUNIMPLEMENTED</span>
+<a name="237"><span class="lineNum">     237 </span><span class="lineNoCov">          0 : }</span></a>
+<span class="lineNum">     238 </span>            : 
+<span class="lineNum">     239 </span><span class="lineNoCov">          0 : void MorphologySWC::writeSectionTypes(const SectionTypes&amp;)</span>
+<span class="lineNum">     240 </span>            : {
+<span class="lineNum">     241 </span><span class="lineNoCov">          0 :     LBUNIMPLEMENTED</span>
+<a name="242"><span class="lineNum">     242 </span><span class="lineNoCov">          0 : }</span></a>
+<span class="lineNum">     243 </span>            : 
+<span class="lineNum">     244 </span><span class="lineNoCov">          0 : void MorphologySWC::writeApicals(const Vector2is&amp;)</span>
+<span class="lineNum">     245 </span>            : {
+<span class="lineNum">     246 </span><span class="lineNoCov">          0 :     LBUNIMPLEMENTED</span>
+<a name="247"><span class="lineNum">     247 </span><span class="lineNoCov">          0 : }</span></a>
+<span class="lineNum">     248 </span>            : 
+<span class="lineNum">     249 </span><span class="lineNoCov">          0 : void MorphologySWC::writePerimeters(const floats&amp;)</span>
+<span class="lineNum">     250 </span>            : {
+<span class="lineNum">     251 </span><span class="lineNoCov">          0 :     LBUNIMPLEMENTED</span>
+<a name="252"><span class="lineNum">     252 </span><span class="lineNoCov">          0 : }</span></a>
+<span class="lineNum">     253 </span>            : 
+<span class="lineNum">     254 </span><span class="lineNoCov">          0 : void MorphologySWC::flush()</span>
+<span class="lineNum">     255 </span>            : {
+<span class="lineNum">     256 </span><span class="lineNoCov">          0 :     LBUNIMPLEMENTED</span>
+<a name="257"><span class="lineNum">     257 </span><span class="lineNoCov">          0 : }</span></a>
+<span class="lineNum">     258 </span>            : 
+<span class="lineNum">     259 </span><span class="lineCov">         32 : void MorphologySWC::_readSamples(RawSWCInfo&amp; info)</span>
+<span class="lineNum">     260 </span>            : {
+<span class="lineNum">     261 </span><span class="lineCov">         64 :     std::ifstream file(info.filename.c_str());</span>
+<span class="lineNum">     262 </span><span class="lineCov">         32 :     if (file.fail())</span>
+<span class="lineNum">     263 </span><span class="lineCov">          2 :         LBTHROW(std::runtime_error(&quot;Error opening morphology file: &quot; +</span>
+<span class="lineNum">     264 </span>            :                                    info.filename));
+<span class="lineNum">     265 </span>            : 
+<span class="lineNum">     266 </span><span class="lineCov">         30 :     Samples&amp; samples = info.samples;</span>
+<span class="lineNum">     267 </span>            : 
+<span class="lineNum">     268 </span><span class="lineCov">         30 :     size_t lineNumber = 0;</span>
+<span class="lineNum">     269 </span><span class="lineCov">         30 :     file &gt;&gt; detail::SkipWhiteSpace(lineNumber);</span>
+<span class="lineNum">     270 </span><span class="lineCov">         60 :     std::string line;</span>
+<span class="lineNum">     271 </span><span class="lineCov">         30 :     size_t totalSamples = 0;</span>
+<span class="lineNum">     272 </span><span class="lineCov">       3846 :     while (!std::getline(file, line).fail())</span>
+<span class="lineNum">     273 </span>            :     {
+<span class="lineNum">     274 </span><span class="lineCov">       1910 :         ++lineNumber;</span>
+<span class="lineNum">     275 </span>            :         // Fix #4: Subsequent non-empty lines each represent a single neuron
+<span class="lineNum">     276 </span>            :         // sample point with seven data items.
+<span class="lineNum">     277 </span><span class="lineCov">       1910 :         if (line[0] == '#' || line.empty())</span>
+<span class="lineNum">     278 </span><span class="lineCov">         78 :             continue;</span>
+<span class="lineNum">     279 </span>            : 
+<span class="lineNum">     280 </span>            :         char* data;
+<span class="lineNum">     281 </span><span class="lineCov">       1832 :         const unsigned int id = strtol(line.data(), &amp;data, 10);</span>
+<span class="lineNum">     282 </span><span class="lineCov">       1832 :         if (*data != ' ')</span>
+<span class="lineNum">     283 </span>            :         {
+<span class="lineNum">     284 </span><span class="lineCov">          2 :             LBTHROW(std::runtime_error(</span>
+<span class="lineNum">     285 </span>            :                 &quot;Reading swc morphology file: &quot; + info.filename +
+<span class="lineNum">     286 </span>            :                 &quot;, parse error at line &quot; + string_cast(lineNumber)));
+<span class="lineNum">     287 </span>            :         }
+<span class="lineNum">     288 </span><span class="lineCov">       1830 :         samples.resize(std::max(samples.size(), size_t(id + 1)));</span>
+<span class="lineNum">     289 </span><span class="lineCov">       1830 :         if (samples[id].valid)</span>
+<span class="lineNum">     290 </span>            :         {
+<span class="lineNum">     291 </span><span class="lineNoCov">          0 :             LBWARN &lt;&lt; &quot;Reading swc morphology file: &quot; &lt;&lt; info.filename</span>
+<span class="lineNum">     292 </span><span class="lineNoCov">          0 :                    &lt;&lt; &quot;, repeated sample id &quot; &lt;&lt; id &lt;&lt; &quot; at line &quot;</span>
+<span class="lineNum">     293 </span><span class="lineNoCov">          0 :                    &lt;&lt; string_cast(lineNumber) &lt;&lt; std::endl;</span>
+<span class="lineNum">     294 </span>            :         }
+<span class="lineNum">     295 </span>            :         else
+<span class="lineNum">     296 </span>            :         {
+<span class="lineNum">     297 </span><span class="lineCov">       1830 :             samples[id] = Sample(data);</span>
+<span class="lineNum">     298 </span><span class="lineCov">       1830 :             ++totalSamples;</span>
+<span class="lineNum">     299 </span><span class="lineCov">       1830 :             if (!samples[id].valid)</span>
+<span class="lineNum">     300 </span>            :             {
+<span class="lineNum">     301 </span><span class="lineNoCov">          0 :                 LBTHROW(std::runtime_error(</span>
+<span class="lineNum">     302 </span>            :                     &quot;Reading swc morphology file: &quot; + info.filename +
+<span class="lineNum">     303 </span>            :                     &quot;, parse error at line &quot; + string_cast(lineNumber)));
+<span class="lineNum">     304 </span>            :             }
+<span class="lineNum">     305 </span>            :         }
+<span class="lineNum">     306 </span>            : 
+<span class="lineNum">     307 </span><span class="lineCov">       1830 :         file &gt;&gt; detail::SkipWhiteSpace(lineNumber);</span>
+<span class="lineNum">     308 </span>            :     }
+<span class="lineNum">     309 </span><span class="lineCov">         28 :     info.totalValidSamples = totalSamples;</span>
+<a name="310"><span class="lineNum">     310 </span><span class="lineCov">         28 : }</span></a>
+<span class="lineNum">     311 </span>            : 
+<span class="lineNum">     312 </span><span class="lineCov">         28 : void MorphologySWC::_buildSampleTree(RawSWCInfo&amp; info)</span>
+<span class="lineNum">     313 </span>            : {
+<span class="lineNum">     314 </span>            :     // To connect the samples in a descending tree the easiest thing is to
+<span class="lineNum">     315 </span>            :     // start with the last sample (assumed to be and end-point as no other
+<span class="lineNum">     316 </span>            :     // can have it as parent without making a loop) and traverse the
+<span class="lineNum">     317 </span>            :     // morphology tree backwards until we find a sample with no
+<span class="lineNum">     318 </span>            :     // parent. Then, the next sample in the input vector which hasn't
+<span class="lineNum">     319 </span>            :     // still been processed is searched and the traversal continues from
+<span class="lineNum">     320 </span>            :     // there. If at any moment a sample which has already been visited is
+<span class="lineNum">     321 </span>            :     // hit, the loop goes back to search the next end point.
+<span class="lineNum">     322 </span><span class="lineCov">         56 :     std::vector&lt;bool&gt; visited;</span>
+<span class="lineNum">     323 </span><span class="lineCov">         28 :     Samples&amp; samples = info.samples;</span>
+<span class="lineNum">     324 </span><span class="lineCov">       1886 :     for (Sample&amp; sample : samples)</span>
+<span class="lineNum">     325 </span><span class="lineCov">       1858 :         visited.push_back(!sample.valid);</span>
+<span class="lineNum">     326 </span>            : 
+<span class="lineNum">     327 </span><span class="lineCov">         28 :     if (samples.empty())</span>
+<span class="lineNum">     328 </span><span class="lineNoCov">          0 :         LBTHROW(std::runtime_error(&quot;Reading swc morphology file: &quot; +</span>
+<span class="lineNum">     329 </span>            :                                    info.filename + &quot;, no soma section found&quot;));
+<span class="lineNum">     330 </span>            : 
+<span class="lineNum">     331 </span><span class="lineCov">         28 :     size_t currentSample = samples.size() - 1;</span>
+<span class="lineNum">     332 </span><span class="lineCov">         28 :     size_t currentEndPoint = samples.size() - 1;</span>
+<span class="lineNum">     333 </span><span class="lineCov">         28 :     size_t samplesLeft = info.totalValidSamples;</span>
+<span class="lineNum">     334 </span><span class="lineCov">         28 :     assert(!visited[currentSample]); // It's impossible that the last</span>
+<span class="lineNum">     335 </span>            :                                      // sample array is not valid
+<span class="lineNum">     336 </span>            : 
+<span class="lineNum">     337 </span><span class="lineCov">         28 :     bool hasSoma = false;</span>
+<span class="lineNum">     338 </span>            : 
+<span class="lineNum">     339 </span><span class="lineCov">       3664 :     while (samplesLeft--)</span>
+<span class="lineNum">     340 </span>            :     {
+<span class="lineNum">     341 </span><span class="lineCov">       1822 :         Sample&amp; sample = samples[currentSample];</span>
+<span class="lineNum">     342 </span><span class="lineCov">       1822 :         visited[currentSample] = true;</span>
+<span class="lineNum">     343 </span>            : 
+<span class="lineNum">     344 </span><span class="lineCov">       1822 :         _correctSampleType(sample, samples);</span>
+<span class="lineNum">     345 </span>            : 
+<span class="lineNum">     346 </span>            :         // Moving to the parent if not visited yet, otherwise searching
+<span class="lineNum">     347 </span>            :         // for the next end point.
+<span class="lineNum">     348 </span><span class="lineCov">       1822 :         const bool root = sample.parent == SWC_UNDEFINED_PARENT;</span>
+<span class="lineNum">     349 </span>            : 
+<span class="lineNum">     350 </span><span class="lineCov">       1822 :         if (!root)</span>
+<span class="lineNum">     351 </span>            :         {
+<span class="lineNum">     352 </span><span class="lineCov">       1786 :             if (sample.parent == int(currentSample))</span>
+<span class="lineNum">     353 </span>            :             {
+<span class="lineNum">     354 </span><span class="lineNoCov">          0 :                 LBTHROW(std::runtime_error(&quot;Reading swc morphology file: &quot; +</span>
+<span class="lineNum">     355 </span>            :                                            info.filename +
+<span class="lineNum">     356 </span>            :                                            &quot;, found a sample point to itself&quot;));
+<span class="lineNum">     357 </span>            :             }
+<span class="lineNum">     358 </span><span class="lineCov">       1786 :             Sample* parent = &amp;samples[sample.parent];</span>
+<span class="lineNum">     359 </span><span class="lineCov">       1786 :             if (!parent-&gt;valid)</span>
+<span class="lineNum">     360 </span>            :             {
+<span class="lineNum">     361 </span><span class="lineCov">          4 :                 std::stringstream msg;</span>
+<span class="lineNum">     362 </span>            :                 msg &lt;&lt; &quot;Reading swc morphology file: &quot; &lt;&lt; info.filename
+<span class="lineNum">     363 </span><span class="lineCov">          2 :                     &lt;&lt; &quot;, broken tree (missing sample  &quot; &lt;&lt; sample.parent &lt;&lt; &quot;)&quot;</span>
+<span class="lineNum">     364 </span><span class="lineCov">          2 :                     &lt;&lt; std::endl;</span>
+<span class="lineNum">     365 </span><span class="lineCov">          2 :                 LBTHROW(std::runtime_error(msg.str()));</span>
+<span class="lineNum">     366 </span>            :             }
+<span class="lineNum">     367 </span>            : 
+<span class="lineNum">     368 </span><span class="lineCov">       1784 :             if (parent-&gt;type == SWC_SECTION_SOMA)</span>
+<span class="lineNum">     369 </span>            :             {
+<span class="lineNum">     370 </span>            :                 // When the parent is the soma we have to handle it differently
+<span class="lineNum">     371 </span>            :                 // as we don't want to split a soma ring where neurites
+<span class="lineNum">     372 </span>            :                 // connect to arbitrary soma points in multiple sections.
+<span class="lineNum">     373 </span><span class="lineCov">         54 :                 if (sample.type == SWC_SECTION_SOMA)</span>
+<span class="lineNum">     374 </span>            :                 {
+<span class="lineNum">     375 </span><span class="lineCov">         20 :                     if (parent-&gt;nextID != -1)</span>
+<span class="lineNum">     376 </span>            :                     {
+<span class="lineNum">     377 </span><span class="lineCov">          6 :                         LBWARN</span>
+<span class="lineNum">     378 </span>            :                             &lt;&lt; &quot;Reading swc morphology file: &quot; &lt;&lt; info.filename
+<span class="lineNum">     379 </span><span class="lineCov">          6 :                             &lt;&lt; &quot;, found bifurcation in soma section&quot;;</span>
+<span class="lineNum">     380 </span><span class="lineCov">          2 :                         sample.siblingID = parent-&gt;nextID;</span>
+<span class="lineNum">     381 </span>            :                     }
+<span class="lineNum">     382 </span>            :                     // Linking the parent to this sample.
+<span class="lineNum">     383 </span><span class="lineCov">         20 :                     parent-&gt;nextID = int(currentSample);</span>
+<span class="lineNum">     384 </span>            :                 }
+<span class="lineNum">     385 </span>            :                 else
+<span class="lineNum">     386 </span>            :                 {
+<span class="lineNum">     387 </span><span class="lineCov">         34 :                     info.roots.push_back(currentSample);</span>
+<span class="lineNum">     388 </span>            :                     // Sections whose parent is the soma need their parent
+<span class="lineNum">     389 </span>            :                     // section to be assigned at this point.
+<span class="lineNum">     390 </span><span class="lineCov">         34 :                     sample.parentSection = 0;</span>
+<span class="lineNum">     391 </span>            :                 }
+<span class="lineNum">     392 </span>            :             }
+<span class="lineNum">     393 </span>            :             else
+<span class="lineNum">     394 </span>            :             {
+<span class="lineNum">     395 </span><span class="lineCov">       1730 :                 if (sample.type == SWC_SECTION_SOMA)</span>
+<span class="lineNum">     396 </span>            :                 {
+<span class="lineNum">     397 </span><span class="lineNoCov">          0 :                     LBTHROW(std::runtime_error(</span>
+<span class="lineNum">     398 </span>            :                         &quot;Reading swc morphology file: &quot; + info.filename +
+<span class="lineNum">     399 </span>            :                         &quot;, found soma sample with neurite parent&quot;));
+<span class="lineNum">     400 </span>            :                 }
+<span class="lineNum">     401 </span><span class="lineCov">       1730 :                 if (parent-&gt;nextID != -1)</span>
+<span class="lineNum">     402 </span>            :                 {
+<span class="lineNum">     403 </span>            :                     // The parent was already connected. Linking this sample
+<span class="lineNum">     404 </span>            :                     // to its sibling.
+<span class="lineNum">     405 </span><span class="lineCov">         86 :                     sample.siblingID = parent-&gt;nextID;</span>
+<span class="lineNum">     406 </span>            :                     // This also means that a sequence of samples is now split
+<span class="lineNum">     407 </span>            :                     // in three different sections (a parent and two children).
+<span class="lineNum">     408 </span><span class="lineCov">         86 :                     info.numSections += 2;</span>
+<span class="lineNum">     409 </span>            :                 }
+<span class="lineNum">     410 </span>            :                 // Linking the parent to this sample.
+<span class="lineNum">     411 </span><span class="lineCov">       1730 :                 parent-&gt;nextID = int(currentSample);</span>
+<span class="lineNum">     412 </span>            :             }
+<span class="lineNum">     413 </span>            :         }
+<span class="lineNum">     414 </span>            :         else
+<span class="lineNum">     415 </span>            :         {
+<span class="lineNum">     416 </span><span class="lineCov">         36 :             ++info.numSections;</span>
+<span class="lineNum">     417 </span><span class="lineCov">         36 :             if (sample.type == SWC_SECTION_SOMA)</span>
+<span class="lineNum">     418 </span>            :             {
+<span class="lineNum">     419 </span>            :                 // Only one soma section is permitted. If a previous
+<span class="lineNum">     420 </span>            :                 // one is detected, then throw.
+<span class="lineNum">     421 </span><span class="lineCov">         46 :                 if (info.roots.size() &amp;&amp;</span>
+<span class="lineNum">     422 </span><span class="lineCov">         20 :                     samples[info.roots[0]].type == SWC_SECTION_SOMA)</span>
+<span class="lineNum">     423 </span>            :                 {
+<span class="lineNum">     424 </span><span class="lineCov">          2 :                     LBTHROW(std::runtime_error(&quot;Reading swc morphology file: &quot; +</span>
+<span class="lineNum">     425 </span>            :                                                info.filename +
+<span class="lineNum">     426 </span>            :                                                &quot;, found two soma sections&quot;));
+<span class="lineNum">     427 </span>            :                 }
+<span class="lineNum">     428 </span><span class="lineCov">         24 :                 info.roots.insert(info.roots.begin(), currentSample);</span>
+<span class="lineNum">     429 </span><span class="lineCov">         24 :                 hasSoma = true;</span>
+<span class="lineNum">     430 </span>            :             }
+<span class="lineNum">     431 </span>            :             else
+<span class="lineNum">     432 </span>            :             {
+<span class="lineNum">     433 </span><span class="lineCov">         10 :                 info.roots.push_back(currentSample);</span>
+<span class="lineNum">     434 </span>            :                 // Non soma root sections get their parent section
+<span class="lineNum">     435 </span>            :                 // assigned to the soma at this point.
+<span class="lineNum">     436 </span><span class="lineCov">         10 :                 sample.parentSection = 0;</span>
+<span class="lineNum">     437 </span>            :                 // If the sample type is fork or end point, we convert it
+<span class="lineNum">     438 </span>            :                 // into undefined because we don't really know which is the
+<span class="lineNum">     439 </span>            :                 // type of the section.
+<span class="lineNum">     440 </span><span class="lineCov">         20 :                 if (sample.type == SWC_SECTION_FORK_POINT ||</span>
+<span class="lineNum">     441 </span><span class="lineCov">         10 :                     sample.type == SWC_SECTION_END_POINT)</span>
+<span class="lineNum">     442 </span>            :                 {
+<span class="lineNum">     443 </span><span class="lineNoCov">          0 :                     sample.type = SWC_SECTION_UNDEFINED;</span>
+<span class="lineNum">     444 </span>            :                 }
+<span class="lineNum">     445 </span>            :             }
+<span class="lineNum">     446 </span>            :         }
+<span class="lineNum">     447 </span>            : 
+<span class="lineNum">     448 </span><span class="lineCov">       1818 :         if (samplesLeft)</span>
+<span class="lineNum">     449 </span>            :         {
+<span class="lineNum">     450 </span><span class="lineCov">       1794 :             if (root || visited[sample.parent])</span>
+<span class="lineNum">     451 </span>            :             {
+<span class="lineNum">     452 </span>            :                 // This loop and the external loop guarantee that every
+<span class="lineNum">     453 </span>            :                 // sample after currentEndPoint has been already visited (or
+<span class="lineNum">     454 </span>            :                 // is invalid).
+<span class="lineNum">     455 </span><span class="lineCov">       3572 :                 while (visited[currentEndPoint])</span>
+<span class="lineNum">     456 </span>            :                 {
+<span class="lineNum">     457 </span><span class="lineCov">       1728 :                     assert(currentEndPoint != 0);</span>
+<span class="lineNum">     458 </span><span class="lineCov">       1728 :                     --currentEndPoint;</span>
+<span class="lineNum">     459 </span>            :                 }
+<span class="lineNum">     460 </span><span class="lineCov">        116 :                 currentSample = currentEndPoint;</span>
+<span class="lineNum">     461 </span>            :             }
+<span class="lineNum">     462 </span>            :             else
+<span class="lineNum">     463 </span><span class="lineCov">       1678 :                 currentSample = sample.parent;</span>
+<span class="lineNum">     464 </span>            :         }
+<span class="lineNum">     465 </span>            :     }
+<span class="lineNum">     466 </span><span class="lineCov">         24 :     if (!hasSoma)</span>
+<span class="lineNum">     467 </span><span class="lineCov">          2 :         LBTHROW(std::runtime_error(&quot;Reading swc morphology file: &quot; +</span>
+<span class="lineNum">     468 </span>            :                                    info.filename + &quot;, no soma section found&quot;));
+<a name="469"><span class="lineNum">     469 </span><span class="lineCov">         22 : }</span></a>
+<span class="lineNum">     470 </span>            : 
+<span class="lineNum">     471 </span><span class="lineCov">         22 : void MorphologySWC::_buildStructure(RawSWCInfo&amp; info)</span>
+<span class="lineNum">     472 </span>            : {
+<span class="lineNum">     473 </span><span class="lineCov">         44 :     std::list&lt;size_t&gt; sectionQueue(info.roots.begin(), info.roots.end());</span>
+<span class="lineNum">     474 </span>            : 
+<span class="lineNum">     475 </span><span class="lineCov">         22 :     int section = 0;</span>
+<span class="lineNum">     476 </span>            :     // All sections except the soma section and the first order sections
+<span class="lineNum">     477 </span>            :     // repeat the parent point in the point list. This is a &quot;feature&quot; to
+<span class="lineNum">     478 </span>            :     // stay compatible with the binary layout of the .h5 file format.
+<span class="lineNum">     479 </span>            :     // The size reservation is an upper estimate because it's not easy to
+<span class="lineNum">     480 </span>            :     // detect all first order sections (some may connect to the soma point
+<span class="lineNum">     481 </span>            :     // or ring and some may not).
+<span class="lineNum">     482 </span><span class="lineCov">         44 :     _points-&gt;reserve(info.totalValidSamples + info.numSections -</span>
+<span class="lineNum">     483 </span><span class="lineCov">         44 :                      info.roots.size());</span>
+<span class="lineNum">     484 </span><span class="lineCov">         22 :     _sections-&gt;reserve(info.numSections);</span>
+<span class="lineNum">     485 </span><span class="lineCov">         22 :     _types-&gt;reserve(info.numSections);</span>
+<span class="lineNum">     486 </span><span class="lineCov">         22 :     Samples&amp; samples = info.samples;</span>
+<span class="lineNum">     487 </span>            : 
+<span class="lineNum">     488 </span><span class="lineCov">         22 :     Sample* sample = &amp;samples[sectionQueue.front()];</span>
+<span class="lineNum">     489 </span><span class="lineCov">         22 :     sectionQueue.pop_front();</span>
+<span class="lineNum">     490 </span><span class="lineCov">        506 :     while (sample)</span>
+<span class="lineNum">     491 </span>            :     {
+<span class="lineNum">     492 </span><span class="lineCov">        242 :         _sections-&gt;push_back(</span>
+<span class="lineNum">     493 </span><span class="lineCov">        484 :             Vector2i(int(_points-&gt;size()), sample-&gt;parentSection));</span>
+<span class="lineNum">     494 </span><span class="lineCov">        242 :         _types-&gt;push_back(SectionType(sample-&gt;type));</span>
+<span class="lineNum">     495 </span>            : 
+<span class="lineNum">     496 </span>            :         // Pushing first point of the section using the parent sample
+<span class="lineNum">     497 </span>            :         // if necessary
+<span class="lineNum">     498 </span><span class="lineCov">        242 :         if (sample-&gt;parent != SWC_UNDEFINED_PARENT)</span>
+<span class="lineNum">     499 </span>            :         {
+<span class="lineNum">     500 </span><span class="lineCov">        212 :             const Sample* parent = &amp;samples[sample-&gt;parent];</span>
+<span class="lineNum">     501 </span>            :             // If the parent sections is the soma, we connect this section
+<span class="lineNum">     502 </span>            :             // to the soma only if the soma is described with more than
+<span class="lineNum">     503 </span>            :             // one sample (that is, sections are not connected to point somas).
+<span class="lineNum">     504 </span><span class="lineCov">        230 :             if (parent-&gt;type != SWC_SECTION_SOMA || parent-&gt;nextID != -1 ||</span>
+<span class="lineNum">     505 </span><span class="lineCov">         18 :                 parent-&gt;parent != -1)</span>
+<span class="lineNum">     506 </span>            :             {
+<span class="lineNum">     507 </span><span class="lineCov">        194 :                 _points-&gt;push_back(parent-&gt;point);</span>
+<span class="lineNum">     508 </span>            :             }
+<span class="lineNum">     509 </span>            :         }
+<span class="lineNum">     510 </span>            : 
+<span class="lineNum">     511 </span>            :         // Iterate while we stay on the same section and push points
+<span class="lineNum">     512 </span>            :         // to the point vector.
+<span class="lineNum">     513 </span><span class="lineCov">       5670 :         while (sample &amp;&amp; sample-&gt;siblingID == -1 &amp;&amp;</span>
+<span class="lineNum">     514 </span>            :                // We also cut into sections when the sample type changes.
+<span class="lineNum">     515 </span>            :                // There are degenerated cases where this is absolutely
+<span class="lineNum">     516 </span>            :                // needed (e.g. a morphology with only one first order
+<span class="lineNum">     517 </span>            :                // section a point soma).
+<span class="lineNum">     518 </span><span class="lineCov">       1812 :                sample-&gt;type == SWCSectionType(_types-&gt;back()))</span>
+<span class="lineNum">     519 </span>            :         {
+<span class="lineNum">     520 </span><span class="lineCov">       1808 :             _points-&gt;push_back(sample-&gt;point);</span>
+<span class="lineNum">     521 </span><span class="lineCov">       1808 :             sample = sample-&gt;nextID == -1 ? 0 : &amp;samples[sample-&gt;nextID];</span>
+<span class="lineNum">     522 </span>            :         }
+<span class="lineNum">     523 </span>            : 
+<span class="lineNum">     524 </span>            :         // Finished iterating a section
+<span class="lineNum">     525 </span><span class="lineCov">        242 :         if (sample)</span>
+<span class="lineNum">     526 </span>            :         {
+<span class="lineNum">     527 </span>            :             // We reached a bifurcation or a section type change, pushing
+<span class="lineNum">     528 </span>            :             // the sibling (if any) to the sectionQeueue and continuing
+<span class="lineNum">     529 </span>            :             // traversing the current section
+<span class="lineNum">     530 </span><span class="lineCov">         92 :             assert(sample-&gt;siblingID != -1 ||</span>
+<span class="lineNum">     531 </span>            :                    sample-&gt;type != SWCSectionType(_types-&gt;back()));
+<span class="lineNum">     532 </span>            : 
+<span class="lineNum">     533 </span>            :             // Assigning the parent section to the current sample, this
+<span class="lineNum">     534 </span>            :             // will be stored in the section array at the beginning of
+<span class="lineNum">     535 </span>            :             // the next iteration.
+<span class="lineNum">     536 </span><span class="lineCov">         92 :             sample-&gt;parentSection = section;</span>
+<span class="lineNum">     537 </span>            : 
+<span class="lineNum">     538 </span>            :             // Pushing all siblings into the queue and unlinking them
+<span class="lineNum">     539 </span><span class="lineCov">         92 :             int siblingID = sample-&gt;siblingID;</span>
+<span class="lineNum">     540 </span><span class="lineCov">         92 :             sample-&gt;siblingID = -1;</span>
+<span class="lineNum">     541 </span><span class="lineCov">        268 :             while (siblingID != -1)</span>
+<span class="lineNum">     542 </span>            :             {
+<span class="lineNum">     543 </span>            :                 // We do push_front to continue on the same subtree and
+<span class="lineNum">     544 </span>            :                 // do a depth-first traversal.
+<span class="lineNum">     545 </span><span class="lineCov">         88 :                 sectionQueue.push_front(siblingID);</span>
+<span class="lineNum">     546 </span><span class="lineCov">         88 :                 Sample* sibling = &amp;samples[siblingID];</span>
+<span class="lineNum">     547 </span>            :                 // Assigning the parent section to the sibling
+<span class="lineNum">     548 </span><span class="lineCov">         88 :                 sibling-&gt;parentSection = section;</span>
+<span class="lineNum">     549 </span><span class="lineCov">         88 :                 siblingID = sibling-&gt;siblingID;</span>
+<span class="lineNum">     550 </span><span class="lineCov">         88 :                 sibling-&gt;siblingID = -1;</span>
+<span class="lineNum">     551 </span>            :             }
+<span class="lineNum">     552 </span>            :         }
+<span class="lineNum">     553 </span><span class="lineCov">        150 :         else if (!sectionQueue.empty())</span>
+<span class="lineNum">     554 </span>            :         {
+<span class="lineNum">     555 </span>            :             // Reached an end point. Starting the next section from
+<span class="lineNum">     556 </span>            :             // the sectionQueue if not empty
+<span class="lineNum">     557 </span><span class="lineCov">        128 :             sample = &amp;samples[sectionQueue.front()];</span>
+<span class="lineNum">     558 </span><span class="lineCov">        128 :             sectionQueue.pop_front();</span>
+<span class="lineNum">     559 </span>            :         }
+<span class="lineNum">     560 </span><span class="lineCov">        242 :         ++section;</span>
+<span class="lineNum">     561 </span>            :     }
+<a name="562"><span class="lineNum">     562 </span><span class="lineCov">         22 : }</span></a>
+<span class="lineNum">     563 </span>            : }
+<span class="lineNum">     564 </span><span class="lineCov">         84 : }</span>
 </pre>
       </td>
     </tr>

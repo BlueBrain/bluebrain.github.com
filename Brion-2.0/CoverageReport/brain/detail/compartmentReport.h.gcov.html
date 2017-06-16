@@ -37,7 +37,7 @@
           </tr>
           <tr>
             <td class="headerItem">Date:</td>
-            <td class="headerValue">2017-06-08 06:06:57</td>
+            <td class="headerValue">2017-06-16 06:06:52</td>
             <td></td>
             <td class="headerItem">Functions:</td>
             <td class="headerCovTableEntry">5</td>
@@ -84,84 +84,86 @@
 <span class="lineNum">      22 </span>            : #include &quot;../compartmentReport.h&quot;
 <span class="lineNum">      23 </span>            : #include &quot;../compartmentReportMapping.h&quot;
 <span class="lineNum">      24 </span>            : #include &quot;brion/compartmentReport.h&quot;
-<span class="lineNum">      25 </span>            : #include &lt;lunchbox/threadPool.h&gt;
-<span class="lineNum">      26 </span>            : 
-<span class="lineNum">      27 </span>            : namespace brain
-<span class="lineNum">      28 </span>            : {
-<a name="29"><span class="lineNum">      29 </span>            : namespace detail</a>
+<span class="lineNum">      25 </span>            : 
+<span class="lineNum">      26 </span>            : #include &lt;lunchbox/threadPool.h&gt;
+<span class="lineNum">      27 </span>            : #include &lt;lunchbox/types.h&gt;
+<span class="lineNum">      28 </span>            : 
+<span class="lineNum">      29 </span>            : namespace brain
 <span class="lineNum">      30 </span>            : {
-<a name="31"><span class="lineNum">      31 </span><span class="lineCov">         15 : struct CompartmentReportReader</span></a>
+<a name="31"><span class="lineNum">      31 </span>            : namespace detail</a>
 <span class="lineNum">      32 </span>            : {
-<span class="lineNum">      33 </span><span class="lineCov">         19 :     CompartmentReportReader(const brion::URI&amp; uri_)</span>
-<span class="lineNum">      34 </span><span class="lineCov">         42 :         : uri(uri_)</span>
-<span class="lineNum">      35 </span>            :     {
-<span class="lineNum">      36 </span><span class="lineCov">         38 :         const brion::CompartmentReport report{uri, brion::MODE_READ};</span>
-<span class="lineNum">      37 </span>            : 
-<span class="lineNum">      38 </span><span class="lineCov">         15 :         metaData.startTime = report.getStartTime();</span>
-<span class="lineNum">      39 </span><span class="lineCov">         15 :         metaData.endTime = report.getEndTime();</span>
-<span class="lineNum">      40 </span><span class="lineCov">         15 :         metaData.timeStep = report.getTimestep();</span>
-<span class="lineNum">      41 </span><span class="lineCov">         15 :         metaData.timeUnit = report.getTimeUnit();</span>
-<span class="lineNum">      42 </span><span class="lineCov">         15 :         metaData.dataUnit = report.getDataUnit();</span>
-<span class="lineNum">      43 </span><span class="lineCov">         15 :     }</span>
-<span class="lineNum">      44 </span>            : 
-<span class="lineNum">      45 </span>            :     const brion::URI uri;
-<span class="lineNum">      46 </span>            :     CompartmentReportMetaData metaData;
-<span class="lineNum">      47 </span>            :     lunchbox::ThreadPool threadPool;
-<a name="48"><span class="lineNum">      48 </span>            : };</a>
-<span class="lineNum">      49 </span>            : 
-<a name="50"><span class="lineNum">      50 </span><span class="lineCov">         12 : struct CompartmentReportView</span></a>
-<span class="lineNum">      51 </span>            : {
-<span class="lineNum">      52 </span><span class="lineCov">         13 :     CompartmentReportView(</span>
-<span class="lineNum">      53 </span>            :         const std::shared_ptr&lt;CompartmentReportReader&gt;&amp; readerImpl_,
-<span class="lineNum">      54 </span>            :         const brion::GIDSet&amp; gids)
-<span class="lineNum">      55 </span><span class="lineCov">         26 :         : report(std::make_shared&lt;brion::CompartmentReport&gt;(readerImpl_-&gt;uri,</span>
-<span class="lineNum">      56 </span>            :                                                             brion::MODE_READ,
-<span class="lineNum">      57 </span>            :                                                             gids))
-<span class="lineNum">      58 </span><span class="lineCov">         27 :         , readerImpl{readerImpl_}</span>
-<span class="lineNum">      59 </span>            :     {
-<span class="lineNum">      60 </span><span class="lineCov">         12 :         _initIndices();</span>
-<span class="lineNum">      61 </span><span class="lineCov">         12 :     }</span>
-<span class="lineNum">      62 </span>            : 
-<span class="lineNum">      63 </span>            :     std::shared_ptr&lt;brion::CompartmentReport&gt; report;
-<span class="lineNum">      64 </span>            :     std::shared_ptr&lt;CompartmentReportReader&gt; readerImpl;
-<span class="lineNum">      65 </span>            :     brain::CompartmentReportMapping mapping{this};
-<span class="lineNum">      66 </span>            :     brain::CompartmentReportMapping::Index indices;
-<span class="lineNum">      67 </span>            : 
-<span class="lineNum">      68 </span>            : private:
-<span class="lineNum">      69 </span>            :     inline void _initIndices();
-<a name="70"><span class="lineNum">      70 </span>            : };</a>
-<span class="lineNum">      71 </span>            : 
-<span class="lineNum">      72 </span><span class="lineCov">         12 : void CompartmentReportView::_initIndices()</span>
-<span class="lineNum">      73 </span>            : {
-<span class="lineNum">      74 </span><span class="lineCov">         12 :     indices.resize(report-&gt;getFrameSize());</span>
-<span class="lineNum">      75 </span>            : 
-<span class="lineNum">      76 </span><span class="lineCov">         12 :     const auto&amp; gids = report-&gt;getGIDs();</span>
-<span class="lineNum">      77 </span><span class="lineCov">         12 :     const std::vector&lt;uint32_t&gt; gidList(report-&gt;getGIDs().begin(),</span>
-<span class="lineNum">      78 </span><span class="lineCov">         36 :                                         report-&gt;getGIDs().end());</span>
-<span class="lineNum">      79 </span><span class="lineCov">         12 :     size_t i = 0;</span>
-<span class="lineNum">      80 </span><span class="lineCov">         96 :     for (auto gid : gids)</span>
-<span class="lineNum">      81 </span>            :     {
-<span class="lineNum">      82 </span>            :         const brion::uint16_ts&amp; compartments =
-<span class="lineNum">      83 </span><span class="lineCov">         84 :             report-&gt;getCompartmentCounts()[i];</span>
-<span class="lineNum">      84 </span><span class="lineCov">         84 :         const brion::uint64_ts&amp; offsets = report-&gt;getOffsets()[i];</span>
-<span class="lineNum">      85 </span><span class="lineCov">      21518 :         for (size_t section = 0; section != compartments.size(); ++section)</span>
-<span class="lineNum">      86 </span>            :         {
-<span class="lineNum">      87 </span><span class="lineCov">      21434 :             const auto offset = offsets[section];</span>
-<span class="lineNum">      88 </span><span class="lineCov">      21434 :             if (offset == LB_UNDEFINED_UINT64)</span>
-<span class="lineNum">      89 </span><span class="lineCov">       8209 :                 continue;</span>
-<span class="lineNum">      90 </span>            : 
-<span class="lineNum">      91 </span><span class="lineCov">      13225 :             const auto count = compartments[section];</span>
-<span class="lineNum">      92 </span><span class="lineCov">      58319 :             for (size_t k = 0; k != count; ++k)</span>
-<span class="lineNum">      93 </span>            :             {
-<span class="lineNum">      94 </span><span class="lineCov">      45094 :                 indices[offset + k].gid = gid;</span>
-<span class="lineNum">      95 </span><span class="lineCov">      45094 :                 indices[offset + k].section = section;</span>
-<span class="lineNum">      96 </span>            :             }
-<span class="lineNum">      97 </span>            :         }
-<span class="lineNum">      98 </span><span class="lineCov">         84 :         ++i;</span>
-<span class="lineNum">      99 </span>            :     }
-<span class="lineNum">     100 </span><span class="lineCov">         12 : }</span>
-<span class="lineNum">     101 </span>            : }
-<span class="lineNum">     102 </span>            : } // namespaces
+<a name="33"><span class="lineNum">      33 </span><span class="lineCov">         15 : struct CompartmentReportReader</span></a>
+<span class="lineNum">      34 </span>            : {
+<span class="lineNum">      35 </span><span class="lineCov">         19 :     CompartmentReportReader(const brion::URI&amp; uri_)</span>
+<span class="lineNum">      36 </span><span class="lineCov">         42 :         : uri(uri_)</span>
+<span class="lineNum">      37 </span>            :     {
+<span class="lineNum">      38 </span><span class="lineCov">         38 :         const brion::CompartmentReport report{uri, brion::MODE_READ};</span>
+<span class="lineNum">      39 </span>            : 
+<span class="lineNum">      40 </span><span class="lineCov">         15 :         metaData.startTime = report.getStartTime();</span>
+<span class="lineNum">      41 </span><span class="lineCov">         15 :         metaData.endTime = report.getEndTime();</span>
+<span class="lineNum">      42 </span><span class="lineCov">         15 :         metaData.timeStep = report.getTimestep();</span>
+<span class="lineNum">      43 </span><span class="lineCov">         15 :         metaData.timeUnit = report.getTimeUnit();</span>
+<span class="lineNum">      44 </span><span class="lineCov">         15 :         metaData.dataUnit = report.getDataUnit();</span>
+<span class="lineNum">      45 </span><span class="lineCov">         15 :     }</span>
+<span class="lineNum">      46 </span>            : 
+<span class="lineNum">      47 </span>            :     const brion::URI uri;
+<span class="lineNum">      48 </span>            :     CompartmentReportMetaData metaData;
+<span class="lineNum">      49 </span>            :     lunchbox::ThreadPool threadPool;
+<a name="50"><span class="lineNum">      50 </span>            : };</a>
+<span class="lineNum">      51 </span>            : 
+<a name="52"><span class="lineNum">      52 </span><span class="lineCov">         12 : struct CompartmentReportView</span></a>
+<span class="lineNum">      53 </span>            : {
+<span class="lineNum">      54 </span><span class="lineCov">         13 :     CompartmentReportView(</span>
+<span class="lineNum">      55 </span>            :         const std::shared_ptr&lt;CompartmentReportReader&gt;&amp; readerImpl_,
+<span class="lineNum">      56 </span>            :         const brion::GIDSet&amp; gids)
+<span class="lineNum">      57 </span><span class="lineCov">         26 :         : report(std::make_shared&lt;brion::CompartmentReport&gt;(readerImpl_-&gt;uri,</span>
+<span class="lineNum">      58 </span>            :                                                             brion::MODE_READ,
+<span class="lineNum">      59 </span>            :                                                             gids))
+<span class="lineNum">      60 </span><span class="lineCov">         27 :         , readerImpl{readerImpl_}</span>
+<span class="lineNum">      61 </span>            :     {
+<span class="lineNum">      62 </span><span class="lineCov">         12 :         _initIndices();</span>
+<span class="lineNum">      63 </span><span class="lineCov">         12 :     }</span>
+<span class="lineNum">      64 </span>            : 
+<span class="lineNum">      65 </span>            :     std::shared_ptr&lt;brion::CompartmentReport&gt; report;
+<span class="lineNum">      66 </span>            :     std::shared_ptr&lt;CompartmentReportReader&gt; readerImpl;
+<span class="lineNum">      67 </span>            :     brain::CompartmentReportMapping mapping{this};
+<span class="lineNum">      68 </span>            :     brain::CompartmentReportMapping::Index indices;
+<span class="lineNum">      69 </span>            : 
+<span class="lineNum">      70 </span>            : private:
+<span class="lineNum">      71 </span>            :     inline void _initIndices();
+<a name="72"><span class="lineNum">      72 </span>            : };</a>
+<span class="lineNum">      73 </span>            : 
+<span class="lineNum">      74 </span><span class="lineCov">         12 : void CompartmentReportView::_initIndices()</span>
+<span class="lineNum">      75 </span>            : {
+<span class="lineNum">      76 </span><span class="lineCov">         12 :     indices.resize(report-&gt;getFrameSize());</span>
+<span class="lineNum">      77 </span>            : 
+<span class="lineNum">      78 </span><span class="lineCov">         12 :     const auto&amp; gids = report-&gt;getGIDs();</span>
+<span class="lineNum">      79 </span><span class="lineCov">         12 :     const std::vector&lt;uint32_t&gt; gidList(report-&gt;getGIDs().begin(),</span>
+<span class="lineNum">      80 </span><span class="lineCov">         36 :                                         report-&gt;getGIDs().end());</span>
+<span class="lineNum">      81 </span><span class="lineCov">         12 :     size_t i = 0;</span>
+<span class="lineNum">      82 </span><span class="lineCov">         96 :     for (auto gid : gids)</span>
+<span class="lineNum">      83 </span>            :     {
+<span class="lineNum">      84 </span>            :         const brion::uint16_ts&amp; compartments =
+<span class="lineNum">      85 </span><span class="lineCov">         84 :             report-&gt;getCompartmentCounts()[i];</span>
+<span class="lineNum">      86 </span><span class="lineCov">         84 :         const brion::uint64_ts&amp; offsets = report-&gt;getOffsets()[i];</span>
+<span class="lineNum">      87 </span><span class="lineCov">      21518 :         for (size_t section = 0; section != compartments.size(); ++section)</span>
+<span class="lineNum">      88 </span>            :         {
+<span class="lineNum">      89 </span><span class="lineCov">      21434 :             const auto offset = offsets[section];</span>
+<span class="lineNum">      90 </span><span class="lineCov">      21434 :             if (offset == LB_UNDEFINED_UINT64)</span>
+<span class="lineNum">      91 </span><span class="lineCov">       8209 :                 continue;</span>
+<span class="lineNum">      92 </span>            : 
+<span class="lineNum">      93 </span><span class="lineCov">      13225 :             const auto count = compartments[section];</span>
+<span class="lineNum">      94 </span><span class="lineCov">      58319 :             for (size_t k = 0; k != count; ++k)</span>
+<span class="lineNum">      95 </span>            :             {
+<span class="lineNum">      96 </span><span class="lineCov">      45094 :                 indices[offset + k].gid = gid;</span>
+<span class="lineNum">      97 </span><span class="lineCov">      45094 :                 indices[offset + k].section = section;</span>
+<span class="lineNum">      98 </span>            :             }
+<span class="lineNum">      99 </span>            :         }
+<span class="lineNum">     100 </span><span class="lineCov">         84 :         ++i;</span>
+<span class="lineNum">     101 </span>            :     }
+<span class="lineNum">     102 </span><span class="lineCov">         12 : }</span>
+<span class="lineNum">     103 </span>            : }
+<span class="lineNum">     104 </span>            : } // namespaces
 </pre>
       </td>
     </tr>
