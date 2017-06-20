@@ -4,7 +4,7 @@ version: "2.0"
 major: 2
 minor: 0
 description: The Blue Brain C++ I/O library
-updated: 16/06/17
+updated: 20/06/17
 homepage: https://github.com/BlueBrain/Brion
 repository: https://github.com/BlueBrain/Brion.git
 issuesurl: https://github.com/BlueBrain/Brion/issues
