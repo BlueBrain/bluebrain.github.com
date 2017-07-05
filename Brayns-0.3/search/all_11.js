@@ -4,6 +4,7 @@ var searchData=
   ['savescenetocachefile',['saveSceneToCacheFile',['../classbrayns_1_1_livre_scene.html#a0a7cfc3476fe12d00e46de28f3522315',1,'brayns::LivreScene::saveSceneToCacheFile()'],['../classbrayns_1_1_opti_x_scene.html#a6bb8367f6b887be1c4528c349098d786',1,'brayns::OptiXScene::saveSceneToCacheFile()'],['../classbrayns_1_1_o_s_p_ray_scene.html#ad9ea4a411a09d9f76af6ad5f428b4762',1,'brayns::OSPRayScene::saveSceneToCacheFile()'],['../classbrayns_1_1_scene.html#a02722804a27cf1d458c09d3cd9a3b8f3',1,'brayns::Scene::saveSceneToCacheFile()']]],
   ['scene',['Scene',['../classbrayns_1_1_scene.html',1,'brayns']]],
   ['scene',['Scene',['../classbrayns_1_1_scene.html#a17f0dfc82bcbd4f69c9f1b436fcb1d66',1,'brayns::Scene']]],
+  ['sceneloader',['SceneLoader',['../classbrayns_1_1_scene_loader.html',1,'brayns']]],
   ['sceneparameters',['SceneParameters',['../classbrayns_1_1_scene_parameters.html',1,'brayns']]],
   ['screenspaceprocessor',['ScreenSpaceProcessor',['../classbrayns_1_1_screen_space_processor.html',1,'brayns']]],
   ['screenspaceprocessordata',['ScreenSpaceProcessorData',['../structbrayns_1_1_screen_space_processor_data.html',1,'brayns']]],
@@ -55,6 +56,6 @@ var searchData=
   ['shortcutinformation',['ShortcutInformation',['../structbrayns_1_1_shortcut_information.html',1,'brayns']]],
   ['simulationrenderer',['SimulationRenderer',['../classbrayns_1_1_simulation_renderer.html',1,'brayns']]],
   ['sphere',['Sphere',['../classbrayns_1_1_sphere.html',1,'brayns']]],
-  ['spikesimulationhandler',['SpikeSimulationHandler',['../classbrayns_1_1_spike_simulation_handler.html#aae5dc41c31d6b1a5473075eaf0c54fc9',1,'brayns::SpikeSimulationHandler']]],
-  ['spikesimulationhandler',['SpikeSimulationHandler',['../classbrayns_1_1_spike_simulation_handler.html',1,'brayns']]]
+  ['spikesimulationhandler',['SpikeSimulationHandler',['../classbrayns_1_1_spike_simulation_handler.html',1,'brayns']]],
+  ['spikesimulationhandler',['SpikeSimulationHandler',['../classbrayns_1_1_spike_simulation_handler.html#aae5dc41c31d6b1a5473075eaf0c54fc9',1,'brayns::SpikeSimulationHandler']]]
 ];

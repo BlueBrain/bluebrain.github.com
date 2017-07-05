@@ -69,6 +69,7 @@ var annotated_dup =
       [ "RenderInput", "structbrayns_1_1_render_input.html", "structbrayns_1_1_render_input" ],
       [ "RenderOutput", "structbrayns_1_1_render_output.html", "structbrayns_1_1_render_output" ],
       [ "Scene", "classbrayns_1_1_scene.html", "classbrayns_1_1_scene" ],
+      [ "SceneLoader", "classbrayns_1_1_scene_loader.html", "classbrayns_1_1_scene_loader" ],
       [ "SceneParameters", "classbrayns_1_1_scene_parameters.html", "classbrayns_1_1_scene_parameters" ],
       [ "ScreenSpaceProcessor", "classbrayns_1_1_screen_space_processor.html", "classbrayns_1_1_screen_space_processor" ],
       [ "ScreenSpaceProcessorData", "structbrayns_1_1_screen_space_processor_data.html", "structbrayns_1_1_screen_space_processor_data" ],

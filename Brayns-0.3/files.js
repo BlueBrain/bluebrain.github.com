@@ -80,6 +80,7 @@ var files =
     [ "Renderer.h", "_renderer_8h_source.html", null ],
     [ "RenderingParameters.h", "_rendering_parameters_8h_source.html", null ],
     [ "Scene.h", "_scene_8h_source.html", null ],
+    [ "SceneLoader.h", "_scene_loader_8h_source.html", null ],
     [ "SceneParameters.h", "_scene_parameters_8h_source.html", null ],
     [ "ScreenSpaceProcessor.h", "_screen_space_processor_8h_source.html", null ],
     [ "shaders.h", "shaders_8h_source.html", null ],

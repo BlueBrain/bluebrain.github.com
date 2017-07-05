@@ -98,6 +98,7 @@ var searchData=
   ['getsavecachefile',['getSaveCacheFile',['../classbrayns_1_1_geometry_parameters.html#a7a08766aaee1cfe6e0feb6a6f8bd4d8f',1,'brayns::GeometryParameters']]],
   ['getscene',['getScene',['../classbrayns_1_1_engine.html#aa7447c013f31279eecf99d3420ce641d',1,'brayns::Engine']]],
   ['getsceneenvironment',['getSceneEnvironment',['../classbrayns_1_1_geometry_parameters.html#a685b7032dd4e7aefadd50cf751f88c6d',1,'brayns::GeometryParameters']]],
+  ['getscenefile',['getSceneFile',['../classbrayns_1_1_geometry_parameters.html#a21155182988087784742301a321df997',1,'brayns::GeometryParameters']]],
   ['getsceneparameters',['getSceneParameters',['../classbrayns_1_1_parameters_manager.html#a2bc6a8dbef296ff837e33911cf3e4e55',1,'brayns::ParametersManager']]],
   ['getschema',['getSchema',['../classbrayns_1_1_version.html#af7fbd75a18a0d7b20f875b0669f3609c',1,'brayns::Version']]],
   ['getshading',['getShading',['../classbrayns_1_1_rendering_parameters.html#a0dcd0049807d927c1c68ab78da95c228',1,'brayns::RenderingParameters']]],

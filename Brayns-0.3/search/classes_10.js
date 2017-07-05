@@ -1,6 +1,7 @@
 var searchData=
 [
   ['scene',['Scene',['../classbrayns_1_1_scene.html',1,'brayns']]],
+  ['sceneloader',['SceneLoader',['../classbrayns_1_1_scene_loader.html',1,'brayns']]],
   ['sceneparameters',['SceneParameters',['../classbrayns_1_1_scene_parameters.html',1,'brayns']]],
   ['screenspaceprocessor',['ScreenSpaceProcessor',['../classbrayns_1_1_screen_space_processor.html',1,'brayns']]],
   ['screenspaceprocessordata',['ScreenSpaceProcessorData',['../structbrayns_1_1_screen_space_processor_data.html',1,'brayns']]],

@@ -81,6 +81,7 @@ var hierarchy =
       [ "brayns::OptiXScene", "classbrayns_1_1_opti_x_scene.html", null ],
       [ "brayns::OSPRayScene", "classbrayns_1_1_o_s_p_ray_scene.html", null ]
     ] ],
+    [ "brayns::SceneLoader", "classbrayns_1_1_scene_loader.html", null ],
     [ "brayns::ScreenSpaceProcessor", "classbrayns_1_1_screen_space_processor.html", null ],
     [ "brayns::ScreenSpaceProcessorData", "structbrayns_1_1_screen_space_processor_data.html", null ],
     [ "brayns::ShortcutInformation", "structbrayns_1_1_shortcut_information.html", null ],
