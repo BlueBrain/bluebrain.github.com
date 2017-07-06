@@ -2,6 +2,7 @@ var hierarchy =
 [
     [ "enable_shared_from_this", null, [
       [ "DisplayGroup", "class_display_group.html", null ],
+      [ "InactivityTimer", "class_inactivity_timer.html", null ],
       [ "Markers", "class_markers.html", null ],
       [ "Options", "class_options.html", null ]
     ] ],
@@ -141,6 +142,7 @@ var hierarchy =
       [ "FileInfoHelper", "class_file_info_helper.html", null ],
       [ "FileReceiver", "class_file_receiver.html", null ],
       [ "HtmlSelectReplacer", "class_html_select_replacer.html", null ],
+      [ "InactivityTimer", "class_inactivity_timer.html", null ],
       [ "KeyboardState", "class_keyboard_state.html", null ],
       [ "LoggingUtility", "class_logging_utility.html", null ],
       [ "MasterDisplayGroupRenderer", "class_master_display_group_renderer.html", null ],

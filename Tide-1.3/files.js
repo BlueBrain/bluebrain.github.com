@@ -60,6 +60,7 @@ var files =
     [ "ImageSource.h", "_image_source_8h_source.html", null ],
     [ "ImageSynchronizer.h", "_image_synchronizer_8h_source.html", null ],
     [ "ImageThumbnailGenerator.h", "_image_thumbnail_generator_8h_source.html", null ],
+    [ "InactivityTimer.h", "_inactivity_timer_8h_source.html", null ],
     [ "includes.h", "includes_8h_source.html", null ],
     [ "json.h", "json_8h_source.html", null ],
     [ "JsonOptions.h", "_json_options_8h_source.html", null ],

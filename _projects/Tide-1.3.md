@@ -4,7 +4,7 @@ version: "1.3"
 major: 1
 minor: 3
 description: Tiled Interactive DisplayWall Environment
-updated: 19/05/17
+updated: 06/07/17
 homepage: https://github.com/BlueBrain/Tide
 repository: https://github.com/BlueBrain/Tide.git
 issuesurl: https://github.com/BlueBrain/Tide/issues
@@ -77,10 +77,10 @@ direct REST API calls. Simply drag and drop a file to upload it to the wall.
 
 Basic procedure on Linux / OSX:
 
-    git clone https://github.com/BlueBrain/Tide.git
+    git clone --recursive https://github.com/BlueBrain/Tide.git
     mkdir Tide/build
     cd Tide/build
-    cmake -GNinja ..
+    cmake -GNinja -DCLONE_SUBPROJECTS=ON ..
     ninja
 
 The master branch always contains the latest development features (see

@@ -1,5 +1,6 @@
 var NAVTREEINDEX2 =
 {
+"class_content_window_controller.html#a0069301d97e2ab70db7abffb74f6d15d":[7,0,21,11],
 "class_content_window_controller.html#a0692b71b65e4d3fcae4e6648a7c2f93a":[7,0,21,13],
 "class_content_window_controller.html#a1b88c694e55003f2a30ab9d1f488557b":[7,0,21,4],
 "class_content_window_controller.html#a3a20b4c22eb64fa0c094a44df766c138":[7,0,21,12],
@@ -98,10 +99,11 @@ var NAVTREEINDEX2 =
 "class_display_group_list_widget.html#a0424e0f76d98a4514b4417122ecf05e3":[7,0,28,1],
 "class_display_group_list_widget.html#a4e7f56488a6238d1577d539c7913dafb":[7,0,28,0],
 "class_display_group_renderer.html":[7,0,29],
-"class_display_group_renderer.html#a15035b434100007d96eeee453e26efb5":[7,0,29,6],
+"class_display_group_renderer.html#a15035b434100007d96eeee453e26efb5":[7,0,29,7],
 "class_display_group_renderer.html#a1cadb5bae289c0f58053b7bc9b559577":[7,0,29,3],
 "class_display_group_renderer.html#a4a2ff328df8cc22d6a8d5e330a498373":[7,0,29,0],
-"class_display_group_renderer.html#a555236ae0a2601ffa54b9fff31ca0713":[7,0,29,5],
+"class_display_group_renderer.html#a555236ae0a2601ffa54b9fff31ca0713":[7,0,29,6],
+"class_display_group_renderer.html#a8a21c9e1723511658901c43553bc9151":[7,0,29,5],
 "class_display_group_renderer.html#a8bbe7e1d1f8a109818f72a69a691f0e1":[7,0,29,1],
 "class_display_group_renderer.html#ace9e977654ad391c3626e6aaf8815250":[7,0,29,2],
 "class_display_group_renderer.html#ada0e93d084100854df430f175abb0b92":[7,0,29,4],
@@ -245,9 +247,7 @@ var NAVTREEINDEX2 =
 "class_image_thumbnail_generator.html":[7,0,52],
 "class_image_thumbnail_generator.html#a6791458d13dff3625fc2706de3b828b1":[7,0,52,0],
 "class_image_thumbnail_generator.html#ac09221deff6342546cc5368174bfa9db":[7,0,52,1],
-"class_json_options.html":[7,0,53],
-"class_json_options.html#a0d51936e344aa40d97ffdd0ebb2ec338":[7,0,53,1],
-"class_json_options.html#a41f9b68c8beeff875f72c31e16f88ae1":[7,0,53,0],
-"class_json_options.html#a894182ee1be246f49106d15c62b7d6b6":[7,0,53,2],
-"class_json_size.html":[7,0,54]
+"class_inactivity_timer.html":[7,0,53],
+"class_inactivity_timer.html#a01e02d85e1598dd9cdb0fb39fa394c12":[7,0,53,5],
+"class_inactivity_timer.html#a0d78cd482c7db9d35c582b18c12810e0":[7,0,53,2]
 };

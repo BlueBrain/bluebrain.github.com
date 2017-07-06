@@ -64,6 +64,7 @@ var annotated_dup =
     [ "ImageSource", "class_image_source.html", "class_image_source" ],
     [ "ImageSynchronizer", "class_image_synchronizer.html", "class_image_synchronizer" ],
     [ "ImageThumbnailGenerator", "class_image_thumbnail_generator.html", "class_image_thumbnail_generator" ],
+    [ "InactivityTimer", "class_inactivity_timer.html", "class_inactivity_timer" ],
     [ "JsonOptions", "class_json_options.html", "class_json_options" ],
     [ "JsonSize", "class_json_size.html", "class_json_size" ],
     [ "KeyboardState", "class_keyboard_state.html", "class_keyboard_state" ],
