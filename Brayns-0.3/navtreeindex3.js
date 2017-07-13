@@ -1,5 +1,6 @@
 var NAVTREEINDEX3 =
 {
+"classbrayns_1_1_proximity_renderer.html#ac927f95ac68c10d74a0afeb819eb05f3":[5,0,0,60,2],
 "classbrayns_1_1_renderer.html":[5,0,0,61],
 "classbrayns_1_1_renderer.html#a1d4d8482269c8cb2c563c9b3b64214d8":[5,0,0,61,3],
 "classbrayns_1_1_renderer.html#a451de85b414a3c2952c41955e39bafe2":[5,0,0,61,1],
@@ -159,14 +160,12 @@ var NAVTREEINDEX3 =
 "classbrayns_1_1_simulation_renderer.html#a941a4ac2580f7fe1273eba83f3b31032":[5,0,0,71,0],
 "classbrayns_1_1_simulation_renderer.html#af3807e12a84ddcd858ab9273ec0ad9fc":[5,0,0,71,1],
 "classbrayns_1_1_sphere.html":[5,0,0,72],
-"classbrayns_1_1_sphere.html#a0efb64e2cc973a6bd5cd27029b60627c":[5,0,0,72,8],
 "classbrayns_1_1_sphere.html#a18e41311ab3fd172d0e3a6bc95b52d0f":[5,0,0,72,2],
 "classbrayns_1_1_sphere.html#a1901f74bb00229ca5e5694050a65d617":[5,0,0,72,3],
-"classbrayns_1_1_sphere.html#a5fead639222251e8a2fe763b3ad4256b":[5,0,0,72,7],
-"classbrayns_1_1_sphere.html#a65cebf9377f6a23a0ec494cc2ddd5d5d":[5,0,0,72,4],
-"classbrayns_1_1_sphere.html#a786a7f80d0735ad662d53a87e629c846":[5,0,0,72,0],
-"classbrayns_1_1_sphere.html#a87fd4533b06e79db22d2cbd934922a39":[5,0,0,72,5],
-"classbrayns_1_1_sphere.html#adedf4daada097dcbf6e822d233ca4333":[5,0,0,72,6],
+"classbrayns_1_1_sphere.html#a5fead639222251e8a2fe763b3ad4256b":[5,0,0,72,6],
+"classbrayns_1_1_sphere.html#a87fd4533b06e79db22d2cbd934922a39":[5,0,0,72,4],
+"classbrayns_1_1_sphere.html#aba4ec1c107f513319e11d3b1a84ee96f":[5,0,0,72,0],
+"classbrayns_1_1_sphere.html#adedf4daada097dcbf6e822d233ca4333":[5,0,0,72,5],
 "classbrayns_1_1_sphere.html#ae9af33a93f1baf06c354b81cd88d7327":[5,0,0,72,1],
 "classbrayns_1_1_spike_simulation_handler.html":[5,0,0,73],
 "classbrayns_1_1_spike_simulation_handler.html#a249fcd4324838bed7e17af5c2bf7fc10":[5,0,0,73,1],
@@ -249,5 +248,6 @@ var NAVTREEINDEX3 =
 "classbrayns_1_1_volume_handler_1_1_volume_descriptor.html#ade83c0a3fcf3a915760e96def5da5c0c":[5,0,0,80,0,3],
 "classbrayns_1_1_volume_handler_1_1_volume_descriptor.html#aea105288818eeb73c6a06d0f59286b47":[5,0,0,80,0,6],
 "classbrayns_1_1_volume_parameters.html":[5,0,0,81],
-"classbrayns_1_1_volume_parameters.html#a02e82d5a9123769c4b1479ad2bee002e":[5,0,0,81,3]
+"classbrayns_1_1_volume_parameters.html#a02e82d5a9123769c4b1479ad2bee002e":[5,0,0,81,3],
+"classbrayns_1_1_volume_parameters.html#a18673660b95a7a82e871bed39eb18936":[5,0,0,81,15]
 };

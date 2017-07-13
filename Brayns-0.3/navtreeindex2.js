@@ -1,7 +1,5 @@
 var NAVTREEINDEX2 =
 {
-"classbrayns_1_1_geometry_parameters.html#ac1a61eaf6ac1efe0d75f80b5ed1a7a65":[5,0,0,27,83],
-"classbrayns_1_1_geometry_parameters.html#ac27f0b43676e59fd9d90e5445d86e744":[5,0,0,27,29],
 "classbrayns_1_1_geometry_parameters.html#ac31f143aa39f960a9e1a994fbe96d59c":[5,0,0,27,38],
 "classbrayns_1_1_geometry_parameters.html#ac3d56648894b68b774500ac58c4eb2c1":[5,0,0,27,47],
 "classbrayns_1_1_geometry_parameters.html#ac603be4c3277073871f757f74d71441a":[5,0,0,27,60],
@@ -235,19 +233,21 @@ var NAVTREEINDEX2 =
 "classbrayns_1_1_point_light.html#ac360885334a6778949e00d7070c8a9ae":[5,0,0,57,0],
 "classbrayns_1_1_point_light.html#ae1d1275e4d67a8622f009bb1633c94a5":[5,0,0,57,3],
 "classbrayns_1_1_primitive.html":[5,0,0,58],
-"classbrayns_1_1_primitive.html#a46539adfba481765527843495366379f":[5,0,0,58,6],
-"classbrayns_1_1_primitive.html#a5fd72aae0e011488209c2a770d8aae9f":[5,0,0,58,0],
+"classbrayns_1_1_primitive.html#a014d538b933f9e9152006255e13d4d9c":[5,0,0,58,0],
+"classbrayns_1_1_primitive.html#a46539adfba481765527843495366379f":[5,0,0,58,8],
+"classbrayns_1_1_primitive.html#a4ba8f77d7be345d0d5f7e65d571d5210":[5,0,0,58,9],
 "classbrayns_1_1_primitive.html#a6842500e7b9b2a5b6b0caa746a76c7a4":[5,0,0,58,2],
-"classbrayns_1_1_primitive.html#a8253d6bf5525affba56cd84e8c6aada2":[5,0,0,58,4],
+"classbrayns_1_1_primitive.html#a7c28f2c005c8d985ecb9fbf81ff8b452":[5,0,0,58,4],
+"classbrayns_1_1_primitive.html#a8253d6bf5525affba56cd84e8c6aada2":[5,0,0,58,5],
 "classbrayns_1_1_primitive.html#ac2c2c78d2888a736ab515ded00b6fce2":[5,0,0,58,3],
+"classbrayns_1_1_primitive.html#ad8893dbe0c09bafaf0d437b8686e5327":[5,0,0,58,6],
 "classbrayns_1_1_primitive.html#ae1173a942f5ba93049292843af53396d":[5,0,0,58,1],
-"classbrayns_1_1_primitive.html#aeb984a265eadebf5952b5919f3a338d6":[5,0,0,58,5],
+"classbrayns_1_1_primitive.html#aeb984a265eadebf5952b5919f3a338d6":[5,0,0,58,7],
 "classbrayns_1_1_protein_loader.html":[5,0,0,59],
 "classbrayns_1_1_protein_loader.html#a5d8b270166fd84a4bc0b2c1fd3354abb":[5,0,0,59,1],
 "classbrayns_1_1_protein_loader.html#a91c82bfd2699c0d8023a37d7e9f6327f":[5,0,0,59,2],
 "classbrayns_1_1_protein_loader.html#af62066c59f482d065b366243f294a03a":[5,0,0,59,0],
 "classbrayns_1_1_proximity_renderer.html":[5,0,0,60],
 "classbrayns_1_1_proximity_renderer.html#a642c9e76b80b4532cffb23d26d874267":[5,0,0,60,0],
-"classbrayns_1_1_proximity_renderer.html#aa4caa1d5f633f2a4dca4b63e7aa74bdd":[5,0,0,60,1],
-"classbrayns_1_1_proximity_renderer.html#ac927f95ac68c10d74a0afeb819eb05f3":[5,0,0,60,2]
+"classbrayns_1_1_proximity_renderer.html#aa4caa1d5f633f2a4dca4b63e7aa74bdd":[5,0,0,60,1]
 };

@@ -12,6 +12,7 @@ var structospray_1_1_extended_spheres =
     [ "offset_materialID", "structospray_1_1_extended_spheres.html#af613715af4889dee15f7691b9192563c", null ],
     [ "offset_radius", "structospray_1_1_extended_spheres.html#a82d38ca36c0d9fb9d38134a5f775b9f6", null ],
     [ "offset_timestamp", "structospray_1_1_extended_spheres.html#a6cb65bd6634e12fe9d15d34cd5ba98d5", null ],
-    [ "offset_value", "structospray_1_1_extended_spheres.html#a9444e31794b973f4454509167f7e5053", null ],
+    [ "offset_value_x", "structospray_1_1_extended_spheres.html#ae083ae303a78907aebc80080cd63ed63", null ],
+    [ "offset_value_y", "structospray_1_1_extended_spheres.html#ab0bb4709f5f108e33768e90f83a2f816", null ],
     [ "radius", "structospray_1_1_extended_spheres.html#a2ae094765956f7e3521d61711ff771d3", null ]
 ];

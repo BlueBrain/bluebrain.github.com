@@ -12,6 +12,7 @@ var structospray_1_1_extended_cylinders =
     [ "offset_timestamp", "structospray_1_1_extended_cylinders.html#a4acb7401b06d3e44c968c7d48d49cf2c", null ],
     [ "offset_v0", "structospray_1_1_extended_cylinders.html#aec331b322c117d1f6a77a3e1d228b087", null ],
     [ "offset_v1", "structospray_1_1_extended_cylinders.html#afd0fc1b651eaf08cc194dd3c0f911e6a", null ],
-    [ "offset_value", "structospray_1_1_extended_cylinders.html#af27946697456138236d52bf986419ddf", null ],
+    [ "offset_value_x", "structospray_1_1_extended_cylinders.html#a4e5e2de7e711a4588de94f34d4f58d51", null ],
+    [ "offset_value_y", "structospray_1_1_extended_cylinders.html#a4c40494202561c632d23a1f2d4c8e836", null ],
     [ "radius", "structospray_1_1_extended_cylinders.html#a2aff46d50644a0920cad25e268a708e4", null ]
 ];
