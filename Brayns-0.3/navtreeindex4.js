@@ -1,5 +1,6 @@
 var NAVTREEINDEX4 =
 {
+"classbrayns_1_1_volume_parameters.html#a18673660b95a7a82e871bed39eb18936":[5,0,0,81,15],
 "classbrayns_1_1_volume_parameters.html#a18f4f2d841400ae72d40328f54f50921":[5,0,0,81,9],
 "classbrayns_1_1_volume_parameters.html#a1fcb2d4b35ba14948765e01671691b4b":[5,0,0,81,8],
 "classbrayns_1_1_volume_parameters.html#a2c310eee2700b2a3dd3904044a186d2c":[5,0,0,81,4],
@@ -192,11 +193,12 @@ var NAVTREEINDEX4 =
 "structospray_1_1_extended_cones.html#a586c7e4d0948e21037f39a6310b19ef7":[5,0,1,1,8],
 "structospray_1_1_extended_cones.html#a6329eba1c64d21d7d8afc80de6f4710d":[5,0,1,1,1],
 "structospray_1_1_extended_cones.html#a7c68094a1fd52029c868586b74030224":[5,0,1,1,13],
-"structospray_1_1_extended_cones.html#a7d50f22971e440471e9299ab0db3998e":[5,0,1,1,15],
+"structospray_1_1_extended_cones.html#a7d50f22971e440471e9299ab0db3998e":[5,0,1,1,16],
 "structospray_1_1_extended_cones.html#a911da7c5c9f67fdedf498fd1f920a3a6":[5,0,1,1,6],
+"structospray_1_1_extended_cones.html#aab52918062400f621310efb5b79a59fa":[5,0,1,1,15],
 "structospray_1_1_extended_cones.html#aacdb9c8ae0fe8f0f1de9ca61c3795e2d":[5,0,1,1,3],
+"structospray_1_1_extended_cones.html#ab27a77eb7857b8d3d022e60e12072bf6":[5,0,1,1,14],
 "structospray_1_1_extended_cones.html#ad2908f90d4e60ebb57878f0618c77884":[5,0,1,1,12],
-"structospray_1_1_extended_cones.html#ae09bfaa0c3013a5d7e591878297c1f3b":[5,0,1,1,14],
 "structospray_1_1_extended_cones.html#aee03769927398155165d853335be19ab":[5,0,1,1,5],
 "structospray_1_1_extended_cones.html#aef5d64b05e770d361f2dda956abdd365":[5,0,1,1,7],
 "structospray_1_1_extended_cones.html#afff1bf2064956d424fccb0202f3ddc0a":[5,0,1,1,9],
