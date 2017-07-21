@@ -1,0 +1,527 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+  "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+
+
+<html xmlns="http://www.w3.org/1999/xhtml">
+  <head>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+    
+    <title>Brain Python tutorial &mdash; Brain 2.1 Python API documentation</title>
+    
+    <link rel="stylesheet" href="_static/classic.css" type="text/css" />
+    <link rel="stylesheet" href="_static/pygments.css" type="text/css" />
+    
+    <script type="text/javascript">
+      var DOCUMENTATION_OPTIONS = {
+        URL_ROOT:    './',
+        VERSION:     '2.1.0',
+        COLLAPSE_INDEX: false,
+        FILE_SUFFIX: '.html',
+        HAS_SOURCE:  true
+      };
+    </script>
+    <script type="text/javascript" src="_static/jquery.js"></script>
+    <script type="text/javascript" src="_static/underscore.js"></script>
+    <script type="text/javascript" src="_static/doctools.js"></script>
+    <link rel="top" title="Brain 2.1 Python API documentation" href="index.html" /> 
+  </head>
+  <body role="document">
+    <div class="related" role="navigation" aria-label="related navigation">
+      <h3>Navigation</h3>
+      <ul>
+        <li class="right" style="margin-right: 10px">
+          <a href="genindex.html" title="General Index"
+             accesskey="I">index</a></li>
+        <li class="right" >
+          <a href="py-modindex.html" title="Python Module Index"
+             >modules</a> |</li>
+        <li class="nav-item nav-item-0"><a href="index.html">Brain 2.1 Python API documentation</a> &raquo;</li> 
+      </ul>
+    </div>  
+
+    <div class="document">
+      <div class="documentwrapper">
+        <div class="bodywrapper">
+          <div class="body" role="main">
+            
+  <div class="section" id="brain-python-tutorial">
+<span id="python-tutorial"></span><h1>Brain Python tutorial<a class="headerlink" href="#brain-python-tutorial" title="Permalink to this headline">¶</a></h1>
+<p>Brain is a high level API for read only access of the data model used in
+the Blue Brain. This tutorial will describe the Python module API for
+accessing the following data:</p>
+<blockquote>
+<div><ul class="simple">
+<li>Circuit</li>
+<li>Synapses</li>
+<li>Morphologies</li>
+<li>Spikes</li>
+</ul>
+</div></blockquote>
+<p>These are the only parts of the data model that are accessible so far.
+In particular, compartment reports and electrical models are not
+available yet.</p>
+<p>If you are reading the read-only version of this document and want to
+access the actual ipynb file you can get it from <a class="reference external" href="https://github.com/BlueBrain/Brion/blob/master/doc/python/python%20tutorial.ipynb">here</a>.</p>
+<p>Before you start you have to make sure that you have the Python module
+available in your environemnt. In the Blue Brain clusters you have two
+possibilities depending on the Python version you want to use:</p>
+<blockquote>
+<div><ul class="simple">
+<li>For Python 3.4: <code class="docutils literal"><span class="pre">module</span> <span class="pre">load</span> <span class="pre">BBP/viz/latest</span></code></li>
+<li>For Python 2.7: <code class="docutils literal"><span class="pre">module</span> <span class="pre">load</span> <span class="pre">memcache/bbpviz</span> <span class="pre">nix/viz/brion</span> <span class="pre">nix/python/2.7-full</span></code></li>
+</ul>
+</div></blockquote>
+<div class="code python highlight-python"><div class="highlight"><pre><span></span><span class="kn">import</span> <span class="nn">brain</span>
+<span class="kn">import</span> <span class="nn">numpy</span>
+</pre></div>
+</div>
+<div class="section" id="circuits">
+<h2>Circuits<a class="headerlink" href="#circuits" title="Permalink to this headline">¶</a></h2>
+<p>Before anything else, we need to have the metada for the circuit we want
+to inspect. This can be easily done by creating a <code class="docutils literal"><span class="pre">Circuit</span></code> object
+with the path to the CircuitConfig:</p>
+<div class="code python highlight-python"><div class="highlight"><pre><span></span><span class="n">config</span> <span class="o">=</span> <span class="s2">&quot;/gpfs/bbp.cscs.ch/project/proj1/circuits/SomatosensoryCxS1-v5.r0/O1/merged_circuit/CircuitConfig&quot;</span>
+<span class="c1"># If the circuit above is not accessible this is another alternative:</span>
+<span class="c1">#config = &quot;/gpfs/bbp.cscs.ch/release/l2/2012.07.23/circuit/O1/merged_circuit/CircuitConfig&quot;</span>
+
+<span class="n">circuit</span> <span class="o">=</span> <span class="n">brain</span><span class="o">.</span><span class="n">Circuit</span><span class="p">(</span><span class="n">config</span><span class="p">)</span>
+</pre></div>
+</div>
+<p>The most basic information we can obtain from a circuit is: * GID sets
+from target names * Neuron positions * Morphological and
+electrophysiological (ME) types. This information can be read for either
+mvd2 or mvd3 circuit files.</p>
+<div class="code python highlight-python"><div class="highlight"><pre><span></span><span class="c1"># This returns all the GIDs of the circuit</span>
+<span class="n">gids</span> <span class="o">=</span> <span class="n">circuit</span><span class="o">.</span><span class="n">gids</span><span class="p">()</span>
+<span class="c1"># But for demonstration purposes a minicolumn is just enough.</span>
+<span class="n">gids</span> <span class="o">=</span> <span class="n">circuit</span><span class="o">.</span><span class="n">gids</span><span class="p">(</span><span class="s1">&#39;MiniColumn_0&#39;</span><span class="p">)</span>
+<span class="c1"># The function gids returns a numpy array with the GIDs sorted in increasing order</span>
+<span class="k">print</span><span class="p">(</span><span class="n">gids</span><span class="p">)</span>
+</pre></div>
+</div>
+<div class="highlight-python"><div class="highlight"><pre><span></span>[  341   802   903  1447  1543  1962  1990  2126  2224  2335  2567  2624
+  2662  3165  3232  3440  4108  4374  4514  4628  5675  5794  6711  7302
+  7664  8122  8164  8482  8624  9068  9640  9704 10195 10344 10499 10880
+ 11112 11423 11511 11601 11648 11957 12090 12134 12750 13119 13706 14245
+ 14422 14558 14746 14807 15020 16018 16189 16570 16828 17634 18345 18553
+ 18760 18883 19016 19273 19648 19995 20121 21090 21362 21494 21628 21742
+ 21872 22234 22368 22878 23393 23893 24026 24162 24291 24406 25164 25535
+ 26160 26408 26532 26663 27658 27909 28029 28164 28419 28662 29414 29544
+ 29931 30461 30587 30957 31077 31331]
+</pre></div>
+</div>
+<div class="code python highlight-python"><div class="highlight"><pre><span></span><span class="c1"># The positions are returned as a 3 x n numpy array.</span>
+<span class="n">positions</span> <span class="o">=</span> <span class="n">circuit</span><span class="o">.</span><span class="n">positions</span><span class="p">(</span><span class="n">gids</span><span class="p">)</span>
+<span class="k">print</span><span class="p">(</span><span class="n">positions</span><span class="o">.</span><span class="n">shape</span><span class="p">)</span>
+<span class="k">print</span><span class="p">(</span><span class="n">positions</span><span class="p">[</span><span class="mi">0</span><span class="p">])</span>
+</pre></div>
+</div>
+<div class="highlight-python"><div class="highlight"><pre><span></span>(102, 3)
+[  367.86856079  1815.69592285   194.61106873]
+</pre></div>
+</div>
+<div class="code python highlight-python"><div class="highlight"><pre><span></span><span class="c1"># The methods to get the ME types of a cell set return index arrays.</span>
+<span class="n">mtypes</span> <span class="o">=</span> <span class="n">circuit</span><span class="o">.</span><span class="n">morphology_types</span><span class="p">(</span><span class="n">gids</span><span class="p">)</span>
+<span class="c1"># The indices are used to get the actual names from a separate array.</span>
+<span class="n">names</span> <span class="o">=</span> <span class="n">circuit</span><span class="o">.</span><span class="n">morphology_type_names</span><span class="p">()</span>
+<span class="k">print</span><span class="p">(</span><span class="n">names</span><span class="p">[</span><span class="n">mtypes</span><span class="p">[</span><span class="mi">0</span><span class="p">]])</span>
+
+<span class="n">etypes</span> <span class="o">=</span> <span class="n">circuit</span><span class="o">.</span><span class="n">electrophysiology_types</span><span class="p">(</span><span class="n">gids</span><span class="p">)</span>
+<span class="n">names</span> <span class="o">=</span> <span class="n">circuit</span><span class="o">.</span><span class="n">electrophysiology_type_names</span><span class="p">()</span> <span class="c1"># typenames</span>
+<span class="k">print</span><span class="p">(</span><span class="n">names</span><span class="p">[</span><span class="n">etypes</span><span class="p">[</span><span class="mi">0</span><span class="p">]])</span>
+</pre></div>
+</div>
+<div class="highlight-python"><div class="highlight"><pre><span></span><span class="n">L23_PC</span>
+<span class="n">cADpyr</span>
+</pre></div>
+</div>
+<div class="code python highlight-python"><div class="highlight"><pre><span></span><span class="c1"># From the circuit it&#39;s also possible to get the 4x4 matrix transform and orientation</span>
+<span class="c1"># quaternion for each cell, these are again returned as numpy arrays.</span>
+<span class="n">transforms</span> <span class="o">=</span> <span class="n">circuit</span><span class="o">.</span><span class="n">transforms</span><span class="p">(</span><span class="n">gids</span><span class="p">)</span>
+<span class="n">rotations</span> <span class="o">=</span> <span class="n">circuit</span><span class="o">.</span><span class="n">rotations</span><span class="p">(</span><span class="n">gids</span><span class="p">)</span>
+<span class="k">print</span><span class="p">(</span><span class="n">rotations</span><span class="p">[</span><span class="mi">0</span><span class="p">:</span><span class="mi">10</span><span class="p">])</span>
+</pre></div>
+</div>
+<div class="highlight-python"><div class="highlight"><pre><span></span>[[-0.         -0.8779915  -0.          0.47867629]
+ [-0.         -0.95352584 -0.          0.30131117]
+ [ 0.          0.18559326  0.          0.98262668]
+ [-0.         -0.57609433 -0.          0.81738323]
+ [ 0.          0.98932451  0.          0.14572905]
+ [ 0.          0.49220368  0.          0.87048006]
+ [-0.         -0.48694596 -0.          0.8734321 ]
+ [ 0.          0.05243697  0.          0.99862427]
+ [ 0.          0.37507021  0.          0.92699641]
+ [-0.         -0.14789115 -0.          0.98900366]]
+</pre></div>
+</div>
+<div class="code python highlight-python"><div class="highlight"><pre><span></span><span class="c1"># All functions that take gids as an input parameter accept any Python iterable or numpy arrays of int32, uint32 or int64</span>
+<span class="k">print</span><span class="p">(</span><span class="n">circuit</span><span class="o">.</span><span class="n">morphology_types</span><span class="p">({</span><span class="mi">1</span><span class="p">,</span> <span class="mi">10</span><span class="p">,</span> <span class="mi">100</span><span class="p">}))</span>
+<span class="k">print</span><span class="p">(</span><span class="n">circuit</span><span class="o">.</span><span class="n">morphology_types</span><span class="p">([</span><span class="mi">1</span><span class="p">,</span> <span class="mi">10</span><span class="p">,</span> <span class="mi">100</span><span class="p">]))</span>
+<span class="k">print</span><span class="p">(</span><span class="n">circuit</span><span class="o">.</span><span class="n">morphology_types</span><span class="p">([</span><span class="mi">10</span><span class="p">,</span> <span class="mi">1</span><span class="p">,</span> <span class="mi">100</span><span class="p">]))</span>
+<span class="k">print</span><span class="p">(</span><span class="n">circuit</span><span class="o">.</span><span class="n">morphology_types</span><span class="p">(</span><span class="n">numpy</span><span class="o">.</span><span class="n">array</span><span class="p">([</span><span class="mi">100</span><span class="p">,</span> <span class="mi">10</span><span class="p">,</span> <span class="mi">1</span><span class="p">])))</span>
+</pre></div>
+</div>
+<div class="highlight-python"><div class="highlight"><pre><span></span>[4 3 5]
+[4 3 5]
+[3 4 5]
+[5 3 4]
+</pre></div>
+</div>
+<div class="code python highlight-python"><div class="highlight"><pre><span></span><span class="c1"># Invalid GID lists will throw ValueError or RuntimeError</span>
+<span class="n">circuit</span><span class="o">.</span><span class="n">positions</span><span class="p">([</span><span class="mi">1</span><span class="p">,</span> <span class="mi">1</span><span class="p">,</span> <span class="mi">2</span><span class="p">])</span>
+</pre></div>
+</div>
+<div class="highlight-python"><div class="highlight"><pre><span></span>---------------------------------------------------------------------------
+
+ValueError                                Traceback (most recent call last)
+
+&lt;ipython-input-8-6c40e1ced9bb&gt; in &lt;module&gt;()
+      1 # Invalid GID lists will throw ValueError or RuntimeError
+----&gt; 2 circuit.positions([1, 1, 2])
+
+
+ValueError: Repeated GID found
+</pre></div>
+</div>
+<div class="code python highlight-python"><div class="highlight"><pre><span></span><span class="n">circuit</span><span class="o">.</span><span class="n">positions</span><span class="p">([</span><span class="mi">0</span><span class="p">])</span>
+</pre></div>
+</div>
+<div class="highlight-python"><div class="highlight"><pre><span></span>---------------------------------------------------------------------------
+
+RuntimeError                              Traceback (most recent call last)
+
+&lt;ipython-input-9-9863689e7678&gt; in &lt;module&gt;()
+----&gt; 1 circuit.positions([0])
+
+
+RuntimeError: Cell GID out of range: 0
+</pre></div>
+</div>
+<div class="code python highlight-python"><div class="highlight"><pre><span></span><span class="n">circuit</span><span class="o">.</span><span class="n">positions</span><span class="p">([</span><span class="mi">1000000</span><span class="p">])</span>
+</pre></div>
+</div>
+<div class="highlight-python"><div class="highlight"><pre><span></span>---------------------------------------------------------------------------
+
+RuntimeError                              Traceback (most recent call last)
+
+&lt;ipython-input-10-749cb12fdeb5&gt; in &lt;module&gt;()
+----&gt; 1 circuit.positions([1000000])
+
+
+RuntimeError: Cell GID out of range: 1000000
+</pre></div>
+</div>
+</div>
+<div class="section" id="synapses">
+<h2>Synapses<a class="headerlink" href="#synapses" title="Permalink to this headline">¶</a></h2>
+<p>From the circuit object we can query the afferent, efferent of a cell
+set and projected synapses between two sets.</p>
+<p>In Lugano there is an in-memory caching system configured, one of the
+advantages of using Brain is that it uses this caching to speed up the
+access to synapse datasets. Another advantage is that by default the
+data is loaded on demand, which is convenient when you are interested
+only in part of the synpase attributes.</p>
+<div class="code python highlight-python"><div class="highlight"><pre><span></span># Loading only the connectivity information for all afferent synapses of mc2_Layer4
+gids = circuit.gids(&quot;mc0_Layer4&quot;)
+%time synapses = circuit.afferent_synapses(gids)
+# The second time it will be faster due to caching
+%time synapses = circuit.afferent_synapses(gids)
+print(len(synapses))
+</pre></div>
+</div>
+<div class="highlight-python"><div class="highlight"><pre><span></span>CPU times: user 1.51 s, sys: 800 ms, total: 2.31 s
+Wall time: 58.9 s
+CPU times: user 444 ms, sys: 108 ms, total: 552 ms
+Wall time: 552 ms
+6031664
+</pre></div>
+</div>
+<div class="code python highlight-python"><div class="highlight"><pre><span></span><span class="c1"># All synapses attributes are accessible as independent numpy arrays.</span>
+<span class="c1"># After querying the synapses, the connectivity attributes are already in memory.</span>
+<span class="n">post</span> <span class="o">=</span> <span class="n">synapses</span><span class="o">.</span><span class="n">post_gids</span><span class="p">()</span>
+<span class="n">pre</span> <span class="o">=</span> <span class="n">synapses</span><span class="o">.</span><span class="n">pre_gids</span><span class="p">()</span>
+</pre></div>
+</div>
+<div class="code python highlight-python"><div class="highlight"><pre><span></span># add local coordinates relative to pre and post
+
+# The rest will be loaded on demand
+%time x = synapses.post_center_x_positions()
+# The position and model attributes are cached separately.
+# Once we access one of the coordinates, the rest are recovered much faster
+%time y = synapses.post_center_y_positions()
+</pre></div>
+</div>
+<div class="highlight-python"><div class="highlight"><pre><span></span>CPU times: user 981 ms, sys: 1.1 s, total: 2.08 s
+Wall time: 8.44 s
+CPU times: user 0 ns, sys: 1e+03 µs, total: 1e+03 µs
+Wall time: 95.4 µs
+</pre></div>
+</div>
+<p>Apart from the array access, synapse containers can also be iterated and
+the attributes accessed using an object interface.</p>
+<div class="code python highlight-python"><div class="highlight"><pre><span></span>subset = [s for s in synapses] # Note that slicing operations, such as synapses[0:100] are not implemented
+# Accessing the model attributes will trigger the loading for all synapses in the container.
+%time c = subset[0].conductance()
+# And now all data is in memory
+%time d = subset[0].delay()
+</pre></div>
+</div>
+<div class="highlight-python"><div class="highlight"><pre><span></span>CPU times: user 3.78 s, sys: 876 ms, total: 4.66 s
+Wall time: 1min 30s
+CPU times: user 0 ns, sys: 0 ns, total: 0 ns
+Wall time: 17.2 µs
+</pre></div>
+</div>
+<p>This final snippet show how to query the synapses projected from one
+cell set to another:</p>
+<div class="code python highlight-python"><div class="highlight"><pre><span></span>%time projections = circuit.projected_synapses(gids, circuit.gids(&quot;mc0_Layer3&quot;))
+</pre></div>
+</div>
+<div class="highlight-python"><div class="highlight"><pre><span></span>CPU times: user 1.21 s, sys: 492 ms, total: 1.7 s
+Wall time: 34 s
+</pre></div>
+</div>
+<p>Something to consider is that Synapses containers are independent, that
+is, they cannot share data between them, so if you load the same neurons
+in different targets, the data will be duplicated in memory. On the
+other hand, the cache servers are accessible for anybody.</p>
+</div>
+<div class="section" id="morphologies">
+<h2>Morphologies<a class="headerlink" href="#morphologies" title="Permalink to this headline">¶</a></h2>
+<p>Morphological data can be accessed by directly opening morphology files
+are loading them through the circuit. When loading from the circuit,
+global or local coordinates can be choosen (contrary to BBPSDK, there&#8217;s
+no implicit handling of global vs local coordinates, but the user
+explicitly states which ones are desired).</p>
+<div class="code python highlight-python"><div class="highlight"><pre><span></span><span class="c1"># Let&#39;s load a morphology directly from a file.</span>
+<span class="c1"># Instead of providing a hardcoded file path we will get it from the circuit</span>
+<span class="n">uri</span> <span class="o">=</span> <span class="n">circuit</span><span class="o">.</span><span class="n">morphology_uris</span><span class="p">({</span><span class="mi">1000</span><span class="p">})[</span><span class="mi">0</span><span class="p">]</span>
+<span class="n">morphology</span> <span class="o">=</span> <span class="n">brain</span><span class="o">.</span><span class="n">neuron</span><span class="o">.</span><span class="n">Morphology</span><span class="p">(</span><span class="n">uri</span><span class="p">)</span>
+
+<span class="c1"># Loading from the circuit is done using GIDs.</span>
+<span class="c1"># When morphologies are shared and local coordinates are requested the underlaying objects are also shared in memory.</span>
+<span class="n">morphologies</span> <span class="o">=</span> <span class="n">circuit</span><span class="o">.</span><span class="n">load_morphologies</span><span class="p">({</span><span class="mi">1000</span><span class="p">},</span> <span class="n">circuit</span><span class="o">.</span><span class="n">Coordinates</span><span class="o">.</span><span class="n">local</span><span class="p">)</span>
+</pre></div>
+</div>
+<p>A neuron morphology is mainly consists of a set of sections and a soma.
+The Section object provides methods to traverse the section tree and to
+query information about the sample points.</p>
+<p>Some functions also provide access to the low raw data arrays.</p>
+<div class="code python highlight-python"><div class="highlight"><pre><span></span><span class="c1"># The soma object provides the centroid, radius and profile points if any.</span>
+<span class="n">soma</span> <span class="o">=</span> <span class="n">morphology</span><span class="o">.</span><span class="n">soma</span><span class="p">()</span>
+<span class="k">print</span><span class="p">(</span><span class="n">soma</span><span class="o">.</span><span class="n">centroid</span><span class="p">())</span>
+<span class="k">print</span><span class="p">(</span><span class="n">soma</span><span class="o">.</span><span class="n">mean_radius</span><span class="p">())</span>
+<span class="k">print</span><span class="p">(</span><span class="n">soma</span><span class="o">.</span><span class="n">profile_points</span><span class="p">())</span>
+</pre></div>
+</div>
+<div class="highlight-python"><div class="highlight"><pre><span></span>(1.907348590179936e-08, 1.5258788721439487e-07, 1.0728836485895954e-08)
+7.4684977531433105
+[[-1.45480001  9.6239996  -0.2296      0.        ]
+ [-2.3448      7.48400021 -0.2296      0.        ]
+ [-2.97480011  5.40399981 -0.1696      0.        ]
+ [-4.21479988  3.79399991 -0.1696      0.        ]
+ [-5.22480011  2.14400005 -0.1696      0.        ]
+ [-6.06479979  0.79400003 -0.1696      0.        ]
+ [-7.45480013 -1.00600004 -0.1696      0.        ]
+ [-7.73479986 -2.46600008 -0.1696      0.        ]
+ [-7.10480022 -3.39599991 -0.1696      0.        ]
+ [-4.85480022 -4.296      -0.1696      0.        ]
+ [-1.73479998 -6.05600023 -0.1696      0.        ]
+ [ 0.69520003 -7.22599983 -0.0296      0.        ]
+ [ 2.07520008 -8.42599964  0.0304      0.        ]
+ [ 2.9052     -8.93599987  0.1104      0.        ]
+ [ 3.89520001 -7.38600016  0.17039999  0.        ]
+ [ 6.53520012 -6.27600002  0.17039999  0.        ]
+ [ 8.06519985 -5.53599977  0.17039999  0.        ]
+ [ 7.52519989 -3.57599998  0.17039999  0.        ]
+ [ 6.13520002 -0.64600003  0.17039999  0.        ]
+ [ 5.04519987  1.53400004  0.17039999  0.        ]
+ [ 3.2651999   3.61400008  0.17039999  0.        ]
+ [ 2.60520005  5.01399994  0.17039999  0.        ]
+ [ 2.04520011  6.86399984  0.17039999  0.        ]
+ [ 1.69519997  9.24400043  0.17039999  0.        ]
+ [-1.32480001  9.71399975  0.17039999  0.        ]]
+</pre></div>
+</div>
+<div class="code python highlight-python"><div class="highlight"><pre><span></span><span class="c1"># Sections can be retrieved by ID or type.</span>
+<span class="c1"># By type</span>
+<span class="n">axon</span> <span class="o">=</span> <span class="n">morphology</span><span class="o">.</span><span class="n">sections</span><span class="p">({</span><span class="n">brain</span><span class="o">.</span><span class="n">neuron</span><span class="o">.</span><span class="n">SectionType</span><span class="o">.</span><span class="n">axon</span><span class="p">})</span>
+<span class="c1"># By id. The conversion is needed because id takes an integer, but not a numpy.uint32</span>
+<span class="n">axon</span> <span class="o">=</span> <span class="p">[</span><span class="n">morphology</span><span class="o">.</span><span class="n">section</span><span class="p">(</span><span class="nb">int</span><span class="p">(</span><span class="nb">id</span><span class="p">))</span> <span class="k">for</span> <span class="nb">id</span> <span class="ow">in</span> <span class="n">morphology</span><span class="o">.</span><span class="n">section_ids</span><span class="p">({</span><span class="n">brain</span><span class="o">.</span><span class="n">neuron</span><span class="o">.</span><span class="n">SectionType</span><span class="o">.</span><span class="n">axon</span><span class="p">})]</span>
+</pre></div>
+</div>
+<div class="code python highlight-python"><div class="highlight"><pre><span></span><span class="c1"># The soma cannot be converted to a section</span>
+<span class="n">morphology</span><span class="o">.</span><span class="n">section</span><span class="p">(</span><span class="mi">0</span><span class="p">)</span> <span class="c1"># throws</span>
+</pre></div>
+</div>
+<div class="highlight-python"><div class="highlight"><pre><span></span>---------------------------------------------------------------------------
+
+RuntimeError                              Traceback (most recent call last)
+
+&lt;ipython-input-19-d5d9f3cc3afc&gt; in &lt;module&gt;()
+      1 # The soma cannot be converted to a section
+----&gt; 2 morphology.section(0) # throws
+
+
+RuntimeError: The soma cannot be accessed as a Section
+</pre></div>
+</div>
+<div class="code python highlight-python"><div class="highlight"><pre><span></span><span class="n">section</span> <span class="o">=</span> <span class="n">axon</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span>
+<span class="c1"># The methods to traverse the morphology graph are parent and children.</span>
+<span class="c1"># Both may return None for first order and terminal sections respectively</span>
+<span class="k">print</span><span class="p">(</span><span class="s2">&quot;Children:&quot;</span><span class="p">,</span> <span class="p">[</span><span class="n">s</span><span class="o">.</span><span class="n">id</span><span class="p">()</span> <span class="k">for</span> <span class="n">s</span> <span class="ow">in</span> <span class="n">section</span><span class="o">.</span><span class="n">children</span><span class="p">()])</span>
+<span class="k">print</span><span class="p">(</span><span class="s2">&quot;Parent:&quot;</span><span class="p">,</span> <span class="n">section</span><span class="o">.</span><span class="n">parent</span><span class="p">())</span>
+
+<span class="c1"># To retrieve the sample locations and diameters the method is samples.</span>
+<span class="k">print</span><span class="p">(</span><span class="n">section</span><span class="o">.</span><span class="n">samples</span><span class="p">())</span>
+
+<span class="c1"># This method can take a list of relative position to obtain linearly interpolated sample positions.</span>
+<span class="k">print</span><span class="p">(</span><span class="n">section</span><span class="o">.</span><span class="n">samples</span><span class="p">([</span><span class="mi">0</span><span class="p">,</span> <span class="mf">0.5</span><span class="p">,</span> <span class="mf">1.0</span><span class="p">]))</span>
+
+<span class="c1"># add convenience function for section, segment and position along segment</span>
+
+<span class="c1"># Distances to soma can be queries in a similar way</span>
+<span class="n">d</span> <span class="o">=</span> <span class="n">section</span><span class="o">.</span><span class="n">sample_distances_to_soma</span><span class="p">()</span>
+<span class="k">print</span><span class="p">(</span><span class="n">section</span><span class="o">.</span><span class="n">length</span><span class="p">(),</span> <span class="n">d</span><span class="p">[</span><span class="o">-</span><span class="mi">1</span><span class="p">]</span> <span class="o">-</span> <span class="n">d</span><span class="p">[</span><span class="mi">0</span><span class="p">])</span>
+</pre></div>
+</div>
+<div class="highlight-python"><div class="highlight"><pre><span></span>Children: [2, 59]
+Parent: None
+[[  1.16173995e+00  -2.73743010e+00   6.85094023e+00   1.36000001e+00]
+ [  3.54643011e+00  -8.35649014e+00   2.09137001e+01   1.36000001e+00]
+ [  1.18355000e+00  -1.71742992e+01   2.14995995e+01   6.00000024e-01]
+ [  3.42235155e-02  -2.16313000e+01   2.24328995e+01   6.00000024e-01]
+ [ -8.28444004e-01  -2.48330994e+01   2.32877007e+01   6.00000024e-01]
+ [ -2.00281000e+00  -2.91338997e+01   2.45149002e+01   6.00000024e-01]
+ [ -2.91564989e+00  -3.27745018e+01   2.55701008e+01   6.00000024e-01]
+ [ -4.48455000e+00  -3.99515991e+01   2.81375999e+01   6.00000024e-01]
+ [ -5.68577003e+00  -4.59066010e+01   3.07444992e+01   6.00000024e-01]
+ [ -6.19869995e+00  -4.87081985e+01   3.19990997e+01   6.00000024e-01]
+ [ -6.71611977e+00  -5.23386002e+01   3.35430984e+01   6.00000024e-01]
+ [ -6.99650002e+00  -5.51487007e+01   3.44781990e+01   6.00000024e-01]
+ [ -7.28359985e+00  -6.08227005e+01   3.58979988e+01   6.00000024e-01]
+ [ -7.14223003e+00  -6.74588013e+01   3.67365990e+01   6.00000024e-01]
+ [ -6.79067993e+00  -7.09904022e+01   3.70312004e+01   6.00000024e-01]
+ [ -6.44088984e+00  -7.37704010e+01   3.71702003e+01   6.00000024e-01]
+ [ -5.58654022e+00  -8.05896988e+01   3.69855003e+01   6.00000024e-01]
+ [ -5.24412012e+00  -8.43290024e+01   3.66076012e+01   6.00000024e-01]
+ [ -4.36117983e+00  -9.24504013e+01   3.53945999e+01   6.00000024e-01]
+ [ -3.78156996e+00  -9.72034988e+01   3.43694992e+01   6.00000024e-01]
+ [ -3.46371007e+00  -1.00455002e+02   3.35546989e+01   6.00000024e-01]
+ [ -3.10776997e+00  -1.07380997e+02   3.18061008e+01   6.00000024e-01]
+ [ -3.05665994e+00  -1.14172997e+02   3.01411991e+01   6.00000024e-01]]
+[[   1.16173995   -2.7374301     6.85094023    1.36000001]
+ [  -6.74434948  -52.62153244   33.63724899    0.60000002]
+ [  -3.05665994 -114.17299652   30.14119911    0.60000002]]
+125.8109130859375 125.811
+</pre></div>
+</div>
+</div>
+<div class="section" id="spikes">
+<h2>Spikes<a class="headerlink" href="#spikes" title="Permalink to this headline">¶</a></h2>
+<p>Spikes can be read from the usual <code class="docutils literal"><span class="pre">out.dat</span></code> ASCII file, <code class="docutils literal"><span class="pre">.gdf</span></code> files
+generated by NEST and a custom <code class="docutils literal"><span class="pre">.spikes</span></code> binary file format that can
+be generated with the spikeConverter tool. For any of them the code is
+the same, first create the reader with the filepath and then request the
+synapses inside a time window:</p>
+<div class="code python highlight-python"><div class="highlight"><pre><span></span># Loading small simulations from ASCII doesn&#39;t take a lot of time.
+%time reader = brain.SpikeReportReader(&#39;/gpfs/bbp.cscs.ch/project/proj3/simulations/vizCa2p0_1x7/out.dat&#39;)
+</pre></div>
+</div>
+<div class="highlight-python"><div class="highlight"><pre><span></span>CPU times: user 2.06 s, sys: 62 ms, total: 2.12 s
+Wall time: 913 ms
+</pre></div>
+</div>
+<div class="code python highlight-python"><div class="highlight"><pre><span></span># For bigger ones it&#39;s better to convert the data to binary first.
+# This is a 74 million cell report from a NEST simulation that has been converted to binary.
+# The conversion step took around one hour and the resulting file is 2.6 GB.
+%time reader = brain.SpikeReportReader(&#39;/gpfs/bbp.cscs.ch/project/proj3/resources/simulations/till_viztm659/till.spikes&#39;)
+</pre></div>
+</div>
+<div class="highlight-python"><div class="highlight"><pre><span></span>CPU times: user 19.2 s, sys: 5.96 s, total: 25.2 s
+Wall time: 25.1 s
+</pre></div>
+</div>
+<div class="code python highlight-python"><div class="highlight"><pre><span></span><span class="c1"># The actual time interval of the report cannot be known by the reader. Instead, it provides the</span>
+<span class="c1"># time of the first and last spike.</span>
+<span class="k">print</span> <span class="p">(</span><span class="n">reader</span><span class="o">.</span><span class="n">getStartTime</span><span class="p">(),</span> <span class="n">reader</span><span class="o">.</span><span class="n">getEndTime</span><span class="p">())</span>
+</pre></div>
+</div>
+<div class="highlight-python"><div class="highlight"><pre><span></span>3.700000047683716 79.80000305175781
+</pre></div>
+</div>
+<div class="code python highlight-python"><div class="highlight"><pre><span></span># Spikes are queried giving a time window. The object returned can be iterated.
+%time spikes = reader.getSpikes(10, 30)
+print(len(spikes))
+</pre></div>
+</div>
+<div class="highlight-python"><div class="highlight"><pre><span></span>CPU times: user 2.81 s, sys: 8 ms, total: 2.82 s
+Wall time: 2.8 s
+75180145
+</pre></div>
+</div>
+<p>One final remark regarding API stability, there are plans for a new API
+at the C++ side for better efficiency loading very large spike reports
+and it&#8217;s not clear if this will imply changes in the Python API.</p>
+</div>
+</div>
+
+
+          </div>
+        </div>
+      </div>
+      <div class="sphinxsidebar" role="navigation" aria-label="main navigation">
+        <div class="sphinxsidebarwrapper">
+  <h3><a href="index.html">Table Of Contents</a></h3>
+  <ul>
+<li><a class="reference internal" href="#">Brain Python tutorial</a><ul>
+<li><a class="reference internal" href="#circuits">Circuits</a></li>
+<li><a class="reference internal" href="#synapses">Synapses</a></li>
+<li><a class="reference internal" href="#morphologies">Morphologies</a></li>
+<li><a class="reference internal" href="#spikes">Spikes</a></li>
+</ul>
+</li>
+</ul>
+
+  <div role="note" aria-label="source link">
+    <h3>This Page</h3>
+    <ul class="this-page-menu">
+      <li><a href="_sources/python_tutorial.txt"
+            rel="nofollow">Show Source</a></li>
+    </ul>
+   </div>
+<div id="searchbox" style="display: none" role="search">
+  <h3>Quick search</h3>
+    <form class="search" action="search.html" method="get">
+      <input type="text" name="q" />
+      <input type="submit" value="Go" />
+      <input type="hidden" name="check_keywords" value="yes" />
+      <input type="hidden" name="area" value="default" />
+    </form>
+    <p class="searchtip" style="font-size: 90%">
+    Enter search terms or a module, class or function name.
+    </p>
+</div>
+<script type="text/javascript">$('#searchbox').show(0);</script>
+        </div>
+      </div>
+      <div class="clearer"></div>
+    </div>
+    <div class="related" role="navigation" aria-label="related navigation">
+      <h3>Navigation</h3>
+      <ul>
+        <li class="right" style="margin-right: 10px">
+          <a href="genindex.html" title="General Index"
+             >index</a></li>
+        <li class="right" >
+          <a href="py-modindex.html" title="Python Module Index"
+             >modules</a> |</li>
+        <li class="nav-item nav-item-0"><a href="index.html">Brain 2.1 Python API documentation</a> &raquo;</li> 
+      </ul>
+    </div>
+    <div class="footer" role="contentinfo">
+        &copy; Copyright 2016, EPFL/Blue Brian Project.
+      Created using <a href="http://sphinx-doc.org/">Sphinx</a> 1.3.
+    </div>
+  </body>
+</html>
