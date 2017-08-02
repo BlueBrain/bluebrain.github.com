@@ -1,5 +1,7 @@
 var NAVTREEINDEX3 =
 {
+"classbrayns_1_1_proximity_renderer.html":[5,0,0,60],
+"classbrayns_1_1_proximity_renderer.html#a642c9e76b80b4532cffb23d26d874267":[5,0,0,60,0],
 "classbrayns_1_1_proximity_renderer.html#aa4caa1d5f633f2a4dca4b63e7aa74bdd":[5,0,0,60,1],
 "classbrayns_1_1_proximity_renderer.html#ac927f95ac68c10d74a0afeb819eb05f3":[5,0,0,60,2],
 "classbrayns_1_1_renderer.html":[5,0,0,61],
@@ -247,7 +249,5 @@ var NAVTREEINDEX3 =
 "classbrayns_1_1_volume_handler_1_1_volume_descriptor.html#a7dc4ef881785d2a0993a0b19977c07a9":[5,0,0,80,0,2],
 "classbrayns_1_1_volume_handler_1_1_volume_descriptor.html#a95f4837562045f1460df63eededf7cc7":[5,0,0,80,0,4],
 "classbrayns_1_1_volume_handler_1_1_volume_descriptor.html#ade83c0a3fcf3a915760e96def5da5c0c":[5,0,0,80,0,3],
-"classbrayns_1_1_volume_handler_1_1_volume_descriptor.html#aea105288818eeb73c6a06d0f59286b47":[5,0,0,80,0,6],
-"classbrayns_1_1_volume_parameters.html":[5,0,0,81],
-"classbrayns_1_1_volume_parameters.html#a02e82d5a9123769c4b1479ad2bee002e":[5,0,0,81,3]
+"classbrayns_1_1_volume_handler_1_1_volume_descriptor.html#aea105288818eeb73c6a06d0f59286b47":[5,0,0,80,0,6]
 };

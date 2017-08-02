@@ -1,5 +1,7 @@
 var NAVTREEINDEX4 =
 {
+"classbrayns_1_1_volume_parameters.html":[5,0,0,81],
+"classbrayns_1_1_volume_parameters.html#a02e82d5a9123769c4b1479ad2bee002e":[5,0,0,81,3],
 "classbrayns_1_1_volume_parameters.html#a18673660b95a7a82e871bed39eb18936":[5,0,0,81,15],
 "classbrayns_1_1_volume_parameters.html#a18f4f2d841400ae72d40328f54f50921":[5,0,0,81,9],
 "classbrayns_1_1_volume_parameters.html#a1fcb2d4b35ba14948765e01671691b4b":[5,0,0,81,8],
@@ -33,8 +35,8 @@ var NAVTREEINDEX4 =
 "defines_linux_8h_source.html":[6,0,24],
 "exceptions_8h_source.html":[6,0,29],
 "files.html":[6,0],
-"functions.html":[5,3,0,0],
 "functions.html":[5,3,0],
+"functions.html":[5,3,0,0],
 "functions_0x7e.html":[5,3,0,20],
 "functions_a.html":[5,3,0,1],
 "functions_b.html":[5,3,0,2],
@@ -247,6 +249,5 @@ var NAVTREEINDEX4 =
 "version_8h.html#ad1d30abb92c583df9555702986df6cd5":[6,0,94,8],
 "version_8h.html#ae06db9b236b4f8ed1de4c3d1cbf55fe5":[6,0,94,4],
 "version_8h.html#aec3b431747b4611d046a5be799c36a85":[6,0,94,9],
-"version_8h.html#af6fac12cc372fa2c0d4a7276646db3e2":[6,0,94,7],
-"version_8h_source.html":[6,0,94]
+"version_8h.html#af6fac12cc372fa2c0d4a7276646db3e2":[6,0,94,7]
 };

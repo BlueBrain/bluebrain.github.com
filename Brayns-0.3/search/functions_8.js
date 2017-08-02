@@ -5,7 +5,7 @@ var searchData=
   ['importcircuit',['importCircuit',['../classbrayns_1_1_morphology_loader.html#a7424c8e01cf0e7acd9f17e4d0b0f3e02',1,'brayns::MorphologyLoader::importCircuit()'],['../classbrayns_1_1_n_e_s_t_loader.html#a23d9116a6c8e76c83e65a6e4c8f44fe1',1,'brayns::NESTLoader::importCircuit()']]],
   ['importfromfile',['importFromFile',['../classbrayns_1_1_scene_loader.html#a81ffea194cf8aa8e0c5d7030bbcd6f15',1,'brayns::SceneLoader']]],
   ['importmeshfromfile',['importMeshFromFile',['../classbrayns_1_1_mesh_loader.html#ae3ac67ade548106ef85a022aa491f732',1,'brayns::MeshLoader']]],
-  ['importmorphology',['importMorphology',['../classbrayns_1_1_morphology_loader.html#a9a91bdb7ddeb4ee2ddd443b1856578a4',1,'brayns::MorphologyLoader']]],
+  ['importmorphology',['importMorphology',['../classbrayns_1_1_morphology_loader.html#a2389c20fe7b0acf1af0edcadcd410b64',1,'brayns::MorphologyLoader']]],
   ['importpdbfile',['importPDBFile',['../classbrayns_1_1_protein_loader.html#a91c82bfd2699c0d8023a37d7e9f6327f',1,'brayns::ProteinLoader']]],
   ['importsimulationdata',['importSimulationData',['../classbrayns_1_1_morphology_loader.html#aeff1dbf39954c539606a3e519220b6c0',1,'brayns::MorphologyLoader']]],
   ['importspikereport',['importSpikeReport',['../classbrayns_1_1_n_e_s_t_loader.html#ad4269586dda8f9e5384c102797adcc51',1,'brayns::NESTLoader']]],
