@@ -37,12 +37,6 @@ var enums_8h =
       [ "MESH_VERSION_1", "enums_8h.html#aa07607b4eacf916066db380a7bb05b7ea7d05ce6bab3fb79bfc82bf3cbb293bb0", null ],
       [ "MESH_VERSION_2", "enums_8h.html#aa07607b4eacf916066db380a7bb05b7ea54755b0fa326ebec06170b6aa1e7eecc", null ]
     ] ],
-    [ "MorphologyRepairStage", "enums_8h.html#af30f09c59879fca22002ccbaacf226eb", [
-      [ "MORPHOLOGY_RAW", "enums_8h.html#af30f09c59879fca22002ccbaacf226ebab979328613c3cd2a02b3bc57c476c545", null ],
-      [ "MORPHOLOGY_UNRAVELED", "enums_8h.html#af30f09c59879fca22002ccbaacf226eba50aa8b5d4f557ae6f39b453b003e8c9a", null ],
-      [ "MORPHOLOGY_REPAIRED", "enums_8h.html#af30f09c59879fca22002ccbaacf226eba59f1c03e7f4bf1c1f80e98b8bedd0b6e", null ],
-      [ "MORPHOLOGY_UNDEFINED", "enums_8h.html#af30f09c59879fca22002ccbaacf226eba96299999a88998af6f41ae748048629c", null ]
-    ] ],
     [ "MorphologyVersion", "enums_8h.html#ac6b91c84e67b858148e505a43b9884b0", [
       [ "MORPHOLOGY_VERSION_H5_1", "enums_8h.html#ac6b91c84e67b858148e505a43b9884b0aedffb4f827d3dbe41731082ad97cefd1", null ],
       [ "MORPHOLOGY_VERSION_H5_2", "enums_8h.html#ac6b91c84e67b858148e505a43b9884b0a4c459d101445e3535338527d6b8dcd19", null ],

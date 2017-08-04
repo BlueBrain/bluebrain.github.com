@@ -1,4 +1,4 @@
 var searchData=
 [
-  ['gids',['gids',['../structbrain_1_1_compartment_report_meta_data.html#a2f8a22ac5e98df63d79e3dcef4eb7778',1,'brain::CompartmentReportMetaData']]]
+  ['starttime',['startTime',['../structbrain_1_1_compartment_report_meta_data.html#a392795c6c7f60bc5b402dd850b0cf474',1,'brain::CompartmentReportMetaData']]]
 ];

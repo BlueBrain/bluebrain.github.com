@@ -1,5 +1,6 @@
 var classbrain_1_1neuron_1_1_morphology =
 [
+    [ "ImplPtr", "classbrain_1_1neuron_1_1_morphology.html#a20d29dfe94d0afd0cf49703373af8f71", null ],
     [ "Morphology", "classbrain_1_1neuron_1_1_morphology.html#ac554c1df7bac1fd79b26e875bf9b3871", null ],
     [ "Morphology", "classbrain_1_1neuron_1_1_morphology.html#af2fe6fd75004bdece3ded721b7b79c1d", null ],
     [ "Morphology", "classbrain_1_1neuron_1_1_morphology.html#ad00e9441cb95fa2262e28c8717decccc", null ],

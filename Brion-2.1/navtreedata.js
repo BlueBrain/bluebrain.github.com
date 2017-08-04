@@ -44,8 +44,8 @@ var NAVTREEINDEX =
 [
 "Changelog.html",
 "classbrain_1_1neuron_1_1_section.html#af729520de464e3ad975ca256c9954cfd",
-"classbrion_1_1_target.html#aa58924378a7389ae2a44867ce5e8be20",
-"structbrain_1_1_compartment_report_meta_data.html#ae37c7d5288f710c42f5c0f9925951d54"
+"classbrion_1_1_target.html#aea9917cbbc18242f7738a1e57ff70274",
+"structbrion_1_1_frames.html#a434a6ca0f8cd314ae439e27190e30d13"
 ];
 
 var SYNCONMSG = 'click to disable panel synchronisation';

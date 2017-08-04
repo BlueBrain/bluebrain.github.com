@@ -1,8 +1,6 @@
 var classbrain_1_1neuron_1_1_section =
 [
     [ "Section", "classbrain_1_1neuron_1_1_section.html#adae5e321c2b1c6c0e711d1817e7e762f", null ],
-    [ "~Section", "classbrain_1_1neuron_1_1_section.html#a012f75ef160843007d5834ddc426f20d", null ],
-    [ "Section", "classbrain_1_1neuron_1_1_section.html#a0bdca8e6f6e84536a25adc38a6fe96c4", null ],
     [ "getChildren", "classbrain_1_1neuron_1_1_section.html#ac34c25b88f6e3acf9b524ed0fe2a67b8", null ],
     [ "getDistanceToSoma", "classbrain_1_1neuron_1_1_section.html#a929e71da9372a82ab12fc650360163e4", null ],
     [ "getID", "classbrain_1_1neuron_1_1_section.html#a7a4724ee3a8483293cf7af337bf5114e", null ],
