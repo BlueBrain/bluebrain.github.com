@@ -37,11 +37,11 @@
           </tr>
           <tr>
             <td class="headerItem">Date:</td>
-            <td class="headerValue">2017-08-03 02:17:02</td>
+            <td class="headerValue">2017-08-10 02:20:24</td>
             <td></td>
             <td class="headerItem">Functions:</td>
-            <td class="headerCovTableEntry">2</td>
-            <td class="headerCovTableEntry">2</td>
+            <td class="headerCovTableEntry">5</td>
+            <td class="headerCovTableEntry">5</td>
             <td class="headerCovTableEntryHi">100.0 %</td>
           </tr>
           <tr><td><img src="../glass.png" width=3 height=3 alt=""></td></tr>
@@ -108,85 +108,96 @@
 <span class="lineNum">      46 </span>            : #include &quot;Socket.h&quot;         // member
 <span class="lineNum">      47 </span>            : #include &quot;Stream.h&quot;         // Stream::Future
 <span class="lineNum">      48 </span>            : 
-<span class="lineNum">      49 </span>            : #include &lt;QThread&gt;
-<span class="lineNum">      50 </span>            : 
-<span class="lineNum">      51 </span>            : #include &lt;deque&gt;
-<span class="lineNum">      52 </span>            : #include &lt;mutex&gt;
-<span class="lineNum">      53 </span>            : 
-<span class="lineNum">      54 </span>            : namespace deflect
-<span class="lineNum">      55 </span>            : {
-<span class="lineNum">      56 </span>            : /**
-<span class="lineNum">      57 </span>            :  * Worker thread class that sends images and messages through a Socket.
-<span class="lineNum">      58 </span>            :  *
-<span class="lineNum">      59 </span>            :  * When a QApplication is present, Qt insists that all write operations on
-<span class="lineNum">      60 </span>            :  * QTcpSocket are done from a single QThread, otherwise a qWarning is issued:
-<span class="lineNum">      61 </span>            :  * &quot;QSocketNotifier: Socket notifiers cannot be enabled or disabled from another
-<span class="lineNum">      62 </span>            :  * thread&quot;.
-<span class="lineNum">      63 </span>            :  * To avoid it, the Socket must be moved to the worker thread (moveToThread()).
-<span class="lineNum">      64 </span>            :  */
-<span class="lineNum">      65 </span>            : class StreamSendWorker : public QThread
-<span class="lineNum">      66 </span>            : {
-<span class="lineNum">      67 </span>            : public:
-<span class="lineNum">      68 </span>            :     /** Create a new stream worker associated to an existing socket. */
-<span class="lineNum">      69 </span>            :     StreamSendWorker(Socket&amp; socket, const std::string&amp; id);
-<span class="lineNum">      70 </span>            : 
-<span class="lineNum">      71 </span>            :     /** Stop and destroy the worker. */
-<span class="lineNum">      72 </span>            :     ~StreamSendWorker();
-<span class="lineNum">      73 </span>            : 
-<span class="lineNum">      74 </span>            :     /** Stop the worker and clear any pending send tasks. */
-<span class="lineNum">      75 </span>            :     void stop();
+<span class="lineNum">      49 </span>            : #ifdef __GNUC__
+<span class="lineNum">      50 </span>            : #pragma GCC diagnostic push
+<span class="lineNum">      51 </span>            : #pragma GCC diagnostic ignored &quot;-Wshadow&quot;
+<span class="lineNum">      52 </span>            : #endif
+<span class="lineNum">      53 </span>            : #include &quot;moodycamel/blockingconcurrentqueue.h&quot;
+<span class="lineNum">      54 </span>            : #ifdef __GNUC__
+<span class="lineNum">      55 </span>            : #pragma GCC diagnostic pop
+<span class="lineNum">      56 </span>            : #endif
+<span class="lineNum">      57 </span>            : 
+<span class="lineNum">      58 </span>            : #include &lt;QThread&gt;
+<span class="lineNum">      59 </span>            : 
+<span class="lineNum">      60 </span>            : namespace deflect
+<span class="lineNum">      61 </span>            : {
+<span class="lineNum">      62 </span>            : /**
+<span class="lineNum">      63 </span>            :  * Worker thread class that sends images and messages through a Socket.
+<span class="lineNum">      64 </span>            :  *
+<span class="lineNum">      65 </span>            :  * When a QApplication is present, Qt insists that all write operations on
+<span class="lineNum">      66 </span>            :  * QTcpSocket are done from a single QThread, otherwise a qWarning is issued:
+<span class="lineNum">      67 </span>            :  * &quot;QSocketNotifier: Socket notifiers cannot be enabled or disabled from another
+<span class="lineNum">      68 </span>            :  * thread&quot;.
+<span class="lineNum">      69 </span>            :  * To avoid it, the Socket must be moved to the worker thread (moveToThread()).
+<span class="lineNum">      70 </span>            :  */
+<span class="lineNum">      71 </span>            : class StreamSendWorker : public QThread
+<span class="lineNum">      72 </span>            : {
+<span class="lineNum">      73 </span>            : public:
+<span class="lineNum">      74 </span>            :     /** Create a new stream worker associated to an existing socket. */
+<span class="lineNum">      75 </span>            :     StreamSendWorker(Socket&amp; socket, const std::string&amp; id);
 <span class="lineNum">      76 </span>            : 
-<span class="lineNum">      77 </span>            :     /** Enqueue an image to be send during the execution of run(). */
-<span class="lineNum">      78 </span>            :     Stream::Future enqueueImage(const ImageWrapper&amp; image, bool finish);
-<span class="lineNum">      79 </span>            :     Stream::Future enqueueFinish();       //!&lt; Enqueue a finishFrame()
-<span class="lineNum">      80 </span>            :     Stream::Future enqueueOpen();         //!&lt; Enqueue an open message
-<span class="lineNum">      81 </span>            :     Stream::Future enqueueClose();        //!&lt; Enqueue a close message
-<span class="lineNum">      82 </span>            :     Stream::Future enqueueObserverOpen(); //!&lt; Enqueue an observer open message
-<span class="lineNum">      83 </span>            : 
-<span class="lineNum">      84 </span>            :     /** @sa Stream::registerForEvents */
-<span class="lineNum">      85 </span>            :     Stream::Future enqueueBindRequest(bool exclusive);
-<span class="lineNum">      86 </span>            : 
-<span class="lineNum">      87 </span>            :     /** @sa Stream::sendSizeHints */
-<span class="lineNum">      88 </span>            :     Stream::Future enqueueSizeHints(const SizeHints&amp; hints);
+<span class="lineNum">      77 </span>            :     /** Stop and destroy the worker. */
+<span class="lineNum">      78 </span>            :     ~StreamSendWorker();
+<span class="lineNum">      79 </span>            : 
+<span class="lineNum">      80 </span>            :     /** Stop the worker and clear any pending send tasks. */
+<span class="lineNum">      81 </span>            :     void stop();
+<span class="lineNum">      82 </span>            : 
+<span class="lineNum">      83 </span>            :     /** Enqueue an image to be send during the execution of run(). */
+<span class="lineNum">      84 </span>            :     Stream::Future enqueueImage(const ImageWrapper&amp; image, bool finish);
+<span class="lineNum">      85 </span>            :     Stream::Future enqueueFinish();       //!&lt; Enqueue a finishFrame()
+<span class="lineNum">      86 </span>            :     Stream::Future enqueueOpen();         //!&lt; Enqueue an open message
+<span class="lineNum">      87 </span>            :     Stream::Future enqueueClose();        //!&lt; Enqueue a close message
+<span class="lineNum">      88 </span>            :     Stream::Future enqueueObserverOpen(); //!&lt; Enqueue an observer open message
 <span class="lineNum">      89 </span>            : 
-<span class="lineNum">      90 </span>            :     /** @sa Stream::sendData */
-<span class="lineNum">      91 </span>            :     Stream::Future enqueueData(QByteArray data);
+<span class="lineNum">      90 </span>            :     /** @sa Stream::registerForEvents */
+<span class="lineNum">      91 </span>            :     Stream::Future enqueueBindRequest(bool exclusive);
 <span class="lineNum">      92 </span>            : 
-<span class="lineNum">      93 </span>            : private:
-<span class="lineNum">      94 </span>            :     using Promise = std::promise&lt;bool&gt;;
-<span class="lineNum">      95 </span>            :     using PromisePtr = std::shared_ptr&lt;Promise&gt;;
-<a name="96"><span class="lineNum">      96 </span>            :     using Task = std::function&lt;bool()&gt;;</a>
-<span class="lineNum">      97 </span>            : 
-<span class="lineNum">      98 </span><span class="lineCov">         65 :     struct Request</span>
-<span class="lineNum">      99 </span>            :     {
-<span class="lineNum">     100 </span>            :         PromisePtr promise;
-<span class="lineNum">     101 </span>            :         std::vector&lt;Task&gt; tasks;
-<span class="lineNum">     102 </span>            :     };
+<span class="lineNum">      93 </span>            :     /** @sa Stream::sendSizeHints */
+<span class="lineNum">      94 </span>            :     Stream::Future enqueueSizeHints(const SizeHints&amp; hints);
+<span class="lineNum">      95 </span>            : 
+<span class="lineNum">      96 </span>            :     /** @sa Stream::sendData */
+<span class="lineNum">      97 </span>            :     Stream::Future enqueueData(QByteArray data);
+<span class="lineNum">      98 </span>            : 
+<span class="lineNum">      99 </span>            : private:
+<span class="lineNum">     100 </span>            :     using Promise = std::promise&lt;bool&gt;;
+<span class="lineNum">     101 </span>            :     using PromisePtr = std::shared_ptr&lt;Promise&gt;;
+<a name="102"><span class="lineNum">     102 </span>            :     using Task = std::function&lt;bool()&gt;;</a>
 <span class="lineNum">     103 </span>            : 
-<span class="lineNum">     104 </span>            :     Socket&amp; _socket;
-<span class="lineNum">     105 </span>            :     const std::string&amp; _id;
-<span class="lineNum">     106 </span>            : 
-<span class="lineNum">     107 </span>            :     ImageSegmenter _imageSegmenter;
-<span class="lineNum">     108 </span>            :     std::deque&lt;Request&gt; _requests;
-<span class="lineNum">     109 </span>            :     std::mutex _mutex;
-<span class="lineNum">     110 </span>            :     std::condition_variable _condition;
-<span class="lineNum">     111 </span>            :     bool _running = false;
-<span class="lineNum">     112 </span>            :     View _currentView = View::mono;
+<span class="lineNum">     104 </span><span class="lineCov">      21260 :     struct Request</span>
+<span class="lineNum">     105 </span>            :     {
+<span class="lineNum">     106 </span>            :         PromisePtr promise;
+<span class="lineNum">     107 </span>            :         std::vector&lt;Task&gt; tasks;
+<span class="lineNum">     108 </span>            :         bool isFinish;
+<span class="lineNum">     109 </span>            :     };
+<span class="lineNum">     110 </span>            : 
+<span class="lineNum">     111 </span>            :     Socket&amp; _socket;
+<span class="lineNum">     112 </span>            :     const std::string&amp; _id;
 <span class="lineNum">     113 </span>            : 
-<span class="lineNum">     114 </span>            :     /** Main QThread loop doing asynchronous processing of queued tasks. */
-<span class="lineNum">     115 </span>            :     void run() final;
-<span class="lineNum">     116 </span>            : 
-<span class="lineNum">     117 </span>            :     Stream::Future _enqueueRequest(std::vector&lt;Task&gt;&amp;&amp; actions);
+<span class="lineNum">     114 </span>            :     ImageSegmenter _imageSegmenter;
+<span class="lineNum">     115 </span>            :     moodycamel::BlockingConcurrentQueue&lt;Request&gt; _requests;
+<span class="lineNum">     116 </span>            :     bool _running = false;
+<span class="lineNum">     117 </span>            :     View _currentView = View::mono;
 <span class="lineNum">     118 </span>            : 
-<span class="lineNum">     119 </span>            :     friend class deflect::test::Application; // to send pre-compressed segments
-<span class="lineNum">     120 </span>            :     bool _sendImage(const ImageWrapper&amp; image);
-<span class="lineNum">     121 </span>            :     bool _sendImageView(View view);
-<span class="lineNum">     122 </span>            :     bool _sendSegment(const Segment&amp; segment);
-<span class="lineNum">     123 </span>            :     bool _sendFinish();
-<span class="lineNum">     124 </span>            :     bool _send(MessageType type, const QByteArray&amp; message);
-<span class="lineNum">     125 </span>            : };
-<span class="lineNum">     126 </span>            : }
-<span class="lineNum">     127 </span>            : #endif
+<span class="lineNum">     119 </span>            :     std::vector&lt;Request&gt; _dequeuedRequests;
+<span class="lineNum">     120 </span>            :     bool _pendingFinish = false;
+<span class="lineNum">     121 </span>            :     Request _finishRequest;
+<span class="lineNum">     122 </span>            : 
+<span class="lineNum">     123 </span>            :     /** Main QThread loop doing asynchronous processing of queued tasks. */
+<span class="lineNum">     124 </span>            :     void run() final;
+<span class="lineNum">     125 </span>            : 
+<span class="lineNum">     126 </span>            :     Stream::Future _enqueueRequest(std::vector&lt;Task&gt;&amp;&amp; actions,
+<span class="lineNum">     127 </span>            :                                    bool isFinish = false);
+<span class="lineNum">     128 </span>            : 
+<span class="lineNum">     129 </span>            :     friend class deflect::test::Application; // to send pre-compressed segments
+<span class="lineNum">     130 </span>            :     bool _sendImage(const ImageWrapper&amp; image);
+<span class="lineNum">     131 </span>            :     bool _sendImageView(View view);
+<span class="lineNum">     132 </span>            :     bool _sendSegment(const Segment&amp; segment);
+<span class="lineNum">     133 </span>            :     bool _sendFinish();
+<span class="lineNum">     134 </span>            :     bool _send(MessageType type, const QByteArray&amp; message,
+<span class="lineNum">     135 </span>            :                bool waitForBytesWritten = true);
+<span class="lineNum">     136 </span>            : };
+<span class="lineNum">     137 </span>            : }
+<span class="lineNum">     138 </span>            : #endif
 </pre>
       </td>
     </tr>

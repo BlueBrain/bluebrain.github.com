@@ -3,14 +3,14 @@ var searchData=
   ['segmentdecoder',['SegmentDecoder',['../classdeflect_1_1_segment_decoder.html#a27136dcbc7c0447aa638a41e00afd46d',1,'deflect::SegmentDecoder']]],
   ['send',['send',['../classdeflect_1_1_stream.html#a4eec165c648025bd37802e2eec0fd6d3',1,'deflect::Stream']]],
   ['sendandfinish',['sendAndFinish',['../classdeflect_1_1_stream.html#aa5c6fb788f4272115a3dd10fa4e6640b',1,'deflect::Stream']]],
-  ['senddata',['sendData',['../classdeflect_1_1qt_1_1_qml_streamer.html#a813f38f626cb1785b02784d44f962303',1,'deflect::qt::QmlStreamer::sendData()'],['../classdeflect_1_1_stream.html#ad4d57fc018a327a553c985ec7de390dc',1,'deflect::Stream::sendData()']]],
-  ['sendsizehints',['sendSizeHints',['../classdeflect_1_1_stream.html#ae580afe8ed6e374789be1b088667e1d9',1,'deflect::Stream']]],
+  ['senddata',['sendData',['../classdeflect_1_1_observer.html#aa02cb3ad9b6b99e36760d84f87ea6fb1',1,'deflect::Observer::sendData()'],['../classdeflect_1_1qt_1_1_qml_streamer.html#a813f38f626cb1785b02784d44f962303',1,'deflect::qt::QmlStreamer::sendData()']]],
+  ['sendsizehints',['sendSizeHints',['../classdeflect_1_1_observer.html#a863ee68e5e842c40d2c090dfc112c07e',1,'deflect::Observer']]],
   ['server',['Server',['../classdeflect_1_1_server.html#a5c0d102c85af38a8c9731e46afc4ee51',1,'deflect::Server']]],
   ['setdisconnectedcallback',['setDisconnectedCallback',['../classdeflect_1_1_observer.html#aea4eaa9ac04f38bf8fc31826d073e182',1,'deflect::Observer']]],
   ['size',['size',['../classdeflect_1_1_m_t_queue.html#af94a1641b365c84e9b4d4a86e41ebc4f',1,'deflect::MTQueue']]],
   ['startdecoding',['startDecoding',['../classdeflect_1_1_segment_decoder.html#ae33a772afaa7890061d16d51576f34e7',1,'deflect::SegmentDecoder']]],
   ['stop',['stop',['../classdeflect_1_1qt_1_1_quick_renderer.html#a4c8499406f5d684811dde1bb268bceac',1,'deflect::qt::QuickRenderer']]],
-  ['stream',['Stream',['../classdeflect_1_1_stream.html#a5bef22dd831e886429004e86af59c3ad',1,'deflect::Stream::Stream()'],['../classdeflect_1_1_stream.html#a34c51c546f2c9136c5fa4bd0f886e8ff',1,'deflect::Stream::Stream(const std::string &amp;id, const std::string &amp;host, unsigned short port=1701)']]],
+  ['stream',['Stream',['../classdeflect_1_1_stream.html#a2d92797dcd05b961853684c6386c1264',1,'deflect::Stream::Stream(unsigned short port=defaultPortNumber)'],['../classdeflect_1_1_stream.html#aef7e07b3a53624602801b131ed1526a9',1,'deflect::Stream::Stream(const std::string &amp;id, const std::string &amp;host, unsigned short port=defaultPortNumber)']]],
   ['streamclosed',['streamClosed',['../classdeflect_1_1qt_1_1_qml_streamer.html#a4a13cac43c74f70aed903e14912904d8',1,'deflect::qt::QmlStreamer']]],
   ['swapyaxis',['swapYAxis',['../structdeflect_1_1_image_wrapper.html#a0259fff8d07a883a02541da59e55de1a',1,'deflect::ImageWrapper']]]
 ];

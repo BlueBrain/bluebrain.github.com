@@ -5,7 +5,7 @@ var searchData=
   ['decode',['decode',['../classdeflect_1_1_segment_decoder.html#a4894a1c487eee14f898261fe50bca5c4',1,'deflect::SegmentDecoder']]],
   ['decodetoyuv',['decodeToYUV',['../classdeflect_1_1_segment_decoder.html#ab6eeb80c7ab347651570ce6325f9a955',1,'deflect::SegmentDecoder']]],
   ['decodetype',['decodeType',['../classdeflect_1_1_segment_decoder.html#ad912b0d415a48883744a429cf3ad033b',1,'deflect::SegmentDecoder']]],
-  ['defaultportnumber',['defaultPortNumber',['../classdeflect_1_1_server.html#ad9de65318605b69ca87b786d9178bddd',1,'deflect::Server']]],
+  ['defaultportnumber',['defaultPortNumber',['../classdeflect_1_1_observer.html#a2df3c337681f5df5724685ed35fc982d',1,'deflect::Observer::defaultPortNumber()'],['../classdeflect_1_1_server.html#ad9de65318605b69ca87b786d9178bddd',1,'deflect::Server::defaultPortNumber()']]],
   ['defines_2eh',['defines.h',['../defines_8h.html',1,'']]],
   ['deflect_5fversion_5fabi',['DEFLECT_VERSION_ABI',['../version_8h.html#aab0ced3f934c8c127ad7678102776039',1,'version.h']]],
   ['deflect_5fversion_5fge',['DEFLECT_VERSION_GE',['../version_8h.html#ac404aa464d71212fec82a2a45bb17874',1,'version.h']]],
