@@ -2,6 +2,7 @@ var classbrayns_1_1_rendering_parameters =
 [
     [ "RenderingParameters", "classbrayns_1_1_rendering_parameters.html#a166b41cdb3c3dcba7113e8c18d5abb4f", null ],
     [ "_parse", "classbrayns_1_1_rendering_parameters.html#a5539459b8bc8462f6ed0b83267dd1b4c", null ],
+    [ "getAccumulation", "classbrayns_1_1_rendering_parameters.html#a2df3b549c61199b65ddf134b334a2de5", null ],
     [ "getAmbientOcclusionStrength", "classbrayns_1_1_rendering_parameters.html#adcfbde4abb46d610c27c3a6ec8361cff", null ],
     [ "getBackgroundColor", "classbrayns_1_1_rendering_parameters.html#af7c6c3beb102a65e3993ef67e6090a02", null ],
     [ "getCameraType", "classbrayns_1_1_rendering_parameters.html#aa00ac300694d6ee5cb52a4e2f636b7c1", null ],
@@ -18,7 +19,7 @@ var classbrayns_1_1_rendering_parameters =
     [ "getRenderer", "classbrayns_1_1_rendering_parameters.html#a83c2c86a1db9882330fc1845118a202d", null ],
     [ "getRendererAsString", "classbrayns_1_1_rendering_parameters.html#a5bec7f121f568bbe48a1611e30a2a4c7", null ],
     [ "getRenderers", "classbrayns_1_1_rendering_parameters.html#a4c01720746de6ba46178db830d24e1d1", null ],
-    [ "getSamplesPerPixel", "classbrayns_1_1_rendering_parameters.html#a3a32a9dbae70efeab2d8d668e4bd6a6f", null ],
+    [ "getSamplesPerPixel", "classbrayns_1_1_rendering_parameters.html#abcf9f98c39218db3f8c95b6aa7df3b6c", null ],
     [ "getShading", "classbrayns_1_1_rendering_parameters.html#a0dcd0049807d927c1c68ab78da95c228", null ],
     [ "getShadingAsString", "classbrayns_1_1_rendering_parameters.html#aa02f97626b64f98bed6256081b3170e8", null ],
     [ "getShadows", "classbrayns_1_1_rendering_parameters.html#ade7ee7e3226529b435fa3ffefd46c7e7", null ],
@@ -35,10 +36,11 @@ var classbrayns_1_1_rendering_parameters =
     [ "setEpsilon", "classbrayns_1_1_rendering_parameters.html#abc66474540605dc0c643e1dae19027a6", null ],
     [ "setLightEmittingMaterials", "classbrayns_1_1_rendering_parameters.html#afedd73bdf09d73382a545dd0129bd995", null ],
     [ "setRenderer", "classbrayns_1_1_rendering_parameters.html#a1114adb56a4fd5f4a6264d321771c78f", null ],
-    [ "setSamplesPerPixel", "classbrayns_1_1_rendering_parameters.html#abdafef888769ad29e0f5c81b4116be1f", null ],
+    [ "setSamplesPerPixel", "classbrayns_1_1_rendering_parameters.html#ad1413c394106bb03e1d6be85b450dc7f", null ],
     [ "setShading", "classbrayns_1_1_rendering_parameters.html#a33b0fbe0cc1dc508517e0cc2f4f45eab", null ],
     [ "setShadows", "classbrayns_1_1_rendering_parameters.html#a596e6a22009973fc6f7833cdeaf6fd78", null ],
     [ "setSoftShadows", "classbrayns_1_1_rendering_parameters.html#a7c35f5049e32faf0958b46a77a3cdc5b", null ],
+    [ "_accumulation", "classbrayns_1_1_rendering_parameters.html#a7724aecee84daa0699a5612469050c44", null ],
     [ "_ambientOcclusionStrength", "classbrayns_1_1_rendering_parameters.html#acc24d582384ee239a48d5ab9d33bab2a", null ],
     [ "_backgroundColor", "classbrayns_1_1_rendering_parameters.html#a9467974bbe193903c722b485f637acf5", null ],
     [ "_cameraType", "classbrayns_1_1_rendering_parameters.html#a21ba5104003d122b5a0a136f6d7fd2fa", null ],
@@ -56,5 +58,5 @@ var classbrayns_1_1_rendering_parameters =
     [ "_shading", "classbrayns_1_1_rendering_parameters.html#a43c856e23a727ae0bf395fa2c8951f42", null ],
     [ "_shadows", "classbrayns_1_1_rendering_parameters.html#aa6206fe510db3c7782ea3b7c46e3412a", null ],
     [ "_softShadows", "classbrayns_1_1_rendering_parameters.html#a64b903a72d8c4549523ecb075a84dd30", null ],
-    [ "_spp", "classbrayns_1_1_rendering_parameters.html#aac277a279c0b83abf0f10a58ffb1a00f", null ]
+    [ "_spp", "classbrayns_1_1_rendering_parameters.html#a1de7876630316b0b129efb6138e63d84", null ]
 ];
