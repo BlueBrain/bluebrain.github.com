@@ -1,7 +1,7 @@
 var classbrayns_1_1_morphology_loader =
 [
-    [ "MorphologyLoader", "classbrayns_1_1_morphology_loader.html#a52a11e4baa4c6c579811a83c1c9dbbd0", null ],
-    [ "importCircuit", "classbrayns_1_1_morphology_loader.html#a7424c8e01cf0e7acd9f17e4d0b0f3e02", null ],
-    [ "importMorphology", "classbrayns_1_1_morphology_loader.html#a2389c20fe7b0acf1af0edcadcd410b64", null ],
-    [ "importSimulationData", "classbrayns_1_1_morphology_loader.html#aeff1dbf39954c539606a3e519220b6c0", null ]
+    [ "MorphologyLoader", "classbrayns_1_1_morphology_loader.html#aa40cf0e42310e813a366ecc3037bf8b9", null ],
+    [ "~MorphologyLoader", "classbrayns_1_1_morphology_loader.html#a50412e26e154df7a562d5d4544fa9cbe", null ],
+    [ "importCircuit", "classbrayns_1_1_morphology_loader.html#a3bbc46d698bb5069bf330a9d09f9af12", null ],
+    [ "importMorphology", "classbrayns_1_1_morphology_loader.html#a8ac1e59e8b60644390dbac7c7b31be11", null ]
 ];

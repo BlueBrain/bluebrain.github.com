@@ -19,7 +19,7 @@ var searchData=
   ['setclipplanes',['setClipPlanes',['../classbrayns_1_1_camera.html#ac5076f27474c37ab25469772802eb382',1,'brayns::Camera']]],
   ['setcolor',['setColor',['../classbrayns_1_1_light.html#ac418f89179bfb0698b73c001729d9423',1,'brayns::Light']]],
   ['setconesdirty',['setConesDirty',['../classbrayns_1_1_scene.html#a77e955b7c5fd52040be500024aec1827',1,'brayns::Scene']]],
-  ['setcurrentframe',['setCurrentFrame',['../classbrayns_1_1_abstract_simulation_handler.html#a33363a14c14c7415863dfdb34259c131',1,'brayns::AbstractSimulationHandler']]],
+  ['setcurrentframe',['setCurrentFrame',['../classbrayns_1_1_abstract_simulation_handler.html#ae83882c292c92741cf5f370fee44b64d',1,'brayns::AbstractSimulationHandler']]],
   ['setcutoffdistance',['setCutoffDistance',['../classbrayns_1_1_point_light.html#a782a3fb04f2cf4a089a738e5bc105698',1,'brayns::PointLight']]],
   ['setcylindersdirty',['setCylindersDirty',['../classbrayns_1_1_scene.html#ac064db2eb8b2f67213d6dcad5b47c3b6',1,'brayns::Scene']]],
   ['setdefaultcamera',['setDefaultCamera',['../classbrayns_1_1_engine.html#a206d534f22b8265dd2d9c5d335980487',1,'brayns::Engine']]],
