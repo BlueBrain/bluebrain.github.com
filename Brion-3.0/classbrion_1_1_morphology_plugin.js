@@ -1,0 +1,28 @@
+var classbrion_1_1_morphology_plugin =
+[
+    [ "InitDataT", "classbrion_1_1_morphology_plugin.html#a20515a51917a71d3f4fd28d415d55862", null ],
+    [ "InterfaceT", "classbrion_1_1_morphology_plugin.html#a070bac17938a7178cdb8e832c74c72d2", null ],
+    [ "MorphologyPlugin", "classbrion_1_1_morphology_plugin.html#a15d3041cfb5a240a46474bd3528e4e99", null ],
+    [ "~MorphologyPlugin", "classbrion_1_1_morphology_plugin.html#a18df5a3cda416dac5f6c8ad2b1ec9f43", null ],
+    [ "_fromBinary", "classbrion_1_1_morphology_plugin.html#a744cf7aa1cd0aa7248dd19999905ce7a", null ],
+    [ "_toBinary", "classbrion_1_1_morphology_plugin.html#ad83db59290acec0eebb86b0f41e0ac11", null ],
+    [ "getCellFamily", "classbrion_1_1_morphology_plugin.html#a63adc722f3aa5b5c6c3626649faf2413", null ],
+    [ "getInitData", "classbrion_1_1_morphology_plugin.html#a5b6dea7733e163c2d740fc9fdd46ba74", null ],
+    [ "getInitData", "classbrion_1_1_morphology_plugin.html#af64d36ea8524fff4570144ed7941f0c4", null ],
+    [ "getPerimeters", "classbrion_1_1_morphology_plugin.html#aa3016ae036bb40457b4253835f0db0c3", null ],
+    [ "getPerimeters", "classbrion_1_1_morphology_plugin.html#a8d5c7b6a60654b7c3eeb0347a275faaf", null ],
+    [ "getPoints", "classbrion_1_1_morphology_plugin.html#a70c95b12d40d47d78d370827832474bd", null ],
+    [ "getPoints", "classbrion_1_1_morphology_plugin.html#aa3f9be75a2913035bcdf052ec948cd11", null ],
+    [ "getSections", "classbrion_1_1_morphology_plugin.html#ae551d845b49f322a19868b874cbdcbad", null ],
+    [ "getSections", "classbrion_1_1_morphology_plugin.html#a231473b26a251700adfc3b5f0508fccc", null ],
+    [ "getSectionTypes", "classbrion_1_1_morphology_plugin.html#a6d1393f3251077d8bc5b4f2b5dc18d47", null ],
+    [ "getSectionTypes", "classbrion_1_1_morphology_plugin.html#ae7d10192e9ddfbd34f6c3ca74cc88f0c", null ],
+    [ "getTypeName", "classbrion_1_1_morphology_plugin.html#af470e20169fbb9064457258a262a45da", null ],
+    [ "getVersion", "classbrion_1_1_morphology_plugin.html#a769cf62d237f9319d2f10af5cbcee44c", null ],
+    [ "load", "classbrion_1_1_morphology_plugin.html#a2a642ba04252ba314f1b76363a4c98a4", null ],
+    [ "_data", "classbrion_1_1_morphology_plugin.html#aa7e17bce9a79f7c0cb864cf730ecac1f", null ],
+    [ "_perimeters", "classbrion_1_1_morphology_plugin.html#a68ebc7b60bffd78155be342bbd752c9d", null ],
+    [ "_points", "classbrion_1_1_morphology_plugin.html#a04a4e2a26fedb7e9a791d835d9bf20ea", null ],
+    [ "_sections", "classbrion_1_1_morphology_plugin.html#a37b17b386042890525c947a64ac73d7c", null ],
+    [ "_sectionTypes", "classbrion_1_1_morphology_plugin.html#afcc09b2c61216363dc51cf9180e166d1", null ]
+];

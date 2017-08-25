@@ -1,0 +1,519 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+
+<html lang="en">
+
+<head>
+  <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+  <title>LCOV - Brion - brion/synapse.cpp</title>
+  <link rel="stylesheet" type="text/css" href="../gcov.css">
+</head>
+
+<body>
+
+  <table width="100%" border=0 cellspacing=0 cellpadding=0>
+    <tr><td class="title">LCOV - code coverage report</td></tr>
+    <tr><td class="ruler"><img src="../glass.png" width=3 height=3 alt=""></td></tr>
+
+    <tr>
+      <td width="100%">
+        <table cellpadding=1 border=0 width="100%">
+          <tr>
+            <td width="10%" class="headerItem">Current view:</td>
+            <td width="35%" class="headerValue"><a href="../index.html">top level</a> - <a href="index.html">brion</a> - synapse.cpp<span style="font-size: 80%;"> (source / <a href="synapse.cpp.func-sort-c.html">functions</a>)</span></td>
+            <td width="5%"></td>
+            <td width="15%"></td>
+            <td width="10%" class="headerCovTableHead">Hit</td>
+            <td width="10%" class="headerCovTableHead">Total</td>
+            <td width="15%" class="headerCovTableHead">Coverage</td>
+          </tr>
+          <tr>
+            <td class="headerItem">Test:</td>
+            <td class="headerValue">Brion</td>
+            <td></td>
+            <td class="headerItem">Lines:</td>
+            <td class="headerCovTableEntry">156</td>
+            <td class="headerCovTableEntry">198</td>
+            <td class="headerCovTableEntryMed">78.8 %</td>
+          </tr>
+          <tr>
+            <td class="headerItem">Date:</td>
+            <td class="headerValue">2017-08-25 06:08:16</td>
+            <td></td>
+            <td class="headerItem">Functions:</td>
+            <td class="headerCovTableEntry">27</td>
+            <td class="headerCovTableEntry">29</td>
+            <td class="headerCovTableEntryHi">93.1 %</td>
+          </tr>
+          <tr><td><img src="../glass.png" width=3 height=3 alt=""></td></tr>
+        </table>
+      </td>
+    </tr>
+
+    <tr><td class="ruler"><img src="../glass.png" width=3 height=3 alt=""></td></tr>
+  </table>
+
+  <table cellpadding=0 cellspacing=0 border=0>
+    <tr>
+      <td><br></td>
+    </tr>
+    <tr>
+      <td>
+<pre class="sourceHeading">          Line data    Source code</pre>
+<pre class="source">
+<a name="1"><span class="lineNum">       1 </span>            : </a>
+<span class="lineNum">       2 </span>            : /* Copyright (c) 2013-2017, EPFL/Blue Brain Project
+<span class="lineNum">       3 </span>            :  *                          bbp-open-source@googlegroups.com
+<span class="lineNum">       4 </span>            :  *                          Daniel Nachbaur &lt;daniel.nachbaur@epfl.ch&gt;
+<span class="lineNum">       5 </span>            :  *
+<span class="lineNum">       6 </span>            :  * This file is part of Brion &lt;https://github.com/BlueBrain/Brion&gt;
+<span class="lineNum">       7 </span>            :  *
+<span class="lineNum">       8 </span>            :  * This library is free software; you can redistribute it and/or modify it under
+<span class="lineNum">       9 </span>            :  * the terms of the GNU Lesser General Public License version 3.0 as published
+<span class="lineNum">      10 </span>            :  * by the Free Software Foundation.
+<span class="lineNum">      11 </span>            :  *
+<span class="lineNum">      12 </span>            :  * This library is distributed in the hope that it will be useful, but WITHOUT
+<span class="lineNum">      13 </span>            :  * ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS
+<span class="lineNum">      14 </span>            :  * FOR A PARTICULAR PURPOSE.  See the GNU Lesser General Public License for more
+<span class="lineNum">      15 </span>            :  * details.
+<span class="lineNum">      16 </span>            :  *
+<span class="lineNum">      17 </span>            :  * You should have received a copy of the GNU Lesser General Public License
+<span class="lineNum">      18 </span>            :  * along with this library; if not, write to the Free Software Foundation, Inc.,
+<span class="lineNum">      19 </span>            :  * 51 Franklin Street, Fifth Floor, Boston, MA 02110-1301 USA.
+<span class="lineNum">      20 </span>            :  */
+<span class="lineNum">      21 </span>            : 
+<span class="lineNum">      22 </span>            : #include &quot;synapse.h&quot;
+<span class="lineNum">      23 </span>            : #include &quot;detail/lockHDF5.h&quot;
+<span class="lineNum">      24 </span>            : #include &quot;detail/silenceHDF5.h&quot;
+<span class="lineNum">      25 </span>            : 
+<span class="lineNum">      26 </span>            : #include &lt;bitset&gt;
+<span class="lineNum">      27 </span>            : 
+<span class="lineNum">      28 </span>            : #include &lt;boost/filesystem.hpp&gt;
+<span class="lineNum">      29 </span>            : #include &lt;boost/lexical_cast.hpp&gt;
+<span class="lineNum">      30 </span>            : #include &lt;boost/regex.hpp&gt;
+<span class="lineNum">      31 </span>            : 
+<span class="lineNum">      32 </span>            : #include &lt;H5Cpp.h&gt;
+<span class="lineNum">      33 </span>            : 
+<span class="lineNum">      34 </span>            : #include &lt;lunchbox/log.h&gt;
+<span class="lineNum">      35 </span>            : #include &lt;lunchbox/scopedMutex.h&gt;
+<span class="lineNum">      36 </span>            : 
+<span class="lineNum">      37 </span>            : #include &lt;fstream&gt;
+<span class="lineNum">      38 </span>            : #include &lt;unordered_map&gt;
+<span class="lineNum">      39 </span>            : 
+<span class="lineNum">      40 </span>            : namespace brion
+<span class="lineNum">      41 </span>            : {
+<span class="lineNum">      42 </span>            : namespace detail
+<span class="lineNum">      43 </span>            : {
+<a name="44"><span class="lineNum">      44 </span>            : namespace</a>
+<span class="lineNum">      45 </span>            : {
+<span class="lineNum">      46 </span><span class="lineCov">     131090 : struct Dataset</span>
+<span class="lineNum">      47 </span>            : {
+<span class="lineNum">      48 </span>            :     H5::DataSet dataset;
+<span class="lineNum">      49 </span>            :     H5::DataSpace dataspace;
+<span class="lineNum">      50 </span>            :     hsize_t dims[2];
+<a name="51"><span class="lineNum">      51 </span>            : };</a>
+<span class="lineNum">      52 </span>            : 
+<span class="lineNum">      53 </span><span class="lineCov">      65545 : bool _openDataset(const H5::H5File&amp; file, const std::string&amp; name,</span>
+<span class="lineNum">      54 </span>            :                   Dataset&amp; dataset)
+<span class="lineNum">      55 </span>            : {
+<span class="lineNum">      56 </span>            :     try
+<span class="lineNum">      57 </span>            :     {
+<span class="lineNum">      58 </span><span class="lineCov">     131090 :         SilenceHDF5 silence;</span>
+<span class="lineNum">      59 </span><span class="lineCov">      65545 :         dataset.dataset = file.openDataSet(name);</span>
+<span class="lineNum">      60 </span>            :     }
+<span class="lineNum">      61 </span><span class="lineCov">         94 :     catch (const H5::Exception&amp;)</span>
+<span class="lineNum">      62 </span>            :     {
+<span class="lineNum">      63 </span><span class="lineCov">         47 :         LBVERB &lt;&lt; &quot;Could not find synapse dataset for &quot; &lt;&lt; name &lt;&lt; &quot;: &quot;</span>
+<span class="lineNum">      64 </span><span class="lineCov">         47 :                &lt;&lt; std::endl;</span>
+<span class="lineNum">      65 </span><span class="lineCov">         47 :         return false;</span>
+<span class="lineNum">      66 </span>            :     }
+<span class="lineNum">      67 </span>            : 
+<span class="lineNum">      68 </span><span class="lineCov">      65498 :     dataset.dataspace = dataset.dataset.getSpace();</span>
+<span class="lineNum">      69 </span><span class="lineCov">      65498 :     if (dataset.dataspace.getSimpleExtentNdims() != 2)</span>
+<span class="lineNum">      70 </span>            :     {
+<span class="lineNum">      71 </span><span class="lineNoCov">          0 :         LBERROR &lt;&lt; &quot;Synapse dataset is not 2 dimensional&quot; &lt;&lt; std::endl;</span>
+<span class="lineNum">      72 </span><span class="lineNoCov">          0 :         return false;</span>
+<span class="lineNum">      73 </span>            :     }
+<span class="lineNum">      74 </span>            : 
+<span class="lineNum">      75 </span><span class="lineCov">      65498 :     if (dataset.dataspace.getSimpleExtentDims(dataset.dims) &lt; 0)</span>
+<span class="lineNum">      76 </span>            :     {
+<span class="lineNum">      77 </span><span class="lineNoCov">          0 :         LBERROR &lt;&lt; &quot;Synapse dataset dimensions could not be retrieved&quot;</span>
+<span class="lineNum">      78 </span><span class="lineNoCov">          0 :                 &lt;&lt; std::endl;</span>
+<span class="lineNum">      79 </span><span class="lineNoCov">          0 :         return false;</span>
+<span class="lineNum">      80 </span>            :     }
+<span class="lineNum">      81 </span>            : 
+<span class="lineNum">      82 </span><span class="lineCov">      65498 :     return true;</span>
+<span class="lineNum">      83 </span>            : }
+<span class="lineNum">      84 </span>            : };
+<span class="lineNum">      85 </span>            : namespace fs = boost::filesystem;
+<span class="lineNum">      86 </span>            : 
+<span class="lineNum">      87 </span>            : /** Access a single synapse file (nrn*.h5 or nrn*.h5.&lt;int&gt; */
+<span class="lineNum">      88 </span>            : class SynapseFile : public boost::noncopyable
+<a name="89"><span class="lineNum">      89 </span>            : {</a>
+<span class="lineNum">      90 </span>            : public:
+<span class="lineNum">      91 </span><span class="lineCov">         60 :     explicit SynapseFile(const std::string&amp; source)</span>
+<span class="lineNum">      92 </span><span class="lineCov">         77 :     {</span>
+<span class="lineNum">      93 </span><span class="lineCov">        120 :         lunchbox::ScopedWrite mutex(detail::hdf5Lock());</span>
+<span class="lineNum">      94 </span>            : 
+<span class="lineNum">      95 </span>            :         try
+<span class="lineNum">      96 </span>            :         {
+<span class="lineNum">      97 </span><span class="lineCov">        120 :             SilenceHDF5 silence;</span>
+<span class="lineNum">      98 </span><span class="lineCov">         60 :             _file.openFile(source, H5F_ACC_RDONLY);</span>
+<span class="lineNum">      99 </span>            :         }
+<span class="lineNum">     100 </span><span class="lineCov">         32 :         catch (const H5::Exception&amp; exc)</span>
+<span class="lineNum">     101 </span>            :         {
+<span class="lineNum">     102 </span><span class="lineCov">         16 :             LBTHROW(std::runtime_error(&quot;Could not open synapse file &quot; + source +</span>
+<span class="lineNum">     103 </span>            :                                        &quot;: &quot; + exc.getDetailMsg()));
+<span class="lineNum">     104 </span>            :         }
+<span class="lineNum">     105 </span>            : 
+<span class="lineNum">     106 </span><span class="lineCov">         88 :         Dataset dataset;</span>
+<span class="lineNum">     107 </span><span class="lineCov">         88 :         const std::string&amp; datasetName = _file.getObjnameByIdx(0);</span>
+<span class="lineNum">     108 </span><span class="lineCov">         44 :         if (!detail::_openDataset(_file, datasetName, dataset))</span>
+<span class="lineNum">     109 </span><span class="lineNoCov">          0 :             LBTHROW(std::runtime_error(&quot;Cannot open dataset &quot; + datasetName +</span>
+<span class="lineNum">     110 </span>            :                                        &quot; in synapse file &quot; + source));
+<span class="lineNum">     111 </span>            : 
+<span class="lineNum">     112 </span><span class="lineCov">         44 :         _numAttributes = dataset.dims[1];</span>
+<span class="lineNum">     113 </span><span class="lineCov">         55 :         if (_numAttributes != SYNAPSE_ALL &amp;&amp;</span>
+<span class="lineNum">     114 </span><span class="lineCov">         12 :             _numAttributes != SYNAPSE_POSITION_ALL &amp;&amp;</span>
+<span class="lineNum">     115 </span><span class="lineCov">          2 :             _numAttributes != SYNAPSE_OLD_POSITION_ALL &amp;&amp;</span>
+<span class="lineNum">     116 </span><span class="lineCov">          1 :             _numAttributes != 1 /* nrn_extra */)</span>
+<span class="lineNum">     117 </span>            :         {
+<span class="lineNum">     118 </span><span class="lineCov">          1 :             LBTHROW(std::runtime_error(source + &quot; not a valid synapse file&quot;));</span>
+<span class="lineNum">     119 </span>            :         }
+<a name="120"><span class="lineNum">     120 </span><span class="lineCov">         43 :     }</span></a>
+<span class="lineNum">     121 </span>            : 
+<span class="lineNum">     122 </span><span class="lineCov">         43 :     ~SynapseFile()</span>
+<span class="lineNum">     123 </span><span class="lineCov">         43 :     {</span>
+<span class="lineNum">     124 </span><span class="lineCov">         86 :         lunchbox::ScopedWrite mutex(detail::hdf5Lock());</span>
+<span class="lineNum">     125 </span><span class="lineCov">         43 :         _file.close();</span>
+<span class="lineNum">     126 </span><span class="lineCov">         43 :     }</span>
+<a name="127"><span class="lineNum">     127 </span>            : </a>
+<span class="lineNum">     128 </span>            :     template &lt;size_t N&gt;
+<span class="lineNum">     129 </span><span class="lineCov">       4176 :     SynapseMatrix read(const uint32_t gid, const uint32_t attributes) const</span>
+<span class="lineNum">     130 </span>            :     {
+<span class="lineNum">     131 </span><span class="lineCov">       4176 :         const std::bitset&lt;N&gt; bits(attributes);</span>
+<span class="lineNum">     132 </span><span class="lineCov">       4174 :         if (!bits.any())</span>
+<span class="lineNum">     133 </span><span class="lineCov">          2 :             return SynapseMatrix();</span>
+<span class="lineNum">     134 </span>            : 
+<span class="lineNum">     135 </span><span class="lineCov">       8348 :         lunchbox::ScopedWrite mutex(detail::hdf5Lock());</span>
+<span class="lineNum">     136 </span><span class="lineCov">       8350 :         Dataset dataset;</span>
+<span class="lineNum">     137 </span><span class="lineCov">       4175 :         if (!_openDataset(gid, dataset))</span>
+<span class="lineNum">     138 </span><span class="lineCov">         33 :             return SynapseMatrix();</span>
+<span class="lineNum">     139 </span>            : 
+<span class="lineNum">     140 </span><span class="lineCov">       4142 :         dataset.dataspace.selectNone();</span>
+<span class="lineNum">     141 </span><span class="lineCov">      82828 :         for (size_t i = 0; i &lt; bits.size(); ++i)</span>
+<span class="lineNum">     142 </span>            :         {
+<span class="lineNum">     143 </span><span class="lineCov">      78686 :             if (bits.test(i))</span>
+<span class="lineNum">     144 </span>            :             {
+<span class="lineNum">     145 </span><span class="lineCov">      57932 :                 const hsize_t readCounts[2] = {dataset.dims[0], 1};</span>
+<span class="lineNum">     146 </span><span class="lineCov">      57932 :                 const hsize_t readOffsets[2] = {0, i};</span>
+<span class="lineNum">     147 </span><span class="lineCov">      57932 :                 dataset.dataspace.selectHyperslab(H5S_SELECT_OR, readCounts,</span>
+<span class="lineNum">     148 </span>            :                                                   readOffsets);
+<span class="lineNum">     149 </span>            :             }
+<span class="lineNum">     150 </span>            :         }
+<span class="lineNum">     151 </span>            : 
+<span class="lineNum">     152 </span><span class="lineCov">       8284 :         SynapseMatrix values(boost::extents[dataset.dims[0]][bits.count()]);</span>
+<span class="lineNum">     153 </span><span class="lineCov">       4142 :         const hsize_t targetSizes[2] = {dataset.dims[0], bits.count()};</span>
+<span class="lineNum">     154 </span><span class="lineCov">       8284 :         H5::DataSpace targetspace(2, targetSizes);</span>
+<span class="lineNum">     155 </span>            : 
+<span class="lineNum">     156 </span><span class="lineCov">       4142 :         dataset.dataset.read(values.data(), H5::PredType::NATIVE_FLOAT,</span>
+<span class="lineNum">     157 </span>            :                              targetspace, dataset.dataspace);
+<span class="lineNum">     158 </span><span class="lineCov">       4142 :         return values;</span>
+<a name="159"><span class="lineNum">     159 </span>            :     }</a>
+<a name="160"><span class="lineNum">     160 </span>            : </a>
+<span class="lineNum">     161 </span><span class="lineCov">        141 :     size_t getNumAttributes() const { return _numAttributes; }</span>
+<span class="lineNum">     162 </span><span class="lineCov">      61326 :     size_t getNumSynapses(const GIDSet&amp; gids) const</span>
+<span class="lineNum">     163 </span>            :     {
+<span class="lineNum">     164 </span><span class="lineCov">     122652 :         lunchbox::ScopedWrite mutex(detail::hdf5Lock());</span>
+<span class="lineNum">     165 </span>            : 
+<span class="lineNum">     166 </span><span class="lineCov">      61326 :         size_t numSynapses = 0;</span>
+<span class="lineNum">     167 </span><span class="lineCov">     122652 :         for (const uint32_t gid : gids)</span>
+<span class="lineNum">     168 </span>            :         {
+<span class="lineNum">     169 </span><span class="lineCov">     122638 :             Dataset dataset;</span>
+<span class="lineNum">     170 </span><span class="lineCov">      61326 :             if (!_openDataset(gid, dataset))</span>
+<span class="lineNum">     171 </span><span class="lineCov">         14 :                 continue;</span>
+<span class="lineNum">     172 </span><span class="lineCov">      61312 :             numSynapses += dataset.dims[0];</span>
+<span class="lineNum">     173 </span>            :         }
+<span class="lineNum">     174 </span><span class="lineCov">     122652 :         return numSynapses;</span>
+<a name="175"><span class="lineNum">     175 </span>            :     }</a>
+<span class="lineNum">     176 </span>            : 
+<span class="lineNum">     177 </span><span class="lineCov">      65501 :     bool _openDataset(const uint32_t gid, Dataset&amp; dataset) const</span>
+<span class="lineNum">     178 </span>            :     {
+<span class="lineNum">     179 </span><span class="lineCov">     131002 :         std::stringstream name;</span>
+<span class="lineNum">     180 </span><span class="lineCov">      65501 :         name &lt;&lt; &quot;a&quot; &lt;&lt; gid;</span>
+<span class="lineNum">     181 </span><span class="lineCov">     131002 :         return detail::_openDataset(_file, name.str(), dataset);</span>
+<a name="182"><span class="lineNum">     182 </span>            :     }</a>
+<span class="lineNum">     183 </span>            : 
+<span class="lineNum">     184 </span><span class="lineCov">       4175 :     SynapseMatrix read(const uint32_t gid, const uint32_t attributes) const</span>
+<span class="lineNum">     185 </span>            :     {
+<span class="lineNum">     186 </span><span class="lineCov">       4175 :         switch (_numAttributes)</span>
+<span class="lineNum">     187 </span>            :         {
+<span class="lineNum">     188 </span>            :         case SYNAPSE_ALL:
+<span class="lineNum">     189 </span><span class="lineCov">       4172 :             return read&lt;SYNAPSE_ALL&gt;(gid, attributes);</span>
+<span class="lineNum">     190 </span>            :         case SYNAPSE_POSITION_ALL:
+<span class="lineNum">     191 </span><span class="lineCov">          3 :             return read&lt;SYNAPSE_POSITION_ALL&gt;(gid, attributes);</span>
+<span class="lineNum">     192 </span>            :         case SYNAPSE_OLD_POSITION_ALL:
+<span class="lineNum">     193 </span><span class="lineNoCov">          0 :             return read&lt;SYNAPSE_OLD_POSITION_ALL&gt;(gid, attributes);</span>
+<span class="lineNum">     194 </span>            :         case 1:
+<span class="lineNum">     195 </span>            :             // nrn_extra
+<span class="lineNum">     196 </span><span class="lineNoCov">          0 :             return read&lt;1&gt;(gid, 1);</span>
+<span class="lineNum">     197 </span>            :         default:
+<span class="lineNum">     198 </span><span class="lineNoCov">          0 :             LBERROR &lt;&lt; &quot;Synapse file &quot; &lt;&lt; _file.getFileName()</span>
+<span class="lineNum">     199 </span><span class="lineNoCov">          0 :                     &lt;&lt; &quot; has unknown number of attributes: &quot; &lt;&lt; _numAttributes</span>
+<span class="lineNum">     200 </span><span class="lineNoCov">          0 :                     &lt;&lt; std::endl;</span>
+<span class="lineNum">     201 </span><span class="lineNoCov">          0 :             return SynapseMatrix();</span>
+<span class="lineNum">     202 </span>            :         }
+<span class="lineNum">     203 </span>            :     }
+<span class="lineNum">     204 </span>            : 
+<span class="lineNum">     205 </span>            : private:
+<span class="lineNum">     206 </span>            :     H5::H5File _file;
+<span class="lineNum">     207 </span>            :     size_t _numAttributes;
+<span class="lineNum">     208 </span>            : };
+<span class="lineNum">     209 </span>            : 
+<span class="lineNum">     210 </span>            : /** Implement the logic to read a merged .h5 or individual .h5.&lt;int&gt; files */
+<span class="lineNum">     211 </span>            : class Synapse : public boost::noncopyable
+<a name="212"><span class="lineNum">     212 </span>            : {</a>
+<span class="lineNum">     213 </span>            : public:
+<span class="lineNum">     214 </span><span class="lineCov">         50 :     explicit Synapse(const std::string&amp; source)</span>
+<span class="lineNum">     215 </span><span class="lineCov">         50 :         : _file(0)</span>
+<span class="lineNum">     216 </span><span class="lineCov">         66 :         , _gid(0)</span>
+<span class="lineNum">     217 </span>            :     {
+<span class="lineNum">     218 </span>            :         try
+<span class="lineNum">     219 </span>            :         {
+<span class="lineNum">     220 </span><span class="lineCov">         67 :             _file = new SynapseFile(source);</span>
+<span class="lineNum">     221 </span>            :         }
+<span class="lineNum">     222 </span><span class="lineCov">         34 :         catch (const std::runtime_error&amp;)</span>
+<span class="lineNum">     223 </span>            :         {
+<span class="lineNum">     224 </span><span class="lineCov">         34 :             const fs::path sourcePath(source);</span>
+<span class="lineNum">     225 </span><span class="lineCov">         34 :             const fs::path dir = sourcePath.parent_path();</span>
+<span class="lineNum">     226 </span><span class="lineCov">         34 :             const std::string filename = sourcePath.filename().generic_string();</span>
+<span class="lineNum">     227 </span>            : 
+<span class="lineNum">     228 </span>            :             // OPT: check if we have at least one unmerged file before fetching
+<span class="lineNum">     229 </span>            :             // all the filenames. Much faster in case there is no merged and/or
+<span class="lineNum">     230 </span>            :             // unmerged file at all.
+<span class="lineNum">     231 </span><span class="lineCov">         17 :             if (!boost::filesystem::exists(fs::path(source + &quot;.0&quot;)))</span>
+<span class="lineNum">     232 </span>            :             {
+<span class="lineNum">     233 </span>            :                 throw std::runtime_error(
+<span class="lineNum">     234 </span><span class="lineCov">         16 :                     &quot;No merged or unmerged synapse file found: &quot; + source);</span>
+<span class="lineNum">     235 </span>            :             }
+<span class="lineNum">     236 </span>            : 
+<span class="lineNum">     237 </span><span class="lineCov">          3 :             LBWARN &lt;&lt; &quot;Only unmerged synapse files found for &quot; &lt;&lt; source</span>
+<span class="lineNum">     238 </span><span class="lineCov">          1 :                    &lt;&lt; &quot;; consider using merged files for better performance.&quot;</span>
+<span class="lineNum">     239 </span><span class="lineCov">          3 :                    &lt;&lt; std::endl;</span>
+<span class="lineNum">     240 </span>            : 
+<span class="lineNum">     241 </span><span class="lineCov">          1 :             _findCandidateFiles(dir, filename);</span>
+<span class="lineNum">     242 </span><span class="lineCov">          1 :             _createIndex(dir, filename);</span>
+<span class="lineNum">     243 </span>            :         }
+<a name="244"><span class="lineNum">     244 </span><span class="lineCov">         34 :     }</span></a>
+<a name="245"><span class="lineNum">     245 </span>            : </a>
+<span class="lineNum">     246 </span><span class="lineCov">         34 :     ~Synapse() { delete _file; }</span>
+<span class="lineNum">     247 </span><span class="lineCov">       4171 :     SynapseMatrix read(const uint32_t gid, const uint32_t attributes) const</span>
+<span class="lineNum">     248 </span>            :     {
+<span class="lineNum">     249 </span><span class="lineCov">       4171 :         if (_findFile(gid))</span>
+<span class="lineNum">     250 </span><span class="lineCov">       4175 :             return _file-&gt;read(gid, attributes);</span>
+<span class="lineNum">     251 </span><span class="lineNoCov">          0 :         return SynapseMatrix();</span>
+<a name="252"><span class="lineNum">     252 </span>            :     }</a>
+<span class="lineNum">     253 </span>            : 
+<span class="lineNum">     254 </span><span class="lineCov">        623 :     size_t getNumSynapses(const GIDSet&amp; gids) const</span>
+<span class="lineNum">     255 </span>            :     {
+<span class="lineNum">     256 </span><span class="lineCov">        623 :         size_t numSynapses = 0;</span>
+<span class="lineNum">     257 </span><span class="lineCov">      61949 :         for (const uint32_t gid : gids)</span>
+<span class="lineNum">     258 </span>            :         {
+<span class="lineNum">     259 </span><span class="lineCov">      61326 :             if (!_findFile(gid))</span>
+<span class="lineNum">     260 </span><span class="lineNoCov">          0 :                 continue;</span>
+<span class="lineNum">     261 </span>            : 
+<span class="lineNum">     262 </span><span class="lineCov">     122652 :             GIDSet set;</span>
+<span class="lineNum">     263 </span><span class="lineCov">      61326 :             set.insert(gid);</span>
+<span class="lineNum">     264 </span><span class="lineCov">      61326 :             numSynapses += _file-&gt;getNumSynapses(set);</span>
+<span class="lineNum">     265 </span>            :         }
+<span class="lineNum">     266 </span><span class="lineCov">        623 :         return numSynapses;</span>
+<a name="267"><span class="lineNum">     267 </span>            :     }</a>
+<span class="lineNum">     268 </span>            : 
+<span class="lineNum">     269 </span><span class="lineCov">        141 :     size_t getNumAttributes() const</span>
+<span class="lineNum">     270 </span>            :     {
+<span class="lineNum">     271 </span><span class="lineCov">        141 :         if (_file)</span>
+<span class="lineNum">     272 </span><span class="lineCov">        141 :             return _file-&gt;getNumAttributes();</span>
+<span class="lineNum">     273 </span>            : 
+<span class="lineNum">     274 </span><span class="lineNoCov">          0 :         assert(!_fileNames.empty());</span>
+<span class="lineNum">     275 </span>            : 
+<span class="lineNum">     276 </span><span class="lineNoCov">          0 :         const std::string&amp; filename = _fileNames.front();</span>
+<span class="lineNum">     277 </span><span class="lineNoCov">          0 :         H5::H5File file;</span>
+<span class="lineNum">     278 </span>            :         try
+<span class="lineNum">     279 </span>            :         {
+<span class="lineNum">     280 </span><span class="lineNoCov">          0 :             SilenceHDF5 silence;</span>
+<span class="lineNum">     281 </span><span class="lineNoCov">          0 :             file.openFile(filename, H5F_ACC_RDONLY);</span>
+<span class="lineNum">     282 </span>            :         }
+<span class="lineNum">     283 </span><span class="lineNoCov">          0 :         catch (const H5::Exception&amp; exc)</span>
+<span class="lineNum">     284 </span>            :         {
+<span class="lineNum">     285 </span><span class="lineNoCov">          0 :             LBTHROW(std::runtime_error(&quot;Could not open synapse file &quot; +</span>
+<span class="lineNum">     286 </span>            :                                        filename + &quot;: &quot; + exc.getDetailMsg()));
+<span class="lineNum">     287 </span>            :         }
+<span class="lineNum">     288 </span><span class="lineNoCov">          0 :         Dataset dataset;</span>
+<span class="lineNum">     289 </span><span class="lineNoCov">          0 :         if (!_openDataset(file, file.getObjnameByIdx(0), dataset))</span>
+<span class="lineNum">     290 </span><span class="lineNoCov">          0 :             LBTHROW(std::runtime_error(&quot;Cannot open dataset in synapse file &quot; +</span>
+<span class="lineNum">     291 </span>            :                                        filename));
+<span class="lineNum">     292 </span><span class="lineNoCov">          0 :         return dataset.dims[1];</span>
+<span class="lineNum">     293 </span>            :     }
+<span class="lineNum">     294 </span>            : 
+<span class="lineNum">     295 </span>            : private:
+<span class="lineNum">     296 </span>            :     typedef std::unordered_map&lt;uint32_t, std::string&gt; GidFileMap;
+<span class="lineNum">     297 </span>            : 
+<span class="lineNum">     298 </span>            :     mutable SynapseFile* _file;
+<span class="lineNum">     299 </span>            :     mutable uint32_t _gid; // current or 0 for all
+<span class="lineNum">     300 </span>            :     Strings _fileNames;
+<a name="301"><span class="lineNum">     301 </span>            :     mutable GidFileMap _fileMap;</a>
+<span class="lineNum">     302 </span>            : 
+<span class="lineNum">     303 </span><span class="lineCov">          1 :     void _createIndex(const fs::path&amp; dir, const std::string&amp; filename)</span>
+<span class="lineNum">     304 </span>            :     {
+<span class="lineNum">     305 </span>            :         // extract the GID-&gt;file mapping from the merge_nrn.sh script
+<span class="lineNum">     306 </span><span class="lineCov">          1 :         const bool afferent = filename.find(&quot;efferent&quot;) == std::string::npos;</span>
+<span class="lineNum">     307 </span>            :         const fs::path merge_nrn =
+<span class="lineNum">     308 </span><span class="lineCov">          1 :             dir / (afferent ? &quot;merge_nrn.sh&quot; : &quot;merge_nrn_efferent.sh&quot;);</span>
+<span class="lineNum">     309 </span><span class="lineCov">          1 :         const std::ifstream mergeFile(merge_nrn.generic_string().c_str());</span>
+<span class="lineNum">     310 </span><span class="lineCov">          1 :         if (!mergeFile.is_open())</span>
+<span class="lineNum">     311 </span>            :         {
+<span class="lineNum">     312 </span><span class="lineCov">          3 :             LBWARN &lt;&lt; &quot;No merged file found in &quot; &lt;&lt; dir</span>
+<span class="lineNum">     313 </span><span class="lineCov">          1 :                    &lt;&lt; &quot; to build lookup index; loading data will be very slow&quot;</span>
+<span class="lineNum">     314 </span><span class="lineCov">          3 :                    &lt;&lt; std::endl;</span>
+<span class="lineNum">     315 </span><span class="lineCov">          1 :             return;</span>
+<span class="lineNum">     316 </span>            :         }
+<span class="lineNum">     317 </span>            : 
+<span class="lineNum">     318 </span><span class="lineNoCov">          0 :         std::stringstream buffer;</span>
+<span class="lineNum">     319 </span><span class="lineNoCov">          0 :         buffer &lt;&lt; mergeFile.rdbuf();</span>
+<span class="lineNum">     320 </span>            : 
+<span class="lineNum">     321 </span><span class="lineNoCov">          0 :         const boost::regex commentregx(&quot;#.*?\\n&quot;);</span>
+<span class="lineNum">     322 </span>            :         const std::string content =
+<span class="lineNum">     323 </span><span class="lineNoCov">          0 :             boost::regex_replace(buffer.str(), commentregx, &quot;\n&quot;);</span>
+<span class="lineNum">     324 </span>            : 
+<span class="lineNum">     325 </span>            :         const boost::regex regx(
+<span class="lineNum">     326 </span>            :             &quot;\\$CMD -i \\$H5.(?&lt;number&gt;[0-9]+) -o &quot;
+<span class="lineNum">     327 </span><span class="lineNoCov">          0 :             &quot;\\$H5 -s /a(?&lt;gid&gt;[0-9]+)&quot;);</span>
+<span class="lineNum">     328 </span><span class="lineNoCov">          0 :         const int subs[] = {1, 2};</span>
+<span class="lineNum">     329 </span>            :         boost::sregex_token_iterator i(content.begin(), content.end(), regx,
+<span class="lineNum">     330 </span><span class="lineNoCov">          0 :                                        subs);</span>
+<span class="lineNum">     331 </span>            : 
+<span class="lineNum">     332 </span>            :         const std::string basename =
+<span class="lineNum">     333 </span><span class="lineNoCov">          0 :             (dir / fs::path(filename)).generic_string() + &quot;.&quot;;</span>
+<span class="lineNum">     334 </span><span class="lineNoCov">          0 :         for (boost::sregex_token_iterator end; i != end;)</span>
+<span class="lineNum">     335 </span>            :         {
+<span class="lineNum">     336 </span><span class="lineNoCov">          0 :             const std::string&amp; fileNumber = *i++;</span>
+<span class="lineNum">     337 </span><span class="lineNoCov">          0 :             const uint32_t fileGID = boost::lexical_cast&lt;uint32_t&gt;(*i++);</span>
+<span class="lineNum">     338 </span><span class="lineNoCov">          0 :             _fileMap[fileGID] = basename + fileNumber;</span>
+<span class="lineNum">     339 </span>            :         }
+<a name="340"><span class="lineNum">     340 </span>            :     }</a>
+<span class="lineNum">     341 </span>            : 
+<span class="lineNum">     342 </span><span class="lineCov">          1 :     void _findCandidateFiles(const fs::path&amp; dir, const std::string&amp; filename)</span>
+<span class="lineNum">     343 </span>            :     {
+<span class="lineNum">     344 </span>            :         // try to open in individual files
+<span class="lineNum">     345 </span><span class="lineCov">          2 :         const boost::regex filter(filename + &quot;\\.[0-9]+$&quot;);</span>
+<span class="lineNum">     346 </span><span class="lineCov">          2 :         fs::directory_iterator end;</span>
+<span class="lineNum">     347 </span><span class="lineCov">         11 :         for (fs::directory_iterator i(dir); i != end; ++i)</span>
+<span class="lineNum">     348 </span>            :         {
+<span class="lineNum">     349 </span><span class="lineCov">         20 :             const fs::path candidate = i-&gt;path().filename();</span>
+<span class="lineNum">     350 </span><span class="lineCov">         20 :             boost::smatch match;</span>
+<span class="lineNum">     351 </span>            : 
+<span class="lineNum">     352 </span>            :             // Testing first if the regex matches. We don't want to throw on
+<span class="lineNum">     353 </span>            :             // is_regular_file for directory entries that are not valid anyway.
+<span class="lineNum">     354 </span><span class="lineCov">         20 :             if (boost::regex_match(candidate.string(), match, filter) &amp;&amp;</span>
+<span class="lineNum">     355 </span><span class="lineCov">         10 :                 boost::filesystem::is_regular_file(i-&gt;status()))</span>
+<span class="lineNum">     356 </span>            :             {
+<span class="lineNum">     357 </span><span class="lineCov">         10 :                 _fileNames.push_back(i-&gt;path().string());</span>
+<span class="lineNum">     358 </span>            :             }
+<span class="lineNum">     359 </span>            :         }
+<span class="lineNum">     360 </span>            : 
+<span class="lineNum">     361 </span><span class="lineCov">          1 :         if (_fileNames.empty())</span>
+<span class="lineNum">     362 </span>            :         {
+<span class="lineNum">     363 </span><span class="lineNoCov">          0 :             LBTHROW(std::runtime_error(&quot;Could not find synapse files &quot; +</span>
+<span class="lineNum">     364 </span>            :                                        dir.string() + &quot;/&quot; + filename));
+<span class="lineNum">     365 </span>            :         }
+<a name="366"><span class="lineNum">     366 </span><span class="lineCov">          1 :     }</span></a>
+<span class="lineNum">     367 </span>            : 
+<span class="lineNum">     368 </span><span class="lineCov">      65501 :     bool _findFile(const uint32_t gid) const</span>
+<span class="lineNum">     369 </span>            :     {
+<span class="lineNum">     370 </span><span class="lineCov">      65501 :         if (_file &amp;&amp; (_gid == gid || _gid == 0))</span>
+<span class="lineNum">     371 </span><span class="lineCov">      65490 :             return true;</span>
+<span class="lineNum">     372 </span>            : 
+<span class="lineNum">     373 </span><span class="lineCov">         21 :         const std::string&amp; filename = _findFilename(gid);</span>
+<span class="lineNum">     374 </span><span class="lineCov">         10 :         if (filename.empty())</span>
+<span class="lineNum">     375 </span><span class="lineNoCov">          0 :             return false;</span>
+<span class="lineNum">     376 </span>            : 
+<span class="lineNum">     377 </span><span class="lineCov">         10 :         delete _file;</span>
+<span class="lineNum">     378 </span><span class="lineCov">         10 :         _file = new SynapseFile(filename);</span>
+<span class="lineNum">     379 </span><span class="lineCov">         10 :         _gid = gid;</span>
+<span class="lineNum">     380 </span><span class="lineCov">         10 :         return true;</span>
+<a name="381"><span class="lineNum">     381 </span>            :     }</a>
+<span class="lineNum">     382 </span>            : 
+<span class="lineNum">     383 </span><span class="lineCov">         10 :     std::string _findFilename(const uint32_t gid) const</span>
+<span class="lineNum">     384 </span>            :     {
+<span class="lineNum">     385 </span><span class="lineCov">         10 :         if (!_fileMap[gid].empty())</span>
+<span class="lineNum">     386 </span><span class="lineNoCov">          0 :             return _fileMap[gid];</span>
+<span class="lineNum">     387 </span>            : 
+<span class="lineNum">     388 </span>            :         // at this point we can only search in each file for the GID which
+<span class="lineNum">     389 </span>            :         // usually results in waiting for I/O and non-parallizable search thanks
+<span class="lineNum">     390 </span>            :         // to HDF5
+<span class="lineNum">     391 </span>            : 
+<span class="lineNum">     392 </span><span class="lineCov">         20 :         lunchbox::ScopedWrite mutex(detail::hdf5Lock());</span>
+<span class="lineNum">     393 </span><span class="lineCov">         20 :         SilenceHDF5 silence;</span>
+<span class="lineNum">     394 </span>            : 
+<span class="lineNum">     395 </span>            :         // this trial-and-error is the 'fastest' path found
+<span class="lineNum">     396 </span><span class="lineCov">         10 :         for (const std::string&amp; candidate : _fileNames)</span>
+<span class="lineNum">     397 </span>            :         {
+<span class="lineNum">     398 </span>            :             try
+<span class="lineNum">     399 </span>            :             {
+<span class="lineNum">     400 </span><span class="lineCov">         20 :                 H5::H5File file;</span>
+<span class="lineNum">     401 </span><span class="lineCov">         10 :                 file.openFile(candidate, H5F_ACC_RDONLY);</span>
+<span class="lineNum">     402 </span>            : 
+<span class="lineNum">     403 </span><span class="lineCov">         20 :                 std::stringstream name;</span>
+<span class="lineNum">     404 </span><span class="lineCov">         10 :                 name &lt;&lt; &quot;a&quot; &lt;&lt; gid;</span>
+<span class="lineNum">     405 </span>            : 
+<span class="lineNum">     406 </span><span class="lineCov">         10 :                 file.openDataSet(name.str());</span>
+<span class="lineNum">     407 </span><span class="lineCov">         10 :                 _fileMap[gid] = candidate;</span>
+<span class="lineNum">     408 </span><span class="lineCov">         10 :                 return candidate;</span>
+<span class="lineNum">     409 </span>            :             }
+<span class="lineNum">     410 </span><span class="lineNoCov">          0 :             catch (const H5::Exception&amp;)</span>
+<span class="lineNum">     411 </span>            :             {
+<span class="lineNum">     412 </span>            :             }
+<span class="lineNum">     413 </span>            :         }
+<span class="lineNum">     414 </span><span class="lineNoCov">          0 :         return std::string();</span>
+<span class="lineNum">     415 </span>            :     }
+<span class="lineNum">     416 </span>            : };
+<a name="417"><span class="lineNum">     417 </span>            : }</a>
+<span class="lineNum">     418 </span>            : 
+<span class="lineNum">     419 </span><span class="lineCov">         50 : Synapse::Synapse(const std::string&amp; source)</span>
+<span class="lineNum">     420 </span><span class="lineCov">         66 :     : _impl(new detail::Synapse(source))</span>
+<span class="lineNum">     421 </span>            : {
+<a name="422"><span class="lineNum">     422 </span><span class="lineCov">         34 : }</span></a>
+<span class="lineNum">     423 </span>            : 
+<span class="lineNum">     424 </span><span class="lineCov">         68 : Synapse::~Synapse()</span>
+<span class="lineNum">     425 </span>            : {
+<span class="lineNum">     426 </span><span class="lineCov">         34 :     delete _impl;</span>
+<a name="427"><span class="lineNum">     427 </span><span class="lineCov">         34 : }</span></a>
+<span class="lineNum">     428 </span>            : 
+<span class="lineNum">     429 </span><span class="lineCov">       4173 : SynapseMatrix Synapse::read(const uint32_t gid, const uint32_t attributes) const</span>
+<span class="lineNum">     430 </span>            : {
+<span class="lineNum">     431 </span><span class="lineCov">       4173 :     return _impl-&gt;read(gid, attributes);</span>
+<a name="432"><span class="lineNum">     432 </span>            : }</a>
+<span class="lineNum">     433 </span>            : 
+<span class="lineNum">     434 </span><span class="lineCov">        623 : size_t Synapse::getNumSynapses(const GIDSet&amp; gids) const</span>
+<span class="lineNum">     435 </span>            : {
+<span class="lineNum">     436 </span><span class="lineCov">        623 :     return _impl-&gt;getNumSynapses(gids);</span>
+<a name="437"><span class="lineNum">     437 </span>            : }</a>
+<span class="lineNum">     438 </span>            : 
+<span class="lineNum">     439 </span><span class="lineCov">        141 : size_t Synapse::getNumAttributes() const</span>
+<span class="lineNum">     440 </span>            : {
+<a name="441"><span class="lineNum">     441 </span><span class="lineCov">        141 :     return _impl-&gt;getNumAttributes();</span></a>
+<span class="lineNum">     442 </span>            : }
+<span class="lineNum">     443 </span><span class="lineCov">         42 : }</span>
+</pre>
+      </td>
+    </tr>
+  </table>
+  <br>
+
+  <table width="100%" border=0 cellspacing=0 cellpadding=0>
+    <tr><td class="ruler"><img src="../glass.png" width=3 height=3 alt=""></td></tr>
+    <tr><td class="versionInfo">Generated by: <a href="http://ltp.sourceforge.net/coverage/lcov.php" target="_parent">LCOV version 1.11</a></td></tr>
+  </table>
+  <br>
+
+</body>
+</html>
