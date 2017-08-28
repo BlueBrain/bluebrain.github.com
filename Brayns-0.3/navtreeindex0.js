@@ -107,7 +107,7 @@ var NAVTREEINDEX0 =
 "brayns_opti_x_cuda_plugin__generated___spheres_8cu_8ptx_8h_source.html":[6,0,14],
 "brayns_opti_x_cuda_plugin__generated___triangles_mesh_8cu_8ptx_8h_source.html":[6,0,15],
 "class_progress.html":[5,0,5],
-"class_progress.html#a4b718db3baf3ec78250ccf8ccc586505":[5,0,5,0],
+"class_progress.html#a122e8ac6b67c609df26e73515c38fc40":[5,0,5,0],
 "classbrayns_1_1_abstract_manipulator.html":[5,0,0,1],
 "classbrayns_1_1_abstract_manipulator.html#a1ddb4ed7cefbbb93422d8f26b5911245":[5,0,0,1,13],
 "classbrayns_1_1_abstract_manipulator.html#a2d43b2e4c78a2db5bcf74c0d828eedbb":[5,0,0,1,11],
