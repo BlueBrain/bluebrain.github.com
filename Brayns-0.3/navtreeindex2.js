@@ -1,6 +1,5 @@
 var NAVTREEINDEX2 =
 {
-"classbrayns_1_1_geometry_parameters.html#aabec220652d36aa26afb5dae8e81f9be":[5,0,0,27,72],
 "classbrayns_1_1_geometry_parameters.html#aafa2015e194c7aa60e11f83df28db179":[5,0,0,27,60],
 "classbrayns_1_1_geometry_parameters.html#ab144d6cb2cc77c85b4f5b796e4c4c9b9":[5,0,0,27,28],
 "classbrayns_1_1_geometry_parameters.html#ab3fce9bbaa45185a6d49fafedfd23e62":[5,0,0,27,13],
@@ -249,5 +248,6 @@ var NAVTREEINDEX2 =
 "classbrayns_1_1_point_light.html#a341eab1555739e2a7a453a1c18e3b211":[5,0,0,57,2],
 "classbrayns_1_1_point_light.html#a782a3fb04f2cf4a089a738e5bc105698":[5,0,0,57,4],
 "classbrayns_1_1_point_light.html#a9500e2af4d823aaa65b62861e95649b1":[5,0,0,57,1],
-"classbrayns_1_1_point_light.html#ac360885334a6778949e00d7070c8a9ae":[5,0,0,57,0]
+"classbrayns_1_1_point_light.html#ac360885334a6778949e00d7070c8a9ae":[5,0,0,57,0],
+"classbrayns_1_1_point_light.html#ae1d1275e4d67a8622f009bb1633c94a5":[5,0,0,57,3]
 };

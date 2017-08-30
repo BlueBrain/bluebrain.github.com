@@ -52,7 +52,6 @@ var searchData=
   ['settitle',['setTitle',['../classbrayns_1_1_base_window.html#a8f917d5d11eb4d7dc70cb49b6d808920',1,'brayns::BaseWindow::setTitle(const char *title)'],['../classbrayns_1_1_base_window.html#a3e56ecff8226f4585ea9cf0b79e1a198',1,'brayns::BaseWindow::setTitle(const std::string &amp;title)']]],
   ['settrianglesmeshesdirty',['setTrianglesMeshesDirty',['../classbrayns_1_1_scene.html#a846ba8492627bd0ae22b246c5c2a8be2',1,'brayns::Scene']]],
   ['setup',['setUp',['../classbrayns_1_1_camera.html#a60ad67b14e8b2ddc80e15a15cff132d8',1,'brayns::Camera']]],
-  ['setupcameramanipulator',['setupCameraManipulator',['../classbrayns_1_1_engine.html#a746f4218b387abf7f497a51945bf510e',1,'brayns::Engine']]],
   ['shortcutinformation',['ShortcutInformation',['../structbrayns_1_1_shortcut_information.html',1,'brayns']]],
   ['simulationrenderer',['SimulationRenderer',['../classbrayns_1_1_simulation_renderer.html',1,'brayns']]],
   ['sphere',['Sphere',['../classbrayns_1_1_sphere.html',1,'brayns']]],

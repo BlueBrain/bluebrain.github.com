@@ -1,6 +1,5 @@
 var NAVTREEINDEX3 =
 {
-"classbrayns_1_1_point_light.html#ae1d1275e4d67a8622f009bb1633c94a5":[5,0,0,57,3],
 "classbrayns_1_1_primitive.html":[5,0,0,58],
 "classbrayns_1_1_primitive.html#a014d538b933f9e9152006255e13d4d9c":[5,0,0,58,0],
 "classbrayns_1_1_primitive.html#a46539adfba481765527843495366379f":[5,0,0,58,8],
@@ -249,5 +248,6 @@ var NAVTREEINDEX3 =
 "classbrayns_1_1_volume_handler.html#a98105fa2f5d6c7ec247915bc470f1b8d":[5,0,0,80,13],
 "classbrayns_1_1_volume_handler.html#a9842a3e1eac8ed2c182bb614f71cf9bd":[5,0,0,80,11],
 "classbrayns_1_1_volume_handler.html#aac72eca3b08d07ba2042f7303c57f501":[5,0,0,80,8],
-"classbrayns_1_1_volume_handler.html#ab8ed1cd8b3fea737cd948e9ef394d88c":[5,0,0,80,10]
+"classbrayns_1_1_volume_handler.html#ab8ed1cd8b3fea737cd948e9ef394d88c":[5,0,0,80,10],
+"classbrayns_1_1_volume_handler.html#ac499d28a2370eaf6938be7ef69e4d87f":[5,0,0,80,3]
 };

@@ -29,7 +29,6 @@ var classbrayns_1_1_engine =
     [ "setActiveRenderer", "classbrayns_1_1_engine.html#a65a906caa0f052f74d57a646d7457a05", null ],
     [ "setDefaultCamera", "classbrayns_1_1_engine.html#a206d534f22b8265dd2d9c5d335980487", null ],
     [ "setDefaultEpsilon", "classbrayns_1_1_engine.html#a09847c925ccc8aa4c98a2b5a7d7f1fec", null ],
-    [ "setupCameraManipulator", "classbrayns_1_1_engine.html#a746f4218b387abf7f497a51945bf510e", null ],
     [ "_activeRenderer", "classbrayns_1_1_engine.html#aedb79bf2ab3061ccb26b1fac6546895f", null ],
     [ "_camera", "classbrayns_1_1_engine.html#ac7dbf55501f7be270776d028005a91f1", null ],
     [ "_frameBuffer", "classbrayns_1_1_engine.html#a5132e8bae1ac113320b4b269b03f1ca0", null ],

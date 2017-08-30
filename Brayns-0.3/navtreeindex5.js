@@ -1,6 +1,5 @@
 var NAVTREEINDEX5 =
 {
-"structospray_1_1_extended_spheres.html#acef51ef3cba48fec3e7dfb2a7744a505":[5,0,1,3,6],
 "structospray_1_1_extended_spheres.html#ae083ae303a78907aebc80080cd63ed63":[5,0,1,3,12],
 "structospray_1_1_extended_spheres.html#af613715af4889dee15f7691b9192563c":[5,0,1,3,9],
 "structospray_1_1_extended_spheres.html#af6562c223616537ba2b6d1151b952c6c":[5,0,1,3,7],

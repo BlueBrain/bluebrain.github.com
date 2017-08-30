@@ -1,6 +1,5 @@
 var NAVTREEINDEX4 =
 {
-"classbrayns_1_1_volume_handler.html#ac499d28a2370eaf6938be7ef69e4d87f":[5,0,0,80,3],
 "classbrayns_1_1_volume_handler.html#ad4bd4b61f3c350ad20172376337c77c2":[5,0,0,80,1],
 "classbrayns_1_1_volume_handler.html#add889082843fb91f5d2d545e9595edeb":[5,0,0,80,4],
 "classbrayns_1_1_volume_handler.html#aebb55d097b0822d9347224e9c91ad770":[5,0,0,80,15],
@@ -44,17 +43,17 @@ var NAVTREEINDEX4 =
 "classbrayns_1_1_zero_e_q_plugin.html#a23227b0fdf787d0f910db1ad794a30db":[5,0,0,83,3],
 "classbrayns_1_1_zero_e_q_plugin.html#a4af28d846a7896aedf5ebb375dd7934f":[5,0,0,83,0],
 "classbrayns_1_1_zero_e_q_plugin.html#a9c2c098c089a723a051e34298aef43d6":[5,0,0,83,1],
-"classbrayns_1_1_zero_e_q_plugin.html#abd692c2413fe2273091cdbe3653b928c":[5,0,0,83,5],
 "classbrayns_1_1_zero_e_q_plugin.html#ac04af934c2b0bb329cb1d974171f8fe4":[5,0,0,83,2],
 "classbrayns_1_1_zero_e_q_plugin.html#ae990a6aa9283f2e6a69b87d255f9c36b":[5,0,0,83,4],
+"classbrayns_1_1_zero_e_q_plugin.html#aee95a01396d6ff69e1ad53d69bffd7a3":[5,0,0,83,5],
 "classes.html":[5,1],
 "defines_8h.html":[6,0,23],
 "defines_8h_source.html":[6,0,23],
 "defines_linux_8h_source.html":[6,0,24],
 "exceptions_8h_source.html":[6,0,29],
 "files.html":[6,0],
-"functions.html":[5,3,0,0],
 "functions.html":[5,3,0],
+"functions.html":[5,3,0,0],
 "functions_0x7e.html":[5,3,0,20],
 "functions_a.html":[5,3,0,1],
 "functions_b.html":[5,3,0,2],
@@ -249,5 +248,6 @@ var NAVTREEINDEX4 =
 "structospray_1_1_extended_spheres.html#a75831585f978ca18eb22fd8cecca79e0":[5,0,1,3,1],
 "structospray_1_1_extended_spheres.html#a82d38ca36c0d9fb9d38134a5f775b9f6":[5,0,1,3,10],
 "structospray_1_1_extended_spheres.html#ab0bb4709f5f108e33768e90f83a2f816":[5,0,1,3,13],
-"structospray_1_1_extended_spheres.html#ac4d61a9d972fe84a6f816b03e8aeae21":[5,0,1,3,0]
+"structospray_1_1_extended_spheres.html#ac4d61a9d972fe84a6f816b03e8aeae21":[5,0,1,3,0],
+"structospray_1_1_extended_spheres.html#acef51ef3cba48fec3e7dfb2a7744a505":[5,0,1,3,6]
 };
