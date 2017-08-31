@@ -1,5 +1,6 @@
 var NAVTREEINDEX1 =
 {
+"structdeflect_1_1_segment_parameters.html#a6db86d0c0e9af3debf3c97c582d9ef8b":[5,0,0,9,2],
 "structdeflect_1_1_segment_parameters.html#ac7c4d67999b9716253360dbbcc7c608c":[5,0,0,9,0],
 "structdeflect_1_1_size_hints.html":[5,0,0,11],
 "structdeflect_1_1_size_hints.html#a01de712423db0f65d71d9f448b8eee2e":[5,0,0,11,4],

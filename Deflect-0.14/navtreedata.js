@@ -31,7 +31,7 @@ var NAVTREE =
 var NAVTREEINDEX =
 [
 ".html",
-"structdeflect_1_1_segment_parameters.html#ac7c4d67999b9716253360dbbcc7c608c"
+"structdeflect_1_1_segment_parameters.html#a6db86d0c0e9af3debf3c97c582d9ef8b"
 ];
 
 var SYNCONMSG = 'click to disable panel synchronisation';

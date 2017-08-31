@@ -19,8 +19,9 @@ var searchData=
   ['sizehints',['SizeHints',['../structdeflect_1_1_size_hints.html',1,'deflect']]],
   ['startdecoding',['startDecoding',['../classdeflect_1_1_segment_decoder.html#ae33a772afaa7890061d16d51576f34e7',1,'deflect::SegmentDecoder']]],
   ['stop',['stop',['../classdeflect_1_1qt_1_1_quick_renderer.html#a4c8499406f5d684811dde1bb268bceac',1,'deflect::qt::QuickRenderer']]],
-  ['stream',['Stream',['../classdeflect_1_1_stream.html',1,'deflect']]],
+  ['stopping',['stopping',['../classdeflect_1_1qt_1_1_quick_renderer.html#a6996c7254349f96abe6aae2cdb9ba92c',1,'deflect::qt::QuickRenderer']]],
   ['stream',['Stream',['../classdeflect_1_1_stream.html#a2d92797dcd05b961853684c6386c1264',1,'deflect::Stream::Stream(unsigned short port=defaultPortNumber)'],['../classdeflect_1_1_stream.html#aef7e07b3a53624602801b131ed1526a9',1,'deflect::Stream::Stream(const std::string &amp;id, const std::string &amp;host, unsigned short port=defaultPortNumber)']]],
+  ['stream',['Stream',['../classdeflect_1_1_stream.html',1,'deflect']]],
   ['streamclosed',['streamClosed',['../classdeflect_1_1qt_1_1_qml_streamer.html#a4a13cac43c74f70aed903e14912904d8',1,'deflect::qt::QmlStreamer']]],
   ['subsampling',['subsampling',['../structdeflect_1_1_image_wrapper.html#a311f8928041b91a31d5e19f548f5699e',1,'deflect::ImageWrapper']]],
   ['swapyaxis',['swapYAxis',['../structdeflect_1_1_image_wrapper.html#a0259fff8d07a883a02541da59e55de1a',1,'deflect::ImageWrapper']]]
