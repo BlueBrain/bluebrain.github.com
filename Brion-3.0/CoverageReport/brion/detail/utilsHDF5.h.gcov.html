@@ -31,17 +31,17 @@
             <td class="headerValue">Brion</td>
             <td></td>
             <td class="headerItem">Lines:</td>
-            <td class="headerCovTableEntry">4</td>
-            <td class="headerCovTableEntry">4</td>
+            <td class="headerCovTableEntry">11</td>
+            <td class="headerCovTableEntry">11</td>
             <td class="headerCovTableEntryHi">100.0 %</td>
           </tr>
           <tr>
             <td class="headerItem">Date:</td>
-            <td class="headerValue">2017-08-29 06:10:09</td>
+            <td class="headerValue">2017-08-31 06:08:48</td>
             <td></td>
             <td class="headerItem">Functions:</td>
-            <td class="headerCovTableEntry">1</td>
-            <td class="headerCovTableEntry">1</td>
+            <td class="headerCovTableEntry">4</td>
+            <td class="headerCovTableEntry">4</td>
             <td class="headerCovTableEntryHi">100.0 %</td>
           </tr>
           <tr><td><img src="../../glass.png" width=3 height=3 alt=""></td></tr>
@@ -60,8 +60,8 @@
       <td>
 <pre class="sourceHeading">          Line data    Source code</pre>
 <pre class="source">
-<a name="1"><span class="lineNum">       1 </span>            : /* Copyright (c) 2016, EPFL/Blue Brain Project</a>
-<span class="lineNum">       2 </span>            :  *                     Daniel Nachbaur &lt;daniel.nachbaur@epfl.ch&gt;
+<a name="1"><span class="lineNum">       1 </span>            : /* Copyright (c) 2016-2017, EPFL/Blue Brain Project</a>
+<span class="lineNum">       2 </span>            :  *                          Daniel Nachbaur &lt;daniel.nachbaur@epfl.ch&gt;
 <span class="lineNum">       3 </span>            :  *
 <span class="lineNum">       4 </span>            :  * This file is part of Brion &lt;https://github.com/BlueBrain/Brion&gt;
 <span class="lineNum">       5 </span>            :  *
@@ -82,23 +82,68 @@
 <span class="lineNum">      20 </span>            : #ifndef BRION_DETAIL_UTILSHDF5
 <span class="lineNum">      21 </span>            : #define BRION_DETAIL_UTILSHDF5
 <span class="lineNum">      22 </span>            : 
-<span class="lineNum">      23 </span>            : #include &lt;H5Cpp.h&gt;
-<span class="lineNum">      24 </span>            : 
-<span class="lineNum">      25 </span>            : namespace brion
-<span class="lineNum">      26 </span>            : {
-<span class="lineNum">      27 </span>            : namespace detail
-<a name="28"><span class="lineNum">      28 </span>            : {</a>
-<span class="lineNum">      29 </span>            : /** Add a string attribute to the given H5 object. */
-<span class="lineNum">      30 </span><span class="lineCov">       1080 : inline void addStringAttribute(H5::H5Object&amp; object, const std::string&amp; name,</span>
-<span class="lineNum">      31 </span>            :                                const std::string&amp; value)
+<span class="lineNum">      23 </span>            : #include &lt;highfive/H5Attribute.hpp&gt;
+<span class="lineNum">      24 </span>            : #include &lt;highfive/H5DataType.hpp&gt;
+<span class="lineNum">      25 </span>            : 
+<span class="lineNum">      26 </span>            : namespace HighFive
+<span class="lineNum">      27 </span>            : {
+<span class="lineNum">      28 </span>            : namespace details
+<span class="lineNum">      29 </span>            : {
+<span class="lineNum">      30 </span>            : template &lt;size_t M, typename T&gt;
+<span class="lineNum">      31 </span>            : struct array_dims&lt;std::vector&lt;vmml::vector&lt;M, T&gt;&gt;&gt;
 <span class="lineNum">      32 </span>            : {
-<span class="lineNum">      33 </span><span class="lineCov">       2160 :     const H5::StrType strType(H5::PredType::C_S1, value.length());</span>
-<span class="lineNum">      34 </span><span class="lineCov">       1080 :     object.createAttribute(name, strType, H5S_SCALAR).write(strType, value);</span>
-<span class="lineNum">      35 </span><span class="lineCov">       1080 : }</span>
-<span class="lineNum">      36 </span>            : }
-<span class="lineNum">      37 </span>            : }
-<span class="lineNum">      38 </span>            : 
-<span class="lineNum">      39 </span>            : #endif
+<span class="lineNum">      33 </span>            :     static const size_t value = 2;
+<span class="lineNum">      34 </span>            :     typedef T type;
+<span class="lineNum">      35 </span>            : };
+<span class="lineNum">      36 </span>            : 
+<span class="lineNum">      37 </span>            : template &lt;size_t M, typename T&gt;
+<span class="lineNum">      38 </span>            : struct type_of_array&lt;std::vector&lt;vmml::vector&lt;M, T&gt;&gt;&gt;
+<span class="lineNum">      39 </span>            : {
+<span class="lineNum">      40 </span>            :     typedef T type;
+<span class="lineNum">      41 </span>            : };
+<span class="lineNum">      42 </span>            : 
+<span class="lineNum">      43 </span>            : template &lt;size_t M, typename T&gt;
+<span class="lineNum">      44 </span>            : struct data_converter&lt;vmml::vector&lt;M, T&gt;&gt;
+<span class="lineNum">      45 </span>            : {
+<span class="lineNum">      46 </span>            :     static T* transform_read(std::vector&lt;vmml::vector&lt;M, T&gt;&gt;&amp; vector)
+<span class="lineNum">      47 </span>            :     {
+<span class="lineNum">      48 </span>            :         return (T*)vector.data();
+<span class="lineNum">      49 </span>            :     }
+<span class="lineNum">      50 </span>            : };
+<span class="lineNum">      51 </span>            : }
+<a name="52"><span class="lineNum">      52 </span>            : </a>
+<span class="lineNum">      53 </span>            : template &lt;&gt;
+<span class="lineNum">      54 </span><span class="lineCov">         54 : inline AtomicType&lt;brion::SectionType&gt;::AtomicType()</span>
+<span class="lineNum">      55 </span>            : {
+<span class="lineNum">      56 </span><span class="lineCov">         54 :     _hid = H5Tcopy(H5T_NATIVE_INT);</span>
+<span class="lineNum">      57 </span><span class="lineCov">         54 : }</span>
+<a name="58"><span class="lineNum">      58 </span>            : </a>
+<span class="lineNum">      59 </span>            : template &lt;&gt;
+<span class="lineNum">      60 </span><span class="lineCov">          8 : inline AtomicType&lt;brion::MorphologyVersion&gt;::AtomicType()</span>
+<span class="lineNum">      61 </span>            : {
+<span class="lineNum">      62 </span><span class="lineCov">          8 :     _hid = H5Tcopy(H5T_NATIVE_INT);</span>
+<span class="lineNum">      63 </span><span class="lineCov">          8 : }</span>
+<span class="lineNum">      64 </span>            : }
+<span class="lineNum">      65 </span>            : 
+<span class="lineNum">      66 </span>            : namespace brion
+<span class="lineNum">      67 </span>            : {
+<span class="lineNum">      68 </span>            : namespace detail
+<span class="lineNum">      69 </span>            : {
+<a name="70"><span class="lineNum">      70 </span>            : /** Add a string attribute to the given H5 object. */</a>
+<span class="lineNum">      71 </span>            : template &lt;typename T&gt;
+<span class="lineNum">      72 </span><span class="lineCov">       1098 : inline void addStringAttribute(HighFive::AnnotateTraits&lt;T&gt;&amp; object,</span>
+<span class="lineNum">      73 </span>            :                                const std::string&amp; name,
+<span class="lineNum">      74 </span>            :                                const std::string&amp; value)
+<span class="lineNum">      75 </span>            : {
+<span class="lineNum">      76 </span><span class="lineCov">       2196 :     auto dataspace = HighFive::DataSpace::From(value);</span>
+<span class="lineNum">      77 </span>            :     auto attr = object.createAttribute(name, dataspace,
+<span class="lineNum">      78 </span><span class="lineCov">       2196 :                                        HighFive::AtomicType&lt;std::string&gt;());</span>
+<span class="lineNum">      79 </span><span class="lineCov">       1098 :     attr.write(value);</span>
+<span class="lineNum">      80 </span><span class="lineCov">       1098 : }</span>
+<span class="lineNum">      81 </span>            : }
+<span class="lineNum">      82 </span>            : }
+<span class="lineNum">      83 </span>            : 
+<span class="lineNum">      84 </span>            : #endif
 </pre>
       </td>
     </tr>
