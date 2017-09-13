@@ -4,7 +4,7 @@ version: "1.0"
 major: 1
 minor: 0
 description: Example project for the Blue Brain Project
-updated: 22/02/17
+updated: 13/09/17
 homepage: https://github.com/BlueBrain/Hello
 repository: https://github.com/BlueBrain/Hello.git
 issuesurl: https://github.com/BlueBrain/Hello/issues
@@ -40,7 +40,7 @@ environments are tested:
 
 Building from source is as simple as:
 
-    git clone https://github.com/BlueBrain/Hello.git
+    git clone --recursive https://github.com/BlueBrain/Hello.git
     mkdir Hello/build
     cd Hello/build
     cmake -GNinja ..
