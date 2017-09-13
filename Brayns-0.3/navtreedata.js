@@ -31,9 +31,9 @@ var NAVTREEINDEX =
 ".html",
 "classbrayns_1_1_base_window.html#a8c41824cc4d9a1e4e9b5cf9f1ee50057",
 "classbrayns_1_1_geometry_parameters.html#aafa2015e194c7aa60e11f83df28db179",
-"classbrayns_1_1_primitive.html",
-"classbrayns_1_1_volume_handler.html#ad4bd4b61f3c350ad20172376337c77c2",
-"structospray_1_1_extended_spheres.html#ae083ae303a78907aebc80080cd63ed63"
+"classbrayns_1_1_point_light.html#a9500e2af4d823aaa65b62861e95649b1",
+"classbrayns_1_1_volume_handler.html#a96bf2720442dd32493cffe4beaccf77c",
+"structospray_1_1_extended_spheres.html#a73c1f76d6e4dfda78b0bb4218be90b1d"
 ];
 
 var SYNCONMSG = 'click to disable panel synchronisation';

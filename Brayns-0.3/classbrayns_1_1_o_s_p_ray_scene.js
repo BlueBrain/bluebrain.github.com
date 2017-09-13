@@ -1,6 +1,7 @@
 var classbrayns_1_1_o_s_p_ray_scene =
 [
     [ "OSPRayScene", "classbrayns_1_1_o_s_p_ray_scene.html#ade4e3101dee810dd44a4707eb2d7b5b7", null ],
+    [ "~OSPRayScene", "classbrayns_1_1_o_s_p_ray_scene.html#ae7908e67cd061b4d5295f8dc17b8c4a2", null ],
     [ "buildGeometry", "classbrayns_1_1_o_s_p_ray_scene.html#ae66bac0fc386bc938be08d31ed718c65", null ],
     [ "commit", "classbrayns_1_1_o_s_p_ray_scene.html#a8178ceb54f910c39059b1888f8de8ba3", null ],
     [ "commitLights", "classbrayns_1_1_o_s_p_ray_scene.html#a98df27705bcc48b935d22ed0256cf89c", null ],
