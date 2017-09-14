@@ -32,17 +32,17 @@
             <td></td>
             <td class="headerItem">Lines:</td>
             <td class="headerCovTableEntry">1</td>
-            <td class="headerCovTableEntry">51</td>
-            <td class="headerCovTableEntryLo">2.0 %</td>
+            <td class="headerCovTableEntry">113</td>
+            <td class="headerCovTableEntryLo">0.9 %</td>
           </tr>
           <tr>
             <td class="headerItem">Date:</td>
-            <td class="headerValue">2017-07-14 03:05:00</td>
+            <td class="headerValue">2017-09-14 03:04:43</td>
             <td></td>
             <td class="headerItem">Functions:</td>
             <td class="headerCovTableEntry">2</td>
-            <td class="headerCovTableEntry">14</td>
-            <td class="headerCovTableEntryLo">14.3 %</td>
+            <td class="headerCovTableEntry">21</td>
+            <td class="headerCovTableEntryLo">9.5 %</td>
           </tr>
           <tr><td><img src="../glass.png" width=3 height=3 alt=""></td></tr>
         </table>
@@ -94,96 +94,209 @@
 <span class="lineNum">      32 </span>            : 
 <a name="33"><span class="lineNum">      33 </span>            : namespace livre</a>
 <span class="lineNum">      34 </span>            : {
-<a name="35"><span class="lineNum">      35 </span><span class="lineNoCov">          0 : struct Client::Impl</span></a>
+<span class="lineNum">      35 </span><span class="lineNoCov">          0 : struct Client::Impl</span>
 <span class="lineNum">      36 </span>            : {
-<span class="lineNum">      37 </span><span class="lineNoCov">          0 :     Impl(const bool isResident_)</span>
-<span class="lineNum">      38 </span><span class="lineNoCov">          0 :         : isResident(isResident_)</span>
-<span class="lineNum">      39 </span>            :     {
-<span class="lineNum">      40 </span><span class="lineNoCov">          0 :     }</span>
-<span class="lineNum">      41 </span>            :     IdleFunc _idleFunc;
-<span class="lineNum">      42 </span>            :     eq::ServerPtr server;
-<span class="lineNum">      43 </span>            :     bool isResident = false;
-<a name="44"><span class="lineNum">      44 </span>            : };</a>
-<span class="lineNum">      45 </span>            : 
-<span class="lineNum">      46 </span><span class="lineNoCov">          0 : Client::Client(const int argc, char** argv, const bool isResident)</span>
-<span class="lineNum">      47 </span><span class="lineNoCov">          0 :     : _impl(new Client::Impl(isResident))</span>
-<span class="lineNum">      48 </span>            : {
-<span class="lineNum">      49 </span><span class="lineNoCov">          0 :     if (!initLocal(argc, argv))</span>
-<span class="lineNum">      50 </span><span class="lineNoCov">          0 :         LBTHROW(std::runtime_error(&quot;Can't init client&quot;));</span>
-<span class="lineNum">      51 </span>            : 
-<span class="lineNum">      52 </span><span class="lineNoCov">          0 :     _impl-&gt;server = new eq::Server;</span>
-<span class="lineNum">      53 </span><span class="lineNoCov">          0 :     if (!connectServer(_impl-&gt;server))</span>
-<span class="lineNum">      54 </span>            :     {
-<span class="lineNum">      55 </span><span class="lineNoCov">          0 :         exitLocal();</span>
-<span class="lineNum">      56 </span><span class="lineNoCov">          0 :         LBTHROW(std::runtime_error(&quot;Can't open server&quot;));</span>
-<span class="lineNum">      57 </span>            :     }
-<a name="58"><span class="lineNum">      58 </span><span class="lineNoCov">          0 : }</span></a>
-<span class="lineNum">      59 </span>            : 
-<span class="lineNum">      60 </span><span class="lineNoCov">          0 : Client::~Client()</span>
-<span class="lineNum">      61 </span>            : {
-<a name="62"><span class="lineNum">      62 </span><span class="lineNoCov">          0 : }</span></a>
-<span class="lineNum">      63 </span>            : 
-<span class="lineNum">      64 </span><span class="lineNoCov">          0 : Config* Client::chooseConfig()</span>
-<span class="lineNum">      65 </span>            : {
+<span class="lineNum">      37 </span>            :     IdleFunc _idleFunc;
+<span class="lineNum">      38 </span>            :     eq::ServerPtr server;
+<span class="lineNum">      39 </span>            :     Config* config{nullptr};
+<span class="lineNum">      40 </span>            :     ApplicationParameters applicationParameters;
+<span class="lineNum">      41 </span>            :     VolumeRendererParameters rendererParameters;
+<a name="42"><span class="lineNum">      42 </span>            : };</a>
+<span class="lineNum">      43 </span>            : 
+<span class="lineNum">      44 </span><span class="lineNoCov">          0 : Client::Client(const int argc, char* argv[])</span>
+<span class="lineNum">      45 </span><span class="lineNoCov">          0 :     : _impl(new Client::Impl)</span>
+<span class="lineNum">      46 </span>            : {
+<span class="lineNum">      47 </span><span class="lineNoCov">          0 :     if (!_impl-&gt;applicationParameters.initialize(argc, argv) ||</span>
+<span class="lineNum">      48 </span><span class="lineNoCov">          0 :         !_impl-&gt;rendererParameters.initialize(argc, argv))</span>
+<span class="lineNum">      49 </span>            :     {
+<span class="lineNum">      50 </span><span class="lineNoCov">          0 :         LBTHROW(std::runtime_error(&quot;Error parsing command line arguments&quot;));</span>
+<span class="lineNum">      51 </span>            :     }
+<span class="lineNum">      52 </span>            : 
+<span class="lineNum">      53 </span><span class="lineNoCov">          0 :     if (_impl-&gt;applicationParameters.dataFileName.empty())</span>
+<span class="lineNum">      54 </span><span class="lineNoCov">          0 :         _impl-&gt;applicationParameters.dataFileName = &quot;mem:///#4096,4096,4096,40&quot;;</span>
+<span class="lineNum">      55 </span>            : 
+<span class="lineNum">      56 </span><span class="lineNoCov">          0 :     if (!initLocal(argc, argv))</span>
+<span class="lineNum">      57 </span><span class="lineNoCov">          0 :         LBTHROW(std::runtime_error(&quot;Can't init client&quot;));</span>
+<span class="lineNum">      58 </span>            : 
+<span class="lineNum">      59 </span><span class="lineNoCov">          0 :     _impl-&gt;server = new eq::Server;</span>
+<span class="lineNum">      60 </span><span class="lineNoCov">          0 :     if (!connectServer(_impl-&gt;server))</span>
+<span class="lineNum">      61 </span>            :     {
+<span class="lineNum">      62 </span><span class="lineNoCov">          0 :         exitLocal();</span>
+<span class="lineNum">      63 </span><span class="lineNoCov">          0 :         LBTHROW(std::runtime_error(&quot;Can't open server&quot;));</span>
+<span class="lineNum">      64 </span>            :     }
+<span class="lineNum">      65 </span>            : 
 <span class="lineNum">      66 </span><span class="lineNoCov">          0 :     eq::fabric::ConfigParams configParams;</span>
-<span class="lineNum">      67 </span>            :     auto config =
+<span class="lineNum">      67 </span><span class="lineNoCov">          0 :     _impl-&gt;config =</span>
 <span class="lineNum">      68 </span><span class="lineNoCov">          0 :         static_cast&lt;Config*&gt;(_impl-&gt;server-&gt;chooseConfig(configParams));</span>
-<span class="lineNum">      69 </span><span class="lineNoCov">          0 :     return config;</span>
-<a name="70"><span class="lineNum">      70 </span>            : }</a>
+<span class="lineNum">      69 </span><span class="lineNoCov">          0 :     if (!_impl-&gt;config)</span>
+<span class="lineNum">      70 </span><span class="lineNoCov">          0 :         LBTHROW(std::runtime_error(&quot;No matching config on server&quot;));</span>
 <span class="lineNum">      71 </span>            : 
-<span class="lineNum">      72 </span><span class="lineNoCov">          0 : void Client::releaseConfig(Config* config)</span>
-<span class="lineNum">      73 </span>            : {
-<span class="lineNum">      74 </span><span class="lineNoCov">          0 :     _impl-&gt;server-&gt;releaseConfig(config);</span>
-<span class="lineNum">      75 </span><span class="lineNoCov">          0 :     if (!disconnectServer(_impl-&gt;server))</span>
-<span class="lineNum">      76 </span><span class="lineNoCov">          0 :         LBERROR &lt;&lt; &quot;Client::disconnectServer failed&quot; &lt;&lt; std::endl;</span>
-<span class="lineNum">      77 </span><span class="lineNoCov">          0 :     _impl-&gt;server = 0;</span>
-<span class="lineNum">      78 </span><span class="lineNoCov">          0 :     exitLocal();</span>
-<span class="lineNum">      79 </span>            : 
-<span class="lineNum">      80 </span><span class="lineNoCov">          0 :     LBASSERTINFO(getRefCount() == 1, &quot;Client still referenced by &quot;</span>
-<span class="lineNum">      81 </span>            :                                          &lt;&lt; getRefCount() - 1);
-<a name="82"><span class="lineNum">      82 </span><span class="lineNoCov">          0 : }</span></a>
-<span class="lineNum">      83 </span>            : 
-<span class="lineNum">      84 </span><span class="lineNoCov">          0 : void Client::setIdleFunction(const IdleFunc&amp; idleFunc)</span>
-<span class="lineNum">      85 </span>            : {
-<span class="lineNum">      86 </span><span class="lineNoCov">          0 :     _impl-&gt;_idleFunc = idleFunc;</span>
+<span class="lineNum">      72 </span>            :     // framedata setup gets volume URI from application params which is
+<span class="lineNum">      73 </span>            :     // needed in Node::configInit() to load volume
+<span class="lineNum">      74 </span><span class="lineNoCov">          0 :     FrameData&amp; frameData = _impl-&gt;config-&gt;getFrameData();</span>
+<span class="lineNum">      75 </span><span class="lineNoCov">          0 :     frameData.setup(_impl-&gt;applicationParameters, _impl-&gt;rendererParameters);</span>
+<span class="lineNum">      76 </span>            : 
+<span class="lineNum">      77 </span><span class="lineNoCov">          0 :     if (!_impl-&gt;config-&gt;init(argc, argv))</span>
+<span class="lineNum">      78 </span>            :     {
+<span class="lineNum">      79 </span><span class="lineNoCov">          0 :         _impl-&gt;server-&gt;releaseConfig(_impl-&gt;config);</span>
+<span class="lineNum">      80 </span><span class="lineNoCov">          0 :         _impl-&gt;config = nullptr;</span>
+<span class="lineNum">      81 </span><span class="lineNoCov">          0 :         LBTHROW(std::runtime_error(&quot;Config init failed&quot;));</span>
+<span class="lineNum">      82 </span>            :     }
+<a name="83"><span class="lineNum">      83 </span><span class="lineNoCov">          0 : }</span></a>
+<span class="lineNum">      84 </span>            : 
+<span class="lineNum">      85 </span><span class="lineNoCov">          0 : Client::~Client()</span>
+<span class="lineNum">      86 </span>            : {
 <a name="87"><span class="lineNum">      87 </span><span class="lineNoCov">          0 : }</span></a>
 <span class="lineNum">      88 </span>            : 
-<span class="lineNum">      89 </span><span class="lineNoCov">          0 : const IdleFunc&amp; Client::getIdleFunction() const</span>
+<span class="lineNum">      89 </span><span class="lineNoCov">          0 : void Client::run()</span>
 <span class="lineNum">      90 </span>            : {
-<span class="lineNum">      91 </span><span class="lineNoCov">          0 :     return _impl-&gt;_idleFunc;</span>
-<a name="92"><span class="lineNum">      92 </span>            : }</a>
-<span class="lineNum">      93 </span>            : 
-<span class="lineNum">      94 </span><span class="lineNoCov">          0 : bool Client::processCommands()</span>
-<span class="lineNum">      95 </span>            : {
-<span class="lineNum">      96 </span><span class="lineNoCov">          0 :     if (!hasCommands())</span>
-<span class="lineNum">      97 </span><span class="lineNoCov">          0 :         return false;</span>
-<span class="lineNum">      98 </span>            : 
-<span class="lineNum">      99 </span><span class="lineNoCov">          0 :     processCommand();</span>
-<span class="lineNum">     100 </span><span class="lineNoCov">          0 :     return true;</span>
-<a name="101"><span class="lineNum">     101 </span>            : }</a>
-<span class="lineNum">     102 </span>            : 
-<span class="lineNum">     103 </span><span class="lineNoCov">          0 : bool Client::initLocal(const int argc, char** argv)</span>
-<span class="lineNum">     104 </span>            : {
-<span class="lineNum">     105 </span><span class="lineNoCov">          0 :     addActiveLayout(&quot;Simple&quot;); // prefer single GPU layout by default</span>
-<span class="lineNum">     106 </span><span class="lineNoCov">          0 :     return eq::Client::initLocal(argc, argv);</span>
-<a name="107"><span class="lineNum">     107 </span>            : }</a>
-<span class="lineNum">     108 </span>            : 
-<span class="lineNum">     109 </span><span class="lineNoCov">          0 : void Client::clientLoop()</span>
-<span class="lineNum">     110 </span>            : {
-<span class="lineNum">     111 </span><span class="lineNoCov">          0 :     do</span>
-<span class="lineNum">     112 </span>            :     {
-<span class="lineNum">     113 </span><span class="lineNoCov">          0 :         LBINFO &lt;&lt; &quot;Entered client loop&quot; &lt;&lt; std::endl;</span>
-<span class="lineNum">     114 </span><span class="lineNoCov">          0 :         const uint32_t timeout = 100; // Run idle function every 100ms</span>
-<span class="lineNum">     115 </span><span class="lineNoCov">          0 :         while (isRunning())</span>
-<span class="lineNum">     116 </span>            :         {
-<span class="lineNum">     117 </span><span class="lineNoCov">          0 :             if (_impl-&gt;_idleFunc)</span>
-<span class="lineNum">     118 </span><span class="lineNoCov">          0 :                 _impl-&gt;_idleFunc(); // order is important for latency</span>
-<span class="lineNum">     119 </span>            : 
-<span class="lineNum">     120 </span><span class="lineNoCov">          0 :             processCommand(timeout);</span>
-<span class="lineNum">     121 </span>            :         }
-<a name="122"><span class="lineNum">     122 </span><span class="lineNoCov">          0 :     } while (_impl-&gt;isResident); // execute at least one config run</span></a>
-<span class="lineNum">     123 </span><span class="lineNoCov">          0 : }</span>
-<span class="lineNum">     124 </span><span class="lineCov">         36 : }</span>
+<span class="lineNum">      91 </span><span class="lineNoCov">          0 :     uint32_t maxFrames = _impl-&gt;applicationParameters.maxFrames;</span>
+<span class="lineNum">      92 </span><span class="lineNoCov">          0 :     while (_impl-&gt;config-&gt;isRunning() &amp;&amp; maxFrames--)</span>
+<span class="lineNum">      93 </span>            :     {
+<span class="lineNum">      94 </span><span class="lineNoCov">          0 :         if (!_impl-&gt;config-&gt;frame()) // If not valid, reset maxFrames</span>
+<span class="lineNum">      95 </span><span class="lineNoCov">          0 :             maxFrames++;</span>
+<span class="lineNum">      96 </span>            : 
+<span class="lineNum">      97 </span><span class="lineNoCov">          0 :         if (getIdleFunction())</span>
+<span class="lineNum">      98 </span><span class="lineNoCov">          0 :             getIdleFunction()(); // order is important to latency</span>
+<span class="lineNum">      99 </span>            : 
+<span class="lineNum">     100 </span>            :         // wait for an event requiring redraw
+<span class="lineNum">     101 </span><span class="lineNoCov">          0 :         while (!_impl-&gt;config-&gt;needRedraw())</span>
+<span class="lineNum">     102 </span>            :         {
+<span class="lineNum">     103 </span><span class="lineNoCov">          0 :             if (hasCommands())</span>
+<span class="lineNum">     104 </span>            :             {
+<span class="lineNum">     105 </span><span class="lineNoCov">          0 :                 processCommand();</span>
+<span class="lineNum">     106 </span><span class="lineNoCov">          0 :                 _impl-&gt;config-&gt;handleEvents(); // non-blocking</span>
+<span class="lineNum">     107 </span>            :             }
+<span class="lineNum">     108 </span>            :             else // no pending commands, block on user event
+<span class="lineNum">     109 </span>            :             {
+<span class="lineNum">     110 </span>            :                 // Poll ZeroEq subscribers at least every 100 ms in handleEvents
+<span class="lineNum">     111 </span>            :                 const eq::EventICommand&amp; event =
+<span class="lineNum">     112 </span><span class="lineNoCov">          0 :                     _impl-&gt;config-&gt;getNextEvent(100);</span>
+<span class="lineNum">     113 </span><span class="lineNoCov">          0 :                 if (event.isValid())</span>
+<span class="lineNum">     114 </span><span class="lineNoCov">          0 :                     _impl-&gt;config-&gt;handleEvent(event);</span>
+<span class="lineNum">     115 </span><span class="lineNoCov">          0 :                 _impl-&gt;config-&gt;handleEvents();        // non-blocking</span>
+<span class="lineNum">     116 </span><span class="lineNoCov">          0 :                 _impl-&gt;config-&gt;handleNetworkEvents(); // non-blocking</span>
+<span class="lineNum">     117 </span>            :             }
+<span class="lineNum">     118 </span>            :         }
+<span class="lineNum">     119 </span><span class="lineNoCov">          0 :         _impl-&gt;config-&gt;handleEvents();        // process all pending events</span>
+<span class="lineNum">     120 </span><span class="lineNoCov">          0 :         _impl-&gt;config-&gt;handleNetworkEvents(); // ...all ZeroEQ events</span>
+<span class="lineNum">     121 </span>            :     }
+<a name="122"><span class="lineNum">     122 </span><span class="lineNoCov">          0 : }</span></a>
+<span class="lineNum">     123 </span>            : 
+<span class="lineNum">     124 </span><span class="lineNoCov">          0 : bool Client::render(const eq::View::ScreenshotFunc&amp; func)</span>
+<span class="lineNum">     125 </span>            : {
+<span class="lineNum">     126 </span><span class="lineNoCov">          0 :     eq::View* view{nullptr};</span>
+<span class="lineNum">     127 </span><span class="lineNoCov">          0 :     auto layout = getActiveLayout();</span>
+<span class="lineNum">     128 </span><span class="lineNoCov">          0 :     if (layout)</span>
+<span class="lineNum">     129 </span>            :     {
+<span class="lineNum">     130 </span><span class="lineNoCov">          0 :         auto&amp; views = layout-&gt;getViews();</span>
+<span class="lineNum">     131 </span><span class="lineNoCov">          0 :         if (!views.empty())</span>
+<span class="lineNum">     132 </span>            :         {
+<span class="lineNum">     133 </span><span class="lineNoCov">          0 :             view = views.front();</span>
+<span class="lineNum">     134 </span><span class="lineNoCov">          0 :             view-&gt;enableScreenshot(eq::Frame::Buffer::color, func);</span>
+<span class="lineNum">     135 </span>            :         }
+<span class="lineNum">     136 </span>            :     }
+<span class="lineNum">     137 </span>            : 
+<span class="lineNum">     138 </span><span class="lineNoCov">          0 :     _impl-&gt;config-&gt;frame();</span>
+<span class="lineNum">     139 </span><span class="lineNoCov">          0 :     if (getIdleFunction())</span>
+<span class="lineNum">     140 </span><span class="lineNoCov">          0 :         getIdleFunction()(); // order is important to latency</span>
+<span class="lineNum">     141 </span><span class="lineNoCov">          0 :     _impl-&gt;config-&gt;handleEvents();</span>
+<span class="lineNum">     142 </span>            : 
+<span class="lineNum">     143 </span><span class="lineNoCov">          0 :     if (view)</span>
+<span class="lineNum">     144 </span><span class="lineNoCov">          0 :         view-&gt;disableScreenshot();</span>
+<span class="lineNum">     145 </span>            : 
+<span class="lineNum">     146 </span><span class="lineNoCov">          0 :     return _impl-&gt;config-&gt;needRedraw();</span>
+<a name="147"><span class="lineNum">     147 </span>            : }</a>
+<span class="lineNum">     148 </span>            : 
+<span class="lineNum">     149 </span><span class="lineNoCov">          0 : void Client::exit()</span>
+<span class="lineNum">     150 </span>            : {
+<span class="lineNum">     151 </span><span class="lineNoCov">          0 :     if (_impl-&gt;config)</span>
+<span class="lineNum">     152 </span>            :     {
+<span class="lineNum">     153 </span><span class="lineNoCov">          0 :         _impl-&gt;config-&gt;exit();</span>
+<span class="lineNum">     154 </span><span class="lineNoCov">          0 :         _impl-&gt;server-&gt;releaseConfig(_impl-&gt;config);</span>
+<span class="lineNum">     155 </span>            :     }
+<span class="lineNum">     156 </span><span class="lineNoCov">          0 :     if (!disconnectServer(_impl-&gt;server))</span>
+<span class="lineNum">     157 </span><span class="lineNoCov">          0 :         LBERROR &lt;&lt; &quot;Client::disconnectServer failed&quot; &lt;&lt; std::endl;</span>
+<span class="lineNum">     158 </span><span class="lineNoCov">          0 :     _impl-&gt;server = 0;</span>
+<span class="lineNum">     159 </span><span class="lineNoCov">          0 :     exitLocal();</span>
+<span class="lineNum">     160 </span>            : 
+<span class="lineNum">     161 </span><span class="lineNoCov">          0 :     LBASSERTINFO(getRefCount() == 1, &quot;Client still referenced by &quot;</span>
+<span class="lineNum">     162 </span>            :                                          &lt;&lt; getRefCount() - 1);
+<a name="163"><span class="lineNum">     163 </span><span class="lineNoCov">          0 : }</span></a>
+<span class="lineNum">     164 </span>            : 
+<span class="lineNum">     165 </span><span class="lineNoCov">          0 : void Client::resize(const Vector2ui&amp; size)</span>
+<span class="lineNum">     166 </span>            : {
+<span class="lineNum">     167 </span><span class="lineNoCov">          0 :     _impl-&gt;config-&gt;finishAllFrames();</span>
+<span class="lineNum">     168 </span><span class="lineNoCov">          0 :     auto layout = getActiveLayout();</span>
+<span class="lineNum">     169 </span><span class="lineNoCov">          0 :     if (layout)</span>
+<span class="lineNum">     170 </span><span class="lineNoCov">          0 :         layout-&gt;setPixelViewport(</span>
+<span class="lineNum">     171 </span><span class="lineNoCov">          0 :             eq::PixelViewport{0, 0, int32_t(size.x()), int32_t(size.y())});</span>
+<a name="172"><span class="lineNum">     172 </span><span class="lineNoCov">          0 : }</span></a>
+<span class="lineNum">     173 </span>            : 
+<span class="lineNum">     174 </span><span class="lineNoCov">          0 : void Client::setIdleFunction(const IdleFunc&amp; idleFunc)</span>
+<span class="lineNum">     175 </span>            : {
+<span class="lineNum">     176 </span><span class="lineNoCov">          0 :     _impl-&gt;_idleFunc = idleFunc;</span>
+<a name="177"><span class="lineNum">     177 </span><span class="lineNoCov">          0 : }</span></a>
+<span class="lineNum">     178 </span>            : 
+<span class="lineNum">     179 </span><span class="lineNoCov">          0 : const IdleFunc&amp; Client::getIdleFunction() const</span>
+<span class="lineNum">     180 </span>            : {
+<span class="lineNum">     181 </span><span class="lineNoCov">          0 :     return _impl-&gt;_idleFunc;</span>
+<a name="182"><span class="lineNum">     182 </span>            : }</a>
+<span class="lineNum">     183 </span>            : 
+<span class="lineNum">     184 </span><span class="lineNoCov">          0 : bool Client::initLocal(const int argc, char** argv)</span>
+<span class="lineNum">     185 </span>            : {
+<span class="lineNum">     186 </span><span class="lineNoCov">          0 :     addActiveLayout(&quot;Simple&quot;); // prefer single GPU layout by default</span>
+<span class="lineNum">     187 </span><span class="lineNoCov">          0 :     return eq::Client::initLocal(argc, argv);</span>
+<a name="188"><span class="lineNum">     188 </span>            : }</a>
+<span class="lineNum">     189 </span>            : 
+<span class="lineNum">     190 </span><span class="lineNoCov">          0 : void Client::clientLoop()</span>
+<span class="lineNum">     191 </span>            : {
+<span class="lineNum">     192 </span><span class="lineNoCov">          0 :     LBINFO &lt;&lt; &quot;Entered client loop&quot; &lt;&lt; std::endl;</span>
+<span class="lineNum">     193 </span><span class="lineNoCov">          0 :     const uint32_t timeout = 100; // Run idle function every 100ms</span>
+<span class="lineNum">     194 </span><span class="lineNoCov">          0 :     while (isRunning())</span>
+<span class="lineNum">     195 </span>            :     {
+<span class="lineNum">     196 </span><span class="lineNoCov">          0 :         if (_impl-&gt;_idleFunc)</span>
+<span class="lineNum">     197 </span><span class="lineNoCov">          0 :             _impl-&gt;_idleFunc(); // order is important for latency</span>
+<span class="lineNum">     198 </span>            : 
+<span class="lineNum">     199 </span><span class="lineNoCov">          0 :         processCommand(timeout);</span>
+<span class="lineNum">     200 </span>            :     }
+<a name="201"><span class="lineNum">     201 </span><span class="lineNoCov">          0 : }</span></a>
+<span class="lineNum">     202 </span>            : 
+<span class="lineNum">     203 </span><span class="lineNoCov">          0 : eq::Layout* Client::getActiveLayout()</span>
+<span class="lineNum">     204 </span>            : {
+<span class="lineNum">     205 </span><span class="lineNoCov">          0 :     if (!_impl-&gt;config)</span>
+<span class="lineNum">     206 </span><span class="lineNoCov">          0 :         return nullptr;</span>
+<span class="lineNum">     207 </span><span class="lineNoCov">          0 :     auto&amp; canvases = _impl-&gt;config-&gt;getCanvases();</span>
+<span class="lineNum">     208 </span><span class="lineNoCov">          0 :     if (!canvases.empty())</span>
+<span class="lineNum">     209 </span><span class="lineNoCov">          0 :         return canvases.front()-&gt;getActiveLayout();</span>
+<span class="lineNum">     210 </span><span class="lineNoCov">          0 :     return nullptr;</span>
+<a name="211"><span class="lineNum">     211 </span>            : }</a>
+<span class="lineNum">     212 </span>            : 
+<span class="lineNum">     213 </span><span class="lineNoCov">          0 : const Histogram&amp; Client::getHistogram() const</span>
+<span class="lineNum">     214 </span>            : {
+<span class="lineNum">     215 </span><span class="lineNoCov">          0 :     return _impl-&gt;config-&gt;getHistogram();</span>
+<a name="216"><span class="lineNum">     216 </span>            : }</a>
+<span class="lineNum">     217 </span>            : 
+<span class="lineNum">     218 </span><span class="lineNoCov">          0 : const FrameData&amp; Client::getFrameData() const</span>
+<span class="lineNum">     219 </span>            : {
+<span class="lineNum">     220 </span><span class="lineNoCov">          0 :     return _impl-&gt;config-&gt;getFrameData();</span>
+<a name="221"><span class="lineNum">     221 </span>            : }</a>
+<span class="lineNum">     222 </span>            : 
+<span class="lineNum">     223 </span><span class="lineNoCov">          0 : FrameData&amp; Client::getFrameData()</span>
+<span class="lineNum">     224 </span>            : {
+<span class="lineNum">     225 </span><span class="lineNoCov">          0 :     return _impl-&gt;config-&gt;getFrameData();</span>
+<a name="226"><span class="lineNum">     226 </span>            : }</a>
+<span class="lineNum">     227 </span>            : 
+<span class="lineNum">     228 </span><span class="lineNoCov">          0 : const VolumeInformation&amp; Client::getVolumeInformation() const</span>
+<span class="lineNum">     229 </span>            : {
+<span class="lineNum">     230 </span><span class="lineNoCov">          0 :     return _impl-&gt;config-&gt;getVolumeInformation();</span>
+<a name="231"><span class="lineNum">     231 </span>            : }</a>
+<span class="lineNum">     232 </span>            : 
+<span class="lineNum">     233 </span><span class="lineNoCov">          0 : ApplicationParameters&amp; Client::getApplicationParameters()</span>
+<span class="lineNum">     234 </span>            : {
+<a name="235"><span class="lineNum">     235 </span><span class="lineNoCov">          0 :     return _impl-&gt;applicationParameters;</span></a>
+<span class="lineNum">     236 </span>            : }
+<span class="lineNum">     237 </span><span class="lineCov">         36 : }</span>
 </pre>
       </td>
     </tr>

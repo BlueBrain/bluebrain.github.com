@@ -10,6 +10,5 @@ var files =
     [ "Parameters.h", "_parameters_8h_source.html", null ],
     [ "TransferFunction1D.h", "_transfer_function1_d_8h_source.html", null ],
     [ "types.h", "types_8h_source.html", null ],
-    [ "Utilities.h", "_utilities_8h_source.html", null ],
     [ "version.h", "version_8h.html", "version_8h" ]
 ];

@@ -11,6 +11,6 @@ var classlivre_1_1_configuration =
     [ "getValue", "classlivre_1_1_configuration.html#a8ca9ca33be016de52015378bfee880b7", null ],
     [ "getValue", "classlivre_1_1_configuration.html#a2ab024f518972248bbba1cd5c15de3af", null ],
     [ "operator=", "classlivre_1_1_configuration.html#ad3d5f74f43f293e40664ee311a50eb61", null ],
-    [ "parseCommandLine", "classlivre_1_1_configuration.html#a14cd308e5463311d2e07cdead263d1ba", null ],
+    [ "parseCommandLine", "classlivre_1_1_configuration.html#aa6f73fdc6ddee7e7c5376e9974753b93", null ],
     [ "operator<<", "classlivre_1_1_configuration.html#aaacf502158abba042903c7a9e842d382", null ]
 ];
