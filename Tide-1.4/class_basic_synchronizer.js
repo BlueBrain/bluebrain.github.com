@@ -1,0 +1,12 @@
+var class_basic_synchronizer =
+[
+    [ "BasicSynchronizer", "class_basic_synchronizer.html#a343ca5d5f6872766b0cd019111cd5427", null ],
+    [ "canSwapTiles", "class_basic_synchronizer.html#a5176a9efe3c6b214f4a7de5c360d4693", null ],
+    [ "getStatistics", "class_basic_synchronizer.html#abdfd78b504b7741b8ad06e75d9ccb3fe", null ],
+    [ "getTilesArea", "class_basic_synchronizer.html#a14fadea5476d8730c894507a0f5da688", null ],
+    [ "getZoomContextTile", "class_basic_synchronizer.html#acb7fe6248334867a4036dfff2c17a33d", null ],
+    [ "onSwapReady", "class_basic_synchronizer.html#abd26eebc223e5d5dc5f0442f51fce2fd", null ],
+    [ "swapTiles", "class_basic_synchronizer.html#ac32980f2fbbfe5acc52cf22430927c09", null ],
+    [ "update", "class_basic_synchronizer.html#ad541e1610630640018bc0f377939a627", null ],
+    [ "updateTiles", "class_basic_synchronizer.html#ad96bfa9fbffc0ccfff474affb6d40d62", null ]
+];
