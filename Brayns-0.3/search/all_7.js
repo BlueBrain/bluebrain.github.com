@@ -55,7 +55,7 @@ var searchData=
   ['getfocallength',['getFocalLength',['../classbrayns_1_1_camera.html#a6fc8b59a7b5e13317810e3299f1928a4',1,'brayns::Camera']]],
   ['getfolder',['getFolder',['../classbrayns_1_1_volume_parameters.html#ab7143e2f875fab737555d9dd8215a096',1,'brayns::VolumeParameters']]],
   ['getframebuffer',['getFrameBuffer',['../classbrayns_1_1_engine.html#a651d4f6e12e6f6ea73089150ee37b8b0',1,'brayns::Engine']]],
-  ['getframedata',['getFrameData',['../classbrayns_1_1_abstract_simulation_handler.html#a4cad6b1294d06b06df1cac173869178d',1,'brayns::AbstractSimulationHandler::getFrameData()'],['../classbrayns_1_1_circuit_simulation_handler.html#af1547e2f5fa81db9b0cc80ce8989e6dc',1,'brayns::CircuitSimulationHandler::getFrameData()'],['../classbrayns_1_1_spike_simulation_handler.html#a249fcd4324838bed7e17af5c2bf7fc10',1,'brayns::SpikeSimulationHandler::getFrameData()']]],
+  ['getframedata',['getFrameData',['../classbrayns_1_1_abstract_simulation_handler.html#a4cad6b1294d06b06df1cac173869178d',1,'brayns::AbstractSimulationHandler::getFrameData()'],['../classbrayns_1_1_spike_simulation_handler.html#a249fcd4324838bed7e17af5c2bf7fc10',1,'brayns::SpikeSimulationHandler::getFrameData()']]],
   ['getframenumber',['getFrameNumber',['../classbrayns_1_1_engine.html#ad7f2f97d88f39783e57fe2fb79aa348c',1,'brayns::Engine']]],
   ['getframesize',['getFrameSize',['../classbrayns_1_1_abstract_simulation_handler.html#a94eb882faba3d4a6f4cecdfa7f3af5d8',1,'brayns::AbstractSimulationHandler']]],
   ['getgeneratemultiplemodels',['getGenerateMultipleModels',['../classbrayns_1_1_geometry_parameters.html#a2b88be75feb41785ab4205eec05d66d2',1,'brayns::GeometryParameters']]],

@@ -1,4 +1,4 @@
 var searchData=
 [
-  ['xyzbloader',['XYZBLoader',['../classbrayns_1_1_x_y_z_b_loader.html',1,'brayns']]]
+  ['zeroeqplugin',['ZeroEQPlugin',['../classbrayns_1_1_zero_e_q_plugin.html',1,'brayns']]]
 ];

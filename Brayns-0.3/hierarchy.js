@@ -16,7 +16,6 @@ var hierarchy =
       [ "brayns::VolumeParameters", "classbrayns_1_1_volume_parameters.html", null ]
     ] ],
     [ "brayns::AbstractSimulationHandler", "classbrayns_1_1_abstract_simulation_handler.html", [
-      [ "brayns::CircuitSimulationHandler", "classbrayns_1_1_circuit_simulation_handler.html", null ],
       [ "brayns::SpikeSimulationHandler", "classbrayns_1_1_spike_simulation_handler.html", null ]
     ] ],
     [ "brayns::BaseWindow", "classbrayns_1_1_base_window.html", null ],
@@ -65,8 +64,6 @@ var hierarchy =
     [ "brayns::MetaballsGenerator", "classbrayns_1_1_metaballs_generator.html", null ],
     [ "brayns::MolecularSystemReader", "classbrayns_1_1_molecular_system_reader.html", null ],
     [ "brayns::MorphologyLayout", "structbrayns_1_1_morphology_layout.html", null ],
-    [ "brayns::MorphologyLoader", "classbrayns_1_1_morphology_loader.html", null ],
-    [ "brayns::NESTLoader", "classbrayns_1_1_n_e_s_t_loader.html", null ],
     [ "brayns::ParametersManager", "classbrayns_1_1_parameters_manager.html", null ],
     [ "brayns::ProteinLoader", "classbrayns_1_1_protein_loader.html", null ],
     [ "brayns::Renderer", "classbrayns_1_1_renderer.html", [

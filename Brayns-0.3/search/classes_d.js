@@ -1,13 +1,12 @@
 var searchData=
 [
-  ['optixcamera',['OptiXCamera',['../classbrayns_1_1_opti_x_camera.html',1,'brayns']]],
-  ['optixengine',['OptiXEngine',['../classbrayns_1_1_opti_x_engine.html',1,'brayns']]],
-  ['optixframebuffer',['OptiXFrameBuffer',['../classbrayns_1_1_opti_x_frame_buffer.html',1,'brayns']]],
-  ['optixrenderer',['OptiXRenderer',['../classbrayns_1_1_opti_x_renderer.html',1,'brayns']]],
-  ['optixscene',['OptiXScene',['../classbrayns_1_1_opti_x_scene.html',1,'brayns']]],
-  ['ospraycamera',['OSPRayCamera',['../classbrayns_1_1_o_s_p_ray_camera.html',1,'brayns']]],
-  ['osprayengine',['OSPRayEngine',['../classbrayns_1_1_o_s_p_ray_engine.html',1,'brayns']]],
-  ['osprayframebuffer',['OSPRayFrameBuffer',['../classbrayns_1_1_o_s_p_ray_frame_buffer.html',1,'brayns']]],
-  ['osprayrenderer',['OSPRayRenderer',['../classbrayns_1_1_o_s_p_ray_renderer.html',1,'brayns']]],
-  ['osprayscene',['OSPRayScene',['../classbrayns_1_1_o_s_p_ray_scene.html',1,'brayns']]]
+  ['parametersmanager',['ParametersManager',['../classbrayns_1_1_parameters_manager.html',1,'brayns']]],
+  ['particlerenderer',['ParticleRenderer',['../classbrayns_1_1_particle_renderer.html',1,'brayns']]],
+  ['perraydata_5fradiance',['PerRayData_radiance',['../struct_per_ray_data__radiance.html',1,'']]],
+  ['perraydata_5fshadow',['PerRayData_shadow',['../struct_per_ray_data__shadow.html',1,'']]],
+  ['pointlight',['PointLight',['../classbrayns_1_1_point_light.html',1,'brayns']]],
+  ['primitive',['Primitive',['../classbrayns_1_1_primitive.html',1,'brayns']]],
+  ['progress',['Progress',['../class_progress.html',1,'']]],
+  ['proteinloader',['ProteinLoader',['../classbrayns_1_1_protein_loader.html',1,'brayns']]],
+  ['proximityrenderer',['ProximityRenderer',['../classbrayns_1_1_proximity_renderer.html',1,'brayns']]]
 ];
