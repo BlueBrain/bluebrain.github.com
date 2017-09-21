@@ -1,5 +1,15 @@
 var NAVTREEINDEX3 =
 {
+"classbrayns_1_1_primitive.html#a4ba8f77d7be345d0d5f7e65d571d5210":[5,0,0,55,9],
+"classbrayns_1_1_primitive.html#a6842500e7b9b2a5b6b0caa746a76c7a4":[5,0,0,55,2],
+"classbrayns_1_1_primitive.html#a7c28f2c005c8d985ecb9fbf81ff8b452":[5,0,0,55,4],
+"classbrayns_1_1_primitive.html#a8253d6bf5525affba56cd84e8c6aada2":[5,0,0,55,5],
+"classbrayns_1_1_primitive.html#ac2c2c78d2888a736ab515ded00b6fce2":[5,0,0,55,3],
+"classbrayns_1_1_primitive.html#ad8893dbe0c09bafaf0d437b8686e5327":[5,0,0,55,6],
+"classbrayns_1_1_primitive.html#ae1173a942f5ba93049292843af53396d":[5,0,0,55,1],
+"classbrayns_1_1_primitive.html#aeb984a265eadebf5952b5919f3a338d6":[5,0,0,55,7],
+"classbrayns_1_1_protein_loader.html":[5,0,0,56],
+"classbrayns_1_1_protein_loader.html#a5d8b270166fd84a4bc0b2c1fd3354abb":[5,0,0,56,1],
 "classbrayns_1_1_protein_loader.html#a91c82bfd2699c0d8023a37d7e9f6327f":[5,0,0,56,2],
 "classbrayns_1_1_protein_loader.html#af62066c59f482d065b366243f294a03a":[5,0,0,56,0],
 "classbrayns_1_1_proximity_renderer.html":[5,0,0,57],
@@ -239,15 +249,5 @@ var NAVTREEINDEX3 =
 "classbrayns_1_1_volume_handler.html#a9842a3e1eac8ed2c182bb614f71cf9bd":[5,0,0,77,11],
 "classbrayns_1_1_volume_handler.html#aac72eca3b08d07ba2042f7303c57f501":[5,0,0,77,8],
 "classbrayns_1_1_volume_handler.html#ab8ed1cd8b3fea737cd948e9ef394d88c":[5,0,0,77,10],
-"classbrayns_1_1_volume_handler.html#ac499d28a2370eaf6938be7ef69e4d87f":[5,0,0,77,3],
-"classbrayns_1_1_volume_handler.html#ad4bd4b61f3c350ad20172376337c77c2":[5,0,0,77,1],
-"classbrayns_1_1_volume_handler.html#add889082843fb91f5d2d545e9595edeb":[5,0,0,77,4],
-"classbrayns_1_1_volume_handler.html#aebb55d097b0822d9347224e9c91ad770":[5,0,0,77,15],
-"classbrayns_1_1_volume_handler.html#af357f8fd6e08e61abfedb040a5f52731":[5,0,0,77,12],
-"classbrayns_1_1_volume_handler.html#afeaa537e13ad45960daab5c5437c6699":[5,0,0,77,5],
-"classbrayns_1_1_volume_handler_1_1_volume_descriptor.html":[5,0,0,77,0],
-"classbrayns_1_1_volume_handler_1_1_volume_descriptor.html#a0ad20d90302c25f34f70085588842b3c":[5,0,0,77,0,1],
-"classbrayns_1_1_volume_handler_1_1_volume_descriptor.html#a2d4b737d5b886e4ce8c3e59dc480d96a":[5,0,0,77,0,9],
-"classbrayns_1_1_volume_handler_1_1_volume_descriptor.html#a3957f2200339a9780daeeff87264b4e7":[5,0,0,77,0,8],
-"classbrayns_1_1_volume_handler_1_1_volume_descriptor.html#a3c3adefe331b28d5e6e07871d3250263":[5,0,0,77,0,10]
+"classbrayns_1_1_volume_handler.html#ac499d28a2370eaf6938be7ef69e4d87f":[5,0,0,77,3]
 };

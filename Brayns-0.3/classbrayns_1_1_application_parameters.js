@@ -11,6 +11,7 @@ var classbrayns_1_1_application_parameters =
     [ "getStreamCompression", "classbrayns_1_1_application_parameters.html#a3fd7cfeeacac40b807b4e64881826171", null ],
     [ "getStreamingEnabled", "classbrayns_1_1_application_parameters.html#af447580e607ea4e45e7d051ea7c267f4", null ],
     [ "getStreamQuality", "classbrayns_1_1_application_parameters.html#a1f6cfc99f6c28d7960bd6d6c00a35c50", null ],
+    [ "getTmpFolder", "classbrayns_1_1_application_parameters.html#a4c2e7a22aad865a23b1be1eb8b1d6175", null ],
     [ "getWindowSize", "classbrayns_1_1_application_parameters.html#a6e87fdfee6a6590c5d9ff7c4ee7dc0ee", null ],
     [ "isBenchmarking", "classbrayns_1_1_application_parameters.html#a0baa53fd46c9a6aecddeec70d2546ce2", null ],
     [ "print", "classbrayns_1_1_application_parameters.html#aa2e0d98422af63c78df7f14a65fa4b6c", null ],
@@ -31,5 +32,6 @@ var classbrayns_1_1_application_parameters =
     [ "_streamCompression", "classbrayns_1_1_application_parameters.html#a3d3e4da6d342e4d8bf8b42e9b2d0ddc7", null ],
     [ "_streamingEnabled", "classbrayns_1_1_application_parameters.html#a72cd0ad563b12bc677532cbcc479ef40", null ],
     [ "_streamQuality", "classbrayns_1_1_application_parameters.html#a57101b81269f49d575b73b1abea1092f", null ],
+    [ "_tmpFolder", "classbrayns_1_1_application_parameters.html#a63a6ca2aa1ef2abd0b7adb00cccfa53c", null ],
     [ "_windowSize", "classbrayns_1_1_application_parameters.html#afa4d23d90d1540ee46edb0f59d162b6e", null ]
 ];

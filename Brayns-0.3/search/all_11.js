@@ -36,6 +36,7 @@ var searchData=
   ['sethistogram',['setHistogram',['../classbrayns_1_1_volume_handler.html#a96bf2720442dd32493cffe4beaccf77c',1,'brayns::VolumeHandler']]],
   ['setintensity',['setIntensity',['../classbrayns_1_1_light.html#a7219ba01bccbf75a30e2be20b3f62fb7',1,'brayns::Light']]],
   ['setjpegcompression',['setJpegCompression',['../classbrayns_1_1_application_parameters.html#a9fdb360a50c27ab8242fff3d0f2170cb',1,'brayns::ApplicationParameters']]],
+  ['setkeeprunning',['setKeepRunning',['../classbrayns_1_1_engine.html#a9eeb56f21e8fc9c34eb926f6d706a546',1,'brayns::Engine']]],
   ['setmaterials',['setMaterials',['../classbrayns_1_1_scene.html#a70238d562cf41d097a48bfa66c4c4094',1,'brayns::Scene']]],
   ['setnbframes',['setNbFrames',['../classbrayns_1_1_abstract_simulation_handler.html#a51a2198c217fe8080a18075995c3de4d',1,'brayns::AbstractSimulationHandler::setNbFrames()'],['../classbrayns_1_1_volume_handler.html#aebb55d097b0822d9347224e9c91ad770',1,'brayns::VolumeHandler::setNbFrames()']]],
   ['setposition',['setPosition',['../classbrayns_1_1_camera.html#ad3ccec7616d8d86e5719a53512c39c68',1,'brayns::Camera::setPosition()'],['../classbrayns_1_1_point_light.html#a14c49779d4e61b944511e07c7f7cad13',1,'brayns::PointLight::setPosition()']]],

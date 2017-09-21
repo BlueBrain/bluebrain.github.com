@@ -7,5 +7,5 @@ var classbrayns_1_1_brayns =
     [ "getKeyboardHandler", "classbrayns_1_1_brayns.html#a8af015ef5e738482177f3e4a9dfc4699", null ],
     [ "getParametersManager", "classbrayns_1_1_brayns.html#ad68939e00e940e6df3255bbf9e8a761f", null ],
     [ "render", "classbrayns_1_1_brayns.html#a40a8a684cb1caf39e10f4b56dce58292", null ],
-    [ "render", "classbrayns_1_1_brayns.html#a422f64427d348600f7ad59f9041f8248", null ]
+    [ "render", "classbrayns_1_1_brayns.html#a775ea688fc1a445393a5a8172fe28864", null ]
 ];
