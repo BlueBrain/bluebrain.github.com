@@ -1,4 +1,4 @@
 var searchData=
 [
-  ['parameters',['Parameters',['../classlivre_1_1_parameters.html',1,'livre']]]
+  ['transferfunction1d',['TransferFunction1D',['../classlivre_1_1_transfer_function1_d.html',1,'livre']]]
 ];

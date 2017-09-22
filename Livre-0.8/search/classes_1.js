@@ -1,5 +1,5 @@
 var searchData=
 [
-  ['deletearray',['DeleteArray',['../structlivre_1_1_delete_array.html',1,'livre']]],
-  ['deleteobject',['DeleteObject',['../structlivre_1_1_delete_object.html',1,'livre']]]
+  ['glcontext',['GLContext',['../classlivre_1_1_g_l_context.html',1,'livre']]],
+  ['glslshaders',['GLSLShaders',['../classlivre_1_1_g_l_s_l_shaders.html',1,'livre']]]
 ];

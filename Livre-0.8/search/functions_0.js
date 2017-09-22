@@ -1,4 +1,6 @@
 var searchData=
 [
-  ['adddescription',['addDescription',['../classlivre_1_1_configuration.html#a504d9fffb96d0b7a4150106b72f790ac',1,'livre::Configuration::addDescription(const std::string &amp;groupName, const std::string &amp;shortDesc, const std::string &amp;longDesc)'],['../classlivre_1_1_configuration.html#a31ee550c1bb8eb849a01bf9234251456',1,'livre::Configuration::addDescription(const std::string &amp;groupName, const std::string &amp;shortDesc, const std::string &amp;longDesc, T defaultValue)'],['../classlivre_1_1_configuration.html#ad916e3c1fa15b09c2df487a710ec9bc0',1,'livre::Configuration::addDescription(const std::string &amp;groupName, const std::string &amp;shortDesc, const std::string &amp;longDesc, T defaultValue, T implicitValue)'],['../classlivre_1_1_configuration.html#a4703c9d2d80658edd98bad3545c18760',1,'livre::Configuration::addDescription(const Configuration &amp;config)']]]
+  ['check',['check',['../classlivrecore_1_1_version.html#a0ff444127e34e0c35278ba354a492129',1,'livrecore::Version']]],
+  ['checkopenglextension',['checkOpenGLExtension',['../classlivre_1_1_g_l_s_l_shaders.html#a9bf9f746b591f6973537480385d87a16',1,'livre::GLSLShaders']]],
+  ['clone',['clone',['../classlivre_1_1_g_l_context.html#a7b76f389693ecf78ec59c92a30579f43',1,'livre::GLContext']]]
 ];
