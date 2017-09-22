@@ -6,5 +6,6 @@ var class_stream_image =
     [ "getFormat", "class_stream_image.html#a52b08547ccf62406ac663263c86a8179", null ],
     [ "getHeight", "class_stream_image.html#a4c34790efbd056bcd25969c4002689b2", null ],
     [ "getPosition", "class_stream_image.html#a8ea7416b0791b10bffb1f71bb9e88092", null ],
+    [ "getRowOrder", "class_stream_image.html#a32556af8dd9a6122824a31aaf57cb767", null ],
     [ "getWidth", "class_stream_image.html#a1e84df6ce5bdeb28df4128f1c3491151", null ]
 ];

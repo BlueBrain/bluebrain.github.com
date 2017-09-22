@@ -42,11 +42,11 @@ var NAVTREEINDEX =
 "class_canvas_node.html#a8c78ae74787755d6c9e7f7c486806e70",
 "class_content_window.html#a83db32d67e94bb5561f5365895c07f34",
 "class_fps_counter.html#af7ac12793ae4f31b96439a4e12551160",
-"class_master_to_wall_channel.html#ad0d468ff235b833e89f854b067e16117",
-"class_pixel_stream_passthrough.html#a5cbc57cb4874d6a6dfd163d5733a7aae",
-"class_swap_synchronizer_factory.html",
-"class_webkit_html_select_replacer.html#aeee70417fc142e48bb07331a33963d00",
-"xml_macros_8h_source.html"
+"class_master_to_wall_channel.html#ab363eb3caaeb7c843c1bc2d3eae219f1",
+"class_pixel_stream_passthrough.html#a53c86bc5bcbdda0d89afbbfaacba3396",
+"class_swap_synchronizer.html#a9d92724c4537dc132b8cf5772608a882",
+"class_webkit_html_select_replacer.html",
+"wall_2version_8h_source.html"
 ];
 
 var SYNCONMSG = 'click to disable panel synchronisation';
