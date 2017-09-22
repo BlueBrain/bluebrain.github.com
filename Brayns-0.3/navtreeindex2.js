@@ -1,8 +1,5 @@
 var NAVTREEINDEX2 =
 {
-"classbrayns_1_1_geometry_parameters.html#aa81c5eec8288be8852085101d48d9832":[5,0,0,26,27],
-"classbrayns_1_1_geometry_parameters.html#aabec220652d36aa26afb5dae8e81f9be":[5,0,0,26,72],
-"classbrayns_1_1_geometry_parameters.html#aafa2015e194c7aa60e11f83df28db179":[5,0,0,26,60],
 "classbrayns_1_1_geometry_parameters.html#ab144d6cb2cc77c85b4f5b796e4c4c9b9":[5,0,0,26,28],
 "classbrayns_1_1_geometry_parameters.html#ab3fce9bbaa45185a6d49fafedfd23e62":[5,0,0,26,13],
 "classbrayns_1_1_geometry_parameters.html#ab7bb21c279fa084747beabae49b5942a":[5,0,0,26,3],
@@ -165,9 +162,9 @@ var NAVTREEINDEX2 =
 "classbrayns_1_1_o_s_p_ray_renderer.html#afc1548cd946b55c1466261c2b5c31fd8":[5,0,0,50,2],
 "classbrayns_1_1_o_s_p_ray_renderer.html#afd5e26652d61e7d3f5c3275258747060":[5,0,0,50,0],
 "classbrayns_1_1_o_s_p_ray_scene.html":[5,0,0,51],
-"classbrayns_1_1_o_s_p_ray_scene.html#a0f7fcf94277124436958d53b4993748b":[5,0,0,51,10],
 "classbrayns_1_1_o_s_p_ray_scene.html#a42e388f6a471df981eb93842d9be6fd5":[5,0,0,51,13],
 "classbrayns_1_1_o_s_p_ray_scene.html#a8178ceb54f910c39059b1888f8de8ba3":[5,0,0,51,3],
+"classbrayns_1_1_o_s_p_ray_scene.html#a90bcf33f659a6dbc4aa7dacb930a351a":[5,0,0,51,10],
 "classbrayns_1_1_o_s_p_ray_scene.html#a98df27705bcc48b935d22ed0256cf89c":[5,0,0,51,4],
 "classbrayns_1_1_o_s_p_ray_scene.html#aa17bae858b1195c11c2c44ae6d2a2b67":[5,0,0,51,11],
 "classbrayns_1_1_o_s_p_ray_scene.html#aa8b9639a0aba20a2795d317b1a21abc5":[5,0,0,51,7],
@@ -249,5 +246,8 @@ var NAVTREEINDEX2 =
 "classbrayns_1_1_point_light.html#ae1d1275e4d67a8622f009bb1633c94a5":[5,0,0,54,3],
 "classbrayns_1_1_primitive.html":[5,0,0,55],
 "classbrayns_1_1_primitive.html#a014d538b933f9e9152006255e13d4d9c":[5,0,0,55,0],
-"classbrayns_1_1_primitive.html#a46539adfba481765527843495366379f":[5,0,0,55,8]
+"classbrayns_1_1_primitive.html#a46539adfba481765527843495366379f":[5,0,0,55,8],
+"classbrayns_1_1_primitive.html#a4ba8f77d7be345d0d5f7e65d571d5210":[5,0,0,55,9],
+"classbrayns_1_1_primitive.html#a6842500e7b9b2a5b6b0caa746a76c7a4":[5,0,0,55,2],
+"classbrayns_1_1_primitive.html#a7c28f2c005c8d985ecb9fbf81ff8b452":[5,0,0,55,4]
 };

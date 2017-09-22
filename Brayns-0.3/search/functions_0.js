@@ -6,5 +6,5 @@ var searchData=
   ['add',['add',['../classbrayns_1_1_extension_plugin_factory.html#a3f2268cf183286874d8c3e47a1ca9860',1,'brayns::ExtensionPluginFactory']]],
   ['addlight',['addLight',['../classbrayns_1_1_scene.html#a7d89afe05548c882153522a0a4f751ac',1,'brayns::Scene']]],
   ['attachsimulationtocachefile',['attachSimulationToCacheFile',['../classbrayns_1_1_abstract_simulation_handler.html#afbda00e17fa6bd162a4263f89a55c379',1,'brayns::AbstractSimulationHandler']]],
-  ['attachvolumetofile',['attachVolumeToFile',['../classbrayns_1_1_volume_handler.html#add889082843fb91f5d2d545e9595edeb',1,'brayns::VolumeHandler']]]
+  ['attachvolumetofile',['attachVolumeToFile',['../classbrayns_1_1_volume_handler.html#a66fb70e7039ace4fde9250bc92afaead',1,'brayns::VolumeHandler']]]
 ];
