@@ -1,4 +1,4 @@
 var searchData=
 [
-  ['width',['width',['../structdeflect_1_1_image_wrapper.html#a628b197165c3e428e4b895e3fbd18146',1,'deflect::ImageWrapper::width()'],['../structdeflect_1_1_segment_parameters.html#a6db86d0c0e9af3debf3c97c582d9ef8b',1,'deflect::SegmentParameters::width()']]]
+  ['view',['view',['../structdeflect_1_1_image_wrapper.html#a9429316b8075a05b80634aafa9caaa6b',1,'deflect::ImageWrapper::view()'],['../structdeflect_1_1_segment.html#aea72ec8a23a08215fcd5a65d90595ac2',1,'deflect::Segment::view()']]]
 ];

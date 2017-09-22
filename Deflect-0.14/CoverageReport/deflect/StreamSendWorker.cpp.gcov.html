@@ -31,18 +31,18 @@
             <td class="headerValue">Deflect</td>
             <td></td>
             <td class="headerItem">Lines:</td>
-            <td class="headerCovTableEntry">118</td>
-            <td class="headerCovTableEntry">130</td>
-            <td class="headerCovTableEntryHi">90.8 %</td>
+            <td class="headerCovTableEntry">89</td>
+            <td class="headerCovTableEntry">105</td>
+            <td class="headerCovTableEntryHi">84.8 %</td>
           </tr>
           <tr>
             <td class="headerItem">Date:</td>
-            <td class="headerValue">2017-09-14 02:19:21</td>
+            <td class="headerValue">2017-09-22 02:22:09</td>
             <td></td>
             <td class="headerItem">Functions:</td>
-            <td class="headerCovTableEntry">34</td>
-            <td class="headerCovTableEntry">37</td>
-            <td class="headerCovTableEntryHi">91.9 %</td>
+            <td class="headerCovTableEntry">19</td>
+            <td class="headerCovTableEntry">22</td>
+            <td class="headerCovTableEntryHi">86.4 %</td>
           </tr>
           <tr><td><img src="../glass.png" width=3 height=3 alt=""></td></tr>
         </table>
@@ -107,284 +107,223 @@
 <span class="lineNum">      45 </span>            : #include &quot;SizeHints.h&quot;
 <span class="lineNum">      46 </span>            : 
 <span class="lineNum">      47 </span>            : #include &lt;iostream&gt;
-<span class="lineNum">      48 </span>            : #include &lt;sstream&gt;
-<span class="lineNum">      49 </span>            : 
-<span class="lineNum">      50 </span>            : namespace
-<span class="lineNum">      51 </span>            : {
-<span class="lineNum">      52 </span>            : const unsigned int SEGMENT_SIZE = 512;
-<span class="lineNum">      53 </span>            : const unsigned int SMALL_IMAGE_SIZE = 64;
-<span class="lineNum">      54 </span>            : }
-<span class="lineNum">      55 </span>            : 
-<a name="56"><span class="lineNum">      56 </span>            : namespace deflect</a>
-<span class="lineNum">      57 </span>            : {
-<span class="lineNum">      58 </span><span class="lineCov">         31 : StreamSendWorker::StreamSendWorker(Socket&amp; socket, const std::string&amp; id)</span>
-<span class="lineNum">      59 </span>            :     : _socket(socket)
-<span class="lineNum">      60 </span>            :     , _id(id)
-<span class="lineNum">      61 </span><span class="lineCov">         31 :     , _dequeuedRequests(std::thread::hardware_concurrency() / 2)</span>
-<span class="lineNum">      62 </span>            : {
-<span class="lineNum">      63 </span><span class="lineCov">         31 :     _imageSegmenter.setNominalSegmentDimensions(SEGMENT_SIZE, SEGMENT_SIZE);</span>
-<a name="64"><span class="lineNum">      64 </span><span class="lineCov">         31 : }</span></a>
-<span class="lineNum">      65 </span>            : 
-<span class="lineNum">      66 </span><span class="lineCov">         62 : StreamSendWorker::~StreamSendWorker()</span>
-<span class="lineNum">      67 </span>            : {
-<span class="lineNum">      68 </span><span class="lineCov">         31 :     stop();</span>
-<a name="69"><span class="lineNum">      69 </span><span class="lineCov">         31 : }</span></a>
-<span class="lineNum">      70 </span>            : 
-<span class="lineNum">      71 </span><span class="lineCov">         31 : void StreamSendWorker::run()</span>
-<span class="lineNum">      72 </span>            : {
-<span class="lineNum">      73 </span><span class="lineCov">         31 :     _running = true;</span>
-<span class="lineNum">      74 </span>            :     while (true)
+<span class="lineNum">      48 </span>            : 
+<a name="49"><span class="lineNum">      49 </span>            : namespace deflect</a>
+<span class="lineNum">      50 </span>            : {
+<span class="lineNum">      51 </span><span class="lineCov">         31 : StreamSendWorker::StreamSendWorker(Socket&amp; socket, const std::string&amp; id)</span>
+<span class="lineNum">      52 </span>            :     : _socket(socket)
+<span class="lineNum">      53 </span>            :     , _id(id)
+<span class="lineNum">      54 </span><span class="lineCov">         31 :     , _dequeuedRequests(std::thread::hardware_concurrency() / 2)</span>
+<span class="lineNum">      55 </span>            : {
+<a name="56"><span class="lineNum">      56 </span><span class="lineCov">         31 : }</span></a>
+<span class="lineNum">      57 </span>            : 
+<span class="lineNum">      58 </span><span class="lineCov">         62 : StreamSendWorker::~StreamSendWorker()</span>
+<span class="lineNum">      59 </span>            : {
+<span class="lineNum">      60 </span><span class="lineCov">         31 :     stop();</span>
+<a name="61"><span class="lineNum">      61 </span><span class="lineCov">         31 : }</span></a>
+<span class="lineNum">      62 </span>            : 
+<span class="lineNum">      63 </span><span class="lineCov">         31 : void StreamSendWorker::stop()</span>
+<span class="lineNum">      64 </span>            : {
+<span class="lineNum">      65 </span>            :     {
+<span class="lineNum">      66 </span><span class="lineCov">         31 :         _running = false;</span>
+<span class="lineNum">      67 </span><span class="lineCov">         31 :         enqueueRequest(std::vector&lt;Task&gt;());</span>
+<span class="lineNum">      68 </span>            :     }
+<span class="lineNum">      69 </span>            : 
+<span class="lineNum">      70 </span><span class="lineCov">         31 :     quit();</span>
+<span class="lineNum">      71 </span><span class="lineCov">         31 :     wait();</span>
+<span class="lineNum">      72 </span>            : 
+<span class="lineNum">      73 </span><span class="lineCov">         62 :     Request request;</span>
+<span class="lineNum">      74 </span><span class="lineCov">         31 :     while (_requests.try_dequeue(request))</span>
 <span class="lineNum">      75 </span>            :     {
-<span class="lineNum">      76 </span><span class="lineCov">       5275 :         if (!_running)</span>
-<span class="lineNum">      77 </span><span class="lineCov">         31 :             break;</span>
-<span class="lineNum">      78 </span>            : 
-<span class="lineNum">      79 </span><span class="lineCov">       5244 :         size_t count = 0;</span>
-<span class="lineNum">      80 </span><span class="lineCov">       5244 :         if (!_pendingFinish)</span>
-<span class="lineNum">      81 </span><span class="lineCov">       5222 :             count = _requests.wait_dequeue_bulk(_dequeuedRequests.begin(),</span>
-<span class="lineNum">      82 </span><span class="lineCov">       5222 :                                                 _dequeuedRequests.size());</span>
-<span class="lineNum">      83 </span>            :         else
-<span class="lineNum">      84 </span>            :         {
-<span class="lineNum">      85 </span>            :             // in case we encountered a finish request, get all remaining send
-<span class="lineNum">      86 </span>            :             // requests w/o waiting
-<span class="lineNum">      87 </span><span class="lineCov">         22 :             count = _requests.try_dequeue_bulk(_dequeuedRequests.begin(),</span>
-<span class="lineNum">      88 </span><span class="lineCov">         22 :                                                _dequeuedRequests.size());</span>
-<span class="lineNum">      89 </span>            : 
-<span class="lineNum">      90 </span>            :             // no more pending sends, now process the finish request and reset
-<span class="lineNum">      91 </span>            :             // for next finish
-<span class="lineNum">      92 </span><span class="lineCov">         22 :             if (count == 0)</span>
-<span class="lineNum">      93 </span>            :             {
-<span class="lineNum">      94 </span><span class="lineCov">         22 :                 count = 1;</span>
-<span class="lineNum">      95 </span><span class="lineCov">         22 :                 _finishRequest.isFinish = false; // reset this to process this</span>
-<span class="lineNum">      96 </span>            :                                                  // request now
-<span class="lineNum">      97 </span><span class="lineCov">         22 :                 _dequeuedRequests[0] = _finishRequest;</span>
-<span class="lineNum">      98 </span><span class="lineCov">         22 :                 _pendingFinish = false;</span>
-<span class="lineNum">      99 </span>            :             }
-<span class="lineNum">     100 </span>            :         }
-<span class="lineNum">     101 </span>            : 
-<span class="lineNum">     102 </span><span class="lineCov">      10490 :         for (size_t i = 0; i &lt; count; ++i)</span>
-<span class="lineNum">     103 </span>            :         {
-<span class="lineNum">     104 </span><span class="lineCov">       5246 :             bool success = true;</span>
-<span class="lineNum">     105 </span><span class="lineCov">       5246 :             auto&amp; request = _dequeuedRequests[i];</span>
-<span class="lineNum">     106 </span>            : 
-<span class="lineNum">     107 </span>            :             // postpone a finish request to maintain order (as the lockfree
-<span class="lineNum">     108 </span>            :             // does not guarantee order)
-<span class="lineNum">     109 </span><span class="lineCov">       5246 :             if (request.isFinish)</span>
-<span class="lineNum">     110 </span>            :             {
-<span class="lineNum">     111 </span><span class="lineCov">         22 :                 if (_pendingFinish)</span>
-<span class="lineNum">     112 </span>            :                 {
-<span class="lineNum">     113 </span><span class="lineNoCov">          0 :                     if (request.promise)</span>
-<span class="lineNum">     114 </span><span class="lineNoCov">          0 :                         request.promise-&gt;set_exception(std::make_exception_ptr(</span>
-<span class="lineNum">     115 </span><span class="lineNoCov">          0 :                             std::runtime_error(&quot;Already have pending finish&quot;)));</span>
-<span class="lineNum">     116 </span><span class="lineCov">         22 :                     continue;</span>
-<span class="lineNum">     117 </span>            :                 }
-<span class="lineNum">     118 </span>            : 
-<span class="lineNum">     119 </span><span class="lineCov">         22 :                 _finishRequest = request;</span>
-<span class="lineNum">     120 </span><span class="lineCov">         22 :                 _pendingFinish = true;</span>
-<span class="lineNum">     121 </span><span class="lineCov">         22 :                 continue;</span>
-<span class="lineNum">     122 </span>            :             }
-<span class="lineNum">     123 </span>            : 
-<span class="lineNum">     124 </span>            :             try
-<span class="lineNum">     125 </span>            :             {
-<span class="lineNum">     126 </span><span class="lineCov">      10407 :                 for (auto&amp; task : request.tasks)</span>
-<span class="lineNum">     127 </span>            :                 {
-<span class="lineNum">     128 </span><span class="lineCov">       5193 :                     if (!task())</span>
-<span class="lineNum">     129 </span>            :                     {
-<span class="lineNum">     130 </span><span class="lineCov">          9 :                         success = false;</span>
-<span class="lineNum">     131 </span><span class="lineCov">          9 :                         break;</span>
-<span class="lineNum">     132 </span>            :                     }
-<span class="lineNum">     133 </span>            :                 }
-<span class="lineNum">     134 </span>            : 
-<span class="lineNum">     135 </span><span class="lineCov">       5223 :                 if (request.promise)</span>
-<span class="lineNum">     136 </span><span class="lineCov">        102 :                     request.promise-&gt;set_value(success);</span>
-<span class="lineNum">     137 </span>            :             }
-<span class="lineNum">     138 </span><span class="lineCov">          2 :             catch (...)</span>
-<span class="lineNum">     139 </span>            :             {
-<span class="lineNum">     140 </span><span class="lineCov">          1 :                 if (request.promise)</span>
-<span class="lineNum">     141 </span><span class="lineCov">          1 :                     request.promise-&gt;set_exception(std::current_exception());</span>
-<span class="lineNum">     142 </span>            :             }
-<span class="lineNum">     143 </span>            :         }
-<span class="lineNum">     144 </span><span class="lineCov">       5244 :     }</span>
-<a name="145"><span class="lineNum">     145 </span><span class="lineCov">         31 : }</span></a>
-<span class="lineNum">     146 </span>            : 
-<span class="lineNum">     147 </span><span class="lineCov">         31 : void StreamSendWorker::stop()</span>
-<span class="lineNum">     148 </span>            : {
-<span class="lineNum">     149 </span>            :     {
-<span class="lineNum">     150 </span><span class="lineCov">         31 :         _running = false;</span>
-<span class="lineNum">     151 </span><span class="lineCov">         31 :         _enqueueRequest(std::vector&lt;Task&gt;());</span>
-<span class="lineNum">     152 </span>            :     }
-<span class="lineNum">     153 </span>            : 
-<span class="lineNum">     154 </span><span class="lineCov">         31 :     quit();</span>
-<span class="lineNum">     155 </span><span class="lineCov">         31 :     wait();</span>
+<span class="lineNum">      76 </span><span class="lineNoCov">          0 :         if (request.promise)</span>
+<span class="lineNum">      77 </span><span class="lineNoCov">          0 :             request.promise-&gt;set_value(false);</span>
+<span class="lineNum">      78 </span>            :     }
+<a name="79"><span class="lineNum">      79 </span><span class="lineCov">         31 : }</span></a>
+<span class="lineNum">      80 </span>            : 
+<span class="lineNum">      81 </span><span class="lineCov">         31 : void StreamSendWorker::run()</span>
+<span class="lineNum">      82 </span>            : {
+<span class="lineNum">      83 </span><span class="lineCov">         31 :     _running = true;</span>
+<span class="lineNum">      84 </span>            :     while (true)
+<span class="lineNum">      85 </span>            :     {
+<span class="lineNum">      86 </span><span class="lineCov">       5275 :         if (!_running)</span>
+<span class="lineNum">      87 </span><span class="lineCov">         31 :             break;</span>
+<span class="lineNum">      88 </span>            : 
+<span class="lineNum">      89 </span><span class="lineCov">       5244 :         size_t count = 0;</span>
+<span class="lineNum">      90 </span><span class="lineCov">       5244 :         if (!_pendingFinish)</span>
+<span class="lineNum">      91 </span><span class="lineCov">       5222 :             count = _requests.wait_dequeue_bulk(_dequeuedRequests.begin(),</span>
+<span class="lineNum">      92 </span><span class="lineCov">       5222 :                                                 _dequeuedRequests.size());</span>
+<span class="lineNum">      93 </span>            :         else
+<span class="lineNum">      94 </span>            :         {
+<span class="lineNum">      95 </span>            :             // in case we encountered a finish request, get all remaining send
+<span class="lineNum">      96 </span>            :             // requests w/o waiting
+<span class="lineNum">      97 </span><span class="lineCov">         22 :             count = _requests.try_dequeue_bulk(_dequeuedRequests.begin(),</span>
+<span class="lineNum">      98 </span><span class="lineCov">         22 :                                                _dequeuedRequests.size());</span>
+<span class="lineNum">      99 </span>            : 
+<span class="lineNum">     100 </span>            :             // no more pending sends, now process the finish request and reset
+<span class="lineNum">     101 </span>            :             // for next finish
+<span class="lineNum">     102 </span><span class="lineCov">         22 :             if (count == 0)</span>
+<span class="lineNum">     103 </span>            :             {
+<span class="lineNum">     104 </span><span class="lineCov">         22 :                 count = 1;</span>
+<span class="lineNum">     105 </span><span class="lineCov">         22 :                 _finishRequest.isFinish = false; // reset this to process this</span>
+<span class="lineNum">     106 </span>            :                                                  // request now
+<span class="lineNum">     107 </span><span class="lineCov">         22 :                 _dequeuedRequests[0] = _finishRequest;</span>
+<span class="lineNum">     108 </span><span class="lineCov">         22 :                 _pendingFinish = false;</span>
+<span class="lineNum">     109 </span>            :             }
+<span class="lineNum">     110 </span>            :         }
+<span class="lineNum">     111 </span>            : 
+<span class="lineNum">     112 </span><span class="lineCov">      10490 :         for (size_t i = 0; i &lt; count; ++i)</span>
+<span class="lineNum">     113 </span>            :         {
+<span class="lineNum">     114 </span><span class="lineCov">       5246 :             auto&amp; request = _dequeuedRequests[i];</span>
+<span class="lineNum">     115 </span>            : 
+<span class="lineNum">     116 </span>            :             // postpone a finish request to maintain order (as the lockfree
+<span class="lineNum">     117 </span>            :             // does not guarantee order)
+<span class="lineNum">     118 </span><span class="lineCov">       5246 :             if (request.isFinish)</span>
+<span class="lineNum">     119 </span>            :             {
+<span class="lineNum">     120 </span><span class="lineCov">         22 :                 if (_pendingFinish)</span>
+<span class="lineNum">     121 </span>            :                 {
+<span class="lineNum">     122 </span><span class="lineNoCov">          0 :                     if (request.promise)</span>
+<span class="lineNum">     123 </span><span class="lineNoCov">          0 :                         request.promise-&gt;set_exception(std::make_exception_ptr(</span>
+<span class="lineNum">     124 </span><span class="lineNoCov">          0 :                             std::runtime_error(&quot;Already have pending finish&quot;)));</span>
+<span class="lineNum">     125 </span><span class="lineNoCov">          0 :                     continue;</span>
+<span class="lineNum">     126 </span>            :                 }
+<span class="lineNum">     127 </span>            : 
+<span class="lineNum">     128 </span><span class="lineCov">         22 :                 _finishRequest = request;</span>
+<span class="lineNum">     129 </span><span class="lineCov">         22 :                 _pendingFinish = true;</span>
+<span class="lineNum">     130 </span><span class="lineCov">         22 :                 continue;</span>
+<span class="lineNum">     131 </span>            :             }
+<span class="lineNum">     132 </span>            : 
+<span class="lineNum">     133 </span>            :             try
+<span class="lineNum">     134 </span>            :             {
+<span class="lineNum">     135 </span><span class="lineCov">       5224 :                 bool success = true;</span>
+<span class="lineNum">     136 </span><span class="lineCov">      10407 :                 for (auto&amp; task : request.tasks)</span>
+<span class="lineNum">     137 </span>            :                 {
+<span class="lineNum">     138 </span><span class="lineCov">       5193 :                     if (!task())</span>
+<span class="lineNum">     139 </span>            :                     {
+<span class="lineNum">     140 </span><span class="lineCov">          9 :                         success = false;</span>
+<span class="lineNum">     141 </span><span class="lineCov">          9 :                         break;</span>
+<span class="lineNum">     142 </span>            :                     }
+<span class="lineNum">     143 </span>            :                 }
+<span class="lineNum">     144 </span>            : 
+<span class="lineNum">     145 </span><span class="lineCov">       5223 :                 if (request.promise)</span>
+<span class="lineNum">     146 </span><span class="lineCov">        102 :                     request.promise-&gt;set_value(success);</span>
+<span class="lineNum">     147 </span>            :             }
+<span class="lineNum">     148 </span><span class="lineCov">          2 :             catch (...)</span>
+<span class="lineNum">     149 </span>            :             {
+<span class="lineNum">     150 </span><span class="lineCov">          1 :                 if (request.promise)</span>
+<span class="lineNum">     151 </span><span class="lineCov">          1 :                     request.promise-&gt;set_exception(std::current_exception());</span>
+<span class="lineNum">     152 </span>            :             }
+<span class="lineNum">     153 </span>            :         }
+<span class="lineNum">     154 </span><span class="lineCov">       5244 :     }</span>
+<a name="155"><span class="lineNum">     155 </span><span class="lineCov">         31 : }</span></a>
 <span class="lineNum">     156 </span>            : 
-<span class="lineNum">     157 </span><span class="lineCov">         62 :     Request request;</span>
-<span class="lineNum">     158 </span><span class="lineCov">         31 :     while (_requests.try_dequeue(request))</span>
-<span class="lineNum">     159 </span>            :     {
-<span class="lineNum">     160 </span><span class="lineNoCov">          0 :         if (request.promise)</span>
-<span class="lineNum">     161 </span><span class="lineNoCov">          0 :             request.promise-&gt;set_value(false);</span>
-<span class="lineNum">     162 </span>            :     }
-<a name="163"><span class="lineNum">     163 </span><span class="lineCov">         31 : }</span></a>
-<span class="lineNum">     164 </span>            : 
-<span class="lineNum">     165 </span><span class="lineCov">       5130 : Stream::Future StreamSendWorker::enqueueImage(const ImageWrapper&amp; image,</span>
-<span class="lineNum">     166 </span>            :                                               const bool finish)
-<span class="lineNum">     167 </span>            : {
-<span class="lineNum">     168 </span><span class="lineCov">       5130 :     if (_pendingFinish)</span>
-<span class="lineNum">     169 </span>            :     {
-<span class="lineNum">     170 </span>            :         return make_exception_future&lt;bool&gt;(
-<span class="lineNum">     171 </span><span class="lineNoCov">          0 :             std::runtime_error(&quot;Pending finish, no send allowed&quot;));</span>
-<span class="lineNum">     172 </span>            :     }
-<span class="lineNum">     173 </span>            : 
-<span class="lineNum">     174 </span><span class="lineCov">       5130 :     if (image.compressionPolicy != COMPRESSION_ON &amp;&amp; image.pixelFormat != RGBA)</span>
-<span class="lineNum">     175 </span>            :     {
-<span class="lineNum">     176 </span><span class="lineCov">         10 :         return make_exception_future&lt;bool&gt;(std::invalid_argument(</span>
-<span class="lineNum">     177 </span>            :             &quot;Currently, RAW images can only be sent in RGBA format. Other &quot;
-<span class="lineNum">     178 </span><span class="lineCov">          5 :             &quot;formats support remain to be implemented.&quot;));</span>
-<span class="lineNum">     179 </span>            :     }
-<span class="lineNum">     180 </span>            : 
-<span class="lineNum">     181 </span><span class="lineCov">       5125 :     if (image.compressionPolicy == COMPRESSION_ON)</span>
-<span class="lineNum">     182 </span>            :     {
-<span class="lineNum">     183 </span><span class="lineCov">       5112 :         if (image.compressionQuality &lt; 1 || image.compressionQuality &gt; 100)</span>
-<span class="lineNum">     184 </span>            :         {
-<span class="lineNum">     185 </span><span class="lineCov">          4 :             std::stringstream msg;</span>
-<span class="lineNum">     186 </span><span class="lineCov">          2 :             msg &lt;&lt; &quot;JPEG compression quality must be between 1 and 100, got &quot;</span>
-<span class="lineNum">     187 </span><span class="lineCov">          4 :                 &lt;&lt; image.compressionQuality &lt;&lt; std::endl;</span>
-<span class="lineNum">     188 </span>            :             return make_exception_future&lt;bool&gt;(
-<span class="lineNum">     189 </span><span class="lineCov">          2 :                 std::invalid_argument(msg.str()));</span>
-<span class="lineNum">     190 </span>            :         }
-<span class="lineNum">     191 </span>            :     }
+<span class="lineNum">     157 </span><span class="lineCov">         71 : Stream::Future StreamSendWorker::enqueueRequest(Task&amp;&amp; action, bool isFinish)</span>
+<span class="lineNum">     158 </span>            : {
+<span class="lineNum">     159 </span><span class="lineCov">         71 :     return enqueueRequest(std::vector&lt;Task&gt;{std::move(action)}, isFinish);</span>
+<a name="160"><span class="lineNum">     160 </span>            : }</a>
+<span class="lineNum">     161 </span>            : 
+<span class="lineNum">     162 </span><span class="lineCov">        103 : Stream::Future StreamSendWorker::enqueueRequest(std::vector&lt;Task&gt;&amp;&amp; tasks,</span>
+<span class="lineNum">     163 </span>            :                                                 const bool isFinish)
+<span class="lineNum">     164 </span>            : {
+<span class="lineNum">     165 </span><span class="lineCov">        206 :     auto promise = std::make_shared&lt;Promise&gt;();</span>
+<span class="lineNum">     166 </span><span class="lineCov">        103 :     auto future = promise-&gt;get_future();</span>
+<span class="lineNum">     167 </span><span class="lineCov">        103 :     _requests.enqueue({std::move(promise), std::move(tasks), isFinish});</span>
+<span class="lineNum">     168 </span><span class="lineCov">        206 :     return future;</span>
+<a name="169"><span class="lineNum">     169 </span>            : }</a>
+<span class="lineNum">     170 </span>            : 
+<span class="lineNum">     171 </span><span class="lineCov">       5121 : void StreamSendWorker::enqueueFastRequest(Task&amp;&amp; task)</span>
+<span class="lineNum">     172 </span>            : {
+<span class="lineNum">     173 </span><span class="lineCov">       5121 :     _requests.enqueue({nullptr, std::vector&lt;Task&gt;{std::move(task)}, false});</span>
+<a name="174"><span class="lineNum">     174 </span><span class="lineCov">       5121 : }</span></a>
+<span class="lineNum">     175 </span>            : 
+<span class="lineNum">     176 </span><span class="lineCov">          4 : bool StreamSendWorker::_sendOpenObserver()</span>
+<span class="lineNum">     177 </span>            : {
+<span class="lineNum">     178 </span>            :     return _send(MESSAGE_TYPE_OBSERVER_OPEN,
+<span class="lineNum">     179 </span><span class="lineCov">          4 :                  QByteArray::number(NETWORK_PROTOCOL_VERSION));</span>
+<a name="180"><span class="lineNum">     180 </span>            : }</a>
+<span class="lineNum">     181 </span>            : 
+<span class="lineNum">     182 </span><span class="lineCov">         27 : bool StreamSendWorker::_sendOpenStream()</span>
+<span class="lineNum">     183 </span>            : {
+<span class="lineNum">     184 </span>            :     return _send(MESSAGE_TYPE_PIXELSTREAM_OPEN,
+<span class="lineNum">     185 </span><span class="lineCov">         27 :                  QByteArray::number(NETWORK_PROTOCOL_VERSION));</span>
+<a name="186"><span class="lineNum">     186 </span>            : }</a>
+<span class="lineNum">     187 </span>            : 
+<span class="lineNum">     188 </span><span class="lineCov">         14 : bool StreamSendWorker::_sendClose()</span>
+<span class="lineNum">     189 </span>            : {
+<span class="lineNum">     190 </span><span class="lineCov">         14 :     return _send(MESSAGE_TYPE_QUIT, {});</span>
+<a name="191"><span class="lineNum">     191 </span>            : }</a>
 <span class="lineNum">     192 </span>            : 
-<span class="lineNum">     193 </span><span class="lineCov">      10246 :     std::vector&lt;Task&gt; tasks;</span>
-<span class="lineNum">     194 </span>            : 
-<span class="lineNum">     195 </span><span class="lineCov">       5123 :     if (image.width &lt;= SMALL_IMAGE_SIZE &amp;&amp; image.height &lt;= SMALL_IMAGE_SIZE)</span>
-<span class="lineNum">     196 </span>            :     {
-<span class="lineNum">     197 </span>            :         try
-<span class="lineNum">     198 </span>            :         {
-<span class="lineNum">     199 </span><span class="lineCov">      10243 :             auto segment = _imageSegmenter.createSingleSegment(image);</span>
-<a name="200"><span class="lineNum">     200 </span>            : </a>
-<span class="lineNum">     201 </span><span class="lineCov">      10242 :             tasks.emplace_back(</span>
-<span class="lineNum">     202 </span><span class="lineCov">      46089 :                 [this, segment] { return _sendSegment(segment); });</span>
-<span class="lineNum">     203 </span>            : 
-<span class="lineNum">     204 </span>            :             // as we expect to encounter a lot of these small sends, be
-<span class="lineNum">     205 </span>            :             // optimistic and fulfill the promise already to reduce load in the
-<span class="lineNum">     206 </span>            :             // send thread (c.f. lock ops performance on KNL)
-<span class="lineNum">     207 </span><span class="lineCov">       5121 :             _requests.enqueue({nullptr, tasks, false});</span>
-<span class="lineNum">     208 </span><span class="lineCov">       5121 :             if (finish)</span>
-<span class="lineNum">     209 </span><span class="lineCov">         12 :                 return enqueueFinish();</span>
-<span class="lineNum">     210 </span><span class="lineCov">       5109 :             return make_ready_future(true);</span>
-<span class="lineNum">     211 </span>            :         }
-<span class="lineNum">     212 </span><span class="lineCov">          2 :         catch (...)</span>
-<span class="lineNum">     213 </span>            :         {
-<span class="lineNum">     214 </span><span class="lineCov">          1 :             return make_exception_future&lt;bool&gt;(std::current_exception());</span>
-<span class="lineNum">     215 </span>            :         }
-<a name="216"><span class="lineNum">     216 </span>            :     }</a>
-<span class="lineNum">     217 </span>            :     else
-<span class="lineNum">     218 </span><span class="lineCov">          2 :         tasks.emplace_back([this, image] { return _sendImage(image); });</span>
-<a name="219"><span class="lineNum">     219 </span>            : </a>
-<span class="lineNum">     220 </span><span class="lineCov">          1 :     if (finish)</span>
-<span class="lineNum">     221 </span><span class="lineNoCov">          0 :         tasks.emplace_back([this] { return _sendFinish(); });</span>
-<span class="lineNum">     222 </span>            : 
-<span class="lineNum">     223 </span><span class="lineCov">          1 :     return _enqueueRequest(std::move(tasks));</span>
-<a name="224"><span class="lineNum">     224 </span>            : }</a>
-<span class="lineNum">     225 </span>            : 
-<a name="226"><span class="lineNum">     226 </span><span class="lineCov">         22 : Stream::Future StreamSendWorker::enqueueFinish()</span></a>
-<span class="lineNum">     227 </span>            : {
-<span class="lineNum">     228 </span><span class="lineCov">         44 :     return _enqueueRequest({[this] { return _sendFinish(); }}, true);</span>
-<a name="229"><span class="lineNum">     229 </span>            : }</a>
-<span class="lineNum">     230 </span>            : 
-<a name="231"><span class="lineNum">     231 </span><span class="lineCov">         27 : Stream::Future StreamSendWorker::enqueueOpen()</span></a>
-<span class="lineNum">     232 </span>            : {
-<span class="lineNum">     233 </span><span class="lineCov">         54 :     return _enqueueRequest({[this] {</span>
-<span class="lineNum">     234 </span>            :         return _send(MESSAGE_TYPE_PIXELSTREAM_OPEN,
-<span class="lineNum">     235 </span><span class="lineCov">         54 :                      QByteArray::number(NETWORK_PROTOCOL_VERSION));</span>
-<span class="lineNum">     236 </span><span class="lineCov">         81 :     }});</span>
-<a name="237"><span class="lineNum">     237 </span>            : }</a>
-<span class="lineNum">     238 </span>            : 
-<a name="239"><span class="lineNum">     239 </span><span class="lineCov">         14 : Stream::Future StreamSendWorker::enqueueClose()</span></a>
-<span class="lineNum">     240 </span>            : {
-<span class="lineNum">     241 </span><span class="lineCov">         28 :     return _enqueueRequest({[this] { return _send(MESSAGE_TYPE_QUIT, {}); }});</span>
-<a name="242"><span class="lineNum">     242 </span>            : }</a>
-<span class="lineNum">     243 </span>            : 
-<a name="244"><span class="lineNum">     244 </span><span class="lineCov">          4 : Stream::Future StreamSendWorker::enqueueObserverOpen()</span></a>
-<span class="lineNum">     245 </span>            : {
-<span class="lineNum">     246 </span><span class="lineCov">          8 :     return _enqueueRequest({[this] {</span>
-<span class="lineNum">     247 </span>            :         return _send(MESSAGE_TYPE_OBSERVER_OPEN,
-<span class="lineNum">     248 </span><span class="lineCov">          8 :                      QByteArray::number(NETWORK_PROTOCOL_VERSION));</span>
-<span class="lineNum">     249 </span><span class="lineCov">         12 :     }});</span>
-<a name="250"><span class="lineNum">     250 </span>            : }</a>
-<span class="lineNum">     251 </span>            : 
-<a name="252"><span class="lineNum">     252 </span><span class="lineCov">          2 : Stream::Future StreamSendWorker::enqueueBindRequest(const bool exclusive)</span></a>
-<span class="lineNum">     253 </span>            : {
-<span class="lineNum">     254 </span><span class="lineCov">          6 :     return _enqueueRequest({[this, exclusive] {</span>
-<span class="lineNum">     255 </span><span class="lineCov">          6 :         return _send(exclusive ? MESSAGE_TYPE_BIND_EVENTS_EX</span>
-<span class="lineNum">     256 </span>            :                                : MESSAGE_TYPE_BIND_EVENTS,
-<span class="lineNum">     257 </span>            :                      {});
-<span class="lineNum">     258 </span><span class="lineCov">          6 :     }});</span>
-<a name="259"><span class="lineNum">     259 </span>            : }</a>
-<span class="lineNum">     260 </span>            : 
-<a name="261"><span class="lineNum">     261 </span><span class="lineCov">          1 : Stream::Future StreamSendWorker::enqueueSizeHints(const SizeHints&amp; hints)</span></a>
-<span class="lineNum">     262 </span>            : {
-<span class="lineNum">     263 </span><span class="lineCov">          2 :     return _enqueueRequest({[this, hints] {</span>
-<span class="lineNum">     264 </span>            :         return _send(MESSAGE_TYPE_SIZE_HINTS,
-<span class="lineNum">     265 </span><span class="lineCov">          2 :                      QByteArray{(const char*)(&amp;hints), sizeof(SizeHints)});</span>
-<span class="lineNum">     266 </span><span class="lineCov">          3 :     }});</span>
-<a name="267"><span class="lineNum">     267 </span>            : }</a>
-<span class="lineNum">     268 </span>            : 
-<span class="lineNum">     269 </span><span class="lineCov">          1 : Stream::Future StreamSendWorker::enqueueData(const QByteArray data)</span>
-<a name="270"><span class="lineNum">     270 </span>            : {</a>
-<span class="lineNum">     271 </span>            :     return _enqueueRequest(
-<span class="lineNum">     272 </span><span class="lineCov">          9 :         {[this, data] { return _send(MESSAGE_TYPE_DATA, data); }});</span>
-<a name="273"><span class="lineNum">     273 </span>            : }</a>
-<span class="lineNum">     274 </span>            : 
-<span class="lineNum">     275 </span><span class="lineCov">        103 : Stream::Future StreamSendWorker::_enqueueRequest(std::vector&lt;Task&gt;&amp;&amp; tasks,</span>
-<span class="lineNum">     276 </span>            :                                                  const bool isFinish)
-<span class="lineNum">     277 </span>            : {
-<span class="lineNum">     278 </span><span class="lineCov">        206 :     PromisePtr promise(new Promise);</span>
-<span class="lineNum">     279 </span><span class="lineCov">        103 :     _requests.enqueue({promise, tasks, isFinish});</span>
-<span class="lineNum">     280 </span><span class="lineCov">        206 :     return promise-&gt;get_future();</span>
-<a name="281"><span class="lineNum">     281 </span>            : }</a>
-<span class="lineNum">     282 </span>            : 
-<span class="lineNum">     283 </span><span class="lineCov">          1 : bool StreamSendWorker::_sendImage(const ImageWrapper&amp; image)</span>
-<span class="lineNum">     284 </span>            : {
-<span class="lineNum">     285 </span>            :     const auto sendFunc =
-<span class="lineNum">     286 </span><span class="lineCov">          1 :         std::bind(&amp;StreamSendWorker::_sendSegment, this, std::placeholders::_1);</span>
-<span class="lineNum">     287 </span><span class="lineCov">          2 :     return _imageSegmenter.generate(image, sendFunc);</span>
-<a name="288"><span class="lineNum">     288 </span>            : }</a>
-<span class="lineNum">     289 </span>            : 
-<span class="lineNum">     290 </span><span class="lineNoCov">          0 : bool StreamSendWorker::_sendImageView(const View view)</span>
-<span class="lineNum">     291 </span>            : {
-<span class="lineNum">     292 </span>            :     return _send(MESSAGE_TYPE_IMAGE_VIEW,
-<span class="lineNum">     293 </span><span class="lineNoCov">          0 :                  QByteArray{(const char*)(&amp;view), sizeof(View)});</span>
-<a name="294"><span class="lineNum">     294 </span>            : }</a>
-<span class="lineNum">     295 </span>            : 
-<span class="lineNum">     296 </span><span class="lineCov">       5122 : bool StreamSendWorker::_sendSegment(const Segment&amp; segment)</span>
-<span class="lineNum">     297 </span>            : {
-<span class="lineNum">     298 </span><span class="lineCov">       5122 :     if (segment.exception)</span>
-<span class="lineNum">     299 </span><span class="lineCov">          2 :         std::rethrow_exception(segment.exception);</span>
-<span class="lineNum">     300 </span>            : 
-<span class="lineNum">     301 </span><span class="lineCov">       5121 :     if (segment.view != _currentView)</span>
-<span class="lineNum">     302 </span>            :     {
-<span class="lineNum">     303 </span><span class="lineNoCov">          0 :         if (!_sendImageView(segment.view))</span>
-<span class="lineNum">     304 </span><span class="lineNoCov">          0 :             return false;</span>
-<span class="lineNum">     305 </span><span class="lineNoCov">          0 :         _currentView = segment.view;</span>
-<span class="lineNum">     306 </span>            :     }
-<span class="lineNum">     307 </span>            : 
-<span class="lineNum">     308 </span><span class="lineCov">       5121 :     auto message = QByteArray{(const char*)(&amp;segment.parameters),</span>
-<span class="lineNum">     309 </span><span class="lineCov">      10242 :                               sizeof(SegmentParameters)};</span>
-<span class="lineNum">     310 </span><span class="lineCov">       5121 :     message.append(segment.imageData);</span>
-<span class="lineNum">     311 </span><span class="lineCov">       5121 :     return _send(MESSAGE_TYPE_PIXELSTREAM, message, false);</span>
-<a name="312"><span class="lineNum">     312 </span>            : }</a>
-<span class="lineNum">     313 </span>            : 
-<span class="lineNum">     314 </span><span class="lineCov">         22 : bool StreamSendWorker::_sendFinish()</span>
-<span class="lineNum">     315 </span>            : {
-<span class="lineNum">     316 </span><span class="lineCov">         22 :     return _send(MESSAGE_TYPE_PIXELSTREAM_FINISH_FRAME, {});</span>
-<a name="317"><span class="lineNum">     317 </span>            : }</a>
-<span class="lineNum">     318 </span>            : 
-<span class="lineNum">     319 </span><span class="lineCov">       5192 : bool StreamSendWorker::_send(const MessageType type, const QByteArray&amp; message,</span>
-<span class="lineNum">     320 </span>            :                              const bool waitForBytesWritten)
-<span class="lineNum">     321 </span>            : {
-<span class="lineNum">     322 </span><span class="lineCov">      10384 :     return _socket.send(MessageHeader(type, message.size(), _id), message,</span>
-<a name="323"><span class="lineNum">     323 </span><span class="lineCov">      10384 :                         waitForBytesWritten);</span></a>
-<span class="lineNum">     324 </span>            : }
-<span class="lineNum">     325 </span><span class="lineCov">         24 : }</span>
+<span class="lineNum">     193 </span><span class="lineCov">       5122 : bool StreamSendWorker::_sendSegment(const Segment&amp; segment)</span>
+<span class="lineNum">     194 </span>            : {
+<span class="lineNum">     195 </span><span class="lineCov">       5122 :     if (segment.exception)</span>
+<span class="lineNum">     196 </span><span class="lineCov">          2 :         std::rethrow_exception(segment.exception);</span>
+<span class="lineNum">     197 </span>            : 
+<span class="lineNum">     198 </span><span class="lineCov">       5121 :     if (segment.view != _currentView)</span>
+<span class="lineNum">     199 </span>            :     {
+<span class="lineNum">     200 </span><span class="lineNoCov">          0 :         if (!_sendImageView(segment.view))</span>
+<span class="lineNum">     201 </span><span class="lineNoCov">          0 :             return false;</span>
+<span class="lineNum">     202 </span><span class="lineNoCov">          0 :         _currentView = segment.view;</span>
+<span class="lineNum">     203 </span>            :     }
+<span class="lineNum">     204 </span><span class="lineCov">       5121 :     _sendRowOrderIfChanged(segment.rowOrder);</span>
+<span class="lineNum">     205 </span>            : 
+<span class="lineNum">     206 </span><span class="lineCov">       5121 :     auto message = QByteArray{(const char*)(&amp;segment.parameters),</span>
+<span class="lineNum">     207 </span><span class="lineCov">      10242 :                               sizeof(SegmentParameters)};</span>
+<span class="lineNum">     208 </span><span class="lineCov">       5121 :     message.append(segment.imageData);</span>
+<span class="lineNum">     209 </span><span class="lineCov">       5121 :     return _send(MESSAGE_TYPE_PIXELSTREAM, message, false);</span>
+<a name="210"><span class="lineNum">     210 </span>            : }</a>
+<span class="lineNum">     211 </span>            : 
+<span class="lineNum">     212 </span><span class="lineNoCov">          0 : bool StreamSendWorker::_sendImageView(const View view)</span>
+<span class="lineNum">     213 </span>            : {
+<span class="lineNum">     214 </span>            :     return _send(MESSAGE_TYPE_IMAGE_VIEW,
+<span class="lineNum">     215 </span><span class="lineNoCov">          0 :                  QByteArray{(const char*)(&amp;view), sizeof(View)});</span>
+<a name="216"><span class="lineNum">     216 </span>            : }</a>
+<span class="lineNum">     217 </span>            : 
+<span class="lineNum">     218 </span><span class="lineCov">       5121 : bool StreamSendWorker::_sendRowOrderIfChanged(const RowOrder rowOrder)</span>
+<span class="lineNum">     219 </span>            : {
+<span class="lineNum">     220 </span><span class="lineCov">       5121 :     if (rowOrder != _currentRowOrder)</span>
+<span class="lineNum">     221 </span>            :     {
+<span class="lineNum">     222 </span><span class="lineNoCov">          0 :         if (!_sendImageRowOrder(rowOrder))</span>
+<span class="lineNum">     223 </span><span class="lineNoCov">          0 :             return false;</span>
+<span class="lineNum">     224 </span><span class="lineNoCov">          0 :         _currentRowOrder = rowOrder;</span>
+<span class="lineNum">     225 </span>            :     }
+<span class="lineNum">     226 </span><span class="lineCov">       5121 :     return true;</span>
+<a name="227"><span class="lineNum">     227 </span>            : }</a>
+<span class="lineNum">     228 </span>            : 
+<span class="lineNum">     229 </span><span class="lineNoCov">          0 : bool StreamSendWorker::_sendImageRowOrder(const RowOrder rowOrder)</span>
+<span class="lineNum">     230 </span>            : {
+<span class="lineNum">     231 </span>            :     return _send(MESSAGE_TYPE_IMAGE_ROW_ORDER,
+<span class="lineNum">     232 </span><span class="lineNoCov">          0 :                  QByteArray{(const char*)(&amp;rowOrder), sizeof(RowOrder)});</span>
+<a name="233"><span class="lineNum">     233 </span>            : }</a>
+<span class="lineNum">     234 </span>            : 
+<span class="lineNum">     235 </span><span class="lineCov">         22 : bool StreamSendWorker::_sendFinish()</span>
+<span class="lineNum">     236 </span>            : {
+<span class="lineNum">     237 </span><span class="lineCov">         22 :     return _send(MESSAGE_TYPE_PIXELSTREAM_FINISH_FRAME, {});</span>
+<a name="238"><span class="lineNum">     238 </span>            : }</a>
+<span class="lineNum">     239 </span>            : 
+<span class="lineNum">     240 </span><span class="lineCov">          1 : bool StreamSendWorker::_sendData(const QByteArray data)</span>
+<span class="lineNum">     241 </span>            : {
+<span class="lineNum">     242 </span><span class="lineCov">          1 :     return _send(MESSAGE_TYPE_DATA, data);</span>
+<a name="243"><span class="lineNum">     243 </span>            : }</a>
+<span class="lineNum">     244 </span>            : 
+<span class="lineNum">     245 </span><span class="lineCov">          1 : bool StreamSendWorker::_sendSizeHints(const SizeHints&amp; hints)</span>
+<span class="lineNum">     246 </span>            : {
+<span class="lineNum">     247 </span>            :     return _send(MESSAGE_TYPE_SIZE_HINTS,
+<span class="lineNum">     248 </span><span class="lineCov">          1 :                  QByteArray{(const char*)(&amp;hints), sizeof(SizeHints)});</span>
+<a name="249"><span class="lineNum">     249 </span>            : }</a>
+<span class="lineNum">     250 </span>            : 
+<span class="lineNum">     251 </span><span class="lineCov">          2 : bool StreamSendWorker::_sendBindEvents(const bool exclusive)</span>
+<span class="lineNum">     252 </span>            : {
+<span class="lineNum">     253 </span><span class="lineCov">          4 :     return _send(exclusive ? MESSAGE_TYPE_BIND_EVENTS_EX</span>
+<span class="lineNum">     254 </span>            :                            : MESSAGE_TYPE_BIND_EVENTS,
+<span class="lineNum">     255 </span><span class="lineCov">          4 :                  {});</span>
+<a name="256"><span class="lineNum">     256 </span>            : }</a>
+<span class="lineNum">     257 </span>            : 
+<span class="lineNum">     258 </span><span class="lineCov">       5192 : bool StreamSendWorker::_send(const MessageType type, const QByteArray&amp; message,</span>
+<span class="lineNum">     259 </span>            :                              const bool waitForBytesWritten)
+<span class="lineNum">     260 </span>            : {
+<span class="lineNum">     261 </span><span class="lineCov">      10384 :     return _socket.send(MessageHeader(type, message.size(), _id), message,</span>
+<a name="262"><span class="lineNum">     262 </span><span class="lineCov">      10384 :                         waitForBytesWritten);</span></a>
+<span class="lineNum">     263 </span>            : }
+<span class="lineNum">     264 </span><span class="lineCov">         30 : }</span>
 </pre>
       </td>
     </tr>

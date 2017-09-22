@@ -5,6 +5,7 @@ var classdeflect_1_1_server =
     [ "_closePixelStream", "classdeflect_1_1_server.html#a82a63afaa9d217de08ae18f8db97a1a3", null ],
     [ "closePixelStream", "classdeflect_1_1_server.html#a93e245a13eaf03e009cf638b2fa4964f", null ],
     [ "pixelStreamClosed", "classdeflect_1_1_server.html#adacda16c07695949e328c6c44f5a9cdb", null ],
+    [ "pixelStreamException", "classdeflect_1_1_server.html#a4169a67ea240cf53085520b8299644b8", null ],
     [ "pixelStreamOpened", "classdeflect_1_1_server.html#a1febfce66453deab11af38f2e2c08ac0", null ],
     [ "receivedData", "classdeflect_1_1_server.html#a5414ec8f30fd8e31df05892d76c54ddc", null ],
     [ "receivedFrame", "classdeflect_1_1_server.html#a919ffde91b4c2000621b4d016c5eebfb", null ],

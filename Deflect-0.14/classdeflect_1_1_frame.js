@@ -1,6 +1,7 @@
 var classdeflect_1_1_frame =
 [
     [ "computeDimensions", "classdeflect_1_1_frame.html#a1f3b6dc77aa6b6d2848af592a1e8539f", null ],
+    [ "determineRowOrder", "classdeflect_1_1_frame.html#ac1a2dc16c659bd760854dc86c756680f", null ],
     [ "segments", "classdeflect_1_1_frame.html#a443833619529fbdde2ed613810e5e189", null ],
     [ "uri", "classdeflect_1_1_frame.html#a930b8466220144877f4bbdd44db083f4", null ]
 ];

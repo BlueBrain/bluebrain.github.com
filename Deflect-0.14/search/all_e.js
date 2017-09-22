@@ -8,5 +8,6 @@ var searchData=
   ['removealltouchpoints',['removeAllTouchPoints',['../classdeflect_1_1qt_1_1_touch_injector.html#a96c53f72080981e4c3165b1d58dcbdf8',1,'deflect::qt::TouchInjector']]],
   ['removetouchpoint',['removeTouchPoint',['../classdeflect_1_1qt_1_1_touch_injector.html#a1b15ba90f5754acf4e577ed827ff4be0',1,'deflect::qt::TouchInjector']]],
   ['render',['render',['../classdeflect_1_1qt_1_1_quick_renderer.html#a6d8dbb634c27a5bdb4abae63189861b5',1,'deflect::qt::QuickRenderer']]],
-  ['requestframe',['requestFrame',['../classdeflect_1_1_server.html#aaa16540189b32fe4165d554ba6173468',1,'deflect::Server']]]
+  ['requestframe',['requestFrame',['../classdeflect_1_1_server.html#aaa16540189b32fe4165d554ba6173468',1,'deflect::Server']]],
+  ['roworder',['rowOrder',['../structdeflect_1_1_image_wrapper.html#a35ba63533c9e07a77f76fe0eecb24114',1,'deflect::ImageWrapper::rowOrder()'],['../structdeflect_1_1_segment.html#a9726bc28ed72325eb14771dbdf5967e8',1,'deflect::Segment::rowOrder()']]]
 ];
