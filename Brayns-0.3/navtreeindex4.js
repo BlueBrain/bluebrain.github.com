@@ -1,5 +1,14 @@
 var NAVTREEINDEX4 =
 {
+"classbrayns_1_1_volume_handler.html#a66fb70e7039ace4fde9250bc92afaead":[5,0,0,77,4],
+"classbrayns_1_1_volume_handler.html#a8d79cfa8b0080820d6fc9d664bbbe669":[5,0,0,77,7],
+"classbrayns_1_1_volume_handler.html#a96bf2720442dd32493cffe4beaccf77c":[5,0,0,77,15],
+"classbrayns_1_1_volume_handler.html#a9842a3e1eac8ed2c182bb614f71cf9bd":[5,0,0,77,12],
+"classbrayns_1_1_volume_handler.html#aac72eca3b08d07ba2042f7303c57f501":[5,0,0,77,8],
+"classbrayns_1_1_volume_handler.html#ab8ed1cd8b3fea737cd948e9ef394d88c":[5,0,0,77,11],
+"classbrayns_1_1_volume_handler.html#ac499d28a2370eaf6938be7ef69e4d87f":[5,0,0,77,3],
+"classbrayns_1_1_volume_handler.html#ad4bd4b61f3c350ad20172376337c77c2":[5,0,0,77,1],
+"classbrayns_1_1_volume_handler.html#aebb55d097b0822d9347224e9c91ad770":[5,0,0,77,17],
 "classbrayns_1_1_volume_handler.html#af357f8fd6e08e61abfedb040a5f52731":[5,0,0,77,13],
 "classbrayns_1_1_volume_handler.html#afeaa537e13ad45960daab5c5437c6699":[5,0,0,77,5],
 "classbrayns_1_1_volume_handler_1_1_volume_descriptor.html":[5,0,0,77,0],
@@ -58,8 +67,8 @@ var NAVTREEINDEX4 =
 "functions_d.html":[5,3,0,4],
 "functions_e.html":[5,3,0,5],
 "functions_f.html":[5,3,0,6],
-"functions_func.html":[5,3,1,0],
 "functions_func.html":[5,3,1],
+"functions_func.html":[5,3,1,0],
 "functions_func_0x7e.html":[5,3,1,19],
 "functions_func_b.html":[5,3,1,1],
 "functions_func_c.html":[5,3,1,2],
@@ -240,14 +249,5 @@ var NAVTREEINDEX4 =
 "structospray_1_1_extended_spheres.html#a35fe1079da30fe2229111b895e484108":[5,0,1,3,4],
 "structospray_1_1_extended_spheres.html#a37fad265868796da992359fe465a90e8":[5,0,1,3,8],
 "structospray_1_1_extended_spheres.html#a3a22e3c6ba38e9585bef343a0855cdb7":[5,0,1,3,5],
-"structospray_1_1_extended_spheres.html#a6cb65bd6634e12fe9d15d34cd5ba98d5":[5,0,1,3,11],
-"structospray_1_1_extended_spheres.html#a73c1f76d6e4dfda78b0bb4218be90b1d":[5,0,1,3,3],
-"structospray_1_1_extended_spheres.html#a75831585f978ca18eb22fd8cecca79e0":[5,0,1,3,1],
-"structospray_1_1_extended_spheres.html#a82d38ca36c0d9fb9d38134a5f775b9f6":[5,0,1,3,10],
-"structospray_1_1_extended_spheres.html#ab0bb4709f5f108e33768e90f83a2f816":[5,0,1,3,13],
-"structospray_1_1_extended_spheres.html#ac4d61a9d972fe84a6f816b03e8aeae21":[5,0,1,3,0],
-"structospray_1_1_extended_spheres.html#acef51ef3cba48fec3e7dfb2a7744a505":[5,0,1,3,6],
-"structospray_1_1_extended_spheres.html#ae083ae303a78907aebc80080cd63ed63":[5,0,1,3,12],
-"structospray_1_1_extended_spheres.html#af613715af4889dee15f7691b9192563c":[5,0,1,3,9],
-"structospray_1_1_extended_spheres.html#af6562c223616537ba2b6d1151b952c6c":[5,0,1,3,7]
+"structospray_1_1_extended_spheres.html#a6cb65bd6634e12fe9d15d34cd5ba98d5":[5,0,1,3,11]
 };

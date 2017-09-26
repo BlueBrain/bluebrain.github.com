@@ -11,6 +11,7 @@ var classbrayns_1_1_application_parameters =
     [ "getStreamCompression", "classbrayns_1_1_application_parameters.html#a3fd7cfeeacac40b807b4e64881826171", null ],
     [ "getStreamingEnabled", "classbrayns_1_1_application_parameters.html#af447580e607ea4e45e7d051ea7c267f4", null ],
     [ "getStreamQuality", "classbrayns_1_1_application_parameters.html#a1f6cfc99f6c28d7960bd6d6c00a35c50", null ],
+    [ "getSynchronousMode", "classbrayns_1_1_application_parameters.html#adad26e22e52a305f855514bfe011bf28", null ],
     [ "getTmpFolder", "classbrayns_1_1_application_parameters.html#a4c2e7a22aad865a23b1be1eb8b1d6175", null ],
     [ "getWindowSize", "classbrayns_1_1_application_parameters.html#a6e87fdfee6a6590c5d9ff7c4ee7dc0ee", null ],
     [ "isBenchmarking", "classbrayns_1_1_application_parameters.html#a0baa53fd46c9a6aecddeec70d2546ce2", null ],
@@ -21,6 +22,7 @@ var classbrayns_1_1_application_parameters =
     [ "setStreamCompression", "classbrayns_1_1_application_parameters.html#a502113399f6c2971ab89336ac3f38028", null ],
     [ "setStreamingEnabled", "classbrayns_1_1_application_parameters.html#a348fbb008eded804d0f974000429d125", null ],
     [ "setStreamQuality", "classbrayns_1_1_application_parameters.html#a8faff49b2d886ba3cecb3a06f2815a4d", null ],
+    [ "setSynchronousMode", "classbrayns_1_1_application_parameters.html#ac5a03027059d65a0f27a6495574b0832", null ],
     [ "setWindowSize", "classbrayns_1_1_application_parameters.html#a2ec8ba7d5703e2a637ec608f44cca940", null ],
     [ "_autoPublishZeroEQEvents", "classbrayns_1_1_application_parameters.html#a39c06b73b0eb78a49a27cc04e9a1c4f3", null ],
     [ "_benchmarking", "classbrayns_1_1_application_parameters.html#aed0ca4df28b0333648ba8149ba46476c", null ],
@@ -32,6 +34,7 @@ var classbrayns_1_1_application_parameters =
     [ "_streamCompression", "classbrayns_1_1_application_parameters.html#a3d3e4da6d342e4d8bf8b42e9b2d0ddc7", null ],
     [ "_streamingEnabled", "classbrayns_1_1_application_parameters.html#a72cd0ad563b12bc677532cbcc479ef40", null ],
     [ "_streamQuality", "classbrayns_1_1_application_parameters.html#a57101b81269f49d575b73b1abea1092f", null ],
+    [ "_synchronousMode", "classbrayns_1_1_application_parameters.html#a009b3f6f47312cea14345ea4e3973706", null ],
     [ "_tmpFolder", "classbrayns_1_1_application_parameters.html#a63a6ca2aa1ef2abd0b7adb00cccfa53c", null ],
     [ "_windowSize", "classbrayns_1_1_application_parameters.html#afa4d23d90d1540ee46edb0f59d162b6e", null ]
 ];
