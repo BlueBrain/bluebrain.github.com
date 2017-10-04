@@ -30,10 +30,10 @@ var NAVTREEINDEX =
 [
 ".html",
 "classbrayns_1_1_base_window.html#a6c6386920f7ac665e1d56c9e3672cdae",
-"classbrayns_1_1_geometry_parameters.html#a9a0433eafa0e8538b0325aa93626cd62",
-"classbrayns_1_1_primitive.html",
-"classbrayns_1_1_volume_handler.html#a66fb70e7039ace4fde9250bc92afaead",
-"structospray_1_1_extended_spheres.html#a73c1f76d6e4dfda78b0bb4218be90b1d"
+"classbrayns_1_1_geometry_parameters.html#a9692b5115e51135d82cfd73cecaa57ea",
+"classbrayns_1_1_particle_renderer.html",
+"classbrayns_1_1_version.html#ac28a55327f904d62ab90dc172be1b440",
+"structospray_1_1_extended_cylinders.html#ac9cd0a4315111f5aa95873e423cd2293"
 ];
 
 var SYNCONMSG = 'click to disable panel synchronisation';

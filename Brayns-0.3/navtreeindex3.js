@@ -1,5 +1,16 @@
 var NAVTREEINDEX3 =
 {
+"classbrayns_1_1_particle_renderer.html":[5,0,0,53],
+"classbrayns_1_1_particle_renderer.html#a3854e6979cc19f8158ef28ceaaef9318":[5,0,0,53,1],
+"classbrayns_1_1_particle_renderer.html#a92fc5f6863414f74849be424e90e1264":[5,0,0,53,0],
+"classbrayns_1_1_particle_renderer.html#af77fad98b58d93e68c2b716fb3d69b30":[5,0,0,53,2],
+"classbrayns_1_1_point_light.html":[5,0,0,54],
+"classbrayns_1_1_point_light.html#a14c49779d4e61b944511e07c7f7cad13":[5,0,0,54,5],
+"classbrayns_1_1_point_light.html#a341eab1555739e2a7a453a1c18e3b211":[5,0,0,54,2],
+"classbrayns_1_1_point_light.html#a782a3fb04f2cf4a089a738e5bc105698":[5,0,0,54,4],
+"classbrayns_1_1_point_light.html#a9500e2af4d823aaa65b62861e95649b1":[5,0,0,54,1],
+"classbrayns_1_1_point_light.html#ac360885334a6778949e00d7070c8a9ae":[5,0,0,54,0],
+"classbrayns_1_1_point_light.html#ae1d1275e4d67a8622f009bb1633c94a5":[5,0,0,54,3],
 "classbrayns_1_1_primitive.html":[5,0,0,55],
 "classbrayns_1_1_primitive.html#a014d538b933f9e9152006255e13d4d9c":[5,0,0,55,0],
 "classbrayns_1_1_primitive.html#a46539adfba481765527843495366379f":[5,0,0,55,8],
@@ -238,16 +249,5 @@ var NAVTREEINDEX3 =
 "classbrayns_1_1_version.html#a6b194dfa87bafdc9a6512fe7ad57794c":[5,0,0,76,6],
 "classbrayns_1_1_version.html#a7230a3f09fc682b33cf1cfff19bebce7":[5,0,0,76,8],
 "classbrayns_1_1_version.html#a74c8402e7ceed27e0c773cf39e8e01b0":[5,0,0,76,4],
-"classbrayns_1_1_version.html#ab23018d1ff96bba3a16b1b5a595115d3":[5,0,0,76,5],
-"classbrayns_1_1_version.html#ac28a55327f904d62ab90dc172be1b440":[5,0,0,76,3],
-"classbrayns_1_1_version.html#ad4caded283f86362198a2ba1eb478eba":[5,0,0,76,2],
-"classbrayns_1_1_version.html#af7fbd75a18a0d7b20f875b0669f3609c":[5,0,0,76,7],
-"classbrayns_1_1_version.html#af99a8b1956c6cb800290c9f8d303f36a":[5,0,0,76,1],
-"classbrayns_1_1_volume_handler.html":[5,0,0,77],
-"classbrayns_1_1_volume_handler.html#a16720b2fe81f275d2c2f2f49132dfbd8":[5,0,0,77,6],
-"classbrayns_1_1_volume_handler.html#a39d2058806a352a3a62469ec34604d06":[5,0,0,77,2],
-"classbrayns_1_1_volume_handler.html#a48bb37209f5697d56a459f3f4051a00e":[5,0,0,77,16],
-"classbrayns_1_1_volume_handler.html#a4f4d7ba8215fdb69907b49fdaa1ca5ca":[5,0,0,77,10],
-"classbrayns_1_1_volume_handler.html#a508760653b12b02644c719fcd58b8240":[5,0,0,77,9],
-"classbrayns_1_1_volume_handler.html#a52b0f63bebafd5b511046d7b37d3fbba":[5,0,0,77,14]
+"classbrayns_1_1_version.html#ab23018d1ff96bba3a16b1b5a595115d3":[5,0,0,76,5]
 };
