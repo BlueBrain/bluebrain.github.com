@@ -1,9 +1,6 @@
 var hierarchy =
 [
     [ "BasicLight", "struct_basic_light.html", null ],
-    [ "progress_display", null, [
-      [ "Progress", "class_progress.html", null ]
-    ] ],
     [ "brayns::AbstractManipulator", "classbrayns_1_1_abstract_manipulator.html", [
       [ "brayns::FlyingModeManipulator", "classbrayns_1_1_flying_mode_manipulator.html", null ],
       [ "brayns::InspectCenterManipulator", "classbrayns_1_1_inspect_center_manipulator.html", null ]
@@ -62,9 +59,14 @@ var hierarchy =
     [ "brayns::Material", "classbrayns_1_1_material.html", null ],
     [ "brayns::MeshLoader", "classbrayns_1_1_mesh_loader.html", null ],
     [ "brayns::MetaballsGenerator", "classbrayns_1_1_metaballs_generator.html", null ],
-    [ "brayns::MolecularSystemReader", "classbrayns_1_1_molecular_system_reader.html", null ],
     [ "brayns::MorphologyLayout", "structbrayns_1_1_morphology_layout.html", null ],
     [ "brayns::ParametersManager", "classbrayns_1_1_parameters_manager.html", null ],
+    [ "brayns::Progress", "classbrayns_1_1_progress.html", null ],
+    [ "brayns::ProgressReporter", "classbrayns_1_1_progress_reporter.html", [
+      [ "brayns::MolecularSystemReader", "classbrayns_1_1_molecular_system_reader.html", null ],
+      [ "brayns::SceneLoader", "classbrayns_1_1_scene_loader.html", null ],
+      [ "brayns::XYZBLoader", "classbrayns_1_1_x_y_z_b_loader.html", null ]
+    ] ],
     [ "brayns::ProteinLoader", "classbrayns_1_1_protein_loader.html", null ],
     [ "brayns::Renderer", "classbrayns_1_1_renderer.html", [
       [ "brayns::LivreRenderer", "classbrayns_1_1_livre_renderer.html", null ],
@@ -78,7 +80,6 @@ var hierarchy =
       [ "brayns::OptiXScene", "classbrayns_1_1_opti_x_scene.html", null ],
       [ "brayns::OSPRayScene", "classbrayns_1_1_o_s_p_ray_scene.html", null ]
     ] ],
-    [ "brayns::SceneLoader", "classbrayns_1_1_scene_loader.html", null ],
     [ "brayns::ScreenSpaceProcessor", "classbrayns_1_1_screen_space_processor.html", null ],
     [ "brayns::ScreenSpaceProcessorData", "structbrayns_1_1_screen_space_processor_data.html", null ],
     [ "brayns::ShortcutInformation", "structbrayns_1_1_shortcut_information.html", null ],
@@ -89,7 +90,6 @@ var hierarchy =
     [ "brayns::Version", "classbrayns_1_1_version.html", null ],
     [ "brayns::VolumeHandler", "classbrayns_1_1_volume_handler.html", null ],
     [ "brayns::VolumeHandler::VolumeDescriptor", "classbrayns_1_1_volume_handler_1_1_volume_descriptor.html", null ],
-    [ "brayns::XYZBLoader", "classbrayns_1_1_x_y_z_b_loader.html", null ],
     [ "Camera", null, [
       [ "ospray::ClippedPerspectiveCamera", "structospray_1_1_clipped_perspective_camera.html", null ]
     ] ],

@@ -6,7 +6,8 @@ var searchData=
   ['perraydata_5fshadow',['PerRayData_shadow',['../struct_per_ray_data__shadow.html',1,'']]],
   ['pointlight',['PointLight',['../classbrayns_1_1_point_light.html',1,'brayns']]],
   ['primitive',['Primitive',['../classbrayns_1_1_primitive.html',1,'brayns']]],
-  ['progress',['Progress',['../class_progress.html',1,'']]],
+  ['progress',['Progress',['../classbrayns_1_1_progress.html',1,'brayns']]],
+  ['progressreporter',['ProgressReporter',['../classbrayns_1_1_progress_reporter.html',1,'brayns']]],
   ['proteinloader',['ProteinLoader',['../classbrayns_1_1_protein_loader.html',1,'brayns']]],
   ['proximityrenderer',['ProximityRenderer',['../classbrayns_1_1_proximity_renderer.html',1,'brayns']]]
 ];

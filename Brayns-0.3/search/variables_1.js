@@ -1,4 +1,4 @@
 var searchData=
 [
-  ['g',['g',['../structbrayns_1_1obj_1_1_extended_o_b_j_material.html#a7d932e025a1b4d7679a5234a0e599195',1,'brayns::obj::ExtendedOBJMaterial']]]
+  ['buildscene',['buildScene',['../classbrayns_1_1_engine.html#af778df7ef0bce4a98675b9589afd9a81',1,'brayns::Engine']]]
 ];

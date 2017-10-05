@@ -38,9 +38,13 @@ var searchData=
   ['setintensity',['setIntensity',['../classbrayns_1_1_light.html#a7219ba01bccbf75a30e2be20b3f62fb7',1,'brayns::Light']]],
   ['setjpegcompression',['setJpegCompression',['../classbrayns_1_1_application_parameters.html#a9fdb360a50c27ab8242fff3d0f2170cb',1,'brayns::ApplicationParameters']]],
   ['setkeeprunning',['setKeepRunning',['../classbrayns_1_1_engine.html#a9eeb56f21e8fc9c34eb926f6d706a546',1,'brayns::Engine']]],
+  ['setlastoperation',['setLastOperation',['../classbrayns_1_1_engine.html#ad22c4f8eae8a7c54567966628ff845d3',1,'brayns::Engine']]],
+  ['setlastprogress',['setLastProgress',['../classbrayns_1_1_engine.html#ad682377d097d0079396207746db74895',1,'brayns::Engine']]],
   ['setmaterials',['setMaterials',['../classbrayns_1_1_scene.html#a70238d562cf41d097a48bfa66c4c4094',1,'brayns::Scene']]],
+  ['setmessage',['setMessage',['../classbrayns_1_1_progress.html#ad487c6ed4e96ebeb88d79ded3a7e9264',1,'brayns::Progress']]],
   ['setnbframes',['setNbFrames',['../classbrayns_1_1_abstract_simulation_handler.html#a6d97bbea1b840d24c754068d0b6c2cd8',1,'brayns::AbstractSimulationHandler::setNbFrames()'],['../classbrayns_1_1_volume_handler.html#aebb55d097b0822d9347224e9c91ad770',1,'brayns::VolumeHandler::setNbFrames()']]],
   ['setposition',['setPosition',['../classbrayns_1_1_camera.html#ad3ccec7616d8d86e5719a53512c39c68',1,'brayns::Camera::setPosition()'],['../classbrayns_1_1_point_light.html#a14c49779d4e61b944511e07c7f7cad13',1,'brayns::PointLight::setPosition()']]],
+  ['setprogresscallback',['setProgressCallback',['../classbrayns_1_1_progress_reporter.html#a55d3d776aa2cd6612ab8bfc97453a141',1,'brayns::ProgressReporter']]],
   ['setradiuscorrection',['setRadiusCorrection',['../classbrayns_1_1_geometry_parameters.html#a6bbfa8e688f9395347b8d3d535b93834',1,'brayns::GeometryParameters']]],
   ['setradiusmultiplier',['setRadiusMultiplier',['../classbrayns_1_1_geometry_parameters.html#a39e145c39048b4ae3c8be29999bb89a4',1,'brayns::GeometryParameters']]],
   ['setsamplesperray',['setSamplesPerRay',['../classbrayns_1_1_volume_parameters.html#ae8eb99f1718e213b31a051ad8864d677',1,'brayns::VolumeParameters']]],
@@ -57,5 +61,6 @@ var searchData=
   ['simulationrenderer',['SimulationRenderer',['../classbrayns_1_1_simulation_renderer.html',1,'brayns']]],
   ['sphere',['Sphere',['../classbrayns_1_1_sphere.html',1,'brayns']]],
   ['spikesimulationhandler',['SpikeSimulationHandler',['../classbrayns_1_1_spike_simulation_handler.html',1,'brayns']]],
-  ['spikesimulationhandler',['SpikeSimulationHandler',['../classbrayns_1_1_spike_simulation_handler.html#aae5dc41c31d6b1a5473075eaf0c54fc9',1,'brayns::SpikeSimulationHandler']]]
+  ['spikesimulationhandler',['SpikeSimulationHandler',['../classbrayns_1_1_spike_simulation_handler.html#aae5dc41c31d6b1a5473075eaf0c54fc9',1,'brayns::SpikeSimulationHandler']]],
+  ['supportsunloading',['supportsUnloading',['../classbrayns_1_1_livre_scene.html#a0227a907df9d8e69718de51bb3e4c1a1',1,'brayns::LivreScene::supportsUnloading()'],['../classbrayns_1_1_scene.html#a2f6049b0f80c208cc90b9f61ed82734f',1,'brayns::Scene::supportsUnloading()']]]
 ];

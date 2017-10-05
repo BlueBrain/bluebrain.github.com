@@ -71,6 +71,8 @@ var files =
     [ "Phong.h", "_phong_8h_source.html", null ],
     [ "PointLight.h", "_point_light_8h_source.html", null ],
     [ "Primitive.h", "_primitive_8h_source.html", null ],
+    [ "Progress.h", "_progress_8h_source.html", null ],
+    [ "ProgressReporter.h", "_progress_reporter_8h_source.html", null ],
     [ "ProteinLoader.h", "_protein_loader_8h_source.html", null ],
     [ "ProximityRenderer.h", "_proximity_renderer_8h_source.html", null ],
     [ "Random.h", "_random_8h_source.html", null ],

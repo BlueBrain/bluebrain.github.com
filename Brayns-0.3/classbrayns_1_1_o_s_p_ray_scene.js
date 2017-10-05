@@ -10,9 +10,9 @@ var classbrayns_1_1_o_s_p_ray_scene =
     [ "commitTransferFunctionData", "classbrayns_1_1_o_s_p_ray_scene.html#aa8b9639a0aba20a2795d317b1a21abc5", null ],
     [ "commitVolumeData", "classbrayns_1_1_o_s_p_ray_scene.html#ac0d6b7acd500f2a3499de9234fcfad41", null ],
     [ "isVolumeSupported", "classbrayns_1_1_o_s_p_ray_scene.html#ae4904bea5fbd897256145650bfbebbe2", null ],
-    [ "modelImpl", "classbrayns_1_1_o_s_p_ray_scene.html#a90bcf33f659a6dbc4aa7dacb930a351a", null ],
-    [ "reset", "classbrayns_1_1_o_s_p_ray_scene.html#aa17bae858b1195c11c2c44ae6d2a2b67", null ],
+    [ "modelImpl", "classbrayns_1_1_o_s_p_ray_scene.html#a27f403d40b9682a70afc740254c80161", null ],
     [ "saveSceneToCacheFile", "classbrayns_1_1_o_s_p_ray_scene.html#ad9ea4a411a09d9f76af6ad5f428b4762", null ],
     [ "serializeGeometry", "classbrayns_1_1_o_s_p_ray_scene.html#a42e388f6a471df981eb93842d9be6fd5", null ],
-    [ "simulationModelImpl", "classbrayns_1_1_o_s_p_ray_scene.html#aadbc5b628c8509f28229352282ec1ca6", null ]
+    [ "simulationModelImpl", "classbrayns_1_1_o_s_p_ray_scene.html#affa5ae2b92e4f28306e7da2289fc244a", null ],
+    [ "unload", "classbrayns_1_1_o_s_p_ray_scene.html#abc14d535ccc3d89fba5af497c99a9bcc", null ]
 ];

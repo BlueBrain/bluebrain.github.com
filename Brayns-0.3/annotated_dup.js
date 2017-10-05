@@ -59,6 +59,8 @@ var annotated_dup =
       [ "ParticleRenderer", "classbrayns_1_1_particle_renderer.html", "classbrayns_1_1_particle_renderer" ],
       [ "PointLight", "classbrayns_1_1_point_light.html", "classbrayns_1_1_point_light" ],
       [ "Primitive", "classbrayns_1_1_primitive.html", "classbrayns_1_1_primitive" ],
+      [ "Progress", "classbrayns_1_1_progress.html", "classbrayns_1_1_progress" ],
+      [ "ProgressReporter", "classbrayns_1_1_progress_reporter.html", "classbrayns_1_1_progress_reporter" ],
       [ "ProteinLoader", "classbrayns_1_1_protein_loader.html", "classbrayns_1_1_protein_loader" ],
       [ "ProximityRenderer", "classbrayns_1_1_proximity_renderer.html", "classbrayns_1_1_proximity_renderer" ],
       [ "Renderer", "classbrayns_1_1_renderer.html", "classbrayns_1_1_renderer" ],
@@ -93,6 +95,5 @@ var annotated_dup =
     ] ],
     [ "BasicLight", "struct_basic_light.html", "struct_basic_light" ],
     [ "PerRayData_radiance", "struct_per_ray_data__radiance.html", "struct_per_ray_data__radiance" ],
-    [ "PerRayData_shadow", "struct_per_ray_data__shadow.html", "struct_per_ray_data__shadow" ],
-    [ "Progress", "class_progress.html", "class_progress" ]
+    [ "PerRayData_shadow", "struct_per_ray_data__shadow.html", "struct_per_ray_data__shadow" ]
 ];

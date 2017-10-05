@@ -13,7 +13,8 @@ var NAVTREE =
       [ "Class Members", "functions.html", [
         [ "All", "functions.html", "functions_dup" ],
         [ "Functions", "functions_func.html", "functions_func" ],
-        [ "Variables", "functions_vars.html", null ]
+        [ "Variables", "functions_vars.html", null ],
+        [ "Typedefs", "functions_type.html", null ]
       ] ]
     ] ],
     [ "Files", null, [
@@ -30,10 +31,10 @@ var NAVTREEINDEX =
 [
 ".html",
 "classbrayns_1_1_base_window.html#a6c6386920f7ac665e1d56c9e3672cdae",
-"classbrayns_1_1_geometry_parameters.html#a9692b5115e51135d82cfd73cecaa57ea",
-"classbrayns_1_1_particle_renderer.html",
-"classbrayns_1_1_version.html#ac28a55327f904d62ab90dc172be1b440",
-"structospray_1_1_extended_cylinders.html#ac9cd0a4315111f5aa95873e423cd2293"
+"classbrayns_1_1_geometry_parameters.html#a8c92a909fef870a14d015a6e838f3f63",
+"classbrayns_1_1_parameters_manager.html#a3558f229417081e9ed7eee77acfa73f0",
+"classbrayns_1_1_transfer_function.html#a6c19db0df6b4efa4c4f6fb1b3b6d7380",
+"structospray_1_1_extended_cones.html#a4fc94f61dcf0d8318c0db4bd794973ad"
 ];
 
 var SYNCONMSG = 'click to disable panel synchronisation';

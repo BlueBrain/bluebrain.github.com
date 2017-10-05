@@ -9,7 +9,7 @@ var searchData=
   ['renderingparameters',['RenderingParameters',['../classbrayns_1_1_rendering_parameters.html',1,'brayns']]],
   ['renderinput',['RenderInput',['../structbrayns_1_1_render_input.html',1,'brayns']]],
   ['renderoutput',['RenderOutput',['../structbrayns_1_1_render_output.html',1,'brayns']]],
-  ['reset',['reset',['../classbrayns_1_1_camera.html#a0378b8d85d011a5b524746f4e23e34e6',1,'brayns::Camera::reset()'],['../classbrayns_1_1_opti_x_scene.html#ab4142145a22dd06167d073d37af2170e',1,'brayns::OptiXScene::reset()'],['../classbrayns_1_1_o_s_p_ray_scene.html#aa17bae858b1195c11c2c44ae6d2a2b67',1,'brayns::OSPRayScene::reset()'],['../classbrayns_1_1_scene.html#a0056f019a5261be6f131b8eb38de2169',1,'brayns::Scene::reset()']]],
+  ['reset',['reset',['../classbrayns_1_1_camera.html#a0378b8d85d011a5b524746f4e23e34e6',1,'brayns::Camera']]],
   ['resetframenumber',['resetFrameNumber',['../classbrayns_1_1_engine.html#a76208420463fc2fa30713135417373e5',1,'brayns::Engine']]],
   ['resetmodified',['resetModified',['../classbrayns_1_1_abstract_parameters.html#ab46b980f9f94fa26350d940f44abf002',1,'brayns::AbstractParameters::resetModified()'],['../classbrayns_1_1_camera.html#a4215decd15d58ff06710cca077e87c2c',1,'brayns::Camera::resetModified()'],['../classbrayns_1_1_parameters_manager.html#a0c96d24bee61aaa727c92db0aeeeb0c0',1,'brayns::ParametersManager::resetModified()']]],
   ['reshape',['reshape',['../classbrayns_1_1_engine.html#a840980ce1525d0e767140ca591deafb0',1,'brayns::Engine']]],

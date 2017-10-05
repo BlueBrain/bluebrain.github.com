@@ -10,5 +10,6 @@ var classbrayns_1_1_livre_scene =
     [ "commitVolumeData", "classbrayns_1_1_livre_scene.html#a3b8678fd9db793bbdbb38b534138cce9", null ],
     [ "isVolumeSupported", "classbrayns_1_1_livre_scene.html#ad9c021b2bfa7ae5fbb4a2d70b41024eb", null ],
     [ "saveSceneToCacheFile", "classbrayns_1_1_livre_scene.html#a0a7cfc3476fe12d00e46de28f3522315", null ],
-    [ "serializeGeometry", "classbrayns_1_1_livre_scene.html#ae096381e9ccfa500b9d2378aeff76013", null ]
+    [ "serializeGeometry", "classbrayns_1_1_livre_scene.html#ae096381e9ccfa500b9d2378aeff76013", null ],
+    [ "supportsUnloading", "classbrayns_1_1_livre_scene.html#a0227a907df9d8e69718de51bb3e4c1a1", null ]
 ];
