@@ -28,6 +28,7 @@ var searchData=
   ['getcachabletileimage',['getCachableTileImage',['../class_cached_data_source.html#a7572411a37e9936abcb1c757bd886293',1,'CachedDataSource::getCachableTileImage()'],['../class_p_d_f_tiler.html#a4a01450edbc7beb40e7f722d7a1f669d',1,'PDFTiler::getCachableTileImage()']]],
   ['getcaptureinteraction',['getCaptureInteraction',['../class_content.html#a7e7c36edf987322675eea81f27e8017d',1,'Content']]],
   ['getcenter',['getCenter',['../namespace_math_utils.html#a8c9dfd1cf1562a7fbf9fe125c6560d3a',1,'MathUtils']]],
+  ['getcolorspace',['getColorSpace',['../class_f_f_m_p_e_g_picture.html#a0cdb082eb51aaf3e8acb869890168a16',1,'FFMPEGPicture::getColorSpace()'],['../class_image.html#a49481fa1cc7c6b2ab9a1dec20209076b',1,'Image::getColorSpace()'],['../class_stream_image.html#aeae9c956fca3fadc732e50c8260f9a83',1,'StreamImage::getColorSpace()']]],
   ['getcommandline',['getCommandLine',['../class_command_line_options.html#a3d8b4c329b6a3634e20a2d661a1e0453',1,'CommandLineOptions']]],
   ['getcommandlinearguments',['getCommandLineArguments',['../class_command_line_options.html#ab5f3af16b94d02c33fa42c6caefcb301',1,'CommandLineOptions']]],
   ['getconfigfilename',['getConfigFilename',['../class_command_line_parameters.html#afe491331fa336946aa6f921bd411018c',1,'CommandLineParameters']]],

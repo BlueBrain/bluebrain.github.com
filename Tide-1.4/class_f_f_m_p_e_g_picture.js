@@ -1,6 +1,7 @@
 var class_f_f_m_p_e_g_picture =
 [
     [ "FFMPEGPicture", "class_f_f_m_p_e_g_picture.html#a9842bab3feecfe624ed350f62cb6c69f", null ],
+    [ "getColorSpace", "class_f_f_m_p_e_g_picture.html#a0cdb082eb51aaf3e8acb869890168a16", null ],
     [ "getData", "class_f_f_m_p_e_g_picture.html#a254b6b8a5bf86e6a55c344240e6ffc83", null ],
     [ "getData", "class_f_f_m_p_e_g_picture.html#a6bc506a884aba0b74e48a1d0741cb619", null ],
     [ "getDataSize", "class_f_f_m_p_e_g_picture.html#aa0913fe0c347bdb51e015e341812e8b8", null ],
