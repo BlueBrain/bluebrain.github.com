@@ -1,5 +1,6 @@
 var NAVTREEINDEX4 =
 {
+"class_master_to_wall_channel.html#a942310b7cff493b7aecb2d9d25e5dc76":[7,0,73,8],
 "class_master_to_wall_channel.html#a97d0c9486dd542aa727c6d879f091ef7":[7,0,73,4],
 "class_master_to_wall_channel.html#aaf9ac18a037e5eca708fbf3a10329deb":[7,0,73,5],
 "class_master_to_wall_channel.html#ab363eb3caaeb7c843c1bc2d3eae219f1":[7,0,73,3],
@@ -248,6 +249,5 @@ var NAVTREEINDEX4 =
 "class_pixel_stream_controller.html#a933fd1de507a6382e821dc2b261c4a84":[7,0,95,11],
 "class_pixel_stream_controller.html#ad8ad070db17e8626497d61c77d80b726":[7,0,95,0],
 "class_pixel_stream_controller.html#adf6fa584167e71a8dc008057bd0c80d0":[7,0,95,8],
-"class_pixel_stream_controller.html#af23254672a33e4682ff38047c71fe9f1":[7,0,95,5],
-"class_pixel_stream_controller.html#af2726b58d52868969b13225553192f55":[7,0,95,3]
+"class_pixel_stream_controller.html#af23254672a33e4682ff38047c71fe9f1":[7,0,95,5]
 };

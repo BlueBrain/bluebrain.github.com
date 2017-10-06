@@ -42,8 +42,8 @@ var searchData=
   ['resizearoundposition',['resizeAroundPosition',['../namespacegeometry.html#a954a0cdcba05798d7ba90fa47dcf175b',1,'geometry']]],
   ['resizerelative',['resizeRelative',['../class_content_window_controller.html#a3a20b4c22eb64fa0c094a44df766c138',1,'ContentWindowController']]],
   ['restart',['restart',['../class_inactivity_timer.html#a01e02d85e1598dd9cdb0fb39fa394c12',1,'InactivityTimer']]],
-  ['restinterface',['RestInterface',['../class_rest_interface.html#ab6a95ac84b8dafc31c8c2da95daa9c04',1,'RestInterface']]],
-  ['restserver',['RestServer',['../class_rest_server.html#a688fd7a30878aea6036b459cfebf657c',1,'RestServer::RestServer()'],['../class_rest_server.html#a80e2ccc03376986de0e597f1ddd0ee5b',1,'RestServer::RestServer(int port)']]],
+  ['restinterface',['RestInterface',['../class_rest_interface.html#a3a44be0c51d216c9e7bdda0b073f26f2',1,'RestInterface']]],
+  ['restserver',['RestServer',['../class_rest_server.html#a688fd7a30878aea6036b459cfebf657c',1,'RestServer::RestServer()'],['../class_rest_server.html#a4b44a7efc2c7580ae5ff8e0136b4fa93',1,'RestServer::RestServer(uint16_t port)']]],
   ['rootobject',['rootObject',['../class_wall_window.html#ab8e15dff962c214995e15e9952b47d3f',1,'WallWindow']]],
   ['run',['run',['../class_process_forker.html#ad1528d488d2aa41dec482bbadb431cd3',1,'ProcessForker']]]
 ];

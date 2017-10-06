@@ -1,5 +1,6 @@
 var NAVTREEINDEX3 =
 {
+"class_fps_counter.html#a3eb9ed3a06caae8d9cdfde369d6976a3":[7,0,46,1],
 "class_fps_counter.html#a4f533eff274f2ff4ec9fdbd6a47de2c7":[7,0,46,2],
 "class_fps_counter.html#af7ac12793ae4f31b96439a4e12551160":[7,0,46,0],
 "class_hardware_swap_group.html":[7,0,47],
@@ -202,10 +203,10 @@ var NAVTREEINDEX3 =
 "class_master_application.html#a8ff4aef9c90eb363f2778154ec7b6af9":[7,0,67,1],
 "class_master_application.html#a97257d3e2f1ae65ba90e70eeaa9cfd94":[7,0,67,2],
 "class_master_configuration.html":[7,0,68],
+"class_master_configuration.html#a005a52c78be4d9e3f3483d5224bb688c":[7,0,68,14],
 "class_master_configuration.html#a105bca4aa2e25f8b417890cd21fae797":[7,0,68,15],
 "class_master_configuration.html#a10c504ed2c3553c900b7605233c7421d":[7,0,68,19],
 "class_master_configuration.html#a1199c895673d2419cce48a0c4143ee24":[7,0,68,1],
-"class_master_configuration.html#a161728807fc81592ff865956942bc4c3":[7,0,68,14],
 "class_master_configuration.html#a1e9671231ef79842a80c80009584987e":[7,0,68,0],
 "class_master_configuration.html#a2b83fb924d0a1259eb7ef7a1a095bd64":[7,0,68,18],
 "class_master_configuration.html#a332aefb4b3600a524dc0332a39578d7b":[7,0,68,12],
@@ -248,6 +249,5 @@ var NAVTREEINDEX3 =
 "class_master_to_wall_channel.html#a14f4b381b5a30ceb29d5bc24a977878f":[7,0,73,6],
 "class_master_to_wall_channel.html#a576ef4ee2d2b6bff8bb514b6079e234e":[7,0,73,1],
 "class_master_to_wall_channel.html#a5d52c566dc2810af957d041759958116":[7,0,73,2],
-"class_master_to_wall_channel.html#a8f671d612ef52095bf7290d791df4fc0":[7,0,73,0],
-"class_master_to_wall_channel.html#a942310b7cff493b7aecb2d9d25e5dc76":[7,0,73,8]
+"class_master_to_wall_channel.html#a8f671d612ef52095bf7290d791df4fc0":[7,0,73,0]
 };

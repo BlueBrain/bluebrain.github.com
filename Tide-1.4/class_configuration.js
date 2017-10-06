@@ -22,5 +22,6 @@ var class_configuration =
     [ "getTotalScreenCountY", "class_configuration.html#a0f61e23c663322c808a33b8deeab198e", null ],
     [ "getTotalSize", "class_configuration.html#a3c3e0bc67693859c0450d4c5f4a79318", null ],
     [ "getTotalWidth", "class_configuration.html#aa7b4b828ea7bc8afcf2bed3857007eaa", null ],
+    [ "getUShort", "class_configuration.html#a1c4d3e179ff9d2fcb2b12bb3979568e8", null ],
     [ "_filename", "class_configuration.html#ae3544038cf10d426a6c8c4b3adc430c5", null ]
 ];
