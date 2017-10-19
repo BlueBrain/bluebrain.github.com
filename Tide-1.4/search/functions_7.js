@@ -79,6 +79,7 @@ var searchData=
   ['getid',['getID',['../class_content_window.html#a57e025ed7564316980c09ca48f8b78e4',1,'ContentWindow::getID()'],['../class_tile.html#a6a653b4a1bfe89750a133644af00cc72',1,'Tile::getId()']]],
   ['getimage',['getImage',['../class_state_preview.html#aa855eb3b0bb12cc534458fe639336c04',1,'StatePreview']]],
   ['getimagesize',['getImageSize',['../class_tiff_pyramid_reader.html#a109fa3d3565fff1364da1d64522ddd65',1,'TiffPyramidReader']]],
+  ['getinfoname',['getInfoName',['../class_master_configuration.html#a64b73f572f0ab584cfddb84b38544ca0',1,'MasterConfiguration']]],
   ['getinteractioncount',['getInteractionCount',['../class_logging_utility.html#ac02c26b1ba446e25db8226fa2d09cd61',1,'LoggingUtility']]],
   ['getinteractionpolicy',['getInteractionPolicy',['../class_content.html#a2dea2403b7d96fad93fae78ca4986197',1,'Content::getInteractionPolicy()'],['../class_movie_content.html#aa5c58116d88d42e003dfc14aad9a8b5f',1,'MovieContent::getInteractionPolicy()'],['../class_pixel_stream_content.html#a11a89d1d2aefedf84211edcb3935fc0a',1,'PixelStreamContent::getInteractionPolicy()']]],
   ['getkeyboardstate',['getKeyboardState',['../class_content.html#a0e10f71c92fe8434a9b40183cb7239a0',1,'Content']]],

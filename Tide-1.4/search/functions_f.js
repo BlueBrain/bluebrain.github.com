@@ -26,7 +26,7 @@ var searchData=
   ['pixelstreamsynchronizer',['PixelStreamSynchronizer',['../class_pixel_stream_synchronizer.html#a7e9be625ac23087186e7860c83f2377b',1,'PixelStreamSynchronizer']]],
   ['pixelstreamupdater',['PixelStreamUpdater',['../class_pixel_stream_updater.html#a6c2d85e507658b80c95666d6b5f7c44a',1,'PixelStreamUpdater']]],
   ['pixelstreamwindowmanager',['PixelStreamWindowManager',['../class_pixel_stream_window_manager.html#a8d3cae6a2b05961dac58bf22810be44a',1,'PixelStreamWindowManager']]],
-  ['poweroff',['powerOff',['../class_app_controller.html#abb5fe626dceb099898f862bc619de688',1,'AppController::powerOff()'],['../class_inactivity_timer.html#a3e2636328fd2b726744449398164d0d3',1,'InactivityTimer::poweroff()']]],
+  ['poweroff',['poweroff',['../class_inactivity_timer.html#a3e2636328fd2b726744449398164d0d3',1,'InactivityTimer::poweroff()'],['../class_app_controller.html#abb5fe626dceb099898f862bc619de688',1,'AppController::powerOff()']]],
   ['powerstatechanged',['powerStateChanged',['../class_logging_utility.html#a397d3f0be5faa1962f9129da577d6fe9',1,'LoggingUtility']]],
   ['prepareupload',['prepareUpload',['../class_file_receiver.html#a8b1ce76b10b2c8d925ecd1f8ec0a0f5b',1,'FileReceiver']]],
   ['preview',['preview',['../class_canvas_node.html#a3654caeae68da20a92a2c29555d4126c',1,'CanvasNode']]],
