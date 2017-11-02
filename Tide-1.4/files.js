@@ -29,6 +29,7 @@ var files =
     [ "ContentWindowController.h", "_content_window_controller_8h_source.html", null ],
     [ "ContentWindowListWidgetItem.h", "_content_window_list_widget_item_8h_source.html", null ],
     [ "core.h", "core_8h_source.html", null ],
+    [ "CountdownStatus.h", "_countdown_status_8h_source.html", null ],
     [ "DataProvider.h", "_data_provider_8h_source.html", null ],
     [ "DataSource.h", "_data_source_8h_source.html", null ],
     [ "DefaultThumbnailGenerator.h", "_default_thumbnail_generator_8h_source.html", null ],

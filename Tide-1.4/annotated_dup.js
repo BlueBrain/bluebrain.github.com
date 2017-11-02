@@ -38,6 +38,7 @@ var annotated_dup =
     [ "ContentWindow", "class_content_window.html", "class_content_window" ],
     [ "ContentWindowController", "class_content_window_controller.html", "class_content_window_controller" ],
     [ "ContentWindowListWidgetItem", "class_content_window_list_widget_item.html", "class_content_window_list_widget_item" ],
+    [ "CountdownStatus", "class_countdown_status.html", "class_countdown_status" ],
     [ "DataProvider", "class_data_provider.html", "class_data_provider" ],
     [ "DataSource", "class_data_source.html", "class_data_source" ],
     [ "DefaultThumbnailGenerator", "class_default_thumbnail_generator.html", "class_default_thumbnail_generator" ],

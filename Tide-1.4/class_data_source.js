@@ -7,5 +7,5 @@ var class_data_source =
     [ "getTileRect", "class_data_source.html#ae90b6ac012313220258d79a06d24b0cf", null ],
     [ "getTilesArea", "class_data_source.html#abcbe01c5aaefb424f671850ee78dd504", null ],
     [ "isDynamic", "class_data_source.html#a54629350c073612b09217a9084b27951", null ],
-    [ "synchronizers", "class_data_source.html#aac92beef5e3022c5594a71221649ed99", null ]
+    [ "synchronizers", "class_data_source.html#a43d2d50fc4971aa75f19e8c0130bc721", null ]
 ];

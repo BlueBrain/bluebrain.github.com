@@ -1,6 +1,7 @@
 var class_movie_synchronizer =
 [
     [ "MovieSynchronizer", "class_movie_synchronizer.html#a916cbc692ebe85fc5e917596ad11d0ee", null ],
+    [ "~MovieSynchronizer", "class_movie_synchronizer.html#afa506141e2d9514649975bb3935106bb", null ],
     [ "getSliderPosition", "class_movie_synchronizer.html#a572cd81a07a0a8c3ee946f0eed766b2a", null ],
     [ "getStatistics", "class_movie_synchronizer.html#af222db1adfcfce06fc81ea433b85ebaa", null ],
     [ "getTilesArea", "class_movie_synchronizer.html#a228b8a12cba78d7a77e3af79192a5c27", null ],

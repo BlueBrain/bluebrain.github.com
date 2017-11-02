@@ -1,6 +1,7 @@
 var class_pixel_stream_synchronizer =
 [
     [ "PixelStreamSynchronizer", "class_pixel_stream_synchronizer.html#a7e9be625ac23087186e7860c83f2377b", null ],
+    [ "~PixelStreamSynchronizer", "class_pixel_stream_synchronizer.html#aa1e066ff0af0469dadd7bf1fc618f864", null ],
     [ "getDataSource", "class_pixel_stream_synchronizer.html#a4dbc7952113a1402ecaf0dcaf1fcedec", null ],
     [ "getStatistics", "class_pixel_stream_synchronizer.html#a90598cd467baee61727896ff7254a636", null ],
     [ "getTilesArea", "class_pixel_stream_synchronizer.html#aef5f2c1d82075573f156051fdf0b7028", null ],

@@ -1,6 +1,7 @@
 var class_lod_synchronizer =
 [
     [ "LodSynchronizer", "class_lod_synchronizer.html#ae056d0d5f9312d67b95f6fb0d39cc8f8", null ],
+    [ "~LodSynchronizer", "class_lod_synchronizer.html#afcea89a37eedb4001edab436dae05d47", null ],
     [ "getDataSource", "class_lod_synchronizer.html#ade270bed0110dd8809be28c330ee5664", null ],
     [ "getStatistics", "class_lod_synchronizer.html#af3da3292f6724a75e51f42028370d295", null ],
     [ "getTilesArea", "class_lod_synchronizer.html#a71b8164252aa4844d0f9d3b5241c1850", null ],

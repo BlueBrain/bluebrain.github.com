@@ -3,7 +3,6 @@ var hierarchy =
     [ "enable_shared_from_this", null, [
       [ "CanvasNode", "class_canvas_node.html", null ],
       [ "DisplayGroup", "class_display_group.html", null ],
-      [ "InactivityTimer", "class_inactivity_timer.html", null ],
       [ "Markers", "class_markers.html", null ],
       [ "Options", "class_options.html", null ],
       [ "ScreenLock", "class_screen_lock.html", null ]
@@ -149,6 +148,7 @@ var hierarchy =
         ] ]
       ] ],
       [ "ContentWindowController", "class_content_window_controller.html", null ],
+      [ "CountdownStatus", "class_countdown_status.html", null ],
       [ "DataProvider", "class_data_provider.html", null ],
       [ "DisplayGroupController", "class_display_group_controller.html", null ],
       [ "DisplayGroupRenderer", "class_display_group_renderer.html", null ],
