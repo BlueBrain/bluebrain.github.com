@@ -19,6 +19,7 @@ var classbrayns_1_1_rendering_parameters =
     [ "getModule", "classbrayns_1_1_rendering_parameters.html#a92b938bead94e14d11f9bae17be326c7", null ],
     [ "getRenderer", "classbrayns_1_1_rendering_parameters.html#a83c2c86a1db9882330fc1845118a202d", null ],
     [ "getRendererAsString", "classbrayns_1_1_rendering_parameters.html#a5bec7f121f568bbe48a1611e30a2a4c7", null ],
+    [ "getRendererNameAsString", "classbrayns_1_1_rendering_parameters.html#a8b36694da2805a2ecd815dab660de04e", null ],
     [ "getRenderers", "classbrayns_1_1_rendering_parameters.html#a4c01720746de6ba46178db830d24e1d1", null ],
     [ "getSamplesPerPixel", "classbrayns_1_1_rendering_parameters.html#abcf9f98c39218db3f8c95b6aa7df3b6c", null ],
     [ "getShading", "classbrayns_1_1_rendering_parameters.html#a0dcd0049807d927c1c68ab78da95c228", null ],

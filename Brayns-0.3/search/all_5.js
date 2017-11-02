@@ -11,7 +11,6 @@ var searchData=
   ['extendedcones',['ExtendedCones',['../structospray_1_1_extended_cones.html',1,'ospray']]],
   ['extendedcylinders',['ExtendedCylinders',['../structospray_1_1_extended_cylinders.html',1,'ospray']]],
   ['extendedobjmaterial',['ExtendedOBJMaterial',['../structbrayns_1_1obj_1_1_extended_o_b_j_material.html',1,'brayns::obj']]],
-  ['extendedobjrenderer',['ExtendedOBJRenderer',['../classbrayns_1_1_extended_o_b_j_renderer.html',1,'brayns']]],
   ['extendedspheres',['ExtendedSpheres',['../structospray_1_1_extended_spheres.html',1,'ospray']]],
   ['extensioninit',['extensionInit',['../classbrayns_1_1_engine.html#aed425b47972bb4cba6a0ea1e00330b4f',1,'brayns::Engine::extensionInit()'],['../classbrayns_1_1_livre_engine.html#aecb3ea5279be3d87cc969280b4cbe083',1,'brayns::LivreEngine::extensionInit()']]],
   ['extensionplugin',['ExtensionPlugin',['../classbrayns_1_1_extension_plugin.html',1,'brayns']]],

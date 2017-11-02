@@ -4,6 +4,7 @@ var searchData=
   ['basewindow',['BaseWindow',['../classbrayns_1_1_base_window.html',1,'brayns']]],
   ['basiclight',['BasicLight',['../struct_basic_light.html',1,'']]],
   ['basiclight',['BasicLight',['../structbrayns_1_1_basic_light.html',1,'brayns']]],
+  ['basicrenderer',['BasicRenderer',['../classbrayns_1_1_basic_renderer.html',1,'brayns']]],
   ['brayns',['Brayns',['../classbrayns_1_1_brayns.html',1,'brayns']]],
   ['brayns_5frev_5fstring',['BRAYNS_REV_STRING',['../version_8h.html#abdfd5d63377bd1606cf51a0437943637',1,'version.h']]],
   ['brayns_5fversion_5fabi',['BRAYNS_VERSION_ABI',['../version_8h.html#a689d3561485abd45ee50411137295ee0',1,'version.h']]],

@@ -103,7 +103,7 @@ var hierarchy =
     ] ],
     [ "Renderer", null, [
       [ "brayns::AbstractRenderer", "classbrayns_1_1_abstract_renderer.html", [
-        [ "brayns::ExtendedOBJRenderer", "classbrayns_1_1_extended_o_b_j_renderer.html", null ],
+        [ "brayns::BasicRenderer", "classbrayns_1_1_basic_renderer.html", null ],
         [ "brayns::ParticleRenderer", "classbrayns_1_1_particle_renderer.html", null ],
         [ "brayns::ProximityRenderer", "classbrayns_1_1_proximity_renderer.html", null ],
         [ "brayns::SimulationRenderer", "classbrayns_1_1_simulation_renderer.html", null ]

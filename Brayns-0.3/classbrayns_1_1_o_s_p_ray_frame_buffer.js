@@ -9,6 +9,6 @@ var classbrayns_1_1_o_s_p_ray_frame_buffer =
     [ "impl", "classbrayns_1_1_o_s_p_ray_frame_buffer.html#a8658d22a1a48434b0c0eb5d12b82d8ff", null ],
     [ "map", "classbrayns_1_1_o_s_p_ray_frame_buffer.html#a32121271b53b6d3ea9c6249f0d04a9d2", null ],
     [ "resize", "classbrayns_1_1_o_s_p_ray_frame_buffer.html#a790c46f12e34114bfc14f56a4429ed0d", null ],
-    [ "setStreamingParams", "classbrayns_1_1_o_s_p_ray_frame_buffer.html#a7de93d656c4ae917008fbfd8f208ca0b", null ],
+    [ "setStreamingParams", "classbrayns_1_1_o_s_p_ray_frame_buffer.html#ad05559fd2e701254ad11326d178845cf", null ],
     [ "unmap", "classbrayns_1_1_o_s_p_ray_frame_buffer.html#abf27f142890aca0452a7ed66a0fac40b", null ]
 ];
