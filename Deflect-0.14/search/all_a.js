@@ -6,7 +6,5 @@ var searchData=
   ['mousemiddle',['mouseMiddle',['../structdeflect_1_1_event.html#ae20855655437dc0c2927ff3c122d20f5',1,'deflect::Event']]],
   ['mouseright',['mouseRight',['../structdeflect_1_1_event.html#a1348a405ee165fa57767eee687e4a1b7',1,'deflect::Event']]],
   ['mousex',['mouseX',['../structdeflect_1_1_event.html#a42c48f6ac9f5ce439938465304f83823',1,'deflect::Event']]],
-  ['mousey',['mouseY',['../structdeflect_1_1_event.html#a4e99317297b97c36acad4e095f49d1fe',1,'deflect::Event']]],
-  ['mtqueue',['MTQueue',['../classdeflect_1_1_m_t_queue.html#a4612c53a9d1a8ea4640dd5ba128dd480',1,'deflect::MTQueue']]],
-  ['mtqueue',['MTQueue',['../classdeflect_1_1_m_t_queue.html',1,'deflect']]]
+  ['mousey',['mouseY',['../structdeflect_1_1_event.html#a4e99317297b97c36acad4e095f49d1fe',1,'deflect::Event']]]
 ];

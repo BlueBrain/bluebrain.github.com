@@ -3,7 +3,6 @@ var hierarchy =
     [ "deflect::Event", "structdeflect_1_1_event.html", null ],
     [ "deflect::Frame", "classdeflect_1_1_frame.html", null ],
     [ "deflect::ImageWrapper", "structdeflect_1_1_image_wrapper.html", null ],
-    [ "deflect::MTQueue< T >", "classdeflect_1_1_m_t_queue.html", null ],
     [ "deflect::Observer", "classdeflect_1_1_observer.html", [
       [ "deflect::Stream", "classdeflect_1_1_stream.html", null ]
     ] ],

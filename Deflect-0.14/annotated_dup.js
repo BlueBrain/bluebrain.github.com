@@ -11,7 +11,6 @@ var annotated_dup =
       [ "EventReceiver", "classdeflect_1_1_event_receiver.html", "classdeflect_1_1_event_receiver" ],
       [ "Frame", "classdeflect_1_1_frame.html", "classdeflect_1_1_frame" ],
       [ "ImageWrapper", "structdeflect_1_1_image_wrapper.html", "structdeflect_1_1_image_wrapper" ],
-      [ "MTQueue", "classdeflect_1_1_m_t_queue.html", "classdeflect_1_1_m_t_queue" ],
       [ "Observer", "classdeflect_1_1_observer.html", "classdeflect_1_1_observer" ],
       [ "Segment", "structdeflect_1_1_segment.html", "structdeflect_1_1_segment" ],
       [ "SegmentDecoder", "classdeflect_1_1_segment_decoder.html", "classdeflect_1_1_segment_decoder" ],

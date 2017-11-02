@@ -26,7 +26,6 @@ var searchData=
   ['deflectqt_5fversion_5fpatch',['DEFLECTQT_VERSION_PATCH',['../qt_2version_8h.html#aa11681985e42693dbff55d1f457917ec',1,'version.h']]],
   ['deflectqt_5fversion_5frevision',['DEFLECTQT_VERSION_REVISION',['../qt_2version_8h.html#a4070fc13376581c19b9e3a94208d3487',1,'version.h']]],
   ['deprecated_20list',['Deprecated List',['../deprecated.html',1,'']]],
-  ['dequeue',['dequeue',['../classdeflect_1_1_m_t_queue.html#af694237052ea1ddc9e1a4ad3c7f7811f',1,'deflect::MTQueue']]],
   ['determineroworder',['determineRowOrder',['../classdeflect_1_1_frame.html#ac1a2dc16c659bd760854dc86c756680f',1,'deflect::Frame']]],
   ['dx',['dx',['../structdeflect_1_1_event.html#a16b046b14e8d6f66685cc3db5f669f7d',1,'deflect::Event']]],
   ['dy',['dy',['../structdeflect_1_1_event.html#a2a2dcc09ecccae9283d91290b2e33ced',1,'deflect::Event']]],

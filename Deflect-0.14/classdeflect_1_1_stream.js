@@ -1,7 +1,8 @@
 var classdeflect_1_1_stream =
 [
     [ "Future", "classdeflect_1_1_stream.html#a0e5fa6cbc93599957783a66b2ff86569", null ],
-    [ "Stream", "classdeflect_1_1_stream.html#a2d92797dcd05b961853684c6386c1264", null ],
+    [ "Stream", "classdeflect_1_1_stream.html#a5bef22dd831e886429004e86af59c3ad", null ],
+    [ "Stream", "classdeflect_1_1_stream.html#ac722a15dbf4e8b0e66fe87558c00184a", null ],
     [ "Stream", "classdeflect_1_1_stream.html#aef7e07b3a53624602801b131ed1526a9", null ],
     [ "~Stream", "classdeflect_1_1_stream.html#a3aef9921d1bc59ffea7b2de8cdf2b7e3", null ],
     [ "asyncSend", "classdeflect_1_1_stream.html#a4604db39475ac4f6c5514fa1776a9ee5", null ],

@@ -1,4 +1,5 @@
 var searchData=
 [
-  ['touchinjector',['TouchInjector',['../classdeflect_1_1qt_1_1_touch_injector.html',1,'deflect::qt']]]
+  ['version',['Version',['../classdeflect_1_1_version.html',1,'deflect']]],
+  ['version',['Version',['../classdeflectqt_1_1_version.html',1,'deflectqt']]]
 ];

@@ -1,4 +1,5 @@
 var searchData=
 [
-  ['mtqueue',['MTQueue',['../classdeflect_1_1_m_t_queue.html',1,'deflect']]]
+  ['observer',['Observer',['../classdeflect_1_1_observer.html',1,'deflect']]],
+  ['offscreenquickview',['OffscreenQuickView',['../classdeflect_1_1qt_1_1_offscreen_quick_view.html',1,'deflect::qt']]]
 ];

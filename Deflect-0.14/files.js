@@ -10,7 +10,6 @@ var files =
     [ "EventReceiver.h", "_event_receiver_8h_source.html", null ],
     [ "Frame.h", "_frame_8h_source.html", null ],
     [ "ImageWrapper.h", "_image_wrapper_8h_source.html", null ],
-    [ "MTQueue.h", "_m_t_queue_8h_source.html", null ],
     [ "Observer.h", "_observer_8h_source.html", null ],
     [ "OffscreenQuickView.h", "_offscreen_quick_view_8h_source.html", null ],
     [ "QmlStreamer.h", "_qml_streamer_8h_source.html", null ],
