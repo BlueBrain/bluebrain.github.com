@@ -11,8 +11,6 @@ var searchData=
   ['pixelstreamassembler',['PixelStreamAssembler',['../class_pixel_stream_assembler.html',1,'']]],
   ['pixelstreamcontent',['PixelStreamContent',['../class_pixel_stream_content.html',1,'']]],
   ['pixelstreamcontroller',['PixelStreamController',['../class_pixel_stream_controller.html',1,'']]],
-  ['pixelstreamer',['PixelStreamer',['../class_pixel_streamer.html',1,'']]],
-  ['pixelstreamerfactory',['PixelStreamerFactory',['../class_pixel_streamer_factory.html',1,'']]],
   ['pixelstreamerlauncher',['PixelStreamerLauncher',['../class_pixel_streamer_launcher.html',1,'']]],
   ['pixelstreampassthrough',['PixelStreamPassthrough',['../class_pixel_stream_passthrough.html',1,'']]],
   ['pixelstreamprocessor',['PixelStreamProcessor',['../class_pixel_stream_processor.html',1,'']]],

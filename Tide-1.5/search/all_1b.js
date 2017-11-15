@@ -20,7 +20,6 @@ var searchData=
   ['_7epdfbackend',['~PDFBackend',['../class_p_d_f_backend.html#ac7ea2ca132e1320bb58073f6ac8cfaf9',1,'PDFBackend']]],
   ['_7epdfpopplerqtbackend',['~PDFPopplerQtBackend',['../class_p_d_f_poppler_qt_backend.html#af21b0b8a9b2163bad7f9c68a2fca57eb',1,'PDFPopplerQtBackend']]],
   ['_7epdftiler',['~PDFTiler',['../class_p_d_f_tiler.html#a4678a34dae7108983a58264bd71bcb06',1,'PDFTiler']]],
-  ['_7epixelstreamer',['~PixelStreamer',['../class_pixel_streamer.html#a1af37833269347d07e385227a12b019e',1,'PixelStreamer']]],
   ['_7epixelstreamprocessor',['~PixelStreamProcessor',['../class_pixel_stream_processor.html#a5110a29743d25928aa6feb039cdb4072',1,'PixelStreamProcessor']]],
   ['_7epixelstreamupdater',['~PixelStreamUpdater',['../class_pixel_stream_updater.html#abec2decfa2660dc4c37523b31dd30892',1,'PixelStreamUpdater']]],
   ['_7eqmlwindowrenderer',['~QmlWindowRenderer',['../class_qml_window_renderer.html#a64b49a4fef3f1bd26e2f2b1a6fa4db3c',1,'QmlWindowRenderer']]],
@@ -31,6 +30,5 @@ var searchData=
   ['_7ethumbnailgenerator',['~ThumbnailGenerator',['../class_thumbnail_generator.html#aa726f0f40d9c5d1e43026260f89d923a',1,'ThumbnailGenerator']]],
   ['_7etiffpyramidreader',['~TiffPyramidReader',['../class_tiff_pyramid_reader.html#a2d45866756f830e4e5d63e5706d7e5aa',1,'TiffPyramidReader']]],
   ['_7ewallapplication',['~WallApplication',['../class_wall_application.html#a8178cc81cec13ae323948ade5a76227a',1,'WallApplication']]],
-  ['_7ewebkitpixelstreamer',['~WebkitPixelStreamer',['../class_webkit_pixel_streamer.html#aa0a741712313a0963f69bc28cae292e3',1,'WebkitPixelStreamer']]],
   ['_7ezoomcontroller',['~ZoomController',['../class_zoom_controller.html#a717fd48c85e5ab55b8a283a8666b3426',1,'ZoomController']]]
 ];

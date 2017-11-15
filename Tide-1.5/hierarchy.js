@@ -1,12 +1,5 @@
 var hierarchy =
 [
-    [ "enable_shared_from_this", null, [
-      [ "CanvasNode", "class_canvas_node.html", null ],
-      [ "DisplayGroup", "class_display_group.html", null ],
-      [ "Markers", "class_markers.html", null ],
-      [ "Options", "class_options.html", null ],
-      [ "ScreenLock", "class_screen_lock.html", null ]
-    ] ],
     [ "noncopyable", null, [
       [ "MPIContext", "class_m_p_i_context.html", null ],
       [ "ReceiveBuffer", "class_receive_buffer.html", null ]
@@ -81,7 +74,6 @@ var hierarchy =
     [ "PDFBackend", "class_p_d_f_backend.html", [
       [ "PDFPopplerQtBackend", "class_p_d_f_poppler_qt_backend.html", null ]
     ] ],
-    [ "PixelStreamerFactory", "class_pixel_streamer_factory.html", null ],
     [ "PixelStreamProcessor", "class_pixel_stream_processor.html", [
       [ "PixelStreamAssembler", "class_pixel_stream_assembler.html", null ],
       [ "PixelStreamPassthrough", "class_pixel_stream_passthrough.html", null ]
@@ -96,8 +88,7 @@ var hierarchy =
       [ "MasterApplication", "class_master_application.html", null ]
     ] ],
     [ "QDialog", null, [
-      [ "BackgroundWidget", "class_background_widget.html", null ],
-      [ "WebbrowserWidget", "class_webbrowser_widget.html", null ]
+      [ "BackgroundWidget", "class_background_widget.html", null ]
     ] ],
     [ "QGuiApplication", null, [
       [ "WallApplication", "class_wall_application.html", null ]
@@ -113,15 +104,12 @@ var hierarchy =
     ] ],
     [ "QmlKeyInjector", "class_qml_key_injector.html", null ],
     [ "QObject", null, [
-      [ "AddressBar", "class_address_bar.html", null ],
       [ "AppController", "class_app_controller.html", null ],
       [ "Content", "class_content.html", [
         [ "DynamicTextureContent", "class_dynamic_texture_content.html", null ],
         [ "ImagePyramidContent", "class_image_pyramid_content.html", null ],
         [ "MovieContent", "class_movie_content.html", null ],
-        [ "PixelStreamContent", "class_pixel_stream_content.html", [
-          [ "WebbrowserContent", "class_webbrowser_content.html", null ]
-        ] ],
+        [ "PixelStreamContent", "class_pixel_stream_content.html", null ],
         [ "TextureContent", "class_texture_content.html", null ],
         [ "VectorialContent", "class_vectorial_content.html", [
           [ "PDFContent", "class_p_d_f_content.html", null ],
@@ -130,9 +118,7 @@ var hierarchy =
       ] ],
       [ "ContentAction", "class_content_action.html", null ],
       [ "ContentController", "class_content_controller.html", [
-        [ "PixelStreamController", "class_pixel_stream_controller.html", [
-          [ "WebbrowserController", "class_webbrowser_controller.html", null ]
-        ] ],
+        [ "PixelStreamController", "class_pixel_stream_controller.html", null ],
         [ "ZoomController", "class_zoom_controller.html", [
           [ "PDFController", "class_p_d_f_controller.html", null ]
         ] ]
@@ -168,9 +154,6 @@ var hierarchy =
       [ "PanDetector", "class_pan_detector.html", null ],
       [ "PDFTiler", "class_p_d_f_tiler.html", null ],
       [ "PinchDetector", "class_pinch_detector.html", null ],
-      [ "PixelStreamer", "class_pixel_streamer.html", [
-        [ "WebkitPixelStreamer", "class_webkit_pixel_streamer.html", null ]
-      ] ],
       [ "PixelStreamerLauncher", "class_pixel_streamer_launcher.html", null ],
       [ "PixelStreamUpdater", "class_pixel_stream_updater.html", null ],
       [ "PixelStreamWindowManager", "class_pixel_stream_window_manager.html", null ],
@@ -187,8 +170,7 @@ var hierarchy =
       [ "TapDetector", "class_tap_detector.html", null ],
       [ "WallFromMasterChannel", "class_wall_from_master_channel.html", null ],
       [ "WallToMasterChannel", "class_wall_to_master_channel.html", null ],
-      [ "WallToWallChannel", "class_wall_to_wall_channel.html", null ],
-      [ "WebkitAuthenticationHelper", "class_webkit_authentication_helper.html", null ]
+      [ "WallToWallChannel", "class_wall_to_wall_channel.html", null ]
     ] ],
     [ "QQuickImageProvider", null, [
       [ "ThumbnailProvider", "class_thumbnail_provider.html", null ]
@@ -230,6 +212,11 @@ var hierarchy =
     [ "StatePreview", "class_state_preview.html", null ],
     [ "StateSerializationHelper", "class_state_serialization_helper.html", null ],
     [ "enable_shared_from_this", null, [
+      [ "CanvasNode", "class_canvas_node.html", null ],
+      [ "DisplayGroup", "class_display_group.html", null ],
+      [ "Markers", "class_markers.html", null ],
+      [ "Options", "class_options.html", null ],
+      [ "ScreenLock", "class_screen_lock.html", null ],
       [ "Tile", "class_tile.html", null ]
     ] ],
     [ "SVG", "class_s_v_g.html", null ],
@@ -259,15 +246,12 @@ var hierarchy =
       [ "ImageThumbnailGenerator", "class_image_thumbnail_generator.html", null ],
       [ "MovieThumbnailGenerator", "class_movie_thumbnail_generator.html", null ],
       [ "StateThumbnailGenerator", "class_state_thumbnail_generator.html", null ],
-      [ "StreamThumbnailGenerator", "class_stream_thumbnail_generator.html", null ],
-      [ "WebbrowserThumbnailGenerator", "class_webbrowser_thumbnail_generator.html", null ]
+      [ "StreamThumbnailGenerator", "class_stream_thumbnail_generator.html", null ]
     ] ],
     [ "ThumbnailGeneratorFactory", "class_thumbnail_generator_factory.html", null ],
     [ "tide::Version", "classtide_1_1_version.html", null ],
     [ "TiffPyramidReader", "class_tiff_pyramid_reader.html", null ],
     [ "VisibilityHelper", "class_visibility_helper.html", null ],
-    [ "WebbrowserHistory", "class_webbrowser_history.html", null ],
-    [ "WebkitHtmlSelectReplacer", "class_webkit_html_select_replacer.html", null ],
     [ "Server", null, [
       [ "RestServer", "class_rest_server.html", null ]
     ] ],

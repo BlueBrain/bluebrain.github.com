@@ -1,6 +1,6 @@
 var class_canvas_node =
 [
-    [ "NodePtr", "class_canvas_node.html#a455c5df0bfc98096e7f0a7ef6c2e7133", null ],
+    [ "NodePtr", "class_canvas_node.html#a75b190f59046164d218057d2b8320062", null ],
     [ "CanvasNode", "class_canvas_node.html#a587df905fb3752341e1f5e33361250f3", null ],
     [ "CanvasNode", "class_canvas_node.html#a3d84b28498fa127f34a84a3d89da93ed", null ],
     [ "CanvasNode", "class_canvas_node.html#ae11fe207f523de9d1b234844d327e639", null ],

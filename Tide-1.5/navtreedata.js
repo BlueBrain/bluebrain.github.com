@@ -39,14 +39,13 @@ var NAVTREE =
 var NAVTREEINDEX =
 [
 ".html",
-"class_canvas_node.html#a78e0aea1abc4f9d963f307fe93ecdb3d",
-"class_content_window.html#a59d5091885505c145f632ddbadd0fb51",
-"class_f_f_m_p_e_g_video_stream.html#abd1bbcc36fc1f0e6d38df4fae161ec8a",
-"class_master_quick_view.html",
-"class_pixel_stream_controller.html#a029ee06398b6b2e4eab77584d990b495",
-"class_state_preview.html#aea9bf32a2c4e97bae3d363e21eca1e33",
-"class_webbrowser_controller.html#a0cb7141c6ebd4ef561777412b0e35515",
-"structboost_1_1serialization_1_1tracking__level_3_01std_1_1chrono_1_1time__point_3_01_c_00_01_d_01_4_01_4.html"
+"class_command_line_parser.html#a72e09cbf8222c686ff78335f79588b2a",
+"class_content_window.html#adc7cc20f3fd12023c3e2d6175dd65c8d",
+"class_html_select_replacer.html#aa1cc930a216d276878780a415f7252c8",
+"class_movie_content.html#a98353db6a7be18988fb4adecbeaaa1a5",
+"class_pixel_stream_synchronizer.html#aa1e066ff0af0469dadd7bf1fc618f864",
+"class_tap_and_hold_detector.html#aa4648a961407d0a817aa45ef199945a0",
+"defines_linux_8h_source.html"
 ];
 
 var SYNCONMSG = 'click to disable panel synchronisation';

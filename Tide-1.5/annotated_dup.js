@@ -14,7 +14,6 @@ var annotated_dup =
     [ "tide", null, [
       [ "Version", "classtide_1_1_version.html", "classtide_1_1_version" ]
     ] ],
-    [ "AddressBar", "class_address_bar.html", "class_address_bar" ],
     [ "AppController", "class_app_controller.html", "class_app_controller" ],
     [ "AutomaticLayout", "class_automatic_layout.html", "class_automatic_layout" ],
     [ "BackgroundWidget", "class_background_widget.html", "class_background_widget" ],
@@ -108,8 +107,6 @@ var annotated_dup =
     [ "PixelStreamAssembler", "class_pixel_stream_assembler.html", "class_pixel_stream_assembler" ],
     [ "PixelStreamContent", "class_pixel_stream_content.html", "class_pixel_stream_content" ],
     [ "PixelStreamController", "class_pixel_stream_controller.html", "class_pixel_stream_controller" ],
-    [ "PixelStreamer", "class_pixel_streamer.html", "class_pixel_streamer" ],
-    [ "PixelStreamerFactory", "class_pixel_streamer_factory.html", "class_pixel_streamer_factory" ],
     [ "PixelStreamerLauncher", "class_pixel_streamer_launcher.html", "class_pixel_streamer_launcher" ],
     [ "PixelStreamPassthrough", "class_pixel_stream_passthrough.html", "class_pixel_stream_passthrough" ],
     [ "PixelStreamProcessor", "class_pixel_stream_processor.html", "class_pixel_stream_processor" ],
@@ -175,14 +172,6 @@ var annotated_dup =
     [ "WallToMasterChannel", "class_wall_to_master_channel.html", "class_wall_to_master_channel" ],
     [ "WallToWallChannel", "class_wall_to_wall_channel.html", "class_wall_to_wall_channel" ],
     [ "WallWindow", "class_wall_window.html", "class_wall_window" ],
-    [ "WebbrowserContent", "class_webbrowser_content.html", "class_webbrowser_content" ],
-    [ "WebbrowserController", "class_webbrowser_controller.html", "class_webbrowser_controller" ],
-    [ "WebbrowserHistory", "class_webbrowser_history.html", "class_webbrowser_history" ],
-    [ "WebbrowserThumbnailGenerator", "class_webbrowser_thumbnail_generator.html", "class_webbrowser_thumbnail_generator" ],
-    [ "WebbrowserWidget", "class_webbrowser_widget.html", "class_webbrowser_widget" ],
-    [ "WebkitAuthenticationHelper", "class_webkit_authentication_helper.html", "class_webkit_authentication_helper" ],
-    [ "WebkitHtmlSelectReplacer", "class_webkit_html_select_replacer.html", "class_webkit_html_select_replacer" ],
-    [ "WebkitPixelStreamer", "class_webkit_pixel_streamer.html", "class_webkit_pixel_streamer" ],
     [ "YUVImage", "class_y_u_v_image.html", "class_y_u_v_image" ],
     [ "ZoomController", "class_zoom_controller.html", "class_zoom_controller" ],
     [ "ZoomHelper", "class_zoom_helper.html", "class_zoom_helper" ]

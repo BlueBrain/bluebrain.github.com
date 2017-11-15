@@ -6,7 +6,7 @@ var searchData=
   ['handlestreamstart',['handleStreamStart',['../class_pixel_stream_window_manager.html#afb4053fccb1b44819a93955de4eedd77',1,'PixelStreamWindowManager']]],
   ['handleupload',['handleUpload',['../class_file_receiver.html#a831e4b5b74ff794027cdc07a0db9a28e',1,'FileReceiver']]],
   ['haseventreceivers',['hasEventReceivers',['../class_pixel_stream_content.html#a0e40610bb7d62536fcce4a31f268098e',1,'PixelStreamContent']]],
-  ['hasfixedaspectratio',['hasFixedAspectRatio',['../class_content.html#adceac372a702843a1e0bd207f670680a',1,'Content::hasFixedAspectRatio()'],['../class_webbrowser_content.html#a5e21664f4f3ffbc2bac1d67a1ab6ffb3',1,'WebbrowserContent::hasFixedAspectRatio()']]],
+  ['hasfixedaspectratio',['hasFixedAspectRatio',['../class_content.html#adceac372a702843a1e0bd207f670680a',1,'Content']]],
   ['hasfocusedwindows',['hasFocusedWindows',['../class_display_group.html#a24a30aa05f0ca717c9b559aed1b6c50d',1,'DisplayGroup']]],
   ['hasfocusedwindowschanged',['hasFocusedWindowsChanged',['../class_display_group.html#a40f1bb735ad449fb1637d4c9fb24657b',1,'DisplayGroup']]],
   ['hasfullscreenwindows',['hasFullscreenWindows',['../class_display_group.html#a4e9e08eed111cfe5e704ca5b68310ade',1,'DisplayGroup']]],
