@@ -1,4 +1,4 @@
 var searchData=
 [
-  ['framecount',['frameCount',['../structbrain_1_1_compartment_report_meta_data.html#a9cb34fc4b95d637b7a93e5685b76faae',1,'brain::CompartmentReportMetaData']]]
+  ['initmapping',['initMapping',['../classbrion_1_1_compartment_report_init_data.html#a885213014fb5e1293abc6a3832cf8dfd',1,'brion::CompartmentReportInitData']]]
 ];

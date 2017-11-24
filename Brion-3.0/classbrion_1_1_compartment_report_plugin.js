@@ -7,6 +7,7 @@ var classbrion_1_1_compartment_report_plugin =
     [ "erase", "classbrion_1_1_compartment_report_plugin.html#a40e2f1fbf74a169f96caaf3cf5d71091", null ],
     [ "flush", "classbrion_1_1_compartment_report_plugin.html#a29f488ea011b60d69788eb5f28d39de8", null ],
     [ "getBufferSize", "classbrion_1_1_compartment_report_plugin.html#ab8a1a38a2cc4ecbd0b8a55285a61545d", null ],
+    [ "getCellCount", "classbrion_1_1_compartment_report_plugin.html#a334923aea957623e384822047ad41256", null ],
     [ "getCompartmentCounts", "classbrion_1_1_compartment_report_plugin.html#a76f5e223ca77148089b09b6149a7cdf1", null ],
     [ "getDataUnit", "classbrion_1_1_compartment_report_plugin.html#a5db9d3f9e159223e455d8b806a04ff29", null ],
     [ "getEndTime", "classbrion_1_1_compartment_report_plugin.html#a4c88ffca4d5f4a9e6df4d05b927dc274", null ],

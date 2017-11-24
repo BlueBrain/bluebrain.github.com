@@ -2,10 +2,12 @@ var classbrion_1_1_compartment_report =
 [
     [ "~CompartmentReport", "classbrion_1_1_compartment_report.html#aa062e1099c64f3dcde183766f07524f2", null ],
     [ "CompartmentReport", "classbrion_1_1_compartment_report.html#a1068892309907490436a2f5b23e3f252", null ],
+    [ "CompartmentReport", "classbrion_1_1_compartment_report.html#a096904de4fab402b872a21e937e254a7", null ],
     [ "clearBuffer", "classbrion_1_1_compartment_report.html#a30882f15ba7f42ebe56e044d4a956082", null ],
     [ "erase", "classbrion_1_1_compartment_report.html#af8c5d7918256836a01754294ff1163d5", null ],
     [ "flush", "classbrion_1_1_compartment_report.html#aada18371df36d46de253b2df4495ecb5", null ],
     [ "getBufferSize", "classbrion_1_1_compartment_report.html#a646267af418b901b2b618e27cf0079ef", null ],
+    [ "getCellCount", "classbrion_1_1_compartment_report.html#a526739bb63e50c73952026c2e4621872", null ],
     [ "getCompartmentCounts", "classbrion_1_1_compartment_report.html#a1457c2180362fb3ac924edd9b7114b1d", null ],
     [ "getDataUnit", "classbrion_1_1_compartment_report.html#afd2cadc160af1e98ccf30b3489a2bd84", null ],
     [ "getDescriptions", "classbrion_1_1_compartment_report.html#acb895dd1b653688292796e1f2c4377e9", null ],

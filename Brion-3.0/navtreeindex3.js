@@ -1,7 +1,12 @@
 var NAVTREEINDEX3 =
 {
-"structbrain_1_1_compartment_report_meta_data.html#aafb4d6d47cfdecf4bf1aeb6312a59a19":[7,0,0,4,2],
-"structbrain_1_1_compartment_report_meta_data.html#ae37c7d5288f710c42f5c0f9925951d54":[7,0,0,4,7],
+"structbrain_1_1_compartment_report_meta_data.html":[7,0,0,4],
+"structbrain_1_1_compartment_report_meta_data.html#a31d41273774f94c41ff11107d1bc4830":[7,0,0,4,1],
+"structbrain_1_1_compartment_report_meta_data.html#a392795c6c7f60bc5b402dd850b0cf474":[7,0,0,4,3],
+"structbrain_1_1_compartment_report_meta_data.html#a95054dbda30be63a7de378e725134832":[7,0,0,4,4],
+"structbrain_1_1_compartment_report_meta_data.html#a9cb34fc4b95d637b7a93e5685b76faae":[7,0,0,4,2],
+"structbrain_1_1_compartment_report_meta_data.html#aafb4d6d47cfdecf4bf1aeb6312a59a19":[7,0,0,4,0],
+"structbrain_1_1_compartment_report_meta_data.html#ae37c7d5288f710c42f5c0f9925951d54":[7,0,0,4,5],
 "structbrain_1_1_synapses_1_1_base_impl.html":[7,0,0,9,0],
 "structbrain_1_1_synapses_1_1_base_impl.html#ab2fce8cd0804be7c6867777ce3747db1":[7,0,0,9,0,0],
 "structbrion_1_1_frame.html":[7,0,1,5],

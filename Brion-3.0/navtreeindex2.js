@@ -1,5 +1,12 @@
 var NAVTREEINDEX2 =
 {
+"classbrion_1_1_synapse.html#a967b1d9adb7f49fbff371130291c0b7d":[7,0,1,14,0],
+"classbrion_1_1_synapse.html#abfae772ef7b2c7af3f219b2f2e4e140a":[7,0,1,14,2],
+"classbrion_1_1_synapse.html#afa0d5cf421b259daf8820890efe248c6":[7,0,1,14,1],
+"classbrion_1_1_synapse_summary.html":[7,0,1,15],
+"classbrion_1_1_synapse_summary.html#a267ab334b59f7bda02f91c259ed7767b":[7,0,1,15,2],
+"classbrion_1_1_synapse_summary.html#a6c88b279a52cb43f3b21f958bbd4ddb7":[7,0,1,15,0],
+"classbrion_1_1_synapse_summary.html#af20d4491231e172d332a2850fb957842":[7,0,1,15,1],
 "classbrion_1_1_target.html":[7,0,1,16],
 "classbrion_1_1_target.html#a2c1de15976a2e1f569b0083bb56d0480":[7,0,1,16,2],
 "classbrion_1_1_target.html#a413c895cc24f25e7c85ed00818395d90":[7,0,1,16,4],
@@ -173,8 +180,8 @@ var NAVTREEINDEX2 =
 "functions_e.html":[7,3,0,3],
 "functions_enum.html":[7,3,3],
 "functions_f.html":[7,3,0,4],
-"functions_func.html":[7,3,1],
 "functions_func.html":[7,3,1,0],
+"functions_func.html":[7,3,1],
 "functions_func_0x7e.html":[7,3,1,17],
 "functions_func_c.html":[7,3,1,1],
 "functions_func_d.html":[7,3,1,2],
@@ -221,8 +228,8 @@ var NAVTREEINDEX2 =
 "namespacebrain.html":[6,0,0],
 "namespacebrain_1_1neuron.html":[6,0,0,0],
 "namespacebrain_1_1neuron.html":[7,0,0,0],
-"namespacebrion.html":[6,0,1],
 "namespacebrion.html":[7,0,1],
+"namespacebrion.html":[6,0,1],
 "namespacemembers.html":[6,1,0],
 "namespacemembers_enum.html":[6,1,4],
 "namespacemembers_func.html":[6,1,1],
@@ -242,12 +249,5 @@ var NAVTREEINDEX2 =
 "spike_reports.html":[2,4],
 "structbrain_1_1_compartment_report_mapping_1_1_index_entry.html":[7,0,0,3,0],
 "structbrain_1_1_compartment_report_mapping_1_1_index_entry.html#a30f216a21f1faac8a3a4930e721dfee2":[7,0,0,3,0,0],
-"structbrain_1_1_compartment_report_mapping_1_1_index_entry.html#af46fceab521d80bbf366e4b5c81793be":[7,0,0,3,0,1],
-"structbrain_1_1_compartment_report_meta_data.html":[7,0,0,4],
-"structbrain_1_1_compartment_report_meta_data.html#a31d41273774f94c41ff11107d1bc4830":[7,0,0,4,3],
-"structbrain_1_1_compartment_report_meta_data.html#a392795c6c7f60bc5b402dd850b0cf474":[7,0,0,4,5],
-"structbrain_1_1_compartment_report_meta_data.html#a3eeb0dafcd02ea3c44c65a0829ca42c3":[7,0,0,4,0],
-"structbrain_1_1_compartment_report_meta_data.html#a95054dbda30be63a7de378e725134832":[7,0,0,4,6],
-"structbrain_1_1_compartment_report_meta_data.html#a9cb34fc4b95d637b7a93e5685b76faae":[7,0,0,4,4],
-"structbrain_1_1_compartment_report_meta_data.html#aa04a26f5fdd43cbef3062a64e3c60c98":[7,0,0,4,1]
+"structbrain_1_1_compartment_report_mapping_1_1_index_entry.html#af46fceab521d80bbf366e4b5c81793be":[7,0,0,3,0,1]
 };

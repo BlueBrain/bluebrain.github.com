@@ -1,4 +1,4 @@
 var searchData=
 [
-  ['endtime',['endTime',['../structbrain_1_1_compartment_report_meta_data.html#a31d41273774f94c41ff11107d1bc4830',1,'brain::CompartmentReportMetaData']]]
+  ['framecount',['frameCount',['../structbrain_1_1_compartment_report_meta_data.html#a9cb34fc4b95d637b7a93e5685b76faae',1,'brain::CompartmentReportMetaData']]]
 ];
