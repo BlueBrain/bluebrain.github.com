@@ -5,6 +5,7 @@ var searchData=
   ['importfromfile',['importFromFile',['../classbrayns_1_1_scene_loader.html#a81ffea194cf8aa8e0c5d7030bbcd6f15',1,'brayns::SceneLoader']]],
   ['importmeshfromfile',['importMeshFromFile',['../classbrayns_1_1_mesh_loader.html#aa8ced7a992519151016b0b7b012db37b',1,'brayns::MeshLoader']]],
   ['importpdbfile',['importPDBFile',['../classbrayns_1_1_protein_loader.html#a91c82bfd2699c0d8023a37d7e9f6327f',1,'brayns::ProteinLoader']]],
+  ['importtexturefromfile',['importTextureFromFile',['../classbrayns_1_1_image_manager.html#afd351f59c98c3c0f651cf6fd401f7f28',1,'brayns::ImageManager']]],
   ['initializematerials',['initializeMaterials',['../classbrayns_1_1_engine.html#a653f2aa1e6003342b6bdc91ca6972b51',1,'brayns::Engine']]],
   ['isanymodified',['isAnyModified',['../classbrayns_1_1_parameters_manager.html#a56137d99df36dc76edb3ffd9d285c88e',1,'brayns::ParametersManager']]],
   ['isbenchmarking',['isBenchmarking',['../classbrayns_1_1_application_parameters.html#a0baa53fd46c9a6aecddeec70d2546ce2',1,'brayns::ApplicationParameters']]],

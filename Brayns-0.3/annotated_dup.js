@@ -31,7 +31,7 @@ var annotated_dup =
       [ "Geometry", "classbrayns_1_1_geometry.html", "classbrayns_1_1_geometry" ],
       [ "GeometryParameters", "classbrayns_1_1_geometry_parameters.html", "classbrayns_1_1_geometry_parameters" ],
       [ "Histogram", "structbrayns_1_1_histogram.html", "structbrayns_1_1_histogram" ],
-      [ "Image", "structbrayns_1_1_image.html", "structbrayns_1_1_image" ],
+      [ "ImageManager", "classbrayns_1_1_image_manager.html", "classbrayns_1_1_image_manager" ],
       [ "InspectCenterManipulator", "classbrayns_1_1_inspect_center_manipulator.html", "classbrayns_1_1_inspect_center_manipulator" ],
       [ "KeyboardHandler", "classbrayns_1_1_keyboard_handler.html", "classbrayns_1_1_keyboard_handler" ],
       [ "Light", "classbrayns_1_1_light.html", "classbrayns_1_1_light" ],
@@ -67,6 +67,7 @@ var annotated_dup =
       [ "RenderingParameters", "classbrayns_1_1_rendering_parameters.html", "classbrayns_1_1_rendering_parameters" ],
       [ "RenderInput", "structbrayns_1_1_render_input.html", "structbrayns_1_1_render_input" ],
       [ "RenderOutput", "structbrayns_1_1_render_output.html", "structbrayns_1_1_render_output" ],
+      [ "RocketsPlugin", "classbrayns_1_1_rockets_plugin.html", "classbrayns_1_1_rockets_plugin" ],
       [ "Scene", "classbrayns_1_1_scene.html", "classbrayns_1_1_scene" ],
       [ "SceneLoader", "classbrayns_1_1_scene_loader.html", "classbrayns_1_1_scene_loader" ],
       [ "SceneParameters", "classbrayns_1_1_scene_parameters.html", "classbrayns_1_1_scene_parameters" ],
@@ -77,15 +78,13 @@ var annotated_dup =
       [ "Sphere", "classbrayns_1_1_sphere.html", "classbrayns_1_1_sphere" ],
       [ "SpikeSimulationHandler", "classbrayns_1_1_spike_simulation_handler.html", "classbrayns_1_1_spike_simulation_handler" ],
       [ "Texture2D", "classbrayns_1_1_texture2_d.html", "classbrayns_1_1_texture2_d" ],
-      [ "TextureLoader", "classbrayns_1_1_texture_loader.html", "classbrayns_1_1_texture_loader" ],
       [ "TransferFunction", "classbrayns_1_1_transfer_function.html", "classbrayns_1_1_transfer_function" ],
       [ "TransferFunctionLoader", "classbrayns_1_1_transfer_function_loader.html", "classbrayns_1_1_transfer_function_loader" ],
       [ "TrianglesMesh", "classbrayns_1_1_triangles_mesh.html", "classbrayns_1_1_triangles_mesh" ],
       [ "Version", "classbrayns_1_1_version.html", "classbrayns_1_1_version" ],
       [ "VolumeHandler", "classbrayns_1_1_volume_handler.html", "classbrayns_1_1_volume_handler" ],
       [ "VolumeParameters", "classbrayns_1_1_volume_parameters.html", "classbrayns_1_1_volume_parameters" ],
-      [ "XYZBLoader", "classbrayns_1_1_x_y_z_b_loader.html", "classbrayns_1_1_x_y_z_b_loader" ],
-      [ "ZeroEQPlugin", "classbrayns_1_1_zero_e_q_plugin.html", "classbrayns_1_1_zero_e_q_plugin" ]
+      [ "XYZBLoader", "classbrayns_1_1_x_y_z_b_loader.html", "classbrayns_1_1_x_y_z_b_loader" ]
     ] ],
     [ "ospray", null, [
       [ "ClippedPerspectiveCamera", "structospray_1_1_clipped_perspective_camera.html", "structospray_1_1_clipped_perspective_camera" ],

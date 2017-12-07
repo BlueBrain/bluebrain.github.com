@@ -1,4 +1,4 @@
 var searchData=
 [
-  ['g',['g',['../structbrayns_1_1obj_1_1_extended_o_b_j_material.html#a7d932e025a1b4d7679a5234a0e599195',1,'brayns::obj::ExtendedOBJMaterial']]]
+  ['glossiness',['glossiness',['../structbrayns_1_1obj_1_1_extended_o_b_j_material.html#a8c1310fb56a9c0fb94311e447f7be4e6',1,'brayns::obj::ExtendedOBJMaterial']]]
 ];

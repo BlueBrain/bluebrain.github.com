@@ -1,18 +1,15 @@
 var searchData=
 [
-  ['g',['g',['../structbrayns_1_1obj_1_1_extended_o_b_j_material.html#a7d932e025a1b4d7679a5234a0e599195',1,'brayns::obj::ExtendedOBJMaterial']]],
   ['generatemesh',['generateMesh',['../classbrayns_1_1_metaballs_generator.html#ad9cffbfc87cdeed4d0e206043671d0b8',1,'brayns::MetaballsGenerator']]],
   ['geometry',['Geometry',['../classbrayns_1_1_geometry.html',1,'brayns']]],
   ['geometryparameters',['GeometryParameters',['../classbrayns_1_1_geometry_parameters.html',1,'brayns']]],
   ['geometryparameters',['GeometryParameters',['../classbrayns_1_1_geometry_parameters.html#a96a7875f7d452448da35b193921725dc',1,'brayns::GeometryParameters']]],
-  ['get',['get',['../classbrayns_1_1_engine_factory.html#aff07fe95857429e76cfb3f08eb64814e',1,'brayns::EngineFactory']]],
   ['getabi',['getABI',['../classbrayns_1_1_version.html#af99a8b1956c6cb800290c9f8d303f36a',1,'brayns::Version']]],
   ['getaccumulation',['getAccumulation',['../classbrayns_1_1_rendering_parameters.html#a2df3b549c61199b65ddf134b334a2de5',1,'brayns::RenderingParameters']]],
   ['getambientocclusionstrength',['getAmbientOcclusionStrength',['../classbrayns_1_1_rendering_parameters.html#adcfbde4abb46d610c27c3a6ec8361cff',1,'brayns::RenderingParameters']]],
   ['getaperture',['getAperture',['../classbrayns_1_1_camera.html#add438a8d6757cc35d463e89bb213e768',1,'brayns::Camera']]],
   ['getapplicationparameters',['getApplicationParameters',['../classbrayns_1_1_parameters_manager.html#aa1bd17b18fd4fe6d75abf1165e19830a',1,'brayns::ParametersManager']]],
   ['getaspectratio',['getAspectRatio',['../classbrayns_1_1_camera.html#afb30957156d54cefd98ba65c29638dc9',1,'brayns::Camera']]],
-  ['getautopublishzeroeqevents',['getAutoPublishZeroEQEvents',['../classbrayns_1_1_application_parameters.html#aa85f82cb8c5dc5bbc4faf853fc97de36',1,'brayns::ApplicationParameters']]],
   ['getcachefiledescriptor',['getCacheFileDescriptor',['../classbrayns_1_1_volume_handler_1_1_volume_descriptor.html#a7dc4ef881785d2a0993a0b19977c07a9',1,'brayns::VolumeHandler::VolumeDescriptor']]],
   ['getcadiffusionsimulationhandler',['getCADiffusionSimulationHandler',['../classbrayns_1_1_scene.html#ae18fcfd7021a6ef3c5624c0e466dbc3c',1,'brayns::Scene']]],
   ['getcamera',['getCamera',['../classbrayns_1_1_application_parameters.html#ad6d4ad54b3b988c628d9812887f1e8e3',1,'brayns::ApplicationParameters::getCamera()'],['../classbrayns_1_1_engine.html#a05478fdf6ae8dd3b0716bc8be93c83f9',1,'brayns::Engine::getCamera()']]],
@@ -52,7 +49,6 @@ var searchData=
   ['getdimensions',['getDimensions',['../classbrayns_1_1_volume_handler.html#a16720b2fe81f275d2c2f2f49132dfbd8',1,'brayns::VolumeHandler::getDimensions()'],['../classbrayns_1_1_volume_handler_1_1_volume_descriptor.html#ade83c0a3fcf3a915760e96def5da5c0c',1,'brayns::VolumeHandler::VolumeDescriptor::getDimensions()'],['../classbrayns_1_1_volume_parameters.html#aac205c6e87fabd2c003a14b59292d221',1,'brayns::VolumeParameters::getDimensions()']]],
   ['getelementspacing',['getElementSpacing',['../classbrayns_1_1_volume_handler.html#a8d79cfa8b0080820d6fc9d664bbbe669',1,'brayns::VolumeHandler::getElementSpacing()'],['../classbrayns_1_1_volume_handler_1_1_volume_descriptor.html#a95f4837562045f1460df63eededf7cc7',1,'brayns::VolumeHandler::VolumeDescriptor::getElementSpacing()'],['../classbrayns_1_1_volume_parameters.html#a02e82d5a9123769c4b1479ad2bee002e',1,'brayns::VolumeParameters::getElementSpacing()']]],
   ['getemissionintensities',['getEmissionIntensities',['../classbrayns_1_1_transfer_function.html#af3ed3fbc1159fb885c3123cf6da05253',1,'brayns::TransferFunction']]],
-  ['getendpointapiversion',['getEndpointAPIVersion',['../classbrayns_1_1_zero_e_q_plugin.html#a30d8406d5728e5ddf2735b40877b1a77',1,'brayns::ZeroEQPlugin']]],
   ['getengine',['getEngine',['../classbrayns_1_1_brayns.html#acc8b3d8d54f59a2b5bb1ca70c07c7047',1,'brayns::Brayns::getEngine()'],['../classbrayns_1_1_rendering_parameters.html#a080d078bf7fe2f1da78c69026b96ddd7',1,'brayns::RenderingParameters::getEngine()']]],
   ['getenvironmentmap',['getEnvironmentMap',['../classbrayns_1_1_scene_parameters.html#a365e760a80a1eb586614a95cd53ec696',1,'brayns::SceneParameters']]],
   ['getepsilon',['getEpsilon',['../classbrayns_1_1_rendering_parameters.html#aa67ca19a55214d45bf79ca1a905557be',1,'brayns::RenderingParameters::getEpsilon()'],['../classbrayns_1_1_volume_handler.html#aac72eca3b08d07ba2042f7303c57f501',1,'brayns::VolumeHandler::getEpsilon()']]],
@@ -70,6 +66,7 @@ var searchData=
   ['getgeometryquality',['getGeometryQuality',['../classbrayns_1_1_geometry_parameters.html#a30dd81996271f03f798942c4d69703ec',1,'brayns::GeometryParameters']]],
   ['getheadlight',['getHeadLight',['../classbrayns_1_1_rendering_parameters.html#a5a0b99764433a5484679dcde5489fd89',1,'brayns::RenderingParameters']]],
   ['gethistogram',['getHistogram',['../classbrayns_1_1_abstract_simulation_handler.html#a06da93216571bc02dd5e04c556be79a9',1,'brayns::AbstractSimulationHandler::getHistogram()'],['../classbrayns_1_1_volume_handler.html#a508760653b12b02644c719fcd58b8240',1,'brayns::VolumeHandler::getHistogram()']]],
+  ['getimagestreamfps',['getImageStreamFPS',['../classbrayns_1_1_application_parameters.html#a0746ff08049a8588d79f8633e33e899a',1,'brayns::ApplicationParameters']]],
   ['getindexmode',['getIndexMode',['../classbrayns_1_1_volume_handler.html#a4f4d7ba8215fdb69907b49fdaa1ca5ca',1,'brayns::VolumeHandler']]],
   ['getjpegsize',['getJpegSize',['../classbrayns_1_1_application_parameters.html#ad8d3a90aba5289d9a8dcdd488fbd016c',1,'brayns::ApplicationParameters']]],
   ['getkeeprunning',['getKeepRunning',['../classbrayns_1_1_engine.html#a415ac09f74a17fd73e3b6b616d2d8a11',1,'brayns::Engine']]],
@@ -102,7 +99,7 @@ var searchData=
   ['getnbframes',['getNbFrames',['../classbrayns_1_1_abstract_simulation_handler.html#a63756f6adb15211c556a20a04d651536',1,'brayns::AbstractSimulationHandler::getNbFrames()'],['../classbrayns_1_1_c_a_diffusion_simulation_handler.html#ad5c1e8fb12d05ae0b40b8dbca0f7a422',1,'brayns::CADiffusionSimulationHandler::getNbFrames()'],['../classbrayns_1_1_volume_handler.html#ab8ed1cd8b3fea737cd948e9ef394d88c',1,'brayns::VolumeHandler::getNbFrames()']]],
   ['getnestcircuit',['getNESTCircuit',['../classbrayns_1_1_geometry_parameters.html#a8d41febca2bc5337b30fe13eaed3a395',1,'brayns::GeometryParameters']]],
   ['getoffset',['getOffset',['../classbrayns_1_1_volume_handler.html#a9842a3e1eac8ed2c182bb614f71cf9bd',1,'brayns::VolumeHandler::getOffset()'],['../classbrayns_1_1_volume_handler_1_1_volume_descriptor.html#a7aeb2117a61aafef87874a0f5d165e7e',1,'brayns::VolumeHandler::VolumeDescriptor::getOffset()'],['../classbrayns_1_1_volume_parameters.html#a7d490d9ed5cb5bbfba798564dc62b48f',1,'brayns::VolumeParameters::getOffset()']]],
-  ['getparametersmanager',['getParametersManager',['../classbrayns_1_1_brayns.html#ad68939e00e940e6df3255bbf9e8a761f',1,'brayns::Brayns::getParametersManager()'],['../classbrayns_1_1_engine.html#afd9ddbaac2d1c22d00c16a118e7b3a29',1,'brayns::Engine::getParametersManager()']]],
+  ['getparametersmanager',['getParametersManager',['../classbrayns_1_1_brayns.html#ad68939e00e940e6df3255bbf9e8a761f',1,'brayns::Brayns']]],
   ['getpatch',['getPatch',['../classbrayns_1_1_version.html#a74c8402e7ceed27e0c773cf39e8e01b0',1,'brayns::Version']]],
   ['getpdbfile',['getPDBFile',['../classbrayns_1_1_geometry_parameters.html#a8a96cab0f8256fb6f8eb17f096750ba2',1,'brayns::GeometryParameters']]],
   ['getpdbfolder',['getPDBFolder',['../classbrayns_1_1_geometry_parameters.html#aed5a379dada9cf21e7129895a3929b0f',1,'brayns::GeometryParameters']]],
@@ -149,5 +146,6 @@ var searchData=
   ['getvolumeparameters',['getVolumeParameters',['../classbrayns_1_1_parameters_manager.html#af96aa3d61e0e96870b7027570c832829',1,'brayns::ParametersManager']]],
   ['getwindowsize',['getWindowSize',['../classbrayns_1_1_application_parameters.html#a6e87fdfee6a6590c5d9ff7c4ee7dc0ee',1,'brayns::ApplicationParameters']]],
   ['getworldbounds',['getWorldBounds',['../classbrayns_1_1_scene.html#ae1c099a5104acb90e3d6f84a69fe90e4',1,'brayns::Scene']]],
-  ['getxyzbfile',['getXYZBFile',['../classbrayns_1_1_geometry_parameters.html#a5f2c583107e540802b24e08924870dbb',1,'brayns::GeometryParameters']]]
+  ['getxyzbfile',['getXYZBFile',['../classbrayns_1_1_geometry_parameters.html#a5f2c583107e540802b24e08924870dbb',1,'brayns::GeometryParameters']]],
+  ['glossiness',['glossiness',['../structbrayns_1_1obj_1_1_extended_o_b_j_material.html#a8c1310fb56a9c0fb94311e447f7be4e6',1,'brayns::obj::ExtendedOBJMaterial']]]
 ];

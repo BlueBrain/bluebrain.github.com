@@ -2,6 +2,7 @@ var classbrayns_1_1_parameters_manager =
 [
     [ "ParametersManager", "classbrayns_1_1_parameters_manager.html#a6012e7eadf1f37e49c16c7870754bc28", null ],
     [ "getApplicationParameters", "classbrayns_1_1_parameters_manager.html#aa1bd17b18fd4fe6d75abf1165e19830a", null ],
+    [ "getApplicationParameters", "classbrayns_1_1_parameters_manager.html#addd6260973b3933ce20f7d9f18a4dabc", null ],
     [ "getGeometryParameters", "classbrayns_1_1_parameters_manager.html#a42770db58f8d661744cd2e029b314295", null ],
     [ "getRenderingParameters", "classbrayns_1_1_parameters_manager.html#a3558f229417081e9ed7eee77acfa73f0", null ],
     [ "getSceneParameters", "classbrayns_1_1_parameters_manager.html#a2bc6a8dbef296ff837e33911cf3e4e55", null ],

@@ -32,7 +32,7 @@ var hierarchy =
     [ "brayns::EngineFactory", "classbrayns_1_1_engine_factory.html", null ],
     [ "brayns::ExtensionPlugin", "classbrayns_1_1_extension_plugin.html", [
       [ "brayns::DeflectPlugin", "classbrayns_1_1_deflect_plugin.html", null ],
-      [ "brayns::ZeroEQPlugin", "classbrayns_1_1_zero_e_q_plugin.html", null ]
+      [ "brayns::RocketsPlugin", "classbrayns_1_1_rockets_plugin.html", null ]
     ] ],
     [ "brayns::ExtensionPluginFactory", "classbrayns_1_1_extension_plugin_factory.html", null ],
     [ "brayns::FPSCounter", "structbrayns_1_1_f_p_s_counter.html", null ],
@@ -50,7 +50,7 @@ var hierarchy =
       [ "brayns::TrianglesMesh", "classbrayns_1_1_triangles_mesh.html", null ]
     ] ],
     [ "brayns::Histogram", "structbrayns_1_1_histogram.html", null ],
-    [ "brayns::Image", "structbrayns_1_1_image.html", null ],
+    [ "brayns::ImageManager", "classbrayns_1_1_image_manager.html", null ],
     [ "brayns::KeyboardHandler", "classbrayns_1_1_keyboard_handler.html", null ],
     [ "brayns::Light", "classbrayns_1_1_light.html", [
       [ "brayns::DirectionalLight", "classbrayns_1_1_directional_light.html", null ],
@@ -84,7 +84,6 @@ var hierarchy =
     [ "brayns::ScreenSpaceProcessorData", "structbrayns_1_1_screen_space_processor_data.html", null ],
     [ "brayns::ShortcutInformation", "structbrayns_1_1_shortcut_information.html", null ],
     [ "brayns::Texture2D", "classbrayns_1_1_texture2_d.html", null ],
-    [ "brayns::TextureLoader", "classbrayns_1_1_texture_loader.html", null ],
     [ "brayns::TransferFunction", "classbrayns_1_1_transfer_function.html", null ],
     [ "brayns::TransferFunctionLoader", "classbrayns_1_1_transfer_function_loader.html", null ],
     [ "brayns::Version", "classbrayns_1_1_version.html", null ],

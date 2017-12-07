@@ -31,13 +31,13 @@
             <td class="headerValue">Brayns</td>
             <td></td>
             <td class="headerItem">Lines:</td>
-            <td class="headerCovTableEntry">71</td>
-            <td class="headerCovTableEntry">102</td>
-            <td class="headerCovTableEntryMed">69.6 %</td>
+            <td class="headerCovTableEntry">76</td>
+            <td class="headerCovTableEntry">107</td>
+            <td class="headerCovTableEntryMed">71.0 %</td>
           </tr>
           <tr>
             <td class="headerItem">Date:</td>
-            <td class="headerValue">2017-11-04 01:28:08</td>
+            <td class="headerValue">2017-12-07 01:27:55</td>
             <td></td>
             <td class="headerItem">Functions:</td>
             <td class="headerCovTableEntry">10</td>
@@ -101,183 +101,193 @@
 <span class="lineNum">      39 </span><span class="lineCov">         10 :     BRAYNS_INFO &lt;&lt; &quot;Initializing OSPRay&quot; &lt;&lt; std::endl;</span>
 <span class="lineNum">      40 </span>            :     try
 <span class="lineNum">      41 </span>            :     {
-<span class="lineNum">      42 </span><span class="lineCov">         10 :         ospInit(&amp;argc, argv);</span>
-<span class="lineNum">      43 </span>            :     }
-<span class="lineNum">      44 </span><span class="lineCov">         12 :     catch (const std::exception&amp; e)</span>
-<span class="lineNum">      45 </span>            :     {
-<span class="lineNum">      46 </span>            :         // Note: This is necessary because OSPRay does not yet implement a
-<span class="lineNum">      47 </span>            :         // ospDestroy API.
-<span class="lineNum">      48 </span><span class="lineCov">          6 :         BRAYNS_ERROR &lt;&lt; &quot;Error during ospInit(): &quot; &lt;&lt; e.what() &lt;&lt; std::endl;</span>
-<span class="lineNum">      49 </span>            :     }
+<span class="lineNum">      42 </span>            :         // Ospray messes up with argv, need to pass a copy
+<span class="lineNum">      43 </span><span class="lineCov">         20 :         strings arguments;</span>
+<span class="lineNum">      44 </span><span class="lineCov">         60 :         for (int i = 0; i &lt; argc; ++i)</span>
+<span class="lineNum">      45 </span><span class="lineCov">         50 :             arguments.push_back(argv[i]);</span>
+<span class="lineNum">      46 </span>            : 
+<span class="lineNum">      47 </span><span class="lineCov">         20 :         std::vector&lt;const char*&gt; newArgv;</span>
+<span class="lineNum">      48 </span><span class="lineCov">         60 :         for (const auto&amp; arg : arguments)</span>
+<span class="lineNum">      49 </span><span class="lineCov">         50 :             newArgv.push_back(arg.c_str());</span>
 <span class="lineNum">      50 </span>            : 
-<span class="lineNum">      51 </span><span class="lineCov">         10 :     RenderingParameters&amp; rp = _parametersManager.getRenderingParameters();</span>
-<span class="lineNum">      52 </span><span class="lineCov">         10 :     if (!rp.getModule().empty())</span>
-<span class="lineNum">      53 </span>            :     {
-<span class="lineNum">      54 </span>            :         try
-<span class="lineNum">      55 </span>            :         {
-<span class="lineNum">      56 </span><span class="lineNoCov">          0 :             const auto error = ospLoadModule(rp.getModule().c_str());</span>
-<span class="lineNum">      57 </span><span class="lineNoCov">          0 :             if (rp.getModule() == &quot;deflect&quot;)</span>
-<span class="lineNum">      58 </span>            :             {
-<span class="lineNum">      59 </span><span class="lineNoCov">          0 :                 if (error &gt; 0)</span>
-<span class="lineNum">      60 </span>            :                     BRAYNS_WARN
-<span class="lineNum">      61 </span>            : #if ((OSPRAY_VERSION_MAJOR == 1) &amp;&amp; (OSPRAY_VERSION_MINOR &lt; 3))
-<span class="lineNum">      62 </span><span class="lineNoCov">          0 :                         &lt;&lt; &quot;Could not load DeflectPixelOp module, error code &quot;</span>
-<span class="lineNum">      63 </span><span class="lineNoCov">          0 :                         &lt;&lt; (int)error &lt;&lt; std::endl;</span>
-<span class="lineNum">      64 </span>            : #else
-<span class="lineNum">      65 </span>            :                         &lt;&lt; ospDeviceGetLastErrorMsg(ospGetCurrentDevice())
-<span class="lineNum">      66 </span>            :                         &lt;&lt; std::endl;
-<span class="lineNum">      67 </span>            : #endif
-<span class="lineNum">      68 </span>            :                 else
-<span class="lineNum">      69 </span><span class="lineNoCov">          0 :                     _haveDeflectPixelOp = true;</span>
-<span class="lineNum">      70 </span>            :             }
-<span class="lineNum">      71 </span>            :         }
-<span class="lineNum">      72 </span><span class="lineNoCov">          0 :         catch (const std::exception&amp; e)</span>
-<span class="lineNum">      73 </span>            :         {
-<span class="lineNum">      74 </span><span class="lineNoCov">          0 :             BRAYNS_ERROR &lt;&lt; &quot;Error while loading module &quot; &lt;&lt; rp.getModule()</span>
-<span class="lineNum">      75 </span><span class="lineNoCov">          0 :                          &lt;&lt; &quot;: &quot; &lt;&lt; e.what() &lt;&lt; std::endl;</span>
-<span class="lineNum">      76 </span>            :         }
-<span class="lineNum">      77 </span>            :     }
-<span class="lineNum">      78 </span>            : 
-<span class="lineNum">      79 </span><span class="lineCov">         10 :     BRAYNS_INFO &lt;&lt; &quot;Initializing renderers&quot; &lt;&lt; std::endl;</span>
-<span class="lineNum">      80 </span><span class="lineCov">         10 :     _activeRenderer = rp.getRenderer();</span>
-<span class="lineNum">      81 </span>            : 
-<span class="lineNum">      82 </span><span class="lineCov">         20 :     Renderers renderersForScene;</span>
-<span class="lineNum">      83 </span><span class="lineCov">         70 :     for (const auto renderer : rp.getRenderers())</span>
-<span class="lineNum">      84 </span>            :     {
-<span class="lineNum">      85 </span><span class="lineCov">         60 :         const auto&amp; rendererName = rp.getRendererNameAsString(renderer);</span>
-<span class="lineNum">      86 </span><span class="lineCov">         60 :         _renderers[renderer].reset(</span>
-<span class="lineNum">      87 </span><span class="lineCov">        120 :             new OSPRayRenderer(rendererName, _parametersManager));</span>
-<span class="lineNum">      88 </span><span class="lineCov">         60 :         renderersForScene.push_back(_renderers[renderer]);</span>
-<span class="lineNum">      89 </span>            :     }
+<span class="lineNum">      51 </span><span class="lineCov">         10 :         ospInit(&amp;argc, newArgv.data());</span>
+<span class="lineNum">      52 </span>            :     }
+<span class="lineNum">      53 </span><span class="lineCov">         12 :     catch (const std::exception&amp; e)</span>
+<span class="lineNum">      54 </span>            :     {
+<span class="lineNum">      55 </span>            :         // Note: This is necessary because OSPRay does not yet implement a
+<span class="lineNum">      56 </span>            :         // ospDestroy API.
+<span class="lineNum">      57 </span><span class="lineCov">          6 :         BRAYNS_ERROR &lt;&lt; &quot;Error during ospInit(): &quot; &lt;&lt; e.what() &lt;&lt; std::endl;</span>
+<span class="lineNum">      58 </span>            :     }
+<span class="lineNum">      59 </span>            : 
+<span class="lineNum">      60 </span><span class="lineCov">         10 :     RenderingParameters&amp; rp = _parametersManager.getRenderingParameters();</span>
+<span class="lineNum">      61 </span><span class="lineCov">         10 :     if (!rp.getModule().empty())</span>
+<span class="lineNum">      62 </span>            :     {
+<span class="lineNum">      63 </span>            :         try
+<span class="lineNum">      64 </span>            :         {
+<span class="lineNum">      65 </span><span class="lineNoCov">          0 :             const auto error = ospLoadModule(rp.getModule().c_str());</span>
+<span class="lineNum">      66 </span><span class="lineNoCov">          0 :             if (rp.getModule() == &quot;deflect&quot;)</span>
+<span class="lineNum">      67 </span>            :             {
+<span class="lineNum">      68 </span><span class="lineNoCov">          0 :                 if (error &gt; 0)</span>
+<span class="lineNum">      69 </span>            :                     BRAYNS_WARN
+<span class="lineNum">      70 </span>            : #if ((OSPRAY_VERSION_MAJOR == 1) &amp;&amp; (OSPRAY_VERSION_MINOR &lt; 3))
+<span class="lineNum">      71 </span><span class="lineNoCov">          0 :                         &lt;&lt; &quot;Could not load DeflectPixelOp module, error code &quot;</span>
+<span class="lineNum">      72 </span><span class="lineNoCov">          0 :                         &lt;&lt; (int)error &lt;&lt; std::endl;</span>
+<span class="lineNum">      73 </span>            : #else
+<span class="lineNum">      74 </span>            :                         &lt;&lt; ospDeviceGetLastErrorMsg(ospGetCurrentDevice())
+<span class="lineNum">      75 </span>            :                         &lt;&lt; std::endl;
+<span class="lineNum">      76 </span>            : #endif
+<span class="lineNum">      77 </span>            :                 else
+<span class="lineNum">      78 </span><span class="lineNoCov">          0 :                     _haveDeflectPixelOp = true;</span>
+<span class="lineNum">      79 </span>            :             }
+<span class="lineNum">      80 </span>            :         }
+<span class="lineNum">      81 </span><span class="lineNoCov">          0 :         catch (const std::exception&amp; e)</span>
+<span class="lineNum">      82 </span>            :         {
+<span class="lineNum">      83 </span><span class="lineNoCov">          0 :             BRAYNS_ERROR &lt;&lt; &quot;Error while loading module &quot; &lt;&lt; rp.getModule()</span>
+<span class="lineNum">      84 </span><span class="lineNoCov">          0 :                          &lt;&lt; &quot;: &quot; &lt;&lt; e.what() &lt;&lt; std::endl;</span>
+<span class="lineNum">      85 </span>            :         }
+<span class="lineNum">      86 </span>            :     }
+<span class="lineNum">      87 </span>            : 
+<span class="lineNum">      88 </span><span class="lineCov">         10 :     BRAYNS_INFO &lt;&lt; &quot;Initializing renderers&quot; &lt;&lt; std::endl;</span>
+<span class="lineNum">      89 </span><span class="lineCov">         10 :     _activeRenderer = rp.getRenderer();</span>
 <span class="lineNum">      90 </span>            : 
-<span class="lineNum">      91 </span><span class="lineCov">         10 :     BRAYNS_INFO &lt;&lt; &quot;Initializing scene&quot; &lt;&lt; std::endl;</span>
-<span class="lineNum">      92 </span><span class="lineCov">         10 :     _scene.reset(new OSPRayScene(renderersForScene, _parametersManager));</span>
-<span class="lineNum">      93 </span><span class="lineCov">         10 :     _camera.reset(new OSPRayCamera(rp.getCameraType()));</span>
-<span class="lineNum">      94 </span>            : 
-<span class="lineNum">      95 </span><span class="lineCov">         10 :     BRAYNS_INFO &lt;&lt; &quot;Initializing frame buffer&quot; &lt;&lt; std::endl;</span>
-<span class="lineNum">      96 </span><span class="lineCov">         20 :     _frameSize = getSupportedFrameSize(</span>
-<span class="lineNum">      97 </span><span class="lineCov">         20 :         _parametersManager.getApplicationParameters().getWindowSize());</span>
-<span class="lineNum">      98 </span>            : 
-<span class="lineNum">      99 </span><span class="lineCov">         10 :     bool accumulation = rp.getAccumulation();</span>
-<span class="lineNum">     100 </span><span class="lineCov">         10 :     if (!_parametersManager.getApplicationParameters().getFilters().empty())</span>
-<span class="lineNum">     101 </span><span class="lineNoCov">          0 :         accumulation = false;</span>
-<span class="lineNum">     102 </span>            : 
-<span class="lineNum">     103 </span>            :     auto ospFrameBuffer =
-<span class="lineNum">     104 </span>            :         new OSPRayFrameBuffer(_frameSize,
-<span class="lineNum">     105 </span><span class="lineCov">         10 :                               haveDeflectPixelOp() ? FrameBufferFormat::none</span>
-<span class="lineNum">     106 </span>            :                                                    : FrameBufferFormat::rgba_i8,
-<span class="lineNum">     107 </span><span class="lineCov">         20 :                               accumulation);</span>
-<span class="lineNum">     108 </span><span class="lineCov">         10 :     if (haveDeflectPixelOp())</span>
-<span class="lineNum">     109 </span><span class="lineNoCov">          0 :         ospFrameBuffer-&gt;enableDeflectPixelOp();</span>
-<span class="lineNum">     110 </span>            : 
-<span class="lineNum">     111 </span><span class="lineCov">         10 :     _frameBuffer.reset(ospFrameBuffer);</span>
-<span class="lineNum">     112 </span>            : 
-<span class="lineNum">     113 </span><span class="lineCov">         70 :     for (const auto&amp; renderer : _renderers)</span>
-<span class="lineNum">     114 </span>            :     {
-<span class="lineNum">     115 </span><span class="lineCov">         60 :         _renderers[renderer.first]-&gt;setScene(_scene);</span>
-<span class="lineNum">     116 </span><span class="lineCov">         60 :         _renderers[renderer.first]-&gt;setCamera(_camera);</span>
-<span class="lineNum">     117 </span>            :     }
-<span class="lineNum">     118 </span>            : 
-<span class="lineNum">     119 </span><span class="lineCov">         10 :     BRAYNS_INFO &lt;&lt; &quot;Engine initialization complete&quot; &lt;&lt; std::endl;</span>
-<a name="120"><span class="lineNum">     120 </span><span class="lineCov">         10 : }</span></a>
+<span class="lineNum">      91 </span><span class="lineCov">         20 :     Renderers renderersForScene;</span>
+<span class="lineNum">      92 </span><span class="lineCov">         80 :     for (const auto renderer : rp.getRenderers())</span>
+<span class="lineNum">      93 </span>            :     {
+<span class="lineNum">      94 </span><span class="lineCov">         70 :         const auto&amp; rendererName = rp.getRendererNameAsString(renderer);</span>
+<span class="lineNum">      95 </span><span class="lineCov">         70 :         _renderers[renderer].reset(</span>
+<span class="lineNum">      96 </span><span class="lineCov">        140 :             new OSPRayRenderer(rendererName, _parametersManager));</span>
+<span class="lineNum">      97 </span><span class="lineCov">         70 :         renderersForScene.push_back(_renderers[renderer]);</span>
+<span class="lineNum">      98 </span>            :     }
+<span class="lineNum">      99 </span>            : 
+<span class="lineNum">     100 </span><span class="lineCov">         10 :     BRAYNS_INFO &lt;&lt; &quot;Initializing scene&quot; &lt;&lt; std::endl;</span>
+<span class="lineNum">     101 </span><span class="lineCov">         10 :     _scene.reset(new OSPRayScene(renderersForScene, _parametersManager));</span>
+<span class="lineNum">     102 </span><span class="lineCov">         10 :     _camera.reset(new OSPRayCamera(rp.getCameraType()));</span>
+<span class="lineNum">     103 </span>            : 
+<span class="lineNum">     104 </span><span class="lineCov">         10 :     BRAYNS_INFO &lt;&lt; &quot;Initializing frame buffer&quot; &lt;&lt; std::endl;</span>
+<span class="lineNum">     105 </span><span class="lineCov">         20 :     _frameSize = getSupportedFrameSize(</span>
+<span class="lineNum">     106 </span><span class="lineCov">         20 :         _parametersManager.getApplicationParameters().getWindowSize());</span>
+<span class="lineNum">     107 </span>            : 
+<span class="lineNum">     108 </span><span class="lineCov">         10 :     bool accumulation = rp.getAccumulation();</span>
+<span class="lineNum">     109 </span><span class="lineCov">         10 :     if (!_parametersManager.getApplicationParameters().getFilters().empty())</span>
+<span class="lineNum">     110 </span><span class="lineNoCov">          0 :         accumulation = false;</span>
+<span class="lineNum">     111 </span>            : 
+<span class="lineNum">     112 </span>            :     auto ospFrameBuffer =
+<span class="lineNum">     113 </span>            :         new OSPRayFrameBuffer(_frameSize,
+<span class="lineNum">     114 </span><span class="lineCov">         10 :                               haveDeflectPixelOp() ? FrameBufferFormat::none</span>
+<span class="lineNum">     115 </span>            :                                                    : FrameBufferFormat::rgba_i8,
+<span class="lineNum">     116 </span><span class="lineCov">         20 :                               accumulation);</span>
+<span class="lineNum">     117 </span><span class="lineCov">         10 :     if (haveDeflectPixelOp())</span>
+<span class="lineNum">     118 </span><span class="lineNoCov">          0 :         ospFrameBuffer-&gt;enableDeflectPixelOp();</span>
+<span class="lineNum">     119 </span>            : 
+<span class="lineNum">     120 </span><span class="lineCov">         10 :     _frameBuffer.reset(ospFrameBuffer);</span>
 <span class="lineNum">     121 </span>            : 
-<span class="lineNum">     122 </span><span class="lineCov">         20 : OSPRayEngine::~OSPRayEngine()</span>
-<span class="lineNum">     123 </span>            : {
-<a name="124"><span class="lineNum">     124 </span><span class="lineCov">         20 : }</span></a>
-<span class="lineNum">     125 </span>            : 
-<span class="lineNum">     126 </span><span class="lineNoCov">          0 : std::string OSPRayEngine::name() const</span>
-<span class="lineNum">     127 </span>            : {
-<span class="lineNum">     128 </span><span class="lineNoCov">          0 :     return &quot;ospray&quot;;</span>
-<a name="129"><span class="lineNum">     129 </span>            : }</a>
+<span class="lineNum">     122 </span><span class="lineCov">         80 :     for (const auto&amp; renderer : _renderers)</span>
+<span class="lineNum">     123 </span>            :     {
+<span class="lineNum">     124 </span><span class="lineCov">         70 :         _renderers[renderer.first]-&gt;setScene(_scene);</span>
+<span class="lineNum">     125 </span><span class="lineCov">         70 :         _renderers[renderer.first]-&gt;setCamera(_camera);</span>
+<span class="lineNum">     126 </span>            :     }
+<span class="lineNum">     127 </span>            : 
+<span class="lineNum">     128 </span><span class="lineCov">         10 :     BRAYNS_INFO &lt;&lt; &quot;Engine initialization complete&quot; &lt;&lt; std::endl;</span>
+<a name="129"><span class="lineNum">     129 </span><span class="lineCov">         10 : }</span></a>
 <span class="lineNum">     130 </span>            : 
-<span class="lineNum">     131 </span><span class="lineCov">          8 : void OSPRayEngine::commit()</span>
+<span class="lineNum">     131 </span><span class="lineCov">         20 : OSPRayEngine::~OSPRayEngine()</span>
 <span class="lineNum">     132 </span>            : {
-<span class="lineNum">     133 </span><span class="lineCov">          8 :     Engine::commit();</span>
+<a name="133"><span class="lineNum">     133 </span><span class="lineCov">         20 : }</span></a>
 <span class="lineNum">     134 </span>            : 
-<span class="lineNum">     135 </span><span class="lineCov">          8 :     auto device = ospGetCurrentDevice();</span>
-<span class="lineNum">     136 </span><span class="lineCov">          8 :     if (device &amp;&amp; _parametersManager.getRenderingParameters().getModified())</span>
-<span class="lineNum">     137 </span>            :     {
-<span class="lineNum">     138 </span>            :         const auto useDynamicLoadBalancer =
-<span class="lineNum">     139 </span><span class="lineCov">          6 :             _parametersManager.getRenderingParameters()</span>
-<span class="lineNum">     140 </span><span class="lineCov">          6 :                 .getDynamicLoadBalancer();</span>
-<span class="lineNum">     141 </span><span class="lineCov">          6 :         if (_useDynamicLoadBalancer != useDynamicLoadBalancer)</span>
-<span class="lineNum">     142 </span>            :         {
-<span class="lineNum">     143 </span><span class="lineNoCov">          0 :             ospDeviceSet1i(device, &quot;dynamicLoadBalancer&quot;,</span>
-<span class="lineNum">     144 </span><span class="lineNoCov">          0 :                            useDynamicLoadBalancer);</span>
-<span class="lineNum">     145 </span><span class="lineNoCov">          0 :             ospDeviceCommit(device);</span>
-<span class="lineNum">     146 </span><span class="lineNoCov">          0 :             _useDynamicLoadBalancer = useDynamicLoadBalancer;</span>
-<span class="lineNum">     147 </span>            : 
-<span class="lineNum">     148 </span>            :             BRAYNS_INFO &lt;&lt; &quot;Using &quot;
-<span class="lineNum">     149 </span>            :                         &lt;&lt; (useDynamicLoadBalancer ? &quot;dynamic&quot; : &quot;static&quot;)
-<span class="lineNum">     150 </span><span class="lineNoCov">          0 :                         &lt;&lt; &quot; load balancer&quot; &lt;&lt; std::endl;</span>
-<span class="lineNum">     151 </span>            :         }
-<span class="lineNum">     152 </span>            :     }
-<span class="lineNum">     153 </span>            : 
-<span class="lineNum">     154 </span>            :     auto osprayFrameBuffer =
-<span class="lineNum">     155 </span><span class="lineCov">         16 :         std::static_pointer_cast&lt;OSPRayFrameBuffer&gt;(_frameBuffer);</span>
-<span class="lineNum">     156 </span><span class="lineCov">          8 :     const auto&amp; appParams = getParametersManager().getApplicationParameters();</span>
-<span class="lineNum">     157 </span><span class="lineCov">          8 :     if (appParams.getModified() || _camera-&gt;getModified())</span>
-<span class="lineNum">     158 </span><span class="lineCov">          8 :         osprayFrameBuffer-&gt;setStreamingParams(appParams,</span>
-<span class="lineNum">     159 </span><span class="lineCov">          8 :                                               _camera-&gt;getType() ==</span>
-<span class="lineNum">     160 </span><span class="lineCov">          8 :                                                   CameraType::stereo);</span>
-<a name="161"><span class="lineNum">     161 </span><span class="lineCov">          8 : }</span></a>
+<span class="lineNum">     135 </span><span class="lineNoCov">          0 : std::string OSPRayEngine::name() const</span>
+<span class="lineNum">     136 </span>            : {
+<span class="lineNum">     137 </span><span class="lineNoCov">          0 :     return &quot;ospray&quot;;</span>
+<a name="138"><span class="lineNum">     138 </span>            : }</a>
+<span class="lineNum">     139 </span>            : 
+<span class="lineNum">     140 </span><span class="lineCov">          8 : void OSPRayEngine::commit()</span>
+<span class="lineNum">     141 </span>            : {
+<span class="lineNum">     142 </span><span class="lineCov">          8 :     Engine::commit();</span>
+<span class="lineNum">     143 </span>            : 
+<span class="lineNum">     144 </span><span class="lineCov">          8 :     auto device = ospGetCurrentDevice();</span>
+<span class="lineNum">     145 </span><span class="lineCov">          8 :     if (device &amp;&amp; _parametersManager.getRenderingParameters().getModified())</span>
+<span class="lineNum">     146 </span>            :     {
+<span class="lineNum">     147 </span>            :         const auto useDynamicLoadBalancer =
+<span class="lineNum">     148 </span><span class="lineCov">          6 :             _parametersManager.getRenderingParameters()</span>
+<span class="lineNum">     149 </span><span class="lineCov">          6 :                 .getDynamicLoadBalancer();</span>
+<span class="lineNum">     150 </span><span class="lineCov">          6 :         if (_useDynamicLoadBalancer != useDynamicLoadBalancer)</span>
+<span class="lineNum">     151 </span>            :         {
+<span class="lineNum">     152 </span><span class="lineNoCov">          0 :             ospDeviceSet1i(device, &quot;dynamicLoadBalancer&quot;,</span>
+<span class="lineNum">     153 </span><span class="lineNoCov">          0 :                            useDynamicLoadBalancer);</span>
+<span class="lineNum">     154 </span><span class="lineNoCov">          0 :             ospDeviceCommit(device);</span>
+<span class="lineNum">     155 </span><span class="lineNoCov">          0 :             _useDynamicLoadBalancer = useDynamicLoadBalancer;</span>
+<span class="lineNum">     156 </span>            : 
+<span class="lineNum">     157 </span>            :             BRAYNS_INFO &lt;&lt; &quot;Using &quot;
+<span class="lineNum">     158 </span>            :                         &lt;&lt; (useDynamicLoadBalancer ? &quot;dynamic&quot; : &quot;static&quot;)
+<span class="lineNum">     159 </span><span class="lineNoCov">          0 :                         &lt;&lt; &quot; load balancer&quot; &lt;&lt; std::endl;</span>
+<span class="lineNum">     160 </span>            :         }
+<span class="lineNum">     161 </span>            :     }
 <span class="lineNum">     162 </span>            : 
-<span class="lineNum">     163 </span><span class="lineCov">          8 : void OSPRayEngine::render()</span>
-<span class="lineNum">     164 </span>            : {
-<span class="lineNum">     165 </span><span class="lineCov">          8 :     Engine::render();</span>
-<span class="lineNum">     166 </span><span class="lineCov">          8 :     _scene-&gt;commitVolumeData();</span>
-<span class="lineNum">     167 </span><span class="lineCov">          8 :     _scene-&gt;commitSimulationData();</span>
-<span class="lineNum">     168 </span><span class="lineCov">          8 :     _renderers[_activeRenderer]-&gt;commit();</span>
-<span class="lineNum">     169 </span><span class="lineCov">          8 :     _renderers[_activeRenderer]-&gt;render(_frameBuffer);</span>
-<a name="170"><span class="lineNum">     170 </span><span class="lineCov">          8 : }</span></a>
-<span class="lineNum">     171 </span>            : 
-<span class="lineNum">     172 </span><span class="lineCov">          8 : void OSPRayEngine::preRender()</span>
-<span class="lineNum">     173 </span>            : {
-<span class="lineNum">     174 </span><span class="lineCov">          8 :     const auto&amp; renderParams = _parametersManager.getRenderingParameters();</span>
-<span class="lineNum">     175 </span><span class="lineCov">          8 :     if (renderParams.getAccumulation() != _frameBuffer-&gt;getAccumulation())</span>
-<span class="lineNum">     176 </span>            :     {
-<span class="lineNum">     177 </span><span class="lineCov">          2 :         _frameBuffer-&gt;setAccumulation(renderParams.getAccumulation());</span>
-<span class="lineNum">     178 </span><span class="lineCov">          2 :         _frameBuffer-&gt;resize(_frameBuffer-&gt;getSize());</span>
-<span class="lineNum">     179 </span>            :     }
-<span class="lineNum">     180 </span>            : 
-<span class="lineNum">     181 </span><span class="lineCov">          8 :     _frameBuffer-&gt;map();</span>
-<a name="182"><span class="lineNum">     182 </span><span class="lineCov">          8 : }</span></a>
-<span class="lineNum">     183 </span>            : 
-<span class="lineNum">     184 </span><span class="lineCov">          8 : void OSPRayEngine::postRender()</span>
-<span class="lineNum">     185 </span>            : {
-<span class="lineNum">     186 </span><span class="lineCov">          8 :     _frameBuffer-&gt;unmap();</span>
-<a name="187"><span class="lineNum">     187 </span><span class="lineCov">          8 : }</span></a>
-<span class="lineNum">     188 </span>            : 
-<span class="lineNum">     189 </span><span class="lineCov">         18 : Vector2ui OSPRayEngine::getSupportedFrameSize(const Vector2ui&amp; size)</span>
-<span class="lineNum">     190 </span>            : {
-<span class="lineNum">     191 </span><span class="lineCov">         18 :     if (!haveDeflectPixelOp())</span>
-<span class="lineNum">     192 </span><span class="lineCov">         18 :         return Engine::getSupportedFrameSize(size);</span>
+<span class="lineNum">     163 </span>            :     auto osprayFrameBuffer =
+<span class="lineNum">     164 </span><span class="lineCov">         16 :         std::static_pointer_cast&lt;OSPRayFrameBuffer&gt;(_frameBuffer);</span>
+<span class="lineNum">     165 </span><span class="lineCov">          8 :     const auto&amp; appParams = _parametersManager.getApplicationParameters();</span>
+<span class="lineNum">     166 </span><span class="lineCov">          8 :     if (appParams.getModified() || _camera-&gt;getModified())</span>
+<span class="lineNum">     167 </span>            :     {
+<span class="lineNum">     168 </span><span class="lineCov">          6 :         const bool isStereo = _camera-&gt;getType() == CameraType::stereo;</span>
+<span class="lineNum">     169 </span><span class="lineCov">          6 :         osprayFrameBuffer-&gt;setStreamingParams(appParams, isStereo);</span>
+<span class="lineNum">     170 </span>            :     }
+<a name="171"><span class="lineNum">     171 </span><span class="lineCov">          8 : }</span></a>
+<span class="lineNum">     172 </span>            : 
+<span class="lineNum">     173 </span><span class="lineCov">          8 : void OSPRayEngine::render()</span>
+<span class="lineNum">     174 </span>            : {
+<span class="lineNum">     175 </span><span class="lineCov">          8 :     Engine::render();</span>
+<span class="lineNum">     176 </span><span class="lineCov">          8 :     _scene-&gt;commitVolumeData();</span>
+<span class="lineNum">     177 </span><span class="lineCov">          8 :     _scene-&gt;commitSimulationData();</span>
+<span class="lineNum">     178 </span><span class="lineCov">          8 :     _renderers[_activeRenderer]-&gt;commit();</span>
+<span class="lineNum">     179 </span><span class="lineCov">          8 :     _renderers[_activeRenderer]-&gt;render(_frameBuffer);</span>
+<a name="180"><span class="lineNum">     180 </span><span class="lineCov">          8 : }</span></a>
+<span class="lineNum">     181 </span>            : 
+<span class="lineNum">     182 </span><span class="lineCov">          8 : void OSPRayEngine::preRender()</span>
+<span class="lineNum">     183 </span>            : {
+<span class="lineNum">     184 </span><span class="lineCov">          8 :     const auto&amp; renderParams = _parametersManager.getRenderingParameters();</span>
+<span class="lineNum">     185 </span><span class="lineCov">          8 :     if (renderParams.getAccumulation() != _frameBuffer-&gt;getAccumulation())</span>
+<span class="lineNum">     186 </span>            :     {
+<span class="lineNum">     187 </span><span class="lineCov">          2 :         _frameBuffer-&gt;setAccumulation(renderParams.getAccumulation());</span>
+<span class="lineNum">     188 </span><span class="lineCov">          2 :         _frameBuffer-&gt;resize(_frameBuffer-&gt;getSize());</span>
+<span class="lineNum">     189 </span>            :     }
+<span class="lineNum">     190 </span>            : 
+<span class="lineNum">     191 </span><span class="lineCov">          8 :     _frameBuffer-&gt;map();</span>
+<a name="192"><span class="lineNum">     192 </span><span class="lineCov">          8 : }</span></a>
 <span class="lineNum">     193 </span>            : 
-<span class="lineNum">     194 </span><span class="lineNoCov">          0 :     Vector2f result = size;</span>
-<span class="lineNum">     195 </span><span class="lineNoCov">          0 :     if (getCamera().getType() == CameraType::stereo)</span>
-<span class="lineNum">     196 </span>            :     {
-<span class="lineNum">     197 </span><span class="lineNoCov">          0 :         if (size.x() % (TILE_SIZE * 2) != 0)</span>
-<span class="lineNum">     198 </span><span class="lineNoCov">          0 :             result.x() = size.x() - size.x() % (TILE_SIZE * 2);</span>
-<span class="lineNum">     199 </span>            :     }
-<span class="lineNum">     200 </span>            :     else
-<span class="lineNum">     201 </span>            :     {
-<span class="lineNum">     202 </span><span class="lineNoCov">          0 :         if (size.x() % TILE_SIZE != 0)</span>
-<span class="lineNum">     203 </span><span class="lineNoCov">          0 :             result.x() = size.x() - size.x() % TILE_SIZE;</span>
-<span class="lineNum">     204 </span>            :     }
-<span class="lineNum">     205 </span>            : 
-<span class="lineNum">     206 </span><span class="lineNoCov">          0 :     if (size.y() % TILE_SIZE != 0)</span>
-<span class="lineNum">     207 </span><span class="lineNoCov">          0 :         result.y() = size.y() - size.y() % TILE_SIZE;</span>
-<span class="lineNum">     208 </span>            : 
-<span class="lineNum">     209 </span><span class="lineNoCov">          0 :     return result;</span>
-<a name="210"><span class="lineNum">     210 </span>            : }</a>
-<span class="lineNum">     211 </span>            : 
-<span class="lineNum">     212 </span><span class="lineNoCov">          0 : Vector2ui OSPRayEngine::getMinimumFrameSize() const</span>
-<span class="lineNum">     213 </span>            : {
-<span class="lineNum">     214 </span><span class="lineNoCov">          0 :     if (getCamera().getType() == CameraType::stereo)</span>
-<span class="lineNum">     215 </span><span class="lineNoCov">          0 :         return {TILE_SIZE * 2, TILE_SIZE};</span>
-<a name="216"><span class="lineNum">     216 </span><span class="lineNoCov">          0 :     return {TILE_SIZE, TILE_SIZE};</span></a>
-<span class="lineNum">     217 </span>            : }
-<span class="lineNum">     218 </span><span class="lineCov">         12 : }</span>
+<span class="lineNum">     194 </span><span class="lineCov">          8 : void OSPRayEngine::postRender()</span>
+<span class="lineNum">     195 </span>            : {
+<span class="lineNum">     196 </span><span class="lineCov">          8 :     _frameBuffer-&gt;unmap();</span>
+<a name="197"><span class="lineNum">     197 </span><span class="lineCov">          8 : }</span></a>
+<span class="lineNum">     198 </span>            : 
+<span class="lineNum">     199 </span><span class="lineCov">         18 : Vector2ui OSPRayEngine::getSupportedFrameSize(const Vector2ui&amp; size)</span>
+<span class="lineNum">     200 </span>            : {
+<span class="lineNum">     201 </span><span class="lineCov">         18 :     if (!haveDeflectPixelOp())</span>
+<span class="lineNum">     202 </span><span class="lineCov">         18 :         return Engine::getSupportedFrameSize(size);</span>
+<span class="lineNum">     203 </span>            : 
+<span class="lineNum">     204 </span><span class="lineNoCov">          0 :     Vector2f result = size;</span>
+<span class="lineNum">     205 </span><span class="lineNoCov">          0 :     if (getCamera().getType() == CameraType::stereo)</span>
+<span class="lineNum">     206 </span>            :     {
+<span class="lineNum">     207 </span><span class="lineNoCov">          0 :         if (size.x() % (TILE_SIZE * 2) != 0)</span>
+<span class="lineNum">     208 </span><span class="lineNoCov">          0 :             result.x() = size.x() - size.x() % (TILE_SIZE * 2);</span>
+<span class="lineNum">     209 </span>            :     }
+<span class="lineNum">     210 </span>            :     else
+<span class="lineNum">     211 </span>            :     {
+<span class="lineNum">     212 </span><span class="lineNoCov">          0 :         if (size.x() % TILE_SIZE != 0)</span>
+<span class="lineNum">     213 </span><span class="lineNoCov">          0 :             result.x() = size.x() - size.x() % TILE_SIZE;</span>
+<span class="lineNum">     214 </span>            :     }
+<span class="lineNum">     215 </span>            : 
+<span class="lineNum">     216 </span><span class="lineNoCov">          0 :     if (size.y() % TILE_SIZE != 0)</span>
+<span class="lineNum">     217 </span><span class="lineNoCov">          0 :         result.y() = size.y() - size.y() % TILE_SIZE;</span>
+<span class="lineNum">     218 </span>            : 
+<span class="lineNum">     219 </span><span class="lineNoCov">          0 :     return result;</span>
+<a name="220"><span class="lineNum">     220 </span>            : }</a>
+<span class="lineNum">     221 </span>            : 
+<span class="lineNum">     222 </span><span class="lineNoCov">          0 : Vector2ui OSPRayEngine::getMinimumFrameSize() const</span>
+<span class="lineNum">     223 </span>            : {
+<span class="lineNum">     224 </span><span class="lineNoCov">          0 :     if (getCamera().getType() == CameraType::stereo)</span>
+<span class="lineNum">     225 </span><span class="lineNoCov">          0 :         return {TILE_SIZE * 2, TILE_SIZE};</span>
+<a name="226"><span class="lineNum">     226 </span><span class="lineNoCov">          0 :     return {TILE_SIZE, TILE_SIZE};</span></a>
+<span class="lineNum">     227 </span>            : }
+<span class="lineNum">     228 </span><span class="lineCov">         12 : }</span>
 </pre>
       </td>
     </tr>

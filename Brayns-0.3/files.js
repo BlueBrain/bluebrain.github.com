@@ -41,6 +41,7 @@ var files =
     [ "Geometry.h", "_geometry_8h_source.html", null ],
     [ "GeometryParameters.h", "_geometry_parameters_8h_source.html", null ],
     [ "Helpers.h", "_helpers_8h_source.html", null ],
+    [ "ImageManager.h", "_image_manager_8h_source.html", null ],
     [ "InspectCenterManipulator.h", "_inspect_center_manipulator_8h_source.html", null ],
     [ "IntersectionRefinement.h", "_intersection_refinement_8h_source.html", null ],
     [ "KeyboardHandler.h", "_keyboard_handler_8h_source.html", null ],
@@ -78,6 +79,7 @@ var files =
     [ "Random.h", "_random_8h_source.html", null ],
     [ "Renderer.h", "_renderer_8h_source.html", null ],
     [ "RenderingParameters.h", "_rendering_parameters_8h_source.html", null ],
+    [ "RocketsPlugin.h", "_rockets_plugin_8h_source.html", null ],
     [ "Scene.h", "_scene_8h_source.html", null ],
     [ "SceneLoader.h", "_scene_loader_8h_source.html", null ],
     [ "SceneParameters.h", "_scene_parameters_8h_source.html", null ],
@@ -87,7 +89,6 @@ var files =
     [ "Sphere.h", "_sphere_8h_source.html", null ],
     [ "SpikeSimulationHandler.h", "_spike_simulation_handler_8h_source.html", null ],
     [ "Texture2D.h", "_texture2_d_8h_source.html", null ],
-    [ "TextureLoader.h", "_texture_loader_8h_source.html", null ],
     [ "TransferFunction.h", "_transfer_function_8h_source.html", null ],
     [ "TransferFunctionLoader.h", "_transfer_function_loader_8h_source.html", null ],
     [ "TrianglesMesh.h", "_triangles_mesh_8h_source.html", null ],
@@ -96,6 +97,5 @@ var files =
     [ "version.h", "version_8h.html", "version_8h" ],
     [ "VolumeHandler.h", "_volume_handler_8h_source.html", null ],
     [ "VolumeParameters.h", "_volume_parameters_8h_source.html", null ],
-    [ "XYZBLoader.h", "_x_y_z_b_loader_8h_source.html", null ],
-    [ "ZeroEQPlugin.h", "_zero_e_q_plugin_8h_source.html", null ]
+    [ "XYZBLoader.h", "_x_y_z_b_loader_8h_source.html", null ]
 ];
