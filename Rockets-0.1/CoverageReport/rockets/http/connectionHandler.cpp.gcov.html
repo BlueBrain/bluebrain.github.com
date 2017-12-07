@@ -1,0 +1,245 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+
+<html lang="en">
+
+<head>
+  <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+  <title>LCOV - Rockets - rockets/http/connectionHandler.cpp</title>
+  <link rel="stylesheet" type="text/css" href="../../gcov.css">
+</head>
+
+<body>
+
+  <table width="100%" border=0 cellspacing=0 cellpadding=0>
+    <tr><td class="title">LCOV - code coverage report</td></tr>
+    <tr><td class="ruler"><img src="../../glass.png" width=3 height=3 alt=""></td></tr>
+
+    <tr>
+      <td width="100%">
+        <table cellpadding=1 border=0 width="100%">
+          <tr>
+            <td width="10%" class="headerItem">Current view:</td>
+            <td width="35%" class="headerValue"><a href="../../index.html">top level</a> - <a href="index.html">rockets/http</a> - connectionHandler.cpp<span style="font-size: 80%;"> (source / <a href="connectionHandler.cpp.func-sort-c.html">functions</a>)</span></td>
+            <td width="5%"></td>
+            <td width="15%"></td>
+            <td width="10%" class="headerCovTableHead">Hit</td>
+            <td width="10%" class="headerCovTableHead">Total</td>
+            <td width="15%" class="headerCovTableHead">Coverage</td>
+          </tr>
+          <tr>
+            <td class="headerItem">Test:</td>
+            <td class="headerValue">Rockets</td>
+            <td></td>
+            <td class="headerItem">Lines:</td>
+            <td class="headerCovTableEntry">50</td>
+            <td class="headerCovTableEntry">66</td>
+            <td class="headerCovTableEntryMed">75.8 %</td>
+          </tr>
+          <tr>
+            <td class="headerItem">Date:</td>
+            <td class="headerValue">2017-12-07 04:13:26</td>
+            <td></td>
+            <td class="headerItem">Functions:</td>
+            <td class="headerCovTableEntry">9</td>
+            <td class="headerCovTableEntry">12</td>
+            <td class="headerCovTableEntryMed">75.0 %</td>
+          </tr>
+          <tr><td><img src="../../glass.png" width=3 height=3 alt=""></td></tr>
+        </table>
+      </td>
+    </tr>
+
+    <tr><td class="ruler"><img src="../../glass.png" width=3 height=3 alt=""></td></tr>
+  </table>
+
+  <table cellpadding=0 cellspacing=0 border=0>
+    <tr>
+      <td><br></td>
+    </tr>
+    <tr>
+      <td>
+<pre class="sourceHeading">          Line data    Source code</pre>
+<pre class="source">
+<a name="1"><span class="lineNum">       1 </span>            : /* Copyright (c) 2017, EPFL/Blue Brain Project</a>
+<span class="lineNum">       2 </span>            :  *                     Raphael.Dumusc@epfl.ch
+<span class="lineNum">       3 </span>            :  *
+<span class="lineNum">       4 </span>            :  * This file is part of Rockets &lt;https://github.com/BlueBrain/Rockets&gt;
+<span class="lineNum">       5 </span>            :  *
+<span class="lineNum">       6 </span>            :  * This library is free software; you can redistribute it and/or modify it under
+<span class="lineNum">       7 </span>            :  * the terms of the GNU Lesser General Public License version 3.0 as published
+<span class="lineNum">       8 </span>            :  * by the Free Software Foundation.
+<span class="lineNum">       9 </span>            :  *
+<span class="lineNum">      10 </span>            :  * This library is distributed in the hope that it will be useful, but WITHOUT
+<span class="lineNum">      11 </span>            :  * ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS
+<span class="lineNum">      12 </span>            :  * FOR A PARTICULAR PURPOSE.  See the GNU Lesser General Public License for more
+<span class="lineNum">      13 </span>            :  * details.
+<span class="lineNum">      14 </span>            :  *
+<span class="lineNum">      15 </span>            :  * You should have received a copy of the GNU Lesser General Public License
+<span class="lineNum">      16 </span>            :  * along with this library; if not, write to the Free Software Foundation, Inc.,
+<span class="lineNum">      17 </span>            :  * 51 Franklin Street, Fifth Floor, Boston, MA 02110-1301 USA.
+<span class="lineNum">      18 </span>            :  */
+<span class="lineNum">      19 </span>            : 
+<span class="lineNum">      20 </span>            : #include &quot;connectionHandler.h&quot;
+<span class="lineNum">      21 </span>            : 
+<span class="lineNum">      22 </span>            : #include &quot;helpers.h&quot;
+<span class="lineNum">      23 </span>            : #include &quot;request.h&quot;
+<span class="lineNum">      24 </span>            : #include &quot;response.h&quot;
+<span class="lineNum">      25 </span>            : #include &quot;utils.h&quot;
+<span class="lineNum">      26 </span>            : 
+<a name="27"><span class="lineNum">      27 </span>            : namespace</a>
+<span class="lineNum">      28 </span>            : {
+<span class="lineNum">      29 </span><span class="lineCov">          2 : const std::string JSON_TYPE = &quot;application/json&quot;;</span>
+<span class="lineNum">      30 </span><span class="lineCov">          2 : const std::string REQUEST_REGISTRY = &quot;registry&quot;;</span>
+<span class="lineNum">      31 </span>            : 
+<a name="32"><span class="lineNum">      32 </span>            : const int codeContinue = 0;</a>
+<span class="lineNum">      33 </span>            : 
+<span class="lineNum">      34 </span><span class="lineCov">        156 : std::string _removeEndpointFromPath(const std::string&amp; endpoint,</span>
+<span class="lineNum">      35 </span>            :                                     const std::string&amp; path)
+<span class="lineNum">      36 </span>            : {
+<span class="lineNum">      37 </span><span class="lineCov">        156 :     if (endpoint == &quot;/&quot;)</span>
+<span class="lineNum">      38 </span><span class="lineCov">         18 :         return path;</span>
+<span class="lineNum">      39 </span>            : 
+<span class="lineNum">      40 </span><span class="lineCov">        138 :     if (endpoint.size() &gt;= path.size())</span>
+<span class="lineNum">      41 </span><span class="lineCov">         96 :         return std::string();</span>
+<span class="lineNum">      42 </span>            : 
+<span class="lineNum">      43 </span><span class="lineCov">         42 :     return path.substr(endpoint.size());</span>
+<span class="lineNum">      44 </span>            : }
+<span class="lineNum">      45 </span>            : } // anonymous namespace
+<span class="lineNum">      46 </span>            : 
+<span class="lineNum">      47 </span>            : namespace rockets
+<span class="lineNum">      48 </span>            : {
+<a name="49"><span class="lineNum">      49 </span>            : namespace http</a>
+<span class="lineNum">      50 </span>            : {
+<span class="lineNum">      51 </span><span class="lineCov">         86 : ConnectionHandler::ConnectionHandler(const Registry&amp; registry)</span>
+<span class="lineNum">      52 </span><span class="lineCov">         86 :     : _registry(registry)</span>
+<span class="lineNum">      53 </span>            : {
+<a name="54"><span class="lineNum">      54 </span><span class="lineCov">         86 : }</span></a>
+<span class="lineNum">      55 </span>            : 
+<span class="lineNum">      56 </span><span class="lineNoCov">          0 : void ConnectionHandler::setFilter(const Filter* filter)</span>
+<span class="lineNum">      57 </span>            : {
+<span class="lineNum">      58 </span><span class="lineNoCov">          0 :     _filter = filter;</span>
+<a name="59"><span class="lineNum">      59 </span><span class="lineNoCov">          0 : }</span></a>
+<span class="lineNum">      60 </span>            : 
+<span class="lineNum">      61 </span><span class="lineCov">        204 : int ConnectionHandler::handleNewRequest(Connection&amp; connection) const</span>
+<span class="lineNum">      62 </span>            : {
+<span class="lineNum">      63 </span><span class="lineCov">        204 :     if (connection.isCorsPreflightRequest())</span>
+<span class="lineNum">      64 </span><span class="lineNoCov">          0 :         return _replyToCorsPreflightRequest(connection);</span>
+<span class="lineNum">      65 </span>            : 
+<span class="lineNum">      66 </span><span class="lineCov">        204 :     if (connection.canHaveHttpBody())</span>
+<span class="lineNum">      67 </span><span class="lineCov">         45 :         return codeContinue;</span>
+<span class="lineNum">      68 </span>            : 
+<span class="lineNum">      69 </span><span class="lineCov">        159 :     return respondToRequest(connection);</span>
+<a name="70"><span class="lineNum">      70 </span>            : }</a>
+<span class="lineNum">      71 </span>            : 
+<span class="lineNum">      72 </span><span class="lineCov">         45 : int ConnectionHandler::handleData(Connection&amp; connection, const char* data,</span>
+<span class="lineNum">      73 </span>            :                                   const size_t size) const
+<span class="lineNum">      74 </span>            : {
+<span class="lineNum">      75 </span><span class="lineCov">         45 :     connection.appendBody(data, size);</span>
+<span class="lineNum">      76 </span><span class="lineCov">         45 :     return codeContinue;</span>
+<a name="77"><span class="lineNum">      77 </span>            : }</a>
+<span class="lineNum">      78 </span>            : 
+<span class="lineNum">      79 </span><span class="lineCov">        204 : int ConnectionHandler::respondToRequest(Connection&amp; connection) const</span>
+<span class="lineNum">      80 </span>            : {
+<span class="lineNum">      81 </span><span class="lineCov">        204 :     if (!connection.delayedResponseSet)</span>
+<span class="lineNum">      82 </span>            :     {
+<span class="lineNum">      83 </span><span class="lineCov">        204 :         connection.delayedResponse = _generateResponse(connection);</span>
+<span class="lineNum">      84 </span><span class="lineCov">        204 :         connection.delayedResponseSet = true;</span>
+<span class="lineNum">      85 </span>            :     }
+<span class="lineNum">      86 </span>            : 
+<span class="lineNum">      87 </span><span class="lineCov">        408 :     Response response;</span>
+<span class="lineNum">      88 </span>            :     try
+<span class="lineNum">      89 </span>            :     {
+<span class="lineNum">      90 </span><span class="lineCov">        204 :         if (!is_ready(connection.delayedResponse))</span>
+<span class="lineNum">      91 </span>            :         {
+<span class="lineNum">      92 </span><span class="lineNoCov">          0 :             connection.delayResponse();</span>
+<span class="lineNum">      93 </span><span class="lineNoCov">          0 :             return codeContinue;</span>
+<span class="lineNum">      94 </span>            :         }
+<span class="lineNum">      95 </span><span class="lineCov">        204 :         response = connection.delayedResponse.get();</span>
+<span class="lineNum">      96 </span>            :     }
+<span class="lineNum">      97 </span><span class="lineNoCov">          0 :     catch (const std::future_error&amp;)</span>
+<span class="lineNum">      98 </span>            :     {
+<span class="lineNum">      99 </span><span class="lineNoCov">          0 :         response = Response{Code::INTERNAL_SERVER_ERROR};</span>
+<span class="lineNum">     100 </span>            :     }
+<span class="lineNum">     101 </span><span class="lineCov">        204 :     return connection.write(response, connection.getCorsResponseHeaders());</span>
+<a name="102"><span class="lineNum">     102 </span>            : }</a>
+<span class="lineNum">     103 </span>            : 
+<span class="lineNum">     104 </span><span class="lineCov">        204 : std::future&lt;Response&gt; ConnectionHandler::_generateResponse(</span>
+<span class="lineNum">     105 </span>            :     Connection&amp; connection) const
+<span class="lineNum">     106 </span>            : {
+<span class="lineNum">     107 </span><span class="lineCov">        204 :     auto&amp; request = connection.getRequest();</span>
+<span class="lineNum">     108 </span><span class="lineCov">        204 :     if (_filter &amp;&amp; _filter-&gt;filter(request))</span>
+<span class="lineNum">     109 </span><span class="lineNoCov">          0 :         return make_ready_response(_filter-&gt;getResponse(request));</span>
+<span class="lineNum">     110 </span>            : 
+<span class="lineNum">     111 </span><span class="lineCov">        408 :     const auto path = connection.getPathWithoutLeadingSlash();</span>
+<span class="lineNum">     112 </span>            : 
+<span class="lineNum">     113 </span><span class="lineCov">        204 :     if (connection.getMethod() == Method::GET &amp;&amp; path == REQUEST_REGISTRY)</span>
+<span class="lineNum">     114 </span><span class="lineCov">          9 :         return make_ready_response(Code::OK, _registry.toJson(), JSON_TYPE);</span>
+<span class="lineNum">     115 </span>            : 
+<span class="lineNum">     116 </span><span class="lineCov">        390 :     const auto result = _registry.findEndpoint(connection.getMethod(), path);</span>
+<span class="lineNum">     117 </span><span class="lineCov">        195 :     if (result.found)</span>
+<span class="lineNum">     118 </span>            :     {
+<span class="lineNum">     119 </span><span class="lineCov">        156 :         const auto&amp; endpoint = result.endpoint;</span>
+<span class="lineNum">     120 </span><span class="lineCov">        156 :         const auto pathStripped = _removeEndpointFromPath(endpoint, path);</span>
+<span class="lineNum">     121 </span><span class="lineCov">        156 :         if (pathStripped.empty() || *endpoint.rbegin() == '/')</span>
+<span class="lineNum">     122 </span>            :         {
+<span class="lineNum">     123 </span><span class="lineCov">        156 :             request.path = pathStripped;</span>
+<span class="lineNum">     124 </span><span class="lineCov">        156 :             return _callHandler(connection, endpoint);</span>
+<span class="lineNum">     125 </span>            :         }
+<span class="lineNum">     126 </span>            :     }
+<span class="lineNum">     127 </span>            : 
+<span class="lineNum">     128 </span>            :     // return informative error 405 &quot;Method Not Allowed&quot; if possible
+<span class="lineNum">     129 </span><span class="lineCov">         78 :     const auto allowedMethods = _registry.getAllowedMethods(path);</span>
+<span class="lineNum">     130 </span><span class="lineCov">         39 :     if (!allowedMethods.empty())</span>
+<span class="lineNum">     131 </span>            :     {
+<span class="lineNum">     132 </span><span class="lineCov">         18 :         Response::Headers headers{{Header::ALLOW, allowedMethods}};</span>
+<span class="lineNum">     133 </span><span class="lineCov">         18 :         return make_ready_response(Code::NOT_SUPPORTED, std::string(),</span>
+<span class="lineNum">     134 </span><span class="lineCov">         18 :                                    std::move(headers));</span>
+<span class="lineNum">     135 </span>            :     }
+<span class="lineNum">     136 </span>            : 
+<span class="lineNum">     137 </span><span class="lineCov">         30 :     return make_ready_response(Code::NOT_FOUND);</span>
+<a name="138"><span class="lineNum">     138 </span>            : }</a>
+<span class="lineNum">     139 </span>            : 
+<span class="lineNum">     140 </span><span class="lineCov">        156 : std::future&lt;Response&gt; ConnectionHandler::_callHandler(</span>
+<span class="lineNum">     141 </span>            :     const Connection&amp; connection, const std::string&amp; endpoint) const
+<span class="lineNum">     142 </span>            : {
+<span class="lineNum">     143 </span><span class="lineCov">        312 :     auto func = _registry.getFunction(connection.getMethod(), endpoint);</span>
+<span class="lineNum">     144 </span><span class="lineCov">        312 :     return func(connection.getRequest());</span>
+<a name="145"><span class="lineNum">     145 </span>            : }</a>
+<span class="lineNum">     146 </span>            : 
+<span class="lineNum">     147 </span><span class="lineNoCov">          0 : int ConnectionHandler::_replyToCorsPreflightRequest(</span>
+<span class="lineNum">     148 </span>            :     Connection&amp; connection) const
+<span class="lineNum">     149 </span>            : {
+<span class="lineNum">     150 </span>            :     // In a typical situation, user agents discover via a preflight request
+<span class="lineNum">     151 </span>            :     // whether a cross-origin resource is prepared to accept requests.
+<span class="lineNum">     152 </span>            :     // The current implementation accepts all sources for all requests.
+<span class="lineNum">     153 </span>            :     // More information can be found here: https://www.w3.org/TR/cors
+<span class="lineNum">     154 </span>            : 
+<span class="lineNum">     155 </span><span class="lineNoCov">          0 :     const auto path = connection.getPathWithoutLeadingSlash();</span>
+<span class="lineNum">     156 </span><span class="lineNoCov">          0 :     const auto corsHeaders = _makeCorsPreflighResponseHeaders(path);</span>
+<span class="lineNum">     157 </span><span class="lineNoCov">          0 :     return connection.write(Response{Code::OK}, corsHeaders);</span>
+<a name="158"><span class="lineNum">     158 </span>            : }</a>
+<span class="lineNum">     159 </span>            : 
+<span class="lineNum">     160 </span><span class="lineNoCov">          0 : CorsResponseHeaders ConnectionHandler::_makeCorsPreflighResponseHeaders(</span>
+<span class="lineNum">     161 </span>            :     const std::string&amp; path) const
+<span class="lineNum">     162 </span>            : {
+<span class="lineNum">     163 </span><span class="lineNoCov">          0 :     const auto allowedMethods = _registry.getAllowedMethods(path);</span>
+<span class="lineNum">     164 </span>            :     return {{CorsResponseHeader::access_control_allow_headers, &quot;Content-Type&quot;},
+<span class="lineNum">     165 </span>            :             {CorsResponseHeader::access_control_allow_methods, allowedMethods},
+<span class="lineNum">     166 </span><span class="lineNoCov">          0 :             {CorsResponseHeader::access_control_allow_origin, &quot;*&quot;}};</span>
+<a name="167"><span class="lineNum">     167 </span>            : }</a>
+<span class="lineNum">     168 </span>            : }
+<span class="lineNum">     169 </span><span class="lineCov">          6 : }</span>
+</pre>
+      </td>
+    </tr>
+  </table>
+  <br>
+
+  <table width="100%" border=0 cellspacing=0 cellpadding=0>
+    <tr><td class="ruler"><img src="../../glass.png" width=3 height=3 alt=""></td></tr>
+    <tr><td class="versionInfo">Generated by: <a href="http://ltp.sourceforge.net/coverage/lcov.php" target="_parent">LCOV version 1.11</a></td></tr>
+  </table>
+  <br>
+
+</body>
+</html>

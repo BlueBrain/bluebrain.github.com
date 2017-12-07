@@ -1,0 +1,7 @@
+set(ROCKETS_MATURITY "EP")
+set(ROCKETS_DESCRIPTION "")
+set(ROCKETS_GIT_ROOT_URL "https://github.com/BlueBrain/Rockets.git")
+set(ROCKETS_PACKAGE_URL "")
+set(ROCKETS_CI_URL "https://travis-ci.org/BlueBrain/Rockets")
+set(ROCKETS_CI_PNG "https://travis-ci.org/BlueBrain/Rockets.png")
+set(ROCKETS_ISSUES_URL "https://github.com/BlueBrain/Rockets/issues")
