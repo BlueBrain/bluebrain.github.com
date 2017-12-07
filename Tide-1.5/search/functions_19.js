@@ -24,7 +24,7 @@ var searchData=
   ['_7epixelstreamupdater',['~PixelStreamUpdater',['../class_pixel_stream_updater.html#abec2decfa2660dc4c37523b31dd30892',1,'PixelStreamUpdater']]],
   ['_7eqmlwindowrenderer',['~QmlWindowRenderer',['../class_qml_window_renderer.html#a64b49a4fef3f1bd26e2f2b1a6fa4db3c',1,'QmlWindowRenderer']]],
   ['_7erestinterface',['~RestInterface',['../class_rest_interface.html#aeafc0fc94ce9d822611933385bfa9325',1,'RestInterface']]],
-  ['_7erestserver',['~RestServer',['../class_rest_server.html#a77cdfc5fd29b0c314ff39f7e0cd7780e',1,'RestServer']]],
+  ['_7erestserver',['~RestServer',['../class_rest_server.html#aa7e86bbb70bbc24c9720fe13bc24fc74',1,'RestServer']]],
   ['_7esvg',['~SVG',['../class_s_v_g.html#ad34298f0fb0cc7bf208c5667b26dd21b',1,'SVG']]],
   ['_7esvgbackend',['~SVGBackend',['../class_s_v_g_backend.html#a21adff1c9967b4ccb5fc316ebaefc7bd',1,'SVGBackend']]],
   ['_7ethumbnailgenerator',['~ThumbnailGenerator',['../class_thumbnail_generator.html#aa726f0f40d9c5d1e43026260f89d923a',1,'ThumbnailGenerator']]],

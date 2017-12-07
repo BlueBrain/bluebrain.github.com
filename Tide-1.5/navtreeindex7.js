@@ -1,9 +1,5 @@
 var NAVTREEINDEX7 =
 {
-"defines_linux_8h_source.html":[8,0,33],
-"deflect_types_8h_source.html":[8,0,34],
-"developer_guide.html":[3],
-"files.html":[8,0],
 "functions.html":[7,3,0,0],
 "functions.html":[7,3,0],
 "functions_0x7e.html":[7,3,0,24],
@@ -100,8 +96,8 @@ var NAVTREEINDEX7 =
 "namespacescreens.html":[6,0,4],
 "namespaceserialization.html":[7,0,1],
 "namespaceserialization.html":[6,0,5],
-"namespaceserialization_1_1detail.html":[6,0,5,0],
 "namespaceserialization_1_1detail.html":[7,0,1,0],
+"namespaceserialization_1_1detail.html":[6,0,5,0],
 "namespacetexture_utils.html":[6,0,6],
 "namespacethumbnail.html":[6,0,7],
 "namespaceyuv.html":[6,0,8],

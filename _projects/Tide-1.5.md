@@ -4,7 +4,7 @@ version: "1.5"
 major: 1
 minor: 5
 description: Tiled Interactive DisplayWall Environment
-updated: 15/11/17
+updated: 07/12/17
 homepage: https://github.com/BlueBrain/Tide
 repository: https://github.com/BlueBrain/Tide.git
 issuesurl: https://github.com/BlueBrain/Tide/issues

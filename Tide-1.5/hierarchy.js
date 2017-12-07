@@ -201,6 +201,12 @@ var hierarchy =
       [ "TextureNodeRGBA", "class_texture_node_r_g_b_a.html", null ]
     ] ],
     [ "RestInterface", "class_rest_interface.html", null ],
+    [ "Filter", null, [
+      [ "RestServer", "class_rest_server.html", null ]
+    ] ],
+    [ "Server", null, [
+      [ "RestServer", "class_rest_server.html", null ]
+    ] ],
     [ "SceneController", "class_scene_controller.html", null ],
     [ "ScreenConfiguration", "struct_screen_configuration.html", null ],
     [ "serialization::detail::serialize< N >", "structserialization_1_1detail_1_1serialize.html", null ],
@@ -252,8 +258,5 @@ var hierarchy =
     [ "tide::Version", "classtide_1_1_version.html", null ],
     [ "TiffPyramidReader", "class_tiff_pyramid_reader.html", null ],
     [ "VisibilityHelper", "class_visibility_helper.html", null ],
-    [ "Server", null, [
-      [ "RestServer", "class_rest_server.html", null ]
-    ] ],
     [ "ZoomHelper", "class_zoom_helper.html", null ]
 ];

@@ -1,10 +1,8 @@
 var searchData=
 [
-  ['handleget',['handleGET',['../class_rest_server.html#a6a92683608d70fe908457e4aacf82536',1,'RestServer']]],
-  ['handleput',['handlePUT',['../class_rest_server.html#a9430e2a74feda48e110736304790f0c3',1,'RestServer']]],
   ['handlestreamend',['handleStreamEnd',['../class_pixel_stream_window_manager.html#a46b8f7dcd44849d8bd12102735f0fa5e',1,'PixelStreamWindowManager']]],
   ['handlestreamstart',['handleStreamStart',['../class_pixel_stream_window_manager.html#afb4053fccb1b44819a93955de4eedd77',1,'PixelStreamWindowManager']]],
-  ['handleupload',['handleUpload',['../class_file_receiver.html#a831e4b5b74ff794027cdc07a0db9a28e',1,'FileReceiver']]],
+  ['handleupload',['handleUpload',['../class_file_receiver.html#a9a259a04ed09125eb77253a5b138a020',1,'FileReceiver']]],
   ['haseventreceivers',['hasEventReceivers',['../class_pixel_stream_content.html#a0e40610bb7d62536fcce4a31f268098e',1,'PixelStreamContent']]],
   ['hasfixedaspectratio',['hasFixedAspectRatio',['../class_content.html#adceac372a702843a1e0bd207f670680a',1,'Content']]],
   ['hasfocusedwindows',['hasFocusedWindows',['../class_display_group.html#a24a30aa05f0ca717c9b559aed1b6c50d',1,'DisplayGroup']]],
@@ -18,5 +16,5 @@ var searchData=
   ['height',['height',['../class_content.html#a0ac15e1ba630bc6c6f98d47529f4c48c',1,'Content']]],
   ['hidepanels',['hidePanels',['../class_display_group_controller.html#a30c12fa5deb6859f9304b47ab7bc7722',1,'DisplayGroupController']]],
   ['hidewindow',['hideWindow',['../class_pixel_stream_window_manager.html#a74bb0eb12ff7357fef0fbbd1d9c92aff',1,'PixelStreamWindowManager']]],
-  ['htmlcontent',['HtmlContent',['../class_html_content.html#a760cf042cab00b636e1331513b2abd54',1,'HtmlContent']]]
+  ['htmlcontent',['HtmlContent',['../class_html_content.html#a93b3d15ad820691f576ec7cccdef6dc3',1,'HtmlContent']]]
 ];
