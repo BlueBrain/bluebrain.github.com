@@ -4,6 +4,7 @@ var searchData=
   ['cadiffusionsimulationhandler',['CADiffusionSimulationHandler',['../classbrayns_1_1_c_a_diffusion_simulation_handler.html#a53ecc8e7dafa8e277c33991808060f24',1,'brayns::CADiffusionSimulationHandler']]],
   ['camera',['Camera',['../classbrayns_1_1_camera.html',1,'brayns']]],
   ['camera',['Camera',['../classbrayns_1_1_camera.html#a4196e54bb40f2270f6f3c82433296745',1,'brayns::Camera']]],
+  ['castsimulationdata',['castSimulationData',['../structbrayns_1_1obj_1_1_extended_o_b_j_material.html#a131057af4b933c41009bd65dc91268a3',1,'brayns::obj::ExtendedOBJMaterial']]],
   ['changelog',['Changelog',['../Changelog.html',1,'']]],
   ['check',['check',['../classbrayns_1_1_version.html#a4b4666df38d8c345e91425821c18c8e0',1,'brayns::Version']]],
   ['clear',['clear',['../classbrayns_1_1_extension_plugin_factory.html#a7cc708c0b64298493774d19ca6df8636',1,'brayns::ExtensionPluginFactory::clear()'],['../classbrayns_1_1_livre_frame_buffer.html#a8b2c9f64282b151a6c031df7e25cf7b1',1,'brayns::LivreFrameBuffer::clear()'],['../classbrayns_1_1_mesh_loader.html#af316536f70b75f105abdeb11664dcdc6',1,'brayns::MeshLoader::clear()'],['../classbrayns_1_1_transfer_function.html#a4dd7b9c4ac8e4942617a50f412bc6d44',1,'brayns::TransferFunction::clear()']]],

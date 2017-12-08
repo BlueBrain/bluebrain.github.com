@@ -1,6 +1,7 @@
 var classbrayns_1_1_material =
 [
     [ "Material", "classbrayns_1_1_material.html#ade43c500674c6ad2e0f269cd7a5f995f", null ],
+    [ "getCastSimulationData", "classbrayns_1_1_material.html#ad6759031f5c25cf21af3dc5e7e37ec3c", null ],
     [ "getColor", "classbrayns_1_1_material.html#a25380b250c91542c4aa1f710085dbef3", null ],
     [ "getEmission", "classbrayns_1_1_material.html#ad3131bd1d1ed4db1b32d92e63aa8118e", null ],
     [ "getGlossiness", "classbrayns_1_1_material.html#a5aaa2b2441f65ca939107e8ea99fc7f3", null ],
@@ -12,6 +13,7 @@ var classbrayns_1_1_material =
     [ "getTextures", "classbrayns_1_1_material.html#a687d64f3690c130b749b7774a8e02883", null ],
     [ "lock", "classbrayns_1_1_material.html#a551d214fda079f3f5e842aa6fc592373", null ],
     [ "locked", "classbrayns_1_1_material.html#a7ef865f2f2424a273242f504add78f72", null ],
+    [ "setCastSimulationData", "classbrayns_1_1_material.html#a6cbbeb19403be487833ed3cbba9bac14", null ],
     [ "setColor", "classbrayns_1_1_material.html#a44b4a007013197940eef5f86960b4d4c", null ],
     [ "setEmission", "classbrayns_1_1_material.html#a069b79cfb104139641fa1a341ccf7fb8", null ],
     [ "setGlossiness", "classbrayns_1_1_material.html#a886dd1647b1b394e99aba757a608d403", null ],
