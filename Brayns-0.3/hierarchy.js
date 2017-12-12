@@ -73,6 +73,7 @@ var hierarchy =
       [ "brayns::OptiXRenderer", "classbrayns_1_1_opti_x_renderer.html", null ],
       [ "brayns::OSPRayRenderer", "classbrayns_1_1_o_s_p_ray_renderer.html", null ]
     ] ],
+    [ "brayns::Renderer::PickResult", "structbrayns_1_1_renderer_1_1_pick_result.html", null ],
     [ "brayns::RenderInput", "structbrayns_1_1_render_input.html", null ],
     [ "brayns::RenderOutput", "structbrayns_1_1_render_output.html", null ],
     [ "brayns::Scene", "classbrayns_1_1_scene.html", [

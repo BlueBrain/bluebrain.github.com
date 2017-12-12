@@ -1,5 +1,10 @@
 var NAVTREEINDEX5 =
 {
+"structbrayns_1_1obj_1_1_extended_o_b_j_material.html#abb15b4991885df4f2f6c49b7a9d030de":[5,0,0,0,0,1],
+"structbrayns_1_1obj_1_1_extended_o_b_j_material.html#ac377b2acb4991b9b94804a8a6715e17b":[5,0,0,0,0,18],
+"structbrayns_1_1obj_1_1_extended_o_b_j_material.html#ac697c0bb42757cea537310ba7cc9d6c7":[5,0,0,0,0,0],
+"structbrayns_1_1obj_1_1_extended_o_b_j_material.html#acfe7c100ec30f684dcd7599714a553cc":[5,0,0,0,0,19],
+"structbrayns_1_1obj_1_1_extended_o_b_j_material.html#ad06827305cfc945abda03b624a6554ce":[5,0,0,0,0,2],
 "structbrayns_1_1obj_1_1_extended_o_b_j_material.html#ad3fb0d75f30229abea5c442c7659e9b6":[5,0,0,0,0,13],
 "structbrayns_1_1obj_1_1_extended_o_b_j_material.html#ad57ac902ccdf0cf52d1d762ff8a00b8b":[5,0,0,0,0,27],
 "structbrayns_1_1obj_1_1_extended_o_b_j_material.html#aece2f6aeb28f9528283b2a8502aaca59":[5,0,0,0,0,6],

@@ -5,6 +5,7 @@ var searchData=
   ['particlerenderer',['ParticleRenderer',['../classbrayns_1_1_particle_renderer.html',1,'brayns']]],
   ['perraydata_5fradiance',['PerRayData_radiance',['../struct_per_ray_data__radiance.html',1,'']]],
   ['perraydata_5fshadow',['PerRayData_shadow',['../struct_per_ray_data__shadow.html',1,'']]],
+  ['pickresult',['PickResult',['../structbrayns_1_1_renderer_1_1_pick_result.html',1,'brayns::Renderer']]],
   ['pointlight',['PointLight',['../classbrayns_1_1_point_light.html',1,'brayns']]],
   ['pointlight',['PointLight',['../classbrayns_1_1_point_light.html#ac360885334a6778949e00d7070c8a9ae',1,'brayns::PointLight']]],
   ['postrender',['postRender',['../classbrayns_1_1_engine.html#a75dcc0f335ea1f2b268d0085ad2f4ce1',1,'brayns::Engine::postRender()'],['../classbrayns_1_1_livre_engine.html#a255720f6917348f2533caf0a0916f568',1,'brayns::LivreEngine::postRender()'],['../classbrayns_1_1_opti_x_engine.html#a8991f0144ee8be096955da98038c8ed9',1,'brayns::OptiXEngine::postRender()'],['../classbrayns_1_1_o_s_p_ray_engine.html#a99d0f628e96540714f0d1c7e5dc522fb',1,'brayns::OSPRayEngine::postRender()']]],
