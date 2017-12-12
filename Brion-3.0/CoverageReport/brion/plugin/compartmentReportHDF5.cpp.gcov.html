@@ -37,7 +37,7 @@
           </tr>
           <tr>
             <td class="headerItem">Date:</td>
-            <td class="headerValue">2017-12-07 06:20:27</td>
+            <td class="headerValue">2017-12-12 06:17:55</td>
             <td></td>
             <td class="headerItem">Functions:</td>
             <td class="headerCovTableEntry">35</td>
@@ -603,75 +603,76 @@
 <span class="lineNum">     541 </span>            : {
 <span class="lineNum">     542 </span><span class="lineCov">       6760 :     auto callback = [this](const char* name) {</span>
 <span class="lineNum">     543 </span><span class="lineCov">       3380 :         if (name[1] != '\0')</span>
-<a name="544"><span class="lineNum">     544 </span><span class="lineCov">       6760 :             _gids.insert(std::stoi(&amp;name[1]));</span></a>
-<span class="lineNum">     545 </span><span class="lineCov">       3412 :     };</span>
-<span class="lineNum">     546 </span><span class="lineCov">       6792 :     auto wrapper = [](int, const char* name, const H5L_info_t*, void* data) {</span>
-<span class="lineNum">     547 </span><span class="lineCov">       3380 :         (*(static_cast&lt;decltype(callback)*&gt;(data)))(name);</span>
-<span class="lineNum">     548 </span><span class="lineCov">       3380 :         return 0;</span>
-<span class="lineNum">     549 </span><span class="lineCov">       3412 :     };</span>
-<span class="lineNum">     550 </span>            :     // Asking iterate in alpha numerical order implies that if there're no
-<span class="lineNum">     551 </span>            :     // index, it will have to be created. I also tried H5_INDEX_CRT_ORDER, but
-<span class="lineNum">     552 </span>            :     // that causes an error.
-<span class="lineNum">     553 </span>            :     // In any case the performance seems faster that using H5Gget_objname_by_idx
-<span class="lineNum">     554 </span>            :     // which most probably has quadratic complexity.
-<span class="lineNum">     555 </span>            :     // Why there's not way to simply iterate the links in the order they
-<span class="lineNum">     556 </span>            :     // appear in the file?
-<span class="lineNum">     557 </span><span class="lineCov">         32 :     H5Literate(_file-&gt;getId(), H5_INDEX_NAME, H5_ITER_NATIVE, nullptr, wrapper,</span>
-<span class="lineNum">     558 </span><span class="lineCov">         32 :                &amp;callback);</span>
-<a name="559"><span class="lineNum">     559 </span><span class="lineCov">         32 : }</span></a>
-<span class="lineNum">     560 </span>            : 
-<span class="lineNum">     561 </span><span class="lineCov">         12 : void CompartmentReportHDF5::_createMetaData()</span>
-<span class="lineNum">     562 </span>            : {
-<span class="lineNum">     563 </span><span class="lineCov">         24 :     auto root = _file-&gt;getGroup(&quot;/&quot;);</span>
-<span class="lineNum">     564 </span>            : 
-<span class="lineNum">     565 </span><span class="lineCov">         12 :     detail::addStringAttribute(root, &quot;creator&quot;, &quot;Brion&quot;);</span>
-<span class="lineNum">     566 </span><span class="lineCov">         12 :     detail::addStringAttribute(root, &quot;software_version&quot;, BRION_REV_STRING);</span>
-<span class="lineNum">     567 </span>            : 
-<span class="lineNum">     568 </span><span class="lineCov">         12 :     const time_t now = ::time(0);</span>
-<span class="lineNum">     569 </span>            : #ifdef _WIN32
-<span class="lineNum">     570 </span>            :     char* gmtString = ::ctime(&amp;now);
-<span class="lineNum">     571 </span>            : #else
-<span class="lineNum">     572 </span>            :     char gmtString[32];
-<span class="lineNum">     573 </span><span class="lineCov">         12 :     ::ctime_r(&amp;now, gmtString);</span>
-<span class="lineNum">     574 </span>            : #endif
-<span class="lineNum">     575 </span><span class="lineCov">         24 :     std::string creationTimeName = gmtString;</span>
-<span class="lineNum">     576 </span>            :     // ctime_r ends with \n
-<span class="lineNum">     577 </span><span class="lineCov">         12 :     creationTimeName = creationTimeName.substr(0, creationTimeName.size() - 1);</span>
-<span class="lineNum">     578 </span><span class="lineCov">         12 :     detail::addStringAttribute(root, &quot;creation_time&quot;, creationTimeName);</span>
-<a name="579"><span class="lineNum">     579 </span><span class="lineCov">         12 : }</span></a>
-<span class="lineNum">     580 </span>            : 
-<span class="lineNum">     581 </span><span class="lineCov">        354 : void CompartmentReportHDF5::_createMappingAttributes(HighFive::DataSet&amp; dataset)</span>
-<span class="lineNum">     582 </span>            : {
-<span class="lineNum">     583 </span><span class="lineCov">        708 :     const std::string type = &quot;compartment&quot;;</span>
-<span class="lineNum">     584 </span><span class="lineCov">        354 :     detail::addStringAttribute(dataset, mappingAttributes[0], type);</span>
-<span class="lineNum">     585 </span><span class="lineCov">       2124 :     for (int i = 1; i &lt; 6; ++i)</span>
-<span class="lineNum">     586 </span>            :         dataset.createAttribute&lt;int&gt;(mappingAttributes[i],
-<span class="lineNum">     587 </span><span class="lineCov">       3540 :                                      HighFive::DataSpace(</span>
-<span class="lineNum">     588 </span><span class="lineCov">       5310 :                                          std::vector&lt;size_t&gt;({1})));</span>
-<a name="589"><span class="lineNum">     589 </span><span class="lineCov">        354 : }</span></a>
-<span class="lineNum">     590 </span>            : 
-<span class="lineNum">     591 </span><span class="lineCov">        354 : void CompartmentReportHDF5::_createDataAttributes(HighFive::DataSet&amp; dataset)</span>
-<span class="lineNum">     592 </span>            : {
-<span class="lineNum">     593 </span><span class="lineCov">        708 :     HighFive::DataSpace scalar(std::vector&lt;size_t&gt;({1}));</span>
-<span class="lineNum">     594 </span>            : 
-<span class="lineNum">     595 </span>            :     auto attribute =
-<span class="lineNum">     596 </span><span class="lineCov">        708 :         dataset.createAttribute&lt;int32_t&gt;(dataAttributes[0], scalar);</span>
-<span class="lineNum">     597 </span><span class="lineCov">        354 :     attribute.write(0); // rank</span>
-<span class="lineNum">     598 </span>            : 
-<span class="lineNum">     599 </span><span class="lineCov">        354 :     attribute = dataset.createAttribute&lt;double&gt;(dataAttributes[1], scalar);</span>
-<span class="lineNum">     600 </span><span class="lineCov">        354 :     attribute.write(getStartTime());</span>
-<span class="lineNum">     601 </span>            : 
-<span class="lineNum">     602 </span><span class="lineCov">        354 :     attribute = dataset.createAttribute&lt;double&gt;(dataAttributes[2], scalar);</span>
-<span class="lineNum">     603 </span><span class="lineCov">        354 :     attribute.write(getEndTime());</span>
-<span class="lineNum">     604 </span>            : 
-<span class="lineNum">     605 </span><span class="lineCov">        354 :     attribute = dataset.createAttribute&lt;double&gt;(dataAttributes[3], scalar);</span>
-<span class="lineNum">     606 </span><span class="lineCov">        354 :     attribute.write(getTimestep());</span>
-<span class="lineNum">     607 </span>            : 
-<span class="lineNum">     608 </span><span class="lineCov">        354 :     detail::addStringAttribute(dataset, dataAttributes[4], _dunit);</span>
-<span class="lineNum">     609 </span><span class="lineCov">        354 :     detail::addStringAttribute(dataset, dataAttributes[5], _tunit);</span>
-<a name="610"><span class="lineNum">     610 </span><span class="lineCov">        354 : }</span></a>
-<span class="lineNum">     611 </span>            : }
-<span class="lineNum">     612 </span><span class="lineCov">         84 : }</span>
+<span class="lineNum">     544 </span><span class="lineCov">       6760 :             _gids.insert(std::stoi(&amp;name[1]));</span>
+<a name="545"><span class="lineNum">     545 </span><span class="lineCov">       3412 :     };</span></a>
+<span class="lineNum">     546 </span>            :     auto wrapper = [](hid_t, const char* name, const H5L_info_t*,
+<span class="lineNum">     547 </span><span class="lineCov">       6792 :                       void* data) -&gt; herr_t {</span>
+<span class="lineNum">     548 </span><span class="lineCov">       3380 :         (*(static_cast&lt;decltype(callback)*&gt;(data)))(name);</span>
+<span class="lineNum">     549 </span><span class="lineCov">       3380 :         return 0;</span>
+<span class="lineNum">     550 </span><span class="lineCov">       3412 :     };</span>
+<span class="lineNum">     551 </span>            :     // Asking iterate in alpha numerical order implies that if there're no
+<span class="lineNum">     552 </span>            :     // index, it will have to be created. I also tried H5_INDEX_CRT_ORDER, but
+<span class="lineNum">     553 </span>            :     // that causes an error.
+<span class="lineNum">     554 </span>            :     // In any case the performance seems faster that using H5Gget_objname_by_idx
+<span class="lineNum">     555 </span>            :     // which most probably has quadratic complexity.
+<span class="lineNum">     556 </span>            :     // Why there's not way to simply iterate the links in the order they
+<span class="lineNum">     557 </span>            :     // appear in the file?
+<span class="lineNum">     558 </span><span class="lineCov">         32 :     H5Literate(_file-&gt;getId(), H5_INDEX_NAME, H5_ITER_NATIVE, nullptr, wrapper,</span>
+<span class="lineNum">     559 </span><span class="lineCov">         32 :                &amp;callback);</span>
+<a name="560"><span class="lineNum">     560 </span><span class="lineCov">         32 : }</span></a>
+<span class="lineNum">     561 </span>            : 
+<span class="lineNum">     562 </span><span class="lineCov">         12 : void CompartmentReportHDF5::_createMetaData()</span>
+<span class="lineNum">     563 </span>            : {
+<span class="lineNum">     564 </span><span class="lineCov">         24 :     auto root = _file-&gt;getGroup(&quot;/&quot;);</span>
+<span class="lineNum">     565 </span>            : 
+<span class="lineNum">     566 </span><span class="lineCov">         12 :     detail::addStringAttribute(root, &quot;creator&quot;, &quot;Brion&quot;);</span>
+<span class="lineNum">     567 </span><span class="lineCov">         12 :     detail::addStringAttribute(root, &quot;software_version&quot;, BRION_REV_STRING);</span>
+<span class="lineNum">     568 </span>            : 
+<span class="lineNum">     569 </span><span class="lineCov">         12 :     const time_t now = ::time(0);</span>
+<span class="lineNum">     570 </span>            : #ifdef _WIN32
+<span class="lineNum">     571 </span>            :     char* gmtString = ::ctime(&amp;now);
+<span class="lineNum">     572 </span>            : #else
+<span class="lineNum">     573 </span>            :     char gmtString[32];
+<span class="lineNum">     574 </span><span class="lineCov">         12 :     ::ctime_r(&amp;now, gmtString);</span>
+<span class="lineNum">     575 </span>            : #endif
+<span class="lineNum">     576 </span><span class="lineCov">         24 :     std::string creationTimeName = gmtString;</span>
+<span class="lineNum">     577 </span>            :     // ctime_r ends with \n
+<span class="lineNum">     578 </span><span class="lineCov">         12 :     creationTimeName = creationTimeName.substr(0, creationTimeName.size() - 1);</span>
+<span class="lineNum">     579 </span><span class="lineCov">         12 :     detail::addStringAttribute(root, &quot;creation_time&quot;, creationTimeName);</span>
+<a name="580"><span class="lineNum">     580 </span><span class="lineCov">         12 : }</span></a>
+<span class="lineNum">     581 </span>            : 
+<span class="lineNum">     582 </span><span class="lineCov">        354 : void CompartmentReportHDF5::_createMappingAttributes(HighFive::DataSet&amp; dataset)</span>
+<span class="lineNum">     583 </span>            : {
+<span class="lineNum">     584 </span><span class="lineCov">        708 :     const std::string type = &quot;compartment&quot;;</span>
+<span class="lineNum">     585 </span><span class="lineCov">        354 :     detail::addStringAttribute(dataset, mappingAttributes[0], type);</span>
+<span class="lineNum">     586 </span><span class="lineCov">       2124 :     for (int i = 1; i &lt; 6; ++i)</span>
+<span class="lineNum">     587 </span>            :         dataset.createAttribute&lt;int&gt;(mappingAttributes[i],
+<span class="lineNum">     588 </span><span class="lineCov">       3540 :                                      HighFive::DataSpace(</span>
+<span class="lineNum">     589 </span><span class="lineCov">       5310 :                                          std::vector&lt;size_t&gt;({1})));</span>
+<a name="590"><span class="lineNum">     590 </span><span class="lineCov">        354 : }</span></a>
+<span class="lineNum">     591 </span>            : 
+<span class="lineNum">     592 </span><span class="lineCov">        354 : void CompartmentReportHDF5::_createDataAttributes(HighFive::DataSet&amp; dataset)</span>
+<span class="lineNum">     593 </span>            : {
+<span class="lineNum">     594 </span><span class="lineCov">        708 :     HighFive::DataSpace scalar(std::vector&lt;size_t&gt;({1}));</span>
+<span class="lineNum">     595 </span>            : 
+<span class="lineNum">     596 </span>            :     auto attribute =
+<span class="lineNum">     597 </span><span class="lineCov">        708 :         dataset.createAttribute&lt;int32_t&gt;(dataAttributes[0], scalar);</span>
+<span class="lineNum">     598 </span><span class="lineCov">        354 :     attribute.write(0); // rank</span>
+<span class="lineNum">     599 </span>            : 
+<span class="lineNum">     600 </span><span class="lineCov">        354 :     attribute = dataset.createAttribute&lt;double&gt;(dataAttributes[1], scalar);</span>
+<span class="lineNum">     601 </span><span class="lineCov">        354 :     attribute.write(getStartTime());</span>
+<span class="lineNum">     602 </span>            : 
+<span class="lineNum">     603 </span><span class="lineCov">        354 :     attribute = dataset.createAttribute&lt;double&gt;(dataAttributes[2], scalar);</span>
+<span class="lineNum">     604 </span><span class="lineCov">        354 :     attribute.write(getEndTime());</span>
+<span class="lineNum">     605 </span>            : 
+<span class="lineNum">     606 </span><span class="lineCov">        354 :     attribute = dataset.createAttribute&lt;double&gt;(dataAttributes[3], scalar);</span>
+<span class="lineNum">     607 </span><span class="lineCov">        354 :     attribute.write(getTimestep());</span>
+<span class="lineNum">     608 </span>            : 
+<span class="lineNum">     609 </span><span class="lineCov">        354 :     detail::addStringAttribute(dataset, dataAttributes[4], _dunit);</span>
+<span class="lineNum">     610 </span><span class="lineCov">        354 :     detail::addStringAttribute(dataset, dataAttributes[5], _tunit);</span>
+<a name="611"><span class="lineNum">     611 </span><span class="lineCov">        354 : }</span></a>
+<span class="lineNum">     612 </span>            : }
+<span class="lineNum">     613 </span><span class="lineCov">         84 : }</span>
 </pre>
       </td>
     </tr>
