@@ -9,7 +9,7 @@ var searchData=
   ['receive',['receive',['../class_m_p_i_channel.html#acf6c03c4fb40017c5a6c5a7b84967116',1,'MPIChannel']]],
   ['receivebroadcast',['receiveBroadcast',['../class_m_p_i_channel.html#acfbacf7a49cc1ce09bac7d17f9de5bd7',1,'MPIChannel']]],
   ['receivebuffer',['ReceiveBuffer',['../class_receive_buffer.html',1,'ReceiveBuffer'],['../class_receive_buffer.html#a2cbab0d9dd92ce024d19d8fdbad032d0',1,'ReceiveBuffer::ReceiveBuffer()']]],
-  ['received',['received',['../class_wall_from_master_channel.html#ab57f20a60ab6c83820e4344915a4f109',1,'WallFromMasterChannel::received()'],['../class_wall_from_master_channel.html#afb6a2af77cb53d4daff226e765de3338',1,'WallFromMasterChannel::received()'],['../class_wall_from_master_channel.html#aa921eea8af21f47289e24e7aa4a9a3b1',1,'WallFromMasterChannel::received()'],['../class_wall_from_master_channel.html#a0b75e7467e0bbe15efcb2c93341c3b0c',1,'WallFromMasterChannel::received()'],['../class_wall_from_master_channel.html#a32ac04eade034a8cd78c198a1b6decfd',1,'WallFromMasterChannel::received()'],['../class_wall_from_master_channel.html#a7e9d59550c96986e0f417d86ee08f053',1,'WallFromMasterChannel::received()']]],
+  ['received',['received',['../class_wall_from_master_channel.html#a8e8409718426eea6acce999bed7d094e',1,'WallFromMasterChannel::received()'],['../class_wall_from_master_channel.html#ab57f20a60ab6c83820e4344915a4f109',1,'WallFromMasterChannel::received()'],['../class_wall_from_master_channel.html#afb6a2af77cb53d4daff226e765de3338',1,'WallFromMasterChannel::received()'],['../class_wall_from_master_channel.html#aa921eea8af21f47289e24e7aa4a9a3b1',1,'WallFromMasterChannel::received()'],['../class_wall_from_master_channel.html#a0b75e7467e0bbe15efcb2c93341c3b0c',1,'WallFromMasterChannel::received()'],['../class_wall_from_master_channel.html#a32ac04eade034a8cd78c198a1b6decfd',1,'WallFromMasterChannel::received()'],['../class_wall_from_master_channel.html#a7e9d59550c96986e0f417d86ee08f053',1,'WallFromMasterChannel::received()']]],
   ['receivedquit',['receivedQuit',['../class_wall_from_master_channel.html#af64048387bb958cc6678929489337ebc',1,'WallFromMasterChannel']]],
   ['receivedrequestframe',['receivedRequestFrame',['../class_master_from_wall_channel.html#ab34184bf2068baeed81bc652149c994e',1,'MasterFromWallChannel']]],
   ['receivedscreenshot',['receivedScreenshot',['../class_master_from_wall_channel.html#ae5e3fab138528a7c89774d0be23e947d',1,'MasterFromWallChannel']]],
@@ -46,9 +46,8 @@ var searchData=
   ['resizerelative',['resizeRelative',['../class_content_window_controller.html#a3a20b4c22eb64fa0c094a44df766c138',1,'ContentWindowController']]],
   ['response',['Response',['../struct_json_rpc_1_1_response.html',1,'JsonRpc']]],
   ['restart',['restart',['../class_inactivity_timer.html#a01e02d85e1598dd9cdb0fb39fa394c12',1,'InactivityTimer']]],
-  ['restinterface',['RestInterface',['../class_rest_interface.html',1,'RestInterface'],['../class_rest_interface.html#a3a44be0c51d216c9e7bdda0b073f26f2',1,'RestInterface::RestInterface()']]],
+  ['restinterface',['RestInterface',['../class_rest_interface.html',1,'RestInterface'],['../class_rest_interface.html#a1c2f694833aa07768e5cdd42a1100489',1,'RestInterface::RestInterface()']]],
   ['restoremodeandzoom',['restoreModeAndZoom',['../class_content_window.html#a3a9c63c9ee25d661dba2b64f4fa22b93',1,'ContentWindow']]],
   ['restserver',['RestServer',['../class_rest_server.html',1,'RestServer'],['../class_rest_server.html#a688fd7a30878aea6036b459cfebf657c',1,'RestServer::RestServer()'],['../class_rest_server.html#a4b44a7efc2c7580ae5ff8e0136b4fa93',1,'RestServer::RestServer(uint16_t port)']]],
-  ['rootobject',['rootObject',['../class_wall_window.html#ab8e15dff962c214995e15e9952b47d3f',1,'WallWindow']]],
   ['run',['run',['../class_process_forker.html#ad1528d488d2aa41dec482bbadb431cd3',1,'ProcessForker']]]
 ];

@@ -31,6 +31,7 @@ var class_content_window =
       [ "PANEL", "class_content_window.html#a748c74477b6483ca7257bb2dc96e09a7ac059b3b2257dc44e869a893f62188200", null ]
     ] ],
     [ "ContentWindow", "class_content_window.html#a318b342ac7fd8854094dfa617da0a3e6", null ],
+    [ "ContentWindow", "class_content_window.html#aafcf5ca3625e447d16f7c99a2e4e90ed", null ],
     [ "~ContentWindow", "class_content_window.html#a048c11ac7d49072c2655e7adb0737844", null ],
     [ "activeHandleChanged", "class_content_window.html#a5a80e61e24172383f59ba121b3d6432f", null ],
     [ "backupModeAndZoom", "class_content_window.html#af0212e3772f2a91e4d89aa3dc213642e", null ],
@@ -39,7 +40,8 @@ var class_content_window =
     [ "focusedCoordinatesChanged", "class_content_window.html#af35627dc8f10f4aed6c067fc2d750590", null ],
     [ "fullscreenCoordinatesChanged", "class_content_window.html#a92ef2268da56e0907d5f98a361f62199", null ],
     [ "getActiveHandle", "class_content_window.html#afb02bcc6e440a57ca958e5bbee867aa6", null ],
-    [ "getContent", "class_content_window.html#a8b06006200dda25a6afbd03025e14d37", null ],
+    [ "getContent", "class_content_window.html#a9074229a622595be47855a23cd8222f1", null ],
+    [ "getContent", "class_content_window.html#a9dc3c15b56fb7550cabab4389a197a9e", null ],
     [ "getContentPtr", "class_content_window.html#a73da45d8ecfcc73d79a00cdc1c30ff4c", null ],
     [ "getDisplayCoordinates", "class_content_window.html#a9fca8d920f103d51dff590cd6349c60c", null ],
     [ "getFocusedCoordinates", "class_content_window.html#a1ee56f12f78de8b6f5941f6a008420f2", null ],

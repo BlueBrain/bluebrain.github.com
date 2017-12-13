@@ -1,5 +1,6 @@
 var hierarchy =
 [
+    [ "BackgroundRenderer", "class_background_renderer.html", null ],
     [ "noncopyable", null, [
       [ "MPIContext", "class_m_p_i_context.html", null ],
       [ "ReceiveBuffer", "class_receive_buffer.html", null ]
@@ -29,6 +30,7 @@ var hierarchy =
       [ "MovieUpdater", "class_movie_updater.html", null ],
       [ "PixelStreamUpdater", "class_pixel_stream_updater.html", null ]
     ] ],
+    [ "DisplayGroupRenderer", "class_display_group_renderer.html", null ],
     [ "ElapsedTimer", "class_elapsed_timer.html", null ],
     [ "FFMPEGFrame", "class_f_f_m_p_e_g_frame.html", null ],
     [ "FFMPEGMovie", "class_f_f_m_p_e_g_movie.html", null ],
@@ -105,6 +107,7 @@ var hierarchy =
     [ "QmlKeyInjector", "class_qml_key_injector.html", null ],
     [ "QObject", null, [
       [ "AppController", "class_app_controller.html", null ],
+      [ "Background", "class_background.html", null ],
       [ "Content", "class_content.html", [
         [ "DynamicTextureContent", "class_dynamic_texture_content.html", null ],
         [ "ImagePyramidContent", "class_image_pyramid_content.html", null ],
@@ -137,7 +140,6 @@ var hierarchy =
       [ "CountdownStatus", "class_countdown_status.html", null ],
       [ "DataProvider", "class_data_provider.html", null ],
       [ "DisplayGroupController", "class_display_group_controller.html", null ],
-      [ "DisplayGroupRenderer", "class_display_group_renderer.html", null ],
       [ "DoubleTapDetector", "class_double_tap_detector.html", null ],
       [ "FileInfoHelper", "class_file_info_helper.html", null ],
       [ "FileReceiver", "class_file_receiver.html", null ],
@@ -169,6 +171,7 @@ var hierarchy =
       [ "TapAndHoldDetector", "class_tap_and_hold_detector.html", null ],
       [ "TapDetector", "class_tap_detector.html", null ],
       [ "WallFromMasterChannel", "class_wall_from_master_channel.html", null ],
+      [ "WallRenderer", "class_wall_renderer.html", null ],
       [ "WallToMasterChannel", "class_wall_to_master_channel.html", null ],
       [ "WallToWallChannel", "class_wall_to_wall_channel.html", null ]
     ] ],
@@ -218,6 +221,7 @@ var hierarchy =
     [ "StatePreview", "class_state_preview.html", null ],
     [ "StateSerializationHelper", "class_state_serialization_helper.html", null ],
     [ "enable_shared_from_this", null, [
+      [ "Background", "class_background.html", null ],
       [ "CanvasNode", "class_canvas_node.html", null ],
       [ "DisplayGroup", "class_display_group.html", null ],
       [ "Markers", "class_markers.html", null ],
@@ -258,5 +262,6 @@ var hierarchy =
     [ "tide::Version", "classtide_1_1_version.html", null ],
     [ "TiffPyramidReader", "class_tiff_pyramid_reader.html", null ],
     [ "VisibilityHelper", "class_visibility_helper.html", null ],
+    [ "WallRenderContext", "struct_wall_render_context.html", null ],
     [ "ZoomHelper", "class_zoom_helper.html", null ]
 ];

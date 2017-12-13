@@ -2,8 +2,8 @@ var class_master_configuration =
 [
     [ "MasterConfiguration", "class_master_configuration.html#a1e9671231ef79842a80c80009584987e", null ],
     [ "getAppLauncherFile", "class_master_configuration.html#a1199c895673d2419cce48a0c4143ee24", null ],
-    [ "getBackgroundColor", "class_master_configuration.html#af2e3ee4518883e324d113434b3e4bcb2", null ],
-    [ "getBackgroundUri", "class_master_configuration.html#a7d2355720bfbd14a13173cc2afcc6b5a", null ],
+    [ "getBackground", "class_master_configuration.html#aec6f2c75570845eb148fb49ad1b0f250", null ],
+    [ "getBackground", "class_master_configuration.html#ae2d0881acd98bdd1db3f3935c62c409a", null ],
     [ "getContentDir", "class_master_configuration.html#accd88a306419367f6714fb5158d06655", null ],
     [ "getDemoServiceImageFolder", "class_master_configuration.html#a464e5fac6d5a0232052d96e00894e073", null ],
     [ "getDemoServiceUrl", "class_master_configuration.html#aed8e72f877a93c14ac153e8dcbd2a376", null ],
@@ -18,7 +18,5 @@ var class_master_configuration =
     [ "getWebServicePort", "class_master_configuration.html#a005a52c78be4d9e3f3483d5224bb688c", null ],
     [ "getWhiteboardSaveFolder", "class_master_configuration.html#a105bca4aa2e25f8b417890cd21fae797", null ],
     [ "save", "class_master_configuration.html#aa54097d7fb4f58aca81e9fe83620858d", null ],
-    [ "save", "class_master_configuration.html#a51fd2b31a51c1b4aa56c0ae1527567be", null ],
-    [ "setBackgroundColor", "class_master_configuration.html#a2b83fb924d0a1259eb7ef7a1a095bd64", null ],
-    [ "setBackgroundUri", "class_master_configuration.html#a10c504ed2c3553c900b7605233c7421d", null ]
+    [ "save", "class_master_configuration.html#a51fd2b31a51c1b4aa56c0ae1527567be", null ]
 ];

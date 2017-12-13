@@ -9,5 +9,6 @@ var class_data_provider =
     [ "requestFrame", "class_data_provider.html#ad877b8b8c6430f423e4b4d1970ca0ffd", null ],
     [ "setNewFrame", "class_data_provider.html#a78d4bb1be6e4cfb61c54e6fd1bf20363", null ],
     [ "synchronizeTilesSwap", "class_data_provider.html#ad297b0d00dcaf94dfb9d03de05139091", null ],
-    [ "updateDataSources", "class_data_provider.html#add75d2d2a156e0f30305fa9d03fc54a9", null ]
+    [ "updateDataSource", "class_data_provider.html#ac7fd9e85d041da263885b293428678e3", null ],
+    [ "updateDataSources", "class_data_provider.html#aa90676e383925064d3456d57154c5aac", null ]
 ];

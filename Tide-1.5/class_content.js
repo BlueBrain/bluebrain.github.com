@@ -10,6 +10,7 @@ var class_content =
     [ "_init", "class_content.html#a7b4a69257f040411ffb935ce19197687", null ],
     [ "canBeZoomed", "class_content.html#af666fa7482f5c6a12c1e5b18f7076f4e", null ],
     [ "captureInteractionChanged", "class_content.html#a7345ff57894c33fda32fe9f2961e168f", null ],
+    [ "clone", "class_content.html#a31ac405053a2cb5e157e5054b1012350", null ],
     [ "dimensionsChanged", "class_content.html#ae338768ac0ff759373c0486315fd23b7", null ],
     [ "getActions", "class_content.html#a7ae29df27d493e89dd7dccd775efbff8", null ],
     [ "getAspectRatio", "class_content.html#a113bd8ba35685e77bcf8a8650fab636a", null ],

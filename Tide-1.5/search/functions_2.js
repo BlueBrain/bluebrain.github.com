@@ -1,7 +1,5 @@
 var searchData=
 [
-  ['backgroundcolorchanged',['backgroundColorChanged',['../class_background_widget.html#a96f4a8796d277ffb83f8641eb1e7113a',1,'BackgroundWidget']]],
-  ['backgroundcontentchanged',['backgroundContentChanged',['../class_background_widget.html#a74f3426c998bd4920b7f5f6556a66faa',1,'BackgroundWidget']]],
   ['backgroundwidget',['BackgroundWidget',['../class_background_widget.html#ae4a39993d86522e34618a67e466e9a18',1,'BackgroundWidget']]],
   ['backupmodeandzoom',['backupModeAndZoom',['../class_content_window.html#af0212e3772f2a91e4d89aa3dc213642e',1,'ContentWindow']]],
   ['basicsynchronizer',['BasicSynchronizer',['../class_basic_synchronizer.html#a343ca5d5f6872766b0cd019111cd5427',1,'BasicSynchronizer']]],
