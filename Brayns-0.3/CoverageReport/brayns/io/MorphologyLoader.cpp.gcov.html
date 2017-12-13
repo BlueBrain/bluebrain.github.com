@@ -31,18 +31,18 @@
             <td class="headerValue">Brayns</td>
             <td></td>
             <td class="headerItem">Lines:</td>
-            <td class="headerCovTableEntry">240</td>
-            <td class="headerCovTableEntry">435</td>
-            <td class="headerCovTableEntryMed">55.2 %</td>
+            <td class="headerCovTableEntry">236</td>
+            <td class="headerCovTableEntry">431</td>
+            <td class="headerCovTableEntryMed">54.8 %</td>
           </tr>
           <tr>
             <td class="headerItem">Date:</td>
-            <td class="headerValue">2017-12-12 01:37:40</td>
+            <td class="headerValue">2017-12-13 01:38:19</td>
             <td></td>
             <td class="headerItem">Functions:</td>
-            <td class="headerCovTableEntry">21</td>
-            <td class="headerCovTableEntry">26</td>
-            <td class="headerCovTableEntryHi">80.8 %</td>
+            <td class="headerCovTableEntry">20</td>
+            <td class="headerCovTableEntry">25</td>
+            <td class="headerCovTableEntryHi">80.0 %</td>
           </tr>
           <tr><td><img src="../../glass.png" width=3 height=3 alt=""></td></tr>
         </table>
@@ -191,8 +191,8 @@
 <span class="lineNum">     129 </span>            :         try
 <span class="lineNum">     130 </span>            :         {
 <span class="lineNum">     131 </span>            :             // Open Circuit and select GIDs according to specified target
-<span class="lineNum">     132 </span><span class="lineCov">          4 :             const brion::BlueConfig bc(uri.getPath());</span>
-<span class="lineNum">     133 </span><span class="lineCov">          4 :             const brain::Circuit circuit(bc);</span>
+<span class="lineNum">     132 </span><span class="lineCov">          4 :             const brain::Circuit circuit(uri);</span>
+<span class="lineNum">     133 </span><span class="lineCov">          4 :             const brion::BlueConfig bc(uri.getPath());</span>
 <span class="lineNum">     134 </span>            :             const auto circuitDensity =
 <span class="lineNum">     135 </span><span class="lineCov">          2 :                 _geometryParameters.getCircuitDensity() / 100.f;</span>
 <span class="lineNum">     136 </span>            : 
@@ -268,811 +268,794 @@
 <span class="lineNum">     206 </span><span class="lineCov">          4 :             const Matrix4fs&amp; transformations = circuit.getTransforms(allGids);</span>
 <span class="lineNum">     207 </span><span class="lineCov">          2 :             _logLoadedGIDs(allGids);</span>
 <span class="lineNum">     208 </span>            : 
-<span class="lineNum">     209 </span>            :             // Read Brion circuit and pouplate neuron matrix. This is necessary
-<span class="lineNum">     210 </span>            :             // to identify layers, e-types, m-types, etc.
-<span class="lineNum">     211 </span><span class="lineCov">          2 :             _populateNeuronMatrix(bc, allGids);</span>
-<span class="lineNum">     212 </span>            : 
-<span class="lineNum">     213 </span>            :             // Import meshes
-<span class="lineNum">     214 </span><span class="lineCov">          2 :             returnValue =</span>
-<span class="lineNum">     215 </span><span class="lineCov">          2 :                 returnValue &amp;&amp; _importMeshes(allGids, transformations,</span>
-<span class="lineNum">     216 </span>            :                                              targetGIDOffsets, meshLoader);
-<span class="lineNum">     217 </span>            : 
-<span class="lineNum">     218 </span>            :             // Import morphologies
-<span class="lineNum">     219 </span><span class="lineCov">          2 :             if (_geometryParameters.getCircuitMeshFolder().empty() ||</span>
-<span class="lineNum">     220 </span><span class="lineNoCov">          0 :                 _geometryParameters.getCircuitUseSimulationModel())</span>
-<span class="lineNum">     221 </span><span class="lineCov">          2 :                 returnValue =</span>
-<span class="lineNum">     222 </span><span class="lineCov">          6 :                     returnValue &amp;&amp;</span>
-<span class="lineNum">     223 </span><span class="lineCov">          8 :                     _importMorphologies(circuit, allGids, transformations,</span>
-<span class="lineNum">     224 </span><span class="lineNoCov">          0 :                                         targetGIDOffsets, compartmentReport);</span>
-<span class="lineNum">     225 </span>            :         }
-<span class="lineNum">     226 </span><span class="lineNoCov">          0 :         catch (const std::exception&amp; error)</span>
-<span class="lineNum">     227 </span>            :         {
-<span class="lineNum">     228 </span><span class="lineNoCov">          0 :             BRAYNS_ERROR &lt;&lt; &quot;Failed to open &quot; &lt;&lt; uri.getPath() &lt;&lt; &quot;: &quot;</span>
-<span class="lineNum">     229 </span><span class="lineNoCov">          0 :                          &lt;&lt; error.what() &lt;&lt; std::endl;</span>
-<span class="lineNum">     230 </span><span class="lineNoCov">          0 :             return false;</span>
-<span class="lineNum">     231 </span>            :         }
-<span class="lineNum">     232 </span>            : 
-<span class="lineNum">     233 </span><span class="lineCov">          2 :         return returnValue;</span>
-<span class="lineNum">     234 </span>            :     }
-<span class="lineNum">     235 </span>            : 
-<span class="lineNum">     236 </span>            : private:
-<span class="lineNum">     237 </span>            :     /**
-<span class="lineNum">     238 </span>            :      * @brief _getCorrectedRadius Modifies the radius of the geometry according
-<span class="lineNum">     239 </span>            :      * to --radius-multiplier and --radius-correction geometry parameters
-<span class="lineNum">     240 </span>            :      * @param radius Radius to be corrected
-<a name="241"><span class="lineNum">     241 </span>            :      * @return Corrected value of a radius according to geometry parameters</a>
-<span class="lineNum">     242 </span>            :      */
-<span class="lineNum">     243 </span><span class="lineCov">   44901514 :     float _getCorrectedRadius(const float radius) const</span>
-<span class="lineNum">     244 </span>            :     {
-<span class="lineNum">     245 </span><span class="lineCov">   44901514 :         return (_geometryParameters.getRadiusCorrection() != 0.f</span>
-<span class="lineNum">     246 </span><span class="lineCov">   89649746 :                     ? _geometryParameters.getRadiusCorrection()</span>
-<span class="lineNum">     247 </span><span class="lineCov">   89685768 :                     : radius * _geometryParameters.getRadiusMultiplier());</span>
-<span class="lineNum">     248 </span>            :     }
-<span class="lineNum">     249 </span>            : 
-<span class="lineNum">     250 </span>            :     /**
-<span class="lineNum">     251 </span>            :      * @brief _getMaterialFromSectionType return a material determined by the
-<span class="lineNum">     252 </span>            :      * --color-scheme geometry parameter
-<span class="lineNum">     253 </span>            :      * @param index Index of the element to which the material will attached
-<span class="lineNum">     254 </span>            :      * @param material Material that is forced in case geometry parameters
-<span class="lineNum">     255 </span>            :      * do not apply
-<span class="lineNum">     256 </span>            :      * @param sectionType Section type of the geometry to which the material
-<span class="lineNum">     257 </span>            :      * will be applied
-<a name="258"><span class="lineNum">     258 </span>            :      * @return Material ID determined by the geometry parameters</a>
-<span class="lineNum">     259 </span>            :      */
-<span class="lineNum">     260 </span><span class="lineCov">     744816 :     size_t _getMaterialFromGeometryParameters(</span>
-<span class="lineNum">     261 </span>            :         const uint64_t index, const size_t material,
-<span class="lineNum">     262 </span>            :         const brain::neuron::SectionType sectionType,
-<span class="lineNum">     263 </span>            :         const GIDOffsets&amp; targetGIDOffsets) const
-<span class="lineNum">     264 </span>            :     {
-<span class="lineNum">     265 </span><span class="lineCov">     744816 :         if (material != NO_MATERIAL)</span>
-<span class="lineNum">     266 </span><span class="lineNoCov">          0 :             return material;</span>
-<span class="lineNum">     267 </span><span class="lineCov">     744816 :         size_t materialId = 0;</span>
-<span class="lineNum">     268 </span><span class="lineCov">     744816 :         switch (_geometryParameters.getColorScheme())</span>
-<span class="lineNum">     269 </span>            :         {
-<span class="lineNum">     270 </span>            :         case ColorScheme::neuron_by_id:
-<span class="lineNum">     271 </span><span class="lineCov">          2 :             materialId = index;</span>
-<span class="lineNum">     272 </span><span class="lineCov">          2 :             break;</span>
-<span class="lineNum">     273 </span>            :         case ColorScheme::neuron_by_segment_type:
-<span class="lineNum">     274 </span><span class="lineNoCov">          0 :             switch (sectionType)</span>
-<span class="lineNum">     275 </span>            :             {
-<span class="lineNum">     276 </span>            :             case brain::neuron::SectionType::soma:
-<span class="lineNum">     277 </span><span class="lineNoCov">          0 :                 materialId = 1;</span>
-<span class="lineNum">     278 </span><span class="lineNoCov">          0 :                 break;</span>
-<span class="lineNum">     279 </span>            :             case brain::neuron::SectionType::axon:
-<span class="lineNum">     280 </span><span class="lineNoCov">          0 :                 materialId = 2;</span>
-<span class="lineNum">     281 </span><span class="lineNoCov">          0 :                 break;</span>
-<span class="lineNum">     282 </span>            :             case brain::neuron::SectionType::dendrite:
-<span class="lineNum">     283 </span><span class="lineNoCov">          0 :                 materialId = 3;</span>
-<span class="lineNum">     284 </span><span class="lineNoCov">          0 :                 break;</span>
-<span class="lineNum">     285 </span>            :             case brain::neuron::SectionType::apicalDendrite:
-<span class="lineNum">     286 </span><span class="lineNoCov">          0 :                 materialId = 4;</span>
-<span class="lineNum">     287 </span><span class="lineNoCov">          0 :                 break;</span>
-<span class="lineNum">     288 </span>            :             default:
-<span class="lineNum">     289 </span><span class="lineNoCov">          0 :                 materialId = 0;</span>
-<span class="lineNum">     290 </span><span class="lineNoCov">          0 :                 break;</span>
-<span class="lineNum">     291 </span>            :             }
-<span class="lineNum">     292 </span><span class="lineNoCov">          0 :             break;</span>
-<span class="lineNum">     293 </span>            :         case ColorScheme::neuron_by_target:
-<span class="lineNum">     294 </span><span class="lineNoCov">          0 :             for (size_t i = 0; i &lt; targetGIDOffsets.size() - 1; ++i)</span>
-<span class="lineNum">     295 </span><span class="lineNoCov">          0 :                 if (index &gt;= targetGIDOffsets[i] &amp;&amp;</span>
-<span class="lineNum">     296 </span><span class="lineNoCov">          0 :                     index &lt; targetGIDOffsets[i + 1])</span>
-<span class="lineNum">     297 </span>            :                 {
-<span class="lineNum">     298 </span><span class="lineNoCov">          0 :                     materialId = i;</span>
-<span class="lineNum">     299 </span><span class="lineNoCov">          0 :                     break;</span>
-<span class="lineNum">     300 </span>            :                 }
-<span class="lineNum">     301 </span><span class="lineNoCov">          0 :             break;</span>
-<span class="lineNum">     302 </span>            :         default:
-<span class="lineNum">     303 </span><span class="lineCov">     744822 :             materialId = NO_MATERIAL;</span>
-<span class="lineNum">     304 </span>            :         }
-<span class="lineNum">     305 </span><span class="lineCov">     744824 :         return NB_SYSTEM_MATERIALS + materialId;</span>
-<span class="lineNum">     306 </span>            :     }
-<span class="lineNum">     307 </span>            : 
-<span class="lineNum">     308 </span>            :     /**
-<span class="lineNum">     309 </span>            :      * @brief _getSectionTypes converts Brayns section types into brain::neuron
-<span class="lineNum">     310 </span>            :      * section types
-<span class="lineNum">     311 </span>            :      * @param morphologySectionTypes Brayns section types
-<a name="312"><span class="lineNum">     312 </span>            :      * @return brain::neuron section types</a>
-<span class="lineNum">     313 </span>            :      */
-<span class="lineNum">     314 </span><span class="lineCov">       2000 :     brain::neuron::SectionTypes _getSectionTypes(</span>
-<span class="lineNum">     315 </span>            :         const size_t morphologySectionTypes) const
-<span class="lineNum">     316 </span>            :     {
-<span class="lineNum">     317 </span><span class="lineCov">       2000 :         brain::neuron::SectionTypes sectionTypes;</span>
-<span class="lineNum">     318 </span><span class="lineCov">       2000 :         if (morphologySectionTypes &amp;</span>
-<span class="lineNum">     319 </span>            :             static_cast&lt;size_t&gt;(MorphologySectionType::soma))
-<span class="lineNum">     320 </span><span class="lineCov">       2000 :             sectionTypes.push_back(brain::neuron::SectionType::soma);</span>
-<span class="lineNum">     321 </span><span class="lineCov">       2000 :         if (morphologySectionTypes &amp;</span>
-<span class="lineNum">     322 </span>            :             static_cast&lt;size_t&gt;(MorphologySectionType::axon))
-<span class="lineNum">     323 </span><span class="lineCov">       2000 :             sectionTypes.push_back(brain::neuron::SectionType::axon);</span>
-<span class="lineNum">     324 </span><span class="lineCov">       2000 :         if (morphologySectionTypes &amp;</span>
-<span class="lineNum">     325 </span>            :             static_cast&lt;size_t&gt;(MorphologySectionType::dendrite))
-<span class="lineNum">     326 </span><span class="lineCov">       2000 :             sectionTypes.push_back(brain::neuron::SectionType::dendrite);</span>
-<span class="lineNum">     327 </span><span class="lineCov">       2000 :         if (morphologySectionTypes &amp;</span>
-<span class="lineNum">     328 </span>            :             static_cast&lt;size_t&gt;(MorphologySectionType::apical_dendrite))
-<span class="lineNum">     329 </span><span class="lineCov">       2000 :             sectionTypes.push_back(brain::neuron::SectionType::apicalDendrite);</span>
-<span class="lineNum">     330 </span><span class="lineCov">       2000 :         return sectionTypes;</span>
-<span class="lineNum">     331 </span>            :     }
-<span class="lineNum">     332 </span>            : 
-<span class="lineNum">     333 </span>            :     /**
-<span class="lineNum">     334 </span>            :      * @brief _getNeuronAttributes converts the --color-scheme geometry
-<span class="lineNum">     335 </span>            :      * parameters into brion::NeuronAttributes is applicable
-<span class="lineNum">     336 </span>            :      * @return brion::NeuronAttributes corresponding to the selected color
-<a name="337"><span class="lineNum">     337 </span>            :      * scheme</a>
-<span class="lineNum">     338 </span>            :      */
-<span class="lineNum">     339 </span><span class="lineCov">          2 :     brion::NeuronAttributes _getNeuronAttributes() const</span>
-<span class="lineNum">     340 </span>            :     {
-<span class="lineNum">     341 </span>            :         brion::NeuronAttributes neuronAttributes;
-<span class="lineNum">     342 </span><span class="lineCov">          2 :         switch (_geometryParameters.getColorScheme())</span>
-<span class="lineNum">     343 </span>            :         {
-<span class="lineNum">     344 </span>            :         case ColorScheme::neuron_by_layer:
-<span class="lineNum">     345 </span><span class="lineNoCov">          0 :             neuronAttributes = brion::NEURON_LAYER;</span>
-<span class="lineNum">     346 </span><span class="lineNoCov">          0 :             break;</span>
-<span class="lineNum">     347 </span>            :         case ColorScheme::neuron_by_mtype:
-<span class="lineNum">     348 </span><span class="lineNoCov">          0 :             neuronAttributes = brion::NEURON_MTYPE;</span>
-<span class="lineNum">     349 </span><span class="lineNoCov">          0 :             break;</span>
-<span class="lineNum">     350 </span>            :         case ColorScheme::neuron_by_etype:
-<span class="lineNum">     351 </span><span class="lineNoCov">          0 :             neuronAttributes = brion::NEURON_ETYPE;</span>
-<span class="lineNum">     352 </span><span class="lineNoCov">          0 :             break;</span>
-<span class="lineNum">     353 </span>            :         default:
-<span class="lineNum">     354 </span><span class="lineCov">          2 :             neuronAttributes = brion::NEURON_ALL;</span>
-<span class="lineNum">     355 </span><span class="lineCov">          2 :             break;</span>
-<span class="lineNum">     356 </span>            :         }
-<span class="lineNum">     357 </span><span class="lineCov">          2 :         return neuronAttributes;</span>
-<span class="lineNum">     358 </span>            :     }
-<span class="lineNum">     359 </span>            : 
-<span class="lineNum">     360 </span>            :     /**
-<span class="lineNum">     361 </span>            :      * @brief _populateNeuronMatrix populates the neuron matrix according to the
-<span class="lineNum">     362 </span>            :      * --color-scheme geometry parameter. This is currently only supported for
-<span class="lineNum">     363 </span>            :      * the MVD2 format.
-<span class="lineNum">     364 </span>            :      * @param blueConfig Configuration of the circuit
-<a name="365"><span class="lineNum">     365 </span>            :      * @param gids GIDs of the neurons for which the matrix is required</a>
-<span class="lineNum">     366 </span>            :      */
-<span class="lineNum">     367 </span><span class="lineCov">          2 :     void _populateNeuronMatrix(const brion::BlueConfig&amp; blueConfig,</span>
-<span class="lineNum">     368 </span>            :                                const brain::GIDSet&amp; gids)
-<span class="lineNum">     369 </span>            :     {
-<span class="lineNum">     370 </span><span class="lineCov">          2 :         _neuronMatrix.clear();</span>
-<span class="lineNum">     371 </span><span class="lineCov">          2 :         brion::NeuronAttributes neuronAttributes = _getNeuronAttributes();</span>
-<span class="lineNum">     372 </span><span class="lineCov">          2 :         if (neuronAttributes == brion::NEURON_ALL)</span>
-<span class="lineNum">     373 </span><span class="lineCov">          2 :             return;</span>
-<span class="lineNum">     374 </span>            :         try
-<span class="lineNum">     375 </span>            :         {
-<span class="lineNum">     376 </span><span class="lineNoCov">          0 :             brion::Circuit brionCircuit(blueConfig.getCircuitSource());</span>
-<span class="lineNum">     377 </span><span class="lineNoCov">          0 :             for (const auto&amp; a : brionCircuit.get(gids, neuronAttributes))</span>
-<span class="lineNum">     378 </span><span class="lineNoCov">          0 :                 _neuronMatrix.push_back(a[0]);</span>
-<span class="lineNum">     379 </span>            :         }
-<span class="lineNum">     380 </span><span class="lineNoCov">          0 :         catch (...)</span>
-<span class="lineNum">     381 </span>            :         {
-<span class="lineNum">     382 </span>            :             BRAYNS_WARN
-<span class="lineNum">     383 </span>            :                 &lt;&lt; &quot;Only MVD2 format is currently supported by Brion &quot;
-<span class="lineNum">     384 </span>            :                    &quot;circuits. Color scheme by layer, e-type or m-type is &quot;
-<span class="lineNum">     385 </span><span class="lineNoCov">          0 :                    &quot;not available for this circuit&quot;</span>
-<span class="lineNum">     386 </span><span class="lineNoCov">          0 :                 &lt;&lt; std::endl;</span>
-<span class="lineNum">     387 </span>            :         }
-<span class="lineNum">     388 </span>            :     }
-<span class="lineNum">     389 </span>            : 
-<span class="lineNum">     390 </span>            :     /**
-<span class="lineNum">     391 </span>            :      * @brief _getIndexAsTextureCoordinates converts a uint64_t index into 2
-<span class="lineNum">     392 </span>            :      * floats so that it can be stored in the texture coordinates of the the
-<span class="lineNum">     393 </span>            :      * geometry to which it is attached
-<span class="lineNum">     394 </span>            :      * @param index Index to be stored in texture coordinates
-<a name="395"><span class="lineNum">     395 </span>            :      * @return Texture coordinates for the given index</a>
-<span class="lineNum">     396 </span>            :      */
-<span class="lineNum">     397 </span><span class="lineCov">   22049608 :     Vector2f _getIndexAsTextureCoordinates(const uint64_t index) const</span>
-<span class="lineNum">     398 </span>            :     {
-<span class="lineNum">     399 </span><span class="lineCov">   22049608 :         Vector2f textureCoordinates;</span>
-<span class="lineNum">     400 </span>            : 
-<span class="lineNum">     401 </span>            :         // https://stackoverflow.com/questions/2810280
-<span class="lineNum">     402 </span><span class="lineCov">   22047362 :         float x = ((index &amp; 0xFFFFFFFF00000000LL) &gt;&gt; 32) / INDEX_MAGIC;</span>
-<span class="lineNum">     403 </span><span class="lineCov">   22047362 :         float y = (index &amp; 0xFFFFFFFFLL) / INDEX_MAGIC;</span>
-<span class="lineNum">     404 </span>            : 
-<span class="lineNum">     405 </span><span class="lineCov">   22047362 :         textureCoordinates.x() = x;</span>
-<span class="lineNum">     406 </span><span class="lineCov">   22055098 :         textureCoordinates.y() = y;</span>
-<span class="lineNum">     407 </span><span class="lineCov">   22974070 :         return textureCoordinates;</span>
-<span class="lineNum">     408 </span>            :     }
-<span class="lineNum">     409 </span>            : 
-<span class="lineNum">     410 </span>            :     /**
-<span class="lineNum">     411 </span>            :      * @brief _logLoadedGIDs Logs selected GIDs for debugging purpose
-<a name="412"><span class="lineNum">     412 </span>            :      * @param gids to trace</a>
-<span class="lineNum">     413 </span>            :      */
-<span class="lineNum">     414 </span><span class="lineCov">          2 :     void _logLoadedGIDs(const brain::GIDSet&amp; gids) const</span>
-<span class="lineNum">     415 </span>            :     {
-<span class="lineNum">     416 </span><span class="lineCov">          4 :         std::stringstream gidsStr;</span>
-<span class="lineNum">     417 </span><span class="lineCov">       2002 :         for (const auto&amp; gid : gids)</span>
-<span class="lineNum">     418 </span><span class="lineCov">       2000 :             gidsStr &lt;&lt; gid &lt;&lt; &quot; &quot;;</span>
-<span class="lineNum">     419 </span><span class="lineCov">          2 :         BRAYNS_DEBUG &lt;&lt; &quot;Loaded GIDs: &quot; &lt;&lt; gidsStr.str() &lt;&lt; std::endl;</span>
-<span class="lineNum">     420 </span><span class="lineCov">          2 :     }</span>
-<span class="lineNum">     421 </span>            : 
-<span class="lineNum">     422 </span>            :     /**
-<span class="lineNum">     423 </span>            :      * @brief _importMorphologyAsPoint places sphere at the specified morphology
-<span class="lineNum">     424 </span>            :      * position
-<span class="lineNum">     425 </span>            :      * @param index Index of the current morphology
-<span class="lineNum">     426 </span>            :      * @param transformation Transformation to apply to the morphology
-<span class="lineNum">     427 </span>            :      * @param material Material that is forced in case geometry parameters do
-<span class="lineNum">     428 </span>            :      * not apply
-<span class="lineNum">     429 </span>            :      * @param compartmentReport Compartment report to map to the morphology
-<span class="lineNum">     430 </span>            :      * @param scene Scene to which the morphology should be loaded into
-<a name="431"><span class="lineNum">     431 </span>            :      * @return True if the loading was successfull, false otherwise</a>
-<span class="lineNum">     432 </span>            :      */
-<span class="lineNum">     433 </span><span class="lineNoCov">          0 :     bool _importMorphologyAsPoint(const uint64_t index, const size_t material,</span>
-<span class="lineNum">     434 </span>            :                                   const Matrix4f&amp; transformation,
-<span class="lineNum">     435 </span>            :                                   CompartmentReportPtr compartmentReport,
-<span class="lineNum">     436 </span>            :                                   const GIDOffsets&amp; targetGIDOffsets,
-<span class="lineNum">     437 </span>            :                                   ParallelSceneContainer&amp; scene)
-<span class="lineNum">     438 </span>            :     {
-<span class="lineNum">     439 </span><span class="lineNoCov">          0 :         uint64_t offset = 0;</span>
-<span class="lineNum">     440 </span><span class="lineNoCov">          0 :         if (compartmentReport)</span>
-<span class="lineNum">     441 </span><span class="lineNoCov">          0 :             offset = compartmentReport-&gt;getOffsets()[index][0];</span>
+<span class="lineNum">     209 </span><span class="lineCov">          2 :             _populateLayerIds(bc, allGids);</span>
+<span class="lineNum">     210 </span>            :             _electrophysiologyTypes =
+<span class="lineNum">     211 </span><span class="lineCov">          2 :                 circuit.getElectrophysiologyTypes(allGids);</span>
+<span class="lineNum">     212 </span><span class="lineCov">          2 :             _morphologyTypes = circuit.getMorphologyTypes(allGids);</span>
+<span class="lineNum">     213 </span>            : 
+<span class="lineNum">     214 </span>            :             // Import meshes
+<span class="lineNum">     215 </span><span class="lineCov">          2 :             returnValue =</span>
+<span class="lineNum">     216 </span><span class="lineCov">          2 :                 returnValue &amp;&amp; _importMeshes(allGids, transformations,</span>
+<span class="lineNum">     217 </span>            :                                              targetGIDOffsets, meshLoader);
+<span class="lineNum">     218 </span>            : 
+<span class="lineNum">     219 </span>            :             // Import morphologies
+<span class="lineNum">     220 </span><span class="lineCov">          2 :             if (_geometryParameters.getCircuitMeshFolder().empty() ||</span>
+<span class="lineNum">     221 </span><span class="lineNoCov">          0 :                 _geometryParameters.getCircuitUseSimulationModel())</span>
+<span class="lineNum">     222 </span><span class="lineCov">          2 :                 returnValue =</span>
+<span class="lineNum">     223 </span><span class="lineCov">          6 :                     returnValue &amp;&amp;</span>
+<span class="lineNum">     224 </span><span class="lineCov">          8 :                     _importMorphologies(circuit, allGids, transformations,</span>
+<span class="lineNum">     225 </span><span class="lineNoCov">          0 :                                         targetGIDOffsets, compartmentReport);</span>
+<span class="lineNum">     226 </span>            :         }
+<span class="lineNum">     227 </span><span class="lineNoCov">          0 :         catch (const std::exception&amp; error)</span>
+<span class="lineNum">     228 </span>            :         {
+<span class="lineNum">     229 </span><span class="lineNoCov">          0 :             BRAYNS_ERROR &lt;&lt; &quot;Failed to open &quot; &lt;&lt; uri.getPath() &lt;&lt; &quot;: &quot;</span>
+<span class="lineNum">     230 </span><span class="lineNoCov">          0 :                          &lt;&lt; error.what() &lt;&lt; std::endl;</span>
+<span class="lineNum">     231 </span><span class="lineNoCov">          0 :             return false;</span>
+<span class="lineNum">     232 </span>            :         }
+<span class="lineNum">     233 </span>            : 
+<span class="lineNum">     234 </span><span class="lineCov">          2 :         return returnValue;</span>
+<span class="lineNum">     235 </span>            :     }
+<span class="lineNum">     236 </span>            : 
+<span class="lineNum">     237 </span>            : private:
+<span class="lineNum">     238 </span>            :     /**
+<span class="lineNum">     239 </span>            :      * @brief _getCorrectedRadius Modifies the radius of the geometry according
+<span class="lineNum">     240 </span>            :      * to --radius-multiplier and --radius-correction geometry parameters
+<span class="lineNum">     241 </span>            :      * @param radius Radius to be corrected
+<a name="242"><span class="lineNum">     242 </span>            :      * @return Corrected value of a radius according to geometry parameters</a>
+<span class="lineNum">     243 </span>            :      */
+<span class="lineNum">     244 </span><span class="lineCov">   44528050 :     float _getCorrectedRadius(const float radius) const</span>
+<span class="lineNum">     245 </span>            :     {
+<span class="lineNum">     246 </span><span class="lineCov">   44528050 :         return (_geometryParameters.getRadiusCorrection() != 0.f</span>
+<span class="lineNum">     247 </span><span class="lineCov">   88801282 :                     ? _geometryParameters.getRadiusCorrection()</span>
+<span class="lineNum">     248 </span><span class="lineCov">   88882708 :                     : radius * _geometryParameters.getRadiusMultiplier());</span>
+<span class="lineNum">     249 </span>            :     }
+<span class="lineNum">     250 </span>            : 
+<span class="lineNum">     251 </span>            :     /**
+<span class="lineNum">     252 </span>            :      * @brief _getMaterialFromSectionType return a material determined by the
+<span class="lineNum">     253 </span>            :      * --color-scheme geometry parameter
+<span class="lineNum">     254 </span>            :      * @param index Index of the element to which the material will attached
+<span class="lineNum">     255 </span>            :      * @param material Material that is forced in case geometry parameters
+<span class="lineNum">     256 </span>            :      * do not apply
+<span class="lineNum">     257 </span>            :      * @param sectionType Section type of the geometry to which the material
+<span class="lineNum">     258 </span>            :      * will be applied
+<a name="259"><span class="lineNum">     259 </span>            :      * @return Material ID determined by the geometry parameters</a>
+<span class="lineNum">     260 </span>            :      */
+<span class="lineNum">     261 </span><span class="lineCov">     746808 :     size_t _getMaterialFromGeometryParameters(</span>
+<span class="lineNum">     262 </span>            :         const uint64_t index, const size_t material,
+<span class="lineNum">     263 </span>            :         const brain::neuron::SectionType sectionType,
+<span class="lineNum">     264 </span>            :         const GIDOffsets&amp; targetGIDOffsets) const
+<span class="lineNum">     265 </span>            :     {
+<span class="lineNum">     266 </span><span class="lineCov">     746808 :         if (material != NO_MATERIAL)</span>
+<span class="lineNum">     267 </span><span class="lineCov">     744808 :             return material;</span>
+<span class="lineNum">     268 </span><span class="lineCov">       2000 :         size_t materialId = 0;</span>
+<span class="lineNum">     269 </span><span class="lineCov">       2000 :         switch (_geometryParameters.getColorScheme())</span>
+<span class="lineNum">     270 </span>            :         {
+<span class="lineNum">     271 </span>            :         case ColorScheme::neuron_by_id:
+<span class="lineNum">     272 </span><span class="lineNoCov">          0 :             materialId = index;</span>
+<span class="lineNum">     273 </span><span class="lineNoCov">          0 :             break;</span>
+<span class="lineNum">     274 </span>            :         case ColorScheme::neuron_by_segment_type:
+<span class="lineNum">     275 </span><span class="lineNoCov">          0 :             switch (sectionType)</span>
+<span class="lineNum">     276 </span>            :             {
+<span class="lineNum">     277 </span>            :             case brain::neuron::SectionType::soma:
+<span class="lineNum">     278 </span><span class="lineNoCov">          0 :                 materialId = 1;</span>
+<span class="lineNum">     279 </span><span class="lineNoCov">          0 :                 break;</span>
+<span class="lineNum">     280 </span>            :             case brain::neuron::SectionType::axon:
+<span class="lineNum">     281 </span><span class="lineNoCov">          0 :                 materialId = 2;</span>
+<span class="lineNum">     282 </span><span class="lineNoCov">          0 :                 break;</span>
+<span class="lineNum">     283 </span>            :             case brain::neuron::SectionType::dendrite:
+<span class="lineNum">     284 </span><span class="lineNoCov">          0 :                 materialId = 3;</span>
+<span class="lineNum">     285 </span><span class="lineNoCov">          0 :                 break;</span>
+<span class="lineNum">     286 </span>            :             case brain::neuron::SectionType::apicalDendrite:
+<span class="lineNum">     287 </span><span class="lineNoCov">          0 :                 materialId = 4;</span>
+<span class="lineNum">     288 </span><span class="lineNoCov">          0 :                 break;</span>
+<span class="lineNum">     289 </span>            :             default:
+<span class="lineNum">     290 </span><span class="lineNoCov">          0 :                 materialId = 0;</span>
+<span class="lineNum">     291 </span><span class="lineNoCov">          0 :                 break;</span>
+<span class="lineNum">     292 </span>            :             }
+<span class="lineNum">     293 </span><span class="lineNoCov">          0 :             break;</span>
+<span class="lineNum">     294 </span>            :         case ColorScheme::neuron_by_target:
+<span class="lineNum">     295 </span><span class="lineNoCov">          0 :             for (size_t i = 0; i &lt; targetGIDOffsets.size() - 1; ++i)</span>
+<span class="lineNum">     296 </span><span class="lineNoCov">          0 :                 if (index &gt;= targetGIDOffsets[i] &amp;&amp;</span>
+<span class="lineNum">     297 </span><span class="lineNoCov">          0 :                     index &lt; targetGIDOffsets[i + 1])</span>
+<span class="lineNum">     298 </span>            :                 {
+<span class="lineNum">     299 </span><span class="lineNoCov">          0 :                     materialId = i;</span>
+<span class="lineNum">     300 </span><span class="lineNoCov">          0 :                     break;</span>
+<span class="lineNum">     301 </span>            :                 }
+<span class="lineNum">     302 </span><span class="lineNoCov">          0 :             break;</span>
+<span class="lineNum">     303 </span>            :         case ColorScheme::neuron_by_etype:
+<span class="lineNum">     304 </span><span class="lineNoCov">          0 :             if (index &lt; _electrophysiologyTypes.size())</span>
+<span class="lineNum">     305 </span><span class="lineNoCov">          0 :                 materialId = _electrophysiologyTypes[index];</span>
+<span class="lineNum">     306 </span>            :             else
+<span class="lineNum">     307 </span><span class="lineNoCov">          0 :                 BRAYNS_DEBUG &lt;&lt; &quot;Failed to get neuron E-type&quot; &lt;&lt; std::endl;</span>
+<span class="lineNum">     308 </span><span class="lineNoCov">          0 :             break;</span>
+<span class="lineNum">     309 </span>            :         case ColorScheme::neuron_by_mtype:
+<span class="lineNum">     310 </span><span class="lineNoCov">          0 :             if (index &lt; _morphologyTypes.size())</span>
+<span class="lineNum">     311 </span><span class="lineNoCov">          0 :                 materialId = _morphologyTypes[index];</span>
+<span class="lineNum">     312 </span>            :             else
+<span class="lineNum">     313 </span><span class="lineNoCov">          0 :                 BRAYNS_DEBUG &lt;&lt; &quot;Failed to get neuron M-type&quot; &lt;&lt; std::endl;</span>
+<span class="lineNum">     314 </span><span class="lineNoCov">          0 :             break;</span>
+<span class="lineNum">     315 </span>            :         case ColorScheme::neuron_by_layer:
+<span class="lineNum">     316 </span><span class="lineNoCov">          0 :             if (index &lt; _layerIds.size())</span>
+<span class="lineNum">     317 </span><span class="lineNoCov">          0 :                 materialId = _layerIds[index];</span>
+<span class="lineNum">     318 </span>            :             else
+<span class="lineNum">     319 </span><span class="lineNoCov">          0 :                 BRAYNS_DEBUG &lt;&lt; &quot;Failed to get neuron layer&quot; &lt;&lt; std::endl;</span>
+<span class="lineNum">     320 </span><span class="lineNoCov">          0 :             break;</span>
+<span class="lineNum">     321 </span>            :         default:
+<span class="lineNum">     322 </span><span class="lineCov">       2000 :             materialId = NO_MATERIAL;</span>
+<span class="lineNum">     323 </span>            :         }
+<span class="lineNum">     324 </span><span class="lineCov">       2000 :         return NB_SYSTEM_MATERIALS + materialId;</span>
+<span class="lineNum">     325 </span>            :     }
+<span class="lineNum">     326 </span>            : 
+<span class="lineNum">     327 </span>            :     /**
+<span class="lineNum">     328 </span>            :      * @brief _getSectionTypes converts Brayns section types into brain::neuron
+<span class="lineNum">     329 </span>            :      * section types
+<span class="lineNum">     330 </span>            :      * @param morphologySectionTypes Brayns section types
+<a name="331"><span class="lineNum">     331 </span>            :      * @return brain::neuron section types</a>
+<span class="lineNum">     332 </span>            :      */
+<span class="lineNum">     333 </span><span class="lineCov">       2000 :     brain::neuron::SectionTypes _getSectionTypes(</span>
+<span class="lineNum">     334 </span>            :         const size_t morphologySectionTypes) const
+<span class="lineNum">     335 </span>            :     {
+<span class="lineNum">     336 </span><span class="lineCov">       2000 :         brain::neuron::SectionTypes sectionTypes;</span>
+<span class="lineNum">     337 </span><span class="lineCov">       2000 :         if (morphologySectionTypes &amp;</span>
+<span class="lineNum">     338 </span>            :             static_cast&lt;size_t&gt;(MorphologySectionType::soma))
+<span class="lineNum">     339 </span><span class="lineCov">       2000 :             sectionTypes.push_back(brain::neuron::SectionType::soma);</span>
+<span class="lineNum">     340 </span><span class="lineCov">       2000 :         if (morphologySectionTypes &amp;</span>
+<span class="lineNum">     341 </span>            :             static_cast&lt;size_t&gt;(MorphologySectionType::axon))
+<span class="lineNum">     342 </span><span class="lineCov">       2000 :             sectionTypes.push_back(brain::neuron::SectionType::axon);</span>
+<span class="lineNum">     343 </span><span class="lineCov">       2000 :         if (morphologySectionTypes &amp;</span>
+<span class="lineNum">     344 </span>            :             static_cast&lt;size_t&gt;(MorphologySectionType::dendrite))
+<span class="lineNum">     345 </span><span class="lineCov">       2000 :             sectionTypes.push_back(brain::neuron::SectionType::dendrite);</span>
+<span class="lineNum">     346 </span><span class="lineCov">       2000 :         if (morphologySectionTypes &amp;</span>
+<span class="lineNum">     347 </span>            :             static_cast&lt;size_t&gt;(MorphologySectionType::apical_dendrite))
+<span class="lineNum">     348 </span><span class="lineCov">       2000 :             sectionTypes.push_back(brain::neuron::SectionType::apicalDendrite);</span>
+<span class="lineNum">     349 </span><span class="lineCov">       2000 :         return sectionTypes;</span>
+<span class="lineNum">     350 </span>            :     }
+<span class="lineNum">     351 </span>            : 
+<span class="lineNum">     352 </span>            :     /**
+<span class="lineNum">     353 </span>            :      * @brief _populateLayerIds populates the neuron layer IDs. This is
+<span class="lineNum">     354 </span>            :      * currently only supported for the MVD2 format.
+<span class="lineNum">     355 </span>            :      * @param blueConfig Configuration of the circuit
+<a name="356"><span class="lineNum">     356 </span>            :      * @param gids GIDs of the neurons</a>
+<span class="lineNum">     357 </span>            :      */
+<span class="lineNum">     358 </span><span class="lineCov">          2 :     void _populateLayerIds(const brion::BlueConfig&amp; blueConfig,</span>
+<span class="lineNum">     359 </span>            :                            const brain::GIDSet&amp; gids)
+<span class="lineNum">     360 </span>            :     {
+<span class="lineNum">     361 </span><span class="lineCov">          2 :         _layerIds.clear();</span>
+<span class="lineNum">     362 </span>            :         try
+<span class="lineNum">     363 </span>            :         {
+<span class="lineNum">     364 </span><span class="lineCov">          4 :             brion::Circuit brionCircuit(blueConfig.getCircuitSource());</span>
+<span class="lineNum">     365 </span><span class="lineNoCov">          0 :             for (const auto&amp; a : brionCircuit.get(gids, brion::NEURON_LAYER))</span>
+<span class="lineNum">     366 </span><span class="lineNoCov">          0 :                 _layerIds.push_back(std::stoi(a[0]));</span>
+<span class="lineNum">     367 </span>            :         }
+<span class="lineNum">     368 </span><span class="lineCov">          4 :         catch (...)</span>
+<span class="lineNum">     369 </span>            :         {
+<span class="lineNum">     370 </span>            :             BRAYNS_WARN &lt;&lt; &quot;Only MVD2 format is currently supported by Brion &quot;
+<span class="lineNum">     371 </span>            :                            &quot;circuits. Color scheme by layer not available for &quot;
+<span class="lineNum">     372 </span><span class="lineCov">          2 :                            &quot;this circuit&quot;</span>
+<span class="lineNum">     373 </span><span class="lineCov">          2 :                         &lt;&lt; std::endl;</span>
+<span class="lineNum">     374 </span>            :         }
+<span class="lineNum">     375 </span><span class="lineCov">          2 :     }</span>
+<span class="lineNum">     376 </span>            : 
+<span class="lineNum">     377 </span>            :     /**
+<span class="lineNum">     378 </span>            :      * @brief _getIndexAsTextureCoordinates converts a uint64_t index into 2
+<span class="lineNum">     379 </span>            :      * floats so that it can be stored in the texture coordinates of the the
+<span class="lineNum">     380 </span>            :      * geometry to which it is attached
+<span class="lineNum">     381 </span>            :      * @param index Index to be stored in texture coordinates
+<a name="382"><span class="lineNum">     382 </span>            :      * @return Texture coordinates for the given index</a>
+<span class="lineNum">     383 </span>            :      */
+<span class="lineNum">     384 </span><span class="lineCov">   21705670 :     Vector2f _getIndexAsTextureCoordinates(const uint64_t index) const</span>
+<span class="lineNum">     385 </span>            :     {
+<span class="lineNum">     386 </span><span class="lineCov">   21705670 :         Vector2f textureCoordinates;</span>
+<span class="lineNum">     387 </span>            : 
+<span class="lineNum">     388 </span>            :         // https://stackoverflow.com/questions/2810280
+<span class="lineNum">     389 </span><span class="lineCov">   21699496 :         float x = ((index &amp; 0xFFFFFFFF00000000LL) &gt;&gt; 32) / INDEX_MAGIC;</span>
+<span class="lineNum">     390 </span><span class="lineCov">   21699496 :         float y = (index &amp; 0xFFFFFFFFLL) / INDEX_MAGIC;</span>
+<span class="lineNum">     391 </span>            : 
+<span class="lineNum">     392 </span><span class="lineCov">   21699496 :         textureCoordinates.x() = x;</span>
+<span class="lineNum">     393 </span><span class="lineCov">   21710998 :         textureCoordinates.y() = y;</span>
+<span class="lineNum">     394 </span><span class="lineCov">   22900242 :         return textureCoordinates;</span>
+<span class="lineNum">     395 </span>            :     }
+<span class="lineNum">     396 </span>            : 
+<span class="lineNum">     397 </span>            :     /**
+<span class="lineNum">     398 </span>            :      * @brief _logLoadedGIDs Logs selected GIDs for debugging purpose
+<a name="399"><span class="lineNum">     399 </span>            :      * @param gids to trace</a>
+<span class="lineNum">     400 </span>            :      */
+<span class="lineNum">     401 </span><span class="lineCov">          2 :     void _logLoadedGIDs(const brain::GIDSet&amp; gids) const</span>
+<span class="lineNum">     402 </span>            :     {
+<span class="lineNum">     403 </span><span class="lineCov">          4 :         std::stringstream gidsStr;</span>
+<span class="lineNum">     404 </span><span class="lineCov">       2002 :         for (const auto&amp; gid : gids)</span>
+<span class="lineNum">     405 </span><span class="lineCov">       2000 :             gidsStr &lt;&lt; gid &lt;&lt; &quot; &quot;;</span>
+<span class="lineNum">     406 </span><span class="lineCov">          2 :         BRAYNS_DEBUG &lt;&lt; &quot;Loaded GIDs: &quot; &lt;&lt; gidsStr.str() &lt;&lt; std::endl;</span>
+<span class="lineNum">     407 </span><span class="lineCov">          2 :     }</span>
+<span class="lineNum">     408 </span>            : 
+<span class="lineNum">     409 </span>            :     /**
+<span class="lineNum">     410 </span>            :      * @brief _importMorphologyAsPoint places sphere at the specified morphology
+<span class="lineNum">     411 </span>            :      * position
+<span class="lineNum">     412 </span>            :      * @param index Index of the current morphology
+<span class="lineNum">     413 </span>            :      * @param transformation Transformation to apply to the morphology
+<span class="lineNum">     414 </span>            :      * @param material Material that is forced in case geometry parameters do
+<span class="lineNum">     415 </span>            :      * not apply
+<span class="lineNum">     416 </span>            :      * @param compartmentReport Compartment report to map to the morphology
+<span class="lineNum">     417 </span>            :      * @param scene Scene to which the morphology should be loaded into
+<a name="418"><span class="lineNum">     418 </span>            :      * @return True if the loading was successfull, false otherwise</a>
+<span class="lineNum">     419 </span>            :      */
+<span class="lineNum">     420 </span><span class="lineNoCov">          0 :     bool _importMorphologyAsPoint(const uint64_t index, const size_t material,</span>
+<span class="lineNum">     421 </span>            :                                   const Matrix4f&amp; transformation,
+<span class="lineNum">     422 </span>            :                                   CompartmentReportPtr compartmentReport,
+<span class="lineNum">     423 </span>            :                                   const GIDOffsets&amp; targetGIDOffsets,
+<span class="lineNum">     424 </span>            :                                   ParallelSceneContainer&amp; scene)
+<span class="lineNum">     425 </span>            :     {
+<span class="lineNum">     426 </span><span class="lineNoCov">          0 :         uint64_t offset = 0;</span>
+<span class="lineNum">     427 </span><span class="lineNoCov">          0 :         if (compartmentReport)</span>
+<span class="lineNum">     428 </span><span class="lineNoCov">          0 :             offset = compartmentReport-&gt;getOffsets()[index][0];</span>
+<span class="lineNum">     429 </span>            : 
+<span class="lineNum">     430 </span><span class="lineNoCov">          0 :         const auto radius = _geometryParameters.getRadiusMultiplier();</span>
+<span class="lineNum">     431 </span><span class="lineNoCov">          0 :         const auto textureCoordinates = _getIndexAsTextureCoordinates(offset);</span>
+<span class="lineNum">     432 </span><span class="lineNoCov">          0 :         const auto somaPosition = transformation.getTranslation();</span>
+<span class="lineNum">     433 </span>            :         const auto materialId =
+<span class="lineNum">     434 </span><span class="lineNoCov">          0 :             _getMaterialFromGeometryParameters(index, material,</span>
+<span class="lineNum">     435 </span>            :                                                brain::neuron::SectionType::soma,
+<span class="lineNum">     436 </span><span class="lineNoCov">          0 :                                                targetGIDOffsets);</span>
+<span class="lineNum">     437 </span><span class="lineNoCov">          0 :         scene._spheres[materialId].push_back(SpherePtr(</span>
+<span class="lineNum">     438 </span><span class="lineNoCov">          0 :             new Sphere(somaPosition, radius, 0.f, textureCoordinates)));</span>
+<span class="lineNum">     439 </span><span class="lineNoCov">          0 :         scene._worldBounds.merge(somaPosition);</span>
+<span class="lineNum">     440 </span><span class="lineNoCov">          0 :         return true;</span>
+<span class="lineNum">     441 </span>            :     }
 <span class="lineNum">     442 </span>            : 
-<span class="lineNum">     443 </span><span class="lineNoCov">          0 :         const auto radius = _geometryParameters.getRadiusMultiplier();</span>
-<span class="lineNum">     444 </span><span class="lineNoCov">          0 :         const auto textureCoordinates = _getIndexAsTextureCoordinates(offset);</span>
-<span class="lineNum">     445 </span><span class="lineNoCov">          0 :         const auto somaPosition = transformation.getTranslation();</span>
-<span class="lineNum">     446 </span>            :         const auto materialId =
-<span class="lineNum">     447 </span><span class="lineNoCov">          0 :             _getMaterialFromGeometryParameters(index, material,</span>
-<span class="lineNum">     448 </span>            :                                                brain::neuron::SectionType::soma,
-<span class="lineNum">     449 </span><span class="lineNoCov">          0 :                                                targetGIDOffsets);</span>
-<span class="lineNum">     450 </span><span class="lineNoCov">          0 :         scene._spheres[materialId].push_back(SpherePtr(</span>
-<span class="lineNum">     451 </span><span class="lineNoCov">          0 :             new Sphere(somaPosition, radius, 0.f, textureCoordinates)));</span>
-<span class="lineNum">     452 </span><span class="lineNoCov">          0 :         scene._worldBounds.merge(somaPosition);</span>
-<span class="lineNum">     453 </span><span class="lineNoCov">          0 :         return true;</span>
-<span class="lineNum">     454 </span>            :     }
-<span class="lineNum">     455 </span>            : 
-<span class="lineNum">     456 </span>            :     /**
-<span class="lineNum">     457 </span>            :      * @brief _createRealisticSoma Creates a realistic soma using the metaballs
-<span class="lineNum">     458 </span>            :      * algorithm.
-<span class="lineNum">     459 </span>            :      * @param uri URI of the morphology for which the soma is created
-<span class="lineNum">     460 </span>            :      * @param index Index of the current morphology
-<span class="lineNum">     461 </span>            :      * @param transformation Transformation to apply to the morphology
-<span class="lineNum">     462 </span>            :      * @param material Material that is forced in case geometry parameters
-<span class="lineNum">     463 </span>            :      * do not apply
-<span class="lineNum">     464 </span>            :      * @param scene Scene to which the morphology should be loaded into
-<a name="465"><span class="lineNum">     465 </span>            :      * @return True if the loading was successfull, false otherwise</a>
-<span class="lineNum">     466 </span>            :      */
-<span class="lineNum">     467 </span><span class="lineNoCov">          0 :     bool _createRealisticSoma(const servus::URI&amp; uri, const uint64_t index,</span>
-<span class="lineNum">     468 </span>            :                               const size_t material,
-<span class="lineNum">     469 </span>            :                               const Matrix4f&amp; transformation,
-<span class="lineNum">     470 </span>            :                               const GIDOffsets&amp; targetGIDOffsets,
-<span class="lineNum">     471 </span>            :                               ParallelSceneContainer&amp; scene)
-<span class="lineNum">     472 </span>            :     {
-<span class="lineNum">     473 </span>            :         try
-<span class="lineNum">     474 </span>            :         {
-<span class="lineNum">     475 </span>            :             const size_t morphologySectionTypes =
-<span class="lineNum">     476 </span><span class="lineNoCov">          0 :                 _geometryParameters.getMorphologySectionTypes();</span>
-<span class="lineNum">     477 </span>            : 
-<span class="lineNum">     478 </span><span class="lineNoCov">          0 :             brain::neuron::Morphology morphology(uri, transformation);</span>
-<span class="lineNum">     479 </span><span class="lineNoCov">          0 :             const auto sectionTypes = _getSectionTypes(morphologySectionTypes);</span>
-<span class="lineNum">     480 </span><span class="lineNoCov">          0 :             const auto&amp; sections = morphology.getSections(sectionTypes);</span>
-<span class="lineNum">     481 </span>            : 
-<span class="lineNum">     482 </span><span class="lineNoCov">          0 :             Spheres metaballs;</span>
-<span class="lineNum">     483 </span><span class="lineNoCov">          0 :             if (morphologySectionTypes &amp; size_t(MorphologySectionType::soma))</span>
-<span class="lineNum">     484 </span>            :             {
-<span class="lineNum">     485 </span>            :                 // Soma
-<span class="lineNum">     486 </span><span class="lineNoCov">          0 :                 const auto&amp; soma = morphology.getSoma();</span>
-<span class="lineNum">     487 </span><span class="lineNoCov">          0 :                 const auto center = soma.getCentroid();</span>
-<span class="lineNum">     488 </span><span class="lineNoCov">          0 :                 const auto radius = _getCorrectedRadius(soma.getMeanRadius());</span>
-<span class="lineNum">     489 </span><span class="lineNoCov">          0 :                 metaballs.push_back(SpherePtr(new Sphere(center, radius)));</span>
-<span class="lineNum">     490 </span><span class="lineNoCov">          0 :                 scene._worldBounds.merge(center);</span>
-<span class="lineNum">     491 </span>            :             }
-<span class="lineNum">     492 </span>            : 
-<span class="lineNum">     493 </span>            :             // Dendrites and axon
-<span class="lineNum">     494 </span><span class="lineNoCov">          0 :             for (const auto&amp; section : sections)</span>
-<span class="lineNum">     495 </span>            :             {
-<span class="lineNum">     496 </span><span class="lineNoCov">          0 :                 const auto hasParent = section.hasParent();</span>
-<span class="lineNum">     497 </span><span class="lineNoCov">          0 :                 if (hasParent)</span>
-<span class="lineNum">     498 </span>            :                 {
-<span class="lineNum">     499 </span>            :                     const auto parentSectionType =
-<span class="lineNum">     500 </span><span class="lineNoCov">          0 :                         section.getParent().getType();</span>
-<span class="lineNum">     501 </span><span class="lineNoCov">          0 :                     if (parentSectionType != brain::neuron::SectionType::soma)</span>
-<span class="lineNum">     502 </span><span class="lineNoCov">          0 :                         continue;</span>
-<span class="lineNum">     503 </span>            :                 }
-<span class="lineNum">     504 </span>            : 
-<span class="lineNum">     505 </span><span class="lineNoCov">          0 :                 const auto&amp; samples = section.getSamples();</span>
-<span class="lineNum">     506 </span><span class="lineNoCov">          0 :                 if (samples.empty())</span>
-<span class="lineNum">     507 </span><span class="lineNoCov">          0 :                     continue;</span>
+<span class="lineNum">     443 </span>            :     /**
+<span class="lineNum">     444 </span>            :      * @brief _createRealisticSoma Creates a realistic soma using the metaballs
+<span class="lineNum">     445 </span>            :      * algorithm.
+<span class="lineNum">     446 </span>            :      * @param uri URI of the morphology for which the soma is created
+<span class="lineNum">     447 </span>            :      * @param index Index of the current morphology
+<span class="lineNum">     448 </span>            :      * @param transformation Transformation to apply to the morphology
+<span class="lineNum">     449 </span>            :      * @param material Material that is forced in case geometry parameters
+<span class="lineNum">     450 </span>            :      * do not apply
+<span class="lineNum">     451 </span>            :      * @param scene Scene to which the morphology should be loaded into
+<a name="452"><span class="lineNum">     452 </span>            :      * @return True if the loading was successfull, false otherwise</a>
+<span class="lineNum">     453 </span>            :      */
+<span class="lineNum">     454 </span><span class="lineNoCov">          0 :     bool _createRealisticSoma(const servus::URI&amp; uri, const uint64_t index,</span>
+<span class="lineNum">     455 </span>            :                               const size_t material,
+<span class="lineNum">     456 </span>            :                               const Matrix4f&amp; transformation,
+<span class="lineNum">     457 </span>            :                               const GIDOffsets&amp; targetGIDOffsets,
+<span class="lineNum">     458 </span>            :                               ParallelSceneContainer&amp; scene)
+<span class="lineNum">     459 </span>            :     {
+<span class="lineNum">     460 </span>            :         try
+<span class="lineNum">     461 </span>            :         {
+<span class="lineNum">     462 </span>            :             const size_t morphologySectionTypes =
+<span class="lineNum">     463 </span><span class="lineNoCov">          0 :                 _geometryParameters.getMorphologySectionTypes();</span>
+<span class="lineNum">     464 </span>            : 
+<span class="lineNum">     465 </span><span class="lineNoCov">          0 :             brain::neuron::Morphology morphology(uri, transformation);</span>
+<span class="lineNum">     466 </span><span class="lineNoCov">          0 :             const auto sectionTypes = _getSectionTypes(morphologySectionTypes);</span>
+<span class="lineNum">     467 </span><span class="lineNoCov">          0 :             const auto&amp; sections = morphology.getSections(sectionTypes);</span>
+<span class="lineNum">     468 </span>            : 
+<span class="lineNum">     469 </span><span class="lineNoCov">          0 :             Spheres metaballs;</span>
+<span class="lineNum">     470 </span><span class="lineNoCov">          0 :             if (morphologySectionTypes &amp; size_t(MorphologySectionType::soma))</span>
+<span class="lineNum">     471 </span>            :             {
+<span class="lineNum">     472 </span>            :                 // Soma
+<span class="lineNum">     473 </span><span class="lineNoCov">          0 :                 const auto&amp; soma = morphology.getSoma();</span>
+<span class="lineNum">     474 </span><span class="lineNoCov">          0 :                 const auto center = soma.getCentroid();</span>
+<span class="lineNum">     475 </span><span class="lineNoCov">          0 :                 const auto radius = _getCorrectedRadius(soma.getMeanRadius());</span>
+<span class="lineNum">     476 </span><span class="lineNoCov">          0 :                 metaballs.push_back(SpherePtr(new Sphere(center, radius)));</span>
+<span class="lineNum">     477 </span><span class="lineNoCov">          0 :                 scene._worldBounds.merge(center);</span>
+<span class="lineNum">     478 </span>            :             }
+<span class="lineNum">     479 </span>            : 
+<span class="lineNum">     480 </span>            :             // Dendrites and axon
+<span class="lineNum">     481 </span><span class="lineNoCov">          0 :             for (const auto&amp; section : sections)</span>
+<span class="lineNum">     482 </span>            :             {
+<span class="lineNum">     483 </span><span class="lineNoCov">          0 :                 const auto hasParent = section.hasParent();</span>
+<span class="lineNum">     484 </span><span class="lineNoCov">          0 :                 if (hasParent)</span>
+<span class="lineNum">     485 </span>            :                 {
+<span class="lineNum">     486 </span>            :                     const auto parentSectionType =
+<span class="lineNum">     487 </span><span class="lineNoCov">          0 :                         section.getParent().getType();</span>
+<span class="lineNum">     488 </span><span class="lineNoCov">          0 :                     if (parentSectionType != brain::neuron::SectionType::soma)</span>
+<span class="lineNum">     489 </span><span class="lineNoCov">          0 :                         continue;</span>
+<span class="lineNum">     490 </span>            :                 }
+<span class="lineNum">     491 </span>            : 
+<span class="lineNum">     492 </span><span class="lineNoCov">          0 :                 const auto&amp; samples = section.getSamples();</span>
+<span class="lineNum">     493 </span><span class="lineNoCov">          0 :                 if (samples.empty())</span>
+<span class="lineNum">     494 </span><span class="lineNoCov">          0 :                     continue;</span>
+<span class="lineNum">     495 </span>            : 
+<span class="lineNum">     496 </span>            :                 const auto samplesFromSoma =
+<span class="lineNum">     497 </span><span class="lineNoCov">          0 :                     _geometryParameters.getMetaballsSamplesFromSoma();</span>
+<span class="lineNum">     498 </span>            :                 const auto samplesToProcess =
+<span class="lineNum">     499 </span><span class="lineNoCov">          0 :                     std::min(samplesFromSoma, samples.size());</span>
+<span class="lineNum">     500 </span><span class="lineNoCov">          0 :                 for (size_t i = 0; i &lt; samplesToProcess; ++i)</span>
+<span class="lineNum">     501 </span>            :                 {
+<span class="lineNum">     502 </span><span class="lineNoCov">          0 :                     const auto&amp; sample = samples[i];</span>
+<span class="lineNum">     503 </span><span class="lineNoCov">          0 :                     const Vector3f position(sample.x(), sample.y(), sample.z());</span>
+<span class="lineNum">     504 </span><span class="lineNoCov">          0 :                     const auto radius = _getCorrectedRadius(sample.w() * 0.5f);</span>
+<span class="lineNum">     505 </span><span class="lineNoCov">          0 :                     if (radius &gt; 0.f)</span>
+<span class="lineNum">     506 </span>            :                         metaballs.push_back(
+<span class="lineNum">     507 </span><span class="lineNoCov">          0 :                             SpherePtr(new Sphere(position, radius)));</span>
 <span class="lineNum">     508 </span>            : 
-<span class="lineNum">     509 </span>            :                 const auto samplesFromSoma =
-<span class="lineNum">     510 </span><span class="lineNoCov">          0 :                     _geometryParameters.getMetaballsSamplesFromSoma();</span>
-<span class="lineNum">     511 </span>            :                 const auto samplesToProcess =
-<span class="lineNum">     512 </span><span class="lineNoCov">          0 :                     std::min(samplesFromSoma, samples.size());</span>
-<span class="lineNum">     513 </span><span class="lineNoCov">          0 :                 for (size_t i = 0; i &lt; samplesToProcess; ++i)</span>
-<span class="lineNum">     514 </span>            :                 {
-<span class="lineNum">     515 </span><span class="lineNoCov">          0 :                     const auto&amp; sample = samples[i];</span>
-<span class="lineNum">     516 </span><span class="lineNoCov">          0 :                     const Vector3f position(sample.x(), sample.y(), sample.z());</span>
-<span class="lineNum">     517 </span><span class="lineNoCov">          0 :                     const auto radius = _getCorrectedRadius(sample.w() * 0.5f);</span>
-<span class="lineNum">     518 </span><span class="lineNoCov">          0 :                     if (radius &gt; 0.f)</span>
-<span class="lineNum">     519 </span>            :                         metaballs.push_back(
-<span class="lineNum">     520 </span><span class="lineNoCov">          0 :                             SpherePtr(new Sphere(position, radius)));</span>
-<span class="lineNum">     521 </span>            : 
-<span class="lineNum">     522 </span><span class="lineNoCov">          0 :                     scene._worldBounds.merge(position);</span>
-<span class="lineNum">     523 </span>            :                 }
-<span class="lineNum">     524 </span>            :             }
-<span class="lineNum">     525 </span>            : 
-<span class="lineNum">     526 </span>            :             // Generate mesh from metaballs
-<span class="lineNum">     527 </span><span class="lineNoCov">          0 :             const auto gridSize = _geometryParameters.getMetaballsGridSize();</span>
-<span class="lineNum">     528 </span><span class="lineNoCov">          0 :             const auto threshold = _geometryParameters.getMetaballsThreshold();</span>
-<span class="lineNum">     529 </span><span class="lineNoCov">          0 :             MetaballsGenerator metaballsGenerator;</span>
-<span class="lineNum">     530 </span>            :             const auto materialId = _getMaterialFromGeometryParameters(
-<span class="lineNum">     531 </span>            :                 index, material, brain::neuron::SectionType::soma,
-<span class="lineNum">     532 </span><span class="lineNoCov">          0 :                 targetGIDOffsets);</span>
-<span class="lineNum">     533 </span><span class="lineNoCov">          0 :             metaballsGenerator.generateMesh(metaballs, gridSize, threshold,</span>
-<span class="lineNum">     534 </span>            :                                             scene._materials, materialId,
-<span class="lineNum">     535 </span><span class="lineNoCov">          0 :                                             scene._trianglesMeshes);</span>
-<span class="lineNum">     536 </span>            :         }
-<span class="lineNum">     537 </span><span class="lineNoCov">          0 :         catch (const std::runtime_error&amp; e)</span>
-<span class="lineNum">     538 </span>            :         {
-<span class="lineNum">     539 </span><span class="lineNoCov">          0 :             BRAYNS_ERROR &lt;&lt; e.what() &lt;&lt; std::endl;</span>
-<span class="lineNum">     540 </span><span class="lineNoCov">          0 :             return false;</span>
-<span class="lineNum">     541 </span>            :         }
-<span class="lineNum">     542 </span><span class="lineNoCov">          0 :         return true;</span>
-<span class="lineNum">     543 </span>            :     }
-<span class="lineNum">     544 </span>            : 
-<span class="lineNum">     545 </span>            :     /**
-<span class="lineNum">     546 </span>            :      * @brief _importMorphologyFromURI imports a morphology from the specified
-<span class="lineNum">     547 </span>            :      * URI
-<span class="lineNum">     548 </span>            :      * @param uri URI of the morphology
-<span class="lineNum">     549 </span>            :      * @param index Index of the current morphology
-<span class="lineNum">     550 </span>            :      * @param transformation Transformation to apply to the morphology
-<span class="lineNum">     551 </span>            :      * @param material Material that is forced in case geometry parameters
-<span class="lineNum">     552 </span>            :      * do not apply
-<span class="lineNum">     553 </span>            :      * @param compartmentReport Compartment report to map to the morphology
-<span class="lineNum">     554 </span>            :      * @param scene Scene to which the morphology should be loaded into
-<a name="555"><span class="lineNum">     555 </span>            :      * @return True if the loading was successfull, false otherwise</a>
-<span class="lineNum">     556 </span>            :      */
-<span class="lineNum">     557 </span><span class="lineCov">       2000 :     bool _importMorphologyFromURI(const servus::URI&amp; uri, const uint64_t index,</span>
-<span class="lineNum">     558 </span>            :                                   const size_t material,
-<span class="lineNum">     559 </span>            :                                   const Matrix4f&amp; transformation,
-<span class="lineNum">     560 </span>            :                                   CompartmentReportPtr compartmentReport,
-<span class="lineNum">     561 </span>            :                                   const GIDOffsets&amp; targetGIDOffsets,
-<span class="lineNum">     562 </span>            :                                   ParallelSceneContainer&amp; scene) const
-<span class="lineNum">     563 </span>            :     {
-<span class="lineNum">     564 </span>            :         try
-<span class="lineNum">     565 </span>            :         {
-<span class="lineNum">     566 </span><span class="lineCov">       2000 :             Vector3f translation;</span>
-<span class="lineNum">     567 </span>            : 
-<span class="lineNum">     568 </span>            :             const size_t morphologySectionTypes =
-<span class="lineNum">     569 </span><span class="lineCov">       2000 :                 _geometryParameters.getMorphologySectionTypes();</span>
+<span class="lineNum">     509 </span><span class="lineNoCov">          0 :                     scene._worldBounds.merge(position);</span>
+<span class="lineNum">     510 </span>            :                 }
+<span class="lineNum">     511 </span>            :             }
+<span class="lineNum">     512 </span>            : 
+<span class="lineNum">     513 </span>            :             // Generate mesh from metaballs
+<span class="lineNum">     514 </span><span class="lineNoCov">          0 :             const auto gridSize = _geometryParameters.getMetaballsGridSize();</span>
+<span class="lineNum">     515 </span><span class="lineNoCov">          0 :             const auto threshold = _geometryParameters.getMetaballsThreshold();</span>
+<span class="lineNum">     516 </span><span class="lineNoCov">          0 :             MetaballsGenerator metaballsGenerator;</span>
+<span class="lineNum">     517 </span>            :             const auto materialId = _getMaterialFromGeometryParameters(
+<span class="lineNum">     518 </span>            :                 index, material, brain::neuron::SectionType::soma,
+<span class="lineNum">     519 </span><span class="lineNoCov">          0 :                 targetGIDOffsets);</span>
+<span class="lineNum">     520 </span><span class="lineNoCov">          0 :             metaballsGenerator.generateMesh(metaballs, gridSize, threshold,</span>
+<span class="lineNum">     521 </span>            :                                             scene._materials, materialId,
+<span class="lineNum">     522 </span><span class="lineNoCov">          0 :                                             scene._trianglesMeshes);</span>
+<span class="lineNum">     523 </span>            :         }
+<span class="lineNum">     524 </span><span class="lineNoCov">          0 :         catch (const std::runtime_error&amp; e)</span>
+<span class="lineNum">     525 </span>            :         {
+<span class="lineNum">     526 </span><span class="lineNoCov">          0 :             BRAYNS_ERROR &lt;&lt; e.what() &lt;&lt; std::endl;</span>
+<span class="lineNum">     527 </span><span class="lineNoCov">          0 :             return false;</span>
+<span class="lineNum">     528 </span>            :         }
+<span class="lineNum">     529 </span><span class="lineNoCov">          0 :         return true;</span>
+<span class="lineNum">     530 </span>            :     }
+<span class="lineNum">     531 </span>            : 
+<span class="lineNum">     532 </span>            :     /**
+<span class="lineNum">     533 </span>            :      * @brief _importMorphologyFromURI imports a morphology from the specified
+<span class="lineNum">     534 </span>            :      * URI
+<span class="lineNum">     535 </span>            :      * @param uri URI of the morphology
+<span class="lineNum">     536 </span>            :      * @param index Index of the current morphology
+<span class="lineNum">     537 </span>            :      * @param transformation Transformation to apply to the morphology
+<span class="lineNum">     538 </span>            :      * @param material Material that is forced in case geometry parameters
+<span class="lineNum">     539 </span>            :      * do not apply
+<span class="lineNum">     540 </span>            :      * @param compartmentReport Compartment report to map to the morphology
+<span class="lineNum">     541 </span>            :      * @param scene Scene to which the morphology should be loaded into
+<a name="542"><span class="lineNum">     542 </span>            :      * @return True if the loading was successfull, false otherwise</a>
+<span class="lineNum">     543 </span>            :      */
+<span class="lineNum">     544 </span><span class="lineCov">       2000 :     bool _importMorphologyFromURI(const servus::URI&amp; uri, const uint64_t index,</span>
+<span class="lineNum">     545 </span>            :                                   const size_t material,
+<span class="lineNum">     546 </span>            :                                   const Matrix4f&amp; transformation,
+<span class="lineNum">     547 </span>            :                                   CompartmentReportPtr compartmentReport,
+<span class="lineNum">     548 </span>            :                                   const GIDOffsets&amp; targetGIDOffsets,
+<span class="lineNum">     549 </span>            :                                   ParallelSceneContainer&amp; scene) const
+<span class="lineNum">     550 </span>            :     {
+<span class="lineNum">     551 </span>            :         try
+<span class="lineNum">     552 </span>            :         {
+<span class="lineNum">     553 </span><span class="lineCov">       2000 :             Vector3f translation;</span>
+<span class="lineNum">     554 </span>            : 
+<span class="lineNum">     555 </span>            :             const size_t morphologySectionTypes =
+<span class="lineNum">     556 </span><span class="lineCov">       2000 :                 _geometryParameters.getMorphologySectionTypes();</span>
+<span class="lineNum">     557 </span>            : 
+<span class="lineNum">     558 </span><span class="lineCov">       4000 :             brain::neuron::Morphology morphology(uri, transformation);</span>
+<span class="lineNum">     559 </span><span class="lineCov">       4000 :             brain::neuron::SectionTypes sectionTypes;</span>
+<span class="lineNum">     560 </span>            : 
+<span class="lineNum">     561 </span>            :             const MorphologyLayout&amp; layout =
+<span class="lineNum">     562 </span><span class="lineCov">       2000 :                 _geometryParameters.getMorphologyLayout();</span>
+<span class="lineNum">     563 </span>            : 
+<span class="lineNum">     564 </span><span class="lineCov">       2000 :             if (layout.nbColumns != 0)</span>
+<span class="lineNum">     565 </span>            :             {
+<span class="lineNum">     566 </span><span class="lineNoCov">          0 :                 Boxf morphologyAABB;</span>
+<span class="lineNum">     567 </span><span class="lineNoCov">          0 :                 const auto&amp; points = morphology.getPoints();</span>
+<span class="lineNum">     568 </span><span class="lineNoCov">          0 :                 for (const auto&amp; point : points)</span>
+<span class="lineNum">     569 </span><span class="lineNoCov">          0 :                     morphologyAABB.merge({point.x(), point.y(), point.z()});</span>
 <span class="lineNum">     570 </span>            : 
-<span class="lineNum">     571 </span><span class="lineCov">       4000 :             brain::neuron::Morphology morphology(uri, transformation);</span>
-<span class="lineNum">     572 </span><span class="lineCov">       4000 :             brain::neuron::SectionTypes sectionTypes;</span>
-<span class="lineNum">     573 </span>            : 
-<span class="lineNum">     574 </span>            :             const MorphologyLayout&amp; layout =
-<span class="lineNum">     575 </span><span class="lineCov">       2000 :                 _geometryParameters.getMorphologyLayout();</span>
-<span class="lineNum">     576 </span>            : 
-<span class="lineNum">     577 </span><span class="lineCov">       2000 :             if (layout.nbColumns != 0)</span>
-<span class="lineNum">     578 </span>            :             {
-<span class="lineNum">     579 </span><span class="lineNoCov">          0 :                 Boxf morphologyAABB;</span>
-<span class="lineNum">     580 </span><span class="lineNoCov">          0 :                 const auto&amp; points = morphology.getPoints();</span>
-<span class="lineNum">     581 </span><span class="lineNoCov">          0 :                 for (const auto&amp; point : points)</span>
-<span class="lineNum">     582 </span><span class="lineNoCov">          0 :                     morphologyAABB.merge({point.x(), point.y(), point.z()});</span>
+<span class="lineNum">     571 </span>            :                 const Vector3f positionInGrid = {
+<span class="lineNum">     572 </span><span class="lineNoCov">          0 :                     -1.f * layout.horizontalSpacing *</span>
+<span class="lineNum">     573 </span><span class="lineNoCov">          0 :                         static_cast&lt;float&gt;(index % layout.nbColumns),</span>
+<span class="lineNum">     574 </span><span class="lineNoCov">          0 :                     -1.f * layout.verticalSpacing *</span>
+<span class="lineNum">     575 </span><span class="lineNoCov">          0 :                         static_cast&lt;float&gt;(index / layout.nbColumns),</span>
+<span class="lineNum">     576 </span><span class="lineNoCov">          0 :                     0.f};</span>
+<span class="lineNum">     577 </span><span class="lineNoCov">          0 :                 translation = positionInGrid - morphologyAABB.getCenter();</span>
+<span class="lineNum">     578 </span>            :             }
+<span class="lineNum">     579 </span>            : 
+<span class="lineNum">     580 </span><span class="lineCov">       2000 :             sectionTypes = _getSectionTypes(morphologySectionTypes);</span>
+<span class="lineNum">     581 </span>            : 
+<span class="lineNum">     582 </span><span class="lineCov">       2000 :             uint64_t offset = 0;</span>
 <span class="lineNum">     583 </span>            : 
-<span class="lineNum">     584 </span>            :                 const Vector3f positionInGrid = {
-<span class="lineNum">     585 </span><span class="lineNoCov">          0 :                     -1.f * layout.horizontalSpacing *</span>
-<span class="lineNum">     586 </span><span class="lineNoCov">          0 :                         static_cast&lt;float&gt;(index % layout.nbColumns),</span>
-<span class="lineNum">     587 </span><span class="lineNoCov">          0 :                     -1.f * layout.verticalSpacing *</span>
-<span class="lineNum">     588 </span><span class="lineNoCov">          0 :                         static_cast&lt;float&gt;(index / layout.nbColumns),</span>
-<span class="lineNum">     589 </span><span class="lineNoCov">          0 :                     0.f};</span>
-<span class="lineNum">     590 </span><span class="lineNoCov">          0 :                 translation = positionInGrid - morphologyAABB.getCenter();</span>
-<span class="lineNum">     591 </span>            :             }
-<span class="lineNum">     592 </span>            : 
-<span class="lineNum">     593 </span><span class="lineCov">       2000 :             sectionTypes = _getSectionTypes(morphologySectionTypes);</span>
-<span class="lineNum">     594 </span>            : 
-<span class="lineNum">     595 </span><span class="lineCov">       2000 :             uint64_t offset = 0;</span>
-<span class="lineNum">     596 </span>            : 
-<span class="lineNum">     597 </span><span class="lineCov">       2000 :             if (compartmentReport)</span>
-<span class="lineNum">     598 </span><span class="lineNoCov">          0 :                 offset = compartmentReport-&gt;getOffsets()[index][0];</span>
-<span class="lineNum">     599 </span>            : 
-<span class="lineNum">     600 </span>            :             // Soma
-<span class="lineNum">     601 </span><span class="lineCov">       4000 :             if (!_geometryParameters.useRealisticSomas() &amp;&amp;</span>
-<span class="lineNum">     602 </span><span class="lineCov">       2000 :                 morphologySectionTypes &amp;</span>
-<span class="lineNum">     603 </span>            :                     static_cast&lt;size_t&gt;(MorphologySectionType::soma))
-<span class="lineNum">     604 </span>            :             {
-<span class="lineNum">     605 </span><span class="lineCov">       4000 :                 const auto&amp; soma = morphology.getSoma();</span>
-<span class="lineNum">     606 </span><span class="lineCov">       2000 :                 const size_t materialId = _getMaterialFromGeometryParameters(</span>
-<span class="lineNum">     607 </span>            :                     index, material, brain::neuron::SectionType::soma,
-<span class="lineNum">     608 </span><span class="lineCov">       2000 :                     targetGIDOffsets);</span>
-<span class="lineNum">     609 </span><span class="lineCov">       2000 :                 const auto somaPosition = soma.getCentroid() + translation;</span>
-<span class="lineNum">     610 </span><span class="lineCov">       2000 :                 const auto radius = _getCorrectedRadius(soma.getMeanRadius());</span>
-<span class="lineNum">     611 </span>            :                 const auto textureCoordinates =
-<span class="lineNum">     612 </span><span class="lineCov">       2000 :                     _getIndexAsTextureCoordinates(offset);</span>
-<span class="lineNum">     613 </span><span class="lineCov">       6000 :                 scene._spheres[materialId].push_back(SpherePtr(</span>
-<span class="lineNum">     614 </span><span class="lineCov">       4000 :                     new Sphere(somaPosition, radius, 0.f, textureCoordinates)));</span>
-<span class="lineNum">     615 </span><span class="lineCov">       2000 :                 scene._worldBounds.merge(somaPosition);</span>
-<span class="lineNum">     616 </span>            : 
-<span class="lineNum">     617 </span><span class="lineCov">       2000 :                 if (_geometryParameters.getCircuitUseSimulationModel())</span>
-<span class="lineNum">     618 </span>            :                 {
-<span class="lineNum">     619 </span>            :                     // When using a simulation model, parametric geometries must
-<span class="lineNum">     620 </span>            :                     // occupy as much space as possible in the mesh. This code
-<span class="lineNum">     621 </span>            :                     // inserts a Cone between the soma and the beginning of each
-<span class="lineNum">     622 </span>            :                     // branch.
-<span class="lineNum">     623 </span><span class="lineNoCov">          0 :                     const auto&amp; children = soma.getChildren();</span>
-<span class="lineNum">     624 </span><span class="lineNoCov">          0 :                     for (const auto&amp; child : children)</span>
-<span class="lineNum">     625 </span>            :                     {
-<span class="lineNum">     626 </span><span class="lineNoCov">          0 :                         const auto&amp; samples = child.getSamples();</span>
-<span class="lineNum">     627 </span><span class="lineNoCov">          0 :                         const Vector3f sample = {samples[0].x(), samples[0].y(),</span>
-<span class="lineNum">     628 </span><span class="lineNoCov">          0 :                                                  samples[0].z()};</span>
-<span class="lineNum">     629 </span><span class="lineNoCov">          0 :                         scene._cones[materialId].push_back(ConePtr(</span>
-<span class="lineNum">     630 </span>            :                             new Cone(somaPosition, sample, radius,
-<span class="lineNum">     631 </span><span class="lineNoCov">          0 :                                      _getCorrectedRadius(samples[0].w() * 0.5f),</span>
-<span class="lineNum">     632 </span><span class="lineNoCov">          0 :                                      0.f, textureCoordinates)));</span>
-<span class="lineNum">     633 </span><span class="lineNoCov">          0 :                         scene._worldBounds.merge(sample);</span>
-<span class="lineNum">     634 </span>            :                     }
-<span class="lineNum">     635 </span>            :                 }
-<span class="lineNum">     636 </span>            :             }
-<span class="lineNum">     637 </span>            : 
-<span class="lineNum">     638 </span>            :             // Only the first one or two axon sections are reported, so find the
-<span class="lineNum">     639 </span>            :             // last one and use its offset for all the other axon sections
-<span class="lineNum">     640 </span><span class="lineCov">       2000 :             uint16_t lastAxon = 0;</span>
-<span class="lineNum">     641 </span><span class="lineCov">       2000 :             if (compartmentReport &amp;&amp;</span>
-<span class="lineNum">     642 </span><span class="lineNoCov">          0 :                 (morphologySectionTypes &amp;</span>
-<span class="lineNum">     643 </span><span class="lineCov">       2000 :                  static_cast&lt;size_t&gt;(MorphologySectionType::axon)))</span>
-<span class="lineNum">     644 </span>            :             {
-<span class="lineNum">     645 </span>            :                 const auto&amp; counts =
-<span class="lineNum">     646 </span><span class="lineNoCov">          0 :                     compartmentReport-&gt;getCompartmentCounts()[index];</span>
-<span class="lineNum">     647 </span>            :                 const auto&amp; axon =
-<span class="lineNum">     648 </span><span class="lineNoCov">          0 :                     morphology.getSections(brain::neuron::SectionType::axon);</span>
-<span class="lineNum">     649 </span><span class="lineNoCov">          0 :                 for (const auto&amp; section : axon)</span>
-<span class="lineNum">     650 </span>            :                 {
-<span class="lineNum">     651 </span><span class="lineNoCov">          0 :                     if (counts[section.getID()] &gt; 0)</span>
-<span class="lineNum">     652 </span>            :                     {
-<span class="lineNum">     653 </span><span class="lineNoCov">          0 :                         lastAxon = section.getID();</span>
-<span class="lineNum">     654 </span><span class="lineNoCov">          0 :                         continue;</span>
-<span class="lineNum">     655 </span>            :                     }
-<span class="lineNum">     656 </span><span class="lineNoCov">          0 :                     break;</span>
-<span class="lineNum">     657 </span>            :                 }
-<span class="lineNum">     658 </span>            :             }
-<span class="lineNum">     659 </span>            : 
-<span class="lineNum">     660 </span>            :             // Dendrites and axon
-<span class="lineNum">     661 </span><span class="lineCov">     744770 :             for (const auto&amp; section : morphology.getSections(sectionTypes))</span>
-<span class="lineNum">     662 </span>            :             {
-<span class="lineNum">     663 </span><span class="lineCov">     742776 :                 if (section.getType() == brain::neuron::SectionType::soma)</span>
-<span class="lineNum">     664 </span><span class="lineCov">          6 :                     continue;</span>
-<span class="lineNum">     665 </span>            : 
-<span class="lineNum">     666 </span>            :                 const auto materialId =
-<span class="lineNum">     667 </span><span class="lineCov">     742876 :                     _getMaterialFromGeometryParameters(index, material,</span>
-<span class="lineNum">     668 </span>            :                                                        section.getType(),
-<span class="lineNum">     669 </span><span class="lineCov">     742826 :                                                        targetGIDOffsets);</span>
-<span class="lineNum">     670 </span><span class="lineCov">    1485596 :                 const auto&amp; samples = section.getSamples();</span>
-<span class="lineNum">     671 </span><span class="lineCov">     742876 :                 if (samples.empty())</span>
-<span class="lineNum">     672 </span><span class="lineNoCov">          0 :                     continue;</span>
-<span class="lineNum">     673 </span>            : 
-<span class="lineNum">     674 </span><span class="lineCov">     742874 :                 auto previousSample = samples[0];</span>
-<span class="lineNum">     675 </span><span class="lineCov">     742874 :                 size_t step = 1;</span>
-<span class="lineNum">     676 </span><span class="lineCov">     742874 :                 switch (_geometryParameters.getGeometryQuality())</span>
-<span class="lineNum">     677 </span>            :                 {
-<span class="lineNum">     678 </span>            :                 case GeometryQuality::low:
-<span class="lineNum">     679 </span><span class="lineNoCov">          0 :                     step = samples.size() - 1;</span>
-<span class="lineNum">     680 </span><span class="lineNoCov">          0 :                     break;</span>
-<span class="lineNum">     681 </span>            :                 case GeometryQuality::medium:
-<span class="lineNum">     682 </span><span class="lineNoCov">          0 :                     step = samples.size() / 2;</span>
-<span class="lineNum">     683 </span><span class="lineNoCov">          0 :                     step = (step == 0) ? 1 : step;</span>
-<span class="lineNum">     684 </span><span class="lineNoCov">          0 :                     break;</span>
-<span class="lineNum">     685 </span>            :                 default:
-<span class="lineNum">     686 </span><span class="lineCov">     742878 :                     step = 1;</span>
-<span class="lineNum">     687 </span>            :                 }
-<span class="lineNum">     688 </span>            : 
-<span class="lineNum">     689 </span><span class="lineCov">     742878 :                 const float distanceToSoma = section.getDistanceToSoma();</span>
-<span class="lineNum">     690 </span>            :                 const floats&amp; distancesToSoma =
-<span class="lineNum">     691 </span><span class="lineCov">    1484820 :                     section.getSampleDistancesToSoma();</span>
-<span class="lineNum">     692 </span>            : 
-<span class="lineNum">     693 </span><span class="lineCov">     742884 :                 float segmentStep = 0.f;</span>
-<span class="lineNum">     694 </span><span class="lineCov">     742884 :                 if (compartmentReport)</span>
-<span class="lineNum">     695 </span>            :                 {
-<span class="lineNum">     696 </span>            :                     const auto&amp; counts =
-<span class="lineNum">     697 </span><span class="lineNoCov">          0 :                         compartmentReport-&gt;getCompartmentCounts()[index];</span>
-<span class="lineNum">     698 </span>            :                     // Number of compartments usually differs from number of
-<span class="lineNum">     699 </span>            :                     // samples
-<span class="lineNum">     700 </span><span class="lineNoCov">          0 :                     segmentStep =</span>
-<span class="lineNum">     701 </span><span class="lineNoCov">          0 :                         counts[section.getID()] / float(samples.size());</span>
-<span class="lineNum">     702 </span>            :                 }
-<span class="lineNum">     703 </span>            : 
-<span class="lineNum">     704 </span><span class="lineCov">     759798 :                 bool done = false;</span>
-<span class="lineNum">     705 </span><span class="lineCov">   23447728 :                 for (size_t i = step; !done &amp;&amp; i &lt; samples.size() + step;</span>
-<span class="lineNum">     706 </span><span class="lineCov">   22687930 :                      i += step)</span>
-<span class="lineNum">     707 </span>            :                 {
-<span class="lineNum">     708 </span><span class="lineCov">   22721300 :                     if (i &gt;= samples.size())</span>
-<span class="lineNum">     709 </span>            :                     {
-<span class="lineNum">     710 </span><span class="lineCov">     742142 :                         i = samples.size() - 1;</span>
-<span class="lineNum">     711 </span><span class="lineCov">     742190 :                         done = true;</span>
-<span class="lineNum">     712 </span>            :                     }
-<span class="lineNum">     713 </span>            : 
-<span class="lineNum">     714 </span><span class="lineCov">   22791886 :                     const auto distance = distanceToSoma + distancesToSoma[i];</span>
-<span class="lineNum">     715 </span>            : 
-<span class="lineNum">     716 </span><span class="lineCov">   22790186 :                     if (compartmentReport)</span>
-<span class="lineNum">     717 </span>            :                     {
-<span class="lineNum">     718 </span>            :                         const auto&amp; offsets =
-<span class="lineNum">     719 </span><span class="lineNoCov">          0 :                             compartmentReport-&gt;getOffsets()[index];</span>
-<span class="lineNum">     720 </span>            :                         const auto&amp; counts =
-<span class="lineNum">     721 </span><span class="lineNoCov">          0 :                             compartmentReport-&gt;getCompartmentCounts()[index];</span>
-<span class="lineNum">     722 </span>            : 
-<span class="lineNum">     723 </span>            :                         // update the offset if we have enough compartments aka
-<span class="lineNum">     724 </span>            :                         // a full compartment report. Otherwise we keep the soma
-<span class="lineNum">     725 </span>            :                         // offset which happens for soma reports and use this
-<span class="lineNum">     726 </span>            :                         // for all the sections
-<span class="lineNum">     727 </span><span class="lineNoCov">          0 :                         if (section.getID() &lt; counts.size())</span>
-<span class="lineNum">     728 </span>            :                         {
-<span class="lineNum">     729 </span><span class="lineNoCov">          0 :                             if (counts[section.getID()] &gt; 0)</span>
-<span class="lineNum">     730 </span><span class="lineNoCov">          0 :                                 offset = offsets[section.getID()] +</span>
-<span class="lineNum">     731 </span><span class="lineNoCov">          0 :                                          float(i - step) * segmentStep;</span>
-<span class="lineNum">     732 </span>            :                             else
-<span class="lineNum">     733 </span>            :                             {
-<span class="lineNum">     734 </span><span class="lineNoCov">          0 :                                 if (section.getType() ==</span>
-<span class="lineNum">     735 </span>            :                                     brain::neuron::SectionType::axon)
-<span class="lineNum">     736 </span>            :                                 {
-<span class="lineNum">     737 </span><span class="lineNoCov">          0 :                                     offset = offsets[lastAxon];</span>
-<span class="lineNum">     738 </span>            :                                 }
-<span class="lineNum">     739 </span>            :                                 else
-<span class="lineNum">     740 </span>            :                                     // This should never happen, but just in
-<span class="lineNum">     741 </span>            :                                     // case use an invalid value to show an
-<span class="lineNum">     742 </span>            :                                     // error color
-<span class="lineNum">     743 </span>            :                                     offset =
-<span class="lineNum">     744 </span><span class="lineNoCov">          0 :                                         std::numeric_limits&lt;uint64_t&gt;::max();</span>
-<span class="lineNum">     745 </span>            :                             }
-<span class="lineNum">     746 </span>            :                         }
-<span class="lineNum">     747 </span>            :                     }
-<span class="lineNum">     748 </span>            : 
-<span class="lineNum">     749 </span><span class="lineCov">   22811800 :                     const auto sample = samples[i];</span>
-<span class="lineNum">     750 </span>            :                     const auto previousRadius =
-<span class="lineNum">     751 </span><span class="lineCov">   22801794 :                         _getCorrectedRadius(samples[i - step].w() * 0.5f);</span>
-<span class="lineNum">     752 </span>            : 
-<span class="lineNum">     753 </span><span class="lineCov">   22748516 :                     Vector3f position(sample.x(), sample.y(), sample.z());</span>
-<span class="lineNum">     754 </span><span class="lineCov">   22544572 :                     position += translation;</span>
-<span class="lineNum">     755 </span><span class="lineCov">   21887672 :                     Vector3f target(previousSample.x(), previousSample.y(),</span>
-<span class="lineNum">     756 </span><span class="lineCov">   43995922 :                                     previousSample.z());</span>
-<span class="lineNum">     757 </span><span class="lineCov">   22462366 :                     target += translation;</span>
-<span class="lineNum">     758 </span>            :                     const auto textureCoordinates =
-<span class="lineNum">     759 </span><span class="lineCov">   21882558 :                         _getIndexAsTextureCoordinates(offset);</span>
-<span class="lineNum">     760 </span>            :                     const auto radius =
-<span class="lineNum">     761 </span><span class="lineCov">   22944824 :                         _getCorrectedRadius(samples[i].w() * 0.5f);</span>
-<span class="lineNum">     762 </span>            : 
-<span class="lineNum">     763 </span><span class="lineCov">   22635738 :                     if (radius &gt; 0.f)</span>
-<span class="lineNum">     764 </span>            :                     {
-<span class="lineNum">     765 </span><span class="lineCov">   22640592 :                         auto&amp; spheres = scene._spheres[materialId];</span>
-<span class="lineNum">     766 </span>            :                         spheres.push_back(
-<span class="lineNum">     767 </span><span class="lineCov">   66679024 :                             SpherePtr(new Sphere(position, radius, distance,</span>
-<span class="lineNum">     768 </span><span class="lineCov">   44823452 :                                                  textureCoordinates)));</span>
-<span class="lineNum">     769 </span><span class="lineCov">   22035348 :                         scene._worldBounds.merge(position);</span>
-<span class="lineNum">     770 </span>            : 
-<span class="lineNum">     771 </span><span class="lineCov">   22525266 :                         if (position != target &amp;&amp; previousRadius &gt; 0.f)</span>
-<span class="lineNum">     772 </span>            :                         {
-<span class="lineNum">     773 </span><span class="lineCov">   21923000 :                             auto&amp; cylinders = scene._cylinders[materialId];</span>
-<span class="lineNum">     774 </span><span class="lineCov">   21337760 :                             auto&amp; cones = scene._cones[materialId];</span>
-<span class="lineNum">     775 </span><span class="lineCov">   21543744 :                             if (radius == previousRadius)</span>
-<span class="lineNum">     776 </span><span class="lineCov">   39007172 :                                 cylinders.push_back(CylinderPtr(</span>
-<span class="lineNum">     777 </span>            :                                     new Cylinder(position, target, radius,
-<span class="lineNum">     778 </span>            :                                                  distance,
-<span class="lineNum">     779 </span><span class="lineCov">   39074876 :                                                  textureCoordinates)));</span>
-<span class="lineNum">     780 </span>            :                             else
-<span class="lineNum">     781 </span>            :                                 cones.push_back(
-<span class="lineNum">     782 </span><span class="lineCov">    4975778 :                                     ConePtr(new Cone(position, target, radius,</span>
-<span class="lineNum">     783 </span>            :                                                      previousRadius, distance,
-<span class="lineNum">     784 </span><span class="lineCov">    4963652 :                                                      textureCoordinates)));</span>
-<span class="lineNum">     785 </span><span class="lineCov">   21501304 :                             scene._worldBounds.merge(target);</span>
-<span class="lineNum">     786 </span>            :                         }
-<span class="lineNum">     787 </span>            :                     }
-<span class="lineNum">     788 </span><span class="lineCov">   22615108 :                     previousSample = sample;</span>
-<span class="lineNum">     789 </span>            :                 }
-<span class="lineNum">     790 </span>            :             }
-<span class="lineNum">     791 </span>            :         }
-<span class="lineNum">     792 </span><span class="lineNoCov">          0 :         catch (const std::runtime_error&amp; e)</span>
-<span class="lineNum">     793 </span>            :         {
-<span class="lineNum">     794 </span><span class="lineNoCov">          0 :             BRAYNS_ERROR &lt;&lt; e.what() &lt;&lt; std::endl;</span>
-<span class="lineNum">     795 </span><span class="lineNoCov">          0 :             return false;</span>
-<span class="lineNum">     796 </span>            :         }
-<span class="lineNum">     797 </span><span class="lineCov">       2000 :         return true;</span>
-<span class="lineNum">     798 </span>            :     }
-<a name="799"><span class="lineNum">     799 </span>            : </a>
-<span class="lineNum">     800 </span>            : #if (BRAYNS_USE_ASSIMP)
-<span class="lineNum">     801 </span><span class="lineCov">          2 :     bool _importMeshes(const brain::GIDSet&amp; gids,</span>
-<span class="lineNum">     802 </span>            :                        const Matrix4fs&amp; transformations,
-<span class="lineNum">     803 </span>            :                        const GIDOffsets&amp; targetGIDOffsets,
-<span class="lineNum">     804 </span>            :                        MeshLoader&amp; meshLoader)
-<span class="lineNum">     805 </span>            :     {
-<span class="lineNum">     806 </span><span class="lineCov">          2 :         size_t loadingFailures = 0;</span>
-<span class="lineNum">     807 </span>            :         const auto meshedMorphologiesFolder =
-<span class="lineNum">     808 </span><span class="lineCov">          4 :             _geometryParameters.getCircuitMeshFolder();</span>
-<span class="lineNum">     809 </span><span class="lineCov">          2 :         if (meshedMorphologiesFolder.empty())</span>
-<span class="lineNum">     810 </span><span class="lineCov">          2 :             return true;</span>
-<span class="lineNum">     811 </span>            : 
-<span class="lineNum">     812 </span><span class="lineNoCov">          0 :         uint64_t meshIndex = 0;</span>
-<span class="lineNum">     813 </span>            :         // Loading meshes is currently sequential. TODO: Make it parallel!!!
-<span class="lineNum">     814 </span><span class="lineNoCov">          0 :         std::stringstream message;</span>
-<span class="lineNum">     815 </span><span class="lineNoCov">          0 :         message &lt;&lt; &quot;Loading &quot; &lt;&lt; gids.size() &lt;&lt; &quot; meshes...&quot;;</span>
-<span class="lineNum">     816 </span><span class="lineNoCov">          0 :         for (const auto&amp; gid : gids)</span>
-<span class="lineNum">     817 </span>            :         {
-<span class="lineNum">     818 </span>            :             const size_t materialId =
-<span class="lineNum">     819 </span><span class="lineNoCov">          0 :                 _neuronMatrix.empty()</span>
-<span class="lineNum">     820 </span><span class="lineNoCov">          0 :                     ? _getMaterialFromGeometryParameters(</span>
-<span class="lineNum">     821 </span>            :                           meshIndex, NO_MATERIAL,
-<span class="lineNum">     822 </span>            :                           brain::neuron::SectionType::undefined,
-<span class="lineNum">     823 </span>            :                           targetGIDOffsets)
-<span class="lineNum">     824 </span>            :                     : NB_SYSTEM_MATERIALS +
-<span class="lineNum">     825 </span><span class="lineNoCov">          0 :                           boost::lexical_cast&lt;size_t&gt;(_neuronMatrix[meshIndex]);</span>
-<span class="lineNum">     826 </span>            : 
-<span class="lineNum">     827 </span>            :             // Load mesh from file
-<span class="lineNum">     828 </span>            :             const auto transformation =
-<span class="lineNum">     829 </span><span class="lineNoCov">          0 :                 _geometryParameters.getCircuitMeshTransformation()</span>
-<span class="lineNum">     830 </span><span class="lineNoCov">          0 :                     ? transformations[meshIndex]</span>
-<span class="lineNum">     831 </span><span class="lineNoCov">          0 :                     : Matrix4f();</span>
-<span class="lineNum">     832 </span><span class="lineNoCov">          0 :             if (!meshLoader.importMeshFromFile(</span>
-<span class="lineNum">     833 </span><span class="lineNoCov">          0 :                     meshLoader.getMeshFilenameFromGID(gid), _scene,</span>
-<span class="lineNum">     834 </span>            :                     transformation, materialId))
-<span class="lineNum">     835 </span><span class="lineNoCov">          0 :                 ++loadingFailures;</span>
-<span class="lineNum">     836 </span><span class="lineNoCov">          0 :             ++meshIndex;</span>
-<span class="lineNum">     837 </span><span class="lineNoCov">          0 :             _parent.updateProgress(message.str(), meshIndex, gids.size());</span>
-<span class="lineNum">     838 </span>            :         }
-<span class="lineNum">     839 </span><span class="lineNoCov">          0 :         if (loadingFailures != 0)</span>
-<span class="lineNum">     840 </span><span class="lineNoCov">          0 :             BRAYNS_WARN &lt;&lt; &quot;Failed to import &quot; &lt;&lt; loadingFailures &lt;&lt; &quot; meshes&quot;</span>
-<span class="lineNum">     841 </span><span class="lineNoCov">          0 :                         &lt;&lt; std::endl;</span>
-<span class="lineNum">     842 </span><span class="lineNoCov">          0 :         return true;</span>
-<span class="lineNum">     843 </span>            :     }
-<span class="lineNum">     844 </span>            : #else
-<span class="lineNum">     845 </span>            :     bool _importMeshes(const brain::GIDSet&amp;, const Matrix4fs&amp;,
-<span class="lineNum">     846 </span>            :                        const GIDOffsets&amp;, MeshLoaderPtr)
-<span class="lineNum">     847 </span>            :     {
-<span class="lineNum">     848 </span>            :         BRAYNS_ERROR &lt;&lt; &quot;assimp dependency is required to load meshes&quot;
-<span class="lineNum">     849 </span>            :                      &lt;&lt; std::endl;
-<span class="lineNum">     850 </span>            :         return false;
-<span class="lineNum">     851 </span>            :     }
-<a name="852"><span class="lineNum">     852 </span>            : #endif</a>
-<span class="lineNum">     853 </span>            : 
-<span class="lineNum">     854 </span><span class="lineCov">       2000 :     bool _importMorphology(const servus::URI&amp; source, const uint64_t index,</span>
-<span class="lineNum">     855 </span>            :                            const size_t material,
-<span class="lineNum">     856 </span>            :                            const Matrix4f&amp; transformation,
-<span class="lineNum">     857 </span>            :                            CompartmentReportPtr compartmentReport,
-<span class="lineNum">     858 </span>            :                            const GIDOffsets&amp; targetGIDOffsets,
-<span class="lineNum">     859 </span>            :                            ParallelSceneContainer&amp; scene)
-<span class="lineNum">     860 </span>            :     {
-<span class="lineNum">     861 </span><span class="lineCov">       2000 :         bool returnValue = true;</span>
-<span class="lineNum">     862 </span>            :         const size_t morphologySectionTypes =
-<span class="lineNum">     863 </span><span class="lineCov">       2000 :             _geometryParameters.getMorphologySectionTypes();</span>
-<span class="lineNum">     864 </span><span class="lineCov">       2000 :         if (morphologySectionTypes ==</span>
-<span class="lineNum">     865 </span>            :             static_cast&lt;size_t&gt;(MorphologySectionType::soma))
-<span class="lineNum">     866 </span><span class="lineNoCov">          0 :             return _importMorphologyAsPoint(index, material, transformation,</span>
-<span class="lineNum">     867 </span>            :                                             compartmentReport, targetGIDOffsets,
-<span class="lineNum">     868 </span><span class="lineNoCov">          0 :                                             scene);</span>
-<span class="lineNum">     869 </span><span class="lineCov">       2000 :         else if (_geometryParameters.useRealisticSomas())</span>
-<span class="lineNum">     870 </span>            :             returnValue =
-<span class="lineNum">     871 </span>            :                 _createRealisticSoma(source, index, material, transformation,
-<span class="lineNum">     872 </span><span class="lineNoCov">          0 :                                      targetGIDOffsets, scene);</span>
-<span class="lineNum">     873 </span><span class="lineCov">       2000 :         returnValue =</span>
-<span class="lineNum">     874 </span><span class="lineCov">       6000 :             returnValue &amp;&amp;</span>
-<span class="lineNum">     875 </span><span class="lineCov">       8000 :             _importMorphologyFromURI(source, index, material, transformation,</span>
-<span class="lineNum">     876 </span>            :                                      compartmentReport, targetGIDOffsets,
-<span class="lineNum">     877 </span><span class="lineNoCov">          0 :                                      scene);</span>
-<span class="lineNum">     878 </span><span class="lineCov">       2000 :         return returnValue;</span>
-<a name="879"><span class="lineNum">     879 </span>            :     }</a>
-<span class="lineNum">     880 </span>            : 
-<span class="lineNum">     881 </span><span class="lineCov">          2 :     bool _importMorphologies(const brain::Circuit&amp; circuit,</span>
-<span class="lineNum">     882 </span>            :                              const brain::GIDSet&amp; gids,
-<span class="lineNum">     883 </span>            :                              const Matrix4fs&amp; transformations,
-<span class="lineNum">     884 </span>            :                              const GIDOffsets&amp; targetGIDOffsets,
-<span class="lineNum">     885 </span>            :                              CompartmentReportPtr compartmentReport)
-<span class="lineNum">     886 </span>            :     {
-<span class="lineNum">     887 </span><span class="lineCov">          4 :         const brain::URIs&amp; uris = circuit.getMorphologyURIs(gids);</span>
-<span class="lineNum">     888 </span><span class="lineCov">          2 :         size_t loadingFailures = 0;</span>
-<span class="lineNum">     889 </span><span class="lineCov">          4 :         std::stringstream message;</span>
-<a name="890"><span class="lineNum">     890 </span><span class="lineCov">          2 :         message &lt;&lt; &quot;Loading &quot; &lt;&lt; uris.size() &lt;&lt; &quot; morphologies...&quot;;</span></a>
-<span class="lineNum">     891 </span><span class="lineCov">          2 :         std::atomic_size_t current{0};</span>
-<span class="lineNum">     892 </span><span class="lineCov">         14 : #pragma omp parallel</span>
-<span class="lineNum">     893 </span>            :         {
-<span class="lineNum">     894 </span><span class="lineCov">         12 : #pragma omp for nowait</span>
-<span class="lineNum">     895 </span>            :             for (uint64_t morphologyIndex = 0; morphologyIndex &lt; uris.size();
-<span class="lineNum">     896 </span>            :                  ++morphologyIndex)
-<span class="lineNum">     897 </span>            :             {
-<span class="lineNum">     898 </span><span class="lineCov">       2000 :                 ++current;</span>
-<span class="lineNum">     899 </span><span class="lineCov">       2000 :                 _parent.updateProgress(message.str(), current, uris.size());</span>
-<span class="lineNum">     900 </span>            : 
-<span class="lineNum">     901 </span><span class="lineCov">       4000 :                 SpheresMap spheres;</span>
-<span class="lineNum">     902 </span><span class="lineCov">       4000 :                 CylindersMap cylinders;</span>
-<span class="lineNum">     903 </span><span class="lineCov">       3998 :                 ConesMap cones;</span>
-<span class="lineNum">     904 </span><span class="lineCov">       4000 :                 TrianglesMeshMap triangleMeshes;</span>
-<span class="lineNum">     905 </span><span class="lineCov">       4000 :                 MaterialsMap materials;</span>
-<span class="lineNum">     906 </span><span class="lineCov">       2000 :                 Boxf bounds;</span>
-<span class="lineNum">     907 </span>            :                 ParallelSceneContainer sceneContainer(spheres, cylinders, cones,
-<span class="lineNum">     908 </span>            :                                                       triangleMeshes, materials,
-<span class="lineNum">     909 </span><span class="lineCov">       2000 :                                                       bounds);</span>
-<span class="lineNum">     910 </span><span class="lineCov">       2000 :                 const auto&amp; uri = uris[morphologyIndex];</span>
-<span class="lineNum">     911 </span>            : 
-<span class="lineNum">     912 </span>            :                 const size_t materialId =
-<span class="lineNum">     913 </span><span class="lineCov">       2000 :                     _geometryParameters.getCircuitUseSimulationModel()</span>
-<span class="lineNum">     914 </span><span class="lineCov">       4000 :                         ? NB_SYSTEM_MATERIALS</span>
-<span class="lineNum">     915 </span><span class="lineCov">       2000 :                         : _neuronMatrix.empty()</span>
-<span class="lineNum">     916 </span><span class="lineCov">       2000 :                               ? NO_MATERIAL</span>
-<span class="lineNum">     917 </span>            :                               : NB_SYSTEM_MATERIALS +
-<span class="lineNum">     918 </span><span class="lineNoCov">          0 :                                     boost::lexical_cast&lt;size_t&gt;(</span>
-<span class="lineNum">     919 </span><span class="lineCov">       2000 :                                         _neuronMatrix[morphologyIndex]);</span>
-<span class="lineNum">     920 </span>            : 
-<span class="lineNum">     921 </span><span class="lineCov">       4000 :                 if (!_importMorphology(uri, morphologyIndex, materialId,</span>
-<span class="lineNum">     922 </span><span class="lineCov">       2000 :                                        transformations[morphologyIndex],</span>
-<span class="lineNum">     923 </span>            :                                        compartmentReport, targetGIDOffsets,
-<span class="lineNum">     924 </span>            :                                        sceneContainer))
-<span class="lineNum">     925 </span>            : #pragma omp atomic
-<span class="lineNum">     926 </span><span class="lineNoCov">          0 :                     ++loadingFailures;</span>
-<span class="lineNum">     927 </span>            : 
-<span class="lineNum">     928 </span><span class="lineCov">       4000 : #pragma omp critical</span>
-<span class="lineNum">     929 </span><span class="lineCov">       6000 :                 for (const auto&amp; sphere : spheres)</span>
-<span class="lineNum">     930 </span>            :                 {
-<span class="lineNum">     931 </span><span class="lineCov">       2000 :                     const auto id = sphere.first;</span>
-<span class="lineNum">     932 </span><span class="lineCov">       2000 :                     _scene.getSpheres()[id].insert(</span>
-<span class="lineNum">     933 </span><span class="lineCov">       4000 :                         _scene.getSpheres()[id].end(),</span>
-<span class="lineNum">     934 </span><span class="lineCov">       2000 :                         sceneContainer._spheres[id].begin(),</span>
-<span class="lineNum">     935 </span><span class="lineCov">       8000 :                         sceneContainer._spheres[id].end());</span>
-<span class="lineNum">     936 </span>            :                 }
-<span class="lineNum">     937 </span>            : 
-<span class="lineNum">     938 </span><span class="lineCov">       4000 : #pragma omp critical</span>
-<span class="lineNum">     939 </span><span class="lineCov">       6000 :                 for (const auto&amp; cylinder : cylinders)</span>
-<span class="lineNum">     940 </span>            :                 {
-<span class="lineNum">     941 </span><span class="lineCov">       2000 :                     const auto id = cylinder.first;</span>
-<span class="lineNum">     942 </span><span class="lineCov">       2000 :                     _scene.getCylinders()[id].insert(</span>
-<span class="lineNum">     943 </span><span class="lineCov">       4000 :                         _scene.getCylinders()[id].end(),</span>
-<span class="lineNum">     944 </span><span class="lineCov">       2000 :                         sceneContainer._cylinders[id].begin(),</span>
-<span class="lineNum">     945 </span><span class="lineCov">       8000 :                         sceneContainer._cylinders[id].end());</span>
-<span class="lineNum">     946 </span>            :                 }
+<span class="lineNum">     584 </span><span class="lineCov">       2000 :             if (compartmentReport)</span>
+<span class="lineNum">     585 </span><span class="lineNoCov">          0 :                 offset = compartmentReport-&gt;getOffsets()[index][0];</span>
+<span class="lineNum">     586 </span>            : 
+<span class="lineNum">     587 </span>            :             // Soma
+<span class="lineNum">     588 </span><span class="lineCov">       4000 :             if (!_geometryParameters.useRealisticSomas() &amp;&amp;</span>
+<span class="lineNum">     589 </span><span class="lineCov">       2000 :                 morphologySectionTypes &amp;</span>
+<span class="lineNum">     590 </span>            :                     static_cast&lt;size_t&gt;(MorphologySectionType::soma))
+<span class="lineNum">     591 </span>            :             {
+<span class="lineNum">     592 </span><span class="lineCov">       4000 :                 const auto&amp; soma = morphology.getSoma();</span>
+<span class="lineNum">     593 </span><span class="lineCov">       2000 :                 const size_t materialId = _getMaterialFromGeometryParameters(</span>
+<span class="lineNum">     594 </span>            :                     index, material, brain::neuron::SectionType::soma,
+<span class="lineNum">     595 </span><span class="lineCov">       2000 :                     targetGIDOffsets);</span>
+<span class="lineNum">     596 </span><span class="lineCov">       2000 :                 const auto somaPosition = soma.getCentroid() + translation;</span>
+<span class="lineNum">     597 </span><span class="lineCov">       2000 :                 const auto radius = _getCorrectedRadius(soma.getMeanRadius());</span>
+<span class="lineNum">     598 </span>            :                 const auto textureCoordinates =
+<span class="lineNum">     599 </span><span class="lineCov">       2000 :                     _getIndexAsTextureCoordinates(offset);</span>
+<span class="lineNum">     600 </span><span class="lineCov">       6000 :                 scene._spheres[materialId].push_back(SpherePtr(</span>
+<span class="lineNum">     601 </span><span class="lineCov">       4000 :                     new Sphere(somaPosition, radius, 0.f, textureCoordinates)));</span>
+<span class="lineNum">     602 </span><span class="lineCov">       2000 :                 scene._worldBounds.merge(somaPosition);</span>
+<span class="lineNum">     603 </span>            : 
+<span class="lineNum">     604 </span><span class="lineCov">       2000 :                 if (_geometryParameters.getCircuitUseSimulationModel())</span>
+<span class="lineNum">     605 </span>            :                 {
+<span class="lineNum">     606 </span>            :                     // When using a simulation model, parametric geometries must
+<span class="lineNum">     607 </span>            :                     // occupy as much space as possible in the mesh. This code
+<span class="lineNum">     608 </span>            :                     // inserts a Cone between the soma and the beginning of each
+<span class="lineNum">     609 </span>            :                     // branch.
+<span class="lineNum">     610 </span><span class="lineNoCov">          0 :                     const auto&amp; children = soma.getChildren();</span>
+<span class="lineNum">     611 </span><span class="lineNoCov">          0 :                     for (const auto&amp; child : children)</span>
+<span class="lineNum">     612 </span>            :                     {
+<span class="lineNum">     613 </span><span class="lineNoCov">          0 :                         const auto&amp; samples = child.getSamples();</span>
+<span class="lineNum">     614 </span><span class="lineNoCov">          0 :                         const Vector3f sample = {samples[0].x(), samples[0].y(),</span>
+<span class="lineNum">     615 </span><span class="lineNoCov">          0 :                                                  samples[0].z()};</span>
+<span class="lineNum">     616 </span><span class="lineNoCov">          0 :                         scene._cones[materialId].push_back(ConePtr(</span>
+<span class="lineNum">     617 </span>            :                             new Cone(somaPosition, sample, radius,
+<span class="lineNum">     618 </span><span class="lineNoCov">          0 :                                      _getCorrectedRadius(samples[0].w() * 0.5f),</span>
+<span class="lineNum">     619 </span><span class="lineNoCov">          0 :                                      0.f, textureCoordinates)));</span>
+<span class="lineNum">     620 </span><span class="lineNoCov">          0 :                         scene._worldBounds.merge(sample);</span>
+<span class="lineNum">     621 </span>            :                     }
+<span class="lineNum">     622 </span>            :                 }
+<span class="lineNum">     623 </span>            :             }
+<span class="lineNum">     624 </span>            : 
+<span class="lineNum">     625 </span>            :             // Only the first one or two axon sections are reported, so find the
+<span class="lineNum">     626 </span>            :             // last one and use its offset for all the other axon sections
+<span class="lineNum">     627 </span><span class="lineCov">       2000 :             uint16_t lastAxon = 0;</span>
+<span class="lineNum">     628 </span><span class="lineCov">       2000 :             if (compartmentReport &amp;&amp;</span>
+<span class="lineNum">     629 </span><span class="lineNoCov">          0 :                 (morphologySectionTypes &amp;</span>
+<span class="lineNum">     630 </span><span class="lineCov">       2000 :                  static_cast&lt;size_t&gt;(MorphologySectionType::axon)))</span>
+<span class="lineNum">     631 </span>            :             {
+<span class="lineNum">     632 </span>            :                 const auto&amp; counts =
+<span class="lineNum">     633 </span><span class="lineNoCov">          0 :                     compartmentReport-&gt;getCompartmentCounts()[index];</span>
+<span class="lineNum">     634 </span>            :                 const auto&amp; axon =
+<span class="lineNum">     635 </span><span class="lineNoCov">          0 :                     morphology.getSections(brain::neuron::SectionType::axon);</span>
+<span class="lineNum">     636 </span><span class="lineNoCov">          0 :                 for (const auto&amp; section : axon)</span>
+<span class="lineNum">     637 </span>            :                 {
+<span class="lineNum">     638 </span><span class="lineNoCov">          0 :                     if (counts[section.getID()] &gt; 0)</span>
+<span class="lineNum">     639 </span>            :                     {
+<span class="lineNum">     640 </span><span class="lineNoCov">          0 :                         lastAxon = section.getID();</span>
+<span class="lineNum">     641 </span><span class="lineNoCov">          0 :                         continue;</span>
+<span class="lineNum">     642 </span>            :                     }
+<span class="lineNum">     643 </span><span class="lineNoCov">          0 :                     break;</span>
+<span class="lineNum">     644 </span>            :                 }
+<span class="lineNum">     645 </span>            :             }
+<span class="lineNum">     646 </span>            : 
+<span class="lineNum">     647 </span>            :             // Dendrites and axon
+<span class="lineNum">     648 </span><span class="lineCov">     744806 :             for (const auto&amp; section : morphology.getSections(sectionTypes))</span>
+<span class="lineNum">     649 </span>            :             {
+<span class="lineNum">     650 </span><span class="lineCov">     742808 :                 if (section.getType() == brain::neuron::SectionType::soma)</span>
+<span class="lineNum">     651 </span><span class="lineCov">          2 :                     continue;</span>
+<span class="lineNum">     652 </span>            : 
+<span class="lineNum">     653 </span>            :                 const auto materialId =
+<span class="lineNum">     654 </span><span class="lineCov">     742884 :                     _getMaterialFromGeometryParameters(index, material,</span>
+<span class="lineNum">     655 </span>            :                                                        section.getType(),
+<span class="lineNum">     656 </span><span class="lineCov">     742810 :                                                        targetGIDOffsets);</span>
+<span class="lineNum">     657 </span><span class="lineCov">    1485616 :                 const auto&amp; samples = section.getSamples();</span>
+<span class="lineNum">     658 </span><span class="lineCov">     742882 :                 if (samples.empty())</span>
+<span class="lineNum">     659 </span><span class="lineNoCov">          0 :                     continue;</span>
+<span class="lineNum">     660 </span>            : 
+<span class="lineNum">     661 </span><span class="lineCov">     742880 :                 auto previousSample = samples[0];</span>
+<span class="lineNum">     662 </span><span class="lineCov">     742880 :                 size_t step = 1;</span>
+<span class="lineNum">     663 </span><span class="lineCov">     742880 :                 switch (_geometryParameters.getGeometryQuality())</span>
+<span class="lineNum">     664 </span>            :                 {
+<span class="lineNum">     665 </span>            :                 case GeometryQuality::low:
+<span class="lineNum">     666 </span><span class="lineNoCov">          0 :                     step = samples.size() - 1;</span>
+<span class="lineNum">     667 </span><span class="lineNoCov">          0 :                     break;</span>
+<span class="lineNum">     668 </span>            :                 case GeometryQuality::medium:
+<span class="lineNum">     669 </span><span class="lineNoCov">          0 :                     step = samples.size() / 2;</span>
+<span class="lineNum">     670 </span><span class="lineNoCov">          0 :                     step = (step == 0) ? 1 : step;</span>
+<span class="lineNum">     671 </span><span class="lineNoCov">          0 :                     break;</span>
+<span class="lineNum">     672 </span>            :                 default:
+<span class="lineNum">     673 </span><span class="lineCov">     742878 :                     step = 1;</span>
+<span class="lineNum">     674 </span>            :                 }
+<span class="lineNum">     675 </span>            : 
+<span class="lineNum">     676 </span><span class="lineCov">     742878 :                 const float distanceToSoma = section.getDistanceToSoma();</span>
+<span class="lineNum">     677 </span>            :                 const floats&amp; distancesToSoma =
+<span class="lineNum">     678 </span><span class="lineCov">    1484732 :                     section.getSampleDistancesToSoma();</span>
+<span class="lineNum">     679 </span>            : 
+<span class="lineNum">     680 </span><span class="lineCov">     742894 :                 float segmentStep = 0.f;</span>
+<span class="lineNum">     681 </span><span class="lineCov">     742894 :                 if (compartmentReport)</span>
+<span class="lineNum">     682 </span>            :                 {
+<span class="lineNum">     683 </span>            :                     const auto&amp; counts =
+<span class="lineNum">     684 </span><span class="lineNoCov">          0 :                         compartmentReport-&gt;getCompartmentCounts()[index];</span>
+<span class="lineNum">     685 </span>            :                     // Number of compartments usually differs from number of
+<span class="lineNum">     686 </span>            :                     // samples
+<span class="lineNum">     687 </span><span class="lineNoCov">          0 :                     segmentStep =</span>
+<span class="lineNum">     688 </span><span class="lineNoCov">          0 :                         counts[section.getID()] / float(samples.size());</span>
+<span class="lineNum">     689 </span>            :                 }
+<span class="lineNum">     690 </span>            : 
+<span class="lineNum">     691 </span><span class="lineCov">     831114 :                 bool done = false;</span>
+<span class="lineNum">     692 </span><span class="lineCov">   23550572 :                 for (size_t i = step; !done &amp;&amp; i &lt; samples.size() + step;</span>
+<span class="lineNum">     693 </span><span class="lineCov">   22719458 :                      i += step)</span>
+<span class="lineNum">     694 </span>            :                 {
+<span class="lineNum">     695 </span><span class="lineCov">   22819882 :                     if (i &gt;= samples.size())</span>
+<span class="lineNum">     696 </span>            :                     {
+<span class="lineNum">     697 </span><span class="lineCov">     742180 :                         i = samples.size() - 1;</span>
+<span class="lineNum">     698 </span><span class="lineCov">     742166 :                         done = true;</span>
+<span class="lineNum">     699 </span>            :                     }
+<span class="lineNum">     700 </span>            : 
+<span class="lineNum">     701 </span><span class="lineCov">   22809866 :                     const auto distance = distanceToSoma + distancesToSoma[i];</span>
+<span class="lineNum">     702 </span>            : 
+<span class="lineNum">     703 </span><span class="lineCov">   22808204 :                     if (compartmentReport)</span>
+<span class="lineNum">     704 </span>            :                     {
+<span class="lineNum">     705 </span>            :                         const auto&amp; offsets =
+<span class="lineNum">     706 </span><span class="lineNoCov">          0 :                             compartmentReport-&gt;getOffsets()[index];</span>
+<span class="lineNum">     707 </span>            :                         const auto&amp; counts =
+<span class="lineNum">     708 </span><span class="lineNoCov">          0 :                             compartmentReport-&gt;getCompartmentCounts()[index];</span>
+<span class="lineNum">     709 </span>            : 
+<span class="lineNum">     710 </span>            :                         // update the offset if we have enough compartments aka
+<span class="lineNum">     711 </span>            :                         // a full compartment report. Otherwise we keep the soma
+<span class="lineNum">     712 </span>            :                         // offset which happens for soma reports and use this
+<span class="lineNum">     713 </span>            :                         // for all the sections
+<span class="lineNum">     714 </span><span class="lineNoCov">          0 :                         if (section.getID() &lt; counts.size())</span>
+<span class="lineNum">     715 </span>            :                         {
+<span class="lineNum">     716 </span><span class="lineNoCov">          0 :                             if (counts[section.getID()] &gt; 0)</span>
+<span class="lineNum">     717 </span><span class="lineNoCov">          0 :                                 offset = offsets[section.getID()] +</span>
+<span class="lineNum">     718 </span><span class="lineNoCov">          0 :                                          float(i - step) * segmentStep;</span>
+<span class="lineNum">     719 </span>            :                             else
+<span class="lineNum">     720 </span>            :                             {
+<span class="lineNum">     721 </span><span class="lineNoCov">          0 :                                 if (section.getType() ==</span>
+<span class="lineNum">     722 </span>            :                                     brain::neuron::SectionType::axon)
+<span class="lineNum">     723 </span>            :                                 {
+<span class="lineNum">     724 </span><span class="lineNoCov">          0 :                                     offset = offsets[lastAxon];</span>
+<span class="lineNum">     725 </span>            :                                 }
+<span class="lineNum">     726 </span>            :                                 else
+<span class="lineNum">     727 </span>            :                                     // This should never happen, but just in
+<span class="lineNum">     728 </span>            :                                     // case use an invalid value to show an
+<span class="lineNum">     729 </span>            :                                     // error color
+<span class="lineNum">     730 </span>            :                                     offset =
+<span class="lineNum">     731 </span><span class="lineNoCov">          0 :                                         std::numeric_limits&lt;uint64_t&gt;::max();</span>
+<span class="lineNum">     732 </span>            :                             }
+<span class="lineNum">     733 </span>            :                         }
+<span class="lineNum">     734 </span>            :                     }
+<span class="lineNum">     735 </span>            : 
+<span class="lineNum">     736 </span><span class="lineCov">   22803088 :                     const auto sample = samples[i];</span>
+<span class="lineNum">     737 </span>            :                     const auto previousRadius =
+<span class="lineNum">     738 </span><span class="lineCov">   22783656 :                         _getCorrectedRadius(samples[i - step].w() * 0.5f);</span>
+<span class="lineNum">     739 </span>            : 
+<span class="lineNum">     740 </span><span class="lineCov">   22519844 :                     Vector3f position(sample.x(), sample.y(), sample.z());</span>
+<span class="lineNum">     741 </span><span class="lineCov">   22293480 :                     position += translation;</span>
+<span class="lineNum">     742 </span><span class="lineCov">   21808018 :                     Vector3f target(previousSample.x(), previousSample.y(),</span>
+<span class="lineNum">     743 </span><span class="lineCov">   43553264 :                                     previousSample.z());</span>
+<span class="lineNum">     744 </span><span class="lineCov">   22001582 :                     target += translation;</span>
+<span class="lineNum">     745 </span>            :                     const auto textureCoordinates =
+<span class="lineNum">     746 </span><span class="lineCov">   21581814 :                         _getIndexAsTextureCoordinates(offset);</span>
+<span class="lineNum">     747 </span>            :                     const auto radius =
+<span class="lineNum">     748 </span><span class="lineCov">   22867032 :                         _getCorrectedRadius(samples[i].w() * 0.5f);</span>
+<span class="lineNum">     749 </span>            : 
+<span class="lineNum">     750 </span><span class="lineCov">   22479654 :                     if (radius &gt; 0.f)</span>
+<span class="lineNum">     751 </span>            :                     {
+<span class="lineNum">     752 </span><span class="lineCov">   22486068 :                         auto&amp; spheres = scene._spheres[materialId];</span>
+<span class="lineNum">     753 </span>            :                         spheres.push_back(
+<span class="lineNum">     754 </span><span class="lineCov">   66600504 :                             SpherePtr(new Sphere(position, radius, distance,</span>
+<span class="lineNum">     755 </span><span class="lineCov">   44710538 :                                                  textureCoordinates)));</span>
+<span class="lineNum">     756 </span><span class="lineCov">   22058476 :                         scene._worldBounds.merge(position);</span>
+<span class="lineNum">     757 </span>            : 
+<span class="lineNum">     758 </span><span class="lineCov">   22555454 :                         if (position != target &amp;&amp; previousRadius &gt; 0.f)</span>
+<span class="lineNum">     759 </span>            :                         {
+<span class="lineNum">     760 </span><span class="lineCov">   21899932 :                             auto&amp; cylinders = scene._cylinders[materialId];</span>
+<span class="lineNum">     761 </span><span class="lineCov">   21280148 :                             auto&amp; cones = scene._cones[materialId];</span>
+<span class="lineNum">     762 </span><span class="lineCov">   21509630 :                             if (radius == previousRadius)</span>
+<span class="lineNum">     763 </span><span class="lineCov">   39112434 :                                 cylinders.push_back(CylinderPtr(</span>
+<span class="lineNum">     764 </span>            :                                     new Cylinder(position, target, radius,
+<span class="lineNum">     765 </span>            :                                                  distance,
+<span class="lineNum">     766 </span><span class="lineCov">   39030518 :                                                  textureCoordinates)));</span>
+<span class="lineNum">     767 </span>            :                             else
+<span class="lineNum">     768 </span>            :                                 cones.push_back(
+<span class="lineNum">     769 </span><span class="lineCov">    4975106 :                                     ConePtr(new Cone(position, target, radius,</span>
+<span class="lineNum">     770 </span>            :                                                      previousRadius, distance,
+<span class="lineNum">     771 </span><span class="lineCov">    4964534 :                                                      textureCoordinates)));</span>
+<span class="lineNum">     772 </span><span class="lineCov">   21673120 :                             scene._worldBounds.merge(target);</span>
+<span class="lineNum">     773 </span>            :                         }
+<span class="lineNum">     774 </span>            :                     }
+<span class="lineNum">     775 </span><span class="lineCov">   22657172 :                     previousSample = sample;</span>
+<span class="lineNum">     776 </span>            :                 }
+<span class="lineNum">     777 </span>            :             }
+<span class="lineNum">     778 </span>            :         }
+<span class="lineNum">     779 </span><span class="lineNoCov">          0 :         catch (const std::runtime_error&amp; e)</span>
+<span class="lineNum">     780 </span>            :         {
+<span class="lineNum">     781 </span><span class="lineNoCov">          0 :             BRAYNS_ERROR &lt;&lt; e.what() &lt;&lt; std::endl;</span>
+<span class="lineNum">     782 </span><span class="lineNoCov">          0 :             return false;</span>
+<span class="lineNum">     783 </span>            :         }
+<span class="lineNum">     784 </span><span class="lineCov">       2000 :         return true;</span>
+<span class="lineNum">     785 </span>            :     }
+<a name="786"><span class="lineNum">     786 </span>            : </a>
+<span class="lineNum">     787 </span>            : #if (BRAYNS_USE_ASSIMP)
+<span class="lineNum">     788 </span><span class="lineCov">          2 :     bool _importMeshes(const brain::GIDSet&amp; gids,</span>
+<span class="lineNum">     789 </span>            :                        const Matrix4fs&amp; transformations,
+<span class="lineNum">     790 </span>            :                        const GIDOffsets&amp; targetGIDOffsets,
+<span class="lineNum">     791 </span>            :                        MeshLoader&amp; meshLoader)
+<span class="lineNum">     792 </span>            :     {
+<span class="lineNum">     793 </span><span class="lineCov">          2 :         size_t loadingFailures = 0;</span>
+<span class="lineNum">     794 </span>            :         const auto meshedMorphologiesFolder =
+<span class="lineNum">     795 </span><span class="lineCov">          4 :             _geometryParameters.getCircuitMeshFolder();</span>
+<span class="lineNum">     796 </span><span class="lineCov">          2 :         if (meshedMorphologiesFolder.empty())</span>
+<span class="lineNum">     797 </span><span class="lineCov">          2 :             return true;</span>
+<span class="lineNum">     798 </span>            : 
+<span class="lineNum">     799 </span><span class="lineNoCov">          0 :         uint64_t meshIndex = 0;</span>
+<span class="lineNum">     800 </span>            :         // Loading meshes is currently sequential. TODO: Make it parallel!!!
+<span class="lineNum">     801 </span><span class="lineNoCov">          0 :         std::stringstream message;</span>
+<span class="lineNum">     802 </span><span class="lineNoCov">          0 :         message &lt;&lt; &quot;Loading &quot; &lt;&lt; gids.size() &lt;&lt; &quot; meshes...&quot;;</span>
+<span class="lineNum">     803 </span><span class="lineNoCov">          0 :         for (const auto&amp; gid : gids)</span>
+<span class="lineNum">     804 </span>            :         {
+<span class="lineNum">     805 </span>            :             const size_t materialId = _getMaterialFromGeometryParameters(
+<span class="lineNum">     806 </span>            :                 meshIndex, NO_MATERIAL, brain::neuron::SectionType::undefined,
+<span class="lineNum">     807 </span><span class="lineNoCov">          0 :                 targetGIDOffsets);</span>
+<span class="lineNum">     808 </span>            : 
+<span class="lineNum">     809 </span>            :             // Load mesh from file
+<span class="lineNum">     810 </span>            :             const auto transformation =
+<span class="lineNum">     811 </span><span class="lineNoCov">          0 :                 _geometryParameters.getCircuitMeshTransformation()</span>
+<span class="lineNum">     812 </span><span class="lineNoCov">          0 :                     ? transformations[meshIndex]</span>
+<span class="lineNum">     813 </span><span class="lineNoCov">          0 :                     : Matrix4f();</span>
+<span class="lineNum">     814 </span><span class="lineNoCov">          0 :             if (!meshLoader.importMeshFromFile(</span>
+<span class="lineNum">     815 </span><span class="lineNoCov">          0 :                     meshLoader.getMeshFilenameFromGID(gid), _scene,</span>
+<span class="lineNum">     816 </span>            :                     transformation, materialId))
+<span class="lineNum">     817 </span><span class="lineNoCov">          0 :                 ++loadingFailures;</span>
+<span class="lineNum">     818 </span><span class="lineNoCov">          0 :             ++meshIndex;</span>
+<span class="lineNum">     819 </span><span class="lineNoCov">          0 :             _parent.updateProgress(message.str(), meshIndex, gids.size());</span>
+<span class="lineNum">     820 </span>            :         }
+<span class="lineNum">     821 </span><span class="lineNoCov">          0 :         if (loadingFailures != 0)</span>
+<span class="lineNum">     822 </span><span class="lineNoCov">          0 :             BRAYNS_WARN &lt;&lt; &quot;Failed to import &quot; &lt;&lt; loadingFailures &lt;&lt; &quot; meshes&quot;</span>
+<span class="lineNum">     823 </span><span class="lineNoCov">          0 :                         &lt;&lt; std::endl;</span>
+<span class="lineNum">     824 </span><span class="lineNoCov">          0 :         return true;</span>
+<span class="lineNum">     825 </span>            :     }
+<span class="lineNum">     826 </span>            : #else
+<span class="lineNum">     827 </span>            :     bool _importMeshes(const brain::GIDSet&amp;, const Matrix4fs&amp;,
+<span class="lineNum">     828 </span>            :                        const GIDOffsets&amp;, MeshLoaderPtr)
+<span class="lineNum">     829 </span>            :     {
+<span class="lineNum">     830 </span>            :         BRAYNS_ERROR &lt;&lt; &quot;assimp dependency is required to load meshes&quot;
+<span class="lineNum">     831 </span>            :                      &lt;&lt; std::endl;
+<span class="lineNum">     832 </span>            :         return false;
+<span class="lineNum">     833 </span>            :     }
+<a name="834"><span class="lineNum">     834 </span>            : #endif</a>
+<span class="lineNum">     835 </span>            : 
+<span class="lineNum">     836 </span><span class="lineCov">       2000 :     bool _importMorphology(const servus::URI&amp; source, const uint64_t index,</span>
+<span class="lineNum">     837 </span>            :                            const size_t material,
+<span class="lineNum">     838 </span>            :                            const Matrix4f&amp; transformation,
+<span class="lineNum">     839 </span>            :                            CompartmentReportPtr compartmentReport,
+<span class="lineNum">     840 </span>            :                            const GIDOffsets&amp; targetGIDOffsets,
+<span class="lineNum">     841 </span>            :                            ParallelSceneContainer&amp; scene)
+<span class="lineNum">     842 </span>            :     {
+<span class="lineNum">     843 </span><span class="lineCov">       2000 :         bool returnValue = true;</span>
+<span class="lineNum">     844 </span>            :         const size_t morphologySectionTypes =
+<span class="lineNum">     845 </span><span class="lineCov">       2000 :             _geometryParameters.getMorphologySectionTypes();</span>
+<span class="lineNum">     846 </span><span class="lineCov">       2000 :         if (morphologySectionTypes ==</span>
+<span class="lineNum">     847 </span>            :             static_cast&lt;size_t&gt;(MorphologySectionType::soma))
+<span class="lineNum">     848 </span><span class="lineNoCov">          0 :             return _importMorphologyAsPoint(index, material, transformation,</span>
+<span class="lineNum">     849 </span>            :                                             compartmentReport, targetGIDOffsets,
+<span class="lineNum">     850 </span><span class="lineNoCov">          0 :                                             scene);</span>
+<span class="lineNum">     851 </span><span class="lineCov">       2000 :         else if (_geometryParameters.useRealisticSomas())</span>
+<span class="lineNum">     852 </span>            :             returnValue =
+<span class="lineNum">     853 </span>            :                 _createRealisticSoma(source, index, material, transformation,
+<span class="lineNum">     854 </span><span class="lineNoCov">          0 :                                      targetGIDOffsets, scene);</span>
+<span class="lineNum">     855 </span><span class="lineCov">       2000 :         returnValue =</span>
+<span class="lineNum">     856 </span><span class="lineCov">       6000 :             returnValue &amp;&amp;</span>
+<span class="lineNum">     857 </span><span class="lineCov">       8000 :             _importMorphologyFromURI(source, index, material, transformation,</span>
+<span class="lineNum">     858 </span>            :                                      compartmentReport, targetGIDOffsets,
+<span class="lineNum">     859 </span><span class="lineNoCov">          0 :                                      scene);</span>
+<span class="lineNum">     860 </span><span class="lineCov">       2000 :         return returnValue;</span>
+<a name="861"><span class="lineNum">     861 </span>            :     }</a>
+<span class="lineNum">     862 </span>            : 
+<span class="lineNum">     863 </span><span class="lineCov">          2 :     bool _importMorphologies(const brain::Circuit&amp; circuit,</span>
+<span class="lineNum">     864 </span>            :                              const brain::GIDSet&amp; gids,
+<span class="lineNum">     865 </span>            :                              const Matrix4fs&amp; transformations,
+<span class="lineNum">     866 </span>            :                              const GIDOffsets&amp; targetGIDOffsets,
+<span class="lineNum">     867 </span>            :                              CompartmentReportPtr compartmentReport)
+<span class="lineNum">     868 </span>            :     {
+<span class="lineNum">     869 </span><span class="lineCov">          4 :         const brain::URIs&amp; uris = circuit.getMorphologyURIs(gids);</span>
+<span class="lineNum">     870 </span><span class="lineCov">          2 :         size_t loadingFailures = 0;</span>
+<span class="lineNum">     871 </span><span class="lineCov">          4 :         std::stringstream message;</span>
+<a name="872"><span class="lineNum">     872 </span><span class="lineCov">          2 :         message &lt;&lt; &quot;Loading &quot; &lt;&lt; uris.size() &lt;&lt; &quot; morphologies...&quot;;</span></a>
+<span class="lineNum">     873 </span><span class="lineCov">          2 :         std::atomic_size_t current{0};</span>
+<span class="lineNum">     874 </span><span class="lineCov">         14 : #pragma omp parallel</span>
+<span class="lineNum">     875 </span>            :         {
+<span class="lineNum">     876 </span><span class="lineCov">         12 : #pragma omp for nowait</span>
+<span class="lineNum">     877 </span>            :             for (uint64_t morphologyIndex = 0; morphologyIndex &lt; uris.size();
+<span class="lineNum">     878 </span>            :                  ++morphologyIndex)
+<span class="lineNum">     879 </span>            :             {
+<span class="lineNum">     880 </span><span class="lineCov">       2000 :                 ++current;</span>
+<span class="lineNum">     881 </span><span class="lineCov">       2000 :                 _parent.updateProgress(message.str(), current, uris.size());</span>
+<span class="lineNum">     882 </span>            : 
+<span class="lineNum">     883 </span><span class="lineCov">       4000 :                 SpheresMap spheres;</span>
+<span class="lineNum">     884 </span><span class="lineCov">       4000 :                 CylindersMap cylinders;</span>
+<span class="lineNum">     885 </span><span class="lineCov">       4000 :                 ConesMap cones;</span>
+<span class="lineNum">     886 </span><span class="lineCov">       3998 :                 TrianglesMeshMap triangleMeshes;</span>
+<span class="lineNum">     887 </span><span class="lineCov">       4000 :                 MaterialsMap materials;</span>
+<span class="lineNum">     888 </span><span class="lineCov">       2000 :                 Boxf bounds;</span>
+<span class="lineNum">     889 </span>            :                 ParallelSceneContainer sceneContainer(spheres, cylinders, cones,
+<span class="lineNum">     890 </span>            :                                                       triangleMeshes, materials,
+<span class="lineNum">     891 </span><span class="lineCov">       2000 :                                                       bounds);</span>
+<span class="lineNum">     892 </span><span class="lineCov">       2000 :                 const auto&amp; uri = uris[morphologyIndex];</span>
+<span class="lineNum">     893 </span>            : 
+<span class="lineNum">     894 </span>            :                 const size_t materialId =
+<span class="lineNum">     895 </span><span class="lineCov">       2000 :                     _geometryParameters.getCircuitUseSimulationModel()</span>
+<span class="lineNum">     896 </span><span class="lineCov">       4000 :                         ? NB_SYSTEM_MATERIALS</span>
+<span class="lineNum">     897 </span>            :                         : _getMaterialFromGeometryParameters(
+<span class="lineNum">     898 </span>            :                               morphologyIndex, NO_MATERIAL,
+<span class="lineNum">     899 </span>            :                               brain::neuron::SectionType::undefined,
+<span class="lineNum">     900 </span><span class="lineCov">       2000 :                               targetGIDOffsets);</span>
+<span class="lineNum">     901 </span>            : 
+<span class="lineNum">     902 </span><span class="lineCov">       4000 :                 if (!_importMorphology(uri, morphologyIndex, materialId,</span>
+<span class="lineNum">     903 </span><span class="lineCov">       2000 :                                        transformations[morphologyIndex],</span>
+<span class="lineNum">     904 </span>            :                                        compartmentReport, targetGIDOffsets,
+<span class="lineNum">     905 </span>            :                                        sceneContainer))
+<span class="lineNum">     906 </span>            : #pragma omp atomic
+<span class="lineNum">     907 </span><span class="lineNoCov">          0 :                     ++loadingFailures;</span>
+<span class="lineNum">     908 </span>            : 
+<span class="lineNum">     909 </span><span class="lineCov">       4000 : #pragma omp critical</span>
+<span class="lineNum">     910 </span><span class="lineCov">       6000 :                 for (const auto&amp; sphere : spheres)</span>
+<span class="lineNum">     911 </span>            :                 {
+<span class="lineNum">     912 </span><span class="lineCov">       2000 :                     const auto id = sphere.first;</span>
+<span class="lineNum">     913 </span><span class="lineCov">       2000 :                     _scene.getSpheres()[id].insert(</span>
+<span class="lineNum">     914 </span><span class="lineCov">       4000 :                         _scene.getSpheres()[id].end(),</span>
+<span class="lineNum">     915 </span><span class="lineCov">       2000 :                         sceneContainer._spheres[id].begin(),</span>
+<span class="lineNum">     916 </span><span class="lineCov">       8000 :                         sceneContainer._spheres[id].end());</span>
+<span class="lineNum">     917 </span>            :                 }
+<span class="lineNum">     918 </span>            : 
+<span class="lineNum">     919 </span><span class="lineCov">       4000 : #pragma omp critical</span>
+<span class="lineNum">     920 </span><span class="lineCov">       6000 :                 for (const auto&amp; cylinder : cylinders)</span>
+<span class="lineNum">     921 </span>            :                 {
+<span class="lineNum">     922 </span><span class="lineCov">       2000 :                     const auto id = cylinder.first;</span>
+<span class="lineNum">     923 </span><span class="lineCov">       2000 :                     _scene.getCylinders()[id].insert(</span>
+<span class="lineNum">     924 </span><span class="lineCov">       4000 :                         _scene.getCylinders()[id].end(),</span>
+<span class="lineNum">     925 </span><span class="lineCov">       2000 :                         sceneContainer._cylinders[id].begin(),</span>
+<span class="lineNum">     926 </span><span class="lineCov">       8000 :                         sceneContainer._cylinders[id].end());</span>
+<span class="lineNum">     927 </span>            :                 }
+<span class="lineNum">     928 </span>            : 
+<span class="lineNum">     929 </span><span class="lineCov">       4000 : #pragma omp critical</span>
+<span class="lineNum">     930 </span><span class="lineCov">       6000 :                 for (const auto&amp; cone : cones)</span>
+<span class="lineNum">     931 </span>            :                 {
+<span class="lineNum">     932 </span><span class="lineCov">       2000 :                     const auto id = cone.first;</span>
+<span class="lineNum">     933 </span><span class="lineCov">       2000 :                     _scene.getCones()[id].insert(</span>
+<span class="lineNum">     934 </span><span class="lineCov">       4000 :                         _scene.getCones()[id].end(),</span>
+<span class="lineNum">     935 </span><span class="lineCov">       2000 :                         sceneContainer._cones[id].begin(),</span>
+<span class="lineNum">     936 </span><span class="lineCov">       8000 :                         sceneContainer._cones[id].end());</span>
+<span class="lineNum">     937 </span>            :                 }
+<span class="lineNum">     938 </span>            : 
+<span class="lineNum">     939 </span><span class="lineCov">       4000 : #pragma omp critical</span>
+<span class="lineNum">     940 </span><span class="lineCov">       2000 :                 for (const auto&amp; material : materials)</span>
+<span class="lineNum">     941 </span><span class="lineNoCov">          0 :                     _scene.getMaterials()[material.first] = material.second;</span>
+<span class="lineNum">     942 </span>            : 
+<span class="lineNum">     943 </span><span class="lineCov">       4000 : #pragma omp critical</span>
+<span class="lineNum">     944 </span><span class="lineCov">       2000 :                 _scene.getWorldBounds().merge(bounds);</span>
+<span class="lineNum">     945 </span>            :             }
+<span class="lineNum">     946 </span>            :         }
 <span class="lineNum">     947 </span>            : 
-<span class="lineNum">     948 </span><span class="lineCov">       4000 : #pragma omp critical</span>
-<span class="lineNum">     949 </span><span class="lineCov">       6000 :                 for (const auto&amp; cone : cones)</span>
-<span class="lineNum">     950 </span>            :                 {
-<span class="lineNum">     951 </span><span class="lineCov">       2000 :                     const auto id = cone.first;</span>
-<span class="lineNum">     952 </span><span class="lineCov">       2000 :                     _scene.getCones()[id].insert(</span>
-<span class="lineNum">     953 </span><span class="lineCov">       4000 :                         _scene.getCones()[id].end(),</span>
-<span class="lineNum">     954 </span><span class="lineCov">       2000 :                         sceneContainer._cones[id].begin(),</span>
-<span class="lineNum">     955 </span><span class="lineCov">       8000 :                         sceneContainer._cones[id].end());</span>
-<span class="lineNum">     956 </span>            :                 }
-<span class="lineNum">     957 </span>            : 
-<span class="lineNum">     958 </span><span class="lineCov">       4000 : #pragma omp critical</span>
-<span class="lineNum">     959 </span><span class="lineCov">       2000 :                 for (const auto&amp; material : materials)</span>
-<span class="lineNum">     960 </span><span class="lineNoCov">          0 :                     _scene.getMaterials()[material.first] = material.second;</span>
-<span class="lineNum">     961 </span>            : 
-<span class="lineNum">     962 </span><span class="lineCov">       4000 : #pragma omp critical</span>
-<span class="lineNum">     963 </span><span class="lineCov">       2000 :                 _scene.getWorldBounds().merge(bounds);</span>
-<span class="lineNum">     964 </span>            :             }
-<span class="lineNum">     965 </span>            :         }
+<span class="lineNum">     948 </span><span class="lineCov">          2 :         if (loadingFailures != 0)</span>
+<span class="lineNum">     949 </span>            :         {
+<span class="lineNum">     950 </span><span class="lineNoCov">          0 :             BRAYNS_ERROR &lt;&lt; loadingFailures &lt;&lt; &quot; could not be loaded&quot;</span>
+<span class="lineNum">     951 </span><span class="lineNoCov">          0 :                          &lt;&lt; std::endl;</span>
+<span class="lineNum">     952 </span><span class="lineNoCov">          0 :             return false;</span>
+<span class="lineNum">     953 </span>            :         }
+<span class="lineNum">     954 </span><span class="lineCov">          2 :         return true;</span>
+<span class="lineNum">     955 </span>            :     }
+<span class="lineNum">     956 </span>            : 
+<span class="lineNum">     957 </span>            : private:
+<span class="lineNum">     958 </span>            :     MorphologyLoader&amp; _parent;
+<span class="lineNum">     959 </span>            :     const ApplicationParameters&amp; _applicationParameters;
+<span class="lineNum">     960 </span>            :     const GeometryParameters&amp; _geometryParameters;
+<span class="lineNum">     961 </span>            :     Scene&amp; _scene;
+<span class="lineNum">     962 </span>            :     size_ts _layerIds;
+<span class="lineNum">     963 </span>            :     size_ts _electrophysiologyTypes;
+<span class="lineNum">     964 </span>            :     size_ts _morphologyTypes;
+<a name="965"><span class="lineNum">     965 </span>            : };</a>
 <span class="lineNum">     966 </span>            : 
-<span class="lineNum">     967 </span><span class="lineCov">          2 :         if (loadingFailures != 0)</span>
-<span class="lineNum">     968 </span>            :         {
-<span class="lineNum">     969 </span><span class="lineNoCov">          0 :             BRAYNS_ERROR &lt;&lt; loadingFailures &lt;&lt; &quot; could not be loaded&quot;</span>
-<span class="lineNum">     970 </span><span class="lineNoCov">          0 :                          &lt;&lt; std::endl;</span>
-<span class="lineNum">     971 </span><span class="lineNoCov">          0 :             return false;</span>
-<span class="lineNum">     972 </span>            :         }
-<span class="lineNum">     973 </span><span class="lineCov">          2 :         return true;</span>
-<span class="lineNum">     974 </span>            :     }
-<span class="lineNum">     975 </span>            : 
-<span class="lineNum">     976 </span>            : private:
-<span class="lineNum">     977 </span>            :     MorphologyLoader&amp; _parent;
-<span class="lineNum">     978 </span>            :     const ApplicationParameters&amp; _applicationParameters;
-<span class="lineNum">     979 </span>            :     const GeometryParameters&amp; _geometryParameters;
-<span class="lineNum">     980 </span>            :     Scene&amp; _scene;
-<span class="lineNum">     981 </span>            :     strings _neuronMatrix;
-<a name="982"><span class="lineNum">     982 </span>            : };</a>
-<span class="lineNum">     983 </span>            : 
-<span class="lineNum">     984 </span><span class="lineCov">          2 : MorphologyLoader::MorphologyLoader(</span>
-<span class="lineNum">     985 </span>            :     const ApplicationParameters&amp; applicationParameters,
-<span class="lineNum">     986 </span><span class="lineCov">          2 :     const GeometryParameters&amp; geometryParameters, Scene&amp; scene)</span>
-<span class="lineNum">     987 </span>            :     : _impl(new MorphologyLoader::Impl(applicationParameters,
-<span class="lineNum">     988 </span><span class="lineCov">          2 :                                        geometryParameters, scene, *this))</span>
-<span class="lineNum">     989 </span>            : {
-<a name="990"><span class="lineNum">     990 </span><span class="lineCov">          2 : }</span></a>
-<span class="lineNum">     991 </span>            : 
-<span class="lineNum">     992 </span><span class="lineCov">          2 : MorphologyLoader::~MorphologyLoader()</span>
+<span class="lineNum">     967 </span><span class="lineCov">          2 : MorphologyLoader::MorphologyLoader(</span>
+<span class="lineNum">     968 </span>            :     const ApplicationParameters&amp; applicationParameters,
+<span class="lineNum">     969 </span><span class="lineCov">          2 :     const GeometryParameters&amp; geometryParameters, Scene&amp; scene)</span>
+<span class="lineNum">     970 </span>            :     : _impl(new MorphologyLoader::Impl(applicationParameters,
+<span class="lineNum">     971 </span><span class="lineCov">          2 :                                        geometryParameters, scene, *this))</span>
+<span class="lineNum">     972 </span>            : {
+<a name="973"><span class="lineNum">     973 </span><span class="lineCov">          2 : }</span></a>
+<span class="lineNum">     974 </span>            : 
+<span class="lineNum">     975 </span><span class="lineCov">          2 : MorphologyLoader::~MorphologyLoader()</span>
+<span class="lineNum">     976 </span>            : {
+<a name="977"><span class="lineNum">     977 </span><span class="lineCov">          2 : }</span></a>
+<span class="lineNum">     978 </span>            : 
+<span class="lineNum">     979 </span><span class="lineNoCov">          0 : bool MorphologyLoader::importMorphology(const servus::URI&amp; uri,</span>
+<span class="lineNum">     980 </span>            :                                         const uint64_t index,
+<span class="lineNum">     981 </span>            :                                         const size_t material,
+<span class="lineNum">     982 </span>            :                                         const Matrix4f&amp; transformation)
+<span class="lineNum">     983 </span>            : {
+<span class="lineNum">     984 </span><span class="lineNoCov">          0 :     const GIDOffsets targetGIDOffsets;</span>
+<span class="lineNum">     985 </span><span class="lineNoCov">          0 :     return _impl-&gt;importMorphology(uri, index, material, transformation,</span>
+<span class="lineNum">     986 </span><span class="lineNoCov">          0 :                                    targetGIDOffsets);</span>
+<a name="987"><span class="lineNum">     987 </span>            : }</a>
+<span class="lineNum">     988 </span>            : 
+<span class="lineNum">     989 </span><span class="lineCov">          2 : bool MorphologyLoader::importCircuit(const servus::URI&amp; uri,</span>
+<span class="lineNum">     990 </span>            :                                      const strings&amp; targets,
+<span class="lineNum">     991 </span>            :                                      const std::string&amp; report, Scene&amp; scene,
+<span class="lineNum">     992 </span>            :                                      MeshLoader&amp; meshLoader)
 <span class="lineNum">     993 </span>            : {
-<a name="994"><span class="lineNum">     994 </span><span class="lineCov">          2 : }</span></a>
-<span class="lineNum">     995 </span>            : 
-<span class="lineNum">     996 </span><span class="lineNoCov">          0 : bool MorphologyLoader::importMorphology(const servus::URI&amp; uri,</span>
-<span class="lineNum">     997 </span>            :                                         const uint64_t index,
-<span class="lineNum">     998 </span>            :                                         const size_t material,
-<span class="lineNum">     999 </span>            :                                         const Matrix4f&amp; transformation)
-<span class="lineNum">    1000 </span>            : {
-<span class="lineNum">    1001 </span><span class="lineNoCov">          0 :     const GIDOffsets targetGIDOffsets;</span>
-<span class="lineNum">    1002 </span><span class="lineNoCov">          0 :     return _impl-&gt;importMorphology(uri, index, material, transformation,</span>
-<span class="lineNum">    1003 </span><span class="lineNoCov">          0 :                                    targetGIDOffsets);</span>
-<a name="1004"><span class="lineNum">    1004 </span>            : }</a>
-<span class="lineNum">    1005 </span>            : 
-<span class="lineNum">    1006 </span><span class="lineCov">          2 : bool MorphologyLoader::importCircuit(const servus::URI&amp; uri,</span>
-<span class="lineNum">    1007 </span>            :                                      const strings&amp; targets,
-<span class="lineNum">    1008 </span>            :                                      const std::string&amp; report, Scene&amp; scene,
-<span class="lineNum">    1009 </span>            :                                      MeshLoader&amp; meshLoader)
-<span class="lineNum">    1010 </span>            : {
-<a name="1011"><span class="lineNum">    1011 </span><span class="lineCov">          2 :     return _impl-&gt;importCircuit(uri, targets, report, scene, meshLoader);</span></a>
-<span class="lineNum">    1012 </span>            : }
-<span class="lineNum">    1013 </span><span class="lineCov">         12 : }</span>
+<a name="994"><span class="lineNum">     994 </span><span class="lineCov">          2 :     return _impl-&gt;importCircuit(uri, targets, report, scene, meshLoader);</span></a>
+<span class="lineNum">     995 </span>            : }
+<span class="lineNum">     996 </span><span class="lineCov">         12 : }</span>
 </pre>
       </td>
     </tr>
