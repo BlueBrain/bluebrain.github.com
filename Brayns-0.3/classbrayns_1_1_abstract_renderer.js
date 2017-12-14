@@ -3,6 +3,7 @@ var classbrayns_1_1_abstract_renderer =
     [ "AbstractRenderer", "classbrayns_1_1_abstract_renderer.html#ab5d02a2864681e84ee0a8bebb5e4122b", null ],
     [ "commit", "classbrayns_1_1_abstract_renderer.html#a54cdb1087dabd27eb7cd807462719e81", null ],
     [ "createMaterial", "classbrayns_1_1_abstract_renderer.html#a49ad1a14647d8c4aa816c1854caf1bf6", null ],
+    [ "_ambientOcclusionDistance", "classbrayns_1_1_abstract_renderer.html#a6cc58ace07d60ae90785486d29084be8", null ],
     [ "_ambientOcclusionStrength", "classbrayns_1_1_abstract_renderer.html#abff1cb145e84e1bd695f96b52f0b674b", null ],
     [ "_bgColor", "classbrayns_1_1_abstract_renderer.html#a847eb3ebcbaaaae66b2df24570be3bd3", null ],
     [ "_camera", "classbrayns_1_1_abstract_renderer.html#a0e5ba025e30f953ee6b1f90504f20278", null ],

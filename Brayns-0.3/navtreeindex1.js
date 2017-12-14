@@ -1,5 +1,6 @@
 var NAVTREEINDEX1 =
 {
+"classbrayns_1_1_base_window.html#a3809d89a769ef3de442e779fbd2407d7":[5,0,0,7,8],
 "classbrayns_1_1_base_window.html#a3d4a510450fd8124276667fc80bbb88e":[5,0,0,7,31],
 "classbrayns_1_1_base_window.html#a3e56ecff8226f4585ea9cf0b79e1a198":[5,0,0,7,21],
 "classbrayns_1_1_base_window.html#a4b9e69b4301d025a43ae2cb26d5dace2":[5,0,0,7,29],
@@ -248,6 +249,5 @@ var NAVTREEINDEX1 =
 "classbrayns_1_1_geometry_parameters.html#a685b7032dd4e7aefadd50cf751f88c6d":[5,0,0,26,46],
 "classbrayns_1_1_geometry_parameters.html#a6bbfa8e688f9395347b8d3d535b93834":[5,0,0,26,55],
 "classbrayns_1_1_geometry_parameters.html#a6c30e57938387889b2460e70713002b4":[5,0,0,26,40],
-"classbrayns_1_1_geometry_parameters.html#a6ff28e9ddeb7faf36d074fd7538a7a80":[5,0,0,26,36],
-"classbrayns_1_1_geometry_parameters.html#a714f28f1069bc6ea579b96300214f23f":[5,0,0,26,45]
+"classbrayns_1_1_geometry_parameters.html#a6ff28e9ddeb7faf36d074fd7538a7a80":[5,0,0,26,36]
 };
