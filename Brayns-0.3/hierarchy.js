@@ -24,6 +24,8 @@ var hierarchy =
       [ "brayns::OptiXCamera", "classbrayns_1_1_opti_x_camera.html", null ],
       [ "brayns::OSPRayCamera", "classbrayns_1_1_o_s_p_ray_camera.html", null ]
     ] ],
+    [ "brayns::Cone", "structbrayns_1_1_cone.html", null ],
+    [ "brayns::Cylinder", "structbrayns_1_1_cylinder.html", null ],
     [ "brayns::Engine", "classbrayns_1_1_engine.html", [
       [ "brayns::LivreEngine", "classbrayns_1_1_livre_engine.html", null ],
       [ "brayns::OptiXEngine", "classbrayns_1_1_opti_x_engine.html", null ],
@@ -40,14 +42,6 @@ var hierarchy =
       [ "brayns::LivreFrameBuffer", "classbrayns_1_1_livre_frame_buffer.html", null ],
       [ "brayns::OptiXFrameBuffer", "classbrayns_1_1_opti_x_frame_buffer.html", null ],
       [ "brayns::OSPRayFrameBuffer", "classbrayns_1_1_o_s_p_ray_frame_buffer.html", null ]
-    ] ],
-    [ "brayns::Geometry", "classbrayns_1_1_geometry.html", [
-      [ "brayns::Primitive", "classbrayns_1_1_primitive.html", [
-        [ "brayns::Cone", "classbrayns_1_1_cone.html", null ],
-        [ "brayns::Cylinder", "classbrayns_1_1_cylinder.html", null ],
-        [ "brayns::Sphere", "classbrayns_1_1_sphere.html", null ]
-      ] ],
-      [ "brayns::TrianglesMesh", "classbrayns_1_1_triangles_mesh.html", null ]
     ] ],
     [ "brayns::Histogram", "structbrayns_1_1_histogram.html", null ],
     [ "brayns::ImageManager", "classbrayns_1_1_image_manager.html", null ],
@@ -84,9 +78,11 @@ var hierarchy =
     [ "brayns::ScreenSpaceProcessor", "classbrayns_1_1_screen_space_processor.html", null ],
     [ "brayns::ScreenSpaceProcessorData", "structbrayns_1_1_screen_space_processor_data.html", null ],
     [ "brayns::ShortcutInformation", "structbrayns_1_1_shortcut_information.html", null ],
+    [ "brayns::Sphere", "structbrayns_1_1_sphere.html", null ],
     [ "brayns::Texture2D", "classbrayns_1_1_texture2_d.html", null ],
     [ "brayns::TransferFunction", "classbrayns_1_1_transfer_function.html", null ],
     [ "brayns::TransferFunctionLoader", "classbrayns_1_1_transfer_function_loader.html", null ],
+    [ "brayns::TrianglesMesh", "structbrayns_1_1_triangles_mesh.html", null ],
     [ "brayns::Version", "classbrayns_1_1_version.html", null ],
     [ "brayns::VolumeHandler", "classbrayns_1_1_volume_handler.html", null ],
     [ "brayns::VolumeHandler::VolumeDescriptor", "classbrayns_1_1_volume_handler_1_1_volume_descriptor.html", null ],

@@ -7,11 +7,11 @@ var structospray_1_1_extended_cylinders =
     [ "data", "structospray_1_1_extended_cylinders.html#a64639598b0f1e4e85bf33c604c210376", null ],
     [ "materialID", "structospray_1_1_extended_cylinders.html#a0f6e73cbe94d7885a0057e34b045fcdc", null ],
     [ "numExtendedCylinders", "structospray_1_1_extended_cylinders.html#a78a0011b75c45742359b54a6d2607648", null ],
+    [ "offset_center", "structospray_1_1_extended_cylinders.html#a1e5d14ec21b681db31f4c95054881f60", null ],
     [ "offset_materialID", "structospray_1_1_extended_cylinders.html#ae8926af525c696db61a261fe05936ff8", null ],
     [ "offset_radius", "structospray_1_1_extended_cylinders.html#a8fbbb4a9078e27814fe76f123367ffd7", null ],
     [ "offset_timestamp", "structospray_1_1_extended_cylinders.html#a4acb7401b06d3e44c968c7d48d49cf2c", null ],
-    [ "offset_v0", "structospray_1_1_extended_cylinders.html#aec331b322c117d1f6a77a3e1d228b087", null ],
-    [ "offset_v1", "structospray_1_1_extended_cylinders.html#afd0fc1b651eaf08cc194dd3c0f911e6a", null ],
+    [ "offset_up", "structospray_1_1_extended_cylinders.html#aa56b869d95f3e11aa988df4c8d1820b7", null ],
     [ "offset_value_x", "structospray_1_1_extended_cylinders.html#a4e5e2de7e711a4588de94f34d4f58d51", null ],
     [ "offset_value_y", "structospray_1_1_extended_cylinders.html#a4c40494202561c632d23a1f2d4c8e836", null ],
     [ "radius", "structospray_1_1_extended_cylinders.html#a2aff46d50644a0920cad25e268a708e4", null ]

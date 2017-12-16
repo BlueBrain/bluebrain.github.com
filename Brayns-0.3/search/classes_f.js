@@ -7,6 +7,6 @@ var searchData=
   ['screenspaceprocessordata',['ScreenSpaceProcessorData',['../structbrayns_1_1_screen_space_processor_data.html',1,'brayns']]],
   ['shortcutinformation',['ShortcutInformation',['../structbrayns_1_1_shortcut_information.html',1,'brayns']]],
   ['simulationrenderer',['SimulationRenderer',['../classbrayns_1_1_simulation_renderer.html',1,'brayns']]],
-  ['sphere',['Sphere',['../classbrayns_1_1_sphere.html',1,'brayns']]],
+  ['sphere',['Sphere',['../structbrayns_1_1_sphere.html',1,'brayns']]],
   ['spikesimulationhandler',['SpikeSimulationHandler',['../classbrayns_1_1_spike_simulation_handler.html',1,'brayns']]]
 ];

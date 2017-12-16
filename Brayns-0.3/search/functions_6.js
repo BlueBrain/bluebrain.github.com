@@ -1,6 +1,6 @@
 var searchData=
 [
-  ['generatemesh',['generateMesh',['../classbrayns_1_1_metaballs_generator.html#ad9cffbfc87cdeed4d0e206043671d0b8',1,'brayns::MetaballsGenerator']]],
+  ['generatemesh',['generateMesh',['../classbrayns_1_1_metaballs_generator.html#a39a09592a9b553052146e21a8e5d9f34',1,'brayns::MetaballsGenerator']]],
   ['geometryparameters',['GeometryParameters',['../classbrayns_1_1_geometry_parameters.html#a96a7875f7d452448da35b193921725dc',1,'brayns::GeometryParameters']]],
   ['getabi',['getABI',['../classbrayns_1_1_version.html#af99a8b1956c6cb800290c9f8d303f36a',1,'brayns::Version']]],
   ['getaccumulation',['getAccumulation',['../classbrayns_1_1_rendering_parameters.html#a2df3b549c61199b65ddf134b334a2de5',1,'brayns::RenderingParameters']]],
@@ -59,7 +59,6 @@ var searchData=
   ['getframedata',['getFrameData',['../classbrayns_1_1_abstract_simulation_handler.html#a0cdae90711c7ed059575c8f09ae22109',1,'brayns::AbstractSimulationHandler::getFrameData()'],['../classbrayns_1_1_spike_simulation_handler.html#a7e9ef61e6eb81d73387c4471134046e4',1,'brayns::SpikeSimulationHandler::getFrameData()']]],
   ['getframenumber',['getFrameNumber',['../classbrayns_1_1_engine.html#ad7f2f97d88f39783e57fe2fb79aa348c',1,'brayns::Engine']]],
   ['getframesize',['getFrameSize',['../classbrayns_1_1_abstract_simulation_handler.html#a94eb882faba3d4a6f4cecdfa7f3af5d8',1,'brayns::AbstractSimulationHandler']]],
-  ['getgeneratemultiplemodels',['getGenerateMultipleModels',['../classbrayns_1_1_geometry_parameters.html#a2b88be75feb41785ab4205eec05d66d2',1,'brayns::GeometryParameters']]],
   ['getgeometryparameters',['getGeometryParameters',['../classbrayns_1_1_parameters_manager.html#a42770db58f8d661744cd2e029b314295',1,'brayns::ParametersManager']]],
   ['getgeometryquality',['getGeometryQuality',['../classbrayns_1_1_geometry_parameters.html#a30dd81996271f03f798942c4d69703ec',1,'brayns::GeometryParameters']]],
   ['getheadlight',['getHeadLight',['../classbrayns_1_1_rendering_parameters.html#a5a0b99764433a5484679dcde5489fd89',1,'brayns::RenderingParameters']]],

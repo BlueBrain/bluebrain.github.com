@@ -24,7 +24,6 @@ var classbrayns_1_1_geometry_parameters =
     [ "getConnectivityMatrixId", "classbrayns_1_1_geometry_parameters.html#a122db9f9390dcb43ef795b7e3acbdca4", null ],
     [ "getConnectivityScale", "classbrayns_1_1_geometry_parameters.html#ac44939931c5fcb349040dbb3bb39c4eb", null ],
     [ "getConnectivityShowConnections", "classbrayns_1_1_geometry_parameters.html#a391e6ba87925bc3ba707ae4548814888", null ],
-    [ "getGenerateMultipleModels", "classbrayns_1_1_geometry_parameters.html#a2b88be75feb41785ab4205eec05d66d2", null ],
     [ "getGeometryQuality", "classbrayns_1_1_geometry_parameters.html#a30dd81996271f03f798942c4d69703ec", null ],
     [ "getGeometryQualityAsString", "classbrayns_1_1_geometry_parameters.html#afb733de1f3368bf84b797bd748cd7ef6", null ],
     [ "getLoadCacheFile", "classbrayns_1_1_geometry_parameters.html#a4074a7994afbeddbf8d96cf4786a3f0b", null ],
