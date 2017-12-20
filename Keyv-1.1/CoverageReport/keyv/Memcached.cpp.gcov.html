@@ -31,13 +31,13 @@
             <td class="headerValue">Keyv</td>
             <td></td>
             <td class="headerItem">Lines:</td>
-            <td class="headerCovTableEntry">109</td>
-            <td class="headerCovTableEntry">126</td>
-            <td class="headerCovTableEntryHi">86.5 %</td>
+            <td class="headerCovTableEntry">108</td>
+            <td class="headerCovTableEntry">125</td>
+            <td class="headerCovTableEntryHi">86.4 %</td>
           </tr>
           <tr>
             <td class="headerItem">Date:</td>
-            <td class="headerValue">2017-06-08 03:57:59</td>
+            <td class="headerValue">2017-12-20 03:59:00</td>
             <td></td>
             <td class="headerItem">Functions:</td>
             <td class="headerCovTableEntry">18</td>
@@ -83,320 +83,325 @@
 <span class="lineNum">      21 </span>            : #include &lt;libmemcached/memcached.h&gt;
 <span class="lineNum">      22 </span>            : #include &lt;lunchbox/pluginRegisterer.h&gt;
 <span class="lineNum">      23 </span>            : #include &lt;lunchbox/uint128_t.h&gt;
-<span class="lineNum">      24 </span>            : #include &lt;pression/data/CompressorSnappy.h&gt;
-<span class="lineNum">      25 </span>            : #include &lt;pression/data/CompressorZSTD.h&gt;
-<span class="lineNum">      26 </span>            : #include &lt;pression/data/Registry.h&gt;
-<span class="lineNum">      27 </span>            : #include &lt;unordered_map&gt;
-<span class="lineNum">      28 </span>            : #include &lt;utility&gt;
-<span class="lineNum">      29 </span>            : 
-<span class="lineNum">      30 </span>            : //#define KEYV_MEMCACHED_COMPRESSION
-<span class="lineNum">      31 </span>            : 
-<span class="lineNum">      32 </span>            : namespace keyv
-<span class="lineNum">      33 </span>            : {
-<span class="lineNum">      34 </span>            : class Memcached;
-<a name="35"><span class="lineNum">      35 </span>            : namespace</a>
-<span class="lineNum">      36 </span>            : {
-<a name="37"><span class="lineNum">      37 </span><span class="lineCov">          1 : lunchbox::PluginRegisterer&lt;Memcached&gt; registerer;</span></a>
-<span class="lineNum">      38 </span>            : 
-<span class="lineNum">      39 </span><span class="lineCov">          3 : memcached_st* _getInstance(const servus::URI&amp; uri)</span>
-<span class="lineNum">      40 </span>            : {
-<span class="lineNum">      41 </span><span class="lineCov">          3 :     const std::string&amp; host = uri.getHost();</span>
-<span class="lineNum">      42 </span><span class="lineCov">          3 :     const int16_t port = uri.getPort() ? uri.getPort() : 11211;</span>
-<span class="lineNum">      43 </span><span class="lineCov">          3 :     memcached_st* instance = memcached_create(0);</span>
-<span class="lineNum">      44 </span><span class="lineCov">          3 :     size_t nServers = 1;</span>
-<span class="lineNum">      45 </span>            : 
-<span class="lineNum">      46 </span><span class="lineCov">          3 :     if (uri.getHost().empty())</span>
-<span class="lineNum">      47 </span>            :     {
-<span class="lineNum">      48 </span><span class="lineCov">          3 :         const char* servers = ::getenv(&quot;MEMCACHED_SERVERS&quot;);</span>
-<span class="lineNum">      49 </span><span class="lineCov">          3 :         if (servers)</span>
-<span class="lineNum">      50 </span>            :         {
-<span class="lineNum">      51 </span><span class="lineCov">          3 :             instance-&gt;server_failure_limit = 10;</span>
-<span class="lineNum">      52 </span><span class="lineCov">          6 :             std::string data = servers;</span>
-<span class="lineNum">      53 </span><span class="lineCov">        219 :             while (!data.empty())</span>
-<span class="lineNum">      54 </span>            :             {
-<span class="lineNum">      55 </span><span class="lineCov">        108 :                 const size_t comma = data.find(',');</span>
-<span class="lineNum">      56 </span><span class="lineCov">        216 :                 const std::string&amp; server = data.substr(0, comma);</span>
-<span class="lineNum">      57 </span>            : 
-<span class="lineNum">      58 </span><span class="lineCov">        108 :                 const size_t colon = server.find(':');</span>
-<span class="lineNum">      59 </span><span class="lineCov">        108 :                 if (colon == std::string::npos)</span>
-<span class="lineNum">      60 </span><span class="lineCov">        108 :                     memcached_server_add(instance, server.c_str(), port);</span>
-<span class="lineNum">      61 </span>            :                 else
-<span class="lineNum">      62 </span><span class="lineNoCov">          0 :                     memcached_server_add(instance,</span>
-<span class="lineNum">      63 </span><span class="lineNoCov">          0 :                                          server.substr(0, colon).c_str(),</span>
-<span class="lineNum">      64 </span><span class="lineNoCov">          0 :                                          std::stoi(server.substr(colon + 1)));</span>
-<span class="lineNum">      65 </span>            : 
-<span class="lineNum">      66 </span><span class="lineCov">        108 :                 if (comma == std::string::npos)</span>
-<span class="lineNum">      67 </span><span class="lineCov">          3 :                     data.clear();</span>
-<span class="lineNum">      68 </span>            :                 else
-<span class="lineNum">      69 </span><span class="lineCov">        105 :                     data = data.substr(comma + 1);</span>
-<span class="lineNum">      70 </span><span class="lineCov">        108 :                 ++nServers;</span>
-<span class="lineNum">      71 </span>            :             }
-<span class="lineNum">      72 </span><span class="lineCov">          3 :             --nServers; // adjust for pre-set '1' in initialization</span>
-<span class="lineNum">      73 </span>            :         }
-<span class="lineNum">      74 </span>            :         else
-<span class="lineNum">      75 </span><span class="lineNoCov">          0 :             memcached_server_add(instance, &quot;127.0.0.1&quot;, port);</span>
-<span class="lineNum">      76 </span>            :     }
-<span class="lineNum">      77 </span>            :     else
-<span class="lineNum">      78 </span><span class="lineNoCov">          0 :         memcached_server_add(instance, host.c_str(), port);</span>
-<span class="lineNum">      79 </span>            : 
-<span class="lineNum">      80 </span>            :     // delivers better distribution and allows servers to be added to the
-<span class="lineNum">      81 </span>            :     // cluster with minimal cache losses
-<span class="lineNum">      82 </span>            :     memcached_behavior_set(instance, MEMCACHED_BEHAVIOR_DISTRIBUTION,
-<span class="lineNum">      83 </span><span class="lineCov">          3 :                            MEMCACHED_DISTRIBUTION_CONSISTENT);</span>
-<span class="lineNum">      84 </span><span class="lineCov">          3 :     memcached_behavior_set(instance, MEMCACHED_BEHAVIOR_NO_BLOCK, 1); // nop?</span>
-<span class="lineNum">      85 </span>            :     // fire-and-forget writes
-<span class="lineNum">      86 </span><span class="lineCov">          3 :     memcached_behavior_set(instance, MEMCACHED_BEHAVIOR_NOREPLY, 1);</span>
-<span class="lineNum">      87 </span>            :     // buffer sizes
-<span class="lineNum">      88 </span><span class="lineCov">          3 :     memcached_behavior_set(instance, MEMCACHED_BEHAVIOR_SOCKET_SEND_SIZE,</span>
-<span class="lineNum">      89 </span><span class="lineCov">          3 :                            LB_1MB * nServers);</span>
-<span class="lineNum">      90 </span><span class="lineCov">          3 :     memcached_behavior_set(instance, MEMCACHED_BEHAVIOR_SOCKET_RECV_SIZE,</span>
-<span class="lineNum">      91 </span><span class="lineCov">          3 :                            LB_1MB * nServers);</span>
-<span class="lineNum">      92 </span><span class="lineCov">          3 :     return instance;</span>
-<a name="93"><span class="lineNum">      93 </span>            : }</a>
-<span class="lineNum">      94 </span>            : 
-<span class="lineNum">      95 </span><span class="lineCov">          3 : lunchbox::uint128_t _generateNamespace(const servus::URI&amp; uri)</span>
-<span class="lineNum">      96 </span>            : {
-<span class="lineNum">      97 </span><span class="lineCov">          3 :     const auto&amp; path = uri.getPath();</span>
-<span class="lineNum">      98 </span><span class="lineCov">          3 :     if (path.empty())</span>
-<span class="lineNum">      99 </span><span class="lineCov">          3 :         return lunchbox::uint128_t();</span>
-<span class="lineNum">     100 </span>            :     // OPT: hash path to limit string size used as key
-<span class="lineNum">     101 </span><span class="lineNoCov">          0 :     return lunchbox::make_uint128(path);</span>
-<span class="lineNum">     102 </span>            : }
+<span class="lineNum">      24 </span>            : #include &lt;unordered_map&gt;
+<span class="lineNum">      25 </span>            : #include &lt;utility&gt;
+<span class="lineNum">      26 </span>            : 
+<span class="lineNum">      27 </span>            : #ifdef KEYV_USE_PRESSION
+<span class="lineNum">      28 </span>            : #include &lt;pression/data/CompressorSnappy.h&gt;
+<span class="lineNum">      29 </span>            : #include &lt;pression/data/CompressorZSTD.h&gt;
+<span class="lineNum">      30 </span>            : #include &lt;pression/data/Registry.h&gt;
+<span class="lineNum">      31 </span>            : #endif
+<span class="lineNum">      32 </span>            : 
+<span class="lineNum">      33 </span>            : namespace keyv
+<span class="lineNum">      34 </span>            : {
+<span class="lineNum">      35 </span>            : class Memcached;
+<a name="36"><span class="lineNum">      36 </span>            : namespace</a>
+<span class="lineNum">      37 </span>            : {
+<a name="38"><span class="lineNum">      38 </span><span class="lineCov">          1 : lunchbox::PluginRegisterer&lt;Memcached&gt; registerer;</span></a>
+<span class="lineNum">      39 </span>            : 
+<span class="lineNum">      40 </span><span class="lineCov">          3 : memcached_st* _getInstance(const servus::URI&amp; uri)</span>
+<span class="lineNum">      41 </span>            : {
+<span class="lineNum">      42 </span><span class="lineCov">          3 :     const std::string&amp; host = uri.getHost();</span>
+<span class="lineNum">      43 </span><span class="lineCov">          3 :     const int16_t port = uri.getPort() ? uri.getPort() : 11211;</span>
+<span class="lineNum">      44 </span><span class="lineCov">          3 :     memcached_st* instance = memcached_create(0);</span>
+<span class="lineNum">      45 </span><span class="lineCov">          3 :     size_t nServers = 1;</span>
+<span class="lineNum">      46 </span>            : 
+<span class="lineNum">      47 </span><span class="lineCov">          3 :     if (uri.getHost().empty())</span>
+<span class="lineNum">      48 </span>            :     {
+<span class="lineNum">      49 </span><span class="lineCov">          3 :         const char* servers = ::getenv(&quot;MEMCACHED_SERVERS&quot;);</span>
+<span class="lineNum">      50 </span><span class="lineCov">          3 :         if (servers)</span>
+<span class="lineNum">      51 </span>            :         {
+<span class="lineNum">      52 </span><span class="lineCov">          3 :             instance-&gt;server_failure_limit = 10;</span>
+<span class="lineNum">      53 </span><span class="lineCov">          6 :             std::string data = servers;</span>
+<span class="lineNum">      54 </span><span class="lineCov">        195 :             while (!data.empty())</span>
+<span class="lineNum">      55 </span>            :             {
+<span class="lineNum">      56 </span><span class="lineCov">         96 :                 const size_t comma = data.find(',');</span>
+<span class="lineNum">      57 </span><span class="lineCov">        192 :                 const std::string&amp; server = data.substr(0, comma);</span>
+<span class="lineNum">      58 </span>            : 
+<span class="lineNum">      59 </span><span class="lineCov">         96 :                 const size_t colon = server.find(':');</span>
+<span class="lineNum">      60 </span><span class="lineCov">         96 :                 if (colon == std::string::npos)</span>
+<span class="lineNum">      61 </span><span class="lineCov">         96 :                     memcached_server_add(instance, server.c_str(), port);</span>
+<span class="lineNum">      62 </span>            :                 else
+<span class="lineNum">      63 </span><span class="lineNoCov">          0 :                     memcached_server_add(instance,</span>
+<span class="lineNum">      64 </span><span class="lineNoCov">          0 :                                          server.substr(0, colon).c_str(),</span>
+<span class="lineNum">      65 </span><span class="lineNoCov">          0 :                                          std::stoi(server.substr(colon + 1)));</span>
+<span class="lineNum">      66 </span>            : 
+<span class="lineNum">      67 </span><span class="lineCov">         96 :                 if (comma == std::string::npos)</span>
+<span class="lineNum">      68 </span><span class="lineCov">          3 :                     data.clear();</span>
+<span class="lineNum">      69 </span>            :                 else
+<span class="lineNum">      70 </span><span class="lineCov">         93 :                     data = data.substr(comma + 1);</span>
+<span class="lineNum">      71 </span><span class="lineCov">         96 :                 ++nServers;</span>
+<span class="lineNum">      72 </span>            :             }
+<span class="lineNum">      73 </span><span class="lineCov">          3 :             --nServers; // adjust for pre-set '1' in initialization</span>
+<span class="lineNum">      74 </span>            :         }
+<span class="lineNum">      75 </span>            :         else
+<span class="lineNum">      76 </span><span class="lineNoCov">          0 :             memcached_server_add(instance, &quot;127.0.0.1&quot;, port);</span>
+<span class="lineNum">      77 </span>            :     }
+<span class="lineNum">      78 </span>            :     else
+<span class="lineNum">      79 </span><span class="lineNoCov">          0 :         memcached_server_add(instance, host.c_str(), port);</span>
+<span class="lineNum">      80 </span>            : 
+<span class="lineNum">      81 </span>            :     // delivers better distribution and allows servers to be added to the
+<span class="lineNum">      82 </span>            :     // cluster with minimal cache losses
+<span class="lineNum">      83 </span>            :     memcached_behavior_set(instance, MEMCACHED_BEHAVIOR_DISTRIBUTION,
+<span class="lineNum">      84 </span><span class="lineCov">          3 :                            MEMCACHED_DISTRIBUTION_CONSISTENT);</span>
+<span class="lineNum">      85 </span><span class="lineCov">          3 :     memcached_behavior_set(instance, MEMCACHED_BEHAVIOR_NO_BLOCK, 1); // nop?</span>
+<span class="lineNum">      86 </span>            :     // fire-and-forget writes
+<span class="lineNum">      87 </span><span class="lineCov">          3 :     memcached_behavior_set(instance, MEMCACHED_BEHAVIOR_NOREPLY, 1);</span>
+<span class="lineNum">      88 </span>            :     // buffer sizes
+<span class="lineNum">      89 </span><span class="lineCov">          3 :     memcached_behavior_set(instance, MEMCACHED_BEHAVIOR_SOCKET_SEND_SIZE,</span>
+<span class="lineNum">      90 </span><span class="lineCov">          3 :                            LB_1MB * nServers);</span>
+<span class="lineNum">      91 </span><span class="lineCov">          3 :     memcached_behavior_set(instance, MEMCACHED_BEHAVIOR_SOCKET_RECV_SIZE,</span>
+<span class="lineNum">      92 </span><span class="lineCov">          3 :                            LB_1MB * nServers);</span>
+<span class="lineNum">      93 </span><span class="lineCov">          3 :     return instance;</span>
+<a name="94"><span class="lineNum">      94 </span>            : }</a>
+<span class="lineNum">      95 </span>            : 
+<span class="lineNum">      96 </span><span class="lineCov">          3 : lunchbox::uint128_t _generateNamespace(const servus::URI&amp; uri)</span>
+<span class="lineNum">      97 </span>            : {
+<span class="lineNum">      98 </span><span class="lineCov">          3 :     const auto&amp; path = uri.getPath();</span>
+<span class="lineNum">      99 </span><span class="lineCov">          3 :     if (path.empty())</span>
+<span class="lineNum">     100 </span><span class="lineCov">          3 :         return lunchbox::uint128_t();</span>
+<span class="lineNum">     101 </span>            :     // OPT: hash path to limit string size used as key
+<span class="lineNum">     102 </span><span class="lineNoCov">          0 :     return lunchbox::make_uint128(path);</span>
 <span class="lineNum">     103 </span>            : }
-<span class="lineNum">     104 </span>            : 
-<span class="lineNum">     105 </span>            : class Memcached : public Plugin
-<a name="106"><span class="lineNum">     106 </span>            : {</a>
-<span class="lineNum">     107 </span>            : public:
-<span class="lineNum">     108 </span><span class="lineCov">          3 :     explicit Memcached(const servus::URI&amp; uri)</span>
-<span class="lineNum">     109 </span><span class="lineCov">          6 :         : _instance(_getInstance(uri))</span>
-<span class="lineNum">     110 </span>            :         , _namespace(_generateNamespace(uri))
-<span class="lineNum">     111 </span><span class="lineCov">          6 :         , _lastError(MEMCACHED_SUCCESS)</span>
-<span class="lineNum">     112 </span>            :     {
-<span class="lineNum">     113 </span><span class="lineCov">          3 :         if (!_instance)</span>
-<span class="lineNum">     114 </span><span class="lineNoCov">          0 :             throw std::runtime_error(std::string(&quot;Open of &quot;) +</span>
-<span class="lineNum">     115 </span><span class="lineNoCov">          0 :                                      std::to_string(uri) + &quot; failed&quot;);</span>
-<a name="116"><span class="lineNum">     116 </span><span class="lineCov">          3 :     }</span></a>
-<a name="117"><span class="lineNum">     117 </span>            : </a>
-<span class="lineNum">     118 </span><span class="lineCov">          6 :     virtual ~Memcached() { memcached_free(_instance); }</span>
-<span class="lineNum">     119 </span><span class="lineCov">          4 :     static bool handles(const servus::URI&amp; uri)</span>
-<span class="lineNum">     120 </span>            :     {
-<span class="lineNum">     121 </span><span class="lineCov">          4 :         return uri.getScheme() == &quot;memcached&quot;;</span>
-<a name="122"><span class="lineNum">     122 </span>            :     }</a>
-<span class="lineNum">     123 </span>            : 
-<span class="lineNum">     124 </span><span class="lineNoCov">          0 :     static std::string getDescription()</span>
-<span class="lineNum">     125 </span>            :     {
-<span class="lineNum">     126 </span><span class="lineNoCov">          0 :         return &quot;memcached://[host][:port][/namespace]&quot;;</span>
-<a name="127"><span class="lineNum">     127 </span>            :     }</a>
-<span class="lineNum">     128 </span>            : 
-<span class="lineNum">     129 </span><span class="lineCov">         14 :     bool insert(const std::string&amp; key, const void* data,</span>
-<span class="lineNum">     130 </span>            :                 const size_t size) final
-<span class="lineNum">     131 </span>            :     {
-<span class="lineNum">     132 </span><span class="lineCov">         28 :         const std::string&amp; hash = _hash(key);</span>
-<span class="lineNum">     133 </span>            : #ifdef KEYV_MEMCACHED_COMPRESSION
-<span class="lineNum">     134 </span>            :         const lunchbox::Bufferb compressed{_compress(data, size)};
-<span class="lineNum">     135 </span>            :         const memcached_return_t ret =
-<span class="lineNum">     136 </span>            :             memcached_set(_instance, hash.c_str(), hash.length(),
-<span class="lineNum">     137 </span>            :                           (char*)compressed.getData(), compressed.getSize(),
-<span class="lineNum">     138 </span>            :                           (time_t)0, (uint32_t)0);
-<span class="lineNum">     139 </span>            : #else
-<span class="lineNum">     140 </span>            :         const memcached_return_t ret =
-<span class="lineNum">     141 </span><span class="lineCov">         14 :             memcached_set(_instance, hash.c_str(), hash.length(),</span>
-<span class="lineNum">     142 </span><span class="lineCov">         14 :                           (const char*)data, size, (time_t)0, (uint32_t)0);</span>
-<span class="lineNum">     143 </span>            : #endif
-<span class="lineNum">     144 </span>            : 
-<span class="lineNum">     145 </span><span class="lineCov">         14 :         if (ret != MEMCACHED_SUCCESS &amp;&amp; _lastError != ret)</span>
-<span class="lineNum">     146 </span>            :         {
-<span class="lineNum">     147 </span><span class="lineNoCov">          0 :             LBWARN &lt;&lt; &quot;memcached_set failed: &quot;</span>
-<span class="lineNum">     148 </span><span class="lineNoCov">          0 :                    &lt;&lt; memcached_strerror(_instance, ret) &lt;&lt; std::endl;</span>
-<span class="lineNum">     149 </span><span class="lineNoCov">          0 :             _lastError = ret;</span>
-<span class="lineNum">     150 </span>            :         }
-<span class="lineNum">     151 </span><span class="lineCov">         28 :         return ret == MEMCACHED_SUCCESS;</span>
-<a name="152"><span class="lineNum">     152 </span>            :     }</a>
-<span class="lineNum">     153 </span>            : 
-<span class="lineNum">     154 </span><span class="lineCov">         23 :     std::string operator[](const std::string&amp; key) const final</span>
-<span class="lineNum">     155 </span>            :     {
-<span class="lineNum">     156 </span><span class="lineCov">         46 :         const std::string&amp; hash = _hash(key);</span>
-<span class="lineNum">     157 </span><span class="lineCov">         23 :         size_t size = 0;</span>
-<span class="lineNum">     158 </span><span class="lineCov">         23 :         uint32_t flags = 0;</span>
-<span class="lineNum">     159 </span><span class="lineCov">         23 :         memcached_return_t ret = MEMCACHED_SUCCESS;</span>
-<span class="lineNum">     160 </span><span class="lineCov">         23 :         char* data = memcached_get(_instance, hash.c_str(), hash.length(),</span>
-<span class="lineNum">     161 </span><span class="lineCov">         23 :                                    &amp;size, &amp;flags, &amp;ret);</span>
-<span class="lineNum">     162 </span><span class="lineCov">         23 :         if (ret != MEMCACHED_SUCCESS)</span>
-<span class="lineNum">     163 </span><span class="lineCov">          3 :             return std::string();</span>
-<span class="lineNum">     164 </span>            : 
-<span class="lineNum">     165 </span><span class="lineCov">         40 :         std::string value;</span>
-<span class="lineNum">     166 </span>            : #ifdef KEYV_MEMCACHED_COMPRESSION
-<span class="lineNum">     167 </span>            :         const uint64_t fullSize = *reinterpret_cast&lt;uint64_t*&gt;(data);
-<span class="lineNum">     168 </span>            :         value.resize(fullSize);
-<span class="lineNum">     169 </span>            :         _decompress((uint8_t*)value.data(), fullSize, (const uint8_t*)data,
-<span class="lineNum">     170 </span>            :                     size);
-<span class="lineNum">     171 </span>            : #else
-<span class="lineNum">     172 </span><span class="lineCov">         20 :         value.assign(data, data + size);</span>
-<span class="lineNum">     173 </span>            : #endif
-<span class="lineNum">     174 </span><span class="lineCov">         20 :         ::free(data);</span>
-<span class="lineNum">     175 </span><span class="lineCov">         20 :         return value;</span>
-<a name="176"><span class="lineNum">     176 </span>            :     }</a>
-<span class="lineNum">     177 </span>            : 
-<span class="lineNum">     178 </span><span class="lineCov">          1 :     void takeValues(const Strings&amp; keys, const ValueFunc&amp; func) const final</span>
-<a name="179"><span class="lineNum">     179 </span>            :     {</a>
-<span class="lineNum">     180 </span>            :         const auto decompress = [this](memcached_result_st* fetched,
-<span class="lineNum">     181 </span><span class="lineCov">          2 :                                        const size_t size) {</span>
-<span class="lineNum">     182 </span><span class="lineCov">          2 :             char* data = memcached_result_take_value(fetched);</span>
-<span class="lineNum">     183 </span><span class="lineCov">          2 :             if (!data)</span>
-<span class="lineNum">     184 </span><span class="lineNoCov">          0 :                 return std::make_pair&lt;char*, size_t&gt;(nullptr, 0);</span>
-<span class="lineNum">     185 </span>            : 
-<span class="lineNum">     186 </span>            : #ifdef KEYV_MEMCACHED_COMPRESSION
-<span class="lineNum">     187 </span>            :             const uint64_t fullSize = *reinterpret_cast&lt;const uint64_t*&gt;(data);
-<span class="lineNum">     188 </span>            :             char* decompressed = (char*)::malloc(fullSize);
-<span class="lineNum">     189 </span>            :             _decompress((uint8_t*)decompressed, fullSize, (uint8_t*)data, size);
-<span class="lineNum">     190 </span>            :             ::free(data);
-<span class="lineNum">     191 </span>            :             return std::pair&lt;char*, size_t&gt;({decompressed, fullSize});
-<span class="lineNum">     192 </span>            : #else
-<span class="lineNum">     193 </span><span class="lineCov">          2 :             return std::pair&lt;char*, size_t&gt;({data, size});</span>
-<span class="lineNum">     194 </span>            : #endif
-<span class="lineNum">     195 </span><span class="lineCov">          1 :         };</span>
-<span class="lineNum">     196 </span><span class="lineCov">          1 :         _multiGet(keys, func, decompress);</span>
-<a name="197"><span class="lineNum">     197 </span><span class="lineCov">          1 :     }</span></a>
-<span class="lineNum">     198 </span>            : 
-<span class="lineNum">     199 </span><span class="lineCov">          1 :     void getValues(const Strings&amp; keys, const ConstValueFunc&amp; func) const final</span>
-<span class="lineNum">     200 </span>            :     {
-<a name="201"><span class="lineNum">     201 </span><span class="lineCov">          2 :         lunchbox::Bufferb decompressed;</span></a>
-<span class="lineNum">     202 </span>            :         const auto decompress = [&amp;](memcached_result_st* fetched,
-<span class="lineNum">     203 </span><span class="lineCov">          2 :                                     const size_t size) {</span>
-<span class="lineNum">     204 </span><span class="lineCov">          2 :             const char* data = memcached_result_value(fetched);</span>
-<span class="lineNum">     205 </span><span class="lineCov">          2 :             if (!data)</span>
-<span class="lineNum">     206 </span><span class="lineNoCov">          0 :                 return std::make_pair&lt;const char*, size_t&gt;(nullptr, 0);</span>
-<span class="lineNum">     207 </span>            : 
-<span class="lineNum">     208 </span>            : #ifdef KEYV_MEMCACHED_COMPRESSION
-<span class="lineNum">     209 </span>            :             const uint64_t fullSize = *reinterpret_cast&lt;const uint64_t*&gt;(data);
-<span class="lineNum">     210 </span>            :             decompressed.resize(fullSize);
-<span class="lineNum">     211 </span>            :             _decompress(decompressed.getData(), fullSize, (const uint8_t*)data,
-<span class="lineNum">     212 </span>            :                         size);
-<span class="lineNum">     213 </span>            :             return std::pair&lt;const char*, size_t&gt;((char*)decompressed.getData(),
-<span class="lineNum">     214 </span>            :                                                   fullSize);
-<span class="lineNum">     215 </span>            : #else
-<span class="lineNum">     216 </span><span class="lineCov">          2 :             return std::pair&lt;const char*, size_t&gt;({data, size});</span>
-<span class="lineNum">     217 </span>            : #endif
-<span class="lineNum">     218 </span>            :         };
-<span class="lineNum">     219 </span><span class="lineCov">          1 :         _multiGet(keys, func, decompress);</span>
-<a name="220"><span class="lineNum">     220 </span><span class="lineCov">          1 :     }</span></a>
-<span class="lineNum">     221 </span>            : 
-<span class="lineNum">     222 </span><span class="lineNoCov">          0 :     bool flush() final</span>
-<span class="lineNum">     223 </span>            :     {
-<span class="lineNum">     224 </span><span class="lineNoCov">          0 :         return memcached_flush_buffers(_instance) == MEMCACHED_SUCCESS;</span>
-<a name="225"><span class="lineNum">     225 </span>            :     }</a>
-<span class="lineNum">     226 </span>            : 
-<span class="lineNum">     227 </span><span class="lineCov">          1 :     void erase(const std::string&amp; key) final</span>
-<span class="lineNum">     228 </span>            :     {
-<span class="lineNum">     229 </span><span class="lineCov">          2 :         const std::string&amp; hash = _hash(key);</span>
-<span class="lineNum">     230 </span><span class="lineCov">          1 :         memcached_delete(_instance, hash.c_str(), hash.length(), 0);</span>
-<span class="lineNum">     231 </span><span class="lineCov">          1 :     }</span>
-<span class="lineNum">     232 </span>            : 
-<a name="233"><span class="lineNum">     233 </span>            : private:</a>
-<span class="lineNum">     234 </span>            :     template &lt;typename F, typename T&gt;
-<span class="lineNum">     235 </span><span class="lineCov">          2 :     void _multiGet(const Strings&amp; keys, const F&amp; func, const T&amp; getFunc) const</span>
-<span class="lineNum">     236 </span>            :     {
-<span class="lineNum">     237 </span><span class="lineCov">          4 :         std::vector&lt;const char*&gt; keysArray;</span>
-<span class="lineNum">     238 </span><span class="lineCov">          4 :         std::vector&lt;size_t&gt; keyLengths;</span>
-<span class="lineNum">     239 </span><span class="lineCov">          2 :         keysArray.reserve(keys.size());</span>
-<span class="lineNum">     240 </span><span class="lineCov">          2 :         keyLengths.reserve(keys.size());</span>
-<span class="lineNum">     241 </span><span class="lineCov">          4 :         std::unordered_map&lt;std::string, std::string&gt; hashes;</span>
-<span class="lineNum">     242 </span><span class="lineCov">          4 :         Strings hashCopy;</span>
-<span class="lineNum">     243 </span><span class="lineCov">          2 :         hashCopy.reserve(keys.size());</span>
-<span class="lineNum">     244 </span>            : 
-<span class="lineNum">     245 </span><span class="lineCov">          6 :         for (const auto&amp; key : keys)</span>
-<span class="lineNum">     246 </span>            :         {
-<span class="lineNum">     247 </span><span class="lineCov">          8 :             const std::string&amp; hash = _hash(key);</span>
-<span class="lineNum">     248 </span><span class="lineCov">          4 :             hashes[hash] = key;</span>
-<span class="lineNum">     249 </span><span class="lineCov">          4 :             hashCopy.push_back(hash);</span>
-<span class="lineNum">     250 </span><span class="lineCov">          4 :             keysArray.push_back(hashCopy.back().c_str());</span>
-<span class="lineNum">     251 </span><span class="lineCov">          4 :             keyLengths.push_back(hashCopy.back().length());</span>
-<span class="lineNum">     252 </span>            :         }
-<span class="lineNum">     253 </span>            : 
-<span class="lineNum">     254 </span><span class="lineCov">          2 :         memcached_mget(_instance, keysArray.data(), keyLengths.data(),</span>
-<span class="lineNum">     255 </span>            :                        keysArray.size());
+<span class="lineNum">     104 </span>            : }
+<span class="lineNum">     105 </span>            : 
+<span class="lineNum">     106 </span>            : class Memcached : public Plugin
+<a name="107"><span class="lineNum">     107 </span>            : {</a>
+<span class="lineNum">     108 </span>            : public:
+<span class="lineNum">     109 </span><span class="lineCov">          3 :     explicit Memcached(const servus::URI&amp; uri)</span>
+<span class="lineNum">     110 </span><span class="lineCov">          6 :         : _instance(_getInstance(uri))</span>
+<span class="lineNum">     111 </span>            :         , _namespace(_generateNamespace(uri))
+<span class="lineNum">     112 </span><span class="lineCov">          6 :         , _lastError(MEMCACHED_SUCCESS)</span>
+<span class="lineNum">     113 </span>            :     {
+<span class="lineNum">     114 </span><span class="lineCov">          3 :         if (!_instance)</span>
+<span class="lineNum">     115 </span><span class="lineNoCov">          0 :             throw std::runtime_error(std::string(&quot;Open of &quot;) +</span>
+<span class="lineNum">     116 </span><span class="lineNoCov">          0 :                                      std::to_string(uri) + &quot; failed&quot;);</span>
+<a name="117"><span class="lineNum">     117 </span><span class="lineCov">          3 :     }</span></a>
+<a name="118"><span class="lineNum">     118 </span>            : </a>
+<span class="lineNum">     119 </span><span class="lineCov">          6 :     virtual ~Memcached() { memcached_free(_instance); }</span>
+<span class="lineNum">     120 </span><span class="lineCov">          4 :     static bool handles(const servus::URI&amp; uri)</span>
+<span class="lineNum">     121 </span>            :     {
+<span class="lineNum">     122 </span><span class="lineCov">          4 :         return uri.getScheme() == &quot;memcached&quot;;</span>
+<a name="123"><span class="lineNum">     123 </span>            :     }</a>
+<span class="lineNum">     124 </span>            : 
+<span class="lineNum">     125 </span><span class="lineNoCov">          0 :     static std::string getDescription()</span>
+<span class="lineNum">     126 </span>            :     {
+<span class="lineNum">     127 </span><span class="lineNoCov">          0 :         return &quot;memcached://[host][:port][/namespace]&quot;;</span>
+<a name="128"><span class="lineNum">     128 </span>            :     }</a>
+<span class="lineNum">     129 </span>            : 
+<span class="lineNum">     130 </span><span class="lineCov">         14 :     bool insert(const std::string&amp; key, const void* data,</span>
+<span class="lineNum">     131 </span>            :                 const size_t size) final
+<span class="lineNum">     132 </span>            :     {
+<span class="lineNum">     133 </span><span class="lineCov">         28 :         const std::string&amp; hash = _hash(key);</span>
+<span class="lineNum">     134 </span>            : #ifdef KEYV_USE_PRESSION
+<span class="lineNum">     135 </span>            :         const lunchbox::Bufferb compressed{_compress(data, size)};
+<span class="lineNum">     136 </span>            :         const memcached_return_t ret =
+<span class="lineNum">     137 </span>            :             memcached_set(_instance, hash.c_str(), hash.length(),
+<span class="lineNum">     138 </span>            :                           (char*)compressed.getData(), compressed.getSize(),
+<span class="lineNum">     139 </span>            :                           (time_t)0, (uint32_t)0);
+<span class="lineNum">     140 </span>            : #else
+<span class="lineNum">     141 </span>            :         const memcached_return_t ret =
+<span class="lineNum">     142 </span><span class="lineCov">         14 :             memcached_set(_instance, hash.c_str(), hash.length(),</span>
+<span class="lineNum">     143 </span><span class="lineCov">         14 :                           (const char*)data, size, (time_t)0, (uint32_t)0);</span>
+<span class="lineNum">     144 </span>            : #endif
+<span class="lineNum">     145 </span>            : 
+<span class="lineNum">     146 </span><span class="lineCov">         14 :         if (ret != MEMCACHED_SUCCESS &amp;&amp; _lastError != ret)</span>
+<span class="lineNum">     147 </span>            :         {
+<span class="lineNum">     148 </span><span class="lineNoCov">          0 :             LBWARN &lt;&lt; &quot;memcached_set failed: &quot;</span>
+<span class="lineNum">     149 </span><span class="lineNoCov">          0 :                    &lt;&lt; memcached_strerror(_instance, ret) &lt;&lt; std::endl;</span>
+<span class="lineNum">     150 </span><span class="lineNoCov">          0 :             _lastError = ret;</span>
+<span class="lineNum">     151 </span>            :         }
+<span class="lineNum">     152 </span><span class="lineCov">         28 :         return ret == MEMCACHED_SUCCESS;</span>
+<a name="153"><span class="lineNum">     153 </span>            :     }</a>
+<span class="lineNum">     154 </span>            : 
+<span class="lineNum">     155 </span><span class="lineCov">         23 :     std::string operator[](const std::string&amp; key) const final</span>
+<span class="lineNum">     156 </span>            :     {
+<span class="lineNum">     157 </span><span class="lineCov">         46 :         const std::string&amp; hash = _hash(key);</span>
+<span class="lineNum">     158 </span><span class="lineCov">         23 :         size_t size = 0;</span>
+<span class="lineNum">     159 </span><span class="lineCov">         23 :         uint32_t flags = 0;</span>
+<span class="lineNum">     160 </span><span class="lineCov">         23 :         memcached_return_t ret = MEMCACHED_SUCCESS;</span>
+<span class="lineNum">     161 </span><span class="lineCov">         23 :         char* data = memcached_get(_instance, hash.c_str(), hash.length(),</span>
+<span class="lineNum">     162 </span><span class="lineCov">         23 :                                    &amp;size, &amp;flags, &amp;ret);</span>
+<span class="lineNum">     163 </span><span class="lineCov">         23 :         if (ret != MEMCACHED_SUCCESS)</span>
+<span class="lineNum">     164 </span><span class="lineCov">          3 :             return std::string();</span>
+<span class="lineNum">     165 </span>            : 
+<span class="lineNum">     166 </span><span class="lineCov">         40 :         std::string value;</span>
+<span class="lineNum">     167 </span>            : #ifdef KEYV_USE_PRESSION
+<span class="lineNum">     168 </span>            :         const uint64_t fullSize = *reinterpret_cast&lt;uint64_t*&gt;(data);
+<span class="lineNum">     169 </span>            :         value.resize(fullSize);
+<span class="lineNum">     170 </span>            :         _decompress((uint8_t*)value.data(), fullSize, (const uint8_t*)data,
+<span class="lineNum">     171 </span>            :                     size);
+<span class="lineNum">     172 </span>            : #else
+<span class="lineNum">     173 </span><span class="lineCov">         20 :         value.assign(data, data + size);</span>
+<span class="lineNum">     174 </span>            : #endif
+<span class="lineNum">     175 </span><span class="lineCov">         20 :         ::free(data);</span>
+<span class="lineNum">     176 </span><span class="lineCov">         20 :         return value;</span>
+<a name="177"><span class="lineNum">     177 </span>            :     }</a>
+<span class="lineNum">     178 </span>            : 
+<span class="lineNum">     179 </span><span class="lineCov">          1 :     void takeValues(const Strings&amp; keys, const ValueFunc&amp; func) const final</span>
+<a name="180"><span class="lineNum">     180 </span>            :     {</a>
+<span class="lineNum">     181 </span>            :         const auto decompress = [this](memcached_result_st* fetched,
+<span class="lineNum">     182 </span><span class="lineCov">          2 :                                        const size_t size) {</span>
+<span class="lineNum">     183 </span><span class="lineCov">          2 :             char* data = memcached_result_take_value(fetched);</span>
+<span class="lineNum">     184 </span><span class="lineCov">          2 :             if (!data)</span>
+<span class="lineNum">     185 </span><span class="lineNoCov">          0 :                 return std::make_pair&lt;char*, size_t&gt;(nullptr, 0);</span>
+<span class="lineNum">     186 </span>            : 
+<span class="lineNum">     187 </span>            : #ifdef KEYV_USE_PRESSION
+<span class="lineNum">     188 </span>            :             const uint64_t fullSize = *reinterpret_cast&lt;const uint64_t*&gt;(data);
+<span class="lineNum">     189 </span>            :             char* decompressed = (char*)::malloc(fullSize);
+<span class="lineNum">     190 </span>            :             _decompress((uint8_t*)decompressed, fullSize, (uint8_t*)data, size);
+<span class="lineNum">     191 </span>            :             ::free(data);
+<span class="lineNum">     192 </span>            :             return std::pair&lt;char*, size_t&gt;({decompressed, fullSize});
+<span class="lineNum">     193 </span>            : #else
+<span class="lineNum">     194 </span><span class="lineCov">          2 :             return std::pair&lt;char*, size_t&gt;({data, size});</span>
+<span class="lineNum">     195 </span>            : #endif
+<span class="lineNum">     196 </span><span class="lineCov">          1 :         };</span>
+<span class="lineNum">     197 </span><span class="lineCov">          1 :         _multiGet(keys, func, decompress);</span>
+<a name="198"><span class="lineNum">     198 </span><span class="lineCov">          1 :     }</span></a>
+<span class="lineNum">     199 </span>            : 
+<span class="lineNum">     200 </span><span class="lineCov">          1 :     void getValues(const Strings&amp; keys, const ConstValueFunc&amp; func) const final</span>
+<span class="lineNum">     201 </span>            :     {
+<span class="lineNum">     202 </span>            : #ifdef KEYV_USE_PRESSION
+<span class="lineNum">     203 </span>            :         lunchbox::Bufferb decompressed;
+<a name="204"><span class="lineNum">     204 </span>            : #endif</a>
+<span class="lineNum">     205 </span>            :         const auto decompress = [&amp;](memcached_result_st* fetched,
+<span class="lineNum">     206 </span><span class="lineCov">          2 :                                     const size_t size) {</span>
+<span class="lineNum">     207 </span><span class="lineCov">          2 :             const char* data = memcached_result_value(fetched);</span>
+<span class="lineNum">     208 </span><span class="lineCov">          2 :             if (!data)</span>
+<span class="lineNum">     209 </span><span class="lineNoCov">          0 :                 return std::make_pair&lt;const char*, size_t&gt;(nullptr, 0);</span>
+<span class="lineNum">     210 </span>            : 
+<span class="lineNum">     211 </span>            : #ifdef KEYV_USE_PRESSION
+<span class="lineNum">     212 </span>            :             const uint64_t fullSize = *reinterpret_cast&lt;const uint64_t*&gt;(data);
+<span class="lineNum">     213 </span>            :             decompressed.resize(fullSize);
+<span class="lineNum">     214 </span>            :             _decompress(decompressed.getData(), fullSize, (const uint8_t*)data,
+<span class="lineNum">     215 </span>            :                         size);
+<span class="lineNum">     216 </span>            :             return std::pair&lt;const char*, size_t&gt;((char*)decompressed.getData(),
+<span class="lineNum">     217 </span>            :                                                   fullSize);
+<span class="lineNum">     218 </span>            : #else
+<span class="lineNum">     219 </span><span class="lineCov">          2 :             return std::pair&lt;const char*, size_t&gt;({data, size});</span>
+<span class="lineNum">     220 </span>            : #endif
+<span class="lineNum">     221 </span>            :         };
+<span class="lineNum">     222 </span><span class="lineCov">          1 :         _multiGet(keys, func, decompress);</span>
+<a name="223"><span class="lineNum">     223 </span><span class="lineCov">          1 :     }</span></a>
+<span class="lineNum">     224 </span>            : 
+<span class="lineNum">     225 </span><span class="lineNoCov">          0 :     bool flush() final</span>
+<span class="lineNum">     226 </span>            :     {
+<span class="lineNum">     227 </span><span class="lineNoCov">          0 :         return memcached_flush_buffers(_instance) == MEMCACHED_SUCCESS;</span>
+<a name="228"><span class="lineNum">     228 </span>            :     }</a>
+<span class="lineNum">     229 </span>            : 
+<span class="lineNum">     230 </span><span class="lineCov">          1 :     void erase(const std::string&amp; key) final</span>
+<span class="lineNum">     231 </span>            :     {
+<span class="lineNum">     232 </span><span class="lineCov">          2 :         const std::string&amp; hash = _hash(key);</span>
+<span class="lineNum">     233 </span><span class="lineCov">          1 :         memcached_delete(_instance, hash.c_str(), hash.length(), 0);</span>
+<span class="lineNum">     234 </span><span class="lineCov">          1 :     }</span>
+<span class="lineNum">     235 </span>            : 
+<a name="236"><span class="lineNum">     236 </span>            : private:</a>
+<span class="lineNum">     237 </span>            :     template &lt;typename F, typename T&gt;
+<span class="lineNum">     238 </span><span class="lineCov">          2 :     void _multiGet(const Strings&amp; keys, const F&amp; func, const T&amp; getFunc) const</span>
+<span class="lineNum">     239 </span>            :     {
+<span class="lineNum">     240 </span><span class="lineCov">          4 :         std::vector&lt;const char*&gt; keysArray;</span>
+<span class="lineNum">     241 </span><span class="lineCov">          4 :         std::vector&lt;size_t&gt; keyLengths;</span>
+<span class="lineNum">     242 </span><span class="lineCov">          2 :         keysArray.reserve(keys.size());</span>
+<span class="lineNum">     243 </span><span class="lineCov">          2 :         keyLengths.reserve(keys.size());</span>
+<span class="lineNum">     244 </span><span class="lineCov">          4 :         std::unordered_map&lt;std::string, std::string&gt; hashes;</span>
+<span class="lineNum">     245 </span><span class="lineCov">          4 :         Strings hashCopy;</span>
+<span class="lineNum">     246 </span><span class="lineCov">          2 :         hashCopy.reserve(keys.size());</span>
+<span class="lineNum">     247 </span>            : 
+<span class="lineNum">     248 </span><span class="lineCov">          6 :         for (const auto&amp; key : keys)</span>
+<span class="lineNum">     249 </span>            :         {
+<span class="lineNum">     250 </span><span class="lineCov">          8 :             const std::string&amp; hash = _hash(key);</span>
+<span class="lineNum">     251 </span><span class="lineCov">          4 :             hashes[hash] = key;</span>
+<span class="lineNum">     252 </span><span class="lineCov">          4 :             hashCopy.push_back(hash);</span>
+<span class="lineNum">     253 </span><span class="lineCov">          4 :             keysArray.push_back(hashCopy.back().c_str());</span>
+<span class="lineNum">     254 </span><span class="lineCov">          4 :             keyLengths.push_back(hashCopy.back().length());</span>
+<span class="lineNum">     255 </span>            :         }
 <span class="lineNum">     256 </span>            : 
-<span class="lineNum">     257 </span><span class="lineCov">          2 :         memcached_return ret = MEMCACHED_SUCCESS;</span>
-<span class="lineNum">     258 </span>            :         memcached_result_st* fetched;
-<span class="lineNum">     259 </span><span class="lineCov">         10 :         while ((fetched = memcached_fetch_result(_instance, nullptr, &amp;ret)))</span>
-<span class="lineNum">     260 </span>            :         {
-<span class="lineNum">     261 </span><span class="lineCov">          4 :             if (ret == MEMCACHED_SUCCESS)</span>
-<span class="lineNum">     262 </span>            :             {
-<span class="lineNum">     263 </span>            :                 const std::string key(memcached_result_key_value(fetched),
-<span class="lineNum">     264 </span><span class="lineCov">          8 :                                       memcached_result_key_length(fetched));</span>
-<span class="lineNum">     265 </span><span class="lineCov">          4 :                 const size_t size = memcached_result_length(fetched);</span>
-<span class="lineNum">     266 </span><span class="lineCov">          4 :                 const auto&amp; result = getFunc(fetched, size);</span>
-<span class="lineNum">     267 </span><span class="lineCov">          4 :                 func(hashes[key], result.first, result.second);</span>
-<span class="lineNum">     268 </span>            :             }
-<span class="lineNum">     269 </span><span class="lineCov">          4 :             memcached_result_free(fetched);</span>
-<span class="lineNum">     270 </span>            :         }
-<span class="lineNum">     271 </span><span class="lineCov">          2 :     }</span>
-<span class="lineNum">     272 </span>            : 
-<span class="lineNum">     273 </span>            : #ifdef KEYV_MEMCACHED_COMPRESSION
-<span class="lineNum">     274 </span>            :     lunchbox::Bufferb _compress(const void* data, const size_t size) const
-<span class="lineNum">     275 </span>            :     {
-<span class="lineNum">     276 </span>            :         lunchbox::Bufferb compressed;
-<span class="lineNum">     277 </span>            :         const auto&amp; results = _compressor.compress((const uint8_t*)data, size);
-<span class="lineNum">     278 </span>            :         compressed.resize(sizeof(uint64_t) + // uncompressed size
-<span class="lineNum">     279 </span>            :                           results.size() * sizeof(uint64_t) +    // chunk sizes
-<span class="lineNum">     280 </span>            :                           pression::data::getDataSize(results)); // chunks
-<span class="lineNum">     281 </span>            :         uint8_t* ptr = compressed.getData();
-<span class="lineNum">     282 </span>            : 
-<span class="lineNum">     283 </span>            :         // uncompressed size
-<span class="lineNum">     284 </span>            :         *reinterpret_cast&lt;uint64_t*&gt;(ptr) = size;
-<span class="lineNum">     285 </span>            :         ptr += sizeof(uint64_t);
-<span class="lineNum">     286 </span>            : 
-<span class="lineNum">     287 </span>            :         for (const auto&amp; result : results)
-<span class="lineNum">     288 </span>            :         {
-<span class="lineNum">     289 </span>            :             // chunk size
-<span class="lineNum">     290 </span>            :             *reinterpret_cast&lt;uint64_t*&gt;(ptr) = result.getSize();
-<span class="lineNum">     291 </span>            :             ptr += sizeof(uint64_t);
-<span class="lineNum">     292 </span>            :             // chunk
-<span class="lineNum">     293 </span>            :             ::memcpy(ptr, result.getData(), result.getSize());
-<span class="lineNum">     294 </span>            :             ptr += result.getSize();
-<span class="lineNum">     295 </span>            :         }
-<span class="lineNum">     296 </span>            :         return compressed;
-<span class="lineNum">     297 </span>            :     }
-<span class="lineNum">     298 </span>            : 
-<span class="lineNum">     299 </span>            :     void _decompress(uint8_t* decompressed, const size_t fullSize,
-<span class="lineNum">     300 </span>            :                      const uint8_t* data, const size_t size) const
-<span class="lineNum">     301 </span>            :     {
-<span class="lineNum">     302 </span>            :         std::vector&lt;std::pair&lt;const uint8_t*, size_t&gt;&gt; inputs;
-<span class="lineNum">     303 </span>            :         for (size_t i = sizeof(uint64_t); i &lt; size;
-<span class="lineNum">     304 </span>            :              i += sizeof(uint64_t) + inputs.back().second)
-<span class="lineNum">     305 </span>            :         {
-<span class="lineNum">     306 </span>            :             const size_t chunkSize =
-<span class="lineNum">     307 </span>            :                 *reinterpret_cast&lt;const uint64_t*&gt;(data + i);
-<span class="lineNum">     308 </span>            :             inputs.push_back({data + i + sizeof(uint64_t), chunkSize});
-<span class="lineNum">     309 </span>            :         }
-<span class="lineNum">     310 </span>            :         _compressor.decompress(inputs, decompressed, fullSize);
-<span class="lineNum">     311 </span>            :     }
-<span class="lineNum">     312 </span>            : 
-<span class="lineNum">     313 </span>            :     // memcached has relative strict requirements on keys (no whitespace or
-<span class="lineNum">     314 </span>            :     // control characters, max length). We therefore hash incoming keys and use
-<span class="lineNum">     315 </span>            :     // their string representation. If we compress data, the compressor name is
-<span class="lineNum">     316 </span>            :     // appended to the key to avoid name clashes.
-<span class="lineNum">     317 </span>            :     std::string _hash(const std::string&amp; key) const
-<span class="lineNum">     318 </span>            :     {
-<span class="lineNum">     319 </span>            :         return lunchbox::uint128_t( _namespace +
-<span class="lineNum">     320 </span>            :             servus::make_uint128( key + _compressor.getName( )).getString();
-<a name="321"><span class="lineNum">     321 </span>            :     }</a>
-<span class="lineNum">     322 </span>            : #else
-<span class="lineNum">     323 </span><span class="lineCov">         42 :     std::string _hash(const std::string&amp; key) const</span>
-<span class="lineNum">     324 </span>            :     {
-<span class="lineNum">     325 </span><span class="lineCov">         84 :         return lunchbox::uint128_t(_namespace + servus::make_uint128(key))</span>
-<span class="lineNum">     326 </span><span class="lineCov">         84 :             .getString();</span>
-<span class="lineNum">     327 </span>            :     }
-<span class="lineNum">     328 </span>            : #endif
-<span class="lineNum">     329 </span>            : 
-<span class="lineNum">     330 </span>            :     memcached_st* const _instance;
-<span class="lineNum">     331 </span>            :     const lunchbox::uint128_t _namespace;
-<span class="lineNum">     332 </span>            :     memcached_return_t _lastError;
-<span class="lineNum">     333 </span>            : #ifdef KEYV_MEMCACHED_COMPRESSION
-<span class="lineNum">     334 </span>            :     mutable pression::data::CompressorSnappy _compressor;
-<a name="335"><span class="lineNum">     335 </span>            : #endif</a>
-<span class="lineNum">     336 </span>            : };
-<span class="lineNum">     337 </span><span class="lineCov">          3 : }</span>
+<span class="lineNum">     257 </span><span class="lineCov">          2 :         memcached_mget(_instance, keysArray.data(), keyLengths.data(),</span>
+<span class="lineNum">     258 </span>            :                        keysArray.size());
+<span class="lineNum">     259 </span>            : 
+<span class="lineNum">     260 </span><span class="lineCov">          2 :         memcached_return ret = MEMCACHED_SUCCESS;</span>
+<span class="lineNum">     261 </span>            :         memcached_result_st* fetched;
+<span class="lineNum">     262 </span><span class="lineCov">         10 :         while ((fetched = memcached_fetch_result(_instance, nullptr, &amp;ret)))</span>
+<span class="lineNum">     263 </span>            :         {
+<span class="lineNum">     264 </span><span class="lineCov">          4 :             if (ret == MEMCACHED_SUCCESS)</span>
+<span class="lineNum">     265 </span>            :             {
+<span class="lineNum">     266 </span>            :                 const std::string key(memcached_result_key_value(fetched),
+<span class="lineNum">     267 </span><span class="lineCov">          8 :                                       memcached_result_key_length(fetched));</span>
+<span class="lineNum">     268 </span><span class="lineCov">          4 :                 const size_t size = memcached_result_length(fetched);</span>
+<span class="lineNum">     269 </span><span class="lineCov">          4 :                 const auto&amp; result = getFunc(fetched, size);</span>
+<span class="lineNum">     270 </span><span class="lineCov">          4 :                 func(hashes[key], result.first, result.second);</span>
+<span class="lineNum">     271 </span>            :             }
+<span class="lineNum">     272 </span><span class="lineCov">          4 :             memcached_result_free(fetched);</span>
+<span class="lineNum">     273 </span>            :         }
+<span class="lineNum">     274 </span><span class="lineCov">          2 :     }</span>
+<span class="lineNum">     275 </span>            : 
+<span class="lineNum">     276 </span>            : #ifdef KEYV_USE_PRESSION
+<span class="lineNum">     277 </span>            :     lunchbox::Bufferb _compress(const void* data, const size_t size) const
+<span class="lineNum">     278 </span>            :     {
+<span class="lineNum">     279 </span>            :         lunchbox::Bufferb compressed;
+<span class="lineNum">     280 </span>            :         const auto&amp; results = _compressor.compress((const uint8_t*)data, size);
+<span class="lineNum">     281 </span>            :         compressed.resize(sizeof(uint64_t) + // uncompressed size
+<span class="lineNum">     282 </span>            :                           results.size() * sizeof(uint64_t) +    // chunk sizes
+<span class="lineNum">     283 </span>            :                           pression::data::getDataSize(results)); // chunks
+<span class="lineNum">     284 </span>            :         uint8_t* ptr = compressed.getData();
+<span class="lineNum">     285 </span>            : 
+<span class="lineNum">     286 </span>            :         // uncompressed size
+<span class="lineNum">     287 </span>            :         *reinterpret_cast&lt;uint64_t*&gt;(ptr) = size;
+<span class="lineNum">     288 </span>            :         ptr += sizeof(uint64_t);
+<span class="lineNum">     289 </span>            : 
+<span class="lineNum">     290 </span>            :         for (const auto&amp; result : results)
+<span class="lineNum">     291 </span>            :         {
+<span class="lineNum">     292 </span>            :             // chunk size
+<span class="lineNum">     293 </span>            :             *reinterpret_cast&lt;uint64_t*&gt;(ptr) = result.getSize();
+<span class="lineNum">     294 </span>            :             ptr += sizeof(uint64_t);
+<span class="lineNum">     295 </span>            :             // chunk
+<span class="lineNum">     296 </span>            :             ::memcpy(ptr, result.getData(), result.getSize());
+<span class="lineNum">     297 </span>            :             ptr += result.getSize();
+<span class="lineNum">     298 </span>            :         }
+<span class="lineNum">     299 </span>            :         return compressed;
+<span class="lineNum">     300 </span>            :     }
+<span class="lineNum">     301 </span>            : 
+<span class="lineNum">     302 </span>            :     void _decompress(uint8_t* decompressed, const size_t fullSize,
+<span class="lineNum">     303 </span>            :                      const uint8_t* data, const size_t size) const
+<span class="lineNum">     304 </span>            :     {
+<span class="lineNum">     305 </span>            :         std::vector&lt;std::pair&lt;const uint8_t*, size_t&gt;&gt; inputs;
+<span class="lineNum">     306 </span>            :         for (size_t i = sizeof(uint64_t); i &lt; size;
+<span class="lineNum">     307 </span>            :              i += sizeof(uint64_t) + inputs.back().second)
+<span class="lineNum">     308 </span>            :         {
+<span class="lineNum">     309 </span>            :             const size_t chunkSize =
+<span class="lineNum">     310 </span>            :                 *reinterpret_cast&lt;const uint64_t*&gt;(data + i);
+<span class="lineNum">     311 </span>            :             inputs.push_back({data + i + sizeof(uint64_t), chunkSize});
+<span class="lineNum">     312 </span>            :         }
+<span class="lineNum">     313 </span>            :         _compressor.decompress(inputs, decompressed, fullSize);
+<span class="lineNum">     314 </span>            :     }
+<span class="lineNum">     315 </span>            : 
+<span class="lineNum">     316 </span>            :     // memcached has relative strict requirements on keys (no whitespace or
+<span class="lineNum">     317 </span>            :     // control characters, max length). We therefore hash incoming keys and use
+<span class="lineNum">     318 </span>            :     // their string representation. If we compress data, the compressor name is
+<span class="lineNum">     319 </span>            :     // appended to the key to avoid name clashes.
+<span class="lineNum">     320 </span>            :     std::string _hash(const std::string&amp; key) const
+<span class="lineNum">     321 </span>            :     {
+<span class="lineNum">     322 </span>            :         return lunchbox::uint128_t(
+<span class="lineNum">     323 </span>            :                    _namespace +
+<span class="lineNum">     324 </span>            :                    servus::make_uint128(key + _compressor.getName()))
+<span class="lineNum">     325 </span>            :             .getString();
+<a name="326"><span class="lineNum">     326 </span>            :     }</a>
+<span class="lineNum">     327 </span>            : #else
+<span class="lineNum">     328 </span><span class="lineCov">         42 :     std::string _hash(const std::string&amp; key) const</span>
+<span class="lineNum">     329 </span>            :     {
+<span class="lineNum">     330 </span><span class="lineCov">         84 :         return lunchbox::uint128_t(_namespace + servus::make_uint128(key))</span>
+<span class="lineNum">     331 </span><span class="lineCov">         84 :             .getString();</span>
+<span class="lineNum">     332 </span>            :     }
+<span class="lineNum">     333 </span>            : #endif
+<span class="lineNum">     334 </span>            : 
+<span class="lineNum">     335 </span>            :     memcached_st* const _instance;
+<span class="lineNum">     336 </span>            :     const lunchbox::uint128_t _namespace;
+<span class="lineNum">     337 </span>            :     memcached_return_t _lastError;
+<span class="lineNum">     338 </span>            : #ifdef KEYV_USE_PRESSION
+<span class="lineNum">     339 </span>            :     mutable pression::data::CompressorSnappy _compressor;
+<a name="340"><span class="lineNum">     340 </span>            : #endif</a>
+<span class="lineNum">     341 </span>            : };
+<span class="lineNum">     342 </span><span class="lineCov">          3 : }</span>
 </pre>
       </td>
     </tr>
