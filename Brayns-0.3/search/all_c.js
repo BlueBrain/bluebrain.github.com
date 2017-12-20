@@ -1,6 +1,6 @@
 var searchData=
 [
-  ['map',['map',['../classbrayns_1_1_livre_frame_buffer.html#a7fb43ca1b058923b36bd6f7a89ef7a18',1,'brayns::LivreFrameBuffer::map()'],['../classbrayns_1_1_volume_handler_1_1_volume_descriptor.html#a2d4b737d5b886e4ce8c3e59dc480d96a',1,'brayns::VolumeHandler::VolumeDescriptor::map()']]],
+  ['map',['map',['../classbrayns_1_1_volume_handler_1_1_volume_descriptor.html#a2d4b737d5b886e4ce8c3e59dc480d96a',1,'brayns::VolumeHandler::VolumeDescriptor']]],
   ['map_5fa',['map_a',['../structbrayns_1_1obj_1_1_extended_o_b_j_material.html#a3a85e2c595afb0fb62dd70d921f3adc7',1,'brayns::obj::ExtendedOBJMaterial']]],
   ['map_5fbump',['map_Bump',['../structbrayns_1_1obj_1_1_extended_o_b_j_material.html#aa751a568ed6aa42d9d5938ae59a3acb0',1,'brayns::obj::ExtendedOBJMaterial']]],
   ['map_5fd',['map_d',['../structbrayns_1_1obj_1_1_extended_o_b_j_material.html#a403863295195b5747082227c93eaf3d7',1,'brayns::obj::ExtendedOBJMaterial']]],

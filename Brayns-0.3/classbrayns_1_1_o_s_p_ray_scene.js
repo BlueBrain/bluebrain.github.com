@@ -10,9 +10,7 @@ var classbrayns_1_1_o_s_p_ray_scene =
     [ "commitTransferFunctionData", "classbrayns_1_1_o_s_p_ray_scene.html#aa8b9639a0aba20a2795d317b1a21abc5", null ],
     [ "commitVolumeData", "classbrayns_1_1_o_s_p_ray_scene.html#ac0d6b7acd500f2a3499de9234fcfad41", null ],
     [ "isVolumeSupported", "classbrayns_1_1_o_s_p_ray_scene.html#ae4904bea5fbd897256145650bfbebbe2", null ],
-    [ "loadFromCacheFile", "classbrayns_1_1_o_s_p_ray_scene.html#ae33df0cea954952482523078b1b5aa68", null ],
     [ "modelImpl", "classbrayns_1_1_o_s_p_ray_scene.html#a637cc39ed52a4ed1aecb00cb990fe4d8", null ],
-    [ "saveToCacheFile", "classbrayns_1_1_o_s_p_ray_scene.html#abcb43baaea1e2134a9b244c2c60a4e52", null ],
     [ "serializeGeometry", "classbrayns_1_1_o_s_p_ray_scene.html#a42e388f6a471df981eb93842d9be6fd5", null ],
     [ "simulationModelImpl", "classbrayns_1_1_o_s_p_ray_scene.html#affa5ae2b92e4f28306e7da2289fc244a", null ],
     [ "unload", "classbrayns_1_1_o_s_p_ray_scene.html#abc14d535ccc3d89fba5af497c99a9bcc", null ]

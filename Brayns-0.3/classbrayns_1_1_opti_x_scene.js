@@ -10,9 +10,7 @@ var classbrayns_1_1_opti_x_scene =
     [ "commitTransferFunctionData", "classbrayns_1_1_opti_x_scene.html#ad2804172919ba949c1b76764f8dcc5c1", null ],
     [ "commitVolumeData", "classbrayns_1_1_opti_x_scene.html#aabc1d5e3e24845a20d5e74fea75b25a3", null ],
     [ "isVolumeSupported", "classbrayns_1_1_opti_x_scene.html#a331ff16e52f9706cec948385933bef82", null ],
-    [ "loadFromCacheFile", "classbrayns_1_1_opti_x_scene.html#a09e8b987aacea1401d5a09d520a2eb67", null ],
     [ "reset", "classbrayns_1_1_opti_x_scene.html#ab4142145a22dd06167d073d37af2170e", null ],
-    [ "saveToCacheFile", "classbrayns_1_1_opti_x_scene.html#aed6f63d8ac39764cecabceb2afb94cf5", null ],
     [ "serializeGeometry", "classbrayns_1_1_opti_x_scene.html#a83dd7d1fac3ec8d67a17ac3696628a62", null ],
     [ "unload", "classbrayns_1_1_opti_x_scene.html#a9d737a04e5ee491b135ab15e2c600d72", null ]
 ];

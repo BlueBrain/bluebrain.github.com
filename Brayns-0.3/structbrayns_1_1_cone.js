@@ -1,6 +1,7 @@
 var structbrayns_1_1_cone =
 [
     [ "Cone", "structbrayns_1_1_cone.html#adea640e9e9abafec9fa6660161d8fc00", null ],
+    [ "Cone", "structbrayns_1_1_cone.html#a6a712db7d22ad90092e589dbdc745e3e", null ],
     [ "center", "structbrayns_1_1_cone.html#a479daddc79d49faabeb4d53375617233", null ],
     [ "centerRadius", "structbrayns_1_1_cone.html#a351687efa58039b7b421a5f7c29a7977", null ],
     [ "timestamp", "structbrayns_1_1_cone.html#accb631fd9d52ac9b187500b5d132004f", null ],

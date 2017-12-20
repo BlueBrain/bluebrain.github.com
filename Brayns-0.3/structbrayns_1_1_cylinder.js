@@ -1,6 +1,7 @@
 var structbrayns_1_1_cylinder =
 [
-    [ "Cylinder", "structbrayns_1_1_cylinder.html#a4cd55cbdeac3fc74f10e7a98b977db41", null ],
+    [ "Cylinder", "structbrayns_1_1_cylinder.html#a644ffccd504d3162768604cf5626a253", null ],
+    [ "Cylinder", "structbrayns_1_1_cylinder.html#a44c4a5dde65ecdd96e0595633d0a0610", null ],
     [ "center", "structbrayns_1_1_cylinder.html#a302079417c18b3480bb7869de68515b9", null ],
     [ "radius", "structbrayns_1_1_cylinder.html#a8650f9daa266c8c6f151534cbeea5a65", null ],
     [ "timestamp", "structbrayns_1_1_cylinder.html#a351e925cfa021f432770e3e4503f4ceb", null ],

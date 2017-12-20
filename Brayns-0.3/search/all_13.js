@@ -1,7 +1,7 @@
 var searchData=
 [
   ['unload',['unload',['../classbrayns_1_1_opti_x_scene.html#a9d737a04e5ee491b135ab15e2c600d72',1,'brayns::OptiXScene::unload()'],['../classbrayns_1_1_o_s_p_ray_scene.html#abc14d535ccc3d89fba5af497c99a9bcc',1,'brayns::OSPRayScene::unload()'],['../classbrayns_1_1_scene.html#ab75c6ad4e340d44b5bd78f99cd2a5851',1,'brayns::Scene::unload()']]],
-  ['unmap',['unmap',['../classbrayns_1_1_livre_frame_buffer.html#af8431d7cd2bb6abc73e2adb99217708c',1,'brayns::LivreFrameBuffer::unmap()'],['../classbrayns_1_1_volume_handler_1_1_volume_descriptor.html#a3c3adefe331b28d5e6e07871d3250263',1,'brayns::VolumeHandler::VolumeDescriptor::unmap()']]],
+  ['unmap',['unmap',['../classbrayns_1_1_volume_handler_1_1_volume_descriptor.html#a3c3adefe331b28d5e6e07871d3250263',1,'brayns::VolumeHandler::VolumeDescriptor']]],
   ['updatecallback',['UpdateCallback',['../classbrayns_1_1_progress.html#a2dcbd15cdf98405e96ad9a523580bf81',1,'brayns::Progress']]],
   ['updateprogress',['updateProgress',['../classbrayns_1_1_progress_reporter.html#ab1409398ff3da811bcec719b51e8ac8b',1,'brayns::ProgressReporter']]],
   ['updatevalue',['updateValue',['../classbrayns_1_1_abstract_parameters.html#a9ad29650d1d34a7ff160a14d49affd6c',1,'brayns::AbstractParameters']]],
