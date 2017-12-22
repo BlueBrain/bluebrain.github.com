@@ -6,7 +6,7 @@ var searchData=
   ['importmeshfromfile',['importMeshFromFile',['../classbrayns_1_1_mesh_loader.html#aa8ced7a992519151016b0b7b012db37b',1,'brayns::MeshLoader']]],
   ['importpdbfile',['importPDBFile',['../classbrayns_1_1_protein_loader.html#a91c82bfd2699c0d8023a37d7e9f6327f',1,'brayns::ProteinLoader']]],
   ['importtexturefromfile',['importTextureFromFile',['../classbrayns_1_1_image_manager.html#afd351f59c98c3c0f651cf6fd401f7f28',1,'brayns::ImageManager']]],
-  ['initializematerials',['initializeMaterials',['../classbrayns_1_1_engine.html#a653f2aa1e6003342b6bdc91ca6972b51',1,'brayns::Engine']]],
+  ['initializematerials',['initializeMaterials',['../classbrayns_1_1_engine.html#a4d39c844e28b872a2513edf2df42f9c0',1,'brayns::Engine']]],
   ['isanymodified',['isAnyModified',['../classbrayns_1_1_parameters_manager.html#a56137d99df36dc76edb3ffd9d285c88e',1,'brayns::ParametersManager']]],
   ['isbenchmarking',['isBenchmarking',['../classbrayns_1_1_application_parameters.html#a0baa53fd46c9a6aecddeec70d2546ce2',1,'brayns::ApplicationParameters']]],
   ['isready',['isReady',['../classbrayns_1_1_engine.html#a9129582e5a8a2b86a48b92d24035e064',1,'brayns::Engine::isReady()'],['../classbrayns_1_1_abstract_simulation_handler.html#aad7e9c57e1a9095c0f3c05b3fc33d332',1,'brayns::AbstractSimulationHandler::isReady()']]],

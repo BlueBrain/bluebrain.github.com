@@ -1,5 +1,10 @@
 var NAVTREEINDEX4 =
 {
+"classbrayns_1_1_volume_parameters.html#a7611a2cd3d9d387485067fd12642e411":[5,0,0,73,0],
+"classbrayns_1_1_volume_parameters.html#a7d490d9ed5cb5bbfba798564dc62b48f":[5,0,0,73,6],
+"classbrayns_1_1_volume_parameters.html#aa2f36419eda1a6af63f6d8f0c69f70a8":[5,0,0,73,12],
+"classbrayns_1_1_volume_parameters.html#aa3e9951f078660fa251b9fdceebc0f1d":[5,0,0,73,1],
+"classbrayns_1_1_volume_parameters.html#aac205c6e87fabd2c003a14b59292d221":[5,0,0,73,2],
 "classbrayns_1_1_volume_parameters.html#ab7143e2f875fab737555d9dd8215a096":[5,0,0,73,5],
 "classbrayns_1_1_volume_parameters.html#ac6c3bc4efbe1911303f056e5d3c112eb":[5,0,0,73,14],
 "classbrayns_1_1_volume_parameters.html#adc41b4462bd0d948f71faf63c4a62966":[5,0,0,73,16],
@@ -16,8 +21,8 @@ var NAVTREEINDEX4 =
 "defines_linux_8h_source.html":[6,0,24],
 "exceptions_8h_source.html":[6,0,29],
 "files.html":[6,0],
-"functions.html":[5,3,0],
 "functions.html":[5,3,0,0],
+"functions.html":[5,3,0],
 "functions_0x7e.html":[5,3,0,21],
 "functions_a.html":[5,3,0,1],
 "functions_b.html":[5,3,0,2],
@@ -244,10 +249,5 @@ var NAVTREEINDEX4 =
 "structospray_1_1_extended_cylinders.html#ae8926af525c696db61a261fe05936ff8":[5,0,1,2,8],
 "structospray_1_1_extended_spheres.html":[5,0,1,3],
 "structospray_1_1_extended_spheres.html#a0315bd498884a696f44feb8cdb884bee":[5,0,1,3,2],
-"structospray_1_1_extended_spheres.html#a2ae094765956f7e3521d61711ff771d3":[5,0,1,3,14],
-"structospray_1_1_extended_spheres.html#a35fe1079da30fe2229111b895e484108":[5,0,1,3,4],
-"structospray_1_1_extended_spheres.html#a37fad265868796da992359fe465a90e8":[5,0,1,3,8],
-"structospray_1_1_extended_spheres.html#a3a22e3c6ba38e9585bef343a0855cdb7":[5,0,1,3,5],
-"structospray_1_1_extended_spheres.html#a6cb65bd6634e12fe9d15d34cd5ba98d5":[5,0,1,3,11],
-"structospray_1_1_extended_spheres.html#a73c1f76d6e4dfda78b0bb4218be90b1d":[5,0,1,3,3]
+"structospray_1_1_extended_spheres.html#a2ae094765956f7e3521d61711ff771d3":[5,0,1,3,14]
 };
