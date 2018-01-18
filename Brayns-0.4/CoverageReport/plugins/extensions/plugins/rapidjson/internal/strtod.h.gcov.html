@@ -1,0 +1,394 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+
+<html lang="en">
+
+<head>
+  <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+  <title>LCOV - Brayns - plugins/extensions/plugins/rapidjson/internal/strtod.h</title>
+  <link rel="stylesheet" type="text/css" href="../../../../../gcov.css">
+</head>
+
+<body>
+
+  <table width="100%" border=0 cellspacing=0 cellpadding=0>
+    <tr><td class="title">LCOV - code coverage report</td></tr>
+    <tr><td class="ruler"><img src="../../../../../glass.png" width=3 height=3 alt=""></td></tr>
+
+    <tr>
+      <td width="100%">
+        <table cellpadding=1 border=0 width="100%">
+          <tr>
+            <td width="10%" class="headerItem">Current view:</td>
+            <td width="35%" class="headerValue"><a href="../../../../../index.html">top level</a> - <a href="index.html">plugins/extensions/plugins/rapidjson/internal</a> - strtod.h<span style="font-size: 80%;"> (source / <a href="strtod.h.func-sort-c.html">functions</a>)</span></td>
+            <td width="5%"></td>
+            <td width="15%"></td>
+            <td width="10%" class="headerCovTableHead">Hit</td>
+            <td width="10%" class="headerCovTableHead">Total</td>
+            <td width="15%" class="headerCovTableHead">Coverage</td>
+          </tr>
+          <tr>
+            <td class="headerItem">Test:</td>
+            <td class="headerValue">Brayns</td>
+            <td></td>
+            <td class="headerItem">Lines:</td>
+            <td class="headerCovTableEntry">0</td>
+            <td class="headerCovTableEntry">12</td>
+            <td class="headerCovTableEntryLo">0.0 %</td>
+          </tr>
+          <tr>
+            <td class="headerItem">Date:</td>
+            <td class="headerValue">2018-01-18 01:28:34</td>
+            <td></td>
+            <td class="headerItem">Functions:</td>
+            <td class="headerCovTableEntry">0</td>
+            <td class="headerCovTableEntry">2</td>
+            <td class="headerCovTableEntryLo">0.0 %</td>
+          </tr>
+          <tr><td><img src="../../../../../glass.png" width=3 height=3 alt=""></td></tr>
+        </table>
+      </td>
+    </tr>
+
+    <tr><td class="ruler"><img src="../../../../../glass.png" width=3 height=3 alt=""></td></tr>
+  </table>
+
+  <table cellpadding=0 cellspacing=0 border=0>
+    <tr>
+      <td><br></td>
+    </tr>
+    <tr>
+      <td>
+<pre class="sourceHeading">          Line data    Source code</pre>
+<pre class="source">
+<a name="1"><span class="lineNum">       1 </span>            : // Tencent is pleased to support the open source community by making RapidJSON</a>
+<span class="lineNum">       2 </span>            : // available.
+<span class="lineNum">       3 </span>            : //
+<span class="lineNum">       4 </span>            : // Copyright (C) 2015 THL A29 Limited, a Tencent company, and Milo Yip. All
+<span class="lineNum">       5 </span>            : // rights reserved.
+<span class="lineNum">       6 </span>            : //
+<span class="lineNum">       7 </span>            : // Licensed under the MIT License (the &quot;License&quot;); you may not use this file
+<span class="lineNum">       8 </span>            : // except
+<span class="lineNum">       9 </span>            : // in compliance with the License. You may obtain a copy of the License at
+<span class="lineNum">      10 </span>            : //
+<span class="lineNum">      11 </span>            : // http://opensource.org/licenses/MIT
+<span class="lineNum">      12 </span>            : //
+<span class="lineNum">      13 </span>            : // Unless required by applicable law or agreed to in writing, software
+<span class="lineNum">      14 </span>            : // distributed
+<span class="lineNum">      15 </span>            : // under the License is distributed on an &quot;AS IS&quot; BASIS, WITHOUT WARRANTIES OR
+<span class="lineNum">      16 </span>            : // CONDITIONS OF ANY KIND, either express or implied. See the License for the
+<span class="lineNum">      17 </span>            : // specific language governing permissions and limitations under the License.
+<span class="lineNum">      18 </span>            : 
+<span class="lineNum">      19 </span>            : #ifndef RAPIDJSON_STRTOD_
+<span class="lineNum">      20 </span>            : #define RAPIDJSON_STRTOD_
+<span class="lineNum">      21 </span>            : 
+<span class="lineNum">      22 </span>            : #include &quot;biginteger.h&quot;
+<span class="lineNum">      23 </span>            : #include &quot;diyfp.h&quot;
+<span class="lineNum">      24 </span>            : #include &quot;ieee754.h&quot;
+<span class="lineNum">      25 </span>            : #include &quot;pow10.h&quot;
+<span class="lineNum">      26 </span>            : 
+<span class="lineNum">      27 </span>            : RAPIDJSON_NAMESPACE_BEGIN
+<a name="28"><span class="lineNum">      28 </span>            : namespace internal</a>
+<span class="lineNum">      29 </span>            : {
+<span class="lineNum">      30 </span><span class="lineNoCov">          0 : inline double FastPath(double significand, int exp)</span>
+<span class="lineNum">      31 </span>            : {
+<span class="lineNum">      32 </span><span class="lineNoCov">          0 :     if (exp &lt; -308)</span>
+<span class="lineNum">      33 </span><span class="lineNoCov">          0 :         return 0.0;</span>
+<span class="lineNum">      34 </span><span class="lineNoCov">          0 :     else if (exp &gt;= 0)</span>
+<span class="lineNum">      35 </span><span class="lineNoCov">          0 :         return significand * internal::Pow10(exp);</span>
+<span class="lineNum">      36 </span>            :     else
+<span class="lineNum">      37 </span><span class="lineNoCov">          0 :         return significand / internal::Pow10(-exp);</span>
+<a name="38"><span class="lineNum">      38 </span>            : }</a>
+<span class="lineNum">      39 </span>            : 
+<span class="lineNum">      40 </span><span class="lineNoCov">          0 : inline double StrtodNormalPrecision(double d, int p)</span>
+<span class="lineNum">      41 </span>            : {
+<span class="lineNum">      42 </span><span class="lineNoCov">          0 :     if (p &lt; -308)</span>
+<span class="lineNum">      43 </span>            :     {
+<span class="lineNum">      44 </span>            :         // Prevent expSum &lt; -308, making Pow10(p) = 0
+<span class="lineNum">      45 </span><span class="lineNoCov">          0 :         d = FastPath(d, -308);</span>
+<span class="lineNum">      46 </span><span class="lineNoCov">          0 :         d = FastPath(d, p + 308);</span>
+<span class="lineNum">      47 </span>            :     }
+<span class="lineNum">      48 </span>            :     else
+<span class="lineNum">      49 </span><span class="lineNoCov">          0 :         d = FastPath(d, p);</span>
+<span class="lineNum">      50 </span><span class="lineNoCov">          0 :     return d;</span>
+<span class="lineNum">      51 </span>            : }
+<span class="lineNum">      52 </span>            : 
+<span class="lineNum">      53 </span>            : template &lt;typename T&gt;
+<span class="lineNum">      54 </span>            : inline T Min3(T a, T b, T c)
+<span class="lineNum">      55 </span>            : {
+<span class="lineNum">      56 </span>            :     T m = a;
+<span class="lineNum">      57 </span>            :     if (m &gt; b)
+<span class="lineNum">      58 </span>            :         m = b;
+<span class="lineNum">      59 </span>            :     if (m &gt; c)
+<span class="lineNum">      60 </span>            :         m = c;
+<span class="lineNum">      61 </span>            :     return m;
+<span class="lineNum">      62 </span>            : }
+<span class="lineNum">      63 </span>            : 
+<span class="lineNum">      64 </span>            : inline int CheckWithinHalfULP(double b, const BigInteger&amp; d, int dExp)
+<span class="lineNum">      65 </span>            : {
+<span class="lineNum">      66 </span>            :     const Double db(b);
+<span class="lineNum">      67 </span>            :     const uint64_t bInt = db.IntegerSignificand();
+<span class="lineNum">      68 </span>            :     const int bExp = db.IntegerExponent();
+<span class="lineNum">      69 </span>            :     const int hExp = bExp - 1;
+<span class="lineNum">      70 </span>            : 
+<span class="lineNum">      71 </span>            :     int dS_Exp2 = 0, dS_Exp5 = 0, bS_Exp2 = 0, bS_Exp5 = 0, hS_Exp2 = 0,
+<span class="lineNum">      72 </span>            :         hS_Exp5 = 0;
+<span class="lineNum">      73 </span>            : 
+<span class="lineNum">      74 </span>            :     // Adjust for decimal exponent
+<span class="lineNum">      75 </span>            :     if (dExp &gt;= 0)
+<span class="lineNum">      76 </span>            :     {
+<span class="lineNum">      77 </span>            :         dS_Exp2 += dExp;
+<span class="lineNum">      78 </span>            :         dS_Exp5 += dExp;
+<span class="lineNum">      79 </span>            :     }
+<span class="lineNum">      80 </span>            :     else
+<span class="lineNum">      81 </span>            :     {
+<span class="lineNum">      82 </span>            :         bS_Exp2 -= dExp;
+<span class="lineNum">      83 </span>            :         bS_Exp5 -= dExp;
+<span class="lineNum">      84 </span>            :         hS_Exp2 -= dExp;
+<span class="lineNum">      85 </span>            :         hS_Exp5 -= dExp;
+<span class="lineNum">      86 </span>            :     }
+<span class="lineNum">      87 </span>            : 
+<span class="lineNum">      88 </span>            :     // Adjust for binary exponent
+<span class="lineNum">      89 </span>            :     if (bExp &gt;= 0)
+<span class="lineNum">      90 </span>            :         bS_Exp2 += bExp;
+<span class="lineNum">      91 </span>            :     else
+<span class="lineNum">      92 </span>            :     {
+<span class="lineNum">      93 </span>            :         dS_Exp2 -= bExp;
+<span class="lineNum">      94 </span>            :         hS_Exp2 -= bExp;
+<span class="lineNum">      95 </span>            :     }
+<span class="lineNum">      96 </span>            : 
+<span class="lineNum">      97 </span>            :     // Adjust for half ulp exponent
+<span class="lineNum">      98 </span>            :     if (hExp &gt;= 0)
+<span class="lineNum">      99 </span>            :         hS_Exp2 += hExp;
+<span class="lineNum">     100 </span>            :     else
+<span class="lineNum">     101 </span>            :     {
+<span class="lineNum">     102 </span>            :         dS_Exp2 -= hExp;
+<span class="lineNum">     103 </span>            :         bS_Exp2 -= hExp;
+<span class="lineNum">     104 </span>            :     }
+<span class="lineNum">     105 </span>            : 
+<span class="lineNum">     106 </span>            :     // Remove common power of two factor from all three scaled values
+<span class="lineNum">     107 </span>            :     int common_Exp2 = Min3(dS_Exp2, bS_Exp2, hS_Exp2);
+<span class="lineNum">     108 </span>            :     dS_Exp2 -= common_Exp2;
+<span class="lineNum">     109 </span>            :     bS_Exp2 -= common_Exp2;
+<span class="lineNum">     110 </span>            :     hS_Exp2 -= common_Exp2;
+<span class="lineNum">     111 </span>            : 
+<span class="lineNum">     112 </span>            :     BigInteger dS = d;
+<span class="lineNum">     113 </span>            :     dS.MultiplyPow5(static_cast&lt;unsigned&gt;(dS_Exp5)) &lt;&lt;=
+<span class="lineNum">     114 </span>            :         static_cast&lt;unsigned&gt;(dS_Exp2);
+<span class="lineNum">     115 </span>            : 
+<span class="lineNum">     116 </span>            :     BigInteger bS(bInt);
+<span class="lineNum">     117 </span>            :     bS.MultiplyPow5(static_cast&lt;unsigned&gt;(bS_Exp5)) &lt;&lt;=
+<span class="lineNum">     118 </span>            :         static_cast&lt;unsigned&gt;(bS_Exp2);
+<span class="lineNum">     119 </span>            : 
+<span class="lineNum">     120 </span>            :     BigInteger hS(1);
+<span class="lineNum">     121 </span>            :     hS.MultiplyPow5(static_cast&lt;unsigned&gt;(hS_Exp5)) &lt;&lt;=
+<span class="lineNum">     122 </span>            :         static_cast&lt;unsigned&gt;(hS_Exp2);
+<span class="lineNum">     123 </span>            : 
+<span class="lineNum">     124 </span>            :     BigInteger delta(0);
+<span class="lineNum">     125 </span>            :     dS.Difference(bS, &amp;delta);
+<span class="lineNum">     126 </span>            : 
+<span class="lineNum">     127 </span>            :     return delta.Compare(hS);
+<span class="lineNum">     128 </span>            : }
+<span class="lineNum">     129 </span>            : 
+<span class="lineNum">     130 </span>            : inline bool StrtodFast(double d, int p, double* result)
+<span class="lineNum">     131 </span>            : {
+<span class="lineNum">     132 </span>            :     // Use fast path for string-to-double conversion if possible
+<span class="lineNum">     133 </span>            :     // see
+<span class="lineNum">     134 </span>            :     // http://www.exploringbinary.com/fast-path-decimal-to-floating-point-conversion/
+<span class="lineNum">     135 </span>            :     if (p &gt; 22 &amp;&amp; p &lt; 22 + 16)
+<span class="lineNum">     136 </span>            :     {
+<span class="lineNum">     137 </span>            :         // Fast Path Cases In Disguise
+<span class="lineNum">     138 </span>            :         d *= internal::Pow10(p - 22);
+<span class="lineNum">     139 </span>            :         p = 22;
+<span class="lineNum">     140 </span>            :     }
+<span class="lineNum">     141 </span>            : 
+<span class="lineNum">     142 </span>            :     if (p &gt;= -22 &amp;&amp; p &lt;= 22 &amp;&amp; d &lt;= 9007199254740991.0)
+<span class="lineNum">     143 </span>            :     { // 2^53 - 1
+<span class="lineNum">     144 </span>            :         *result = FastPath(d, p);
+<span class="lineNum">     145 </span>            :         return true;
+<span class="lineNum">     146 </span>            :     }
+<span class="lineNum">     147 </span>            :     else
+<span class="lineNum">     148 </span>            :         return false;
+<span class="lineNum">     149 </span>            : }
+<span class="lineNum">     150 </span>            : 
+<span class="lineNum">     151 </span>            : // Compute an approximation and see if it is within 1/2 ULP
+<span class="lineNum">     152 </span>            : inline bool StrtodDiyFp(const char* decimals, size_t length,
+<span class="lineNum">     153 </span>            :                         size_t decimalPosition, int exp, double* result)
+<span class="lineNum">     154 </span>            : {
+<span class="lineNum">     155 </span>            :     uint64_t significand = 0;
+<span class="lineNum">     156 </span>            :     size_t i = 0; // 2^64 - 1 = 18446744073709551615, 1844674407370955161 =
+<span class="lineNum">     157 </span>            :                   // 0x1999999999999999
+<span class="lineNum">     158 </span>            :     for (; i &lt; length; i++)
+<span class="lineNum">     159 </span>            :     {
+<span class="lineNum">     160 </span>            :         if (significand &gt; RAPIDJSON_UINT64_C2(0x19999999, 0x99999999) ||
+<span class="lineNum">     161 </span>            :             (significand == RAPIDJSON_UINT64_C2(0x19999999, 0x99999999) &amp;&amp;
+<span class="lineNum">     162 </span>            :              decimals[i] &gt; '5'))
+<span class="lineNum">     163 </span>            :             break;
+<span class="lineNum">     164 </span>            :         significand =
+<span class="lineNum">     165 </span>            :             significand * 10u + static_cast&lt;unsigned&gt;(decimals[i] - '0');
+<span class="lineNum">     166 </span>            :     }
+<span class="lineNum">     167 </span>            : 
+<span class="lineNum">     168 </span>            :     if (i &lt; length &amp;&amp; decimals[i] &gt;= '5') // Rounding
+<span class="lineNum">     169 </span>            :         significand++;
+<span class="lineNum">     170 </span>            : 
+<span class="lineNum">     171 </span>            :     size_t remaining = length - i;
+<span class="lineNum">     172 </span>            :     const unsigned kUlpShift = 3;
+<span class="lineNum">     173 </span>            :     const unsigned kUlp = 1 &lt;&lt; kUlpShift;
+<span class="lineNum">     174 </span>            :     int64_t error = (remaining == 0) ? 0 : kUlp / 2;
+<span class="lineNum">     175 </span>            : 
+<span class="lineNum">     176 </span>            :     DiyFp v(significand, 0);
+<span class="lineNum">     177 </span>            :     v = v.Normalize();
+<span class="lineNum">     178 </span>            :     error &lt;&lt;= -v.e;
+<span class="lineNum">     179 </span>            : 
+<span class="lineNum">     180 </span>            :     const int dExp =
+<span class="lineNum">     181 </span>            :         static_cast&lt;int&gt;(decimalPosition) - static_cast&lt;int&gt;(i) + exp;
+<span class="lineNum">     182 </span>            : 
+<span class="lineNum">     183 </span>            :     int actualExp;
+<span class="lineNum">     184 </span>            :     DiyFp cachedPower = GetCachedPower10(dExp, &amp;actualExp);
+<span class="lineNum">     185 </span>            :     if (actualExp != dExp)
+<span class="lineNum">     186 </span>            :     {
+<span class="lineNum">     187 </span>            :         static const DiyFp kPow10[] = {
+<span class="lineNum">     188 </span>            :             DiyFp(RAPIDJSON_UINT64_C2(0xa0000000, 00000000), -60), // 10^1
+<span class="lineNum">     189 </span>            :             DiyFp(RAPIDJSON_UINT64_C2(0xc8000000, 00000000), -57), // 10^2
+<span class="lineNum">     190 </span>            :             DiyFp(RAPIDJSON_UINT64_C2(0xfa000000, 00000000), -54), // 10^3
+<span class="lineNum">     191 </span>            :             DiyFp(RAPIDJSON_UINT64_C2(0x9c400000, 00000000), -50), // 10^4
+<span class="lineNum">     192 </span>            :             DiyFp(RAPIDJSON_UINT64_C2(0xc3500000, 00000000), -47), // 10^5
+<span class="lineNum">     193 </span>            :             DiyFp(RAPIDJSON_UINT64_C2(0xf4240000, 00000000), -44), // 10^6
+<span class="lineNum">     194 </span>            :             DiyFp(RAPIDJSON_UINT64_C2(0x98968000, 00000000), -40)  // 10^7
+<span class="lineNum">     195 </span>            :         };
+<span class="lineNum">     196 </span>            :         int adjustment = dExp - actualExp - 1;
+<span class="lineNum">     197 </span>            :         RAPIDJSON_ASSERT(adjustment &gt;= 0 &amp;&amp; adjustment &lt; 7);
+<span class="lineNum">     198 </span>            :         v = v * kPow10[adjustment];
+<span class="lineNum">     199 </span>            :         if (length + static_cast&lt;unsigned&gt;(adjustment) &gt;
+<span class="lineNum">     200 </span>            :             19u) // has more digits than decimal digits in 64-bit
+<span class="lineNum">     201 </span>            :             error += kUlp / 2;
+<span class="lineNum">     202 </span>            :     }
+<span class="lineNum">     203 </span>            : 
+<span class="lineNum">     204 </span>            :     v = v * cachedPower;
+<span class="lineNum">     205 </span>            : 
+<span class="lineNum">     206 </span>            :     error += kUlp + (error == 0 ? 0 : 1);
+<span class="lineNum">     207 </span>            : 
+<span class="lineNum">     208 </span>            :     const int oldExp = v.e;
+<span class="lineNum">     209 </span>            :     v = v.Normalize();
+<span class="lineNum">     210 </span>            :     error &lt;&lt;= oldExp - v.e;
+<span class="lineNum">     211 </span>            : 
+<span class="lineNum">     212 </span>            :     const unsigned effectiveSignificandSize =
+<span class="lineNum">     213 </span>            :         Double::EffectiveSignificandSize(64 + v.e);
+<span class="lineNum">     214 </span>            :     unsigned precisionSize = 64 - effectiveSignificandSize;
+<span class="lineNum">     215 </span>            :     if (precisionSize + kUlpShift &gt;= 64)
+<span class="lineNum">     216 </span>            :     {
+<span class="lineNum">     217 </span>            :         unsigned scaleExp = (precisionSize + kUlpShift) - 63;
+<span class="lineNum">     218 </span>            :         v.f &gt;&gt;= scaleExp;
+<span class="lineNum">     219 </span>            :         v.e += scaleExp;
+<span class="lineNum">     220 </span>            :         error = (error &gt;&gt; scaleExp) + 1 + static_cast&lt;int&gt;(kUlp);
+<span class="lineNum">     221 </span>            :         precisionSize -= scaleExp;
+<span class="lineNum">     222 </span>            :     }
+<span class="lineNum">     223 </span>            : 
+<span class="lineNum">     224 </span>            :     DiyFp rounded(v.f &gt;&gt; precisionSize, v.e + static_cast&lt;int&gt;(precisionSize));
+<span class="lineNum">     225 </span>            :     const uint64_t precisionBits =
+<span class="lineNum">     226 </span>            :         (v.f &amp; ((uint64_t(1) &lt;&lt; precisionSize) - 1)) * kUlp;
+<span class="lineNum">     227 </span>            :     const uint64_t halfWay = (uint64_t(1) &lt;&lt; (precisionSize - 1)) * kUlp;
+<span class="lineNum">     228 </span>            :     if (precisionBits &gt;= halfWay + static_cast&lt;unsigned&gt;(error))
+<span class="lineNum">     229 </span>            :     {
+<span class="lineNum">     230 </span>            :         rounded.f++;
+<span class="lineNum">     231 </span>            :         if (rounded.f &amp; (DiyFp::kDpHiddenBit &lt;&lt; 1))
+<span class="lineNum">     232 </span>            :         { // rounding overflows mantissa (issue #340)
+<span class="lineNum">     233 </span>            :             rounded.f &gt;&gt;= 1;
+<span class="lineNum">     234 </span>            :             rounded.e++;
+<span class="lineNum">     235 </span>            :         }
+<span class="lineNum">     236 </span>            :     }
+<span class="lineNum">     237 </span>            : 
+<span class="lineNum">     238 </span>            :     *result = rounded.ToDouble();
+<span class="lineNum">     239 </span>            : 
+<span class="lineNum">     240 </span>            :     return halfWay - static_cast&lt;unsigned&gt;(error) &gt;= precisionBits ||
+<span class="lineNum">     241 </span>            :            precisionBits &gt;= halfWay + static_cast&lt;unsigned&gt;(error);
+<span class="lineNum">     242 </span>            : }
+<span class="lineNum">     243 </span>            : 
+<span class="lineNum">     244 </span>            : inline double StrtodBigInteger(double approx, const char* decimals,
+<span class="lineNum">     245 </span>            :                                size_t length, size_t decimalPosition, int exp)
+<span class="lineNum">     246 </span>            : {
+<span class="lineNum">     247 </span>            :     const BigInteger dInt(decimals, length);
+<span class="lineNum">     248 </span>            :     const int dExp =
+<span class="lineNum">     249 </span>            :         static_cast&lt;int&gt;(decimalPosition) - static_cast&lt;int&gt;(length) + exp;
+<span class="lineNum">     250 </span>            :     Double a(approx);
+<span class="lineNum">     251 </span>            :     int cmp = CheckWithinHalfULP(a.Value(), dInt, dExp);
+<span class="lineNum">     252 </span>            :     if (cmp &lt; 0)
+<span class="lineNum">     253 </span>            :         return a.Value(); // within half ULP
+<span class="lineNum">     254 </span>            :     else if (cmp == 0)
+<span class="lineNum">     255 </span>            :     {
+<span class="lineNum">     256 </span>            :         // Round towards even
+<span class="lineNum">     257 </span>            :         if (a.Significand() &amp; 1)
+<span class="lineNum">     258 </span>            :             return a.NextPositiveDouble();
+<span class="lineNum">     259 </span>            :         else
+<span class="lineNum">     260 </span>            :             return a.Value();
+<span class="lineNum">     261 </span>            :     }
+<span class="lineNum">     262 </span>            :     else // adjustment
+<span class="lineNum">     263 </span>            :         return a.NextPositiveDouble();
+<span class="lineNum">     264 </span>            : }
+<span class="lineNum">     265 </span>            : 
+<span class="lineNum">     266 </span>            : inline double StrtodFullPrecision(double d, int p, const char* decimals,
+<span class="lineNum">     267 </span>            :                                   size_t length, size_t decimalPosition,
+<span class="lineNum">     268 </span>            :                                   int exp)
+<span class="lineNum">     269 </span>            : {
+<span class="lineNum">     270 </span>            :     RAPIDJSON_ASSERT(d &gt;= 0.0);
+<span class="lineNum">     271 </span>            :     RAPIDJSON_ASSERT(length &gt;= 1);
+<span class="lineNum">     272 </span>            : 
+<span class="lineNum">     273 </span>            :     double result;
+<span class="lineNum">     274 </span>            :     if (StrtodFast(d, p, &amp;result))
+<span class="lineNum">     275 </span>            :         return result;
+<span class="lineNum">     276 </span>            : 
+<span class="lineNum">     277 </span>            :     // Trim leading zeros
+<span class="lineNum">     278 </span>            :     while (*decimals == '0' &amp;&amp; length &gt; 1)
+<span class="lineNum">     279 </span>            :     {
+<span class="lineNum">     280 </span>            :         length--;
+<span class="lineNum">     281 </span>            :         decimals++;
+<span class="lineNum">     282 </span>            :         decimalPosition--;
+<span class="lineNum">     283 </span>            :     }
+<span class="lineNum">     284 </span>            : 
+<span class="lineNum">     285 </span>            :     // Trim trailing zeros
+<span class="lineNum">     286 </span>            :     while (decimals[length - 1] == '0' &amp;&amp; length &gt; 1)
+<span class="lineNum">     287 </span>            :     {
+<span class="lineNum">     288 </span>            :         length--;
+<span class="lineNum">     289 </span>            :         decimalPosition--;
+<span class="lineNum">     290 </span>            :         exp++;
+<span class="lineNum">     291 </span>            :     }
+<span class="lineNum">     292 </span>            : 
+<span class="lineNum">     293 </span>            :     // Trim right-most digits
+<span class="lineNum">     294 </span>            :     const int kMaxDecimalDigit = 780;
+<span class="lineNum">     295 </span>            :     if (static_cast&lt;int&gt;(length) &gt; kMaxDecimalDigit)
+<span class="lineNum">     296 </span>            :     {
+<span class="lineNum">     297 </span>            :         int delta = (static_cast&lt;int&gt;(length) - kMaxDecimalDigit);
+<span class="lineNum">     298 </span>            :         exp += delta;
+<span class="lineNum">     299 </span>            :         decimalPosition -= static_cast&lt;unsigned&gt;(delta);
+<span class="lineNum">     300 </span>            :         length = kMaxDecimalDigit;
+<span class="lineNum">     301 </span>            :     }
+<span class="lineNum">     302 </span>            : 
+<span class="lineNum">     303 </span>            :     // If too small, underflow to zero
+<span class="lineNum">     304 </span>            :     if (int(length) + exp &lt; -324)
+<span class="lineNum">     305 </span>            :         return 0.0;
+<span class="lineNum">     306 </span>            : 
+<span class="lineNum">     307 </span>            :     if (StrtodDiyFp(decimals, length, decimalPosition, exp, &amp;result))
+<span class="lineNum">     308 </span>            :         return result;
+<span class="lineNum">     309 </span>            : 
+<span class="lineNum">     310 </span>            :     // Use approximation from StrtodDiyFp and make adjustment with BigInteger
+<span class="lineNum">     311 </span>            :     // comparison
+<span class="lineNum">     312 </span>            :     return StrtodBigInteger(result, decimals, length, decimalPosition, exp);
+<span class="lineNum">     313 </span>            : }
+<span class="lineNum">     314 </span>            : 
+<span class="lineNum">     315 </span>            : } // namespace internal
+<span class="lineNum">     316 </span>            : RAPIDJSON_NAMESPACE_END
+<span class="lineNum">     317 </span>            : 
+<span class="lineNum">     318 </span>            : #endif // RAPIDJSON_STRTOD_
+</pre>
+      </td>
+    </tr>
+  </table>
+  <br>
+
+  <table width="100%" border=0 cellspacing=0 cellpadding=0>
+    <tr><td class="ruler"><img src="../../../../../glass.png" width=3 height=3 alt=""></td></tr>
+    <tr><td class="versionInfo">Generated by: <a href="http://ltp.sourceforge.net/coverage/lcov.php" target="_parent">LCOV version 1.11</a></td></tr>
+  </table>
+  <br>
+
+</body>
+</html>

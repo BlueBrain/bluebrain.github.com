@@ -4,7 +4,7 @@ version: "0.4"
 major: 0
 minor: 4
 description: Hardware Agnostic Ray-Tracer
-updated: 09/01/18
+updated: 18/01/18
 homepage: https://github.com/BlueBrain/Brayns
 repository: https://github.com/BlueBrain/Brayns.git
 issuesurl: https://github.com/BlueBrain/Brayns/issues
@@ -12,7 +12,7 @@ packageurl:
 license: 
 maturity: EP
 maintainers: 
-contributors: Cyrille Favreau
+contributors: Daniel Nachbaur
 readmetype: text/x-markdown
 ---
 # Brayns

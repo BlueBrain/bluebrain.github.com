@@ -5,6 +5,6 @@ var classbrayns_1_1_transfer_function =
     [ "getContributions", "classbrayns_1_1_transfer_function.html#a9fdca1da05c29e8c725b033c9cdb6ac5", null ],
     [ "getDiffuseColors", "classbrayns_1_1_transfer_function.html#a1f5738a01364bde00a8d013b200c602c", null ],
     [ "getEmissionIntensities", "classbrayns_1_1_transfer_function.html#af3ed3fbc1159fb885c3123cf6da05253", null ],
-    [ "getValuesRange", "classbrayns_1_1_transfer_function.html#aa6fe90fcf4c6ce0b4658d069f11a0650", null ],
+    [ "getValuesRange", "classbrayns_1_1_transfer_function.html#af4e9071359890513159ee40276e1b0d9", null ],
     [ "setValuesRange", "classbrayns_1_1_transfer_function.html#a3b1c4ce9d79a704b4f0ae0bcf0c86e19", null ]
 ];

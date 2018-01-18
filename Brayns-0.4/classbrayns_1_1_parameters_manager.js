@@ -1,11 +1,13 @@
 var classbrayns_1_1_parameters_manager =
 [
     [ "ParametersManager", "classbrayns_1_1_parameters_manager.html#a6012e7eadf1f37e49c16c7870754bc28", null ],
+    [ "getAnimationParameters", "classbrayns_1_1_parameters_manager.html#a7d8bac86d95437486b9e8bb2e1e26254", null ],
     [ "getApplicationParameters", "classbrayns_1_1_parameters_manager.html#aa1bd17b18fd4fe6d75abf1165e19830a", null ],
     [ "getApplicationParameters", "classbrayns_1_1_parameters_manager.html#addd6260973b3933ce20f7d9f18a4dabc", null ],
     [ "getGeometryParameters", "classbrayns_1_1_parameters_manager.html#a42770db58f8d661744cd2e029b314295", null ],
     [ "getRenderingParameters", "classbrayns_1_1_parameters_manager.html#a3558f229417081e9ed7eee77acfa73f0", null ],
     [ "getSceneParameters", "classbrayns_1_1_parameters_manager.html#a2bc6a8dbef296ff837e33911cf3e4e55", null ],
+    [ "getStreamParameters", "classbrayns_1_1_parameters_manager.html#af0a2f6ace6b34e1d9782841eec23180b", null ],
     [ "getVolumeParameters", "classbrayns_1_1_parameters_manager.html#af96aa3d61e0e96870b7027570c832829", null ],
     [ "isAnyModified", "classbrayns_1_1_parameters_manager.html#a56137d99df36dc76edb3ffd9d285c88e", null ],
     [ "parse", "classbrayns_1_1_parameters_manager.html#a512452ae6195a30b5c733f75c7ea1c54", null ],

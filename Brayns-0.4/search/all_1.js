@@ -13,6 +13,7 @@ var searchData=
   ['addlight',['addLight',['../classbrayns_1_1_scene.html#a7d89afe05548c882153522a0a4f751ac',1,'brayns::Scene']]],
   ['addmaterial',['addMaterial',['../classbrayns_1_1_scene.html#a30bab743dc7c7724396c343941d371be',1,'brayns::Scene']]],
   ['addsphere',['addSphere',['../classbrayns_1_1_scene.html#aec55b2d2b349716ca137ab77ca774e8c',1,'brayns::Scene']]],
+  ['animationparameters',['AnimationParameters',['../classbrayns_1_1_animation_parameters.html',1,'brayns']]],
   ['api_2eh',['api.h',['../api_8h.html',1,'']]],
   ['applicationparameters',['ApplicationParameters',['../classbrayns_1_1_application_parameters.html',1,'brayns']]],
   ['application_20help',['Application Help',['../apps.html',1,'']]],

@@ -9,7 +9,7 @@ var classbrayns_1_1_volume_handler =
     [ "getDimensions", "classbrayns_1_1_volume_handler.html#a16720b2fe81f275d2c2f2f49132dfbd8", null ],
     [ "getElementSpacing", "classbrayns_1_1_volume_handler.html#a8d79cfa8b0080820d6fc9d664bbbe669", null ],
     [ "getEpsilon", "classbrayns_1_1_volume_handler.html#aac72eca3b08d07ba2042f7303c57f501", null ],
-    [ "getHistogram", "classbrayns_1_1_volume_handler.html#a508760653b12b02644c719fcd58b8240", null ],
+    [ "getHistogram", "classbrayns_1_1_volume_handler.html#aa6d9df42a68164f4cbd48054a6c3fa1c", null ],
     [ "getIndexMode", "classbrayns_1_1_volume_handler.html#a4f4d7ba8215fdb69907b49fdaa1ca5ca", null ],
     [ "getNbFrames", "classbrayns_1_1_volume_handler.html#ab8ed1cd8b3fea737cd948e9ef394d88c", null ],
     [ "getOffset", "classbrayns_1_1_volume_handler.html#a9842a3e1eac8ed2c182bb614f71cf9bd", null ],
