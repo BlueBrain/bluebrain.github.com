@@ -6,6 +6,7 @@ var searchData=
   ['masterdisplaygrouprenderer',['MasterDisplayGroupRenderer',['../class_master_display_group_renderer.html',1,'']]],
   ['masterfromwallchannel',['MasterFromWallChannel',['../class_master_from_wall_channel.html',1,'']]],
   ['masterquickview',['MasterQuickView',['../class_master_quick_view.html',1,'']]],
+  ['masterscenerenderer',['MasterSceneRenderer',['../class_master_scene_renderer.html',1,'']]],
   ['mastertoforkerchannel',['MasterToForkerChannel',['../class_master_to_forker_channel.html',1,'']]],
   ['mastertowallchannel',['MasterToWallChannel',['../class_master_to_wall_channel.html',1,'']]],
   ['masterwindow',['MasterWindow',['../class_master_window.html',1,'']]],

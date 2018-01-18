@@ -149,6 +149,7 @@ var hierarchy =
       [ "LoggingUtility", "class_logging_utility.html", null ],
       [ "MasterDisplayGroupRenderer", "class_master_display_group_renderer.html", null ],
       [ "MasterFromWallChannel", "class_master_from_wall_channel.html", null ],
+      [ "MasterSceneRenderer", "class_master_scene_renderer.html", null ],
       [ "MasterToForkerChannel", "class_master_to_forker_channel.html", null ],
       [ "MasterToWallChannel", "class_master_to_wall_channel.html", null ],
       [ "MovieUpdater", "class_movie_updater.html", null ],
@@ -171,7 +172,7 @@ var hierarchy =
       [ "TapAndHoldDetector", "class_tap_and_hold_detector.html", null ],
       [ "TapDetector", "class_tap_detector.html", null ],
       [ "WallFromMasterChannel", "class_wall_from_master_channel.html", null ],
-      [ "WallRenderer", "class_wall_renderer.html", null ],
+      [ "WallSceneRenderer", "class_wall_scene_renderer.html", null ],
       [ "WallToMasterChannel", "class_wall_to_master_channel.html", null ],
       [ "WallToWallChannel", "class_wall_to_wall_channel.html", null ]
     ] ],

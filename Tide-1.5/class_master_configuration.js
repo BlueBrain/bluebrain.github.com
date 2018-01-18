@@ -14,6 +14,7 @@ var class_master_configuration =
     [ "getPlanarTimeout", "class_master_configuration.html#ad0b783ee970f54806bde3c880c3f7192", null ],
     [ "getSessionsDir", "class_master_configuration.html#a4985b2568e33198f6e283ddf9fa8e2ca", null ],
     [ "getUploadDir", "class_master_configuration.html#a332aefb4b3600a524dc0332a39578d7b", null ],
+    [ "getWakeupTouchpoints", "class_master_configuration.html#aedd928f2613ae0d56ad213040e9ad51f", null ],
     [ "getWebBrowserDefaultURL", "class_master_configuration.html#a7786132d2c47c7575b7cd682752d1b3c", null ],
     [ "getWebServicePort", "class_master_configuration.html#a005a52c78be4d9e3f3483d5224bb688c", null ],
     [ "getWhiteboardSaveFolder", "class_master_configuration.html#a105bca4aa2e25f8b417890cd21fae797", null ],

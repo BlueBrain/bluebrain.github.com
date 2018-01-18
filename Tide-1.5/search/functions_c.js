@@ -6,6 +6,7 @@ var searchData=
   ['masterdisplaygrouprenderer',['MasterDisplayGroupRenderer',['../class_master_display_group_renderer.html#a7bad3cfa3fbbdc7d0293b2266d22be43',1,'MasterDisplayGroupRenderer']]],
   ['masterfromwallchannel',['MasterFromWallChannel',['../class_master_from_wall_channel.html#ae3a1dc5ffe6841e24a3df3bd78254d38',1,'MasterFromWallChannel']]],
   ['masterquickview',['MasterQuickView',['../class_master_quick_view.html#a4cbc47d7c07ffbcc6c7bd408843f901c',1,'MasterQuickView']]],
+  ['masterscenerenderer',['MasterSceneRenderer',['../class_master_scene_renderer.html#ad8204ccc5feb935ccc8c13d10ca67c9f',1,'MasterSceneRenderer']]],
   ['mastertoforkerchannel',['MasterToForkerChannel',['../class_master_to_forker_channel.html#a4281cf932f32d2db274303e2e176e792',1,'MasterToForkerChannel']]],
   ['mastertowallchannel',['MasterToWallChannel',['../class_master_to_wall_channel.html#a8f671d612ef52095bf7290d791df4fc0',1,'MasterToWallChannel']]],
   ['masterwindow',['MasterWindow',['../class_master_window.html#af41c91dfdd3a9b837e7b9be62c386f7c',1,'MasterWindow']]],

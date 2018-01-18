@@ -16,6 +16,7 @@ var searchData=
   ['_7emasterapplication',['~MasterApplication',['../class_master_application.html#a8ff4aef9c90eb363f2778154ec7b6af9',1,'MasterApplication']]],
   ['_7emasterdisplaygrouprenderer',['~MasterDisplayGroupRenderer',['../class_master_display_group_renderer.html#ae60f9223cdf18e5c113bd6a8256682ab',1,'MasterDisplayGroupRenderer']]],
   ['_7emasterquickview',['~MasterQuickView',['../class_master_quick_view.html#af3408fed026b2fc8ee212c78ac8931c6',1,'MasterQuickView']]],
+  ['_7emasterscenerenderer',['~MasterSceneRenderer',['../class_master_scene_renderer.html#a04f07ab7b85185daf0708c511a75ffc6',1,'MasterSceneRenderer']]],
   ['_7empichannel',['~MPIChannel',['../class_m_p_i_channel.html#a58250252d6b686e1d11d4144b40ca951',1,'MPIChannel']]],
   ['_7empicontext',['~MPIContext',['../class_m_p_i_context.html#a3399b4521ba34fbe6977cc8c5358046b',1,'MPIContext']]],
   ['_7epdfbackend',['~PDFBackend',['../class_p_d_f_backend.html#ac7ea2ca132e1320bb58073f6ac8cfaf9',1,'PDFBackend']]],
@@ -31,6 +32,6 @@ var searchData=
   ['_7ethumbnailgenerator',['~ThumbnailGenerator',['../class_thumbnail_generator.html#aa726f0f40d9c5d1e43026260f89d923a',1,'ThumbnailGenerator']]],
   ['_7etiffpyramidreader',['~TiffPyramidReader',['../class_tiff_pyramid_reader.html#a2d45866756f830e4e5d63e5706d7e5aa',1,'TiffPyramidReader']]],
   ['_7ewallapplication',['~WallApplication',['../class_wall_application.html#a8178cc81cec13ae323948ade5a76227a',1,'WallApplication']]],
-  ['_7ewallrenderer',['~WallRenderer',['../class_wall_renderer.html#a3e804ce0374d9fe474db21bc76a079a2',1,'WallRenderer']]],
+  ['_7ewallscenerenderer',['~WallSceneRenderer',['../class_wall_scene_renderer.html#a6a069f3b6d0a6d5d363d06fd6f4786ef',1,'WallSceneRenderer']]],
   ['_7ezoomcontroller',['~ZoomController',['../class_zoom_controller.html#a717fd48c85e5ab55b8a283a8666b3426',1,'ZoomController']]]
 ];
