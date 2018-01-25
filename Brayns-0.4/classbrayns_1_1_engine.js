@@ -6,7 +6,6 @@ var classbrayns_1_1_engine =
     [ "_render", "classbrayns_1_1_engine.html#a17d6eb48cac43da08959d562c4b3f06a", null ],
     [ "_render", "classbrayns_1_1_engine.html#a6389a561193bca223f1dda33a77b7439", null ],
     [ "commit", "classbrayns_1_1_engine.html#acc32a5f9bf9ec1639e52990a56da72c4", null ],
-    [ "extensionInit", "classbrayns_1_1_engine.html#aed425b47972bb4cba6a0ea1e00330b4f", null ],
     [ "getActiveRenderer", "classbrayns_1_1_engine.html#a54e27af52438e4f4e0cc6d8d09928e76", null ],
     [ "getCamera", "classbrayns_1_1_engine.html#a05478fdf6ae8dd3b0716bc8be93c83f9", null ],
     [ "getCamera", "classbrayns_1_1_engine.html#adf7ca0c652dd739df512eb4bc72af84a", null ],
@@ -46,6 +45,5 @@ var classbrayns_1_1_engine =
     [ "_progress", "classbrayns_1_1_engine.html#a3b800fd925b2080adcb425d3737721a7", null ],
     [ "_renderers", "classbrayns_1_1_engine.html#a2d38cf1c8d61f255773a900c367e8182", null ],
     [ "_scene", "classbrayns_1_1_engine.html#a254b9a96346ee4bd3a0a71125975c22d", null ],
-    [ "buildScene", "classbrayns_1_1_engine.html#af778df7ef0bce4a98675b9589afd9a81", null ],
-    [ "recreate", "classbrayns_1_1_engine.html#af73ce5c200238ee584ac21e3a394d420", null ]
+    [ "buildScene", "classbrayns_1_1_engine.html#af778df7ef0bce4a98675b9589afd9a81", null ]
 ];

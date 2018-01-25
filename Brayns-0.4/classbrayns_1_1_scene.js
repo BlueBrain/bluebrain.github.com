@@ -49,7 +49,6 @@ var classbrayns_1_1_scene =
     [ "setSimulationHandler", "classbrayns_1_1_scene.html#a0ebde9602b22c831f46ca3fa07db6795", null ],
     [ "setSphere", "classbrayns_1_1_scene.html#a8407cc2084455780ce0bcebc1130f336", null ],
     [ "setSpheresDirty", "classbrayns_1_1_scene.html#aee00cb9bde9c26e3d38b6b14dd2421e1", null ],
-    [ "supportsUnloading", "classbrayns_1_1_scene.html#a2f6049b0f80c208cc90b9f61ed82734f", null ],
     [ "unload", "classbrayns_1_1_scene.html#ab75c6ad4e340d44b5bd78f99cd2a5851", null ],
     [ "_bounds", "classbrayns_1_1_scene.html#a65e0c184b16fe0d20ce8c6ae3cf21428", null ],
     [ "_caDiffusionSimulationHandler", "classbrayns_1_1_scene.html#a860b65fe982aacd77e6d70df0855d660", null ],

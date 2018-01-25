@@ -7,7 +7,6 @@ var classbrayns_1_1_application_parameters =
     [ "getFrameExportFolder", "classbrayns_1_1_application_parameters.html#afe14a9d631373375169ec1570e613975", null ],
     [ "getImageStreamFPS", "classbrayns_1_1_application_parameters.html#a0746ff08049a8588d79f8633e33e899a", null ],
     [ "getJpegCompression", "classbrayns_1_1_application_parameters.html#a38a68927f124fcf473143d89e6cebda9", null ],
-    [ "getJpegSize", "classbrayns_1_1_application_parameters.html#ad8d3a90aba5289d9a8dcdd488fbd016c", null ],
     [ "getSynchronousMode", "classbrayns_1_1_application_parameters.html#adad26e22e52a305f855514bfe011bf28", null ],
     [ "getTmpFolder", "classbrayns_1_1_application_parameters.html#a4c2e7a22aad865a23b1be1eb8b1d6175", null ],
     [ "getWindowSize", "classbrayns_1_1_application_parameters.html#a6e87fdfee6a6590c5d9ff7c4ee7dc0ee", null ],
@@ -16,7 +15,6 @@ var classbrayns_1_1_application_parameters =
     [ "setFrameExportFolder", "classbrayns_1_1_application_parameters.html#a30bc98e504d9ce4cc257934433dbbad8", null ],
     [ "setImageStreamFPS", "classbrayns_1_1_application_parameters.html#a62042af841f0e9870cf11949907d3beb", null ],
     [ "setJpegCompression", "classbrayns_1_1_application_parameters.html#a9fdb360a50c27ab8242fff3d0f2170cb", null ],
-    [ "setJpegSize", "classbrayns_1_1_application_parameters.html#a406cd85e93b29ef0e516fec2d33c86c7", null ],
     [ "setSynchronousMode", "classbrayns_1_1_application_parameters.html#ac5a03027059d65a0f27a6495574b0832", null ],
     [ "setWindowSize", "classbrayns_1_1_application_parameters.html#a2ec8ba7d5703e2a637ec608f44cca940", null ],
     [ "_benchmarking", "classbrayns_1_1_application_parameters.html#aed0ca4df28b0333648ba8149ba46476c", null ],
@@ -25,7 +23,6 @@ var classbrayns_1_1_application_parameters =
     [ "_frameExportFolder", "classbrayns_1_1_application_parameters.html#a6160b7f8e7727e9e401bd723c9ad2d4e", null ],
     [ "_imageStreamFPS", "classbrayns_1_1_application_parameters.html#a03e73369e863795b6c78c9f5d2e711d5", null ],
     [ "_jpegCompression", "classbrayns_1_1_application_parameters.html#a304824feb3a900aa187ff5cdc095d53d", null ],
-    [ "_jpegSize", "classbrayns_1_1_application_parameters.html#a2c61e5debcbc47e62b8c3d5688ce4d05", null ],
     [ "_synchronousMode", "classbrayns_1_1_application_parameters.html#a009b3f6f47312cea14345ea4e3973706", null ],
     [ "_tmpFolder", "classbrayns_1_1_application_parameters.html#a63a6ca2aa1ef2abd0b7adb00cccfa53c", null ],
     [ "_windowSize", "classbrayns_1_1_application_parameters.html#afa4d23d90d1540ee46edb0f59d162b6e", null ]

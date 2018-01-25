@@ -2,6 +2,8 @@ var searchData=
 [
   ['badparameter',['BadParameter',['../classbrayns_1_1_bad_parameter.html',1,'brayns']]],
   ['basewindow',['BaseWindow',['../classbrayns_1_1_base_window.html',1,'brayns']]],
+  ['basiclight',['BasicLight',['../struct_basic_light.html',1,'']]],
+  ['basiclight',['BasicLight',['../structbrayns_1_1_basic_light.html',1,'brayns']]],
   ['basicrenderer',['BasicRenderer',['../classbrayns_1_1_basic_renderer.html',1,'brayns']]],
   ['brayns',['Brayns',['../classbrayns_1_1_brayns.html',1,'brayns']]],
   ['brayns_5frev_5fstring',['BRAYNS_REV_STRING',['../version_8h.html#abdfd5d63377bd1606cf51a0437943637',1,'version.h']]],
@@ -20,7 +22,7 @@ var searchData=
   ['braynsviewer',['braynsViewer',['../braynsViewer.html',1,'apps']]],
   ['builddefault',['buildDefault',['../classbrayns_1_1_scene.html#a13667f2db068b46530102270f3b0e0ce',1,'brayns::Scene']]],
   ['buildenvironment',['buildEnvironment',['../classbrayns_1_1_scene.html#a49c9856f08fe184d3b956b4a0e55657b',1,'brayns::Scene']]],
-  ['buildgeometry',['buildGeometry',['../classbrayns_1_1_o_s_p_ray_scene.html#ae66bac0fc386bc938be08d31ed718c65',1,'brayns::OSPRayScene::buildGeometry()'],['../classbrayns_1_1_scene.html#ac186f12a5217a53ebd1a8d149c8fa71f',1,'brayns::Scene::buildGeometry()']]],
+  ['buildgeometry',['buildGeometry',['../classbrayns_1_1_opti_x_scene.html#ad3de43780ef77d31c324bb9396f7a741',1,'brayns::OptiXScene::buildGeometry()'],['../classbrayns_1_1_o_s_p_ray_scene.html#ae66bac0fc386bc938be08d31ed718c65',1,'brayns::OSPRayScene::buildGeometry()'],['../classbrayns_1_1_scene.html#ac186f12a5217a53ebd1a8d149c8fa71f',1,'brayns::Scene::buildGeometry()']]],
   ['buildscene',['buildScene',['../classbrayns_1_1_engine.html#af778df7ef0bce4a98675b9589afd9a81',1,'brayns::Engine']]],
   ['brayns_20user_20guide',['Brayns user guide',['../md__jenkins_03_workspace_oss.Brayns.documentation_build_type_Debug_platform_cscsviz-vm_sources_doc_UserGuide.html',1,'']]]
 ];
