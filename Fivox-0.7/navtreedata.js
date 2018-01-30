@@ -47,7 +47,7 @@ var NAVTREE =
 var NAVTREEINDEX =
 [
 ".html",
-"classfivox_1_1_volume_handler.html#acc3ae16e03e857bcc20f88a0ec07eceb"
+"defines_8h_source.html"
 ];
 
 var SYNCONMSG = 'click to disable panel synchronisation';

@@ -1,7 +1,6 @@
 var files =
 [
     [ "api.h", "api_8h.html", "api_8h" ],
-    [ "livre/api.h", "livre_2api_8h.html", "livre_2api_8h" ],
     [ "attenuationCurve.h", "attenuation_curve_8h_source.html", null ],
     [ "compartmentLoader.h", "compartment_loader_8h_source.html", null ],
     [ "cudaImageSource.h", "cuda_image_source_8h_source.html", null ],
@@ -18,7 +17,6 @@ var files =
     [ "genericLoader.h", "generic_loader_8h_source.html", null ],
     [ "imageSource.h", "image_source_8h_source.html", null ],
     [ "lfpFunctor.h", "lfp_functor_8h_source.html", null ],
-    [ "livre.h", "livre_8h_source.html", null ],
     [ "progressObserver.h", "progress_observer_8h_source.html", null ],
     [ "scaleFilter.h", "scale_filter_8h_source.html", null ],
     [ "somaLoader.h", "soma_loader_8h_source.html", null ],
@@ -26,7 +24,6 @@ var files =
     [ "synapseLoader.h", "synapse_loader_8h_source.html", null ],
     [ "types.h", "types_8h_source.html", null ],
     [ "uriHandler.h", "uri_handler_8h_source.html", null ],
-    [ "livre/version.h", "livre_2version_8h.html", "livre_2version_8h" ],
     [ "version.h", "version_8h.html", "version_8h" ],
     [ "volumeHandler.h", "volume_handler_8h_source.html", null ],
     [ "vsdLoader.h", "vsd_loader_8h_source.html", null ]

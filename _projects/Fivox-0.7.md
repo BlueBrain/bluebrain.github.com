@@ -4,7 +4,7 @@ version: "0.7"
 major: 0
 minor: 7
 description: ITK library to sample events into regular volumes
-updated: 16/06/17
+updated: 30/01/18
 homepage: https://github.com/BlueBrain/Fivox
 repository: https://github.com/BlueBrain/Fivox.git
 issuesurl: https://github.com/BlueBrain/Fivox/issues
@@ -91,6 +91,6 @@ platforms and build environments are tested:
 * Linux: Ubuntu 14.04, RHEL 6.6 (Makefile, x64)
 * Mac OS X 10.9
 
-The [API documentation](https://bluebrain.github.io/Fivox-0.6/index.html)
+The [API documentation](https://bluebrain.github.io/Fivox-0.7/index.html)
 can be found on [bluebrain.github.io](https://bluebrain.github.io).
 
