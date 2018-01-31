@@ -11,17 +11,14 @@ var hierarchy =
         [ "brayns::VolumeParameters", "classbrayns_1_1_volume_parameters.html", null ]
       ] ],
       [ "brayns::Camera", "classbrayns_1_1_camera.html", [
-        [ "brayns::OptiXCamera", "classbrayns_1_1_opti_x_camera.html", null ],
         [ "brayns::OSPRayCamera", "classbrayns_1_1_o_s_p_ray_camera.html", null ]
       ] ],
       [ "brayns::Engine::Progress", "structbrayns_1_1_engine_1_1_progress.html", null ],
       [ "brayns::Scene", "classbrayns_1_1_scene.html", [
-        [ "brayns::OptiXScene", "classbrayns_1_1_opti_x_scene.html", null ],
         [ "brayns::OSPRayScene", "classbrayns_1_1_o_s_p_ray_scene.html", null ]
       ] ],
       [ "brayns::TransferFunction", "classbrayns_1_1_transfer_function.html", null ]
     ] ],
-    [ "BasicLight", "struct_basic_light.html", null ],
     [ "brayns::AbstractManipulator", "classbrayns_1_1_abstract_manipulator.html", [
       [ "brayns::FlyingModeManipulator", "classbrayns_1_1_flying_mode_manipulator.html", null ],
       [ "brayns::InspectCenterManipulator", "classbrayns_1_1_inspect_center_manipulator.html", null ]
@@ -30,7 +27,6 @@ var hierarchy =
       [ "brayns::SpikeSimulationHandler", "classbrayns_1_1_spike_simulation_handler.html", null ]
     ] ],
     [ "brayns::BaseWindow", "classbrayns_1_1_base_window.html", null ],
-    [ "brayns::BasicLight", "structbrayns_1_1_basic_light.html", null ],
     [ "brayns::Brayns", "classbrayns_1_1_brayns.html", null ],
     [ "brayns::CADiffusionSimulationHandler", "classbrayns_1_1_c_a_diffusion_simulation_handler.html", null ],
     [ "brayns::CircuitConfiguration", "structbrayns_1_1_circuit_configuration.html", null ],
@@ -38,7 +34,6 @@ var hierarchy =
     [ "brayns::ConnectivityConfiguration", "structbrayns_1_1_connectivity_configuration.html", null ],
     [ "brayns::Cylinder", "structbrayns_1_1_cylinder.html", null ],
     [ "brayns::Engine", "classbrayns_1_1_engine.html", [
-      [ "brayns::OptiXEngine", "classbrayns_1_1_opti_x_engine.html", null ],
       [ "brayns::OSPRayEngine", "classbrayns_1_1_o_s_p_ray_engine.html", null ]
     ] ],
     [ "brayns::EngineFactory", "classbrayns_1_1_engine_factory.html", null ],
@@ -49,7 +44,6 @@ var hierarchy =
     [ "brayns::ExtensionPluginFactory", "classbrayns_1_1_extension_plugin_factory.html", null ],
     [ "brayns::FPSCounter", "structbrayns_1_1_f_p_s_counter.html", null ],
     [ "brayns::FrameBuffer", "classbrayns_1_1_frame_buffer.html", [
-      [ "brayns::OptiXFrameBuffer", "classbrayns_1_1_opti_x_frame_buffer.html", null ],
       [ "brayns::OSPRayFrameBuffer", "classbrayns_1_1_o_s_p_ray_frame_buffer.html", null ]
     ] ],
     [ "brayns::Histogram", "structbrayns_1_1_histogram.html", null ],
@@ -72,7 +66,6 @@ var hierarchy =
     ] ],
     [ "brayns::ProteinLoader", "classbrayns_1_1_protein_loader.html", null ],
     [ "brayns::Renderer", "classbrayns_1_1_renderer.html", [
-      [ "brayns::OptiXRenderer", "classbrayns_1_1_opti_x_renderer.html", null ],
       [ "brayns::OSPRayRenderer", "classbrayns_1_1_o_s_p_ray_renderer.html", null ]
     ] ],
     [ "brayns::Renderer::PickResult", "structbrayns_1_1_renderer_1_1_pick_result.html", null ],
@@ -107,8 +100,6 @@ var hierarchy =
         [ "brayns::SimulationRenderer", "classbrayns_1_1_simulation_renderer.html", null ]
       ] ]
     ] ],
-    [ "PerRayData_radiance", "struct_per_ray_data__radiance.html", null ],
-    [ "PerRayData_shadow", "struct_per_ray_data__shadow.html", null ],
     [ "std::exception", null, [
       [ "brayns::Exception", "classbrayns_1_1_exception.html", [
         [ "brayns::BadParameter", "classbrayns_1_1_bad_parameter.html", null ]

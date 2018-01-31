@@ -87,7 +87,7 @@ var searchData=
   ['getmetaballsgridsize',['getMetaballsGridSize',['../classbrayns_1_1_geometry_parameters.html#af08fd8f25c3ad8caf65c121fad5c5419',1,'brayns::GeometryParameters']]],
   ['getmetaballssamplesfromsoma',['getMetaballsSamplesFromSoma',['../classbrayns_1_1_geometry_parameters.html#ac1a28b8320f3b27633cdc5621f259ae8',1,'brayns::GeometryParameters']]],
   ['getmetaballsthreshold',['getMetaballsThreshold',['../classbrayns_1_1_geometry_parameters.html#aa81c5eec8288be8852085101d48d9832',1,'brayns::GeometryParameters']]],
-  ['getminimumframesize',['getMinimumFrameSize',['../classbrayns_1_1_engine.html#aa8ae6d776485d6b2275cc16fb1032e2f',1,'brayns::Engine::getMinimumFrameSize()'],['../classbrayns_1_1_opti_x_engine.html#a5d09c7570b414937271701a36d776b98',1,'brayns::OptiXEngine::getMinimumFrameSize()'],['../classbrayns_1_1_o_s_p_ray_engine.html#ab95e9bb89f2c5b0f9aa734b56789d415',1,'brayns::OSPRayEngine::getMinimumFrameSize()']]],
+  ['getminimumframesize',['getMinimumFrameSize',['../classbrayns_1_1_engine.html#aa8ae6d776485d6b2275cc16fb1032e2f',1,'brayns::Engine::getMinimumFrameSize()'],['../classbrayns_1_1_o_s_p_ray_engine.html#ab95e9bb89f2c5b0f9aa734b56789d415',1,'brayns::OSPRayEngine::getMinimumFrameSize()']]],
   ['getminor',['getMinor',['../classbrayns_1_1_version.html#ac28a55327f904d62ab90dc172be1b440',1,'brayns::Version']]],
   ['getmodule',['getModule',['../classbrayns_1_1_rendering_parameters.html#a92b938bead94e14d11f9bae17be326c7',1,'brayns::RenderingParameters']]],
   ['getmolecularsystemconfig',['getMolecularSystemConfig',['../classbrayns_1_1_geometry_parameters.html#ab144d6cb2cc77c85b4f5b796e4c4c9b9',1,'brayns::GeometryParameters']]],

@@ -12,7 +12,6 @@ var annotated_dup =
       [ "ApplicationParameters", "classbrayns_1_1_application_parameters.html", "classbrayns_1_1_application_parameters" ],
       [ "BadParameter", "classbrayns_1_1_bad_parameter.html", "classbrayns_1_1_bad_parameter" ],
       [ "BaseWindow", "classbrayns_1_1_base_window.html", "classbrayns_1_1_base_window" ],
-      [ "BasicLight", "structbrayns_1_1_basic_light.html", "structbrayns_1_1_basic_light" ],
       [ "BasicRenderer", "classbrayns_1_1_basic_renderer.html", "classbrayns_1_1_basic_renderer" ],
       [ "Brayns", "classbrayns_1_1_brayns.html", "classbrayns_1_1_brayns" ],
       [ "CADiffusionSimulationHandler", "classbrayns_1_1_c_a_diffusion_simulation_handler.html", "classbrayns_1_1_c_a_diffusion_simulation_handler" ],
@@ -42,11 +41,6 @@ var annotated_dup =
       [ "MetaballsGenerator", "classbrayns_1_1_metaballs_generator.html", "classbrayns_1_1_metaballs_generator" ],
       [ "MolecularSystemReader", "classbrayns_1_1_molecular_system_reader.html", "classbrayns_1_1_molecular_system_reader" ],
       [ "MorphologyLayout", "structbrayns_1_1_morphology_layout.html", "structbrayns_1_1_morphology_layout" ],
-      [ "OptiXCamera", "classbrayns_1_1_opti_x_camera.html", "classbrayns_1_1_opti_x_camera" ],
-      [ "OptiXEngine", "classbrayns_1_1_opti_x_engine.html", "classbrayns_1_1_opti_x_engine" ],
-      [ "OptiXFrameBuffer", "classbrayns_1_1_opti_x_frame_buffer.html", "classbrayns_1_1_opti_x_frame_buffer" ],
-      [ "OptiXRenderer", "classbrayns_1_1_opti_x_renderer.html", "classbrayns_1_1_opti_x_renderer" ],
-      [ "OptiXScene", "classbrayns_1_1_opti_x_scene.html", "classbrayns_1_1_opti_x_scene" ],
       [ "OSPRayCamera", "classbrayns_1_1_o_s_p_ray_camera.html", "classbrayns_1_1_o_s_p_ray_camera" ],
       [ "OSPRayEngine", "classbrayns_1_1_o_s_p_ray_engine.html", "classbrayns_1_1_o_s_p_ray_engine" ],
       [ "OSPRayFrameBuffer", "classbrayns_1_1_o_s_p_ray_frame_buffer.html", "classbrayns_1_1_o_s_p_ray_frame_buffer" ],
@@ -88,8 +82,5 @@ var annotated_dup =
       [ "ExtendedCones", "structospray_1_1_extended_cones.html", "structospray_1_1_extended_cones" ],
       [ "ExtendedCylinders", "structospray_1_1_extended_cylinders.html", "structospray_1_1_extended_cylinders" ],
       [ "ExtendedSpheres", "structospray_1_1_extended_spheres.html", "structospray_1_1_extended_spheres" ]
-    ] ],
-    [ "BasicLight", "struct_basic_light.html", "struct_basic_light" ],
-    [ "PerRayData_radiance", "struct_per_ray_data__radiance.html", "struct_per_ray_data__radiance" ],
-    [ "PerRayData_shadow", "struct_per_ray_data__shadow.html", "struct_per_ray_data__shadow" ]
+    ] ]
 ];

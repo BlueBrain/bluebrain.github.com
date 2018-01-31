@@ -3,6 +3,7 @@ var classbrayns_1_1_scene =
     [ "Scene", "classbrayns_1_1_scene.html#a17f0dfc82bcbd4f69c9f1b436fcb1d66", null ],
     [ "~Scene", "classbrayns_1_1_scene.html#afd5a144acd4a49c1150a5cf9b38adecb", null ],
     [ "_buildMissingMaterials", "classbrayns_1_1_scene.html#ada8aab5a4725e2dbecb0f5fdd2aeed8e", null ],
+    [ "_processVolumeAABBGeometry", "classbrayns_1_1_scene.html#a8187b5b3d6d81af4fecc591ce6170639", null ],
     [ "addCone", "classbrayns_1_1_scene.html#a7c9e628fd8aa9540a0804007327ecb86", null ],
     [ "addCylinder", "classbrayns_1_1_scene.html#aa7a0617795488224f9338415213735be", null ],
     [ "addLight", "classbrayns_1_1_scene.html#a7d89afe05548c882153522a0a4f751ac", null ],
