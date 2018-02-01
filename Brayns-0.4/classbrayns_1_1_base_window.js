@@ -37,7 +37,6 @@ var classbrayns_1_1_base_window =
     [ "_currMousePos", "classbrayns_1_1_base_window.html#a33a00f1cd06ce75f249593f148cf439b", null ],
     [ "_defaultInitSize", "classbrayns_1_1_base_window.html#addd591463e1330d7e9233e0ee20f4f47", null ],
     [ "_displayHelp", "classbrayns_1_1_base_window.html#a0f04d1ff95efb3d262b238c23cf93862", null ],
-    [ "_fps", "classbrayns_1_1_base_window.html#a939fd69f9f581cf280e682b0d9aceb82", null ],
     [ "_frameBufferMode", "classbrayns_1_1_base_window.html#a0391311ad716bc0d53fadd15f40dc5b6", null ],
     [ "_fullScreen", "classbrayns_1_1_base_window.html#a81a6cda31cae8ee8fc85ef39d096b0eb", null ],
     [ "_gid", "classbrayns_1_1_base_window.html#a509c0a01c0cabfe9550af5d9a5909a4d", null ],
@@ -45,6 +44,7 @@ var classbrayns_1_1_base_window =
     [ "_lastMousePos", "classbrayns_1_1_base_window.html#af085195f3b46d738811ec8be61a58fc2", null ],
     [ "_mouse", "classbrayns_1_1_base_window.html#aadc33e9b2cec154eefd08b1179426e02", null ],
     [ "_screenSpaceProcessor", "classbrayns_1_1_base_window.html#a0268a074e231c0d209defc9ca6924181", null ],
+    [ "_timer", "classbrayns_1_1_base_window.html#a1914bb6f4e9eae8da584d013cd2837be", null ],
     [ "_windowID", "classbrayns_1_1_base_window.html#a929db69c63d769d84b2a7e91d7e564e7", null ],
     [ "_windowPosition", "classbrayns_1_1_base_window.html#ac19852b2fd09963997a6387ab14fbc2c", null ],
     [ "_windowSize", "classbrayns_1_1_base_window.html#ad195910cc20a612bb709fbe1bd7f5e46", null ]

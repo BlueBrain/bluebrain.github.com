@@ -1,6 +1,8 @@
 var searchData=
 [
   ['parse',['parse',['../classbrayns_1_1_abstract_parameters.html#a23279a7de7c2c0becbf81c1d242775bf',1,'brayns::AbstractParameters::parse()'],['../classbrayns_1_1_parameters_manager.html#a512452ae6195a30b5c733f75c7ea1c54',1,'brayns::ParametersManager::parse()']]],
+  ['persecond',['perSecond',['../classbrayns_1_1_timer.html#a293726bf5766ee48ee904a157c0dde3a',1,'brayns::Timer']]],
+  ['persecondsmoothed',['perSecondSmoothed',['../classbrayns_1_1_timer.html#a7d9c329c5310b950435de63138586a1d',1,'brayns::Timer']]],
   ['pointlight',['PointLight',['../classbrayns_1_1_point_light.html#ac360885334a6778949e00d7070c8a9ae',1,'brayns::PointLight']]],
   ['postrender',['postRender',['../classbrayns_1_1_engine.html#a75dcc0f335ea1f2b268d0085ad2f4ce1',1,'brayns::Engine::postRender()'],['../classbrayns_1_1_o_s_p_ray_engine.html#a99d0f628e96540714f0d1c7e5dc522fb',1,'brayns::OSPRayEngine::postRender()']]],
   ['prerender',['preRender',['../classbrayns_1_1_engine.html#ae4df6a7c3480fd5a2c99d2669d7ddbee',1,'brayns::Engine::preRender()'],['../classbrayns_1_1_o_s_p_ray_engine.html#a8013acb4c26a1f64da41a055035dcd78',1,'brayns::OSPRayEngine::preRender()']]],

@@ -121,6 +121,7 @@ var searchData=
   ['getshadows',['getShadows',['../classbrayns_1_1_rendering_parameters.html#ade7ee7e3226529b435fa3ffefd46c7e7',1,'brayns::RenderingParameters']]],
   ['getsimulationhandler',['getSimulationHandler',['../classbrayns_1_1_scene.html#a35ecec341354107001f1369f68500aaa',1,'brayns::Scene']]],
   ['getsize',['getSize',['../classbrayns_1_1_volume_handler.html#af357f8fd6e08e61abfedb040a5f52731',1,'brayns::VolumeHandler::getSize()'],['../classbrayns_1_1_volume_handler_1_1_volume_descriptor.html#a3957f2200339a9780daeeff87264b4e7',1,'brayns::VolumeHandler::VolumeDescriptor::getSize()']]],
+  ['getsizeinbytes',['getSizeInBytes',['../classbrayns_1_1_scene.html#a361219416ee29d355f3c8e2101a449c7',1,'brayns::Scene']]],
   ['getsoftshadows',['getSoftShadows',['../classbrayns_1_1_rendering_parameters.html#abc86470c43608043d4579f2ac566a76e',1,'brayns::RenderingParameters']]],
   ['getspheres',['getSpheres',['../classbrayns_1_1_scene.html#a04dc9203e6beb571cb5684e21ea1982b',1,'brayns::Scene']]],
   ['getstereomode',['getStereoMode',['../classbrayns_1_1_camera.html#a984359963515fe34b6f12fadf105f86e',1,'brayns::Camera']]],

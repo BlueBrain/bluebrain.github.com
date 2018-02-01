@@ -17,6 +17,7 @@ var hierarchy =
       [ "brayns::Scene", "classbrayns_1_1_scene.html", [
         [ "brayns::OSPRayScene", "classbrayns_1_1_o_s_p_ray_scene.html", null ]
       ] ],
+      [ "brayns::Statistics", "classbrayns_1_1_statistics.html", null ],
       [ "brayns::TransferFunction", "classbrayns_1_1_transfer_function.html", null ]
     ] ],
     [ "brayns::AbstractManipulator", "classbrayns_1_1_abstract_manipulator.html", [
@@ -42,7 +43,6 @@ var hierarchy =
       [ "brayns::RocketsPlugin", "classbrayns_1_1_rockets_plugin.html", null ]
     ] ],
     [ "brayns::ExtensionPluginFactory", "classbrayns_1_1_extension_plugin_factory.html", null ],
-    [ "brayns::FPSCounter", "structbrayns_1_1_f_p_s_counter.html", null ],
     [ "brayns::FrameBuffer", "classbrayns_1_1_frame_buffer.html", [
       [ "brayns::OSPRayFrameBuffer", "classbrayns_1_1_o_s_p_ray_frame_buffer.html", null ]
     ] ],
@@ -76,6 +76,7 @@ var hierarchy =
     [ "brayns::ShortcutInformation", "structbrayns_1_1_shortcut_information.html", null ],
     [ "brayns::Sphere", "structbrayns_1_1_sphere.html", null ],
     [ "brayns::Texture2D", "classbrayns_1_1_texture2_d.html", null ],
+    [ "brayns::Timer", "classbrayns_1_1_timer.html", null ],
     [ "brayns::TransferFunctionLoader", "classbrayns_1_1_transfer_function_loader.html", null ],
     [ "brayns::TrianglesMesh", "structbrayns_1_1_triangles_mesh.html", null ],
     [ "brayns::Version", "classbrayns_1_1_version.html", null ],

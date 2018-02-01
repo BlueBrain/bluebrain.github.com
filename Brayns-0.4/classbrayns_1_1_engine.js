@@ -17,6 +17,7 @@ var classbrayns_1_1_engine =
     [ "getProgress", "classbrayns_1_1_engine.html#a3e1fc31abccf3da8475247e845706dc9", null ],
     [ "getRenderer", "classbrayns_1_1_engine.html#af961a55c58767fdc61b67497abcbf7bb", null ],
     [ "getScene", "classbrayns_1_1_engine.html#aa7447c013f31279eecf99d3420ce641d", null ],
+    [ "getStatistics", "classbrayns_1_1_engine.html#a6b6be996e7313e3f83097c41e3affa15", null ],
     [ "getSupportedFrameSize", "classbrayns_1_1_engine.html#a5dc71a22ec526b9792836221b2832be0", null ],
     [ "haveDeflectPixelOp", "classbrayns_1_1_engine.html#a49c13d75aac81d4ce47e50ceb95a7b1a", null ],
     [ "initializeMaterials", "classbrayns_1_1_engine.html#a4d39c844e28b872a2513edf2df42f9c0", null ],
@@ -45,5 +46,6 @@ var classbrayns_1_1_engine =
     [ "_progress", "classbrayns_1_1_engine.html#a3b800fd925b2080adcb425d3737721a7", null ],
     [ "_renderers", "classbrayns_1_1_engine.html#a2d38cf1c8d61f255773a900c367e8182", null ],
     [ "_scene", "classbrayns_1_1_engine.html#a254b9a96346ee4bd3a0a71125975c22d", null ],
+    [ "_statistics", "classbrayns_1_1_engine.html#a7d1974bc8c175477c0b5e1c50d976bc7", null ],
     [ "buildScene", "classbrayns_1_1_engine.html#af778df7ef0bce4a98675b9589afd9a81", null ]
 ];
