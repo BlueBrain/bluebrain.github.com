@@ -52,6 +52,7 @@ var searchData=
   ['settitle',['setTitle',['../classbrayns_1_1_base_window.html#a8f917d5d11eb4d7dc70cb49b6d808920',1,'brayns::BaseWindow::setTitle(const char *title)'],['../classbrayns_1_1_base_window.html#a3e56ecff8226f4585ea9cf0b79e1a198',1,'brayns::BaseWindow::setTitle(const std::string &amp;title)']]],
   ['setup',['setUp',['../classbrayns_1_1_camera.html#a6f0cf030cd4e0330bfa2b0abdb016267',1,'brayns::Camera']]],
   ['setvariancethreshold',['setVarianceThreshold',['../classbrayns_1_1_rendering_parameters.html#aadf26c0def3d1eb724491b48a4b94c19',1,'brayns::RenderingParameters']]],
+  ['snapshot',['snapshot',['../classbrayns_1_1_engine.html#af88267b9c73259fab4a79275fa87419f',1,'brayns::Engine']]],
   ['spikesimulationhandler',['SpikeSimulationHandler',['../classbrayns_1_1_spike_simulation_handler.html#aae5dc41c31d6b1a5473075eaf0c54fc9',1,'brayns::SpikeSimulationHandler']]],
   ['start',['start',['../classbrayns_1_1_timer.html#aa4b955ae78d2e06e444eb7b4ecba62d4',1,'brayns::Timer']]],
   ['stop',['stop',['../classbrayns_1_1_timer.html#ab45e9548afa774cc5eaf70cb6c54975d',1,'brayns::Timer']]]

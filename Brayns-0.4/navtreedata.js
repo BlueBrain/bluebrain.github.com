@@ -31,9 +31,9 @@ var NAVTREEINDEX =
 [
 ".html",
 "classbrayns_1_1_base_window.html#ad195910cc20a612bb709fbe1bd7f5e46",
-"classbrayns_1_1_keyboard_handler.html#afbba49463b302102914acc01880324ee",
-"classbrayns_1_1_scene.html#a17f0dfc82bcbd4f69c9f1b436fcb1d66",
-"functions_s.html"
+"classbrayns_1_1_keyboard_handler.html#aedb8a810a846045ce3a08acfd87f69ba",
+"classbrayns_1_1_scene.html#a13667f2db068b46530102270f3b0e0ce",
+"functions_r.html"
 ];
 
 var SYNCONMSG = 'click to disable panel synchronisation';

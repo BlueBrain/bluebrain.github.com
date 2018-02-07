@@ -1,5 +1,6 @@
 var NAVTREEINDEX2 =
 {
+"classbrayns_1_1_keyboard_handler.html#aedb8a810a846045ce3a08acfd87f69ba":[5,0,0,30,2],
 "classbrayns_1_1_keyboard_handler.html#afbba49463b302102914acc01880324ee":[5,0,0,30,7],
 "classbrayns_1_1_light.html":[5,0,0,31],
 "classbrayns_1_1_light.html#a2f6772ab70bbf4ef95ea11503cd08149":[5,0,0,31,0],
@@ -248,6 +249,5 @@ var NAVTREEINDEX2 =
 "classbrayns_1_1_scene.html#a04dc9203e6beb571cb5684e21ea1982b":[5,0,0,54,29],
 "classbrayns_1_1_scene.html#a0d835b82330c961a0d7967ac08f96567":[5,0,0,54,41],
 "classbrayns_1_1_scene.html#a0ebde9602b22c831f46ca3fa07db6795":[5,0,0,54,48],
-"classbrayns_1_1_scene.html#a0f36c3f1a126e04687c060750612d17c":[5,0,0,54,42],
-"classbrayns_1_1_scene.html#a13667f2db068b46530102270f3b0e0ce":[5,0,0,54,9]
+"classbrayns_1_1_scene.html#a0f36c3f1a126e04687c060750612d17c":[5,0,0,54,42]
 };

@@ -35,6 +35,7 @@ var classbrayns_1_1_engine =
     [ "setLastOperation", "classbrayns_1_1_engine.html#ad22c4f8eae8a7c54567966628ff845d3", null ],
     [ "setLastProgress", "classbrayns_1_1_engine.html#ad682377d097d0079396207746db74895", null ],
     [ "setReady", "classbrayns_1_1_engine.html#a0f71f5fbf40fcc310b8c21f8a57b7a63", null ],
+    [ "snapshot", "classbrayns_1_1_engine.html#af88267b9c73259fab4a79275fa87419f", null ],
     [ "_activeRenderer", "classbrayns_1_1_engine.html#aedb79bf2ab3061ccb26b1fac6546895f", null ],
     [ "_camera", "classbrayns_1_1_engine.html#ac7dbf55501f7be270776d028005a91f1", null ],
     [ "_frameBuffer", "classbrayns_1_1_engine.html#a5132e8bae1ac113320b4b269b03f1ca0", null ],

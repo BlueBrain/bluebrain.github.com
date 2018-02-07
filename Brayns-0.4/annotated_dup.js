@@ -64,6 +64,7 @@ var annotated_dup =
       [ "ScreenSpaceProcessorData", "structbrayns_1_1_screen_space_processor_data.html", "structbrayns_1_1_screen_space_processor_data" ],
       [ "ShortcutInformation", "structbrayns_1_1_shortcut_information.html", "structbrayns_1_1_shortcut_information" ],
       [ "SimulationRenderer", "classbrayns_1_1_simulation_renderer.html", "classbrayns_1_1_simulation_renderer" ],
+      [ "SnapshotParams", "structbrayns_1_1_snapshot_params.html", "structbrayns_1_1_snapshot_params" ],
       [ "Sphere", "structbrayns_1_1_sphere.html", "structbrayns_1_1_sphere" ],
       [ "SpikeSimulationHandler", "classbrayns_1_1_spike_simulation_handler.html", "classbrayns_1_1_spike_simulation_handler" ],
       [ "Statistics", "classbrayns_1_1_statistics.html", "classbrayns_1_1_statistics" ],
