@@ -70,7 +70,6 @@ var annotated_dup =
     [ "ImageSource", "class_image_source.html", "class_image_source" ],
     [ "ImageThumbnailGenerator", "class_image_thumbnail_generator.html", "class_image_thumbnail_generator" ],
     [ "InactivityTimer", "class_inactivity_timer.html", "class_inactivity_timer" ],
-    [ "JsonRpc", "class_json_rpc.html", "class_json_rpc" ],
     [ "KeyboardState", "class_keyboard_state.html", "class_keyboard_state" ],
     [ "LayoutEngine", "class_layout_engine.html", "class_layout_engine" ],
     [ "LayoutPolicy", "class_layout_policy.html", "class_layout_policy" ],

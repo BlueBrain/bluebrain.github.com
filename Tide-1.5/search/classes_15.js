@@ -1,4 +1,5 @@
 var searchData=
 [
-  ['yuvimage',['YUVImage',['../class_y_u_v_image.html',1,'']]]
+  ['zoomcontroller',['ZoomController',['../class_zoom_controller.html',1,'']]],
+  ['zoomhelper',['ZoomHelper',['../class_zoom_helper.html',1,'']]]
 ];

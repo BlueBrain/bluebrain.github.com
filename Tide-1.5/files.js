@@ -68,7 +68,6 @@ var files =
     [ "InactivityTimer.h", "_inactivity_timer_8h_source.html", null ],
     [ "includes.h", "includes_8h_source.html", null ],
     [ "json.h", "json_8h_source.html", null ],
-    [ "JsonRpc.h", "_json_rpc_8h_source.html", null ],
     [ "jsonschema.h", "jsonschema_8h_source.html", null ],
     [ "KeyboardState.h", "_keyboard_state_8h_source.html", null ],
     [ "LayoutEngine.h", "_layout_engine_8h_source.html", null ],

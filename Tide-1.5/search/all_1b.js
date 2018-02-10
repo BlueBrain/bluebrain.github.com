@@ -12,7 +12,6 @@ var searchData=
   ['_7effmpegmovie',['~FFMPEGMovie',['../class_f_f_m_p_e_g_movie.html#ada29015e30fd77182119418abe0356cd',1,'FFMPEGMovie']]],
   ['_7effmpegvideoframeconverter',['~FFMPEGVideoFrameConverter',['../class_f_f_m_p_e_g_video_frame_converter.html#aeefb0051a145deb3d6b6fd58bb4906ac',1,'FFMPEGVideoFrameConverter']]],
   ['_7effmpegvideostream',['~FFMPEGVideoStream',['../class_f_f_m_p_e_g_video_stream.html#ac156456c4ed8b05d38a475d562de746e',1,'FFMPEGVideoStream']]],
-  ['_7ejsonrpc',['~JsonRpc',['../class_json_rpc.html#ad7357a7274b53f2362f73b97c3c966bd',1,'JsonRpc']]],
   ['_7emasterapplication',['~MasterApplication',['../class_master_application.html#a8ff4aef9c90eb363f2778154ec7b6af9',1,'MasterApplication']]],
   ['_7emasterdisplaygrouprenderer',['~MasterDisplayGroupRenderer',['../class_master_display_group_renderer.html#ae60f9223cdf18e5c113bd6a8256682ab',1,'MasterDisplayGroupRenderer']]],
   ['_7emasterquickview',['~MasterQuickView',['../class_master_quick_view.html#af3408fed026b2fc8ee212c78ac8931c6',1,'MasterQuickView']]],

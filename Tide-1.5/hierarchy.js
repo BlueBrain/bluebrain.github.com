@@ -52,8 +52,6 @@ var hierarchy =
       [ "boost::serialization::is_bitwise_serializable< std::chrono::duration< Rep, Period > >", "structboost_1_1serialization_1_1is__bitwise__serializable_3_01std_1_1chrono_1_1duration_3_01_rep_00_01_period_01_4_01_4.html", null ],
       [ "boost::serialization::is_bitwise_serializable< std::chrono::time_point< C, D > >", "structboost_1_1serialization_1_1is__bitwise__serializable_3_01std_1_1chrono_1_1time__point_3_01_c_00_01_d_01_4_01_4.html", null ]
     ] ],
-    [ "JsonRpc", "class_json_rpc.html", null ],
-    [ "JsonRpc::Response", "struct_json_rpc_1_1_response.html", null ],
     [ "LayoutPolicy", "class_layout_policy.html", [
       [ "AutomaticLayout", "class_automatic_layout.html", null ],
       [ "LayoutEngine", "class_layout_engine.html", null ]
@@ -208,10 +206,13 @@ var hierarchy =
     [ "Filter", null, [
       [ "RestServer", "class_rest_server.html", null ]
     ] ],
+    [ "Receiver", null, [
+      [ "AppController", "class_app_controller.html", null ],
+      [ "SceneController", "class_scene_controller.html", null ]
+    ] ],
     [ "Server", null, [
       [ "RestServer", "class_rest_server.html", null ]
     ] ],
-    [ "SceneController", "class_scene_controller.html", null ],
     [ "ScreenConfiguration", "struct_screen_configuration.html", null ],
     [ "serialization::detail::serialize< N >", "structserialization_1_1detail_1_1serialize.html", null ],
     [ "serialization::detail::serialize< 0 >", "structserialization_1_1detail_1_1serialize_3_010_01_4.html", null ],

@@ -1,4 +1,4 @@
 var searchData=
 [
-  ['jsonrpc',['JsonRpc',['../class_json_rpc.html',1,'']]]
+  ['keyboardstate',['KeyboardState',['../class_keyboard_state.html',1,'']]]
 ];
