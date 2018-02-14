@@ -1,12 +1,7 @@
 var searchData=
 [
-  ['sendbinary',['sendBinary',['../classrockets_1_1ws_1_1_client.html#a6bfaa939820f439902088f06d67c0e0d',1,'rockets::ws::Client']]],
-  ['sendtext',['sendText',['../classrockets_1_1ws_1_1_client.html#a41535048901cf93ab9718c6e8678e4ac',1,'rockets::ws::Client']]],
-  ['server',['Server',['../classrockets_1_1_server.html',1,'rockets']]],
-  ['server',['Server',['../classrockets_1_1_server.html#ac3881cb8cadc9a57c994d9ddd4bceeac',1,'rockets::Server']]],
-  ['sethttpfilter',['setHttpFilter',['../classrockets_1_1_server.html#aa471f0640af5e55ea1f88ce8357243e6',1,'rockets::Server']]],
-  ['setsocketlistener',['setSocketListener',['../classrockets_1_1_socket_based_interface.html#a43aa9c625c9f69b26583ce01e511e6e2',1,'rockets::SocketBasedInterface']]],
-  ['socketbasedinterface',['SocketBasedInterface',['../classrockets_1_1_socket_based_interface.html',1,'rockets']]],
-  ['socketlistener',['SocketListener',['../classrockets_1_1_socket_listener.html',1,'rockets']]],
-  ['socketprocessor',['SocketProcessor',['../classrockets_1_1qt_1_1_socket_processor.html',1,'rockets::qt']]]
+  ['process',['process',['../classrockets_1_1jsonrpc_1_1_receiver.html#aa5b11d017c9923fcddbbf448dcacd8fb',1,'rockets::jsonrpc::Receiver::process(const Request &amp;request)'],['../classrockets_1_1jsonrpc_1_1_receiver.html#ad8decd4a9db901ac82b6118bcf8a21ed',1,'rockets::jsonrpc::Receiver::process(const Request &amp;request, AsyncStringResponse callback)'],['../classrockets_1_1_socket_based_interface.html#aba549a192dd24a91308837c5192a8b22',1,'rockets::SocketBasedInterface::process()']]],
+  ['processasync',['processAsync',['../classrockets_1_1jsonrpc_1_1_receiver.html#a0ccb1cc32232579834b5fbc2ce23b3cf',1,'rockets::jsonrpc::Receiver']]],
+  ['processresponse',['processResponse',['../classrockets_1_1jsonrpc_1_1_requester.html#abc77c79fe429e8e00ccf1b088cd17312',1,'rockets::jsonrpc::Requester']]],
+  ['processsocket',['processSocket',['../classrockets_1_1_socket_based_interface.html#ae0200deb463dbce66fc8bc4fcdf96353',1,'rockets::SocketBasedInterface']]]
 ];

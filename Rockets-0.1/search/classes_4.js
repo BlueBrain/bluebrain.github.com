@@ -1,4 +1,4 @@
 var searchData=
 [
-  ['version',['Version',['../classrockets_1_1_version.html',1,'rockets']]]
+  ['notifier',['Notifier',['../classrockets_1_1jsonrpc_1_1_notifier.html',1,'rockets::jsonrpc']]]
 ];

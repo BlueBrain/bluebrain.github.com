@@ -1,6 +1,7 @@
 var searchData=
 [
-  ['remove',['remove',['../classrockets_1_1_server.html#a4e1f56d98dbc47a5442830f7ce774359',1,'rockets::Server']]],
-  ['request',['request',['../classrockets_1_1http_1_1_client.html#a42b373a2506b3af7888a6d4c633bb9df',1,'rockets::http::Client']]],
-  ['response',['Response',['../structrockets_1_1http_1_1_response.html#a429593f742e4b8c45db9a0ca83805f6d',1,'rockets::http::Response::Response(const Code code_=Code::OK, std::string body_=std::string())'],['../structrockets_1_1http_1_1_response.html#a4fca34d90f11e5e6be26e10164132354',1,'rockets::http::Response::Response(const Code code_, std::string body_, const std::string &amp;contentType)'],['../structrockets_1_1http_1_1_response.html#a196c7a8e3be8bed4d3736bb8750fa471',1,'rockets::http::Response::Response(const Code code_, std::string body_, std::map&lt; Header, std::string &gt; headers_)']]]
+  ['process',['process',['../classrockets_1_1jsonrpc_1_1_receiver.html#aa5b11d017c9923fcddbbf448dcacd8fb',1,'rockets::jsonrpc::Receiver::process(const Request &amp;request)'],['../classrockets_1_1jsonrpc_1_1_receiver.html#ad8decd4a9db901ac82b6118bcf8a21ed',1,'rockets::jsonrpc::Receiver::process(const Request &amp;request, AsyncStringResponse callback)'],['../classrockets_1_1_socket_based_interface.html#aba549a192dd24a91308837c5192a8b22',1,'rockets::SocketBasedInterface::process()']]],
+  ['processasync',['processAsync',['../classrockets_1_1jsonrpc_1_1_receiver.html#a0ccb1cc32232579834b5fbc2ce23b3cf',1,'rockets::jsonrpc::Receiver']]],
+  ['processresponse',['processResponse',['../classrockets_1_1jsonrpc_1_1_requester.html#abc77c79fe429e8e00ccf1b088cd17312',1,'rockets::jsonrpc::Requester']]],
+  ['processsocket',['processSocket',['../classrockets_1_1_socket_based_interface.html#ae0200deb463dbce66fc8bc4fcdf96353',1,'rockets::SocketBasedInterface']]]
 ];

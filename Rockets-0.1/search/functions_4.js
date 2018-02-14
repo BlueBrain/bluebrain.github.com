@@ -6,5 +6,6 @@ var searchData=
   ['handleget',['handleGET',['../classrockets_1_1_server.html#a8381000400b391697793b87108636f41',1,'rockets::Server']]],
   ['handleopen',['handleOpen',['../classrockets_1_1_server.html#a7b37b68e2b3adc1c6145f9b907c73ecc',1,'rockets::Server']]],
   ['handleput',['handlePUT',['../classrockets_1_1_server.html#a8cf01ade9b3730d342aa632d03e22fc8',1,'rockets::Server']]],
-  ['handletext',['handleText',['../classrockets_1_1_server.html#aab147975dcd9e4db242742e2f3ccce19',1,'rockets::Server::handleText()'],['../classrockets_1_1ws_1_1_client.html#a46d115b821e8d29cfa23131e8d5508a2',1,'rockets::ws::Client::handleText()']]]
+  ['handletext',['handleText',['../classrockets_1_1_server.html#aab147975dcd9e4db242742e2f3ccce19',1,'rockets::Server::handleText(ws::MessageCallback callback)'],['../classrockets_1_1_server.html#abebcb3ca363f2905c36a5decf7ab4eff',1,'rockets::Server::handleText(ws::MessageCallbackAsync callback)'],['../classrockets_1_1ws_1_1_client.html#a46d115b821e8d29cfa23131e8d5508a2',1,'rockets::ws::Client::handleText()']]],
+  ['httpcommunicator',['HttpCommunicator',['../classrockets_1_1jsonrpc_1_1_http_communicator.html#a20a9996f038b1327f650e9e89ef7cfd0',1,'rockets::jsonrpc::HttpCommunicator']]]
 ];

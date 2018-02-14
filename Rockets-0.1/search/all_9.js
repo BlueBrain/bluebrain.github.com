@@ -1,5 +1,5 @@
 var searchData=
 [
-  ['process',['process',['../classrockets_1_1_socket_based_interface.html#aba549a192dd24a91308837c5192a8b22',1,'rockets::SocketBasedInterface']]],
-  ['processsocket',['processSocket',['../classrockets_1_1_socket_based_interface.html#ae0200deb463dbce66fc8bc4fcdf96353',1,'rockets::SocketBasedInterface']]]
+  ['notifier',['Notifier',['../classrockets_1_1jsonrpc_1_1_notifier.html',1,'rockets::jsonrpc']]],
+  ['notify',['notify',['../classrockets_1_1jsonrpc_1_1_notifier.html#a3595ea73579decd7c7e7618b8569c074',1,'rockets::jsonrpc::Notifier::notify(const std::string &amp;method, const std::string &amp;params)'],['../classrockets_1_1jsonrpc_1_1_notifier.html#aeebb053a6b8dc96bbc816e8ea41a5565',1,'rockets::jsonrpc::Notifier::notify(const std::string &amp;method, const Params &amp;params)']]]
 ];
