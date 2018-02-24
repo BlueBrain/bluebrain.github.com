@@ -1,4 +1,4 @@
 var searchData=
 [
-  ['filter',['Filter',['../classrockets_1_1http_1_1_filter.html',1,'rockets::http']]]
+  ['error',['Error',['../structrockets_1_1jsonrpc_1_1_response_1_1_error.html',1,'rockets::jsonrpc::Response']]]
 ];

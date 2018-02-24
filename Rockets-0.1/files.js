@@ -1,6 +1,7 @@
 var files =
 [
     [ "api.h", "api_8h.html", "api_8h" ],
+    [ "asyncReceiver.h", "async_receiver_8h_source.html", null ],
     [ "http/client.h", "http_2client_8h_source.html", null ],
     [ "jsonrpc/client.h", "jsonrpc_2client_8h_source.html", null ],
     [ "ws/client.h", "ws_2client_8h_source.html", null ],
@@ -15,6 +16,7 @@ var files =
     [ "notifier.h", "notifier_8h_source.html", null ],
     [ "readWriteSocketNotifier.h", "read_write_socket_notifier_8h_source.html", null ],
     [ "receiver.h", "receiver_8h_source.html", null ],
+    [ "receiverInterface.h", "receiver_interface_8h_source.html", null ],
     [ "request.h", "request_8h_source.html", null ],
     [ "requester.h", "requester_8h_source.html", null ],
     [ "http/response.h", "http_2response_8h_source.html", null ],
@@ -30,5 +32,6 @@ var files =
     [ "jsonrpc/types.h", "jsonrpc_2types_8h_source.html", null ],
     [ "types.h", "types_8h_source.html", null ],
     [ "ws/types.h", "ws_2types_8h_source.html", null ],
+    [ "utils.h", "utils_8h_source.html", null ],
     [ "version.h", "version_8h.html", "version_8h" ]
 ];

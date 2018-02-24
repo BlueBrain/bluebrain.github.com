@@ -1,5 +1,8 @@
 var hierarchy =
 [
+    [ "ReceiverT", null, [
+      [ "rockets::jsonrpc::Server< ServerT, ReceiverT >", "classrockets_1_1jsonrpc_1_1_server.html", null ]
+    ] ],
     [ "rockets::http::Filter", "classrockets_1_1http_1_1_filter.html", null ],
     [ "rockets::http::Request", "structrockets_1_1http_1_1_request.html", null ],
     [ "rockets::http::Response", "structrockets_1_1http_1_1_response.html", null ],
@@ -8,11 +11,13 @@ var hierarchy =
       [ "rockets::jsonrpc::Requester", "classrockets_1_1jsonrpc_1_1_requester.html", [
         [ "rockets::jsonrpc::Client< Communicator >", "classrockets_1_1jsonrpc_1_1_client.html", null ]
       ] ],
-      [ "rockets::jsonrpc::Server< ServerT >", "classrockets_1_1jsonrpc_1_1_server.html", null ]
+      [ "rockets::jsonrpc::Server< ServerT, ReceiverT >", "classrockets_1_1jsonrpc_1_1_server.html", null ]
     ] ],
-    [ "rockets::jsonrpc::Receiver", "classrockets_1_1jsonrpc_1_1_receiver.html", [
-      [ "rockets::jsonrpc::Client< Communicator >", "classrockets_1_1jsonrpc_1_1_client.html", null ],
-      [ "rockets::jsonrpc::Server< ServerT >", "classrockets_1_1jsonrpc_1_1_server.html", null ]
+    [ "rockets::jsonrpc::ReceiverInterface", "classrockets_1_1jsonrpc_1_1_receiver_interface.html", [
+      [ "rockets::jsonrpc::AsyncReceiver", "classrockets_1_1jsonrpc_1_1_async_receiver.html", null ],
+      [ "rockets::jsonrpc::Receiver", "classrockets_1_1jsonrpc_1_1_receiver.html", [
+        [ "rockets::jsonrpc::Client< Communicator >", "classrockets_1_1jsonrpc_1_1_client.html", null ]
+      ] ]
     ] ],
     [ "rockets::jsonrpc::Response", "structrockets_1_1jsonrpc_1_1_response.html", null ],
     [ "rockets::jsonrpc::Response::Error", "structrockets_1_1jsonrpc_1_1_response_1_1_error.html", null ],
