@@ -4,7 +4,7 @@ version: "0.5"
 major: 0
 minor: 5
 description: Hardware Agnostic Ray-Tracer
-updated: 24/02/18
+updated: 27/02/18
 homepage: https://github.com/BlueBrain/Brayns
 repository: https://github.com/BlueBrain/Brayns.git
 issuesurl: https://github.com/BlueBrain/Brayns/issues
@@ -12,12 +12,12 @@ packageurl:
 license: 
 maturity: EP
 maintainers: 
-contributors: Daniel Nachbaur
+contributors: Cyrille Favreau
 readmetype: text/x-markdown
 ---
 # Brayns
 
-![Brayns](doc/images/Brayns.png)
+![Brayns](doc/images/Brayns.jpg)
 
 One of the keys towards understanding how the brain works as a whole is
 visualisation of how the individual cells function. In particular, the more
@@ -59,6 +59,24 @@ The following platforms and build environments are tested:
 
 The [API documentation](http://bluebrain.github.io/Brayns-0.1/index.html)
 can be found on [bluebrain.github.io](http://bluebrain.github.io/).
+
+## Using Docker images
+
+### Start Brayns as a service
+
+```
+docker run -ti --rm -p 8200:8200 bluebrain/brayns
+```
+
+More documentation is available on DockerHub: https://hub.docker.com/r/bluebrain/brayns/
+
+### Start the Sauron web UI
+
+```
+docker run -ti --rm -p 8080:8080 bluebrain/sauron
+```
+
+More documentation is available on DockerHub: https://hub.docker.com/r/bluebrain/sauron/
 
 ## Building from Source
 
