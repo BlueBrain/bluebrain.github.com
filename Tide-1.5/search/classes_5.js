@@ -8,6 +8,7 @@ var searchData=
   ['filebrowser',['FileBrowser',['../class_file_browser.html',1,'']]],
   ['fileinfohelper',['FileInfoHelper',['../class_file_info_helper.html',1,'']]],
   ['filereceiver',['FileReceiver',['../class_file_receiver.html',1,'']]],
+  ['folders',['Folders',['../struct_configuration_1_1_folders.html',1,'Configuration']]],
   ['folderthumbnailgenerator',['FolderThumbnailGenerator',['../class_folder_thumbnail_generator.html',1,'']]],
   ['fpscounter',['FpsCounter',['../class_fps_counter.html',1,'']]]
 ];

@@ -1,4 +1,5 @@
 var searchData=
 [
-  ['xmlcopy',['xmlCopy',['../namespaceserialization.html#a107c73edfa060d10556deffc1677ca7d',1,'serialization']]]
+  ['xmlcopy',['xmlCopy',['../namespaceserialization.html#a107c73edfa060d10556deffc1677ca7d',1,'serialization']]],
+  ['xmlparser',['XmlParser',['../class_xml_parser.html',1,'']]]
 ];

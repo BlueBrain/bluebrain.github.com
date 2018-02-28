@@ -1,4 +1,5 @@
 var searchData=
 [
-  ['vm',['vm',['../class_command_line_parser.html#ad00d7149ac4b3c176a81767426a7a36e',1,'CommandLineParser']]]
+  ['inactivitytimeout',['inactivityTimeout',['../struct_configuration_1_1_settings.html#ae5925ecfde04a733dd24b2d73b66ddf3',1,'Configuration::Settings']]],
+  ['infoname',['infoName',['../struct_configuration_1_1_settings.html#adf47774c0ab4bddfbcc56313f932b5f0',1,'Configuration::Settings']]]
 ];

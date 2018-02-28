@@ -1,6 +1,6 @@
 var class_app_controller =
 [
-    [ "AppController", "class_app_controller.html#a93d5f2dbaa6cc532e4eada48cfdae3f3", null ],
+    [ "AppController", "class_app_controller.html#abb88e98ae1757510054a6295abdb5a1b", null ],
     [ "browse", "class_app_controller.html#a76031dea73c40112208f7691a54e3a79", null ],
     [ "exit", "class_app_controller.html#a55e0ed27462e88eec0b0602fef70e65a", null ],
     [ "load", "class_app_controller.html#ae0232bc6f3f8d9bcaeabb099af430960", null ],

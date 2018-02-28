@@ -12,10 +12,14 @@ var hierarchy =
       [ "CommandLineOptions", "class_command_line_options.html", null ],
       [ "CommandLineParameters", "class_command_line_parameters.html", null ]
     ] ],
-    [ "Configuration", "class_configuration.html", [
-      [ "MasterConfiguration", "class_master_configuration.html", null ],
-      [ "WallConfiguration", "class_wall_configuration.html", null ]
-    ] ],
+    [ "Configuration", "class_configuration.html", null ],
+    [ "Configuration::Folders", "struct_configuration_1_1_folders.html", null ],
+    [ "Configuration::Global", "struct_configuration_1_1_global.html", null ],
+    [ "Configuration::Launcher", "struct_configuration_1_1_launcher.html", null ],
+    [ "Configuration::Master", "struct_configuration_1_1_master.html", null ],
+    [ "Configuration::Settings", "struct_configuration_1_1_settings.html", null ],
+    [ "Configuration::Webbrowser", "struct_configuration_1_1_webbrowser.html", null ],
+    [ "Configuration::Whiteboard", "struct_configuration_1_1_whiteboard.html", null ],
     [ "ContentFactory", "class_content_factory.html", null ],
     [ "ContentLoader", "class_content_loader.html", null ],
     [ "DataSource", "class_data_source.html", [
@@ -79,6 +83,9 @@ var hierarchy =
       [ "PixelStreamPassthrough", "class_pixel_stream_passthrough.html", null ]
     ] ],
     [ "ProbeResult", "struct_probe_result.html", null ],
+    [ "Process", "struct_process.html", [
+      [ "WallConfiguration", "struct_wall_configuration.html", null ]
+    ] ],
     [ "ProcessForker", "class_process_forker.html", null ],
     [ "QAbstractListModel", null, [
       [ "ContentActionsModel", "class_content_actions_model.html", null ],
@@ -213,7 +220,7 @@ var hierarchy =
     [ "Server", null, [
       [ "RestServer", "class_rest_server.html", null ]
     ] ],
-    [ "ScreenConfiguration", "struct_screen_configuration.html", null ],
+    [ "Screen", "struct_screen.html", null ],
     [ "serialization::detail::serialize< N >", "structserialization_1_1detail_1_1serialize.html", null ],
     [ "serialization::detail::serialize< 0 >", "structserialization_1_1detail_1_1serialize_3_010_01_4.html", null ],
     [ "SharedNetworkBarrier", "class_shared_network_barrier.html", [
@@ -231,6 +238,7 @@ var hierarchy =
       [ "ScreenLock", "class_screen_lock.html", null ],
       [ "Tile", "class_tile.html", null ]
     ] ],
+    [ "Surface", "struct_surface.html", null ],
     [ "SVG", "class_s_v_g.html", null ],
     [ "SVGBackend", "class_s_v_g_backend.html", [
       [ "SVGQtGpuBackend", "class_s_v_g_qt_gpu_backend.html", null ]
@@ -265,5 +273,6 @@ var hierarchy =
     [ "TiffPyramidReader", "class_tiff_pyramid_reader.html", null ],
     [ "VisibilityHelper", "class_visibility_helper.html", null ],
     [ "WallRenderContext", "struct_wall_render_context.html", null ],
+    [ "XmlParser", "class_xml_parser.html", null ],
     [ "ZoomHelper", "class_zoom_helper.html", null ]
 ];

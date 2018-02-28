@@ -1,4 +1,4 @@
 var searchData=
 [
-  ['options',['Options',['../class_options.html',1,'']]]
+  ['networkbarrier',['NetworkBarrier',['../class_network_barrier.html',1,'']]]
 ];

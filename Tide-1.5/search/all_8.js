@@ -14,9 +14,12 @@ var searchData=
   ['hasvisiblepanels',['hasVisiblePanels',['../class_display_group.html#aa2857a09fb72669d48021f0cb30efeb5',1,'DisplayGroup']]],
   ['hasvisiblepanelschanged',['hasVisiblePanelsChanged',['../class_display_group.html#a745e87f0f41cdcf6cd7b05fc5ed2a8c5',1,'DisplayGroup']]],
   ['hasvisibletiles',['hasVisibleTiles',['../class_movie_synchronizer.html#acb015c4c36cbdc0823ef4d48314d55d5',1,'MovieSynchronizer']]],
+  ['headless',['headless',['../struct_configuration_1_1_master.html#aa06184ddfe5fd6b2b75bd502392efa5a',1,'Configuration::Master']]],
   ['height',['height',['../class_content.html#a0ac15e1ba630bc6c6f98d47529f4c48c',1,'Content']]],
   ['hidepanels',['hidePanels',['../class_display_group_controller.html#a30c12fa5deb6859f9304b47ab7bc7722',1,'DisplayGroupController']]],
   ['hidewindow',['hideWindow',['../class_pixel_stream_window_manager.html#a74bb0eb12ff7357fef0fbbd1d9c92aff',1,'PixelStreamWindowManager']]],
+  ['host',['host',['../struct_process.html#ad66e481c67a2c46c0dba898558352794',1,'Process']]],
+  ['hostname',['hostname',['../struct_configuration_1_1_master.html#a9fcbf1adc112765e834d9ca54a18c332',1,'Configuration::Master']]],
   ['htmlcontent',['HtmlContent',['../class_html_content.html',1,'HtmlContent'],['../class_html_content.html#a93b3d15ad820691f576ec7cccdef6dc3',1,'HtmlContent::HtmlContent()']]],
   ['htmlselectreplacer',['HtmlSelectReplacer',['../class_html_select_replacer.html',1,'']]]
 ];

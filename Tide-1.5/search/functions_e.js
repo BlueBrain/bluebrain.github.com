@@ -1,12 +1,13 @@
 var searchData=
 [
+  ['pack',['pack',['../namespacejson.html#a1c08a5f8a963797c41d61f9cdbeca1c0',1,'json::pack(const QJsonObject &amp;object)'],['../namespacejson.html#ae5a32e9c242384e39df2364fc4d3e9c4',1,'json::pack(const SerializableT &amp;object)']]],
   ['pagechanged',['pageChanged',['../class_p_d_f_content.html#a817129d408c9907e2081ab588659d8a4',1,'PDFContent::pageChanged()'],['../class_p_d_f_tiler.html#a190ee9c5278133140a9641a62c500d8f',1,'PDFTiler::pageChanged()']]],
   ['paint',['paint',['../class_test_pattern.html#a7ad9a56b63b91c661dd198a23935b3a7',1,'TestPattern']]],
   ['painttext',['paintText',['../class_thumbnail_generator.html#a830215bb774dfa30b8b2d6e812465bd4',1,'ThumbnailGenerator']]],
   ['pan',['pan',['../class_multitouch_area.html#aa8c67585684186f2c15c531699b80e3f',1,'MultitouchArea::pan()'],['../class_pan_detector.html#a459b1b402758a9fbf4ffa75a1a9d9787',1,'PanDetector::pan()']]],
   ['panended',['panEnded',['../class_multitouch_area.html#a84b90afb21f9a1a305db11bf5655df09',1,'MultitouchArea::panEnded()'],['../class_pan_detector.html#a3be4ed12df76f56d7f03016714d23e93',1,'PanDetector::panEnded()']]],
   ['panstarted',['panStarted',['../class_multitouch_area.html#aa293ed637d9f6be952d767de2f24e6ca',1,'MultitouchArea::panStarted()'],['../class_pan_detector.html#a4da6121099455abfc6d57991fa082a5e',1,'PanDetector::panStarted()']]],
-  ['parse',['parse',['../class_command_line_parser.html#acbc5ec7953ff31f839ca40570e3052e7',1,'CommandLineParser::parse()'],['../class_command_line_options.html#a5d1040e4ba091f5d7c28f61e9dd68d94',1,'CommandLineOptions::parse()']]],
+  ['parse',['parse',['../class_command_line_parser.html#acbc5ec7953ff31f839ca40570e3052e7',1,'CommandLineParser::parse()'],['../class_command_line_options.html#a5d1040e4ba091f5d7c28f61e9dd68d94',1,'CommandLineOptions::parse()'],['../namespacejson.html#ac1b53f6824e0942f11ba6142782a2e44',1,'json::parse()']]],
   ['parsedata',['parseData',['../class_pixel_stream_content.html#aaeecac84283680ea0ead807c2006e1d7',1,'PixelStreamContent']]],
   ['pdfcontent',['PDFContent',['../class_p_d_f_content.html#a4ae008684cb13c9a6bd52ed35f827781',1,'PDFContent']]],
   ['pdfpopplerqtbackend',['PDFPopplerQtBackend',['../class_p_d_f_poppler_qt_backend.html#af85d60a6df140b5852a319e591c07212',1,'PDFPopplerQtBackend']]],
@@ -20,7 +21,7 @@ var searchData=
   ['pixelstreamclose',['pixelStreamClose',['../class_master_from_wall_channel.html#a15ab169ae1b8287bae27fea6ffbaefb0',1,'MasterFromWallChannel']]],
   ['pixelstreamcontent',['PixelStreamContent',['../class_pixel_stream_content.html#ace06f35a28c5944c47ac13ddc33f8473',1,'PixelStreamContent']]],
   ['pixelstreamcontroller',['PixelStreamController',['../class_pixel_stream_controller.html#ad8ad070db17e8626497d61c77d80b726',1,'PixelStreamController']]],
-  ['pixelstreamerlauncher',['PixelStreamerLauncher',['../class_pixel_streamer_launcher.html#a4e75a7d4d03297d532d969337bb93bb9',1,'PixelStreamerLauncher']]],
+  ['pixelstreamerlauncher',['PixelStreamerLauncher',['../class_pixel_streamer_launcher.html#a911a09bff7c15873b6229cbddb0e3be7',1,'PixelStreamerLauncher']]],
   ['pixelstreampassthrough',['PixelStreamPassthrough',['../class_pixel_stream_passthrough.html#ae558f02a0c237f8590453944b3225a59',1,'PixelStreamPassthrough']]],
   ['pixelstreamsynchronizer',['PixelStreamSynchronizer',['../class_pixel_stream_synchronizer.html#a7e9be625ac23087186e7860c83f2377b',1,'PixelStreamSynchronizer']]],
   ['pixelstreamupdater',['PixelStreamUpdater',['../class_pixel_stream_updater.html#a6c2d85e507658b80c95666d6b5f7c44a',1,'PixelStreamUpdater']]],

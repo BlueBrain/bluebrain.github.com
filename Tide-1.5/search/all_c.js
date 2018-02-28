@@ -1,6 +1,7 @@
 var searchData=
 [
   ['launch',['launch',['../class_pixel_streamer_launcher.html#afc419a30fbbfad12deed8cba43427723',1,'PixelStreamerLauncher']]],
+  ['launcher',['Launcher',['../struct_configuration_1_1_launcher.html',1,'Configuration']]],
   ['layoutengine',['LayoutEngine',['../class_layout_engine.html',1,'']]],
   ['layoutpolicy',['LayoutPolicy',['../class_layout_policy.html',1,'']]],
   ['legacyloadxml',['legacyLoadXML',['../class_state.html#a9d239d0be957febba6229da5a599124e',1,'State']]],

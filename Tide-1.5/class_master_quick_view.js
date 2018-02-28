@@ -1,6 +1,6 @@
 var class_master_quick_view =
 [
-    [ "MasterQuickView", "class_master_quick_view.html#a4cbc47d7c07ffbcc6c7bd408843f901c", null ],
+    [ "MasterQuickView", "class_master_quick_view.html#aff1a8db258eee9c442e63cb627e31a2d", null ],
     [ "~MasterQuickView", "class_master_quick_view.html#af3408fed026b2fc8ee212c78ac8931c6", null ],
     [ "mapToWallPos", "class_master_quick_view.html#a8cca513cded41f400424556ff803684a", null ],
     [ "mouseMoved", "class_master_quick_view.html#ab19d624146ef5236bc11eb4428652a95", null ],

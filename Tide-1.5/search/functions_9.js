@@ -20,7 +20,7 @@ var searchData=
   ['isgpuimage',['isGpuImage',['../class_image.html#ac3e10f35fb8dd895bda5627f43d96907',1,'Image::isGpuImage()'],['../class_s_v_g_gpu_image.html#ac344a36d69cb8d45ea8103d8b752de02',1,'SVGGpuImage::isGpuImage()']]],
   ['ishidden',['isHidden',['../class_content_window.html#a5d8a2935e14cb43f890e776a1c9f2315',1,'ContentWindow']]],
   ['islocked',['isLocked',['../class_screen_lock.html#a3631151869f8527fc72864a64f3212d9',1,'ScreenLock']]],
-  ['ismessageavailable',['isMessageAvailable',['../class_m_p_i_channel.html#aa1e0f4381789f23123aff7c8b5fb1b0d',1,'MPIChannel::isMessageAvailable()'],['../class_wall_from_master_channel.html#a34a7629d9a71d873394d4bc51e687d04',1,'WallFromMasterChannel::isMessageAvailable()']]],
+  ['ismessageavailable',['isMessageAvailable',['../class_m_p_i_channel.html#aa1e0f4381789f23123aff7c8b5fb1b0d',1,'MPIChannel']]],
   ['ismoving',['isMoving',['../class_content_window.html#ac557a80bb17253cb4c2ecb3f5f468f1a',1,'ContentWindow']]],
   ['ispanel',['isPanel',['../class_content_window.html#ada977a7c22d00eeb905ad9224be20e30',1,'ContentWindow']]],
   ['ispaused',['isPaused',['../class_movie_updater.html#a74c9e0d5a4e306db1b8e66c811e5ed03',1,'MovieUpdater']]],

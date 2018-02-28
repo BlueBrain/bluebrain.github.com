@@ -2,7 +2,6 @@ var searchData=
 [
   ['_7ebackground',['~Background',['../class_background.html#a36754df1deb720393217ade59da41557',1,'Background']]],
   ['_7ecommandlineparser',['~CommandLineParser',['../class_command_line_parser.html#a77dce9e183275e2b11466e4f0398cfce',1,'CommandLineParser']]],
-  ['_7econfiguration',['~Configuration',['../class_configuration.html#a4f365eded377e740d1e2457fe7ade448',1,'Configuration']]],
   ['_7econtentcontroller',['~ContentController',['../class_content_controller.html#a163809b078fbd897aef5507a12e2b733',1,'ContentController']]],
   ['_7econtentsynchronizer',['~ContentSynchronizer',['../class_content_synchronizer.html#aac4d27f2dcb82846eb5e94a8f281aa5f',1,'ContentSynchronizer']]],
   ['_7econtentwindow',['~ContentWindow',['../class_content_window.html#a048c11ac7d49072c2655e7adb0737844',1,'ContentWindow']]],

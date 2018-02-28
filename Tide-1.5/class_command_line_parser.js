@@ -6,5 +6,6 @@ var class_command_line_parser =
     [ "parse", "class_command_line_parser.html#acbc5ec7953ff31f839ca40570e3052e7", null ],
     [ "showSyntax", "class_command_line_parser.html#a2b87eb86ff854feef5a6b26958bbb37c", null ],
     [ "desc", "class_command_line_parser.html#a3d555fab2fc4cf169d4c3ca91af062a2", null ],
+    [ "pos_desc", "class_command_line_parser.html#a670b2fb53d37943a4d3f891299498c91", null ],
     [ "vm", "class_command_line_parser.html#ad00d7149ac4b3c176a81767426a7a36e", null ]
 ];

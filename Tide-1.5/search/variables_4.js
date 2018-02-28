@@ -1,4 +1,4 @@
 var searchData=
 [
-  ['position',['position',['../struct_screen_configuration.html#a675c76348004401556bd2865058998c4',1,'ScreenConfiguration']]]
+  ['fullscreen',['fullscreen',['../struct_screen.html#a6a68557cd24dbce7e1cb68534c39ed36',1,'Screen']]]
 ];

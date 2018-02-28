@@ -4,6 +4,7 @@ var class_m_p_i_channel =
     [ "MPIChannel", "class_m_p_i_channel.html#a466aa85d1bc711eca37eb73eb0101126", null ],
     [ "~MPIChannel", "class_m_p_i_channel.html#a58250252d6b686e1d11d4144b40ca951", null ],
     [ "broadcast", "class_m_p_i_channel.html#aedd7a83aa3c29703ec5c2fa878c277e9", null ],
+    [ "broadcast", "class_m_p_i_channel.html#a946e17c6102bc85aacb696ad87d8c952", null ],
     [ "gatherAll", "class_m_p_i_channel.html#a76a7f0709dcb3fc71dda271ca6a7df4a", null ],
     [ "getRank", "class_m_p_i_channel.html#ad9e9ffb350e0035706cb1e669ed6535d", null ],
     [ "getSize", "class_m_p_i_channel.html#a64a7a3cecb2a92ec2e24a0497ca4fa5a", null ],

@@ -1,5 +1,6 @@
 var searchData=
 [
+  ['read',['read',['../namespacejson.html#a17f7af4db8e0fa034595736c0dc2710c',1,'json']]],
   ['readimage',['readImage',['../class_tiff_pyramid_reader.html#a187c3d86df808c3f5c925f91a5762a0b',1,'TiffPyramidReader']]],
   ['readmetadata',['readMetadata',['../class_content.html#a6822bf4cf94ae866c561b23e62506303',1,'Content::readMetadata()'],['../class_dynamic_texture_content.html#ab74f1fd46ec931ccf9aabc767e33aa5d',1,'DynamicTextureContent::readMetadata()'],['../class_image_pyramid_content.html#a306dc9f5ea9089c6d2c48b65abe905b4',1,'ImagePyramidContent::readMetadata()'],['../class_movie_content.html#a0e86020c0ed68ed8bb8e46c8c5997131',1,'MovieContent::readMetadata()'],['../class_p_d_f_content.html#af7cf516a0351264f60c076b11c33a45d',1,'PDFContent::readMetadata()'],['../class_pixel_stream_content.html#af1fde82b270db2ed217ec6542924c3e4',1,'PixelStreamContent::readMetadata()'],['../class_s_v_g_content.html#ab1498c71f69ee1f0720fb5686bef3ecf',1,'SVGContent::readMetadata()'],['../class_texture_content.html#aac9af25e443cae0cfef848825719f56f',1,'TextureContent::readMetadata()']]],
   ['readsize',['readSize',['../class_tiff_pyramid_reader.html#a5db70eed319606338693298a76079b07',1,'TiffPyramidReader']]],
@@ -9,13 +10,13 @@ var searchData=
   ['receive',['receive',['../class_m_p_i_channel.html#acf6c03c4fb40017c5a6c5a7b84967116',1,'MPIChannel']]],
   ['receivebroadcast',['receiveBroadcast',['../class_m_p_i_channel.html#acfbacf7a49cc1ce09bac7d17f9de5bd7',1,'MPIChannel']]],
   ['receivebuffer',['ReceiveBuffer',['../class_receive_buffer.html#a2cbab0d9dd92ce024d19d8fdbad032d0',1,'ReceiveBuffer']]],
+  ['receiveconfiguration',['receiveConfiguration',['../class_wall_from_master_channel.html#ac4531ec33a0681e410ddd556966f1f56',1,'WallFromMasterChannel']]],
   ['received',['received',['../class_wall_from_master_channel.html#a8e8409718426eea6acce999bed7d094e',1,'WallFromMasterChannel::received()'],['../class_wall_from_master_channel.html#ab57f20a60ab6c83820e4344915a4f109',1,'WallFromMasterChannel::received()'],['../class_wall_from_master_channel.html#afb6a2af77cb53d4daff226e765de3338',1,'WallFromMasterChannel::received()'],['../class_wall_from_master_channel.html#aa921eea8af21f47289e24e7aa4a9a3b1',1,'WallFromMasterChannel::received()'],['../class_wall_from_master_channel.html#a0b75e7467e0bbe15efcb2c93341c3b0c',1,'WallFromMasterChannel::received()'],['../class_wall_from_master_channel.html#a32ac04eade034a8cd78c198a1b6decfd',1,'WallFromMasterChannel::received()'],['../class_wall_from_master_channel.html#a7e9d59550c96986e0f417d86ee08f053',1,'WallFromMasterChannel::received()']]],
   ['receivedquit',['receivedQuit',['../class_wall_from_master_channel.html#af64048387bb958cc6678929489337ebc',1,'WallFromMasterChannel']]],
   ['receivedrequestframe',['receivedRequestFrame',['../class_master_from_wall_channel.html#ab34184bf2068baeed81bc652149c994e',1,'MasterFromWallChannel']]],
   ['receivedscreenshot',['receivedScreenshot',['../class_master_from_wall_channel.html#ae5e3fab138528a7c89774d0be23e947d',1,'MasterFromWallChannel']]],
   ['receivedscreenshotrequest',['receivedScreenshotRequest',['../class_wall_from_master_channel.html#a49c5e352d07f230a7a26c1bb6b7fa9c2',1,'WallFromMasterChannel']]],
   ['receiveheader',['receiveHeader',['../class_m_p_i_channel.html#a9c2fa2fd32d788ddc632396580afd38f',1,'MPIChannel']]],
-  ['receivemessage',['receiveMessage',['../class_wall_from_master_channel.html#a8ee7bd69b551972aa732743a116c7c04',1,'WallFromMasterChannel']]],
   ['receivetimestampbroadcast',['receiveTimestampBroadcast',['../class_wall_to_wall_channel.html#a67047a61902842ac5e330b0474333d8d',1,'WallToWallChannel']]],
   ['registereventreceiver',['registerEventReceiver',['../class_pixel_stream_window_manager.html#a03e923c990a174beac04a7cf91672af8',1,'PixelStreamWindowManager']]],
   ['reject',['reject',['../class_background_widget.html#a46290d2cbf08a44b84533b6aacc631c5',1,'BackgroundWidget']]],
@@ -41,7 +42,7 @@ var searchData=
   ['resizearoundposition',['resizeAroundPosition',['../namespacegeometry.html#a954a0cdcba05798d7ba90fa47dcf175b',1,'geometry']]],
   ['resizerelative',['resizeRelative',['../class_content_window_controller.html#a3a20b4c22eb64fa0c094a44df766c138',1,'ContentWindowController']]],
   ['restart',['restart',['../class_inactivity_timer.html#a01e02d85e1598dd9cdb0fb39fa394c12',1,'InactivityTimer']]],
-  ['restinterface',['RestInterface',['../class_rest_interface.html#a1c2f694833aa07768e5cdd42a1100489',1,'RestInterface']]],
+  ['restinterface',['RestInterface',['../class_rest_interface.html#adaa2da8dab70ed241271bd1066579d84',1,'RestInterface']]],
   ['restoremodeandzoom',['restoreModeAndZoom',['../class_content_window.html#a3a9c63c9ee25d661dba2b64f4fa22b93',1,'ContentWindow']]],
   ['restserver',['RestServer',['../class_rest_server.html#a688fd7a30878aea6036b459cfebf657c',1,'RestServer::RestServer()'],['../class_rest_server.html#a4b44a7efc2c7580ae5ff8e0136b4fa93',1,'RestServer::RestServer(uint16_t port)']]],
   ['run',['run',['../class_process_forker.html#ad1528d488d2aa41dec482bbadb431cd3',1,'ProcessForker']]]

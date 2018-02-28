@@ -32,17 +32,17 @@
             <td></td>
             <td class="headerItem">Lines:</td>
             <td class="headerCovTableEntry">1</td>
-            <td class="headerCovTableEntry">78</td>
-            <td class="headerCovTableEntryLo">1.3 %</td>
+            <td class="headerCovTableEntry">82</td>
+            <td class="headerCovTableEntryLo">1.2 %</td>
           </tr>
           <tr>
             <td class="headerItem">Date:</td>
-            <td class="headerValue">2018-02-10 06:33:58</td>
+            <td class="headerValue">2018-02-28 06:40:09</td>
             <td></td>
             <td class="headerItem">Functions:</td>
             <td class="headerCovTableEntry">2</td>
-            <td class="headerCovTableEntry">20</td>
-            <td class="headerCovTableEntryLo">10.0 %</td>
+            <td class="headerCovTableEntry">21</td>
+            <td class="headerCovTableEntryLo">9.5 %</td>
           </tr>
           <tr><td><img src="../../glass.png" width=3 height=3 alt=""></td></tr>
         </table>
@@ -197,82 +197,89 @@
 <span class="lineNum">     135 </span><span class="lineNoCov">          0 : void MPIChannel::broadcast(const MPIMessageType type,</span>
 <span class="lineNum">     136 </span>            :                            const std::string&amp; serializedData)
 <span class="lineNum">     137 </span>            : {
-<span class="lineNum">     138 </span>            :     MPIHeader mh;
-<span class="lineNum">     139 </span><span class="lineNoCov">          0 :     mh.size = serializedData.size();</span>
-<span class="lineNum">     140 </span><span class="lineNoCov">          0 :     mh.type = type;</span>
+<span class="lineNum">     138 </span><span class="lineNoCov">          0 :     broadcast(type, QByteArray::fromRawData(serializedData.data(),</span>
+<span class="lineNum">     139 </span><span class="lineNoCov">          0 :                                             serializedData.size()));</span>
+<a name="140"><span class="lineNum">     140 </span><span class="lineNoCov">          0 : }</span></a>
 <span class="lineNum">     141 </span>            : 
-<span class="lineNum">     142 </span><span class="lineNoCov">          0 :     for (int i = 0; i &lt; _mpiSize; ++i)</span>
-<span class="lineNum">     143 </span><span class="lineNoCov">          0 :         _send(mh, i);</span>
-<span class="lineNum">     144 </span>            : 
-<span class="lineNum">     145 </span><span class="lineNoCov">          0 :     MPI_CHECK(MPI_Bcast((void*)serializedData.data(), serializedData.size(),</span>
-<span class="lineNum">     146 </span>            :                         MPI_BYTE, _mpiRank, _mpiComm));
-<a name="147"><span class="lineNum">     147 </span><span class="lineNoCov">          0 : }</span></a>
+<span class="lineNum">     142 </span><span class="lineNoCov">          0 : void MPIChannel::broadcast(const MPIMessageType type,</span>
+<span class="lineNum">     143 </span>            :                            const QByteArray&amp; serializedData)
+<span class="lineNum">     144 </span>            : {
+<span class="lineNum">     145 </span>            :     MPIHeader mh;
+<span class="lineNum">     146 </span><span class="lineNoCov">          0 :     mh.size = serializedData.size();</span>
+<span class="lineNum">     147 </span><span class="lineNoCov">          0 :     mh.type = type;</span>
 <span class="lineNum">     148 </span>            : 
-<span class="lineNum">     149 </span><span class="lineNoCov">          0 : MPIHeader MPIChannel::receiveHeader(const int src)</span>
-<span class="lineNum">     150 </span>            : {
-<span class="lineNum">     151 </span>            :     MPI_Status status;
-<span class="lineNum">     152 </span>            :     MPIHeader mh;
-<span class="lineNum">     153 </span><span class="lineNoCov">          0 :     MPI_CHECK(MPI_Recv_Nospin((void*)&amp;mh, sizeof(MPIHeader), MPI_BYTE, src, 0,</span>
-<span class="lineNum">     154 </span>            :                               _mpiComm, &amp;status));
-<span class="lineNum">     155 </span><span class="lineNoCov">          0 :     return mh;</span>
-<a name="156"><span class="lineNum">     156 </span>            : }</a>
-<span class="lineNum">     157 </span>            : 
-<span class="lineNum">     158 </span><span class="lineNoCov">          0 : ProbeResult MPIChannel::probe(const int src, const int tag)</span>
-<span class="lineNum">     159 </span>            : {
-<span class="lineNum">     160 </span>            :     MPI_Status status;
-<span class="lineNum">     161 </span><span class="lineNoCov">          0 :     MPI_CHECK(MPI_Probe_Nospin(src, tag, _mpiComm, &amp;status));</span>
-<span class="lineNum">     162 </span>            : 
-<span class="lineNum">     163 </span><span class="lineNoCov">          0 :     int count = MPI_UNDEFINED;</span>
-<span class="lineNum">     164 </span><span class="lineNoCov">          0 :     MPI_CHECK(MPI_Get_count(&amp;status, MPI_BYTE, &amp;count));</span>
-<span class="lineNum">     165 </span>            : 
-<span class="lineNum">     166 </span><span class="lineNoCov">          0 :     return ProbeResult{status.MPI_SOURCE, count,</span>
-<span class="lineNum">     167 </span><span class="lineNoCov">          0 :                        MPIMessageType(status.MPI_TAG)};</span>
-<a name="168"><span class="lineNum">     168 </span>            : }</a>
+<span class="lineNum">     149 </span><span class="lineNoCov">          0 :     for (int i = 0; i &lt; _mpiSize; ++i)</span>
+<span class="lineNum">     150 </span><span class="lineNoCov">          0 :         _send(mh, i);</span>
+<span class="lineNum">     151 </span>            : 
+<span class="lineNum">     152 </span><span class="lineNoCov">          0 :     MPI_CHECK(MPI_Bcast(const_cast&lt;char*&gt;(serializedData.constData()),</span>
+<span class="lineNum">     153 </span>            :                         serializedData.size(), MPI_BYTE, _mpiRank, _mpiComm));
+<a name="154"><span class="lineNum">     154 </span><span class="lineNoCov">          0 : }</span></a>
+<span class="lineNum">     155 </span>            : 
+<span class="lineNum">     156 </span><span class="lineNoCov">          0 : MPIHeader MPIChannel::receiveHeader(const int src)</span>
+<span class="lineNum">     157 </span>            : {
+<span class="lineNum">     158 </span>            :     MPI_Status status;
+<span class="lineNum">     159 </span>            :     MPIHeader mh;
+<span class="lineNum">     160 </span><span class="lineNoCov">          0 :     MPI_CHECK(MPI_Recv_Nospin((void*)&amp;mh, sizeof(MPIHeader), MPI_BYTE, src, 0,</span>
+<span class="lineNum">     161 </span>            :                               _mpiComm, &amp;status));
+<span class="lineNum">     162 </span><span class="lineNoCov">          0 :     return mh;</span>
+<a name="163"><span class="lineNum">     163 </span>            : }</a>
+<span class="lineNum">     164 </span>            : 
+<span class="lineNum">     165 </span><span class="lineNoCov">          0 : ProbeResult MPIChannel::probe(const int src, const int tag)</span>
+<span class="lineNum">     166 </span>            : {
+<span class="lineNum">     167 </span>            :     MPI_Status status;
+<span class="lineNum">     168 </span><span class="lineNoCov">          0 :     MPI_CHECK(MPI_Probe_Nospin(src, tag, _mpiComm, &amp;status));</span>
 <span class="lineNum">     169 </span>            : 
-<span class="lineNum">     170 </span><span class="lineNoCov">          0 : void MPIChannel::receive(char* dataBuffer, const size_t messageSize,</span>
-<span class="lineNum">     171 </span>            :                          const int src, const int tag)
-<span class="lineNum">     172 </span>            : {
-<span class="lineNum">     173 </span>            :     MPI_Status status;
-<span class="lineNum">     174 </span><span class="lineNoCov">          0 :     MPI_CHECK(MPI_Recv_Nospin((void*)dataBuffer, messageSize, MPI_BYTE, src,</span>
-<span class="lineNum">     175 </span>            :                               tag, _mpiComm, &amp;status));
+<span class="lineNum">     170 </span><span class="lineNoCov">          0 :     int count = MPI_UNDEFINED;</span>
+<span class="lineNum">     171 </span><span class="lineNoCov">          0 :     MPI_CHECK(MPI_Get_count(&amp;status, MPI_BYTE, &amp;count));</span>
+<span class="lineNum">     172 </span>            : 
+<span class="lineNum">     173 </span><span class="lineNoCov">          0 :     return ProbeResult{status.MPI_SOURCE, count,</span>
+<span class="lineNum">     174 </span><span class="lineNoCov">          0 :                        MPIMessageType(status.MPI_TAG)};</span>
+<a name="175"><span class="lineNum">     175 </span>            : }</a>
 <span class="lineNum">     176 </span>            : 
-<span class="lineNum">     177 </span>            :     // Validate the number of bytes received
-<span class="lineNum">     178 </span><span class="lineNoCov">          0 :     int count = 0;</span>
-<span class="lineNum">     179 </span><span class="lineNoCov">          0 :     MPI_CHECK(MPI_Get_count(&amp;status, MPI_BYTE, &amp;count));</span>
-<span class="lineNum">     180 </span><span class="lineNoCov">          0 :     if (count != (int)messageSize)</span>
-<span class="lineNum">     181 </span><span class="lineNoCov">          0 :         print_log(LOG_ERROR, LOG_MPI, &quot;incorrect bytes count: %d / %d&quot;, count,</span>
-<span class="lineNum">     182 </span><span class="lineNoCov">          0 :                   messageSize);</span>
-<a name="183"><span class="lineNum">     183 </span><span class="lineNoCov">          0 : }</span></a>
-<span class="lineNum">     184 </span>            : 
-<span class="lineNum">     185 </span><span class="lineNoCov">          0 : void MPIChannel::receiveBroadcast(char* dataBuffer, const size_t messageSize,</span>
-<span class="lineNum">     186 </span>            :                                   const int src)
-<span class="lineNum">     187 </span>            : {
-<span class="lineNum">     188 </span><span class="lineNoCov">          0 :     MPI_CHECK(</span>
-<span class="lineNum">     189 </span>            :         MPI_Bcast((void*)dataBuffer, messageSize, MPI_BYTE, src, _mpiComm));
+<span class="lineNum">     177 </span><span class="lineNoCov">          0 : void MPIChannel::receive(char* dataBuffer, const size_t messageSize,</span>
+<span class="lineNum">     178 </span>            :                          const int src, const int tag)
+<span class="lineNum">     179 </span>            : {
+<span class="lineNum">     180 </span>            :     MPI_Status status;
+<span class="lineNum">     181 </span><span class="lineNoCov">          0 :     MPI_CHECK(MPI_Recv_Nospin((void*)dataBuffer, messageSize, MPI_BYTE, src,</span>
+<span class="lineNum">     182 </span>            :                               tag, _mpiComm, &amp;status));
+<span class="lineNum">     183 </span>            : 
+<span class="lineNum">     184 </span>            :     // Validate the number of bytes received
+<span class="lineNum">     185 </span><span class="lineNoCov">          0 :     int count = 0;</span>
+<span class="lineNum">     186 </span><span class="lineNoCov">          0 :     MPI_CHECK(MPI_Get_count(&amp;status, MPI_BYTE, &amp;count));</span>
+<span class="lineNum">     187 </span><span class="lineNoCov">          0 :     if (count != (int)messageSize)</span>
+<span class="lineNum">     188 </span><span class="lineNoCov">          0 :         print_log(LOG_ERROR, LOG_MPI, &quot;incorrect bytes count: %d / %d&quot;, count,</span>
+<span class="lineNum">     189 </span><span class="lineNoCov">          0 :                   messageSize);</span>
 <a name="190"><span class="lineNum">     190 </span><span class="lineNoCov">          0 : }</span></a>
 <span class="lineNum">     191 </span>            : 
-<span class="lineNum">     192 </span><span class="lineNoCov">          0 : std::vector&lt;uint64_t&gt; MPIChannel::gatherAll(const uint64_t value)</span>
-<span class="lineNum">     193 </span>            : {
-<span class="lineNum">     194 </span><span class="lineNoCov">          0 :     std::vector&lt;uint64_t&gt; results(_mpiSize);</span>
-<span class="lineNum">     195 </span><span class="lineNoCov">          0 :     MPI_CHECK(MPI_Allgather((void*)&amp;value, 1, MPI_LONG_LONG_INT,</span>
-<span class="lineNum">     196 </span>            :                             (void*)results.data(), 1, MPI_LONG_LONG_INT,
-<span class="lineNum">     197 </span>            :                             _mpiComm));
-<span class="lineNum">     198 </span><span class="lineNoCov">          0 :     return results;</span>
-<a name="199"><span class="lineNum">     199 </span>            : }</a>
-<span class="lineNum">     200 </span>            : 
-<span class="lineNum">     201 </span><span class="lineNoCov">          0 : bool MPIChannel::_isValid(const int dest) const</span>
-<span class="lineNum">     202 </span>            : {
-<span class="lineNum">     203 </span><span class="lineNoCov">          0 :     return dest != _mpiRank &amp;&amp; dest &gt;= 0 &amp;&amp; dest &lt; _mpiSize;</span>
-<a name="204"><span class="lineNum">     204 </span>            : }</a>
-<span class="lineNum">     205 </span>            : 
-<span class="lineNum">     206 </span><span class="lineNoCov">          0 : void MPIChannel::_send(const MPIHeader&amp; header, const int dest)</span>
-<span class="lineNum">     207 </span>            : {
-<span class="lineNum">     208 </span><span class="lineNoCov">          0 :     if (!_isValid(dest))</span>
-<span class="lineNum">     209 </span><span class="lineNoCov">          0 :         return;</span>
-<span class="lineNum">     210 </span>            : 
-<a name="211"><span class="lineNum">     211 </span><span class="lineNoCov">          0 :     MPI_CHECK(MPI_Send_Nospin((void*)&amp;header, sizeof(MPIHeader), MPI_BYTE, dest,</span></a>
-<span class="lineNum">     212 </span>            :                               0, _mpiComm));
-<span class="lineNum">     213 </span><span class="lineCov">         96 : }</span>
+<span class="lineNum">     192 </span><span class="lineNoCov">          0 : void MPIChannel::receiveBroadcast(char* dataBuffer, const size_t messageSize,</span>
+<span class="lineNum">     193 </span>            :                                   const int src)
+<span class="lineNum">     194 </span>            : {
+<span class="lineNum">     195 </span><span class="lineNoCov">          0 :     MPI_CHECK(</span>
+<span class="lineNum">     196 </span>            :         MPI_Bcast((void*)dataBuffer, messageSize, MPI_BYTE, src, _mpiComm));
+<a name="197"><span class="lineNum">     197 </span><span class="lineNoCov">          0 : }</span></a>
+<span class="lineNum">     198 </span>            : 
+<span class="lineNum">     199 </span><span class="lineNoCov">          0 : std::vector&lt;uint64_t&gt; MPIChannel::gatherAll(const uint64_t value)</span>
+<span class="lineNum">     200 </span>            : {
+<span class="lineNum">     201 </span><span class="lineNoCov">          0 :     std::vector&lt;uint64_t&gt; results(_mpiSize);</span>
+<span class="lineNum">     202 </span><span class="lineNoCov">          0 :     MPI_CHECK(MPI_Allgather((void*)&amp;value, 1, MPI_LONG_LONG_INT,</span>
+<span class="lineNum">     203 </span>            :                             (void*)results.data(), 1, MPI_LONG_LONG_INT,
+<span class="lineNum">     204 </span>            :                             _mpiComm));
+<span class="lineNum">     205 </span><span class="lineNoCov">          0 :     return results;</span>
+<a name="206"><span class="lineNum">     206 </span>            : }</a>
+<span class="lineNum">     207 </span>            : 
+<span class="lineNum">     208 </span><span class="lineNoCov">          0 : bool MPIChannel::_isValid(const int dest) const</span>
+<span class="lineNum">     209 </span>            : {
+<span class="lineNum">     210 </span><span class="lineNoCov">          0 :     return dest != _mpiRank &amp;&amp; dest &gt;= 0 &amp;&amp; dest &lt; _mpiSize;</span>
+<a name="211"><span class="lineNum">     211 </span>            : }</a>
+<span class="lineNum">     212 </span>            : 
+<span class="lineNum">     213 </span><span class="lineNoCov">          0 : void MPIChannel::_send(const MPIHeader&amp; header, const int dest)</span>
+<span class="lineNum">     214 </span>            : {
+<span class="lineNum">     215 </span><span class="lineNoCov">          0 :     if (!_isValid(dest))</span>
+<span class="lineNum">     216 </span><span class="lineNoCov">          0 :         return;</span>
+<span class="lineNum">     217 </span>            : 
+<a name="218"><span class="lineNum">     218 </span><span class="lineNoCov">          0 :     MPI_CHECK(MPI_Send_Nospin((void*)&amp;header, sizeof(MPIHeader), MPI_BYTE, dest,</span></a>
+<span class="lineNum">     219 </span>            :                               0, _mpiComm));
+<span class="lineNum">     220 </span><span class="lineCov">         96 : }</span>
 </pre>
       </td>
     </tr>
