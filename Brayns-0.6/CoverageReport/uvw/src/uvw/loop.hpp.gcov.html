@@ -1,0 +1,450 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+
+<html lang="en">
+
+<head>
+  <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+  <title>LCOV - Brayns - uvw/src/uvw/loop.hpp</title>
+  <link rel="stylesheet" type="text/css" href="../../../gcov.css">
+</head>
+
+<body>
+
+  <table width="100%" border=0 cellspacing=0 cellpadding=0>
+    <tr><td class="title">LCOV - code coverage report</td></tr>
+    <tr><td class="ruler"><img src="../../../glass.png" width=3 height=3 alt=""></td></tr>
+
+    <tr>
+      <td width="100%">
+        <table cellpadding=1 border=0 width="100%">
+          <tr>
+            <td width="10%" class="headerItem">Current view:</td>
+            <td width="35%" class="headerValue"><a href="../../../index.html">top level</a> - <a href="index.html">uvw/src/uvw</a> - loop.hpp<span style="font-size: 80%;"> (source / <a href="loop.hpp.func-sort-c.html">functions</a>)</span></td>
+            <td width="5%"></td>
+            <td width="15%"></td>
+            <td width="10%" class="headerCovTableHead">Hit</td>
+            <td width="10%" class="headerCovTableHead">Total</td>
+            <td width="15%" class="headerCovTableHead">Coverage</td>
+          </tr>
+          <tr>
+            <td class="headerItem">Test:</td>
+            <td class="headerValue">Brayns</td>
+            <td></td>
+            <td class="headerItem">Lines:</td>
+            <td class="headerCovTableEntry">23</td>
+            <td class="headerCovTableEntry">29</td>
+            <td class="headerCovTableEntryMed">79.3 %</td>
+          </tr>
+          <tr>
+            <td class="headerItem">Date:</td>
+            <td class="headerValue">2018-03-06 01:23:59</td>
+            <td></td>
+            <td class="headerItem">Functions:</td>
+            <td class="headerCovTableEntry">9</td>
+            <td class="headerCovTableEntry">12</td>
+            <td class="headerCovTableEntryMed">75.0 %</td>
+          </tr>
+          <tr><td><img src="../../../glass.png" width=3 height=3 alt=""></td></tr>
+        </table>
+      </td>
+    </tr>
+
+    <tr><td class="ruler"><img src="../../../glass.png" width=3 height=3 alt=""></td></tr>
+  </table>
+
+  <table cellpadding=0 cellspacing=0 border=0>
+    <tr>
+      <td><br></td>
+    </tr>
+    <tr>
+      <td>
+<pre class="sourceHeading">          Line data    Source code</pre>
+<pre class="source">
+<a name="1"><span class="lineNum">       1 </span>            : #pragma once</a>
+<span class="lineNum">       2 </span>            : 
+<span class="lineNum">       3 </span>            : 
+<span class="lineNum">       4 </span>            : #include &lt;new&gt;
+<span class="lineNum">       5 </span>            : #include &lt;memory&gt;
+<span class="lineNum">       6 </span>            : #include &lt;utility&gt;
+<span class="lineNum">       7 </span>            : #include &lt;type_traits&gt;
+<span class="lineNum">       8 </span>            : #include &lt;chrono&gt;
+<span class="lineNum">       9 </span>            : #include &lt;uv.h&gt;
+<span class="lineNum">      10 </span>            : #include &quot;emitter.hpp&quot;
+<span class="lineNum">      11 </span>            : 
+<span class="lineNum">      12 </span>            : 
+<span class="lineNum">      13 </span>            : namespace uvw {
+<span class="lineNum">      14 </span>            : 
+<span class="lineNum">      15 </span>            : 
+<span class="lineNum">      16 </span>            : namespace details {
+<span class="lineNum">      17 </span>            : 
+<span class="lineNum">      18 </span>            : 
+<span class="lineNum">      19 </span>            : enum class UVLoopOption: std::underlying_type_t&lt;uv_loop_option&gt; {
+<span class="lineNum">      20 </span>            :     BLOCK_SIGNAL = UV_LOOP_BLOCK_SIGNAL
+<span class="lineNum">      21 </span>            : };
+<span class="lineNum">      22 </span>            : 
+<span class="lineNum">      23 </span>            : 
+<span class="lineNum">      24 </span>            : enum class UVRunMode: std::underlying_type_t&lt;uv_run_mode&gt; {
+<span class="lineNum">      25 </span>            :     DEFAULT = UV_RUN_DEFAULT,
+<span class="lineNum">      26 </span>            :     ONCE = UV_RUN_ONCE,
+<span class="lineNum">      27 </span>            :     NOWAIT = UV_RUN_NOWAIT
+<span class="lineNum">      28 </span>            : };
+<span class="lineNum">      29 </span>            : 
+<span class="lineNum">      30 </span>            : 
+<span class="lineNum">      31 </span>            : }
+<span class="lineNum">      32 </span>            : 
+<span class="lineNum">      33 </span>            : 
+<span class="lineNum">      34 </span>            : /**
+<span class="lineNum">      35 </span>            :  * @brief Untyped handle class
+<span class="lineNum">      36 </span>            :  *
+<span class="lineNum">      37 </span>            :  * Handles' types are unknown from the point of view of the loop.&lt;br/&gt;
+<span class="lineNum">      38 </span>            :  * Anyway, a loop maintains a list of all the associated handles and let the
+<span class="lineNum">      39 </span>            :  * users walk them as untyped instances.&lt;br/&gt;
+<a name="40"><span class="lineNum">      40 </span>            :  * This can help to end all the pending requests by closing the handles.</a>
+<span class="lineNum">      41 </span>            :  */
+<span class="lineNum">      42 </span><span class="lineNoCov">          0 : class BaseHandle {</span>
+<span class="lineNum">      43 </span>            : public:
+<span class="lineNum">      44 </span>            :     /**
+<span class="lineNum">      45 </span>            :      * @brief Checks if the handle is active.
+<span class="lineNum">      46 </span>            :      *
+<span class="lineNum">      47 </span>            :      * What _active_ means depends on the type of handle:
+<span class="lineNum">      48 </span>            :      *
+<span class="lineNum">      49 </span>            :      * * An AsyncHandle handle is always active and cannot be deactivated,
+<span class="lineNum">      50 </span>            :      * except by closing it with uv_close().
+<span class="lineNum">      51 </span>            :      * * A PipeHandle, TcpHandle, UDPHandle, etc. handle - basically any handle
+<span class="lineNum">      52 </span>            :      * that deals with I/O - is active when it is doing something that involves
+<span class="lineNum">      53 </span>            :      * I/O, like reading, writing, connecting, accepting new connections, etc.
+<span class="lineNum">      54 </span>            :      * * A CheckHandle, IdleHandle, TimerHandle, etc. handle is active when it
+<span class="lineNum">      55 </span>            :      * has been started with a call to `start()`.
+<span class="lineNum">      56 </span>            :      *
+<span class="lineNum">      57 </span>            :      * Rule of thumb: if a handle of type `FooHandle` has a `start()` member
+<span class="lineNum">      58 </span>            :      * method, then it’s active from the moment that method is called. Likewise,
+<span class="lineNum">      59 </span>            :      * `stop()` deactivates the handle again.
+<span class="lineNum">      60 </span>            :      *
+<span class="lineNum">      61 </span>            :      * @return True if the handle is active, false otherwise.
+<span class="lineNum">      62 </span>            :      */
+<span class="lineNum">      63 </span>            :     virtual bool active() const noexcept = 0;
+<span class="lineNum">      64 </span>            : 
+<span class="lineNum">      65 </span>            :     /**
+<span class="lineNum">      66 </span>            :      * @brief Checks if a handle is closing or closed.
+<span class="lineNum">      67 </span>            :      *
+<span class="lineNum">      68 </span>            :      * This function should only be used between the initialization of the
+<span class="lineNum">      69 </span>            :      * handle and the arrival of the close callback.
+<span class="lineNum">      70 </span>            :      *
+<span class="lineNum">      71 </span>            :      * @return True if the handle is closing or closed, false otherwise.
+<span class="lineNum">      72 </span>            :      */
+<span class="lineNum">      73 </span>            :     virtual bool closing() const noexcept = 0;
+<span class="lineNum">      74 </span>            : 
+<span class="lineNum">      75 </span>            :     /**
+<span class="lineNum">      76 </span>            :      * @brief Reference the given handle.
+<span class="lineNum">      77 </span>            :      *
+<span class="lineNum">      78 </span>            :      * References are idempotent, that is, if a handle is already referenced
+<span class="lineNum">      79 </span>            :      * calling this function again will have no effect.
+<span class="lineNum">      80 </span>            :      */
+<span class="lineNum">      81 </span>            :     virtual void reference() noexcept = 0;
+<span class="lineNum">      82 </span>            : 
+<span class="lineNum">      83 </span>            :     /**
+<span class="lineNum">      84 </span>            :      * @brief Unreference the given handle.
+<span class="lineNum">      85 </span>            :      *
+<span class="lineNum">      86 </span>            :      * References are idempotent, that is, if a handle is not referenced calling
+<span class="lineNum">      87 </span>            :      * this function again will have no effect.
+<span class="lineNum">      88 </span>            :      */
+<span class="lineNum">      89 </span>            :     virtual void unreference() noexcept = 0;
+<span class="lineNum">      90 </span>            : 
+<span class="lineNum">      91 </span>            :     /**
+<span class="lineNum">      92 </span>            :      * @brief Checks if the given handle referenced.
+<span class="lineNum">      93 </span>            :      * @return True if the handle referenced, false otherwise.
+<span class="lineNum">      94 </span>            :      */
+<span class="lineNum">      95 </span>            :     virtual bool referenced() const noexcept = 0;
+<span class="lineNum">      96 </span>            : 
+<span class="lineNum">      97 </span>            :     /**
+<span class="lineNum">      98 </span>            :      * @brief Request handle to be closed.
+<span class="lineNum">      99 </span>            :      *
+<span class="lineNum">     100 </span>            :      * This **must** be called on each handle before memory is released.&lt;br/&gt;
+<span class="lineNum">     101 </span>            :      * In-progress requests are cancelled and this can result in an ErrorEvent
+<span class="lineNum">     102 </span>            :      * emitted.
+<span class="lineNum">     103 </span>            :      */
+<span class="lineNum">     104 </span>            :     virtual void close() noexcept = 0;
+<span class="lineNum">     105 </span>            : };
+<span class="lineNum">     106 </span>            : 
+<span class="lineNum">     107 </span>            : 
+<span class="lineNum">     108 </span>            : /**
+<span class="lineNum">     109 </span>            :  * @brief The Loop class.
+<span class="lineNum">     110 </span>            :  *
+<span class="lineNum">     111 </span>            :  * The event loop is the central part of `uvw`'s functionalities, as well as
+<span class="lineNum">     112 </span>            :  * libuv's ones.&lt;br/&gt;
+<span class="lineNum">     113 </span>            :  * It takes care of polling for I/O and scheduling callbacks to be run based on
+<span class="lineNum">     114 </span>            :  * different sources of events.
+<span class="lineNum">     115 </span>            :  */
+<span class="lineNum">     116 </span>            : class Loop final: public Emitter&lt;Loop&gt;, public std::enable_shared_from_this&lt;Loop&gt; {
+<span class="lineNum">     117 </span>            :     using Deleter = void(*)(uv_loop_t *);
+<span class="lineNum">     118 </span>            : 
+<span class="lineNum">     119 </span>            :     template&lt;typename, typename&gt;
+<a name="120"><span class="lineNum">     120 </span>            :     friend class Resource;</a>
+<span class="lineNum">     121 </span>            : 
+<span class="lineNum">     122 </span><span class="lineCov">          1 :     Loop(std::unique_ptr&lt;uv_loop_t, Deleter&gt; ptr) noexcept</span>
+<span class="lineNum">     123 </span><span class="lineCov">          1 :         : loop{std::move(ptr)}</span>
+<span class="lineNum">     124 </span><span class="lineCov">          1 :     { }</span>
+<span class="lineNum">     125 </span>            : 
+<span class="lineNum">     126 </span>            : public:
+<span class="lineNum">     127 </span>            :     using Time = std::chrono::milliseconds;
+<span class="lineNum">     128 </span>            :     using Configure = details::UVLoopOption;
+<span class="lineNum">     129 </span>            :     using Mode = details::UVRunMode;
+<span class="lineNum">     130 </span>            : 
+<span class="lineNum">     131 </span>            :     /**
+<span class="lineNum">     132 </span>            :      * @brief Initializes a new Loop instance.
+<span class="lineNum">     133 </span>            :      * @return A pointer to the newly created loop.
+<span class="lineNum">     134 </span>            :      */
+<span class="lineNum">     135 </span>            :     static std::shared_ptr&lt;Loop&gt; create() {
+<span class="lineNum">     136 </span>            :         auto ptr = std::unique_ptr&lt;uv_loop_t, Deleter&gt;{new uv_loop_t, [](uv_loop_t *l){ delete l; }};
+<span class="lineNum">     137 </span>            :         auto loop = std::shared_ptr&lt;Loop&gt;(new Loop{std::move(ptr)});
+<span class="lineNum">     138 </span>            : 
+<span class="lineNum">     139 </span>            :         if(uv_loop_init(loop-&gt;loop.get())) {
+<span class="lineNum">     140 </span>            :             loop = nullptr;
+<span class="lineNum">     141 </span>            :         }
+<span class="lineNum">     142 </span>            : 
+<span class="lineNum">     143 </span>            :         return loop;
+<span class="lineNum">     144 </span>            :     }
+<span class="lineNum">     145 </span>            : 
+<span class="lineNum">     146 </span>            :     /**
+<span class="lineNum">     147 </span>            :      * @brief Gets the initialized default loop.
+<span class="lineNum">     148 </span>            :      *
+<span class="lineNum">     149 </span>            :      * It may return an empty pointer in case of failure.&lt;br&gt;
+<span class="lineNum">     150 </span>            :      * This function is just a convenient way for having a global loop
+<span class="lineNum">     151 </span>            :      * throughout an application, the default loop is in no way different than
+<span class="lineNum">     152 </span>            :      * the ones initialized with `create()`.&lt;br&gt;
+<span class="lineNum">     153 </span>            :      * As such, the default loop can be closed with `close()` so the resources
+<span class="lineNum">     154 </span>            :      * associated with it are freed (even if it is not strictly necessary).
+<span class="lineNum">     155 </span>            :      *
+<a name="156"><span class="lineNum">     156 </span>            :      * @return The initialized default loop.</a>
+<span class="lineNum">     157 </span>            :      */
+<span class="lineNum">     158 </span><span class="lineCov">          1 :     static std::shared_ptr&lt;Loop&gt; getDefault() {</span>
+<span class="lineNum">     159 </span><span class="lineCov">          1 :         static std::weak_ptr&lt;Loop&gt; ref;</span>
+<span class="lineNum">     160 </span><span class="lineCov">          1 :         std::shared_ptr&lt;Loop&gt; loop;</span>
+<span class="lineNum">     161 </span>            : 
+<span class="lineNum">     162 </span><span class="lineCov">          1 :         if(ref.expired()) {</span>
+<span class="lineNum">     163 </span><span class="lineCov">          1 :             auto def = uv_default_loop();</span>
+<a name="164"><span class="lineNum">     164 </span>            : </a>
+<span class="lineNum">     165 </span><span class="lineCov">          1 :             if(def) {</span>
+<span class="lineNum">     166 </span><span class="lineCov">          5 :                 auto ptr = std::unique_ptr&lt;uv_loop_t, Deleter&gt;(def, [](uv_loop_t *){ });</span>
+<span class="lineNum">     167 </span><span class="lineCov">          1 :                 loop = std::shared_ptr&lt;Loop&gt;(new Loop{std::move(ptr)});</span>
+<span class="lineNum">     168 </span>            :             }
+<span class="lineNum">     169 </span>            : 
+<span class="lineNum">     170 </span><span class="lineCov">          1 :             ref = loop;</span>
+<span class="lineNum">     171 </span>            :         } else {
+<span class="lineNum">     172 </span><span class="lineNoCov">          0 :             loop = ref.lock();</span>
+<span class="lineNum">     173 </span>            :         }
+<span class="lineNum">     174 </span>            : 
+<span class="lineNum">     175 </span><span class="lineCov">          1 :         return loop;</span>
+<span class="lineNum">     176 </span>            :     }
+<span class="lineNum">     177 </span>            : 
+<span class="lineNum">     178 </span>            :     Loop(const Loop &amp;) = delete;
+<span class="lineNum">     179 </span>            :     Loop(Loop &amp;&amp;other) = delete;
+<span class="lineNum">     180 </span>            :     Loop&amp; operator=(const Loop &amp;) = delete;
+<a name="181"><span class="lineNum">     181 </span>            :     Loop&amp; operator=(Loop &amp;&amp;other) = delete;</a>
+<span class="lineNum">     182 </span>            : 
+<span class="lineNum">     183 </span><span class="lineCov">          3 :     ~Loop() noexcept {</span>
+<span class="lineNum">     184 </span><span class="lineCov">          1 :         if(loop) {</span>
+<span class="lineNum">     185 </span><span class="lineCov">          1 :             close();</span>
+<span class="lineNum">     186 </span>            :         }
+<span class="lineNum">     187 </span><span class="lineCov">          2 :     }</span>
+<span class="lineNum">     188 </span>            : 
+<span class="lineNum">     189 </span>            :     /**
+<span class="lineNum">     190 </span>            :      * @brief Sets additional loop options.
+<span class="lineNum">     191 </span>            :      *
+<span class="lineNum">     192 </span>            :      * You should normally call this before the first call to uv_run() unless
+<span class="lineNum">     193 </span>            :      * mentioned otherwise.&lt;br/&gt;
+<span class="lineNum">     194 </span>            :      * Supported options:
+<span class="lineNum">     195 </span>            :      *
+<span class="lineNum">     196 </span>            :      * * `Loop::Configure::BLOCK_SIGNAL`: Block a signal when polling for new
+<span class="lineNum">     197 </span>            :      * events. A second argument is required and it is the signal number.
+<span class="lineNum">     198 </span>            :      *
+<span class="lineNum">     199 </span>            :      * An ErrorEvent will be emitted in case of errors.
+<span class="lineNum">     200 </span>            :      *
+<span class="lineNum">     201 </span>            :      * See the official
+<span class="lineNum">     202 </span>            :      * [documentation](http://docs.libuv.org/en/v1.x/loop.html#c.uv_loop_configure)
+<span class="lineNum">     203 </span>            :      * for further details.
+<span class="lineNum">     204 </span>            :      */
+<span class="lineNum">     205 </span>            :     template&lt;typename... Args&gt;
+<span class="lineNum">     206 </span>            :     void configure(Configure flag, Args... args) {
+<span class="lineNum">     207 </span>            :         auto err = uv_loop_configure(loop.get(), static_cast&lt;std::underlying_type_t&lt;Configure&gt;&gt;(flag), std::forward&lt;Args&gt;(args)...);
+<span class="lineNum">     208 </span>            :         if(err) { publish(ErrorEvent{err}); }
+<span class="lineNum">     209 </span>            :     }
+<span class="lineNum">     210 </span>            : 
+<span class="lineNum">     211 </span>            :     /**
+<span class="lineNum">     212 </span>            :      * @brief Creates resources of handles' types.
+<span class="lineNum">     213 </span>            :      *
+<span class="lineNum">     214 </span>            :      * This should be used as a default method to create resources.&lt;br/&gt;
+<span class="lineNum">     215 </span>            :      * The arguments are the ones required for the specific resource.
+<span class="lineNum">     216 </span>            :      *
+<span class="lineNum">     217 </span>            :      * Use it as `loop-&gt;resource&lt;uvw::TimerHandle&gt;()`.
+<span class="lineNum">     218 </span>            :      *
+<span class="lineNum">     219 </span>            :      * @return A pointer to the newly created resource.
+<span class="lineNum">     220 </span>            :      */
+<a name="221"><span class="lineNum">     221 </span>            :     template&lt;typename R, typename... Args&gt;</a>
+<span class="lineNum">     222 </span>            :     std::enable_if_t&lt;std::is_base_of&lt;BaseHandle, R&gt;::value, std::shared_ptr&lt;R&gt;&gt;
+<span class="lineNum">     223 </span><span class="lineNoCov">          0 :     resource(Args&amp;&amp;... args) {</span>
+<span class="lineNum">     224 </span><span class="lineNoCov">          0 :         auto ptr = R::create(shared_from_this(), std::forward&lt;Args&gt;(args)...);</span>
+<span class="lineNum">     225 </span><span class="lineNoCov">          0 :         ptr = ptr-&gt;init() ? ptr : nullptr;</span>
+<span class="lineNum">     226 </span><span class="lineNoCov">          0 :         return ptr;</span>
+<span class="lineNum">     227 </span>            :     }
+<span class="lineNum">     228 </span>            : 
+<span class="lineNum">     229 </span>            :     /**
+<span class="lineNum">     230 </span>            :      * @brief Creates resources of types other than handles' ones.
+<span class="lineNum">     231 </span>            :      *
+<span class="lineNum">     232 </span>            :      * This should be used as a default method to create resources.&lt;br/&gt;
+<span class="lineNum">     233 </span>            :      * The arguments are the ones required for the specific resource.
+<span class="lineNum">     234 </span>            :      *
+<span class="lineNum">     235 </span>            :      * Use it as `loop-&gt;resource&lt;uvw::WorkReq&gt;()`.
+<span class="lineNum">     236 </span>            :      *
+<span class="lineNum">     237 </span>            :      * @return A pointer to the newly created resource.
+<span class="lineNum">     238 </span>            :      */
+<span class="lineNum">     239 </span>            :     template&lt;typename R, typename... Args&gt;
+<span class="lineNum">     240 </span>            :     std::enable_if_t&lt;not std::is_base_of&lt;BaseHandle, R&gt;::value, std::shared_ptr&lt;R&gt;&gt;
+<span class="lineNum">     241 </span>            :     resource(Args&amp;&amp;... args) {
+<span class="lineNum">     242 </span>            :         return R::create(shared_from_this(), std::forward&lt;Args&gt;(args)...);
+<span class="lineNum">     243 </span>            :     }
+<span class="lineNum">     244 </span>            : 
+<span class="lineNum">     245 </span>            :     /**
+<span class="lineNum">     246 </span>            :      * @brief Releases all internal loop resources.
+<span class="lineNum">     247 </span>            :      *
+<span class="lineNum">     248 </span>            :      * Call this function only when the loop has finished executing and all open
+<span class="lineNum">     249 </span>            :      * handles and requests have been closed, or the loop will emit an error.
+<span class="lineNum">     250 </span>            :      *
+<a name="251"><span class="lineNum">     251 </span>            :      * An ErrorEvent will be emitted in case of errors.</a>
+<span class="lineNum">     252 </span>            :      */
+<span class="lineNum">     253 </span><span class="lineCov">          1 :     void close() {</span>
+<span class="lineNum">     254 </span><span class="lineCov">          1 :         auto err = uv_loop_close(loop.get());</span>
+<span class="lineNum">     255 </span><span class="lineCov">          1 :         if(err) { publish(ErrorEvent{err}); }</span>
+<span class="lineNum">     256 </span><span class="lineCov">          1 :     }</span>
+<span class="lineNum">     257 </span>            : 
+<span class="lineNum">     258 </span>            :     /**
+<span class="lineNum">     259 </span>            :      * @brief Runs the event loop.
+<span class="lineNum">     260 </span>            :      *
+<span class="lineNum">     261 </span>            :      * Available modes are:
+<span class="lineNum">     262 </span>            :      *
+<span class="lineNum">     263 </span>            :      * * `Loop::Mode::DEFAULT`: Runs the event loop until there are no more
+<span class="lineNum">     264 </span>            :      * active and referenced handles or requests.
+<span class="lineNum">     265 </span>            :      * * `Loop::Mode::ONCE`: Poll for i/o once. Note that this function blocks
+<span class="lineNum">     266 </span>            :      * if there are no pending callbacks.
+<span class="lineNum">     267 </span>            :      * * `Loop::Mode::NOWAIT`: Poll for i/o once but don’t block if there are no
+<span class="lineNum">     268 </span>            :      * pending callbacks.
+<span class="lineNum">     269 </span>            :      *
+<span class="lineNum">     270 </span>            :      * See the official
+<span class="lineNum">     271 </span>            :      * [documentation](http://docs.libuv.org/en/v1.x/loop.html#c.uv_run)
+<span class="lineNum">     272 </span>            :      * for further details.
+<span class="lineNum">     273 </span>            :      *
+<span class="lineNum">     274 </span>            :      * @return True when done, false in all other cases.
+<span class="lineNum">     275 </span>            :      */
+<span class="lineNum">     276 </span>            :     template&lt;Mode mode = Mode::DEFAULT&gt;
+<span class="lineNum">     277 </span>            :     bool run() noexcept {
+<span class="lineNum">     278 </span>            :         auto utm = static_cast&lt;std::underlying_type_t&lt;Mode&gt;&gt;(mode);
+<span class="lineNum">     279 </span>            :         auto uvrm = static_cast&lt;uv_run_mode&gt;(utm);
+<span class="lineNum">     280 </span>            :         return (uv_run(loop.get(), uvrm) == 0);
+<span class="lineNum">     281 </span>            :     }
+<span class="lineNum">     282 </span>            : 
+<span class="lineNum">     283 </span>            :     /**
+<span class="lineNum">     284 </span>            :      * @brief Checks if there are active resources.
+<a name="285"><span class="lineNum">     285 </span>            :      * @return True if there are active resources in the loop.</a>
+<span class="lineNum">     286 </span>            :      */
+<span class="lineNum">     287 </span><span class="lineCov">          1 :     bool alive() const noexcept {</span>
+<span class="lineNum">     288 </span><span class="lineCov">          1 :         return !(uv_loop_alive(loop.get()) == 0);</span>
+<span class="lineNum">     289 </span>            :     }
+<span class="lineNum">     290 </span>            : 
+<span class="lineNum">     291 </span>            :     /**
+<span class="lineNum">     292 </span>            :      * @brief Stops the event loop.
+<span class="lineNum">     293 </span>            :      *
+<span class="lineNum">     294 </span>            :      * It causes `run()` to end as soon as possible.&lt;br/&gt;
+<span class="lineNum">     295 </span>            :      * This will happen not sooner than the next loop iteration.&lt;br/&gt;
+<span class="lineNum">     296 </span>            :      * If this function was called before blocking for I/O, the loop won’t block
+<span class="lineNum">     297 </span>            :      * for I/O on this iteration.
+<span class="lineNum">     298 </span>            :      */
+<span class="lineNum">     299 </span>            :     void stop() noexcept {
+<span class="lineNum">     300 </span>            :         uv_stop(loop.get());
+<span class="lineNum">     301 </span>            :     }
+<span class="lineNum">     302 </span>            : 
+<span class="lineNum">     303 </span>            :     /**
+<span class="lineNum">     304 </span>            :      * @brief Get backend file descriptor.
+<span class="lineNum">     305 </span>            :      *
+<span class="lineNum">     306 </span>            :      * Only kqueue, epoll and event ports are supported.&lt;br/&gt;
+<span class="lineNum">     307 </span>            :      * This can be used in conjunction with `run&lt;Loop::Mode::NOWAIT&gt;()` to poll
+<span class="lineNum">     308 </span>            :      * in one thread and run the event loop’s callbacks in another.
+<span class="lineNum">     309 </span>            :      *
+<span class="lineNum">     310 </span>            :      * @return The backend file descriptor.
+<span class="lineNum">     311 </span>            :      */
+<span class="lineNum">     312 </span>            :     int descriptor() const noexcept {
+<span class="lineNum">     313 </span>            :         return uv_backend_fd(loop.get());
+<span class="lineNum">     314 </span>            :     }
+<span class="lineNum">     315 </span>            : 
+<span class="lineNum">     316 </span>            :     /**
+<span class="lineNum">     317 </span>            :      * @brief Gets the poll timeout.
+<span class="lineNum">     318 </span>            :      * @return The return value is in milliseconds, or -1 for no timeout.
+<span class="lineNum">     319 </span>            :      */
+<span class="lineNum">     320 </span>            :     Time timeout() const noexcept {
+<span class="lineNum">     321 </span>            :         return Time{uv_backend_timeout(loop.get())};
+<span class="lineNum">     322 </span>            :     }
+<span class="lineNum">     323 </span>            : 
+<span class="lineNum">     324 </span>            :     /**
+<span class="lineNum">     325 </span>            :      * @brief Returns the current timestamp in milliseconds.
+<span class="lineNum">     326 </span>            :      *
+<span class="lineNum">     327 </span>            :      * The timestamp is cached at the start of the event loop tick.&lt;br/&gt;
+<span class="lineNum">     328 </span>            :      * The timestamp increases monotonically from some arbitrary point in
+<span class="lineNum">     329 </span>            :      * time.&lt;br/&gt;
+<span class="lineNum">     330 </span>            :      * Don’t make assumptions about the starting point, you will only get
+<span class="lineNum">     331 </span>            :      * disappointed.
+<span class="lineNum">     332 </span>            :      *
+<span class="lineNum">     333 </span>            :      * @return The current timestamp in milliseconds.
+<span class="lineNum">     334 </span>            :      */
+<span class="lineNum">     335 </span>            :     Time now() const noexcept {
+<span class="lineNum">     336 </span>            :         return Time{uv_now(loop.get())};
+<span class="lineNum">     337 </span>            :     }
+<span class="lineNum">     338 </span>            : 
+<span class="lineNum">     339 </span>            :     /**
+<span class="lineNum">     340 </span>            :      * @brief Updates the event loop’s concept of _now_.
+<span class="lineNum">     341 </span>            :      *
+<span class="lineNum">     342 </span>            :      * The current time is cached at the start of the event loop tick in order
+<span class="lineNum">     343 </span>            :      * to reduce the number of time-related system calls.&lt;br/&gt;
+<span class="lineNum">     344 </span>            :      * You won’t normally need to call this function unless you have callbacks
+<span class="lineNum">     345 </span>            :      * that block the event loop for longer periods of time, where _longer_ is
+<span class="lineNum">     346 </span>            :      * somewhat subjective but probably on the order of a millisecond or more.
+<span class="lineNum">     347 </span>            :      */
+<span class="lineNum">     348 </span>            :     void update() const noexcept {
+<span class="lineNum">     349 </span>            :         return uv_update_time(loop.get());
+<span class="lineNum">     350 </span>            :     }
+<span class="lineNum">     351 </span>            : 
+<span class="lineNum">     352 </span>            :     /**
+<span class="lineNum">     353 </span>            :      * @brief Walks the list of handles.
+<span class="lineNum">     354 </span>            :      *
+<span class="lineNum">     355 </span>            :      * The callback will be executed once for each handle that is still active.
+<span class="lineNum">     356 </span>            :      *
+<span class="lineNum">     357 </span>            :      * @param callback A function to be invoked once for each active handle.
+<span class="lineNum">     358 </span>            :      */
+<span class="lineNum">     359 </span>            :     void walk(std::function&lt;void(BaseHandle &amp;)&gt; callback) {
+<span class="lineNum">     360 </span>            :         // remember: non-capturing lambdas decay to pointers to functions
+<span class="lineNum">     361 </span>            :         uv_walk(loop.get(), [](uv_handle_t *handle, void *func) {
+<span class="lineNum">     362 </span>            :             BaseHandle &amp;ref = *static_cast&lt;BaseHandle*&gt;(handle-&gt;data);
+<span class="lineNum">     363 </span>            :             std::function&lt;void(BaseHandle &amp;)&gt; &amp;f =
+<span class="lineNum">     364 </span>            :                     *static_cast&lt;std::function&lt;void(BaseHandle &amp;)&gt;*&gt;(func);
+<span class="lineNum">     365 </span>            :             f(ref);
+<span class="lineNum">     366 </span>            :         }, &amp;callback);
+<span class="lineNum">     367 </span>            :     }
+<span class="lineNum">     368 </span>            : 
+<span class="lineNum">     369 </span>            : private:
+<span class="lineNum">     370 </span>            :     std::unique_ptr&lt;uv_loop_t, Deleter&gt; loop;
+<span class="lineNum">     371 </span>            : };
+<span class="lineNum">     372 </span>            : 
+<span class="lineNum">     373 </span>            : 
+<span class="lineNum">     374 </span>            : }
+</pre>
+      </td>
+    </tr>
+  </table>
+  <br>
+
+  <table width="100%" border=0 cellspacing=0 cellpadding=0>
+    <tr><td class="ruler"><img src="../../../glass.png" width=3 height=3 alt=""></td></tr>
+    <tr><td class="versionInfo">Generated by: <a href="http://ltp.sourceforge.net/coverage/lcov.php" target="_parent">LCOV version 1.11</a></td></tr>
+  </table>
+  <br>
+
+</body>
+</html>
