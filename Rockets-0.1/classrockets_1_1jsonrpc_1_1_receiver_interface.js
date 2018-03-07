@@ -9,6 +9,7 @@ var classrockets_1_1jsonrpc_1_1_receiver_interface =
     [ "bind", "classrockets_1_1jsonrpc_1_1_receiver_interface.html#a30376a41e10f0e6705297b16bc654330", null ],
     [ "bind", "classrockets_1_1jsonrpc_1_1_receiver_interface.html#a82e138de01979c77ffc3ba4626c7fda5", null ],
     [ "bind", "classrockets_1_1jsonrpc_1_1_receiver_interface.html#af6f6351bca316864d86352c444fd8498", null ],
+    [ "bind", "classrockets_1_1jsonrpc_1_1_receiver_interface.html#a995713b8c8cb8847b061c176f0a656e1", null ],
     [ "bindAsync", "classrockets_1_1jsonrpc_1_1_receiver_interface.html#a1e857a31163b60733d3713e73d1b7167", null ],
     [ "bindAsync", "classrockets_1_1jsonrpc_1_1_receiver_interface.html#a2138db746a07368daa656ad79b65791d", null ],
     [ "connect", "classrockets_1_1jsonrpc_1_1_receiver_interface.html#a5269af67131664a8eb9984d02f2a43fa", null ],
