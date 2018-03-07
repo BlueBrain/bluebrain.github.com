@@ -2,6 +2,7 @@ var classbrayns_1_1_brayns =
 [
     [ "Brayns", "classbrayns_1_1_brayns.html#ab1202cd9f6bcc02bd8f25f9d269be53d", null ],
     [ "~Brayns", "classbrayns_1_1_brayns.html#a18c0a0230019be4422beade2667bd6eb", null ],
+    [ "addPlugin", "classbrayns_1_1_brayns.html#aec27137d924e7ef09e0726a6b1ef9576", null ],
     [ "buildScene", "classbrayns_1_1_brayns.html#afefbd02f955a375c53140e3d2e6a6909", null ],
     [ "createPlugins", "classbrayns_1_1_brayns.html#a2b55eb5130c66d4d6acc17ffd76fba9a", null ],
     [ "getCameraManipulator", "classbrayns_1_1_brayns.html#a86278a6f267a457c0473e85cef65c54f", null ],

@@ -8,6 +8,7 @@ var searchData=
   ['addcylinder',['addCylinder',['../classbrayns_1_1_scene.html#aa7a0617795488224f9338415213735be',1,'brayns::Scene']]],
   ['addlight',['addLight',['../classbrayns_1_1_scene.html#a7d89afe05548c882153522a0a4f751ac',1,'brayns::Scene']]],
   ['addmaterial',['addMaterial',['../classbrayns_1_1_scene.html#a30bab743dc7c7724396c343941d371be',1,'brayns::Scene']]],
+  ['addplugin',['addPlugin',['../classbrayns_1_1_brayns.html#aec27137d924e7ef09e0726a6b1ef9576',1,'brayns::Brayns']]],
   ['addsphere',['addSphere',['../classbrayns_1_1_scene.html#aec55b2d2b349716ca137ab77ca774e8c',1,'brayns::Scene']]],
   ['attachsimulationtocachefile',['attachSimulationToCacheFile',['../classbrayns_1_1_abstract_simulation_handler.html#afbda00e17fa6bd162a4263f89a55c379',1,'brayns::AbstractSimulationHandler']]],
   ['attachvolumetofile',['attachVolumeToFile',['../classbrayns_1_1_volume_handler.html#a66fb70e7039ace4fde9250bc92afaead',1,'brayns::VolumeHandler']]]

@@ -30,6 +30,9 @@ var hierarchy =
     [ "brayns::AbstractSimulationHandler", "classbrayns_1_1_abstract_simulation_handler.html", [
       [ "brayns::SpikeSimulationHandler", "classbrayns_1_1_spike_simulation_handler.html", null ]
     ] ],
+    [ "brayns::ActionInterface", "classbrayns_1_1_action_interface.html", [
+      [ "brayns::RocketsPlugin", "classbrayns_1_1_rockets_plugin.html", null ]
+    ] ],
     [ "brayns::BaseWindow", "classbrayns_1_1_base_window.html", null ],
     [ "brayns::Brayns", "classbrayns_1_1_brayns.html", null ],
     [ "brayns::CADiffusionSimulationHandler", "classbrayns_1_1_c_a_diffusion_simulation_handler.html", null ],

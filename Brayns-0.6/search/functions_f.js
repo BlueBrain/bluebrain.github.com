@@ -43,7 +43,7 @@ var searchData=
   ['setprogresscallback',['setProgressCallback',['../classbrayns_1_1_progress_reporter.html#a55d3d776aa2cd6612ab8bfc97453a141',1,'brayns::ProgressReporter']]],
   ['setradiuscorrection',['setRadiusCorrection',['../classbrayns_1_1_geometry_parameters.html#a6bbfa8e688f9395347b8d3d535b93834',1,'brayns::GeometryParameters']]],
   ['setradiusmultiplier',['setRadiusMultiplier',['../classbrayns_1_1_geometry_parameters.html#a39e145c39048b4ae3c8be29999bb89a4',1,'brayns::GeometryParameters']]],
-  ['setsamplesperray',['setSamplesPerRay',['../classbrayns_1_1_volume_parameters.html#ae8eb99f1718e213b31a051ad8864d677',1,'brayns::VolumeParameters']]],
+  ['setsamplesperray',['setSamplesPerRay',['../classbrayns_1_1_rendering_parameters.html#a09b4edd3e71bf1b6f39dc00212ef91b3',1,'brayns::RenderingParameters']]],
   ['setsimulationhandler',['setSimulationHandler',['../classbrayns_1_1_scene.html#a0ebde9602b22c831f46ca3fa07db6795',1,'brayns::Scene']]],
   ['setsphere',['setSphere',['../classbrayns_1_1_scene.html#a8407cc2084455780ce0bcebc1130f336',1,'brayns::Scene']]],
   ['setspheresdirty',['setSpheresDirty',['../classbrayns_1_1_scene.html#aee00cb9bde9c26e3d38b6b14dd2421e1',1,'brayns::Scene']]],

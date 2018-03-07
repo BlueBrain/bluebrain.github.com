@@ -24,6 +24,7 @@ var classbrayns_1_1_rendering_parameters =
     [ "getRendererAsString", "classbrayns_1_1_rendering_parameters.html#a5bec7f121f568bbe48a1611e30a2a4c7", null ],
     [ "getRenderers", "classbrayns_1_1_rendering_parameters.html#a4c01720746de6ba46178db830d24e1d1", null ],
     [ "getSamplesPerPixel", "classbrayns_1_1_rendering_parameters.html#abcf9f98c39218db3f8c95b6aa7df3b6c", null ],
+    [ "getSamplesPerRay", "classbrayns_1_1_rendering_parameters.html#a38ff3ba9de93f1b21417a2618d13d3b1", null ],
     [ "getShading", "classbrayns_1_1_rendering_parameters.html#a0dcd0049807d927c1c68ab78da95c228", null ],
     [ "getShadingAsString", "classbrayns_1_1_rendering_parameters.html#aa02f97626b64f98bed6256081b3170e8", null ],
     [ "getShadows", "classbrayns_1_1_rendering_parameters.html#ade7ee7e3226529b435fa3ffefd46c7e7", null ],
@@ -47,6 +48,7 @@ var classbrayns_1_1_rendering_parameters =
     [ "setMaxAccumFrames", "classbrayns_1_1_rendering_parameters.html#a98779393dd60f8ed99638cdb049a1f9a", null ],
     [ "setRenderer", "classbrayns_1_1_rendering_parameters.html#a1114adb56a4fd5f4a6264d321771c78f", null ],
     [ "setSamplesPerPixel", "classbrayns_1_1_rendering_parameters.html#ad1413c394106bb03e1d6be85b450dc7f", null ],
+    [ "setSamplesPerRay", "classbrayns_1_1_rendering_parameters.html#a09b4edd3e71bf1b6f39dc00212ef91b3", null ],
     [ "setShading", "classbrayns_1_1_rendering_parameters.html#a33b0fbe0cc1dc508517e0cc2f4f45eab", null ],
     [ "setShadows", "classbrayns_1_1_rendering_parameters.html#a596e6a22009973fc6f7833cdeaf6fd78", null ],
     [ "setSoftShadows", "classbrayns_1_1_rendering_parameters.html#a7c35f5049e32faf0958b46a77a3cdc5b", null ],
@@ -75,5 +77,6 @@ var classbrayns_1_1_rendering_parameters =
     [ "_shadows", "classbrayns_1_1_rendering_parameters.html#aa6206fe510db3c7782ea3b7c46e3412a", null ],
     [ "_softShadows", "classbrayns_1_1_rendering_parameters.html#a64b903a72d8c4549523ecb075a84dd30", null ],
     [ "_spp", "classbrayns_1_1_rendering_parameters.html#a1de7876630316b0b129efb6138e63d84", null ],
+    [ "_spr", "classbrayns_1_1_rendering_parameters.html#a02cb28863e997a956ae69dec8d33cd8a", null ],
     [ "_varianceThreshold", "classbrayns_1_1_rendering_parameters.html#aa1252974e87692c23cd7b4d3e8c98041", null ]
 ];

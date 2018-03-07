@@ -8,6 +8,7 @@ var annotated_dup =
       [ "AbstractParameters", "classbrayns_1_1_abstract_parameters.html", "classbrayns_1_1_abstract_parameters" ],
       [ "AbstractRenderer", "classbrayns_1_1_abstract_renderer.html", "classbrayns_1_1_abstract_renderer" ],
       [ "AbstractSimulationHandler", "classbrayns_1_1_abstract_simulation_handler.html", "classbrayns_1_1_abstract_simulation_handler" ],
+      [ "ActionInterface", "classbrayns_1_1_action_interface.html", "classbrayns_1_1_action_interface" ],
       [ "AnimationParameters", "classbrayns_1_1_animation_parameters.html", "classbrayns_1_1_animation_parameters" ],
       [ "ApplicationParameters", "classbrayns_1_1_application_parameters.html", "classbrayns_1_1_application_parameters" ],
       [ "BadParameter", "classbrayns_1_1_bad_parameter.html", "classbrayns_1_1_bad_parameter" ],

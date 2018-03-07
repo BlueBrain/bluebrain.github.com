@@ -5,6 +5,7 @@ var classbrayns_1_1_volume_handler =
     [ "VolumeHandler", "classbrayns_1_1_volume_handler.html#a39d2058806a352a3a62469ec34604d06", null ],
     [ "~VolumeHandler", "classbrayns_1_1_volume_handler.html#ac499d28a2370eaf6938be7ef69e4d87f", null ],
     [ "attachVolumeToFile", "classbrayns_1_1_volume_handler.html#a66fb70e7039ace4fde9250bc92afaead", null ],
+    [ "clear", "classbrayns_1_1_volume_handler.html#a40de31fd2eab9adb92e3a090046a272d", null ],
     [ "getData", "classbrayns_1_1_volume_handler.html#afeaa537e13ad45960daab5c5437c6699", null ],
     [ "getDimensions", "classbrayns_1_1_volume_handler.html#a16720b2fe81f275d2c2f2f49132dfbd8", null ],
     [ "getElementSpacing", "classbrayns_1_1_volume_handler.html#a8d79cfa8b0080820d6fc9d664bbbe669", null ],

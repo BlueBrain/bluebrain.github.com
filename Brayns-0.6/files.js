@@ -4,6 +4,7 @@ var files =
     [ "AbstractParameters.h", "_abstract_parameters_8h_source.html", null ],
     [ "AbstractRenderer.h", "_abstract_renderer_8h_source.html", null ],
     [ "AbstractSimulationHandler.h", "_abstract_simulation_handler_8h_source.html", null ],
+    [ "ActionInterface.h", "_action_interface_8h_source.html", null ],
     [ "AnimationParameters.h", "_animation_parameters_8h_source.html", null ],
     [ "api.h", "api_8h.html", "api_8h" ],
     [ "ApplicationParameters.h", "_application_parameters_8h_source.html", null ],
