@@ -5,6 +5,7 @@ var classbrayns_1_1_extension_plugin_factory =
     [ "add", "classbrayns_1_1_extension_plugin_factory.html#a3f2268cf183286874d8c3e47a1ca9860", null ],
     [ "clear", "classbrayns_1_1_extension_plugin_factory.html#a7cc708c0b64298493774d19ca6df8636", null ],
     [ "postRender", "classbrayns_1_1_extension_plugin_factory.html#aeba31aed608088f93a07179306c29564", null ],
+    [ "postSceneLoading", "classbrayns_1_1_extension_plugin_factory.html#a68149cf4ad20fa939aae18d531988275", null ],
     [ "preRender", "classbrayns_1_1_extension_plugin_factory.html#a8ce59bc1acd066cbbc7a2663373cfd7c", null ],
     [ "remove", "classbrayns_1_1_extension_plugin_factory.html#aed9a3a7689696f8e6c82eeb64fd52c21", null ]
 ];
