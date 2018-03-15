@@ -1,6 +1,14 @@
 var hierarchy =
 [
-    [ "BaseObject", null, [
+    [ "brayns::AbstractManipulator", "classbrayns_1_1_abstract_manipulator.html", [
+      [ "brayns::FlyingModeManipulator", "classbrayns_1_1_flying_mode_manipulator.html", null ],
+      [ "brayns::InspectCenterManipulator", "classbrayns_1_1_inspect_center_manipulator.html", null ]
+    ] ],
+    [ "brayns::AbstractSimulationHandler", "classbrayns_1_1_abstract_simulation_handler.html", [
+      [ "brayns::SpikeSimulationHandler", "classbrayns_1_1_spike_simulation_handler.html", null ]
+    ] ],
+    [ "brayns::ActionInterface", "classbrayns_1_1_action_interface.html", null ],
+    [ "brayns::BaseObject", "classbrayns_1_1_base_object.html", [
       [ "brayns::AbstractParameters", "classbrayns_1_1_abstract_parameters.html", [
         [ "brayns::AnimationParameters", "classbrayns_1_1_animation_parameters.html", null ],
         [ "brayns::ApplicationParameters", "classbrayns_1_1_application_parameters.html", null ],
@@ -23,17 +31,6 @@ var hierarchy =
       [ "brayns::Statistics", "classbrayns_1_1_statistics.html", null ],
       [ "brayns::TransferFunction", "classbrayns_1_1_transfer_function.html", null ]
     ] ],
-    [ "brayns::AbstractManipulator", "classbrayns_1_1_abstract_manipulator.html", [
-      [ "brayns::FlyingModeManipulator", "classbrayns_1_1_flying_mode_manipulator.html", null ],
-      [ "brayns::InspectCenterManipulator", "classbrayns_1_1_inspect_center_manipulator.html", null ]
-    ] ],
-    [ "brayns::AbstractSimulationHandler", "classbrayns_1_1_abstract_simulation_handler.html", [
-      [ "brayns::SpikeSimulationHandler", "classbrayns_1_1_spike_simulation_handler.html", null ]
-    ] ],
-    [ "brayns::ActionInterface", "classbrayns_1_1_action_interface.html", [
-      [ "brayns::RocketsPlugin", "classbrayns_1_1_rockets_plugin.html", null ]
-    ] ],
-    [ "brayns::BaseWindow", "classbrayns_1_1_base_window.html", null ],
     [ "brayns::Brayns", "classbrayns_1_1_brayns.html", null ],
     [ "brayns::CADiffusionSimulationHandler", "classbrayns_1_1_c_a_diffusion_simulation_handler.html", null ],
     [ "brayns::CircuitConfiguration", "structbrayns_1_1_circuit_configuration.html", null ],
@@ -43,12 +40,7 @@ var hierarchy =
     [ "brayns::Engine", "classbrayns_1_1_engine.html", [
       [ "brayns::OSPRayEngine", "classbrayns_1_1_o_s_p_ray_engine.html", null ]
     ] ],
-    [ "brayns::EngineFactory", "classbrayns_1_1_engine_factory.html", null ],
-    [ "brayns::ExtensionPlugin", "classbrayns_1_1_extension_plugin.html", [
-      [ "brayns::DeflectPlugin", "classbrayns_1_1_deflect_plugin.html", null ],
-      [ "brayns::RocketsPlugin", "classbrayns_1_1_rockets_plugin.html", null ]
-    ] ],
-    [ "brayns::ExtensionPluginFactory", "classbrayns_1_1_extension_plugin_factory.html", null ],
+    [ "brayns::ExtensionPlugin", "classbrayns_1_1_extension_plugin.html", null ],
     [ "brayns::Histogram", "structbrayns_1_1_histogram.html", null ],
     [ "brayns::ImageManager", "classbrayns_1_1_image_manager.html", null ],
     [ "brayns::KeyboardHandler", "classbrayns_1_1_keyboard_handler.html", null ],
@@ -61,6 +53,7 @@ var hierarchy =
     [ "brayns::MetaballsGenerator", "classbrayns_1_1_metaballs_generator.html", null ],
     [ "brayns::MorphologyLayout", "structbrayns_1_1_morphology_layout.html", null ],
     [ "brayns::ParametersManager", "classbrayns_1_1_parameters_manager.html", null ],
+    [ "brayns::PluginAPI", "classbrayns_1_1_plugin_a_p_i.html", null ],
     [ "brayns::Progress", "classbrayns_1_1_progress.html", null ],
     [ "brayns::ProgressReporter", "classbrayns_1_1_progress_reporter.html", [
       [ "brayns::MolecularSystemReader", "classbrayns_1_1_molecular_system_reader.html", null ],
@@ -74,8 +67,6 @@ var hierarchy =
     [ "brayns::Renderer::PickResult", "structbrayns_1_1_renderer_1_1_pick_result.html", null ],
     [ "brayns::RenderInput", "structbrayns_1_1_render_input.html", null ],
     [ "brayns::RenderOutput", "structbrayns_1_1_render_output.html", null ],
-    [ "brayns::ScreenSpaceProcessor", "classbrayns_1_1_screen_space_processor.html", null ],
-    [ "brayns::ScreenSpaceProcessorData", "structbrayns_1_1_screen_space_processor_data.html", null ],
     [ "brayns::ShortcutInformation", "structbrayns_1_1_shortcut_information.html", null ],
     [ "brayns::SnapshotParams", "structbrayns_1_1_snapshot_params.html", null ],
     [ "brayns::Sphere", "structbrayns_1_1_sphere.html", null ],

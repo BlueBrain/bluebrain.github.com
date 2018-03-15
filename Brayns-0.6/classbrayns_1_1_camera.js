@@ -1,6 +1,6 @@
 var classbrayns_1_1_camera =
 [
-    [ "Camera", "classbrayns_1_1_camera.html#a4196e54bb40f2270f6f3c82433296745", null ],
+    [ "Camera", "classbrayns_1_1_camera.html#a4b4dbbc0c49614d9ee6cef116cedd7bc", null ],
     [ "~Camera", "classbrayns_1_1_camera.html#a9b2df178c283598bfc54ff6dbc984d31", null ],
     [ "commit", "classbrayns_1_1_camera.html#a0354f79ac970081e142566d3b7f8d93e", null ],
     [ "getAperture", "classbrayns_1_1_camera.html#add438a8d6757cc35d463e89bb213e768", null ],
@@ -11,7 +11,7 @@ var classbrayns_1_1_camera =
     [ "getFocalLength", "classbrayns_1_1_camera.html#a6fc8b59a7b5e13317810e3299f1928a4", null ],
     [ "getPosition", "classbrayns_1_1_camera.html#a36cac1e98a3ea0be98b1813cba7f75e3", null ],
     [ "getRotationMatrix", "classbrayns_1_1_camera.html#a921c85b3e42db5156f172387cd93b4b7", null ],
-    [ "getStereoMode", "classbrayns_1_1_camera.html#a984359963515fe34b6f12fadf105f86e", null ],
+    [ "getStereoMode", "classbrayns_1_1_camera.html#ac55d49f66e0f704d9a2094223a36ba1f", null ],
     [ "getTarget", "classbrayns_1_1_camera.html#a488bad48faaa17a0c1d2ba27bd6c19c6", null ],
     [ "getType", "classbrayns_1_1_camera.html#a0922ca991159fe5fc401bae15597230e", null ],
     [ "getUp", "classbrayns_1_1_camera.html#aea0f9370d5b1662f8192f11030fe3af8", null ],
@@ -26,8 +26,9 @@ var classbrayns_1_1_camera =
     [ "setFieldOfView", "classbrayns_1_1_camera.html#a60c233a5b53c7d8bbad0a88ea753fca9", null ],
     [ "setFocalLength", "classbrayns_1_1_camera.html#adb7e9f91916e49cd6d2a4370908c8a82", null ],
     [ "setInitialState", "classbrayns_1_1_camera.html#ad75ab39d4ae7e333b1fa76143d7e2bc5", null ],
+    [ "setInitialState", "classbrayns_1_1_camera.html#a028234129f2dfd833e822421aa78cad7", null ],
     [ "setPosition", "classbrayns_1_1_camera.html#a9e019f22770dd3dff66e399965d326f3", null ],
-    [ "setStereoMode", "classbrayns_1_1_camera.html#a9d72938ca0b714a6a8f7132546f5033d", null ],
+    [ "setStereoMode", "classbrayns_1_1_camera.html#aff5c0e3449b4dfc1d0359dcfd66994cb", null ],
     [ "setTarget", "classbrayns_1_1_camera.html#ac9a741fa01ace6c9cf2723a56afac43c", null ],
     [ "setUp", "classbrayns_1_1_camera.html#a6f0cf030cd4e0330bfa2b0abdb016267", null ]
 ];

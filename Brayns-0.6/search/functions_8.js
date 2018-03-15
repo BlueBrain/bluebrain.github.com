@@ -11,6 +11,7 @@ var searchData=
   ['initializematerials',['initializeMaterials',['../classbrayns_1_1_engine.html#a4d39c844e28b872a2513edf2df42f9c0',1,'brayns::Engine']]],
   ['isanymodified',['isAnyModified',['../classbrayns_1_1_parameters_manager.html#a56137d99df36dc76edb3ffd9d285c88e',1,'brayns::ParametersManager']]],
   ['isbenchmarking',['isBenchmarking',['../classbrayns_1_1_application_parameters.html#a0baa53fd46c9a6aecddeec70d2546ce2',1,'brayns::ApplicationParameters']]],
+  ['ismodified',['isModified',['../classbrayns_1_1_base_object.html#ad5e3f16c81e260c2fdfcf5aa00fca6fd',1,'brayns::BaseObject']]],
   ['isready',['isReady',['../classbrayns_1_1_abstract_simulation_handler.html#aad7e9c57e1a9095c0f3c05b3fc33d332',1,'brayns::AbstractSimulationHandler']]],
-  ['isvolumesupported',['isVolumeSupported',['../classbrayns_1_1_o_s_p_ray_scene.html#ae4904bea5fbd897256145650bfbebbe2',1,'brayns::OSPRayScene::isVolumeSupported()'],['../classbrayns_1_1_scene.html#a86009585882ba32e2938dde100097eea',1,'brayns::Scene::isVolumeSupported()']]]
+  ['isvolumesupported',['isVolumeSupported',['../classbrayns_1_1_scene.html#a86009585882ba32e2938dde100097eea',1,'brayns::Scene::isVolumeSupported()'],['../classbrayns_1_1_o_s_p_ray_scene.html#ae4904bea5fbd897256145650bfbebbe2',1,'brayns::OSPRayScene::isVolumeSupported()']]]
 ];

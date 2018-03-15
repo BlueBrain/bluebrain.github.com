@@ -3,7 +3,7 @@ var classbrayns_1_1_o_s_p_ray_engine =
     [ "OSPRayEngine", "classbrayns_1_1_o_s_p_ray_engine.html#a481781276419835b9330a7851b25f337", null ],
     [ "~OSPRayEngine", "classbrayns_1_1_o_s_p_ray_engine.html#a172ab639f1d49fa2dcd4683faef0d488", null ],
     [ "commit", "classbrayns_1_1_o_s_p_ray_engine.html#a03db1cc79ac850a139d4f3e1730340b0", null ],
-    [ "createCamera", "classbrayns_1_1_o_s_p_ray_engine.html#a78fd43b3c508ede66f373576ef3573c3", null ],
+    [ "createCamera", "classbrayns_1_1_o_s_p_ray_engine.html#ad453f9422e40ee6dffd637185df59a7d", null ],
     [ "createFrameBuffer", "classbrayns_1_1_o_s_p_ray_engine.html#ad670da3e39f053a2ed859c1da905a97e", null ],
     [ "getMinimumFrameSize", "classbrayns_1_1_o_s_p_ray_engine.html#ab95e9bb89f2c5b0f9aa734b56789d415", null ],
     [ "getSupportedFrameSize", "classbrayns_1_1_o_s_p_ray_engine.html#a879bc415aecede0e68ed6e6b60406886", null ],

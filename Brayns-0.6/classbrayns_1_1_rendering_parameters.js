@@ -29,6 +29,8 @@ var classbrayns_1_1_rendering_parameters =
     [ "getShadingAsString", "classbrayns_1_1_rendering_parameters.html#aa02f97626b64f98bed6256081b3170e8", null ],
     [ "getShadows", "classbrayns_1_1_rendering_parameters.html#ade7ee7e3226529b435fa3ffefd46c7e7", null ],
     [ "getSoftShadows", "classbrayns_1_1_rendering_parameters.html#abc86470c43608043d4579f2ac566a76e", null ],
+    [ "getStereoMode", "classbrayns_1_1_rendering_parameters.html#ac12ae23a45027a81147b10e54ce55350", null ],
+    [ "getStereoModeAsString", "classbrayns_1_1_rendering_parameters.html#a58d16771900d5ed58478d2bafc99f1ce", null ],
     [ "getVarianceThreshold", "classbrayns_1_1_rendering_parameters.html#a2e15eaf4a39b43a5bb324469f118fe8b", null ],
     [ "initializeDefaultCameras", "classbrayns_1_1_rendering_parameters.html#aae0ed47a19b6f78280ec32e6c190598f", null ],
     [ "initializeDefaultRenderers", "classbrayns_1_1_rendering_parameters.html#ad757f946c741873c82e46e69231e36ad", null ],
@@ -52,6 +54,7 @@ var classbrayns_1_1_rendering_parameters =
     [ "setShading", "classbrayns_1_1_rendering_parameters.html#a33b0fbe0cc1dc508517e0cc2f4f45eab", null ],
     [ "setShadows", "classbrayns_1_1_rendering_parameters.html#a596e6a22009973fc6f7833cdeaf6fd78", null ],
     [ "setSoftShadows", "classbrayns_1_1_rendering_parameters.html#a7c35f5049e32faf0958b46a77a3cdc5b", null ],
+    [ "setStereoMode", "classbrayns_1_1_rendering_parameters.html#a47fdee5768d75511c5c6af1ae2bf33ca", null ],
     [ "setVarianceThreshold", "classbrayns_1_1_rendering_parameters.html#aadf26c0def3d1eb724491b48a4b94c19", null ],
     [ "_accumulation", "classbrayns_1_1_rendering_parameters.html#a7724aecee84daa0699a5612469050c44", null ],
     [ "_ambientOcclusionDistance", "classbrayns_1_1_rendering_parameters.html#a77dc7c33535208c50802c55298b3f737", null ],
@@ -78,5 +81,6 @@ var classbrayns_1_1_rendering_parameters =
     [ "_softShadows", "classbrayns_1_1_rendering_parameters.html#a64b903a72d8c4549523ecb075a84dd30", null ],
     [ "_spp", "classbrayns_1_1_rendering_parameters.html#a1de7876630316b0b129efb6138e63d84", null ],
     [ "_spr", "classbrayns_1_1_rendering_parameters.html#a02cb28863e997a956ae69dec8d33cd8a", null ],
+    [ "_stereoMode", "classbrayns_1_1_rendering_parameters.html#a6dd5af027bff99d2ad1b618d79f12400", null ],
     [ "_varianceThreshold", "classbrayns_1_1_rendering_parameters.html#aa1252974e87692c23cd7b4d3e8c98041", null ]
 ];
