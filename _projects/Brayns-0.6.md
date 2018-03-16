@@ -4,7 +4,7 @@ version: "0.6"
 major: 0
 minor: 6
 description: Hardware Agnostic Ray-Tracer
-updated: 15/03/18
+updated: 16/03/18
 homepage: https://github.com/BlueBrain/Brayns
 repository: https://github.com/BlueBrain/Brayns.git
 issuesurl: https://github.com/BlueBrain/Brayns/issues
@@ -12,7 +12,7 @@ packageurl:
 license: LGPL
 maturity: EP
 maintainers: 
-contributors: Daniel Nachbaur
+contributors: Cyrille Favreau
 readmetype: text/x-markdown
 ---
 # Brayns
@@ -70,13 +70,13 @@ docker run -ti --rm -p 8200:8200 bluebrain/brayns
 
 More documentation is available on DockerHub: https://hub.docker.com/r/bluebrain/brayns/
 
-### Start the Sauron web UI
+### Start the Brayns web UI
 
 ```
-docker run -ti --rm -p 8080:8080 bluebrain/sauron
+docker run -ti --rm -p 8080:8080 bluebrain/brayns-ui
 ```
 
-More documentation is available on DockerHub: https://hub.docker.com/r/bluebrain/sauron/
+More documentation is available on DockerHub: https://hub.docker.com/r/bluebrain/brayns-ui/
 
 ## Building from Source
 
