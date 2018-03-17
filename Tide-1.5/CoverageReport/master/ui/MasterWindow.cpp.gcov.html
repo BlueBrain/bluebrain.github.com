@@ -32,17 +32,17 @@
             <td></td>
             <td class="headerItem">Lines:</td>
             <td class="headerCovTableEntry">2</td>
-            <td class="headerCovTableEntry">299</td>
-            <td class="headerCovTableEntryLo">0.7 %</td>
+            <td class="headerCovTableEntry">314</td>
+            <td class="headerCovTableEntryLo">0.6 %</td>
           </tr>
           <tr>
             <td class="headerItem">Date:</td>
-            <td class="headerValue">2018-02-28 06:40:09</td>
+            <td class="headerValue">2018-03-17 06:34:01</td>
             <td></td>
             <td class="headerItem">Functions:</td>
             <td class="headerCovTableEntry">2</td>
-            <td class="headerCovTableEntry">19</td>
-            <td class="headerCovTableEntryLo">10.5 %</td>
+            <td class="headerCovTableEntry">25</td>
+            <td class="headerCovTableEntryLo">8.0 %</td>
           </tr>
           <tr><td><img src="../../glass.png" width=3 height=3 alt=""></td></tr>
         </table>
@@ -61,7 +61,7 @@
 <pre class="sourceHeading">          Line data    Source code</pre>
 <pre class="source">
 <a name="1"><span class="lineNum">       1 </span>            : /*********************************************************************/</a>
-<span class="lineNum">       2 </span>            : /* Copyright (c) 2014-2016, EPFL/Blue Brain Project                  */
+<span class="lineNum">       2 </span>            : /* Copyright (c) 2014-2018, EPFL/Blue Brain Project                  */
 <span class="lineNum">       3 </span>            : /*                          Raphael Dumusc &lt;raphael.dumusc@epfl.ch&gt;  */
 <span class="lineNum">       4 </span>            : /* All rights reserved.                                              */
 <span class="lineNum">       5 </span>            : /*                                                                   */
@@ -115,516 +115,546 @@
 <span class="lineNum">      53 </span>            : #include &quot;scene/ContentWindow.h&quot;
 <span class="lineNum">      54 </span>            : #include &quot;scene/DisplayGroup.h&quot;
 <span class="lineNum">      55 </span>            : #include &quot;scene/Options.h&quot;
-<span class="lineNum">      56 </span>            : #if TIDE_ENABLE_WEBBROWSER_SUPPORT
-<span class="lineNum">      57 </span>            : #include &quot;WebbrowserWidget.h&quot;
-<span class="lineNum">      58 </span>            : #endif
-<span class="lineNum">      59 </span>            : 
-<span class="lineNum">      60 </span>            : #include &lt;tide/core/version.h&gt;
-<span class="lineNum">      61 </span>            : 
-<span class="lineNum">      62 </span>            : #include &lt;QtWidgets&gt;
-<span class="lineNum">      63 </span>            : #include &lt;sstream&gt;
-<span class="lineNum">      64 </span>            : 
-<span class="lineNum">      65 </span>            : namespace
-<span class="lineNum">      66 </span>            : {
-<span class="lineNum">      67 </span><span class="lineCov">         32 : const QString SESSION_FILES_FILTER(&quot;Session files (*.dcx)&quot;);</span>
-<span class="lineNum">      68 </span>            : const QSize DEFAULT_WINDOW_SIZE(810, 600);
-<a name="69"><span class="lineNum">      69 </span>            : }</a>
-<span class="lineNum">      70 </span>            : 
-<span class="lineNum">      71 </span><span class="lineNoCov">          0 : MasterWindow::MasterWindow(DisplayGroupPtr displayGroup, OptionsPtr options,</span>
-<span class="lineNum">      72 </span><span class="lineNoCov">          0 :                            ScreenLockPtr lock, Configuration&amp; config)</span>
-<span class="lineNum">      73 </span>            :     : QMainWindow()
-<span class="lineNum">      74 </span>            :     , _displayGroup(displayGroup)
-<span class="lineNum">      75 </span>            :     , _options(options)
-<span class="lineNum">      76 </span><span class="lineNoCov">          0 :     , _backgroundWidget(new BackgroundWidget(config, this))</span>
-<span class="lineNum">      77 </span>            : #if TIDE_ENABLE_WEBBROWSER_SUPPORT
-<span class="lineNum">      78 </span>            :     , _webbrowserWidget(new WebbrowserWidget(config, this))
-<span class="lineNum">      79 </span>            : #endif
-<span class="lineNum">      80 </span>            :     , _contentFolder(config.folders.contents)
-<span class="lineNum">      81 </span>            :     , _sessionFolder(config.folders.sessions)
-<span class="lineNum">      82 </span><span class="lineNoCov">          0 :     , _uploadDir(config.folders.upload)</span>
-<span class="lineNum">      83 </span>            : {
-<span class="lineNum">      84 </span><span class="lineNoCov">          0 :     _backgroundWidget-&gt;setModal(true);</span>
-<span class="lineNum">      85 </span>            : 
-<span class="lineNum">      86 </span>            : #if TIDE_ENABLE_WEBBROWSER_SUPPORT
-<span class="lineNum">      87 </span>            :     connect(_webbrowserWidget, &amp;WebbrowserWidget::openWebBrowser, this,
-<span class="lineNum">      88 </span>            :             &amp;MasterWindow::openWebBrowser);
-<span class="lineNum">      89 </span>            : #endif
-<a name="90"><span class="lineNum">      90 </span>            : </a>
-<span class="lineNum">      91 </span>            :     connect(&amp;_loadSessionOp, &amp;QFutureWatcher&lt;DisplayGroupConstPtr&gt;::finished,
-<span class="lineNum">      92 </span><span class="lineNoCov">          0 :             [this]() {</span>
-<span class="lineNum">      93 </span><span class="lineNoCov">          0 :                 if (auto group = _loadSessionOp.result())</span>
-<span class="lineNum">      94 </span><span class="lineNoCov">          0 :                     emit sessionLoaded(group);</span>
-<span class="lineNum">      95 </span>            :                 else
-<span class="lineNum">      96 </span><span class="lineNoCov">          0 :                     QMessageBox::warning(this, &quot;Error&quot;,</span>
-<span class="lineNum">      97 </span>            :                                          &quot;Could not load session file.&quot;,
-<span class="lineNum">      98 </span><span class="lineNoCov">          0 :                                          QMessageBox::Ok, QMessageBox::Ok);</span>
-<a name="99"><span class="lineNum">      99 </span><span class="lineNoCov">          0 :             });</span></a>
-<span class="lineNum">     100 </span>            : 
-<span class="lineNum">     101 </span><span class="lineNoCov">          0 :     connect(&amp;_saveSessionOp, &amp;QFutureWatcher&lt;bool&gt;::finished, [this]() {</span>
-<span class="lineNum">     102 </span><span class="lineNoCov">          0 :         if (!_saveSessionOp.result())</span>
-<span class="lineNum">     103 </span><span class="lineNoCov">          0 :             QMessageBox::warning(this, &quot;Error&quot;, &quot;Could not save session file.&quot;,</span>
-<span class="lineNum">     104 </span><span class="lineNoCov">          0 :                                  QMessageBox::Ok, QMessageBox::Ok);</span>
-<span class="lineNum">     105 </span><span class="lineNoCov">          0 :     });</span>
-<span class="lineNum">     106 </span>            : 
-<span class="lineNum">     107 </span><span class="lineNoCov">          0 :     resize(DEFAULT_WINDOW_SIZE);</span>
-<span class="lineNum">     108 </span><span class="lineNoCov">          0 :     setAcceptDrops(true);</span>
-<span class="lineNum">     109 </span>            : 
-<span class="lineNum">     110 </span>            :     _setupMasterWindowUI(
-<span class="lineNum">     111 </span><span class="lineNoCov">          0 :         std::make_unique&lt;MasterQuickView&gt;(_options, lock, config));</span>
-<span class="lineNum">     112 </span>            : 
-<span class="lineNum">     113 </span><span class="lineNoCov">          0 :     show();</span>
-<a name="114"><span class="lineNum">     114 </span><span class="lineNoCov">          0 : }</span></a>
-<span class="lineNum">     115 </span>            : 
-<span class="lineNum">     116 </span><span class="lineNoCov">          0 : MasterQuickView* MasterWindow::getQuickView()</span>
-<span class="lineNum">     117 </span>            : {
-<span class="lineNum">     118 </span><span class="lineNoCov">          0 :     return _quickView;</span>
-<a name="119"><span class="lineNum">     119 </span>            : }</a>
-<span class="lineNum">     120 </span>            : 
-<span class="lineNum">     121 </span><span class="lineNoCov">          0 : void MasterWindow::_setupMasterWindowUI(</span>
-<span class="lineNum">     122 </span>            :     std::unique_ptr&lt;MasterQuickView&gt; quickView)
-<span class="lineNum">     123 </span>            : {
-<span class="lineNum">     124 </span>            :     // create menus in menu bar
-<span class="lineNum">     125 </span><span class="lineNoCov">          0 :     QMenu* fileMenu = menuBar()-&gt;addMenu(&quot;&amp;File&quot;);</span>
-<span class="lineNum">     126 </span><span class="lineNoCov">          0 :     QMenu* editMenu = menuBar()-&gt;addMenu(&quot;&amp;Edit&quot;);</span>
-<span class="lineNum">     127 </span><span class="lineNoCov">          0 :     QMenu* viewMenu = menuBar()-&gt;addMenu(&quot;&amp;View&quot;);</span>
-<span class="lineNum">     128 </span><span class="lineNoCov">          0 :     QMenu* helpMenu = menuBar()-&gt;addMenu(&quot;&amp;Help&quot;);</span>
+<span class="lineNum">      56 </span>            : #include &quot;scene/Scene.h&quot;
+<span class="lineNum">      57 </span>            : #if TIDE_ENABLE_WEBBROWSER_SUPPORT
+<span class="lineNum">      58 </span>            : #include &quot;WebbrowserWidget.h&quot;
+<span class="lineNum">      59 </span>            : #endif
+<span class="lineNum">      60 </span>            : 
+<span class="lineNum">      61 </span>            : #include &lt;tide/core/version.h&gt;
+<span class="lineNum">      62 </span>            : 
+<span class="lineNum">      63 </span>            : #include &lt;QtWidgets&gt;
+<span class="lineNum">      64 </span>            : #include &lt;sstream&gt;
+<span class="lineNum">      65 </span>            : 
+<span class="lineNum">      66 </span>            : namespace
+<span class="lineNum">      67 </span>            : {
+<span class="lineNum">      68 </span><span class="lineCov">         32 : const QString SESSION_FILES_FILTER(&quot;Session files (*.dcx)&quot;);</span>
+<span class="lineNum">      69 </span>            : const QSize DEFAULT_WINDOW_SIZE(810, 600);
+<a name="70"><span class="lineNum">      70 </span>            : }</a>
+<span class="lineNum">      71 </span>            : 
+<span class="lineNum">      72 </span><span class="lineNoCov">          0 : MasterWindow::MasterWindow(ScenePtr scene_, OptionsPtr options,</span>
+<span class="lineNum">      73 </span><span class="lineNoCov">          0 :                            ScreenLockPtr lock, Configuration&amp; config)</span>
+<span class="lineNum">      74 </span>            :     : QMainWindow()
+<span class="lineNum">      75 </span>            :     , _scene{scene_}
+<span class="lineNum">      76 </span>            :     , _options(options)
+<span class="lineNum">      77 </span><span class="lineNoCov">          0 :     , _backgroundWidget(new BackgroundWidget(config, this))</span>
+<span class="lineNum">      78 </span>            : #if TIDE_ENABLE_WEBBROWSER_SUPPORT
+<span class="lineNum">      79 </span>            :     , _webbrowserWidget(new WebbrowserWidget(config, this))
+<span class="lineNum">      80 </span>            : #endif
+<span class="lineNum">      81 </span>            :     , _contentFolder(config.folders.contents)
+<span class="lineNum">      82 </span>            :     , _sessionFolder(config.folders.sessions)
+<span class="lineNum">      83 </span><span class="lineNoCov">          0 :     , _uploadDir(config.folders.upload)</span>
+<span class="lineNum">      84 </span>            : {
+<span class="lineNum">      85 </span><span class="lineNoCov">          0 :     _backgroundWidget-&gt;setModal(true);</span>
+<span class="lineNum">      86 </span>            : 
+<span class="lineNum">      87 </span>            : #if TIDE_ENABLE_WEBBROWSER_SUPPORT
+<span class="lineNum">      88 </span>            :     connect(_webbrowserWidget, &amp;WebbrowserWidget::openWebBrowser,
+<span class="lineNum">      89 </span>            :             [this](QPointF pos, QSize size, QString url, ushort debugPort) {
+<span class="lineNum">      90 </span>            :                 emit openWebBrowser(_getActiveSceneIndex(), pos, size, url,
+<span class="lineNum">      91 </span>            :                                     debugPort);
+<span class="lineNum">      92 </span>            :             });
+<span class="lineNum">      93 </span>            : #endif
+<a name="94"><span class="lineNum">      94 </span>            : </a>
+<span class="lineNum">      95 </span>            :     connect(&amp;_loadSessionOp, &amp;QFutureWatcher&lt;SceneConstPtr&gt;::finished,
+<span class="lineNum">      96 </span><span class="lineNoCov">          0 :             [this]() {</span>
+<span class="lineNum">      97 </span><span class="lineNoCov">          0 :                 if (auto scene = _loadSessionOp.result())</span>
+<span class="lineNum">      98 </span><span class="lineNoCov">          0 :                     emit sessionLoaded(scene);</span>
+<span class="lineNum">      99 </span>            :                 else
+<span class="lineNum">     100 </span><span class="lineNoCov">          0 :                     QMessageBox::warning(this, &quot;Error&quot;,</span>
+<span class="lineNum">     101 </span>            :                                          &quot;Could not load session file.&quot;,
+<span class="lineNum">     102 </span><span class="lineNoCov">          0 :                                          QMessageBox::Ok, QMessageBox::Ok);</span>
+<a name="103"><span class="lineNum">     103 </span><span class="lineNoCov">          0 :             });</span></a>
+<span class="lineNum">     104 </span>            : 
+<span class="lineNum">     105 </span><span class="lineNoCov">          0 :     connect(&amp;_saveSessionOp, &amp;QFutureWatcher&lt;bool&gt;::finished, [this]() {</span>
+<span class="lineNum">     106 </span><span class="lineNoCov">          0 :         if (!_saveSessionOp.result())</span>
+<span class="lineNum">     107 </span><span class="lineNoCov">          0 :             QMessageBox::warning(this, &quot;Error&quot;, &quot;Could not save session file.&quot;,</span>
+<span class="lineNum">     108 </span><span class="lineNoCov">          0 :                                  QMessageBox::Ok, QMessageBox::Ok);</span>
+<span class="lineNum">     109 </span><span class="lineNoCov">          0 :     });</span>
+<span class="lineNum">     110 </span>            : 
+<span class="lineNum">     111 </span><span class="lineNoCov">          0 :     resize(DEFAULT_WINDOW_SIZE);</span>
+<span class="lineNum">     112 </span><span class="lineNoCov">          0 :     setAcceptDrops(true);</span>
+<span class="lineNum">     113 </span>            : 
+<span class="lineNum">     114 </span><span class="lineNoCov">          0 :     _setupMasterWindowUI();</span>
+<span class="lineNum">     115 </span><span class="lineNoCov">          0 :     _addSurfacesTabViews(config, lock);</span>
+<span class="lineNum">     116 </span>            : 
+<span class="lineNum">     117 </span><span class="lineNoCov">          0 :     show();</span>
+<a name="118"><span class="lineNum">     118 </span><span class="lineNoCov">          0 : }</span></a>
+<span class="lineNum">     119 </span>            : 
+<span class="lineNum">     120 </span><span class="lineNoCov">          0 : MasterQuickView* MasterWindow::getQuickView()</span>
+<span class="lineNum">     121 </span>            : {
+<span class="lineNum">     122 </span><span class="lineNoCov">          0 :     return _quickView;</span>
+<a name="123"><span class="lineNum">     123 </span>            : }</a>
+<span class="lineNum">     124 </span>            : 
+<span class="lineNum">     125 </span><span class="lineNoCov">          0 : void MasterWindow::_setupMasterWindowUI()</span>
+<span class="lineNum">     126 </span>            : {
+<span class="lineNum">     127 </span>            :     // add main tab widget
+<span class="lineNum">     128 </span><span class="lineNoCov">          0 :     setCentralWidget(new QTabWidget());</span>
 <span class="lineNum">     129 </span>            : 
-<span class="lineNum">     130 </span>            :     // create tool bar
-<span class="lineNum">     131 </span><span class="lineNoCov">          0 :     QToolBar* toolbar = addToolBar(&quot;toolbar&quot;);</span>
-<span class="lineNum">     132 </span>            : 
-<span class="lineNum">     133 </span>            :     /** FILE menu */
-<span class="lineNum">     134 </span>            : 
-<span class="lineNum">     135 </span>            :     // open content action
-<span class="lineNum">     136 </span><span class="lineNoCov">          0 :     QAction* openContentAction = new QAction(&quot;Open Content&quot;, this);</span>
-<span class="lineNum">     137 </span><span class="lineNoCov">          0 :     openContentAction-&gt;setStatusTip(&quot;Open content&quot;);</span>
-<span class="lineNum">     138 </span>            :     connect(openContentAction, &amp;QAction::triggered, this,
-<span class="lineNum">     139 </span><span class="lineNoCov">          0 :             &amp;MasterWindow::_openContent);</span>
+<span class="lineNum">     130 </span>            :     // create menus in menu bar
+<span class="lineNum">     131 </span><span class="lineNoCov">          0 :     auto fileMenu = menuBar()-&gt;addMenu(&quot;&amp;File&quot;);</span>
+<span class="lineNum">     132 </span><span class="lineNoCov">          0 :     auto editMenu = menuBar()-&gt;addMenu(&quot;&amp;Edit&quot;);</span>
+<span class="lineNum">     133 </span><span class="lineNoCov">          0 :     auto viewMenu = menuBar()-&gt;addMenu(&quot;&amp;View&quot;);</span>
+<span class="lineNum">     134 </span><span class="lineNoCov">          0 :     auto helpMenu = menuBar()-&gt;addMenu(&quot;&amp;Help&quot;);</span>
+<span class="lineNum">     135 </span>            : 
+<span class="lineNum">     136 </span>            :     // create tool bar
+<span class="lineNum">     137 </span><span class="lineNoCov">          0 :     auto toolbar = addToolBar(&quot;toolbar&quot;);</span>
+<span class="lineNum">     138 </span>            : 
+<span class="lineNum">     139 </span>            :     /** FILE menu */
 <span class="lineNum">     140 </span>            : 
-<span class="lineNum">     141 </span>            :     // open contents directory action
-<span class="lineNum">     142 </span><span class="lineNoCov">          0 :     QAction* openContentsDirectoryAction = new QAction(&quot;Open Directory&quot;, this);</span>
-<span class="lineNum">     143 </span><span class="lineNoCov">          0 :     openContentsDirectoryAction-&gt;setStatusTip(&quot;Open directory of contents&quot;);</span>
-<span class="lineNum">     144 </span>            :     connect(openContentsDirectoryAction, &amp;QAction::triggered, this,
-<span class="lineNum">     145 </span><span class="lineNoCov">          0 :             &amp;MasterWindow::_openContentsDirectory);</span>
+<span class="lineNum">     141 </span>            :     // open content action
+<span class="lineNum">     142 </span><span class="lineNoCov">          0 :     auto openContentAction = new QAction(&quot;Open Content&quot;, this);</span>
+<span class="lineNum">     143 </span><span class="lineNoCov">          0 :     openContentAction-&gt;setStatusTip(&quot;Open content&quot;);</span>
+<span class="lineNum">     144 </span>            :     connect(openContentAction, &amp;QAction::triggered, this,
+<span class="lineNum">     145 </span><span class="lineNoCov">          0 :             &amp;MasterWindow::_openContent);</span>
 <span class="lineNum">     146 </span>            : 
-<span class="lineNum">     147 </span>            :     // clear contents action
-<span class="lineNum">     148 </span><span class="lineNoCov">          0 :     QAction* clearContentsAction = new QAction(&quot;Clear&quot;, this);</span>
-<span class="lineNum">     149 </span><span class="lineNoCov">          0 :     clearContentsAction-&gt;setStatusTip(&quot;Clear all contents&quot;);</span>
-<span class="lineNum">     150 </span><span class="lineNoCov">          0 :     connect(clearContentsAction, &amp;QAction::triggered, _displayGroup.get(),</span>
-<span class="lineNum">     151 </span><span class="lineNoCov">          0 :             &amp;DisplayGroup::clear);</span>
+<span class="lineNum">     147 </span>            :     // open contents directory action
+<span class="lineNum">     148 </span><span class="lineNoCov">          0 :     auto openContentsDirectoryAction = new QAction(&quot;Open Directory&quot;, this);</span>
+<span class="lineNum">     149 </span><span class="lineNoCov">          0 :     openContentsDirectoryAction-&gt;setStatusTip(&quot;Open directory of contents&quot;);</span>
+<span class="lineNum">     150 </span>            :     connect(openContentsDirectoryAction, &amp;QAction::triggered, this,
+<span class="lineNum">     151 </span><span class="lineNoCov">          0 :             &amp;MasterWindow::_openContentsDirectory);</span>
 <span class="lineNum">     152 </span>            : 
-<span class="lineNum">     153 </span>            :     // save session action
-<span class="lineNum">     154 </span><span class="lineNoCov">          0 :     QAction* saveSessionAction = new QAction(&quot;Save Session&quot;, this);</span>
-<span class="lineNum">     155 </span><span class="lineNoCov">          0 :     saveSessionAction-&gt;setStatusTip(&quot;Save current session&quot;);</span>
-<span class="lineNum">     156 </span>            :     connect(saveSessionAction, &amp;QAction::triggered, this,
-<span class="lineNum">     157 </span><span class="lineNoCov">          0 :             &amp;MasterWindow::_saveSession);</span>
+<span class="lineNum">     153 </span>            :     // clear contents action
+<span class="lineNum">     154 </span><span class="lineNoCov">          0 :     auto clearContentsAction = new QAction(&quot;Clear&quot;, this);</span>
+<a name="155"><span class="lineNum">     155 </span><span class="lineNoCov">          0 :     clearContentsAction-&gt;setStatusTip(&quot;Clear all contents&quot;);</span></a>
+<span class="lineNum">     156 </span>            :     connect(clearContentsAction, &amp;QAction::triggered,
+<span class="lineNum">     157 </span><span class="lineNoCov">          0 :             [this]() { _getActiveGroup().clear(); });</span>
 <span class="lineNum">     158 </span>            : 
-<span class="lineNum">     159 </span>            :     // load session action
-<span class="lineNum">     160 </span><span class="lineNoCov">          0 :     QAction* loadSessionAction = new QAction(&quot;Load Session&quot;, this);</span>
-<span class="lineNum">     161 </span><span class="lineNoCov">          0 :     loadSessionAction-&gt;setStatusTip(&quot;Load a session&quot;);</span>
-<span class="lineNum">     162 </span>            :     connect(loadSessionAction, &amp;QAction::triggered, this,
-<span class="lineNum">     163 </span><span class="lineNoCov">          0 :             &amp;MasterWindow::_openSession);</span>
+<span class="lineNum">     159 </span>            :     // save session action
+<span class="lineNum">     160 </span><span class="lineNoCov">          0 :     auto saveSessionAction = new QAction(&quot;Save Session&quot;, this);</span>
+<span class="lineNum">     161 </span><span class="lineNoCov">          0 :     saveSessionAction-&gt;setStatusTip(&quot;Save current session&quot;);</span>
+<span class="lineNum">     162 </span>            :     connect(saveSessionAction, &amp;QAction::triggered, this,
+<span class="lineNum">     163 </span><span class="lineNoCov">          0 :             &amp;MasterWindow::_saveSession);</span>
 <span class="lineNum">     164 </span>            : 
-<span class="lineNum">     165 </span>            : #if TIDE_ENABLE_WEBBROWSER_SUPPORT
-<span class="lineNum">     166 </span>            :     // Open webbrowser action
-<span class="lineNum">     167 </span>            :     QAction* webbrowserAction = new QAction(&quot;Web Browser&quot;, this);
-<span class="lineNum">     168 </span>            :     webbrowserAction-&gt;setStatusTip(&quot;Open a web browser&quot;);
-<span class="lineNum">     169 </span>            :     connect(webbrowserAction, &amp;QAction::triggered, _webbrowserWidget,
-<span class="lineNum">     170 </span>            :             &amp;WebbrowserWidget::show);
-<span class="lineNum">     171 </span>            : #endif
-<span class="lineNum">     172 </span>            : 
-<span class="lineNum">     173 </span>            :     // Open whiteboard action
-<span class="lineNum">     174 </span><span class="lineNoCov">          0 :     QAction* whiteboardAction = new QAction(&quot;Whiteboard&quot;, this);</span>
-<span class="lineNum">     175 </span><span class="lineNoCov">          0 :     whiteboardAction-&gt;setStatusTip(&quot;Open a whiteboard&quot;);</span>
-<span class="lineNum">     176 </span>            :     connect(whiteboardAction, &amp;QAction::triggered, this,
-<span class="lineNum">     177 </span><span class="lineNoCov">          0 :             &amp;MasterWindow::openWhiteboard);</span>
+<span class="lineNum">     165 </span>            :     // load session action
+<span class="lineNum">     166 </span><span class="lineNoCov">          0 :     auto loadSessionAction = new QAction(&quot;Load Session&quot;, this);</span>
+<span class="lineNum">     167 </span><span class="lineNoCov">          0 :     loadSessionAction-&gt;setStatusTip(&quot;Load a session&quot;);</span>
+<span class="lineNum">     168 </span>            :     connect(loadSessionAction, &amp;QAction::triggered, this,
+<span class="lineNum">     169 </span><span class="lineNoCov">          0 :             &amp;MasterWindow::_openSession);</span>
+<span class="lineNum">     170 </span>            : 
+<span class="lineNum">     171 </span>            : #if TIDE_ENABLE_WEBBROWSER_SUPPORT
+<span class="lineNum">     172 </span>            :     // Open webbrowser action
+<span class="lineNum">     173 </span>            :     auto webbrowserAction = new QAction(&quot;Web Browser&quot;, this);
+<span class="lineNum">     174 </span>            :     webbrowserAction-&gt;setStatusTip(&quot;Open a web browser&quot;);
+<span class="lineNum">     175 </span>            :     connect(webbrowserAction, &amp;QAction::triggered, _webbrowserWidget,
+<span class="lineNum">     176 </span>            :             &amp;WebbrowserWidget::show);
+<span class="lineNum">     177 </span>            : #endif
 <span class="lineNum">     178 </span>            : 
-<span class="lineNum">     179 </span>            :     // quit action
-<span class="lineNum">     180 </span><span class="lineNoCov">          0 :     QAction* quitAction = new QAction(&quot;Quit&quot;, this);</span>
-<span class="lineNum">     181 </span><span class="lineNoCov">          0 :     quitAction-&gt;setStatusTip(&quot;Quit application&quot;);</span>
-<span class="lineNum">     182 </span><span class="lineNoCov">          0 :     connect(quitAction, &amp;QAction::triggered, this, &amp;MasterWindow::close);</span>
-<span class="lineNum">     183 </span>            : 
-<span class="lineNum">     184 </span>            :     /** EDIT menu */
-<span class="lineNum">     185 </span>            : 
-<span class="lineNum">     186 </span>            :     // background content action
-<span class="lineNum">     187 </span><span class="lineNoCov">          0 :     QAction* backgroundAction = new QAction(&quot;Background&quot;, this);</span>
-<span class="lineNum">     188 </span><span class="lineNoCov">          0 :     backgroundAction-&gt;setStatusTip(&quot;Select the background color and content&quot;);</span>
-<span class="lineNum">     189 </span><span class="lineNoCov">          0 :     connect(backgroundAction, &amp;QAction::triggered, _backgroundWidget,</span>
-<span class="lineNum">     190 </span><span class="lineNoCov">          0 :             &amp;BackgroundWidget::show);</span>
+<span class="lineNum">     179 </span>            :     // Open whiteboard action
+<span class="lineNum">     180 </span><span class="lineNoCov">          0 :     auto whiteboardAction = new QAction(&quot;Whiteboard&quot;, this);</span>
+<a name="181"><span class="lineNum">     181 </span><span class="lineNoCov">          0 :     whiteboardAction-&gt;setStatusTip(&quot;Open a whiteboard&quot;);</span></a>
+<span class="lineNum">     182 </span>            :     connect(whiteboardAction, &amp;QAction::triggered,
+<span class="lineNum">     183 </span><span class="lineNoCov">          0 :             [this] { emit openWhiteboard(_getActiveSceneIndex()); });</span>
+<span class="lineNum">     184 </span>            : 
+<span class="lineNum">     185 </span>            :     // quit action
+<span class="lineNum">     186 </span><span class="lineNoCov">          0 :     auto quitAction = new QAction(&quot;Quit&quot;, this);</span>
+<span class="lineNum">     187 </span><span class="lineNoCov">          0 :     quitAction-&gt;setStatusTip(&quot;Quit application&quot;);</span>
+<span class="lineNum">     188 </span><span class="lineNoCov">          0 :     connect(quitAction, &amp;QAction::triggered, this, &amp;MasterWindow::close);</span>
+<span class="lineNum">     189 </span>            : 
+<span class="lineNum">     190 </span>            :     /** EDIT menu */
 <span class="lineNum">     191 </span>            : 
-<span class="lineNum">     192 </span>            :     /** VIEW menu */
-<span class="lineNum">     193 </span>            : 
-<span class="lineNum">     194 </span>            :     // enable alpha blending
-<span class="lineNum">     195 </span><span class="lineNoCov">          0 :     QAction* enableAlphaBlendingAction = new QAction(&quot;Alpha Blending&quot;, this);</span>
-<span class="lineNum">     196 </span><span class="lineNoCov">          0 :     enableAlphaBlendingAction-&gt;setStatusTip(</span>
-<span class="lineNum">     197 </span><span class="lineNoCov">          0 :         &quot;Enable alpha blending for transparent contents (png, svg, etc..)&quot;);</span>
-<span class="lineNum">     198 </span><span class="lineNoCov">          0 :     enableAlphaBlendingAction-&gt;setCheckable(true);</span>
-<span class="lineNum">     199 </span><span class="lineNoCov">          0 :     enableAlphaBlendingAction-&gt;setChecked(_options-&gt;isAlphaBlendingEnabled());</span>
-<span class="lineNum">     200 </span><span class="lineNoCov">          0 :     connect(enableAlphaBlendingAction, &amp;QAction::toggled, _options.get(),</span>
-<span class="lineNum">     201 </span><span class="lineNoCov">          0 :             &amp;Options::enableAlphaBlending);</span>
-<span class="lineNum">     202 </span><span class="lineNoCov">          0 :     connect(_options.get(), &amp;Options::alphaBlendingEnabledChanged,</span>
-<span class="lineNum">     203 </span><span class="lineNoCov">          0 :             enableAlphaBlendingAction, &amp;QAction::setChecked);</span>
-<span class="lineNum">     204 </span>            : 
-<span class="lineNum">     205 </span>            :     // auto focus pixel streams
-<span class="lineNum">     206 </span>            :     QAction* autoFocusStreamersAction =
-<span class="lineNum">     207 </span><span class="lineNoCov">          0 :         new QAction(&quot;Auto-focus streamers&quot;, this);</span>
-<span class="lineNum">     208 </span><span class="lineNoCov">          0 :     autoFocusStreamersAction-&gt;setStatusTip(</span>
-<span class="lineNum">     209 </span><span class="lineNoCov">          0 :         &quot;Open the windows of the external streamers in focus mode&quot;);</span>
-<span class="lineNum">     210 </span><span class="lineNoCov">          0 :     autoFocusStreamersAction-&gt;setCheckable(true);</span>
-<span class="lineNum">     211 </span><span class="lineNoCov">          0 :     autoFocusStreamersAction-&gt;setChecked(_options-&gt;getAutoFocusPixelStreams());</span>
-<span class="lineNum">     212 </span><span class="lineNoCov">          0 :     connect(autoFocusStreamersAction, &amp;QAction::toggled, _options.get(),</span>
-<span class="lineNum">     213 </span><span class="lineNoCov">          0 :             &amp;Options::setAutoFocusPixelStreams);</span>
-<span class="lineNum">     214 </span><span class="lineNoCov">          0 :     connect(_options.get(), &amp;Options::autoFocusPixelStreamsChanged,</span>
-<span class="lineNum">     215 </span><span class="lineNoCov">          0 :             autoFocusStreamersAction, &amp;QAction::setChecked);</span>
-<span class="lineNum">     216 </span>            : 
-<span class="lineNum">     217 </span>            :     // show clock action
-<span class="lineNum">     218 </span><span class="lineNoCov">          0 :     QAction* showClockAction = new QAction(&quot;Clock&quot;, this);</span>
-<span class="lineNum">     219 </span><span class="lineNoCov">          0 :     showClockAction-&gt;setStatusTip(&quot;Show a clock on the background&quot;);</span>
-<span class="lineNum">     220 </span><span class="lineNoCov">          0 :     showClockAction-&gt;setCheckable(true);</span>
-<span class="lineNum">     221 </span><span class="lineNoCov">          0 :     showClockAction-&gt;setChecked(_options-&gt;getShowClock());</span>
-<span class="lineNum">     222 </span><span class="lineNoCov">          0 :     connect(showClockAction, &amp;QAction::toggled, _options.get(),</span>
-<span class="lineNum">     223 </span><span class="lineNoCov">          0 :             &amp;Options::setShowClock);</span>
-<span class="lineNum">     224 </span><span class="lineNoCov">          0 :     connect(_options.get(), &amp;Options::showClockChanged, showClockAction,</span>
-<span class="lineNum">     225 </span><span class="lineNoCov">          0 :             &amp;QAction::setChecked);</span>
-<span class="lineNum">     226 </span>            : 
-<span class="lineNum">     227 </span>            :     // show content tiles action
-<span class="lineNum">     228 </span><span class="lineNoCov">          0 :     QAction* showContentTilesAction = new QAction(&quot;Content Tiles&quot;, this);</span>
-<span class="lineNum">     229 </span><span class="lineNoCov">          0 :     showContentTilesAction-&gt;setStatusTip(&quot;Show Content Tiles&quot;);</span>
-<span class="lineNum">     230 </span><span class="lineNoCov">          0 :     showContentTilesAction-&gt;setCheckable(true);</span>
-<span class="lineNum">     231 </span><span class="lineNoCov">          0 :     showContentTilesAction-&gt;setChecked(_options-&gt;getShowContentTiles());</span>
-<span class="lineNum">     232 </span><span class="lineNoCov">          0 :     connect(showContentTilesAction, &amp;QAction::toggled, _options.get(),</span>
-<span class="lineNum">     233 </span><span class="lineNoCov">          0 :             &amp;Options::setShowContentTiles);</span>
-<span class="lineNum">     234 </span><span class="lineNoCov">          0 :     connect(_options.get(), &amp;Options::showContentTilesChanged,</span>
-<span class="lineNum">     235 </span><span class="lineNoCov">          0 :             showContentTilesAction, &amp;QAction::setChecked);</span>
-<span class="lineNum">     236 </span>            : 
-<span class="lineNum">     237 </span>            :     // show control area action
-<span class="lineNum">     238 </span><span class="lineNoCov">          0 :     QAction* showControlAreaAction = new QAction(&quot;Control Area&quot;, this);</span>
-<span class="lineNum">     239 </span><span class="lineNoCov">          0 :     showControlAreaAction-&gt;setStatusTip(&quot;Show the Control Area&quot;);</span>
-<span class="lineNum">     240 </span><span class="lineNoCov">          0 :     showControlAreaAction-&gt;setCheckable(true);</span>
-<span class="lineNum">     241 </span><span class="lineNoCov">          0 :     showControlAreaAction-&gt;setChecked(_options-&gt;getShowControlArea());</span>
-<span class="lineNum">     242 </span><span class="lineNoCov">          0 :     connect(showControlAreaAction, &amp;QAction::toggled, _options.get(),</span>
-<span class="lineNum">     243 </span><span class="lineNoCov">          0 :             &amp;Options::setShowControlArea);</span>
-<span class="lineNum">     244 </span><span class="lineNoCov">          0 :     connect(_options.get(), &amp;Options::showControlAreaChanged,</span>
-<span class="lineNum">     245 </span><span class="lineNoCov">          0 :             showControlAreaAction, &amp;QAction::setChecked);</span>
-<span class="lineNum">     246 </span>            : 
-<span class="lineNum">     247 </span>            :     // show streaming statistics action
-<span class="lineNum">     248 </span><span class="lineNoCov">          0 :     QAction* showStatisticsAction = new QAction(&quot;Statistics&quot;, this);</span>
-<span class="lineNum">     249 </span><span class="lineNoCov">          0 :     showStatisticsAction-&gt;setStatusTip(&quot;Show statistics&quot;);</span>
-<span class="lineNum">     250 </span><span class="lineNoCov">          0 :     showStatisticsAction-&gt;setCheckable(true);</span>
-<span class="lineNum">     251 </span><span class="lineNoCov">          0 :     showStatisticsAction-&gt;setChecked(_options-&gt;getShowStatistics());</span>
-<span class="lineNum">     252 </span><span class="lineNoCov">          0 :     connect(showStatisticsAction, &amp;QAction::toggled, _options.get(),</span>
-<span class="lineNum">     253 </span><span class="lineNoCov">          0 :             &amp;Options::setShowStatistics);</span>
-<span class="lineNum">     254 </span><span class="lineNoCov">          0 :     connect(_options.get(), &amp;Options::showStatisticsChanged,</span>
-<span class="lineNum">     255 </span><span class="lineNoCov">          0 :             showStatisticsAction, &amp;QAction::setChecked);</span>
-<span class="lineNum">     256 </span>            : 
-<span class="lineNum">     257 </span>            :     // show test pattern action
-<span class="lineNum">     258 </span><span class="lineNoCov">          0 :     QAction* showTestPatternAction = new QAction(&quot;Test Pattern&quot;, this);</span>
-<span class="lineNum">     259 </span><span class="lineNoCov">          0 :     showTestPatternAction-&gt;setStatusTip(&quot;Show test pattern&quot;);</span>
-<span class="lineNum">     260 </span><span class="lineNoCov">          0 :     showTestPatternAction-&gt;setCheckable(true);</span>
-<span class="lineNum">     261 </span><span class="lineNoCov">          0 :     showTestPatternAction-&gt;setChecked(_options-&gt;getShowTestPattern());</span>
-<span class="lineNum">     262 </span><span class="lineNoCov">          0 :     connect(showTestPatternAction, &amp;QAction::toggled, _options.get(),</span>
-<span class="lineNum">     263 </span><span class="lineNoCov">          0 :             &amp;Options::setShowTestPattern);</span>
-<span class="lineNum">     264 </span><span class="lineNoCov">          0 :     connect(_options.get(), &amp;Options::showTestPatternChanged,</span>
-<span class="lineNum">     265 </span><span class="lineNoCov">          0 :             showTestPatternAction, &amp;QAction::setChecked);</span>
-<span class="lineNum">     266 </span>            : 
-<span class="lineNum">     267 </span>            :     // show touch points action
-<span class="lineNum">     268 </span><span class="lineNoCov">          0 :     QAction* showTouchPoints = new QAction(&quot;Touch Points&quot;, this);</span>
-<span class="lineNum">     269 </span><span class="lineNoCov">          0 :     showTouchPoints-&gt;setStatusTip(&quot;Show touch points&quot;);</span>
-<span class="lineNum">     270 </span><span class="lineNoCov">          0 :     showTouchPoints-&gt;setCheckable(true);</span>
-<span class="lineNum">     271 </span><span class="lineNoCov">          0 :     showTouchPoints-&gt;setChecked(_options-&gt;getShowTouchPoints());</span>
-<span class="lineNum">     272 </span><span class="lineNoCov">          0 :     connect(showTouchPoints, &amp;QAction::toggled, _options.get(),</span>
-<span class="lineNum">     273 </span><span class="lineNoCov">          0 :             &amp;Options::setShowTouchPoints);</span>
-<span class="lineNum">     274 </span><span class="lineNoCov">          0 :     connect(_options.get(), &amp;Options::showTouchPointsChanged, showTouchPoints,</span>
-<span class="lineNum">     275 </span><span class="lineNoCov">          0 :             &amp;QAction::setChecked);</span>
-<span class="lineNum">     276 </span>            : 
-<span class="lineNum">     277 </span>            :     // show window borders action
-<span class="lineNum">     278 </span><span class="lineNoCov">          0 :     QAction* showWindowBordersAction = new QAction(&quot;Window Borders&quot;, this);</span>
-<span class="lineNum">     279 </span><span class="lineNoCov">          0 :     showWindowBordersAction-&gt;setStatusTip(&quot;Show window borders&quot;);</span>
-<span class="lineNum">     280 </span><span class="lineNoCov">          0 :     showWindowBordersAction-&gt;setCheckable(true);</span>
-<span class="lineNum">     281 </span><span class="lineNoCov">          0 :     showWindowBordersAction-&gt;setChecked(_options-&gt;getShowWindowBorders());</span>
-<span class="lineNum">     282 </span><span class="lineNoCov">          0 :     connect(showWindowBordersAction, &amp;QAction::toggled, _options.get(),</span>
-<span class="lineNum">     283 </span><span class="lineNoCov">          0 :             &amp;Options::setShowWindowBorders);</span>
-<span class="lineNum">     284 </span><span class="lineNoCov">          0 :     connect(_options.get(), &amp;Options::showWindowBordersChanged,</span>
-<span class="lineNum">     285 </span><span class="lineNoCov">          0 :             showWindowBordersAction, &amp;QAction::setChecked);</span>
-<span class="lineNum">     286 </span>            : 
-<span class="lineNum">     287 </span>            :     // show window title action
-<span class="lineNum">     288 </span><span class="lineNoCov">          0 :     QAction* showWindowTitlesAction = new QAction(&quot;Window Titles&quot;, this);</span>
-<span class="lineNum">     289 </span><span class="lineNoCov">          0 :     showWindowTitlesAction-&gt;setStatusTip(&quot;Show window titles&quot;);</span>
-<span class="lineNum">     290 </span><span class="lineNoCov">          0 :     showWindowTitlesAction-&gt;setCheckable(true);</span>
-<span class="lineNum">     291 </span><span class="lineNoCov">          0 :     showWindowTitlesAction-&gt;setChecked(_options-&gt;getShowWindowTitles());</span>
-<span class="lineNum">     292 </span><span class="lineNoCov">          0 :     connect(showWindowTitlesAction, &amp;QAction::toggled, _options.get(),</span>
-<span class="lineNum">     293 </span><span class="lineNoCov">          0 :             &amp;Options::setShowWindowTitles);</span>
-<span class="lineNum">     294 </span><span class="lineNoCov">          0 :     connect(_options.get(), &amp;Options::showWindowTitlesChanged,</span>
-<span class="lineNum">     295 </span><span class="lineNoCov">          0 :             showWindowTitlesAction, &amp;QAction::setChecked);</span>
-<span class="lineNum">     296 </span>            : 
-<span class="lineNum">     297 </span>            :     // show zoom context action
-<span class="lineNum">     298 </span><span class="lineNoCov">          0 :     QAction* showZoomContextAction = new QAction(&quot;Zoom Context&quot;, this);</span>
-<span class="lineNum">     299 </span><span class="lineNoCov">          0 :     showZoomContextAction-&gt;setStatusTip(&quot;Show zoom context&quot;);</span>
-<span class="lineNum">     300 </span><span class="lineNoCov">          0 :     showZoomContextAction-&gt;setCheckable(true);</span>
-<span class="lineNum">     301 </span><span class="lineNoCov">          0 :     showZoomContextAction-&gt;setChecked(_options-&gt;getShowZoomContext());</span>
-<span class="lineNum">     302 </span><span class="lineNoCov">          0 :     connect(showZoomContextAction, &amp;QAction::toggled, _options.get(),</span>
-<span class="lineNum">     303 </span><span class="lineNoCov">          0 :             &amp;Options::setShowZoomContext);</span>
-<span class="lineNum">     304 </span><span class="lineNoCov">          0 :     connect(_options.get(), &amp;Options::showZoomContextChanged,</span>
-<span class="lineNum">     305 </span><span class="lineNoCov">          0 :             showZoomContextAction, &amp;QAction::setChecked);</span>
-<span class="lineNum">     306 </span>            : 
-<span class="lineNum">     307 </span>            :     /** HELP menu */
-<span class="lineNum">     308 </span>            : 
-<span class="lineNum">     309 </span><span class="lineNoCov">          0 :     QAction* showAboutDialog = new QAction(&quot;About&quot;, this);</span>
-<span class="lineNum">     310 </span><span class="lineNoCov">          0 :     showAboutDialog-&gt;setStatusTip(&quot;About Tide&quot;);</span>
-<span class="lineNum">     311 </span>            :     connect(showAboutDialog, &amp;QAction::triggered, this,
-<span class="lineNum">     312 </span><span class="lineNoCov">          0 :             &amp;MasterWindow::_openAboutWidget);</span>
-<span class="lineNum">     313 </span>            : 
-<span class="lineNum">     314 </span>            :     // add actions to menus
-<span class="lineNum">     315 </span><span class="lineNoCov">          0 :     fileMenu-&gt;addAction(openContentAction);</span>
-<span class="lineNum">     316 </span><span class="lineNoCov">          0 :     fileMenu-&gt;addAction(openContentsDirectoryAction);</span>
-<span class="lineNum">     317 </span><span class="lineNoCov">          0 :     fileMenu-&gt;addAction(loadSessionAction);</span>
-<span class="lineNum">     318 </span><span class="lineNoCov">          0 :     fileMenu-&gt;addAction(saveSessionAction);</span>
-<span class="lineNum">     319 </span>            : #if TIDE_ENABLE_WEBBROWSER_SUPPORT
-<span class="lineNum">     320 </span>            :     fileMenu-&gt;addAction(webbrowserAction);
-<span class="lineNum">     321 </span>            : #endif
-<span class="lineNum">     322 </span><span class="lineNoCov">          0 :     fileMenu-&gt;addAction(whiteboardAction);</span>
-<span class="lineNum">     323 </span><span class="lineNoCov">          0 :     fileMenu-&gt;addAction(clearContentsAction);</span>
-<span class="lineNum">     324 </span><span class="lineNoCov">          0 :     fileMenu-&gt;addAction(quitAction);</span>
-<span class="lineNum">     325 </span><span class="lineNoCov">          0 :     editMenu-&gt;addAction(backgroundAction);</span>
-<span class="lineNum">     326 </span><span class="lineNoCov">          0 :     viewMenu-&gt;addAction(autoFocusStreamersAction);</span>
-<span class="lineNum">     327 </span><span class="lineNoCov">          0 :     viewMenu-&gt;addAction(enableAlphaBlendingAction);</span>
-<span class="lineNum">     328 </span><span class="lineNoCov">          0 :     viewMenu-&gt;addAction(showClockAction);</span>
-<span class="lineNum">     329 </span><span class="lineNoCov">          0 :     viewMenu-&gt;addAction(showContentTilesAction);</span>
-<span class="lineNum">     330 </span><span class="lineNoCov">          0 :     viewMenu-&gt;addAction(showControlAreaAction);</span>
-<span class="lineNum">     331 </span><span class="lineNoCov">          0 :     viewMenu-&gt;addAction(showStatisticsAction);</span>
-<span class="lineNum">     332 </span><span class="lineNoCov">          0 :     viewMenu-&gt;addAction(showTestPatternAction);</span>
-<span class="lineNum">     333 </span><span class="lineNoCov">          0 :     viewMenu-&gt;addAction(showTouchPoints);</span>
-<span class="lineNum">     334 </span><span class="lineNoCov">          0 :     viewMenu-&gt;addAction(showWindowBordersAction);</span>
-<span class="lineNum">     335 </span><span class="lineNoCov">          0 :     viewMenu-&gt;addAction(showWindowTitlesAction);</span>
-<span class="lineNum">     336 </span><span class="lineNoCov">          0 :     viewMenu-&gt;addAction(showZoomContextAction);</span>
-<span class="lineNum">     337 </span><span class="lineNoCov">          0 :     helpMenu-&gt;addAction(showAboutDialog);</span>
-<span class="lineNum">     338 </span>            : 
-<span class="lineNum">     339 </span>            :     // add actions to toolbar
-<span class="lineNum">     340 </span><span class="lineNoCov">          0 :     toolbar-&gt;addAction(openContentAction);</span>
-<span class="lineNum">     341 </span><span class="lineNoCov">          0 :     toolbar-&gt;addAction(openContentsDirectoryAction);</span>
-<span class="lineNum">     342 </span><span class="lineNoCov">          0 :     toolbar-&gt;addAction(loadSessionAction);</span>
-<span class="lineNum">     343 </span><span class="lineNoCov">          0 :     toolbar-&gt;addAction(saveSessionAction);</span>
-<span class="lineNum">     344 </span>            : #if TIDE_ENABLE_WEBBROWSER_SUPPORT
-<span class="lineNum">     345 </span>            :     toolbar-&gt;addAction(webbrowserAction);
-<span class="lineNum">     346 </span>            : #endif
-<span class="lineNum">     347 </span><span class="lineNoCov">          0 :     toolbar-&gt;addAction(whiteboardAction);</span>
-<span class="lineNum">     348 </span><span class="lineNoCov">          0 :     toolbar-&gt;addAction(clearContentsAction);</span>
-<span class="lineNum">     349 </span><span class="lineNoCov">          0 :     toolbar-&gt;addAction(backgroundAction);</span>
-<span class="lineNum">     350 </span>            : 
-<span class="lineNum">     351 </span>            :     // main widget / layout area
-<span class="lineNum">     352 </span><span class="lineNoCov">          0 :     QTabWidget* mainWidget = new QTabWidget();</span>
-<span class="lineNum">     353 </span><span class="lineNoCov">          0 :     setCentralWidget(mainWidget);</span>
-<span class="lineNum">     354 </span>            : 
-<span class="lineNum">     355 </span>            :     // The QWidget wrapper *has* to retain ownership to the masterQuickView.
-<span class="lineNum">     356 </span>            :     // It is not possible to detach the masterQuickView from its parent wrapper
-<span class="lineNum">     357 </span>            :     // in the MasterWindow destructor. The parentChanged event doesn't have
-<span class="lineNum">     358 </span>            :     // time to be processed correctly resulting in a double-delete.
-<span class="lineNum">     359 </span><span class="lineNoCov">          0 :     _quickView = quickView.get(); // keep a reference</span>
-<span class="lineNum">     360 </span><span class="lineNoCov">          0 :     mainWidget-&gt;addTab(QWidget::createWindowContainer(quickView.release()),</span>
-<span class="lineNum">     361 </span><span class="lineNoCov">          0 :                        &quot;Display group 0&quot;);</span>
-<span class="lineNum">     362 </span>            : 
-<span class="lineNum">     363 </span>            :     // create contents dock widget
-<span class="lineNum">     364 </span><span class="lineNoCov">          0 :     QDockWidget* contentsDockWidget = new QDockWidget(&quot;Contents&quot;, this);</span>
-<span class="lineNum">     365 </span><span class="lineNoCov">          0 :     QWidget* contentsWidget = new QWidget();</span>
-<span class="lineNum">     366 </span><span class="lineNoCov">          0 :     QVBoxLayout* contentsLayout = new QVBoxLayout();</span>
-<span class="lineNum">     367 </span><span class="lineNoCov">          0 :     contentsWidget-&gt;setLayout(contentsLayout);</span>
-<span class="lineNum">     368 </span><span class="lineNoCov">          0 :     contentsDockWidget-&gt;setWidget(contentsWidget);</span>
-<span class="lineNum">     369 </span><span class="lineNoCov">          0 :     addDockWidget(Qt::LeftDockWidgetArea, contentsDockWidget);</span>
-<span class="lineNum">     370 </span>            : 
-<span class="lineNum">     371 </span>            :     // add the list widget
-<span class="lineNum">     372 </span><span class="lineNoCov">          0 :     DisplayGroupListWidget* dglwp = new DisplayGroupListWidget(this);</span>
-<span class="lineNum">     373 </span><span class="lineNoCov">          0 :     dglwp-&gt;setDataModel(_displayGroup);</span>
-<span class="lineNum">     374 </span><span class="lineNoCov">          0 :     contentsLayout-&gt;addWidget(dglwp);</span>
-<a name="375"><span class="lineNum">     375 </span><span class="lineNoCov">          0 : }</span></a>
-<span class="lineNum">     376 </span>            : 
-<span class="lineNum">     377 </span><span class="lineNoCov">          0 : void MasterWindow::_openContent()</span>
-<span class="lineNum">     378 </span>            : {
-<span class="lineNum">     379 </span><span class="lineNoCov">          0 :     const QString filter = ContentFactory::getSupportedFilesFilterAsString();</span>
-<span class="lineNum">     380 </span>            : 
-<span class="lineNum">     381 </span>            :     const QString filename =
-<span class="lineNum">     382 </span><span class="lineNoCov">          0 :         QFileDialog::getOpenFileName(this, tr(&quot;Choose content&quot;), _contentFolder,</span>
-<span class="lineNum">     383 </span><span class="lineNoCov">          0 :                                      filter);</span>
-<span class="lineNum">     384 </span><span class="lineNoCov">          0 :     if (filename.isEmpty())</span>
-<span class="lineNum">     385 </span><span class="lineNoCov">          0 :         return;</span>
-<span class="lineNum">     386 </span>            : 
-<span class="lineNum">     387 </span><span class="lineNoCov">          0 :     _contentFolder = QFileInfo(filename).absoluteDir().path();</span>
+<span class="lineNum">     192 </span>            :     // background content action
+<span class="lineNum">     193 </span><span class="lineNoCov">          0 :     auto backgroundAction = new QAction(&quot;Background&quot;, this);</span>
+<span class="lineNum">     194 </span><span class="lineNoCov">          0 :     backgroundAction-&gt;setStatusTip(&quot;Select the background color and content&quot;);</span>
+<span class="lineNum">     195 </span><span class="lineNoCov">          0 :     connect(backgroundAction, &amp;QAction::triggered, _backgroundWidget,</span>
+<span class="lineNum">     196 </span><span class="lineNoCov">          0 :             &amp;BackgroundWidget::show);</span>
+<span class="lineNum">     197 </span><span class="lineNoCov">          0 :     connect(static_cast&lt;QTabWidget*&gt;(centralWidget()),</span>
+<span class="lineNum">     198 </span><span class="lineNoCov">          0 :             &amp;QTabWidget::currentChanged, _backgroundWidget,</span>
+<span class="lineNum">     199 </span><span class="lineNoCov">          0 :             &amp;BackgroundWidget::setActiveSurface);</span>
+<span class="lineNum">     200 </span>            : 
+<span class="lineNum">     201 </span>            :     /** VIEW menu */
+<span class="lineNum">     202 </span>            : 
+<span class="lineNum">     203 </span>            :     // enable alpha blending
+<span class="lineNum">     204 </span><span class="lineNoCov">          0 :     auto enableAlphaBlendingAction = new QAction(&quot;Alpha Blending&quot;, this);</span>
+<span class="lineNum">     205 </span><span class="lineNoCov">          0 :     enableAlphaBlendingAction-&gt;setStatusTip(</span>
+<span class="lineNum">     206 </span><span class="lineNoCov">          0 :         &quot;Enable alpha blending for transparent contents (png, svg, etc..)&quot;);</span>
+<span class="lineNum">     207 </span><span class="lineNoCov">          0 :     enableAlphaBlendingAction-&gt;setCheckable(true);</span>
+<span class="lineNum">     208 </span><span class="lineNoCov">          0 :     enableAlphaBlendingAction-&gt;setChecked(_options-&gt;isAlphaBlendingEnabled());</span>
+<span class="lineNum">     209 </span><span class="lineNoCov">          0 :     connect(enableAlphaBlendingAction, &amp;QAction::toggled, _options.get(),</span>
+<span class="lineNum">     210 </span><span class="lineNoCov">          0 :             &amp;Options::enableAlphaBlending);</span>
+<span class="lineNum">     211 </span><span class="lineNoCov">          0 :     connect(_options.get(), &amp;Options::alphaBlendingEnabledChanged,</span>
+<span class="lineNum">     212 </span><span class="lineNoCov">          0 :             enableAlphaBlendingAction, &amp;QAction::setChecked);</span>
+<span class="lineNum">     213 </span>            : 
+<span class="lineNum">     214 </span>            :     // auto focus pixel streams
+<span class="lineNum">     215 </span><span class="lineNoCov">          0 :     auto autoFocusStreamersAction = new QAction(&quot;Auto-focus streamers&quot;, this);</span>
+<span class="lineNum">     216 </span><span class="lineNoCov">          0 :     autoFocusStreamersAction-&gt;setStatusTip(</span>
+<span class="lineNum">     217 </span><span class="lineNoCov">          0 :         &quot;Open the windows of the external streamers in focus mode&quot;);</span>
+<span class="lineNum">     218 </span><span class="lineNoCov">          0 :     autoFocusStreamersAction-&gt;setCheckable(true);</span>
+<span class="lineNum">     219 </span><span class="lineNoCov">          0 :     autoFocusStreamersAction-&gt;setChecked(_options-&gt;getAutoFocusPixelStreams());</span>
+<span class="lineNum">     220 </span><span class="lineNoCov">          0 :     connect(autoFocusStreamersAction, &amp;QAction::toggled, _options.get(),</span>
+<span class="lineNum">     221 </span><span class="lineNoCov">          0 :             &amp;Options::setAutoFocusPixelStreams);</span>
+<span class="lineNum">     222 </span><span class="lineNoCov">          0 :     connect(_options.get(), &amp;Options::autoFocusPixelStreamsChanged,</span>
+<span class="lineNum">     223 </span><span class="lineNoCov">          0 :             autoFocusStreamersAction, &amp;QAction::setChecked);</span>
+<span class="lineNum">     224 </span>            : 
+<span class="lineNum">     225 </span>            :     // show clock action
+<span class="lineNum">     226 </span><span class="lineNoCov">          0 :     auto showClockAction = new QAction(&quot;Clock&quot;, this);</span>
+<span class="lineNum">     227 </span><span class="lineNoCov">          0 :     showClockAction-&gt;setStatusTip(&quot;Show a clock on the background&quot;);</span>
+<span class="lineNum">     228 </span><span class="lineNoCov">          0 :     showClockAction-&gt;setCheckable(true);</span>
+<span class="lineNum">     229 </span><span class="lineNoCov">          0 :     showClockAction-&gt;setChecked(_options-&gt;getShowClock());</span>
+<span class="lineNum">     230 </span><span class="lineNoCov">          0 :     connect(showClockAction, &amp;QAction::toggled, _options.get(),</span>
+<span class="lineNum">     231 </span><span class="lineNoCov">          0 :             &amp;Options::setShowClock);</span>
+<span class="lineNum">     232 </span><span class="lineNoCov">          0 :     connect(_options.get(), &amp;Options::showClockChanged, showClockAction,</span>
+<span class="lineNum">     233 </span><span class="lineNoCov">          0 :             &amp;QAction::setChecked);</span>
+<span class="lineNum">     234 </span>            : 
+<span class="lineNum">     235 </span>            :     // show content tiles action
+<span class="lineNum">     236 </span><span class="lineNoCov">          0 :     auto showContentTilesAction = new QAction(&quot;Content Tiles&quot;, this);</span>
+<span class="lineNum">     237 </span><span class="lineNoCov">          0 :     showContentTilesAction-&gt;setStatusTip(&quot;Show Content Tiles&quot;);</span>
+<span class="lineNum">     238 </span><span class="lineNoCov">          0 :     showContentTilesAction-&gt;setCheckable(true);</span>
+<span class="lineNum">     239 </span><span class="lineNoCov">          0 :     showContentTilesAction-&gt;setChecked(_options-&gt;getShowContentTiles());</span>
+<span class="lineNum">     240 </span><span class="lineNoCov">          0 :     connect(showContentTilesAction, &amp;QAction::toggled, _options.get(),</span>
+<span class="lineNum">     241 </span><span class="lineNoCov">          0 :             &amp;Options::setShowContentTiles);</span>
+<span class="lineNum">     242 </span><span class="lineNoCov">          0 :     connect(_options.get(), &amp;Options::showContentTilesChanged,</span>
+<span class="lineNum">     243 </span><span class="lineNoCov">          0 :             showContentTilesAction, &amp;QAction::setChecked);</span>
+<span class="lineNum">     244 </span>            : 
+<span class="lineNum">     245 </span>            :     // show control area action
+<span class="lineNum">     246 </span><span class="lineNoCov">          0 :     auto showControlAreaAction = new QAction(&quot;Control Area&quot;, this);</span>
+<span class="lineNum">     247 </span><span class="lineNoCov">          0 :     showControlAreaAction-&gt;setStatusTip(&quot;Show the Control Area&quot;);</span>
+<span class="lineNum">     248 </span><span class="lineNoCov">          0 :     showControlAreaAction-&gt;setCheckable(true);</span>
+<span class="lineNum">     249 </span><span class="lineNoCov">          0 :     showControlAreaAction-&gt;setChecked(_options-&gt;getShowControlArea());</span>
+<span class="lineNum">     250 </span><span class="lineNoCov">          0 :     connect(showControlAreaAction, &amp;QAction::toggled, _options.get(),</span>
+<span class="lineNum">     251 </span><span class="lineNoCov">          0 :             &amp;Options::setShowControlArea);</span>
+<span class="lineNum">     252 </span><span class="lineNoCov">          0 :     connect(_options.get(), &amp;Options::showControlAreaChanged,</span>
+<span class="lineNum">     253 </span><span class="lineNoCov">          0 :             showControlAreaAction, &amp;QAction::setChecked);</span>
+<span class="lineNum">     254 </span>            : 
+<span class="lineNum">     255 </span>            :     // show streaming statistics action
+<span class="lineNum">     256 </span><span class="lineNoCov">          0 :     auto showStatisticsAction = new QAction(&quot;Statistics&quot;, this);</span>
+<span class="lineNum">     257 </span><span class="lineNoCov">          0 :     showStatisticsAction-&gt;setStatusTip(&quot;Show statistics&quot;);</span>
+<span class="lineNum">     258 </span><span class="lineNoCov">          0 :     showStatisticsAction-&gt;setCheckable(true);</span>
+<span class="lineNum">     259 </span><span class="lineNoCov">          0 :     showStatisticsAction-&gt;setChecked(_options-&gt;getShowStatistics());</span>
+<span class="lineNum">     260 </span><span class="lineNoCov">          0 :     connect(showStatisticsAction, &amp;QAction::toggled, _options.get(),</span>
+<span class="lineNum">     261 </span><span class="lineNoCov">          0 :             &amp;Options::setShowStatistics);</span>
+<span class="lineNum">     262 </span><span class="lineNoCov">          0 :     connect(_options.get(), &amp;Options::showStatisticsChanged,</span>
+<span class="lineNum">     263 </span><span class="lineNoCov">          0 :             showStatisticsAction, &amp;QAction::setChecked);</span>
+<span class="lineNum">     264 </span>            : 
+<span class="lineNum">     265 </span>            :     // show test pattern action
+<span class="lineNum">     266 </span><span class="lineNoCov">          0 :     auto showTestPatternAction = new QAction(&quot;Test Pattern&quot;, this);</span>
+<span class="lineNum">     267 </span><span class="lineNoCov">          0 :     showTestPatternAction-&gt;setStatusTip(&quot;Show test pattern&quot;);</span>
+<span class="lineNum">     268 </span><span class="lineNoCov">          0 :     showTestPatternAction-&gt;setCheckable(true);</span>
+<span class="lineNum">     269 </span><span class="lineNoCov">          0 :     showTestPatternAction-&gt;setChecked(_options-&gt;getShowTestPattern());</span>
+<span class="lineNum">     270 </span><span class="lineNoCov">          0 :     connect(showTestPatternAction, &amp;QAction::toggled, _options.get(),</span>
+<span class="lineNum">     271 </span><span class="lineNoCov">          0 :             &amp;Options::setShowTestPattern);</span>
+<span class="lineNum">     272 </span><span class="lineNoCov">          0 :     connect(_options.get(), &amp;Options::showTestPatternChanged,</span>
+<span class="lineNum">     273 </span><span class="lineNoCov">          0 :             showTestPatternAction, &amp;QAction::setChecked);</span>
+<span class="lineNum">     274 </span>            : 
+<span class="lineNum">     275 </span>            :     // show touch points action
+<span class="lineNum">     276 </span><span class="lineNoCov">          0 :     auto showTouchPoints = new QAction(&quot;Touch Points&quot;, this);</span>
+<span class="lineNum">     277 </span><span class="lineNoCov">          0 :     showTouchPoints-&gt;setStatusTip(&quot;Show touch points&quot;);</span>
+<span class="lineNum">     278 </span><span class="lineNoCov">          0 :     showTouchPoints-&gt;setCheckable(true);</span>
+<span class="lineNum">     279 </span><span class="lineNoCov">          0 :     showTouchPoints-&gt;setChecked(_options-&gt;getShowTouchPoints());</span>
+<span class="lineNum">     280 </span><span class="lineNoCov">          0 :     connect(showTouchPoints, &amp;QAction::toggled, _options.get(),</span>
+<span class="lineNum">     281 </span><span class="lineNoCov">          0 :             &amp;Options::setShowTouchPoints);</span>
+<span class="lineNum">     282 </span><span class="lineNoCov">          0 :     connect(_options.get(), &amp;Options::showTouchPointsChanged, showTouchPoints,</span>
+<span class="lineNum">     283 </span><span class="lineNoCov">          0 :             &amp;QAction::setChecked);</span>
+<span class="lineNum">     284 </span>            : 
+<span class="lineNum">     285 </span>            :     // show window borders action
+<span class="lineNum">     286 </span><span class="lineNoCov">          0 :     auto showWindowBordersAction = new QAction(&quot;Window Borders&quot;, this);</span>
+<span class="lineNum">     287 </span><span class="lineNoCov">          0 :     showWindowBordersAction-&gt;setStatusTip(&quot;Show window borders&quot;);</span>
+<span class="lineNum">     288 </span><span class="lineNoCov">          0 :     showWindowBordersAction-&gt;setCheckable(true);</span>
+<span class="lineNum">     289 </span><span class="lineNoCov">          0 :     showWindowBordersAction-&gt;setChecked(_options-&gt;getShowWindowBorders());</span>
+<span class="lineNum">     290 </span><span class="lineNoCov">          0 :     connect(showWindowBordersAction, &amp;QAction::toggled, _options.get(),</span>
+<span class="lineNum">     291 </span><span class="lineNoCov">          0 :             &amp;Options::setShowWindowBorders);</span>
+<span class="lineNum">     292 </span><span class="lineNoCov">          0 :     connect(_options.get(), &amp;Options::showWindowBordersChanged,</span>
+<span class="lineNum">     293 </span><span class="lineNoCov">          0 :             showWindowBordersAction, &amp;QAction::setChecked);</span>
+<span class="lineNum">     294 </span>            : 
+<span class="lineNum">     295 </span>            :     // show window title action
+<span class="lineNum">     296 </span><span class="lineNoCov">          0 :     auto showWindowTitlesAction = new QAction(&quot;Window Titles&quot;, this);</span>
+<span class="lineNum">     297 </span><span class="lineNoCov">          0 :     showWindowTitlesAction-&gt;setStatusTip(&quot;Show window titles&quot;);</span>
+<span class="lineNum">     298 </span><span class="lineNoCov">          0 :     showWindowTitlesAction-&gt;setCheckable(true);</span>
+<span class="lineNum">     299 </span><span class="lineNoCov">          0 :     showWindowTitlesAction-&gt;setChecked(_options-&gt;getShowWindowTitles());</span>
+<span class="lineNum">     300 </span><span class="lineNoCov">          0 :     connect(showWindowTitlesAction, &amp;QAction::toggled, _options.get(),</span>
+<span class="lineNum">     301 </span><span class="lineNoCov">          0 :             &amp;Options::setShowWindowTitles);</span>
+<span class="lineNum">     302 </span><span class="lineNoCov">          0 :     connect(_options.get(), &amp;Options::showWindowTitlesChanged,</span>
+<span class="lineNum">     303 </span><span class="lineNoCov">          0 :             showWindowTitlesAction, &amp;QAction::setChecked);</span>
+<span class="lineNum">     304 </span>            : 
+<span class="lineNum">     305 </span>            :     // show zoom context action
+<span class="lineNum">     306 </span><span class="lineNoCov">          0 :     auto showZoomContextAction = new QAction(&quot;Zoom Context&quot;, this);</span>
+<span class="lineNum">     307 </span><span class="lineNoCov">          0 :     showZoomContextAction-&gt;setStatusTip(&quot;Show zoom context&quot;);</span>
+<span class="lineNum">     308 </span><span class="lineNoCov">          0 :     showZoomContextAction-&gt;setCheckable(true);</span>
+<span class="lineNum">     309 </span><span class="lineNoCov">          0 :     showZoomContextAction-&gt;setChecked(_options-&gt;getShowZoomContext());</span>
+<span class="lineNum">     310 </span><span class="lineNoCov">          0 :     connect(showZoomContextAction, &amp;QAction::toggled, _options.get(),</span>
+<span class="lineNum">     311 </span><span class="lineNoCov">          0 :             &amp;Options::setShowZoomContext);</span>
+<span class="lineNum">     312 </span><span class="lineNoCov">          0 :     connect(_options.get(), &amp;Options::showZoomContextChanged,</span>
+<span class="lineNum">     313 </span><span class="lineNoCov">          0 :             showZoomContextAction, &amp;QAction::setChecked);</span>
+<span class="lineNum">     314 </span>            : 
+<span class="lineNum">     315 </span>            :     /** HELP menu */
+<span class="lineNum">     316 </span>            : 
+<span class="lineNum">     317 </span><span class="lineNoCov">          0 :     auto showAboutDialog = new QAction(&quot;About&quot;, this);</span>
+<span class="lineNum">     318 </span><span class="lineNoCov">          0 :     showAboutDialog-&gt;setStatusTip(&quot;About Tide&quot;);</span>
+<span class="lineNum">     319 </span>            :     connect(showAboutDialog, &amp;QAction::triggered, this,
+<span class="lineNum">     320 </span><span class="lineNoCov">          0 :             &amp;MasterWindow::_openAboutWidget);</span>
+<span class="lineNum">     321 </span>            : 
+<span class="lineNum">     322 </span>            :     // add actions to menus
+<span class="lineNum">     323 </span><span class="lineNoCov">          0 :     fileMenu-&gt;addAction(openContentAction);</span>
+<span class="lineNum">     324 </span><span class="lineNoCov">          0 :     fileMenu-&gt;addAction(openContentsDirectoryAction);</span>
+<span class="lineNum">     325 </span><span class="lineNoCov">          0 :     fileMenu-&gt;addAction(loadSessionAction);</span>
+<span class="lineNum">     326 </span><span class="lineNoCov">          0 :     fileMenu-&gt;addAction(saveSessionAction);</span>
+<span class="lineNum">     327 </span>            : #if TIDE_ENABLE_WEBBROWSER_SUPPORT
+<span class="lineNum">     328 </span>            :     fileMenu-&gt;addAction(webbrowserAction);
+<span class="lineNum">     329 </span>            : #endif
+<span class="lineNum">     330 </span><span class="lineNoCov">          0 :     fileMenu-&gt;addAction(whiteboardAction);</span>
+<span class="lineNum">     331 </span><span class="lineNoCov">          0 :     fileMenu-&gt;addAction(clearContentsAction);</span>
+<span class="lineNum">     332 </span><span class="lineNoCov">          0 :     fileMenu-&gt;addAction(quitAction);</span>
+<span class="lineNum">     333 </span><span class="lineNoCov">          0 :     editMenu-&gt;addAction(backgroundAction);</span>
+<span class="lineNum">     334 </span><span class="lineNoCov">          0 :     viewMenu-&gt;addAction(autoFocusStreamersAction);</span>
+<span class="lineNum">     335 </span><span class="lineNoCov">          0 :     viewMenu-&gt;addAction(enableAlphaBlendingAction);</span>
+<span class="lineNum">     336 </span><span class="lineNoCov">          0 :     viewMenu-&gt;addAction(showClockAction);</span>
+<span class="lineNum">     337 </span><span class="lineNoCov">          0 :     viewMenu-&gt;addAction(showContentTilesAction);</span>
+<span class="lineNum">     338 </span><span class="lineNoCov">          0 :     viewMenu-&gt;addAction(showControlAreaAction);</span>
+<span class="lineNum">     339 </span><span class="lineNoCov">          0 :     viewMenu-&gt;addAction(showStatisticsAction);</span>
+<span class="lineNum">     340 </span><span class="lineNoCov">          0 :     viewMenu-&gt;addAction(showTestPatternAction);</span>
+<span class="lineNum">     341 </span><span class="lineNoCov">          0 :     viewMenu-&gt;addAction(showTouchPoints);</span>
+<span class="lineNum">     342 </span><span class="lineNoCov">          0 :     viewMenu-&gt;addAction(showWindowBordersAction);</span>
+<span class="lineNum">     343 </span><span class="lineNoCov">          0 :     viewMenu-&gt;addAction(showWindowTitlesAction);</span>
+<span class="lineNum">     344 </span><span class="lineNoCov">          0 :     viewMenu-&gt;addAction(showZoomContextAction);</span>
+<span class="lineNum">     345 </span><span class="lineNoCov">          0 :     helpMenu-&gt;addAction(showAboutDialog);</span>
+<span class="lineNum">     346 </span>            : 
+<span class="lineNum">     347 </span>            :     // add actions to toolbar
+<span class="lineNum">     348 </span><span class="lineNoCov">          0 :     toolbar-&gt;addAction(openContentAction);</span>
+<span class="lineNum">     349 </span><span class="lineNoCov">          0 :     toolbar-&gt;addAction(openContentsDirectoryAction);</span>
+<span class="lineNum">     350 </span><span class="lineNoCov">          0 :     toolbar-&gt;addAction(loadSessionAction);</span>
+<span class="lineNum">     351 </span><span class="lineNoCov">          0 :     toolbar-&gt;addAction(saveSessionAction);</span>
+<span class="lineNum">     352 </span>            : #if TIDE_ENABLE_WEBBROWSER_SUPPORT
+<span class="lineNum">     353 </span>            :     toolbar-&gt;addAction(webbrowserAction);
+<span class="lineNum">     354 </span>            : #endif
+<span class="lineNum">     355 </span><span class="lineNoCov">          0 :     toolbar-&gt;addAction(whiteboardAction);</span>
+<span class="lineNum">     356 </span><span class="lineNoCov">          0 :     toolbar-&gt;addAction(clearContentsAction);</span>
+<span class="lineNum">     357 </span><span class="lineNoCov">          0 :     toolbar-&gt;addAction(backgroundAction);</span>
+<span class="lineNum">     358 </span>            : 
+<span class="lineNum">     359 </span>            :     // create left dock widget
+<span class="lineNum">     360 </span><span class="lineNoCov">          0 :     auto contentsDockWidget = new QDockWidget(&quot;Contents&quot;, this);</span>
+<span class="lineNum">     361 </span><span class="lineNoCov">          0 :     auto contentsWidget = new QWidget();</span>
+<span class="lineNum">     362 </span><span class="lineNoCov">          0 :     auto contentsLayout = new QVBoxLayout();</span>
+<span class="lineNum">     363 </span><span class="lineNoCov">          0 :     contentsWidget-&gt;setLayout(contentsLayout);</span>
+<span class="lineNum">     364 </span><span class="lineNoCov">          0 :     contentsDockWidget-&gt;setWidget(contentsWidget);</span>
+<span class="lineNum">     365 </span><span class="lineNoCov">          0 :     addDockWidget(Qt::LeftDockWidgetArea, contentsDockWidget);</span>
+<span class="lineNum">     366 </span>            : 
+<span class="lineNum">     367 </span>            :     // add list widget (first display group only at the moment)
+<span class="lineNum">     368 </span><span class="lineNoCov">          0 :     auto displayGroupWidget = new DisplayGroupListWidget(this);</span>
+<span class="lineNum">     369 </span><span class="lineNoCov">          0 :     displayGroupWidget-&gt;setDataModel(_scene-&gt;getGroup(0).shared_from_this());</span>
+<span class="lineNum">     370 </span><span class="lineNoCov">          0 :     contentsLayout-&gt;addWidget(displayGroupWidget);</span>
+<a name="371"><span class="lineNum">     371 </span><span class="lineNoCov">          0 : }</span></a>
+<span class="lineNum">     372 </span>            : 
+<span class="lineNum">     373 </span><span class="lineNoCov">          0 : void MasterWindow::_addSurfacesTabViews(const Configuration&amp; config,</span>
+<span class="lineNum">     374 </span>            :                                         ScreenLockPtr lock)
+<span class="lineNum">     375 </span>            : {
+<span class="lineNum">     376 </span><span class="lineNoCov">          0 :     for (auto i = 0u; i &lt; _scene-&gt;getSurfaces().size(); ++i)</span>
+<span class="lineNum">     377 </span>            :     {
+<span class="lineNum">     378 </span><span class="lineNoCov">          0 :         auto group = _scene-&gt;getGroup(i).shared_from_this();</span>
+<span class="lineNum">     379 </span><span class="lineNoCov">          0 :         const auto&amp; surface = config.surfaces[i];</span>
+<span class="lineNum">     380 </span><span class="lineNoCov">          0 :         const auto tabTitle = QString{&quot;Display group %1&quot;}.arg(i);</span>
+<span class="lineNum">     381 </span>            :         auto quickView = std::make_unique&lt;MasterQuickView&gt;(surface, i, group,
+<span class="lineNum">     382 </span><span class="lineNoCov">          0 :                                                            _options, lock);</span>
+<span class="lineNum">     383 </span><span class="lineNoCov">          0 :         if (i == 0)</span>
+<span class="lineNum">     384 </span><span class="lineNoCov">          0 :             _quickView = quickView.get(); // keep a reference for mouse -&gt; touch</span>
+<span class="lineNum">     385 </span><span class="lineNoCov">          0 :         _addDisplayGroupTabView(std::move(quickView), tabTitle);</span>
+<span class="lineNum">     386 </span>            :     }
+<a name="387"><span class="lineNum">     387 </span><span class="lineNoCov">          0 : }</span></a>
 <span class="lineNum">     388 </span>            : 
-<span class="lineNum">     389 </span><span class="lineNoCov">          0 :     ContentLoader loader(_displayGroup);</span>
-<span class="lineNum">     390 </span><span class="lineNoCov">          0 :     if (!loader.load(filename))</span>
-<span class="lineNum">     391 </span>            :     {
-<span class="lineNum">     392 </span><span class="lineNoCov">          0 :         QMessageBox messageBox;</span>
-<span class="lineNum">     393 </span><span class="lineNoCov">          0 :         messageBox.setText(loader.isAlreadyOpen(filename)</span>
-<span class="lineNum">     394 </span>            :                                ? &quot;File already open.&quot;
-<span class="lineNum">     395 </span><span class="lineNoCov">          0 :                                : &quot;Unsupported file.&quot;);</span>
-<span class="lineNum">     396 </span><span class="lineNoCov">          0 :         messageBox.exec();</span>
-<span class="lineNum">     397 </span>            :     }
-<a name="398"><span class="lineNum">     398 </span>            : }</a>
-<span class="lineNum">     399 </span>            : 
-<span class="lineNum">     400 </span><span class="lineNoCov">          0 : void MasterWindow::_addContentDirectory(const QString&amp; directoryName,</span>
-<span class="lineNum">     401 </span>            :                                         const QSize&amp; gridSize)
-<span class="lineNum">     402 </span>            : {
-<span class="lineNum">     403 </span><span class="lineNoCov">          0 :     QDir directory(directoryName);</span>
-<span class="lineNum">     404 </span><span class="lineNoCov">          0 :     directory.setFilter(QDir::Files);</span>
-<span class="lineNum">     405 </span><span class="lineNoCov">          0 :     directory.setNameFilters(ContentFactory::getSupportedFilesFilter());</span>
-<span class="lineNum">     406 </span>            : 
-<span class="lineNum">     407 </span><span class="lineNoCov">          0 :     QFileInfoList list = directory.entryInfoList();</span>
-<span class="lineNum">     408 </span>            : 
-<span class="lineNum">     409 </span>            :     // Prevent opening of folders with an excessively large number of items
-<span class="lineNum">     410 </span><span class="lineNoCov">          0 :     if (list.size() &gt; 16)</span>
-<span class="lineNum">     411 </span>            :     {
-<span class="lineNum">     412 </span><span class="lineNoCov">          0 :         QString msg = &quot;Opening this folder will create &quot; +</span>
-<span class="lineNum">     413 </span><span class="lineNoCov">          0 :                       QString::number(list.size()) +</span>
-<span class="lineNum">     414 </span><span class="lineNoCov">          0 :                       &quot; content elements. Are you sure you want to continue?&quot;;</span>
-<span class="lineNum">     415 </span>            : 
-<span class="lineNum">     416 </span>            :         const auto reply =
-<span class="lineNum">     417 </span><span class="lineNoCov">          0 :             QMessageBox::question(this, &quot;Warning&quot;, msg,</span>
-<span class="lineNum">     418 </span><span class="lineNoCov">          0 :                                   QMessageBox::Yes | QMessageBox::No);</span>
-<span class="lineNum">     419 </span><span class="lineNoCov">          0 :         if (reply != QMessageBox::Yes)</span>
-<span class="lineNum">     420 </span><span class="lineNoCov">          0 :             return;</span>
-<span class="lineNum">     421 </span>            :     }
-<span class="lineNum">     422 </span>            : 
-<span class="lineNum">     423 </span><span class="lineNoCov">          0 :     ContentLoader{_displayGroup}.loadDir(directoryName, gridSize);</span>
-<a name="424"><span class="lineNum">     424 </span>            : }</a>
-<span class="lineNum">     425 </span>            : 
-<span class="lineNum">     426 </span><span class="lineNoCov">          0 : void MasterWindow::_openContentsDirectory()</span>
+<span class="lineNum">     389 </span><span class="lineNoCov">          0 : void MasterWindow::_addDisplayGroupTabView(</span>
+<span class="lineNum">     390 </span>            :     std::unique_ptr&lt;MasterQuickView&gt; quickView, const QString&amp; title)
+<span class="lineNum">     391 </span>            : {
+<span class="lineNum">     392 </span><span class="lineNoCov">          0 :     auto mainTabWidget = static_cast&lt;QTabWidget*&gt;(centralWidget());</span>
+<span class="lineNum">     393 </span>            : 
+<span class="lineNum">     394 </span>            :     // The QWidget wrapper *has* to retain ownership to the masterQuickView.
+<span class="lineNum">     395 </span>            :     // It is not possible to detach the masterQuickView from its parent wrapper
+<span class="lineNum">     396 </span>            :     // in the MasterWindow destructor. The parentChanged event doesn't have
+<span class="lineNum">     397 </span>            :     // time to be processed correctly resulting in a double-delete.
+<span class="lineNum">     398 </span><span class="lineNoCov">          0 :     mainTabWidget-&gt;addTab(QWidget::createWindowContainer(quickView.release()),</span>
+<span class="lineNum">     399 </span><span class="lineNoCov">          0 :                           title);</span>
+<a name="400"><span class="lineNum">     400 </span><span class="lineNoCov">          0 : }</span></a>
+<span class="lineNum">     401 </span>            : 
+<span class="lineNum">     402 </span><span class="lineNoCov">          0 : void MasterWindow::_openContent()</span>
+<span class="lineNum">     403 </span>            : {
+<span class="lineNum">     404 </span><span class="lineNoCov">          0 :     const auto filter = ContentFactory::getSupportedFilesFilterAsString();</span>
+<span class="lineNum">     405 </span>            : 
+<span class="lineNum">     406 </span>            :     const auto filename =
+<span class="lineNum">     407 </span><span class="lineNoCov">          0 :         QFileDialog::getOpenFileName(this, tr(&quot;Choose content&quot;), _contentFolder,</span>
+<span class="lineNum">     408 </span><span class="lineNoCov">          0 :                                      filter);</span>
+<span class="lineNum">     409 </span><span class="lineNoCov">          0 :     if (filename.isEmpty())</span>
+<span class="lineNum">     410 </span><span class="lineNoCov">          0 :         return;</span>
+<span class="lineNum">     411 </span>            : 
+<span class="lineNum">     412 </span><span class="lineNoCov">          0 :     _contentFolder = QFileInfo(filename).absoluteDir().path();</span>
+<span class="lineNum">     413 </span>            : 
+<span class="lineNum">     414 </span><span class="lineNoCov">          0 :     ContentLoader loader(_getActiveGroup());</span>
+<span class="lineNum">     415 </span><span class="lineNoCov">          0 :     if (!loader.load(filename))</span>
+<span class="lineNum">     416 </span>            :     {
+<span class="lineNum">     417 </span><span class="lineNoCov">          0 :         QMessageBox messageBox;</span>
+<span class="lineNum">     418 </span><span class="lineNoCov">          0 :         messageBox.setText(loader.isAlreadyOpen(filename)</span>
+<span class="lineNum">     419 </span>            :                                ? &quot;File already open.&quot;
+<span class="lineNum">     420 </span><span class="lineNoCov">          0 :                                : &quot;Unsupported file.&quot;);</span>
+<span class="lineNum">     421 </span><span class="lineNoCov">          0 :         messageBox.exec();</span>
+<span class="lineNum">     422 </span>            :     }
+<a name="423"><span class="lineNum">     423 </span>            : }</a>
+<span class="lineNum">     424 </span>            : 
+<span class="lineNum">     425 </span><span class="lineNoCov">          0 : void MasterWindow::_addContentDirectory(const QString&amp; directoryName,</span>
+<span class="lineNum">     426 </span>            :                                         const QSize&amp; gridSize)
 <span class="lineNum">     427 </span>            : {
-<span class="lineNum">     428 </span>            :     const QString dirName =
-<span class="lineNum">     429 </span><span class="lineNoCov">          0 :         QFileDialog::getExistingDirectory(this, QString(), _contentFolder);</span>
-<span class="lineNum">     430 </span><span class="lineNoCov">          0 :     if (dirName.isEmpty())</span>
-<span class="lineNum">     431 </span><span class="lineNoCov">          0 :         return;</span>
-<span class="lineNum">     432 </span>            : 
-<span class="lineNum">     433 </span><span class="lineNoCov">          0 :     _contentFolder = dirName;</span>
-<span class="lineNum">     434 </span>            : 
-<span class="lineNum">     435 </span><span class="lineNoCov">          0 :     const int gridX = QInputDialog::getInt(this, &quot;Grid X dimension&quot;,</span>
-<span class="lineNum">     436 </span><span class="lineNoCov">          0 :                                            &quot;Grid X dimension&quot;, 0, 0);</span>
-<span class="lineNum">     437 </span><span class="lineNoCov">          0 :     const int gridY = QInputDialog::getInt(this, &quot;Grid Y dimension&quot;,</span>
-<span class="lineNum">     438 </span><span class="lineNoCov">          0 :                                            &quot;Grid Y dimension&quot;, 0, 0);</span>
-<span class="lineNum">     439 </span><span class="lineNoCov">          0 :     _addContentDirectory(dirName, {gridX, gridY});</span>
-<a name="440"><span class="lineNum">     440 </span>            : }</a>
-<span class="lineNum">     441 </span>            : 
-<span class="lineNum">     442 </span><span class="lineNoCov">          0 : void MasterWindow::_openSession()</span>
-<span class="lineNum">     443 </span>            : {
-<span class="lineNum">     444 </span>            :     const QString filename =
-<span class="lineNum">     445 </span>            :         QFileDialog::getOpenFileName(this, &quot;Load Session&quot;, _sessionFolder,
-<span class="lineNum">     446 </span><span class="lineNoCov">          0 :                                      SESSION_FILES_FILTER);</span>
-<span class="lineNum">     447 </span><span class="lineNoCov">          0 :     if (filename.isEmpty())</span>
-<span class="lineNum">     448 </span><span class="lineNoCov">          0 :         return;</span>
-<span class="lineNum">     449 </span>            : 
-<span class="lineNum">     450 </span><span class="lineNoCov">          0 :     _sessionFolder = QFileInfo(filename).absoluteDir().path();</span>
-<span class="lineNum">     451 </span>            : 
-<span class="lineNum">     452 </span><span class="lineNoCov">          0 :     _loadSession(filename);</span>
-<a name="453"><span class="lineNum">     453 </span>            : }</a>
-<span class="lineNum">     454 </span>            : 
-<span class="lineNum">     455 </span><span class="lineNoCov">          0 : void MasterWindow::_saveSession()</span>
-<span class="lineNum">     456 </span>            : {
-<span class="lineNum">     457 </span>            :     const auto filename =
-<span class="lineNum">     458 </span>            :         QFileDialog::getSaveFileName(this, &quot;Save Session&quot;, _sessionFolder,
-<span class="lineNum">     459 </span><span class="lineNoCov">          0 :                                      SESSION_FILES_FILTER);</span>
-<span class="lineNum">     460 </span><span class="lineNoCov">          0 :     if (filename.isEmpty())</span>
-<span class="lineNum">     461 </span><span class="lineNoCov">          0 :         return;</span>
-<span class="lineNum">     462 </span>            : 
-<span class="lineNum">     463 </span><span class="lineNoCov">          0 :     _sessionFolder = QFileInfo(filename).absoluteDir().path();</span>
-<span class="lineNum">     464 </span><span class="lineNoCov">          0 :     _saveSessionOp.setFuture(</span>
-<span class="lineNum">     465 </span><span class="lineNoCov">          0 :         StateSerializationHelper(_displayGroup).save(filename, _uploadDir));</span>
-<a name="466"><span class="lineNum">     466 </span>            : }</a>
-<span class="lineNum">     467 </span>            : 
-<span class="lineNum">     468 </span><span class="lineNoCov">          0 : void MasterWindow::_loadSession(const QString&amp; filename)</span>
-<span class="lineNum">     469 </span>            : {
-<span class="lineNum">     470 </span><span class="lineNoCov">          0 :     _loadSessionOp.setFuture(</span>
-<span class="lineNum">     471 </span><span class="lineNoCov">          0 :         StateSerializationHelper(_displayGroup).load(filename));</span>
-<a name="472"><span class="lineNum">     472 </span><span class="lineNoCov">          0 : }</span></a>
-<span class="lineNum">     473 </span>            : 
-<span class="lineNum">     474 </span><span class="lineNoCov">          0 : void MasterWindow::_openAboutWidget()</span>
-<span class="lineNum">     475 </span>            : {
-<span class="lineNum">     476 </span><span class="lineNoCov">          0 :     const int revision = tide::Version::getRevision();</span>
-<span class="lineNum">     477 </span>            : 
-<span class="lineNum">     478 </span><span class="lineNoCov">          0 :     std::ostringstream aboutMsg;</span>
-<span class="lineNum">     479 </span><span class="lineNoCov">          0 :     aboutMsg &lt;&lt; &quot;Current version: &quot; &lt;&lt; tide::Version::getString();</span>
-<span class="lineNum">     480 </span><span class="lineNoCov">          0 :     aboutMsg &lt;&lt; std::endl;</span>
-<span class="lineNum">     481 </span><span class="lineNoCov">          0 :     aboutMsg &lt;&lt; &quot;SCM revision: &quot; &lt;&lt; std::hex &lt;&lt; revision &lt;&lt; std::dec;</span>
-<span class="lineNum">     482 </span>            : 
-<span class="lineNum">     483 </span><span class="lineNoCov">          0 :     QMessageBox::about(this, &quot;About Tide&quot;, aboutMsg.str().c_str());</span>
-<a name="484"><span class="lineNum">     484 </span><span class="lineNoCov">          0 : }</span></a>
-<span class="lineNum">     485 </span>            : 
-<span class="lineNum">     486 </span><span class="lineNoCov">          0 : QStringList MasterWindow::_extractValidContentUrls(const QMimeData* mimeData)</span>
-<span class="lineNum">     487 </span>            : {
-<span class="lineNum">     488 </span><span class="lineNoCov">          0 :     QStringList pathList;</span>
-<span class="lineNum">     489 </span>            : 
-<span class="lineNum">     490 </span><span class="lineNoCov">          0 :     if (mimeData-&gt;hasUrls())</span>
-<span class="lineNum">     491 </span>            :     {
-<span class="lineNum">     492 </span><span class="lineNoCov">          0 :         QList&lt;QUrl&gt; urlList = mimeData-&gt;urls();</span>
-<span class="lineNum">     493 </span>            : 
-<span class="lineNum">     494 </span><span class="lineNoCov">          0 :         foreach (QUrl url, urlList)</span>
-<span class="lineNum">     495 </span>            :         {
-<span class="lineNum">     496 </span>            :             const QString extension =
-<span class="lineNum">     497 </span><span class="lineNoCov">          0 :                 QFileInfo(url.toLocalFile().toLower()).suffix();</span>
-<span class="lineNum">     498 </span><span class="lineNoCov">          0 :             if (ContentFactory::getSupportedExtensions().contains(extension))</span>
-<span class="lineNum">     499 </span><span class="lineNoCov">          0 :                 pathList.append(url.toLocalFile());</span>
-<span class="lineNum">     500 </span>            :         }
-<span class="lineNum">     501 </span>            :     }
-<span class="lineNum">     502 </span>            : 
-<span class="lineNum">     503 </span><span class="lineNoCov">          0 :     return pathList;</span>
-<a name="504"><span class="lineNum">     504 </span>            : }</a>
-<span class="lineNum">     505 </span>            : 
-<span class="lineNum">     506 </span><span class="lineNoCov">          0 : QStringList MasterWindow::_extractFolderUrls(const QMimeData* mimeData)</span>
-<span class="lineNum">     507 </span>            : {
-<span class="lineNum">     508 </span><span class="lineNoCov">          0 :     QStringList pathList;</span>
+<span class="lineNum">     428 </span><span class="lineNoCov">          0 :     QDir directory(directoryName);</span>
+<span class="lineNum">     429 </span><span class="lineNoCov">          0 :     directory.setFilter(QDir::Files);</span>
+<span class="lineNum">     430 </span><span class="lineNoCov">          0 :     directory.setNameFilters(ContentFactory::getSupportedFilesFilter());</span>
+<span class="lineNum">     431 </span>            : 
+<span class="lineNum">     432 </span><span class="lineNoCov">          0 :     const auto list = directory.entryInfoList();</span>
+<span class="lineNum">     433 </span>            : 
+<span class="lineNum">     434 </span>            :     // Prevent opening of folders with an excessively large number of items
+<span class="lineNum">     435 </span><span class="lineNoCov">          0 :     if (list.size() &gt; 16)</span>
+<span class="lineNum">     436 </span>            :     {
+<span class="lineNum">     437 </span><span class="lineNoCov">          0 :         QString msg = &quot;Opening this folder will create &quot; +</span>
+<span class="lineNum">     438 </span><span class="lineNoCov">          0 :                       QString::number(list.size()) +</span>
+<span class="lineNum">     439 </span><span class="lineNoCov">          0 :                       &quot; content elements. Are you sure you want to continue?&quot;;</span>
+<span class="lineNum">     440 </span>            : 
+<span class="lineNum">     441 </span>            :         const auto reply =
+<span class="lineNum">     442 </span><span class="lineNoCov">          0 :             QMessageBox::question(this, &quot;Warning&quot;, msg,</span>
+<span class="lineNum">     443 </span><span class="lineNoCov">          0 :                                   QMessageBox::Yes | QMessageBox::No);</span>
+<span class="lineNum">     444 </span><span class="lineNoCov">          0 :         if (reply != QMessageBox::Yes)</span>
+<span class="lineNum">     445 </span><span class="lineNoCov">          0 :             return;</span>
+<span class="lineNum">     446 </span>            :     }
+<span class="lineNum">     447 </span>            : 
+<span class="lineNum">     448 </span><span class="lineNoCov">          0 :     ContentLoader{_getActiveGroup()}.loadDir(directoryName, gridSize);</span>
+<a name="449"><span class="lineNum">     449 </span>            : }</a>
+<span class="lineNum">     450 </span>            : 
+<span class="lineNum">     451 </span><span class="lineNoCov">          0 : void MasterWindow::_openContentsDirectory()</span>
+<span class="lineNum">     452 </span>            : {
+<span class="lineNum">     453 </span>            :     const auto dirName =
+<span class="lineNum">     454 </span><span class="lineNoCov">          0 :         QFileDialog::getExistingDirectory(this, QString(), _contentFolder);</span>
+<span class="lineNum">     455 </span><span class="lineNoCov">          0 :     if (dirName.isEmpty())</span>
+<span class="lineNum">     456 </span><span class="lineNoCov">          0 :         return;</span>
+<span class="lineNum">     457 </span>            : 
+<span class="lineNum">     458 </span><span class="lineNoCov">          0 :     _contentFolder = dirName;</span>
+<span class="lineNum">     459 </span>            : 
+<span class="lineNum">     460 </span><span class="lineNoCov">          0 :     const auto gridX = QInputDialog::getInt(this, &quot;Grid X dimension&quot;,</span>
+<span class="lineNum">     461 </span><span class="lineNoCov">          0 :                                             &quot;Grid X dimension&quot;, 0, 0);</span>
+<span class="lineNum">     462 </span><span class="lineNoCov">          0 :     const auto gridY = QInputDialog::getInt(this, &quot;Grid Y dimension&quot;,</span>
+<span class="lineNum">     463 </span><span class="lineNoCov">          0 :                                             &quot;Grid Y dimension&quot;, 0, 0);</span>
+<span class="lineNum">     464 </span><span class="lineNoCov">          0 :     _addContentDirectory(dirName, {gridX, gridY});</span>
+<a name="465"><span class="lineNum">     465 </span>            : }</a>
+<span class="lineNum">     466 </span>            : 
+<span class="lineNum">     467 </span><span class="lineNoCov">          0 : void MasterWindow::_openSession()</span>
+<span class="lineNum">     468 </span>            : {
+<span class="lineNum">     469 </span>            :     const auto filename =
+<span class="lineNum">     470 </span>            :         QFileDialog::getOpenFileName(this, &quot;Load Session&quot;, _sessionFolder,
+<span class="lineNum">     471 </span><span class="lineNoCov">          0 :                                      SESSION_FILES_FILTER);</span>
+<span class="lineNum">     472 </span><span class="lineNoCov">          0 :     if (filename.isEmpty())</span>
+<span class="lineNum">     473 </span><span class="lineNoCov">          0 :         return;</span>
+<span class="lineNum">     474 </span>            : 
+<span class="lineNum">     475 </span><span class="lineNoCov">          0 :     _sessionFolder = QFileInfo(filename).absoluteDir().path();</span>
+<span class="lineNum">     476 </span>            : 
+<span class="lineNum">     477 </span><span class="lineNoCov">          0 :     _loadSession(filename);</span>
+<a name="478"><span class="lineNum">     478 </span>            : }</a>
+<span class="lineNum">     479 </span>            : 
+<span class="lineNum">     480 </span><span class="lineNoCov">          0 : void MasterWindow::_saveSession()</span>
+<span class="lineNum">     481 </span>            : {
+<span class="lineNum">     482 </span>            :     const auto filename =
+<span class="lineNum">     483 </span>            :         QFileDialog::getSaveFileName(this, &quot;Save Session&quot;, _sessionFolder,
+<span class="lineNum">     484 </span><span class="lineNoCov">          0 :                                      SESSION_FILES_FILTER);</span>
+<span class="lineNum">     485 </span><span class="lineNoCov">          0 :     if (filename.isEmpty())</span>
+<span class="lineNum">     486 </span><span class="lineNoCov">          0 :         return;</span>
+<span class="lineNum">     487 </span>            : 
+<span class="lineNum">     488 </span><span class="lineNoCov">          0 :     _sessionFolder = QFileInfo(filename).absoluteDir().path();</span>
+<span class="lineNum">     489 </span><span class="lineNoCov">          0 :     _saveSessionOp.setFuture(</span>
+<span class="lineNum">     490 </span><span class="lineNoCov">          0 :         StateSerializationHelper(_scene).save(filename, _uploadDir));</span>
+<a name="491"><span class="lineNum">     491 </span>            : }</a>
+<span class="lineNum">     492 </span>            : 
+<span class="lineNum">     493 </span><span class="lineNoCov">          0 : void MasterWindow::_loadSession(const QString&amp; filename)</span>
+<span class="lineNum">     494 </span>            : {
+<span class="lineNum">     495 </span><span class="lineNoCov">          0 :     _loadSessionOp.setFuture(StateSerializationHelper(_scene).load(filename));</span>
+<a name="496"><span class="lineNum">     496 </span><span class="lineNoCov">          0 : }</span></a>
+<span class="lineNum">     497 </span>            : 
+<span class="lineNum">     498 </span><span class="lineNoCov">          0 : void MasterWindow::_openAboutWidget()</span>
+<span class="lineNum">     499 </span>            : {
+<span class="lineNum">     500 </span><span class="lineNoCov">          0 :     const int revision = tide::Version::getRevision();</span>
+<span class="lineNum">     501 </span>            : 
+<span class="lineNum">     502 </span><span class="lineNoCov">          0 :     std::ostringstream aboutMsg;</span>
+<span class="lineNum">     503 </span><span class="lineNoCov">          0 :     aboutMsg &lt;&lt; &quot;Current version: &quot; &lt;&lt; tide::Version::getString();</span>
+<span class="lineNum">     504 </span><span class="lineNoCov">          0 :     aboutMsg &lt;&lt; std::endl;</span>
+<span class="lineNum">     505 </span><span class="lineNoCov">          0 :     aboutMsg &lt;&lt; &quot;SCM revision: &quot; &lt;&lt; std::hex &lt;&lt; revision &lt;&lt; std::dec;</span>
+<span class="lineNum">     506 </span>            : 
+<span class="lineNum">     507 </span><span class="lineNoCov">          0 :     QMessageBox::about(this, &quot;About Tide&quot;, aboutMsg.str().c_str());</span>
+<a name="508"><span class="lineNum">     508 </span><span class="lineNoCov">          0 : }</span></a>
 <span class="lineNum">     509 </span>            : 
-<span class="lineNum">     510 </span><span class="lineNoCov">          0 :     if (mimeData-&gt;hasUrls())</span>
-<span class="lineNum">     511 </span>            :     {
-<span class="lineNum">     512 </span><span class="lineNoCov">          0 :         QList&lt;QUrl&gt; urlList = mimeData-&gt;urls();</span>
-<span class="lineNum">     513 </span>            : 
-<span class="lineNum">     514 </span><span class="lineNoCov">          0 :         foreach (QUrl url, urlList)</span>
-<span class="lineNum">     515 </span>            :         {
-<span class="lineNum">     516 </span><span class="lineNoCov">          0 :             if (QDir(url.toLocalFile()).exists())</span>
-<span class="lineNum">     517 </span><span class="lineNoCov">          0 :                 pathList.append(url.toLocalFile());</span>
-<span class="lineNum">     518 </span>            :         }
-<span class="lineNum">     519 </span>            :     }
-<span class="lineNum">     520 </span>            : 
-<span class="lineNum">     521 </span><span class="lineNoCov">          0 :     return pathList;</span>
-<a name="522"><span class="lineNum">     522 </span>            : }</a>
+<span class="lineNum">     510 </span><span class="lineNoCov">          0 : uint MasterWindow::_getActiveSceneIndex() const</span>
+<span class="lineNum">     511 </span>            : {
+<span class="lineNum">     512 </span><span class="lineNoCov">          0 :     return static_cast&lt;QTabWidget*&gt;(centralWidget())-&gt;currentIndex();</span>
+<a name="513"><span class="lineNum">     513 </span>            : }</a>
+<span class="lineNum">     514 </span>            : 
+<span class="lineNum">     515 </span><span class="lineNoCov">          0 : DisplayGroup&amp; MasterWindow::_getActiveGroup()</span>
+<span class="lineNum">     516 </span>            : {
+<span class="lineNum">     517 </span><span class="lineNoCov">          0 :     return _scene-&gt;getGroup(_getActiveSceneIndex());</span>
+<a name="518"><span class="lineNum">     518 </span>            : }</a>
+<span class="lineNum">     519 </span>            : 
+<span class="lineNum">     520 </span><span class="lineNoCov">          0 : QStringList MasterWindow::_extractValidContentUrls(const QMimeData* mimeData)</span>
+<span class="lineNum">     521 </span>            : {
+<span class="lineNum">     522 </span><span class="lineNoCov">          0 :     QStringList pathList;</span>
 <span class="lineNum">     523 </span>            : 
-<span class="lineNum">     524 </span><span class="lineNoCov">          0 : QString MasterWindow::_extractSessionFile(const QMimeData* mimeData)</span>
-<span class="lineNum">     525 </span>            : {
-<span class="lineNum">     526 </span><span class="lineNoCov">          0 :     QList&lt;QUrl&gt; urlList = mimeData-&gt;urls();</span>
-<span class="lineNum">     527 </span><span class="lineNoCov">          0 :     if (urlList.size() == 1)</span>
-<span class="lineNum">     528 </span>            :     {
-<span class="lineNum">     529 </span><span class="lineNoCov">          0 :         QUrl url = urlList[0];</span>
-<span class="lineNum">     530 </span>            :         const QString extension =
-<span class="lineNum">     531 </span><span class="lineNoCov">          0 :             QFileInfo(url.toLocalFile().toLower()).suffix();</span>
-<span class="lineNum">     532 </span><span class="lineNoCov">          0 :         if (extension == &quot;dcx&quot;)</span>
-<span class="lineNum">     533 </span><span class="lineNoCov">          0 :             return url.toLocalFile();</span>
-<span class="lineNum">     534 </span>            :     }
-<span class="lineNum">     535 </span><span class="lineNoCov">          0 :     return QString();</span>
+<span class="lineNum">     524 </span><span class="lineNoCov">          0 :     if (mimeData-&gt;hasUrls())</span>
+<span class="lineNum">     525 </span>            :     {
+<span class="lineNum">     526 </span><span class="lineNoCov">          0 :         for (const auto&amp; url : mimeData-&gt;urls())</span>
+<span class="lineNum">     527 </span>            :         {
+<span class="lineNum">     528 </span>            :             const auto extension =
+<span class="lineNum">     529 </span><span class="lineNoCov">          0 :                 QFileInfo(url.toLocalFile().toLower()).suffix();</span>
+<span class="lineNum">     530 </span><span class="lineNoCov">          0 :             if (ContentFactory::getSupportedExtensions().contains(extension))</span>
+<span class="lineNum">     531 </span><span class="lineNoCov">          0 :                 pathList.append(url.toLocalFile());</span>
+<span class="lineNum">     532 </span>            :         }
+<span class="lineNum">     533 </span>            :     }
+<span class="lineNum">     534 </span>            : 
+<span class="lineNum">     535 </span><span class="lineNoCov">          0 :     return pathList;</span>
 <a name="536"><span class="lineNum">     536 </span>            : }</a>
 <span class="lineNum">     537 </span>            : 
-<span class="lineNum">     538 </span><span class="lineNoCov">          0 : void MasterWindow::dragEnterEvent(QDragEnterEvent* dragEvent)</span>
+<span class="lineNum">     538 </span><span class="lineNoCov">          0 : QStringList MasterWindow::_extractFolderUrls(const QMimeData* mimeData)</span>
 <span class="lineNum">     539 </span>            : {
-<span class="lineNum">     540 </span><span class="lineNoCov">          0 :     const QMimeData* mimeData = dragEvent-&gt;mimeData();</span>
-<span class="lineNum">     541 </span><span class="lineNoCov">          0 :     const QStringList&amp; pathList = _extractValidContentUrls(mimeData);</span>
-<span class="lineNum">     542 </span><span class="lineNoCov">          0 :     const QStringList&amp; dirList = _extractFolderUrls(mimeData);</span>
-<span class="lineNum">     543 </span><span class="lineNoCov">          0 :     const QString&amp; sessionFile = _extractSessionFile(mimeData);</span>
-<span class="lineNum">     544 </span>            : 
-<span class="lineNum">     545 </span><span class="lineNoCov">          0 :     if (!pathList.empty() || !dirList.empty() || !sessionFile.isNull())</span>
-<span class="lineNum">     546 </span><span class="lineNoCov">          0 :         dragEvent-&gt;acceptProposedAction();</span>
-<a name="547"><span class="lineNum">     547 </span><span class="lineNoCov">          0 : }</span></a>
-<span class="lineNum">     548 </span>            : 
-<span class="lineNum">     549 </span><span class="lineNoCov">          0 : void MasterWindow::dropEvent(QDropEvent* dropEvt)</span>
-<span class="lineNum">     550 </span>            : {
-<span class="lineNum">     551 </span><span class="lineNoCov">          0 :     const QStringList&amp; urls = _extractValidContentUrls(dropEvt-&gt;mimeData());</span>
-<span class="lineNum">     552 </span><span class="lineNoCov">          0 :     ContentLoader loader(_displayGroup);</span>
-<span class="lineNum">     553 </span><span class="lineNoCov">          0 :     foreach (QString url, urls)</span>
-<span class="lineNum">     554 </span><span class="lineNoCov">          0 :         loader.load(url);</span>
-<span class="lineNum">     555 </span>            : 
-<span class="lineNum">     556 </span><span class="lineNoCov">          0 :     const QStringList&amp; folders = _extractFolderUrls(dropEvt-&gt;mimeData());</span>
-<span class="lineNum">     557 </span><span class="lineNoCov">          0 :     if (!folders.isEmpty())</span>
-<span class="lineNum">     558 </span><span class="lineNoCov">          0 :         _addContentDirectory(folders[0]); // Only one directory at a time</span>
-<span class="lineNum">     559 </span>            : 
-<span class="lineNum">     560 </span><span class="lineNoCov">          0 :     const QString&amp; sessionFile = _extractSessionFile(dropEvt-&gt;mimeData());</span>
-<span class="lineNum">     561 </span><span class="lineNoCov">          0 :     if (!sessionFile.isNull())</span>
-<span class="lineNum">     562 </span><span class="lineNoCov">          0 :         _loadSession(sessionFile);</span>
-<a name="563"><span class="lineNum">     563 </span>            : </a>
-<span class="lineNum">     564 </span><span class="lineNoCov">          0 :     dropEvt-&gt;acceptProposedAction();</span>
-<span class="lineNum">     565 </span><span class="lineCov">         96 : }</span>
+<span class="lineNum">     540 </span><span class="lineNoCov">          0 :     QStringList pathList;</span>
+<span class="lineNum">     541 </span>            : 
+<span class="lineNum">     542 </span><span class="lineNoCov">          0 :     if (mimeData-&gt;hasUrls())</span>
+<span class="lineNum">     543 </span>            :     {
+<span class="lineNum">     544 </span><span class="lineNoCov">          0 :         for (const auto&amp; url : mimeData-&gt;urls())</span>
+<span class="lineNum">     545 </span>            :         {
+<span class="lineNum">     546 </span><span class="lineNoCov">          0 :             if (QDir(url.toLocalFile()).exists())</span>
+<span class="lineNum">     547 </span><span class="lineNoCov">          0 :                 pathList.append(url.toLocalFile());</span>
+<span class="lineNum">     548 </span>            :         }
+<span class="lineNum">     549 </span>            :     }
+<span class="lineNum">     550 </span>            : 
+<span class="lineNum">     551 </span><span class="lineNoCov">          0 :     return pathList;</span>
+<a name="552"><span class="lineNum">     552 </span>            : }</a>
+<span class="lineNum">     553 </span>            : 
+<span class="lineNum">     554 </span><span class="lineNoCov">          0 : QString MasterWindow::_extractSessionFile(const QMimeData* mimeData)</span>
+<span class="lineNum">     555 </span>            : {
+<span class="lineNum">     556 </span><span class="lineNoCov">          0 :     QList&lt;QUrl&gt; urlList = mimeData-&gt;urls();</span>
+<span class="lineNum">     557 </span><span class="lineNoCov">          0 :     if (urlList.size() == 1)</span>
+<span class="lineNum">     558 </span>            :     {
+<span class="lineNum">     559 </span><span class="lineNoCov">          0 :         QUrl url = urlList[0];</span>
+<span class="lineNum">     560 </span>            :         const QString extension =
+<span class="lineNum">     561 </span><span class="lineNoCov">          0 :             QFileInfo(url.toLocalFile().toLower()).suffix();</span>
+<span class="lineNum">     562 </span><span class="lineNoCov">          0 :         if (extension == &quot;dcx&quot;)</span>
+<span class="lineNum">     563 </span><span class="lineNoCov">          0 :             return url.toLocalFile();</span>
+<span class="lineNum">     564 </span>            :     }
+<span class="lineNum">     565 </span><span class="lineNoCov">          0 :     return QString();</span>
+<a name="566"><span class="lineNum">     566 </span>            : }</a>
+<span class="lineNum">     567 </span>            : 
+<span class="lineNum">     568 </span><span class="lineNoCov">          0 : void MasterWindow::dragEnterEvent(QDragEnterEvent* dragEvent)</span>
+<span class="lineNum">     569 </span>            : {
+<span class="lineNum">     570 </span><span class="lineNoCov">          0 :     const QMimeData* mimeData = dragEvent-&gt;mimeData();</span>
+<span class="lineNum">     571 </span><span class="lineNoCov">          0 :     const QStringList&amp; pathList = _extractValidContentUrls(mimeData);</span>
+<span class="lineNum">     572 </span><span class="lineNoCov">          0 :     const QStringList&amp; dirList = _extractFolderUrls(mimeData);</span>
+<span class="lineNum">     573 </span><span class="lineNoCov">          0 :     const QString&amp; sessionFile = _extractSessionFile(mimeData);</span>
+<span class="lineNum">     574 </span>            : 
+<span class="lineNum">     575 </span><span class="lineNoCov">          0 :     if (!pathList.empty() || !dirList.empty() || !sessionFile.isNull())</span>
+<span class="lineNum">     576 </span><span class="lineNoCov">          0 :         dragEvent-&gt;acceptProposedAction();</span>
+<a name="577"><span class="lineNum">     577 </span><span class="lineNoCov">          0 : }</span></a>
+<span class="lineNum">     578 </span>            : 
+<span class="lineNum">     579 </span><span class="lineNoCov">          0 : void MasterWindow::dropEvent(QDropEvent* dropEvt)</span>
+<span class="lineNum">     580 </span>            : {
+<span class="lineNum">     581 </span><span class="lineNoCov">          0 :     const auto urls = _extractValidContentUrls(dropEvt-&gt;mimeData());</span>
+<span class="lineNum">     582 </span><span class="lineNoCov">          0 :     ContentLoader loader(_getActiveGroup());</span>
+<span class="lineNum">     583 </span><span class="lineNoCov">          0 :     for (const auto&amp; url : urls)</span>
+<span class="lineNum">     584 </span><span class="lineNoCov">          0 :         loader.load(url);</span>
+<span class="lineNum">     585 </span>            : 
+<span class="lineNum">     586 </span><span class="lineNoCov">          0 :     const auto folders = _extractFolderUrls(dropEvt-&gt;mimeData());</span>
+<span class="lineNum">     587 </span><span class="lineNoCov">          0 :     if (!folders.isEmpty())</span>
+<span class="lineNum">     588 </span><span class="lineNoCov">          0 :         _addContentDirectory(folders[0]); // Only one directory at a time</span>
+<span class="lineNum">     589 </span>            : 
+<span class="lineNum">     590 </span><span class="lineNoCov">          0 :     const auto sessionFile = _extractSessionFile(dropEvt-&gt;mimeData());</span>
+<span class="lineNum">     591 </span><span class="lineNoCov">          0 :     if (!sessionFile.isNull())</span>
+<span class="lineNum">     592 </span><span class="lineNoCov">          0 :         _loadSession(sessionFile);</span>
+<a name="593"><span class="lineNum">     593 </span>            : </a>
+<span class="lineNum">     594 </span><span class="lineNoCov">          0 :     dropEvt-&gt;acceptProposedAction();</span>
+<span class="lineNum">     595 </span><span class="lineCov">         96 : }</span>
 </pre>
       </td>
     </tr>

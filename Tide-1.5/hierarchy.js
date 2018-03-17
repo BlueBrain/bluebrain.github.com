@@ -111,7 +111,7 @@ var hierarchy =
     ] ],
     [ "QmlKeyInjector", "class_qml_key_injector.html", null ],
     [ "QObject", null, [
-      [ "AppController", "class_app_controller.html", null ],
+      [ "AppRemoteController", "class_app_remote_controller.html", null ],
       [ "Background", "class_background.html", null ],
       [ "Content", "class_content.html", [
         [ "DynamicTextureContent", "class_dynamic_texture_content.html", null ],
@@ -142,6 +142,7 @@ var hierarchy =
         ] ]
       ] ],
       [ "ContentWindowController", "class_content_window_controller.html", null ],
+      [ "ContentWindowRenderer", "class_content_window_renderer.html", null ],
       [ "CountdownStatus", "class_countdown_status.html", null ],
       [ "DataProvider", "class_data_provider.html", null ],
       [ "DisplayGroupController", "class_display_group_controller.html", null ],
@@ -154,7 +155,7 @@ var hierarchy =
       [ "LoggingUtility", "class_logging_utility.html", null ],
       [ "MasterDisplayGroupRenderer", "class_master_display_group_renderer.html", null ],
       [ "MasterFromWallChannel", "class_master_from_wall_channel.html", null ],
-      [ "MasterSceneRenderer", "class_master_scene_renderer.html", null ],
+      [ "MasterSurfaceRenderer", "class_master_surface_renderer.html", null ],
       [ "MasterToForkerChannel", "class_master_to_forker_channel.html", null ],
       [ "MasterToWallChannel", "class_master_to_wall_channel.html", null ],
       [ "MovieUpdater", "class_movie_updater.html", null ],
@@ -165,19 +166,20 @@ var hierarchy =
       [ "PixelStreamerLauncher", "class_pixel_streamer_launcher.html", null ],
       [ "PixelStreamUpdater", "class_pixel_stream_updater.html", null ],
       [ "PixelStreamWindowManager", "class_pixel_stream_window_manager.html", null ],
-      [ "QmlWindowRenderer", "class_qml_window_renderer.html", null ],
       [ "Rectangle", "class_rectangle.html", [
         [ "ContentWindow", "class_content_window.html", null ],
         [ "DisplayGroup", "class_display_group.html", null ]
       ] ],
       [ "RenderController", "class_render_controller.html", null ],
+      [ "Scene", "class_scene.html", null ],
+      [ "SceneController", "class_scene_controller.html", null ],
       [ "ScreenLock", "class_screen_lock.html", null ],
       [ "ScreenshotAssembler", "class_screenshot_assembler.html", null ],
       [ "SwipeDetector", "class_swipe_detector.html", null ],
       [ "TapAndHoldDetector", "class_tap_and_hold_detector.html", null ],
       [ "TapDetector", "class_tap_detector.html", null ],
       [ "WallFromMasterChannel", "class_wall_from_master_channel.html", null ],
-      [ "WallSceneRenderer", "class_wall_scene_renderer.html", null ],
+      [ "WallRenderer", "class_wall_renderer.html", null ],
       [ "WallToMasterChannel", "class_wall_to_master_channel.html", null ],
       [ "WallToWallChannel", "class_wall_to_wall_channel.html", null ]
     ] ],
@@ -214,8 +216,8 @@ var hierarchy =
       [ "RestServer", "class_rest_server.html", null ]
     ] ],
     [ "Receiver", null, [
-      [ "AppController", "class_app_controller.html", null ],
-      [ "SceneController", "class_scene_controller.html", null ]
+      [ "AppRemoteController", "class_app_remote_controller.html", null ],
+      [ "SceneRemoteController", "class_scene_remote_controller.html", null ]
     ] ],
     [ "Server", null, [
       [ "RestServer", "class_rest_server.html", null ]
@@ -235,10 +237,18 @@ var hierarchy =
       [ "DisplayGroup", "class_display_group.html", null ],
       [ "Markers", "class_markers.html", null ],
       [ "Options", "class_options.html", null ],
+      [ "Scene", "class_scene.html", null ],
       [ "ScreenLock", "class_screen_lock.html", null ],
       [ "Tile", "class_tile.html", null ]
     ] ],
-    [ "Surface", "struct_surface.html", null ],
+    [ "std::exception", null, [
+      [ "std::runtime_error", null, [
+        [ "invalid_surface_index_error", "classinvalid__surface__index__error.html", null ],
+        [ "window_not_found_error", "classwindow__not__found__error.html", null ]
+      ] ]
+    ] ],
+    [ "Surface", "class_surface.html", null ],
+    [ "SurfaceConfig", "struct_surface_config.html", null ],
     [ "SVG", "class_s_v_g.html", null ],
     [ "SVGBackend", "class_s_v_g_backend.html", [
       [ "SVGQtGpuBackend", "class_s_v_g_qt_gpu_backend.html", null ]

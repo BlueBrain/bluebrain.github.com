@@ -1,6 +1,8 @@
 var searchData=
 [
+  ['scene',['Scene',['../class_scene.html',1,'']]],
   ['scenecontroller',['SceneController',['../class_scene_controller.html',1,'']]],
+  ['sceneremotecontroller',['SceneRemoteController',['../class_scene_remote_controller.html',1,'']]],
   ['screen',['Screen',['../struct_screen.html',1,'']]],
   ['screenlock',['ScreenLock',['../class_screen_lock.html',1,'']]],
   ['screenshotassembler',['ScreenshotAssembler',['../class_screenshot_assembler.html',1,'']]],
@@ -14,7 +16,8 @@ var searchData=
   ['statethumbnailgenerator',['StateThumbnailGenerator',['../class_state_thumbnail_generator.html',1,'']]],
   ['streamimage',['StreamImage',['../class_stream_image.html',1,'']]],
   ['streamthumbnailgenerator',['StreamThumbnailGenerator',['../class_stream_thumbnail_generator.html',1,'']]],
-  ['surface',['Surface',['../struct_surface.html',1,'']]],
+  ['surface',['Surface',['../class_surface.html',1,'']]],
+  ['surfaceconfig',['SurfaceConfig',['../struct_surface_config.html',1,'']]],
   ['svg',['SVG',['../class_s_v_g.html',1,'']]],
   ['svgbackend',['SVGBackend',['../class_s_v_g_backend.html',1,'']]],
   ['svgcontent',['SVGContent',['../class_s_v_g_content.html',1,'']]],

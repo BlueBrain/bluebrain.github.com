@@ -16,6 +16,7 @@ var searchData=
   ['hasvisibletiles',['hasVisibleTiles',['../class_movie_synchronizer.html#acb015c4c36cbdc0823ef4d48314d55d5',1,'MovieSynchronizer']]],
   ['headless',['headless',['../struct_configuration_1_1_master.html#aa06184ddfe5fd6b2b75bd502392efa5a',1,'Configuration::Master']]],
   ['height',['height',['../class_content.html#a0ac15e1ba630bc6c6f98d47529f4c48c',1,'Content']]],
+  ['hidelauncher',['hideLauncher',['../class_scene_controller.html#aa17cea719c50c3bb25e9ad2141b955a3',1,'SceneController']]],
   ['hidepanels',['hidePanels',['../class_display_group_controller.html#a30c12fa5deb6859f9304b47ab7bc7722',1,'DisplayGroupController']]],
   ['hidewindow',['hideWindow',['../class_pixel_stream_window_manager.html#a74bb0eb12ff7357fef0fbbd1d9c92aff',1,'PixelStreamWindowManager']]],
   ['host',['host',['../struct_process.html#ad66e481c67a2c46c0dba898558352794',1,'Process']]],

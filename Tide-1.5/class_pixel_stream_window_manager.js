@@ -1,13 +1,13 @@
 var class_pixel_stream_window_manager =
 [
-    [ "PixelStreamWindowManager", "class_pixel_stream_window_manager.html#a8d3cae6a2b05961dac58bf22810be44a", null ],
+    [ "PixelStreamWindowManager", "class_pixel_stream_window_manager.html#a835e4815253d8b8e51263f9d803a61e2", null ],
     [ "externalStreamOpening", "class_pixel_stream_window_manager.html#a1990873d8c39ec3cd1c72f9403330e7d", null ],
     [ "getAutoFocusNewWindows", "class_pixel_stream_window_manager.html#a22fcff539e065134b0dce6d07bf3872f", null ],
     [ "getWindow", "class_pixel_stream_window_manager.html#a582579fb754a9cc239f68b9a89eaffab", null ],
     [ "handleStreamEnd", "class_pixel_stream_window_manager.html#a46b8f7dcd44849d8bd12102735f0fa5e", null ],
     [ "handleStreamStart", "class_pixel_stream_window_manager.html#afb4053fccb1b44819a93955de4eedd77", null ],
     [ "hideWindow", "class_pixel_stream_window_manager.html#a74bb0eb12ff7357fef0fbbd1d9c92aff", null ],
-    [ "openWindow", "class_pixel_stream_window_manager.html#aeaee5bce1b44089e3ea952f8e17c6843", null ],
+    [ "openWindow", "class_pixel_stream_window_manager.html#aa75cce47c1fa400a354d68d175ccf139", null ],
     [ "registerEventReceiver", "class_pixel_stream_window_manager.html#a03e923c990a174beac04a7cf91672af8", null ],
     [ "requestFirstFrame", "class_pixel_stream_window_manager.html#a0766b8b0cde56e30de923b786009f612", null ],
     [ "sendDataToWindow", "class_pixel_stream_window_manager.html#ae7b8614c9a975ea862e93ebe52668ecd", null ],

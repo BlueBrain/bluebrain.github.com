@@ -11,5 +11,6 @@ var class_logging_utility =
     [ "logContentWindowAdded", "class_logging_utility.html#a9040d787b2a0270c559312c94481614c", null ],
     [ "logContentWindowMovedToFront", "class_logging_utility.html#ab9bec43efc96e41e2d1b4d9d49ee22c7", null ],
     [ "logContentWindowRemoved", "class_logging_utility.html#ad16815722f3db7c7dc9f0b403b0eb8c6", null ],
-    [ "logScreenStateChanged", "class_logging_utility.html#a6c829a4f7330d2ccb113ed5b6480e4c6", null ]
+    [ "logScreenStateChanged", "class_logging_utility.html#a6c829a4f7330d2ccb113ed5b6480e4c6", null ],
+    [ "monitor", "class_logging_utility.html#a4e9cb82ac1b68a0eb67bb015d218bf40", null ]
 ];

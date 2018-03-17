@@ -8,6 +8,7 @@ var class_display_group =
     [ "contentWindowAdded", "class_display_group.html#a7d776c2d2ae02dcbd1a0011446a1c5de", null ],
     [ "contentWindowMovedToFront", "class_display_group.html#a018a418c963074c2fee79896c327e950", null ],
     [ "contentWindowRemoved", "class_display_group.html#a2901850c2b9893e2c3826cbdf6b1795a", null ],
+    [ "create", "class_display_group.html#a9d756f999d8a22092db7ada9db587447", null ],
     [ "getContentWindow", "class_display_group.html#a1b578c1cd18a8b8c8fe637de45b4302b", null ],
     [ "getContentWindows", "class_display_group.html#aa1940079d2bc1464f59e38c52ac1bffb", null ],
     [ "getFocusedWindows", "class_display_group.html#ad34ce28749abdf4530486c499c84cc9c", null ],

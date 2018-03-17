@@ -1,4 +1,4 @@
 var searchData=
 [
-  ['background',['background',['../class_configuration.html#aa92531feaa81dd702536f21e073e35a9',1,'Configuration']]]
+  ['background',['background',['../struct_surface_config.html#a6ece8bcbfeab2fad15f07b3209929f70',1,'SurfaceConfig']]]
 ];

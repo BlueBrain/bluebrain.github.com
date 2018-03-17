@@ -1,11 +1,11 @@
 var searchData=
 [
-  ['takescreenshot',['takeScreenshot',['../class_app_controller.html#a4a9d006afee407168c2832f02075f091',1,'AppController']]],
+  ['takescreenshot',['takeScreenshot',['../class_app_remote_controller.html#a5eaf77e43de754ce7bee11734e2c6795',1,'AppRemoteController']]],
   ['tap',['tap',['../class_multitouch_area.html#ad10f067038cca27820ec0da46630b7ec',1,'MultitouchArea::tap()'],['../class_tap_detector.html#ac7b0f69cf359dd1a4adadba8e4dd2554',1,'TapDetector::tap()']]],
   ['tapandhold',['tapAndHold',['../class_multitouch_area.html#a968c008c352f09cb24486ed8257b0968',1,'MultitouchArea::tapAndHold()'],['../class_tap_and_hold_detector.html#ac74ae2cad949de85e7983238d1794634',1,'TapAndHoldDetector::tapAndHold()']]],
   ['tapandholddetector',['TapAndHoldDetector',['../class_tap_and_hold_detector.html',1,'']]],
   ['tapdetector',['TapDetector',['../class_tap_detector.html',1,'']]],
-  ['testpattern',['TestPattern',['../class_test_pattern.html',1,'TestPattern'],['../class_test_pattern.html#aac657d5d39e093988b5b38b3cfa02829',1,'TestPattern::TestPattern()']]],
+  ['testpattern',['TestPattern',['../class_test_pattern.html',1,'TestPattern'],['../class_test_pattern.html#aa9a87351a6bc76073c704d7b120dca9f',1,'TestPattern::TestPattern()']]],
   ['textureborderswitcher',['TextureBorderSwitcher',['../class_texture_border_switcher.html',1,'']]],
   ['texturecontent',['TextureContent',['../class_texture_content.html',1,'TextureContent'],['../class_texture_content.html#a34ede22c00496d1f2309d56c0bfcf70b',1,'TextureContent::TextureContent()']]],
   ['texturenode',['TextureNode',['../class_texture_node.html',1,'']]],
@@ -16,7 +16,7 @@ var searchData=
   ['textureswitcher',['TextureSwitcher',['../class_texture_switcher.html',1,'']]],
   ['textureutils',['textureUtils',['../namespacetexture_utils.html',1,'']]],
   ['thumbnail',['thumbnail',['../namespacethumbnail.html',1,'']]],
-  ['thumbnailcache',['ThumbnailCache',['../class_thumbnail_cache.html',1,'ThumbnailCache'],['../class_thumbnail_cache.html#a3f3bcd49433abab9d34203119426a971',1,'ThumbnailCache::ThumbnailCache()']]],
+  ['thumbnailcache',['ThumbnailCache',['../class_thumbnail_cache.html',1,'ThumbnailCache'],['../class_thumbnail_cache.html#aaf48e76717166ff97629b361bbfc8a1b',1,'ThumbnailCache::ThumbnailCache()']]],
   ['thumbnailgenerator',['ThumbnailGenerator',['../class_thumbnail_generator.html',1,'ThumbnailGenerator'],['../class_thumbnail_generator.html#a8e1445189917a48c75ddaf992d4e166f',1,'ThumbnailGenerator::ThumbnailGenerator()']]],
   ['thumbnailgeneratorfactory',['ThumbnailGeneratorFactory',['../class_thumbnail_generator_factory.html',1,'']]],
   ['thumbnailprovider',['ThumbnailProvider',['../class_thumbnail_provider.html',1,'']]],

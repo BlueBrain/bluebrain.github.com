@@ -5,8 +5,9 @@ var class_markers =
       [ "YPOSITION_ROLE", "class_markers.html#a9758d9926d9fbf5c556820114bacedeea4e434fb5794d8d6f31d910833c9ed6d4", null ]
     ] ],
     [ "addMarker", "class_markers.html#ad869f2cc23ff3b375148ab23f48636ce", null ],
-    [ "create", "class_markers.html#a242e62c7db9af601951dea3ebf949ca8", null ],
+    [ "create", "class_markers.html#ad2505d3dbf1da891e0ab650a93c915ce", null ],
     [ "data", "class_markers.html#a42cc1db05b9b6f81a4f32921aa11cb32", null ],
+    [ "getSurfaceIndex", "class_markers.html#aa9501a69a18478bd3a1743591c1e1fa1", null ],
     [ "removeMarker", "class_markers.html#a3932715d3ac4bc865bc303007fcac5cc", null ],
     [ "roleNames", "class_markers.html#ae5190c8d5859c57410ee1fed702fb49f", null ],
     [ "rowCount", "class_markers.html#a8dfb912222ca2f7485c049d042d4f764", null ],

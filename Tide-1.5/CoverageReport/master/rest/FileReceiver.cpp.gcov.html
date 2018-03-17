@@ -31,18 +31,18 @@
             <td class="headerValue">Tide</td>
             <td></td>
             <td class="headerItem">Lines:</td>
-            <td class="headerCovTableEntry">54</td>
-            <td class="headerCovTableEntry">64</td>
-            <td class="headerCovTableEntryHi">84.4 %</td>
+            <td class="headerCovTableEntry">66</td>
+            <td class="headerCovTableEntry">76</td>
+            <td class="headerCovTableEntryHi">86.8 %</td>
           </tr>
           <tr>
             <td class="headerItem">Date:</td>
-            <td class="headerValue">2018-02-28 06:40:09</td>
+            <td class="headerValue">2018-03-17 06:34:01</td>
             <td></td>
             <td class="headerItem">Functions:</td>
-            <td class="headerCovTableEntry">12</td>
-            <td class="headerCovTableEntry">12</td>
-            <td class="headerCovTableEntryHi">100.0 %</td>
+            <td class="headerCovTableEntry">19</td>
+            <td class="headerCovTableEntry">20</td>
+            <td class="headerCovTableEntryHi">95.0 %</td>
           </tr>
           <tr><td><img src="../../glass.png" width=3 height=3 alt=""></td></tr>
         </table>
@@ -61,9 +61,9 @@
 <pre class="sourceHeading">          Line data    Source code</pre>
 <pre class="source">
 <a name="1"><span class="lineNum">       1 </span>            : /*********************************************************************/</a>
-<span class="lineNum">       2 </span>            : /* Copyright (c) 2017, EPFL/Blue Brain Project                       */
-<span class="lineNum">       3 </span>            : /*                     Pawel Podhajski &lt;pawel.podhajski@epfl.ch&gt;     */
-<span class="lineNum">       4 </span>            : /*                     Raphael Dumusc &lt;raphael.dumusc@epfl.ch&gt;       */
+<span class="lineNum">       2 </span>            : /* Copyright (c) 2017-2018, EPFL/Blue Brain Project                  */
+<span class="lineNum">       3 </span>            : /*                          Pawel Podhajski &lt;pawel.podhajski@epfl.ch&gt;*/
+<span class="lineNum">       4 </span>            : /*                          Raphael Dumusc &lt;raphael.dumusc@epfl.ch&gt;  */
 <span class="lineNum">       5 </span>            : /* All rights reserved.                                              */
 <span class="lineNum">       6 </span>            : /*                                                                   */
 <span class="lineNum">       7 </span>            : /* Redistribution and use in source and binary forms, with or        */
@@ -128,7 +128,7 @@
 <span class="lineNum">      66 </span>            : 
 <span class="lineNum">      67 </span><span class="lineCov">          5 : QString _getAvailableFileName(const QFileInfo&amp; fileInfo)</span>
 <span class="lineNum">      68 </span>            : {
-<span class="lineNum">      69 </span><span class="lineCov">          5 :     QString filename = fileInfo.fileName();</span>
+<span class="lineNum">      69 </span><span class="lineCov">          5 :     auto filename = fileInfo.fileName();</span>
 <span class="lineNum">      70 </span>            : 
 <span class="lineNum">      71 </span><span class="lineCov">          5 :     int nSuffix = 0;</span>
 <span class="lineNum">      72 </span><span class="lineCov">          9 :     while (QFile(QDir::tempPath() + &quot;/&quot; + filename).exists())</span>
@@ -149,79 +149,102 @@
 <span class="lineNum">      87 </span>            : }
 <a name="88"><span class="lineNum">      88 </span>            : }</a>
 <span class="lineNum">      89 </span>            : 
-<span class="lineNum">      90 </span><span class="lineCov">          7 : std::future&lt;http::Response&gt; FileReceiver::prepareUpload(</span>
-<span class="lineNum">      91 </span>            :     const http::Request&amp; request)
-<span class="lineNum">      92 </span>            : {
-<span class="lineNum">      93 </span><span class="lineCov">         14 :     const auto obj = json::parse(request.body);</span>
-<span class="lineNum">      94 </span><span class="lineCov">          7 :     if (obj.empty())</span>
-<span class="lineNum">      95 </span><span class="lineNoCov">          0 :         return make_ready_response(http::Code::BAD_REQUEST);</span>
-<span class="lineNum">      96 </span>            : 
-<span class="lineNum">      97 </span><span class="lineCov">         14 :     const auto filename = obj[&quot;filename&quot;].toString();</span>
-<span class="lineNum">      98 </span><span class="lineCov">          7 :     if (filename.contains('/'))</span>
-<span class="lineNum">      99 </span><span class="lineNoCov">          0 :         return make_ready_response(http::Code::NOT_SUPPORTED);</span>
-<span class="lineNum">     100 </span>            : 
-<span class="lineNum">     101 </span><span class="lineCov">          7 :     const auto position = QPointF{obj[&quot;x&quot;].toDouble(), obj[&quot;y&quot;].toDouble()};</span>
-<span class="lineNum">     102 </span>            : 
-<span class="lineNum">     103 </span><span class="lineCov">         14 :     const QFileInfo fileInfo(filename);</span>
-<span class="lineNum">     104 </span><span class="lineCov">         14 :     const QString fileSuffix = fileInfo.suffix();</span>
-<span class="lineNum">     105 </span><span class="lineCov">          7 :     if (fileSuffix.isEmpty() || fileInfo.baseName().isEmpty())</span>
-<span class="lineNum">     106 </span><span class="lineCov">          1 :         return make_ready_response(http::Code::NOT_SUPPORTED);</span>
+<a name="90"><span class="lineNum">      90 </span><span class="lineCov">         27 : struct FileReceiver::UploadParameters</span></a>
+<a name="91"><span class="lineNum">      91 </span>            : {</a>
+<span class="lineNum">      92 </span><span class="lineCov">          5 :     UploadParameters() = default;</span>
+<span class="lineNum">      93 </span><span class="lineCov">          7 :     UploadParameters(const QJsonObject&amp; obj)</span>
+<span class="lineNum">      94 </span><span class="lineCov">          7 :         : filename{obj[&quot;filename&quot;].toString()}</span>
+<span class="lineNum">      95 </span><span class="lineCov">         14 :         , surfaceIndex{static_cast&lt;uint&gt;(obj[&quot;surfaceIndex&quot;].toInt())}</span>
+<span class="lineNum">      96 </span><span class="lineCov">         21 :         , position{obj[&quot;x&quot;].toDouble(), obj[&quot;y&quot;].toDouble()}</span>
+<span class="lineNum">      97 </span>            :     {
+<span class="lineNum">      98 </span><span class="lineCov">          7 :     }</span>
+<span class="lineNum">      99 </span>            :     QString filename;
+<span class="lineNum">     100 </span>            :     uint surfaceIndex = 0;
+<span class="lineNum">     101 </span>            :     QPointF position;
+<a name="102"><span class="lineNum">     102 </span>            : };</a>
+<span class="lineNum">     103 </span>            : 
+<span class="lineNum">     104 </span><span class="lineCov">          6 : FileReceiver::FileReceiver()</span>
+<span class="lineNum">     105 </span>            : {
+<a name="106"><span class="lineNum">     106 </span><span class="lineCov">          6 : }</span></a>
 <span class="lineNum">     107 </span>            : 
-<span class="lineNum">     108 </span><span class="lineCov">          6 :     const QStringList&amp; filters = ContentFactory::getSupportedExtensions();</span>
-<span class="lineNum">     109 </span><span class="lineCov">          6 :     if (!filters.contains(fileSuffix.toLower()))</span>
-<span class="lineNum">     110 </span><span class="lineCov">          1 :         return make_ready_response(http::Code::NOT_SUPPORTED);</span>
+<span class="lineNum">     108 </span><span class="lineCov">          6 : FileReceiver::~FileReceiver()</span>
+<span class="lineNum">     109 </span>            : {
+<a name="110"><span class="lineNum">     110 </span><span class="lineCov">          6 : }</span></a>
 <span class="lineNum">     111 </span>            : 
-<span class="lineNum">     112 </span><span class="lineCov">         10 :     const auto name = _getAvailableFileName(fileInfo);</span>
-<span class="lineNum">     113 </span><span class="lineCov">          5 :     _preparedPaths[name] = position;</span>
-<span class="lineNum">     114 </span><span class="lineCov">          5 :     return _makeResponse(http::Code::OK, &quot;url&quot;, _urlEncode(name));</span>
-<a name="115"><span class="lineNum">     115 </span>            : }</a>
-<span class="lineNum">     116 </span>            : 
-<span class="lineNum">     117 </span><span class="lineCov">          6 : std::future&lt;http::Response&gt; FileReceiver::handleUpload(</span>
-<span class="lineNum">     118 </span>            :     const http::Request&amp; request)
-<span class="lineNum">     119 </span>            : {
-<span class="lineNum">     120 </span><span class="lineCov">         12 :     const auto name = _urlDecode(QString::fromStdString(request.path));</span>
-<span class="lineNum">     121 </span><span class="lineCov">          6 :     if (!_preparedPaths.contains(name))</span>
-<span class="lineNum">     122 </span>            :         return _makeResponse(http::Code::FORBIDDEN, &quot;info&quot;,
-<span class="lineNum">     123 </span><span class="lineCov">          1 :                              &quot;upload not prepared&quot;);</span>
-<span class="lineNum">     124 </span>            : 
-<span class="lineNum">     125 </span><span class="lineCov">         10 :     const auto filePath = QDir::tempPath() + &quot;/&quot; + name;</span>
-<span class="lineNum">     126 </span><span class="lineCov">          5 :     const auto position = _preparedPaths[name];</span>
-<span class="lineNum">     127 </span><span class="lineCov">          5 :     _preparedPaths.remove(name);</span>
-<span class="lineNum">     128 </span>            : 
-<span class="lineNum">     129 </span><span class="lineCov">         10 :     QFile file(filePath);</span>
-<span class="lineNum">     130 </span><span class="lineCov">         10 :     if (!file.open(QIODevice::WriteOnly) ||</span>
-<span class="lineNum">     131 </span><span class="lineCov">          5 :         !file.write(request.body.c_str(), request.body.size()))</span>
-<span class="lineNum">     132 </span>            :     {
-<span class="lineNum">     133 </span><span class="lineNoCov">          0 :         print_log(LOG_ERROR, LOG_REST, &quot;file not created as %s&quot;,</span>
-<span class="lineNum">     134 </span><span class="lineNoCov">          0 :                   filePath.toLocal8Bit().constData());</span>
-<span class="lineNum">     135 </span>            :         return _makeResponse(http::Code::INTERNAL_SERVER_ERROR, &quot;info&quot;,
-<span class="lineNum">     136 </span><span class="lineNoCov">          0 :                              &quot;could not upload&quot;);</span>
-<span class="lineNum">     137 </span>            :     }
-<span class="lineNum">     138 </span><span class="lineCov">          5 :     file.close();</span>
-<span class="lineNum">     139 </span>            : 
-<span class="lineNum">     140 </span><span class="lineCov">         10 :     print_log(LOG_INFO, LOG_REST, &quot;file created as %s&quot;,</span>
-<span class="lineNum">     141 </span><span class="lineCov">          5 :               filePath.toLocal8Bit().constData());</span>
-<a name="142"><span class="lineNum">     142 </span>            : </a>
-<span class="lineNum">     143 </span><span class="lineCov">         10 :     auto promise = std::make_shared&lt;std::promise&lt;Response&gt;&gt;();</span>
-<span class="lineNum">     144 </span><span class="lineCov">         37 :     emit open(filePath, position, [promise, filePath](const bool success) {</span>
-<span class="lineNum">     145 </span><span class="lineCov">          4 :         if (success)</span>
-<span class="lineNum">     146 </span>            :         {
-<span class="lineNum">     147 </span><span class="lineCov">          8 :             print_log(LOG_INFO, LOG_REST, &quot;file uploaded and saved as: %s&quot;,</span>
-<span class="lineNum">     148 </span><span class="lineCov">          4 :                       filePath.toLocal8Bit().constData());</span>
-<span class="lineNum">     149 </span><span class="lineCov">          4 :             promise-&gt;set_value(Response{http::Code::CREATED, &quot;info&quot;, &quot;OK&quot;});</span>
-<span class="lineNum">     150 </span><span class="lineCov">          4 :             return;</span>
-<span class="lineNum">     151 </span>            :         }
-<span class="lineNum">     152 </span>            : 
-<span class="lineNum">     153 </span><span class="lineNoCov">          0 :         QFile(filePath).remove();</span>
-<span class="lineNum">     154 </span>            : 
-<span class="lineNum">     155 </span><span class="lineNoCov">          0 :         print_log(LOG_ERROR, LOG_REST,</span>
-<span class="lineNum">     156 </span>            :                   &quot;file uploaded but could not be opened: %s&quot;,
-<span class="lineNum">     157 </span><span class="lineNoCov">          0 :                   filePath.toLocal8Bit().constData());</span>
-<span class="lineNum">     158 </span><span class="lineNoCov">          0 :         promise-&gt;set_value(Response{http::Code::NOT_SUPPORTED, &quot;info&quot;,</span>
-<span class="lineNum">     159 </span><span class="lineNoCov">          0 :                                     &quot;file could not be opened&quot;});</span>
-<a name="160"><span class="lineNum">     160 </span><span class="lineCov">          5 :     });</span></a>
-<span class="lineNum">     161 </span><span class="lineCov">          5 :     return promise-&gt;get_future();</span>
-<span class="lineNum">     162 </span><span class="lineCov">         96 : }</span>
+<span class="lineNum">     112 </span><span class="lineCov">          7 : std::future&lt;http::Response&gt; FileReceiver::prepareUpload(</span>
+<span class="lineNum">     113 </span>            :     const http::Request&amp; request)
+<span class="lineNum">     114 </span>            : {
+<span class="lineNum">     115 </span><span class="lineCov">         14 :     const auto obj = json::parse(request.body);</span>
+<span class="lineNum">     116 </span><span class="lineCov">          7 :     if (obj.empty())</span>
+<span class="lineNum">     117 </span><span class="lineNoCov">          0 :         return make_ready_response(http::Code::BAD_REQUEST);</span>
+<span class="lineNum">     118 </span>            : 
+<span class="lineNum">     119 </span><span class="lineCov">         14 :     const auto params = UploadParameters{obj};</span>
+<span class="lineNum">     120 </span><span class="lineCov">          7 :     if (params.filename.contains('/'))</span>
+<span class="lineNum">     121 </span><span class="lineNoCov">          0 :         return make_ready_response(http::Code::NOT_SUPPORTED);</span>
+<span class="lineNum">     122 </span>            : 
+<span class="lineNum">     123 </span><span class="lineCov">         14 :     const auto fileInfo = QFileInfo(params.filename);</span>
+<span class="lineNum">     124 </span><span class="lineCov">         14 :     const auto fileSuffix = fileInfo.suffix();</span>
+<span class="lineNum">     125 </span><span class="lineCov">          7 :     if (fileSuffix.isEmpty() || fileInfo.baseName().isEmpty())</span>
+<span class="lineNum">     126 </span><span class="lineCov">          1 :         return make_ready_response(http::Code::NOT_SUPPORTED);</span>
+<span class="lineNum">     127 </span>            : 
+<span class="lineNum">     128 </span><span class="lineCov">          6 :     const auto&amp; filters = ContentFactory::getSupportedExtensions();</span>
+<span class="lineNum">     129 </span><span class="lineCov">          6 :     if (!filters.contains(fileSuffix.toLower()))</span>
+<span class="lineNum">     130 </span><span class="lineCov">          1 :         return make_ready_response(http::Code::NOT_SUPPORTED);</span>
+<span class="lineNum">     131 </span>            : 
+<span class="lineNum">     132 </span><span class="lineCov">         10 :     const auto name = _getAvailableFileName(fileInfo);</span>
+<span class="lineNum">     133 </span><span class="lineCov">          5 :     _preparedPaths[name] = params;</span>
+<span class="lineNum">     134 </span><span class="lineCov">          5 :     return _makeResponse(http::Code::OK, &quot;url&quot;, _urlEncode(name));</span>
+<a name="135"><span class="lineNum">     135 </span>            : }</a>
+<span class="lineNum">     136 </span>            : 
+<span class="lineNum">     137 </span><span class="lineCov">          6 : std::future&lt;http::Response&gt; FileReceiver::handleUpload(</span>
+<span class="lineNum">     138 </span>            :     const http::Request&amp; request)
+<span class="lineNum">     139 </span>            : {
+<span class="lineNum">     140 </span><span class="lineCov">         12 :     const auto name = _urlDecode(QString::fromStdString(request.path));</span>
+<span class="lineNum">     141 </span><span class="lineCov">          6 :     if (!_preparedPaths.count(name))</span>
+<span class="lineNum">     142 </span>            :         return _makeResponse(http::Code::FORBIDDEN, &quot;info&quot;,
+<span class="lineNum">     143 </span><span class="lineCov">          1 :                              &quot;upload not prepared&quot;);</span>
+<span class="lineNum">     144 </span>            : 
+<span class="lineNum">     145 </span><span class="lineCov">         10 :     const auto filePath = QDir::tempPath() + &quot;/&quot; + name;</span>
+<span class="lineNum">     146 </span>            : 
+<span class="lineNum">     147 </span><span class="lineCov">         10 :     const auto params = _preparedPaths[name];</span>
+<span class="lineNum">     148 </span><span class="lineCov">          5 :     _preparedPaths.erase(name);</span>
+<span class="lineNum">     149 </span>            : 
+<span class="lineNum">     150 </span><span class="lineCov">         10 :     QFile file(filePath);</span>
+<span class="lineNum">     151 </span><span class="lineCov">         10 :     if (!file.open(QIODevice::WriteOnly) ||</span>
+<span class="lineNum">     152 </span><span class="lineCov">          5 :         !file.write(request.body.c_str(), request.body.size()))</span>
+<span class="lineNum">     153 </span>            :     {
+<span class="lineNum">     154 </span><span class="lineNoCov">          0 :         print_log(LOG_ERROR, LOG_REST, &quot;file not created as %s&quot;,</span>
+<span class="lineNum">     155 </span><span class="lineNoCov">          0 :                   filePath.toLocal8Bit().constData());</span>
+<span class="lineNum">     156 </span>            :         return _makeResponse(http::Code::INTERNAL_SERVER_ERROR, &quot;info&quot;,
+<span class="lineNum">     157 </span><span class="lineNoCov">          0 :                              &quot;could not upload&quot;);</span>
+<span class="lineNum">     158 </span>            :     }
+<span class="lineNum">     159 </span><span class="lineCov">          5 :     file.close();</span>
+<span class="lineNum">     160 </span>            : 
+<span class="lineNum">     161 </span><span class="lineCov">         10 :     print_log(LOG_INFO, LOG_REST, &quot;file created as %s&quot;,</span>
+<span class="lineNum">     162 </span><span class="lineCov">          5 :               filePath.toLocal8Bit().constData());</span>
+<span class="lineNum">     163 </span>            : 
+<span class="lineNum">     164 </span><span class="lineCov">         10 :     auto promise = std::make_shared&lt;std::promise&lt;Response&gt;&gt;();</span>
+<a name="165"><span class="lineNum">     165 </span><span class="lineCov">         10 :     emit open(</span></a>
+<span class="lineNum">     166 </span><span class="lineCov">          5 :         params.surfaceIndex, filePath, params.position,</span>
+<span class="lineNum">     167 </span><span class="lineCov">         27 :         [promise, filePath](const bool success) {</span>
+<span class="lineNum">     168 </span><span class="lineCov">          4 :             if (success)</span>
+<span class="lineNum">     169 </span>            :             {
+<span class="lineNum">     170 </span><span class="lineCov">          8 :                 print_log(LOG_INFO, LOG_REST, &quot;file uploaded and saved as: %s&quot;,</span>
+<span class="lineNum">     171 </span><span class="lineCov">          4 :                           filePath.toLocal8Bit().constData());</span>
+<span class="lineNum">     172 </span><span class="lineCov">          4 :                 promise-&gt;set_value(Response{http::Code::CREATED, &quot;info&quot;, &quot;OK&quot;});</span>
+<span class="lineNum">     173 </span><span class="lineCov">          4 :                 return;</span>
+<span class="lineNum">     174 </span>            :             }
+<span class="lineNum">     175 </span>            : 
+<span class="lineNum">     176 </span><span class="lineNoCov">          0 :             QFile(filePath).remove();</span>
+<span class="lineNum">     177 </span>            : 
+<span class="lineNum">     178 </span><span class="lineNoCov">          0 :             print_log(LOG_ERROR, LOG_REST,</span>
+<span class="lineNum">     179 </span>            :                       &quot;file uploaded but could not be opened: %s&quot;,
+<span class="lineNum">     180 </span><span class="lineNoCov">          0 :                       filePath.toLocal8Bit().constData());</span>
+<span class="lineNum">     181 </span><span class="lineNoCov">          0 :             promise-&gt;set_value(Response{http::Code::NOT_SUPPORTED, &quot;info&quot;,</span>
+<span class="lineNum">     182 </span><span class="lineNoCov">          0 :                                         &quot;file could not be opened&quot;});</span>
+<a name="183"><span class="lineNum">     183 </span><span class="lineCov">          5 :         });</span></a>
+<span class="lineNum">     184 </span><span class="lineCov">          5 :     return promise-&gt;get_future();</span>
+<span class="lineNum">     185 </span><span class="lineCov">         96 : }</span>
 </pre>
       </td>
     </tr>

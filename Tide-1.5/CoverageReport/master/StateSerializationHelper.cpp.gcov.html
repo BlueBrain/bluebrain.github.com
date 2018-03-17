@@ -31,17 +31,17 @@
             <td class="headerValue">Tide</td>
             <td></td>
             <td class="headerItem">Lines:</td>
-            <td class="headerCovTableEntry">102</td>
-            <td class="headerCovTableEntry">134</td>
-            <td class="headerCovTableEntryMed">76.1 %</td>
+            <td class="headerCovTableEntry">124</td>
+            <td class="headerCovTableEntry">160</td>
+            <td class="headerCovTableEntryMed">77.5 %</td>
           </tr>
           <tr>
             <td class="headerItem">Date:</td>
-            <td class="headerValue">2018-02-28 06:40:09</td>
+            <td class="headerValue">2018-03-17 06:34:01</td>
             <td></td>
             <td class="headerItem">Functions:</td>
-            <td class="headerCovTableEntry">20</td>
-            <td class="headerCovTableEntry">20</td>
+            <td class="headerCovTableEntry">25</td>
+            <td class="headerCovTableEntry">25</td>
             <td class="headerCovTableEntryHi">100.0 %</td>
           </tr>
           <tr><td><img src="../glass.png" width=3 height=3 alt=""></td></tr>
@@ -61,7 +61,7 @@
 <pre class="sourceHeading">          Line data    Source code</pre>
 <pre class="source">
 <a name="1"><span class="lineNum">       1 </span>            : /*********************************************************************/</a>
-<span class="lineNum">       2 </span>            : /* Copyright (c) 2013-2017, EPFL/Blue Brain Project                  */
+<span class="lineNum">       2 </span>            : /* Copyright (c) 2013-2018, EPFL/Blue Brain Project                  */
 <span class="lineNum">       3 </span>            : /*                          Raphael Dumusc &lt;raphael.dumusc@epfl.ch&gt;  */
 <span class="lineNum">       4 </span>            : /* All rights reserved.                                              */
 <span class="lineNum">       5 </span>            : /*                                                                   */
@@ -106,7 +106,7 @@
 <span class="lineNum">      44 </span>            : #include &quot;control/DisplayGroupController.h&quot;
 <span class="lineNum">      45 </span>            : #include &quot;log.h&quot;
 <span class="lineNum">      46 </span>            : #include &quot;scene/ContentFactory.h&quot;
-<span class="lineNum">      47 </span>            : #include &quot;scene/DisplayGroup.h&quot;
+<span class="lineNum">      47 </span>            : #include &quot;scene/Scene.h&quot;
 <span class="lineNum">      48 </span>            : #include &quot;serialization/utils.h&quot;
 <span class="lineNum">      49 </span>            : 
 <span class="lineNum">      50 </span>            : #include &lt;QFileInfo&gt;
@@ -116,8 +116,8 @@
 <span class="lineNum">      54 </span><span class="lineCov">         32 : const QString SESSION_FILE_EXTENSION(&quot;.dcx&quot;);</span>
 <a name="55"><span class="lineNum">      55 </span>            : }</a>
 <span class="lineNum">      56 </span>            : 
-<span class="lineNum">      57 </span><span class="lineCov">          9 : StateSerializationHelper::StateSerializationHelper(DisplayGroupPtr group)</span>
-<span class="lineNum">      58 </span><span class="lineCov">          9 :     : _displayGroup(group)</span>
+<span class="lineNum">      57 </span><span class="lineCov">          9 : StateSerializationHelper::StateSerializationHelper(ScenePtr scene)</span>
+<span class="lineNum">      58 </span><span class="lineCov">          9 :     : _scene(scene)</span>
 <span class="lineNum">      59 </span>            : {
 <a name="60"><span class="lineNum">      60 </span><span class="lineCov">          9 : }</span></a>
 <span class="lineNum">      61 </span>            : 
@@ -191,185 +191,223 @@
 <span class="lineNum">     129 </span>            :     }
 <a name="130"><span class="lineNum">     130 </span>            : }</a>
 <span class="lineNum">     131 </span>            : 
-<span class="lineNum">     132 </span><span class="lineCov">          6 : bool _validateContent(const ContentWindowPtr&amp; window)</span>
+<span class="lineNum">     132 </span><span class="lineCov">          2 : void _relocateTempContent(Scene&amp; scene, const QString&amp; dstDir)</span>
 <span class="lineNum">     133 </span>            : {
-<span class="lineNum">     134 </span><span class="lineCov">          6 :     auto content = window-&gt;getContentPtr();</span>
-<span class="lineNum">     135 </span><span class="lineCov">          6 :     if (!content)</span>
-<span class="lineNum">     136 </span>            :     {
-<span class="lineNum">     137 </span><span class="lineNoCov">          0 :         print_log(LOG_WARN, LOG_CONTENT, &quot;Window '%s' does not have a Content!&quot;,</span>
-<span class="lineNum">     138 </span><span class="lineNoCov">          0 :                   window-&gt;getID().toString().toLocal8Bit().constData());</span>
-<span class="lineNum">     139 </span><span class="lineNoCov">          0 :         return false;</span>
-<span class="lineNum">     140 </span>            :     }
-<span class="lineNum">     141 </span>            : 
-<span class="lineNum">     142 </span><span class="lineCov">          6 :     if (!_canBeRestored(content-&gt;getType()))</span>
-<span class="lineNum">     143 </span><span class="lineNoCov">          0 :         return false;</span>
-<span class="lineNum">     144 </span>            : 
-<span class="lineNum">     145 </span>            :     // Some regular textures were saved as DynamicTexture type before the
-<span class="lineNum">     146 </span>            :     // migration to qml2 rendering
-<span class="lineNum">     147 </span><span class="lineCov">          6 :     if (content-&gt;getType() == CONTENT_TYPE_DYNAMIC_TEXTURE)</span>
-<span class="lineNum">     148 </span>            :     {
-<span class="lineNum">     149 </span><span class="lineNoCov">          0 :         const QString&amp; uri = content-&gt;getURI();</span>
-<span class="lineNum">     150 </span><span class="lineNoCov">          0 :         const auto type = ContentFactory::getContentTypeForFile(uri);</span>
-<span class="lineNum">     151 </span><span class="lineNoCov">          0 :         if (type == CONTENT_TYPE_TEXTURE)</span>
-<span class="lineNum">     152 </span>            :         {
-<span class="lineNum">     153 </span><span class="lineNoCov">          0 :             print_log(LOG_DEBUG, LOG_CONTENT,</span>
-<span class="lineNum">     154 </span>            :                       &quot;Try restoring legacy DynamicTexture as &quot;
-<span class="lineNum">     155 </span>            :                       &quot;a regular texture: '%s'&quot;,
-<span class="lineNum">     156 </span><span class="lineNoCov">          0 :                       content-&gt;getURI().toLocal8Bit().constData());</span>
-<span class="lineNum">     157 </span>            : 
-<span class="lineNum">     158 </span><span class="lineNoCov">          0 :             window-&gt;setContent(ContentFactory::getContent(uri));</span>
-<span class="lineNum">     159 </span><span class="lineNoCov">          0 :             content = window-&gt;getContentPtr();</span>
-<span class="lineNum">     160 </span>            :         }
-<span class="lineNum">     161 </span>            :         else
-<span class="lineNum">     162 </span>            :         {
-<span class="lineNum">     163 </span><span class="lineNoCov">          0 :             print_log(LOG_INFO, LOG_CONTENT,</span>
-<span class="lineNum">     164 </span>            :                       &quot;DynamicTexture are no longer supported. Please&quot;
-<span class="lineNum">     165 </span>            :                       &quot;convert the source image to a tiff pyramid: &quot;
-<span class="lineNum">     166 </span>            :                       &quot;'%s'&quot;,
-<span class="lineNum">     167 </span><span class="lineNoCov">          0 :                       content-&gt;getURI().toLocal8Bit().constData());</span>
+<span class="lineNum">     134 </span><span class="lineCov">          4 :     for (auto i = 0u; i &lt; scene.getSurfaceCount(); ++i)</span>
+<span class="lineNum">     135 </span><span class="lineCov">          2 :         _relocateTempContent(scene.getGroup(i), dstDir);</span>
+<a name="136"><span class="lineNum">     136 </span><span class="lineCov">          2 : }</span></a>
+<span class="lineNum">     137 </span>            : 
+<span class="lineNum">     138 </span><span class="lineCov">          6 : bool _validateContent(const ContentWindowPtr&amp; window)</span>
+<span class="lineNum">     139 </span>            : {
+<span class="lineNum">     140 </span><span class="lineCov">          6 :     auto content = window-&gt;getContentPtr();</span>
+<span class="lineNum">     141 </span><span class="lineCov">          6 :     if (!content)</span>
+<span class="lineNum">     142 </span>            :     {
+<span class="lineNum">     143 </span><span class="lineNoCov">          0 :         print_log(LOG_WARN, LOG_CONTENT, &quot;Window '%s' does not have a Content!&quot;,</span>
+<span class="lineNum">     144 </span><span class="lineNoCov">          0 :                   window-&gt;getID().toString().toLocal8Bit().constData());</span>
+<span class="lineNum">     145 </span><span class="lineNoCov">          0 :         return false;</span>
+<span class="lineNum">     146 </span>            :     }
+<span class="lineNum">     147 </span>            : 
+<span class="lineNum">     148 </span><span class="lineCov">          6 :     if (!_canBeRestored(content-&gt;getType()))</span>
+<span class="lineNum">     149 </span><span class="lineNoCov">          0 :         return false;</span>
+<span class="lineNum">     150 </span>            : 
+<span class="lineNum">     151 </span>            :     // Some regular textures were saved as DynamicTexture type before the
+<span class="lineNum">     152 </span>            :     // migration to qml2 rendering
+<span class="lineNum">     153 </span><span class="lineCov">          6 :     if (content-&gt;getType() == CONTENT_TYPE_DYNAMIC_TEXTURE)</span>
+<span class="lineNum">     154 </span>            :     {
+<span class="lineNum">     155 </span><span class="lineNoCov">          0 :         const auto&amp; uri = content-&gt;getURI();</span>
+<span class="lineNum">     156 </span><span class="lineNoCov">          0 :         const auto type = ContentFactory::getContentTypeForFile(uri);</span>
+<span class="lineNum">     157 </span><span class="lineNoCov">          0 :         if (type == CONTENT_TYPE_TEXTURE)</span>
+<span class="lineNum">     158 </span>            :         {
+<span class="lineNum">     159 </span><span class="lineNoCov">          0 :             print_log(LOG_DEBUG, LOG_CONTENT,</span>
+<span class="lineNum">     160 </span>            :                       &quot;Try restoring legacy DynamicTexture as &quot;
+<span class="lineNum">     161 </span>            :                       &quot;a regular texture: '%s'&quot;,
+<span class="lineNum">     162 </span><span class="lineNoCov">          0 :                       content-&gt;getURI().toLocal8Bit().constData());</span>
+<span class="lineNum">     163 </span>            : 
+<span class="lineNum">     164 </span><span class="lineNoCov">          0 :             auto newContent = ContentFactory::getContent(uri);</span>
+<span class="lineNum">     165 </span><span class="lineNoCov">          0 :             newContent-&gt;moveToThread(window-&gt;thread());</span>
+<span class="lineNum">     166 </span><span class="lineNoCov">          0 :             window-&gt;setContent(std::move(newContent));</span>
+<span class="lineNum">     167 </span><span class="lineNoCov">          0 :             content = window-&gt;getContentPtr();</span>
 <span class="lineNum">     168 </span>            :         }
-<span class="lineNum">     169 </span>            :     }
-<span class="lineNum">     170 </span>            : 
-<span class="lineNum">     171 </span>            :     // Refresh content information, files can have been modified or removed
-<span class="lineNum">     172 </span>            :     // since the state was saved.
-<span class="lineNum">     173 </span><span class="lineCov">          6 :     if (window-&gt;getContent().readMetadata())</span>
-<span class="lineNum">     174 </span>            :     {
-<span class="lineNum">     175 </span><span class="lineCov">         12 :         print_log(LOG_DEBUG, LOG_CONTENT, &quot;Restoring content: '%s'&quot;,</span>
-<span class="lineNum">     176 </span><span class="lineCov">          6 :                   content-&gt;getURI().toLocal8Bit().constData());</span>
+<span class="lineNum">     169 </span>            :         else
+<span class="lineNum">     170 </span>            :         {
+<span class="lineNum">     171 </span><span class="lineNoCov">          0 :             print_log(LOG_INFO, LOG_CONTENT,</span>
+<span class="lineNum">     172 </span>            :                       &quot;DynamicTexture are no longer supported. Please&quot;
+<span class="lineNum">     173 </span>            :                       &quot;convert the source image to a tiff pyramid: &quot;
+<span class="lineNum">     174 </span>            :                       &quot;'%s'&quot;,
+<span class="lineNum">     175 </span><span class="lineNoCov">          0 :                       content-&gt;getURI().toLocal8Bit().constData());</span>
+<span class="lineNum">     176 </span>            :         }
 <span class="lineNum">     177 </span>            :     }
-<span class="lineNum">     178 </span>            :     else
-<span class="lineNum">     179 </span>            :     {
-<span class="lineNum">     180 </span><span class="lineNoCov">          0 :         print_log(LOG_WARN, LOG_CONTENT, &quot;'%s' could not be restored!&quot;,</span>
-<span class="lineNum">     181 </span><span class="lineNoCov">          0 :                   content-&gt;getURI().toLocal8Bit().constData());</span>
-<span class="lineNum">     182 </span><span class="lineNoCov">          0 :         const QSize&amp; size = content-&gt;getDimensions();</span>
-<span class="lineNum">     183 </span><span class="lineNoCov">          0 :         window-&gt;setContent(ContentFactory::getErrorContent(size));</span>
-<span class="lineNum">     184 </span>            :     }
-<span class="lineNum">     185 </span><span class="lineCov">          6 :     return true;</span>
-<a name="186"><span class="lineNum">     186 </span>            : }</a>
-<span class="lineNum">     187 </span>            : 
-<span class="lineNum">     188 </span><span class="lineCov">          6 : void _validateContents(DisplayGroup&amp; group)</span>
-<span class="lineNum">     189 </span>            : {
-<span class="lineNum">     190 </span>            :     typedef QVector&lt;ContentWindowPtr&gt; Windows;
-<span class="lineNum">     191 </span><span class="lineCov">         12 :     Windows windows = Windows::fromStdVector(group.getContentWindows());</span>
-<span class="lineNum">     192 </span>            : 
-<span class="lineNum">     193 </span><span class="lineCov">          6 :     QtConcurrent::blockingFilter(windows, _validateContent);</span>
-<span class="lineNum">     194 </span>            : 
-<span class="lineNum">     195 </span><span class="lineCov">          6 :     group.setContentWindows(windows.toStdVector());</span>
-<a name="196"><span class="lineNum">     196 </span><span class="lineCov">          6 : }</span></a>
+<span class="lineNum">     178 </span>            : 
+<span class="lineNum">     179 </span>            :     // Refresh content information, files can have been modified or removed
+<span class="lineNum">     180 </span>            :     // since the state was saved.
+<span class="lineNum">     181 </span><span class="lineCov">          6 :     if (window-&gt;getContent().readMetadata())</span>
+<span class="lineNum">     182 </span>            :     {
+<span class="lineNum">     183 </span><span class="lineCov">         12 :         print_log(LOG_DEBUG, LOG_CONTENT, &quot;Restoring content: '%s'&quot;,</span>
+<span class="lineNum">     184 </span><span class="lineCov">          6 :                   content-&gt;getURI().toLocal8Bit().constData());</span>
+<span class="lineNum">     185 </span>            :     }
+<span class="lineNum">     186 </span>            :     else
+<span class="lineNum">     187 </span>            :     {
+<span class="lineNum">     188 </span><span class="lineNoCov">          0 :         print_log(LOG_WARN, LOG_CONTENT, &quot;'%s' could not be restored!&quot;,</span>
+<span class="lineNum">     189 </span><span class="lineNoCov">          0 :                   content-&gt;getURI().toLocal8Bit().constData());</span>
+<span class="lineNum">     190 </span><span class="lineNoCov">          0 :         const auto&amp; size = content-&gt;getDimensions();</span>
+<span class="lineNum">     191 </span><span class="lineNoCov">          0 :         auto errorContent = ContentFactory::getErrorContent(size);</span>
+<span class="lineNum">     192 </span><span class="lineNoCov">          0 :         errorContent-&gt;moveToThread(window-&gt;thread());</span>
+<span class="lineNum">     193 </span><span class="lineNoCov">          0 :         window-&gt;setContent(std::move(errorContent));</span>
+<span class="lineNum">     194 </span>            :     }
+<span class="lineNum">     195 </span><span class="lineCov">          6 :     return true;</span>
+<a name="196"><span class="lineNum">     196 </span>            : }</a>
 <span class="lineNum">     197 </span>            : 
-<span class="lineNum">     198 </span><span class="lineCov">          7 : DisplayGroupConstPtr _load(const QString&amp; filename,</span>
-<span class="lineNum">     199 </span>            :                            DisplayGroupConstPtr referenceGroup)
-<span class="lineNum">     200 </span>            : {
-<span class="lineNum">     201 </span><span class="lineCov">         14 :     State state;</span>
-<span class="lineNum">     202 </span>            :     // For backward compatibility, try to load the file as a legacy xml first
-<span class="lineNum">     203 </span><span class="lineCov">         27 :     if (!state.legacyLoadXML(filename) &amp;&amp;</span>
-<span class="lineNum">     204 </span><span class="lineCov">         25 :         !serialization::fromXmlFile(state, filename.toStdString()))</span>
-<span class="lineNum">     205 </span>            :     {
-<span class="lineNum">     206 </span><span class="lineCov">          1 :         return DisplayGroupConstPtr();</span>
-<span class="lineNum">     207 </span>            :     }
-<span class="lineNum">     208 </span>            : 
-<span class="lineNum">     209 </span><span class="lineCov">         12 :     DisplayGroupPtr group = state.getDisplayGroup();</span>
-<span class="lineNum">     210 </span><span class="lineCov">          6 :     _validateContents(*group);</span>
-<span class="lineNum">     211 </span>            : 
-<span class="lineNum">     212 </span><span class="lineCov">         12 :     DisplayGroupController controller(*group);</span>
-<span class="lineNum">     213 </span><span class="lineCov">          6 :     controller.updateFocusedWindowsCoordinates();</span>
-<span class="lineNum">     214 </span>            : 
-<span class="lineNum">     215 </span><span class="lineCov">          6 :     if (state.getVersion() &lt; FIRST_PIXEL_COORDINATES_FILE_VERSION)</span>
-<span class="lineNum">     216 </span><span class="lineCov">          2 :         controller.denormalize(referenceGroup-&gt;size());</span>
-<span class="lineNum">     217 </span><span class="lineCov">          4 :     else if (state.getVersion() == FIRST_PIXEL_COORDINATES_FILE_VERSION)</span>
-<span class="lineNum">     218 </span>            :     {
-<span class="lineNum">     219 </span>            :         // Approximation; only applies to FIRST_PIXEL_COORDINATES_FILE_VERSION
-<span class="lineNum">     220 </span>            :         // which did not serialize the size of the DisplayGroup
-<span class="lineNum">     221 </span><span class="lineNoCov">          0 :         assert(group-&gt;getCoordinates().isEmpty());</span>
-<span class="lineNum">     222 </span><span class="lineNoCov">          0 :         group-&gt;setCoordinates(controller.estimateSurface());</span>
-<span class="lineNum">     223 </span>            :     }
-<span class="lineNum">     224 </span>            : 
-<span class="lineNum">     225 </span>            :     // Reshape the new DisplayGroup only if it doesn't fit (legacy behaviour).
-<span class="lineNum">     226 </span>            :     // If the saved group was smaller, resize it but don't modify its windows.
-<span class="lineNum">     227 </span><span class="lineCov">          6 :     if (!referenceGroup-&gt;getCoordinates().contains(group-&gt;getCoordinates()))</span>
-<span class="lineNum">     228 </span><span class="lineNoCov">          0 :         controller.reshape(referenceGroup-&gt;size());</span>
-<span class="lineNum">     229 </span>            :     else
-<span class="lineNum">     230 </span>            :     {
-<span class="lineNum">     231 </span><span class="lineCov">          6 :         group-&gt;setWidth(referenceGroup-&gt;width());</span>
-<span class="lineNum">     232 </span><span class="lineCov">          6 :         group-&gt;setHeight(referenceGroup-&gt;height());</span>
-<span class="lineNum">     233 </span>            :     }
-<span class="lineNum">     234 </span><span class="lineCov">          6 :     group-&gt;moveToThread(referenceGroup-&gt;thread());</span>
+<span class="lineNum">     198 </span><span class="lineCov">          6 : void _validateContents(DisplayGroup&amp; group)</span>
+<span class="lineNum">     199 </span>            : {
+<span class="lineNum">     200 </span>            :     using Windows = QVector&lt;ContentWindowPtr&gt;;
+<span class="lineNum">     201 </span><span class="lineCov">         12 :     auto windows = Windows::fromStdVector(group.getContentWindows());</span>
+<span class="lineNum">     202 </span>            : 
+<span class="lineNum">     203 </span><span class="lineCov">          6 :     QtConcurrent::blockingFilter(windows, _validateContent);</span>
+<span class="lineNum">     204 </span>            : 
+<span class="lineNum">     205 </span><span class="lineCov">          6 :     group.setContentWindows(windows.toStdVector());</span>
+<a name="206"><span class="lineNum">     206 </span><span class="lineCov">          6 : }</span></a>
+<span class="lineNum">     207 </span>            : 
+<span class="lineNum">     208 </span><span class="lineCov">          6 : void _validateContents(Scene&amp; scene)</span>
+<span class="lineNum">     209 </span>            : {
+<span class="lineNum">     210 </span><span class="lineCov">         12 :     for (auto i = 0u; i &lt; scene.getSurfaceCount(); ++i)</span>
+<span class="lineNum">     211 </span><span class="lineCov">          6 :         _validateContents(scene.getGroup(i));</span>
+<a name="212"><span class="lineNum">     212 </span><span class="lineCov">          6 : }</span></a>
+<span class="lineNum">     213 </span>            : 
+<span class="lineNum">     214 </span><span class="lineCov">          6 : void _adjust(DisplayGroup&amp; group, const DisplayGroup&amp; referenceGroup)</span>
+<span class="lineNum">     215 </span>            : {
+<span class="lineNum">     216 </span>            :     // Reshape the new DisplayGroup only if it doesn't fit (legacy behaviour).
+<span class="lineNum">     217 </span>            :     // If the saved group was smaller, resize it but don't modify its windows.
+<span class="lineNum">     218 </span><span class="lineCov">          6 :     if (!referenceGroup.getCoordinates().contains(group.getCoordinates()))</span>
+<span class="lineNum">     219 </span><span class="lineNoCov">          0 :         DisplayGroupController{group}.reshape(referenceGroup.size());</span>
+<span class="lineNum">     220 </span>            :     else
+<span class="lineNum">     221 </span>            :     {
+<span class="lineNum">     222 </span><span class="lineCov">          6 :         group.setWidth(referenceGroup.width());</span>
+<span class="lineNum">     223 </span><span class="lineCov">          6 :         group.setHeight(referenceGroup.height());</span>
+<span class="lineNum">     224 </span>            :     }
+<a name="225"><span class="lineNum">     225 </span><span class="lineCov">          6 : }</span></a>
+<span class="lineNum">     226 </span>            : 
+<span class="lineNum">     227 </span><span class="lineCov">          6 : void _adjust(Scene&amp; scene, const Scene&amp; currentScene)</span>
+<span class="lineNum">     228 </span>            : {
+<span class="lineNum">     229 </span>            :     const auto max =
+<span class="lineNum">     230 </span><span class="lineCov">          6 :         std::min(scene.getSurfaces().size(), currentScene.getSurfaces().size());</span>
+<span class="lineNum">     231 </span>            : 
+<span class="lineNum">     232 </span><span class="lineCov">         12 :     for (auto i = 0u; i &lt; max; ++i)</span>
+<span class="lineNum">     233 </span><span class="lineCov">          6 :         _adjust(scene.getGroup(i), currentScene.getGroup(i));</span>
+<a name="234"><span class="lineNum">     234 </span><span class="lineCov">          6 : }</span></a>
 <span class="lineNum">     235 </span>            : 
-<span class="lineNum">     236 </span><span class="lineCov">          6 :     return group;</span>
-<a name="237"><span class="lineNum">     237 </span>            : }</a>
-<span class="lineNum">     238 </span>            : 
-<span class="lineNum">     239 </span><span class="lineCov">          7 : QFuture&lt;DisplayGroupConstPtr&gt; StateSerializationHelper::load(</span>
-<span class="lineNum">     240 </span>            :     const QString&amp; filename) const
-<span class="lineNum">     241 </span>            : {
-<span class="lineNum">     242 </span><span class="lineCov">         14 :     print_log(LOG_INFO, LOG_CONTENT, &quot;Restoring session: '%s'&quot;,</span>
-<span class="lineNum">     243 </span><span class="lineCov">          7 :               filename.toStdString().c_str());</span>
-<a name="244"><span class="lineNum">     244 </span>            : </a>
-<span class="lineNum">     245 </span><span class="lineCov">         14 :     DisplayGroupConstPtr referenceGroup = _displayGroup;</span>
-<span class="lineNum">     246 </span><span class="lineCov">         42 :     return QtConcurrent::run([referenceGroup, filename]() {</span>
-<span class="lineNum">     247 </span>            :         return _load(filename, referenceGroup);
-<span class="lineNum">     248 </span><span class="lineCov">         21 :     });</span>
-<a name="249"><span class="lineNum">     249 </span>            : }</a>
-<span class="lineNum">     250 </span>            : 
-<span class="lineNum">     251 </span><span class="lineCov">          3 : void _generatePreview(const DisplayGroup&amp; group, const QString&amp; filename)</span>
-<span class="lineNum">     252 </span>            : {
-<span class="lineNum">     253 </span><span class="lineCov">          3 :     const QSize size = group.size().toSize();</span>
-<span class="lineNum">     254 </span><span class="lineCov">          3 :     const ContentWindowPtrs&amp; windows = group.getContentWindows();</span>
-<span class="lineNum">     255 </span>            : 
-<span class="lineNum">     256 </span><span class="lineCov">          6 :     StatePreview filePreview(filename);</span>
-<span class="lineNum">     257 </span><span class="lineCov">          3 :     filePreview.generateImage(size, windows);</span>
-<span class="lineNum">     258 </span><span class="lineCov">          3 :     filePreview.saveToFile();</span>
-<a name="259"><span class="lineNum">     259 </span><span class="lineCov">          3 : }</span></a>
-<span class="lineNum">     260 </span>            : 
-<span class="lineNum">     261 </span><span class="lineCov">          3 : void _filterContents(DisplayGroup&amp; group)</span>
-<span class="lineNum">     262 </span>            : {
-<span class="lineNum">     263 </span><span class="lineCov">          3 :     const auto&amp; windows = group.getContentWindows();</span>
+<span class="lineNum">     236 </span><span class="lineCov">          7 : SceneConstPtr _load(const QString&amp; filename, SceneConstPtr referenceScene)</span>
+<span class="lineNum">     237 </span>            : {
+<span class="lineNum">     238 </span><span class="lineCov">         14 :     State state;</span>
+<span class="lineNum">     239 </span>            :     // For backward compatibility, try to load the file as a legacy xml first
+<span class="lineNum">     240 </span><span class="lineCov">         27 :     if (!state.legacyLoadXML(filename) &amp;&amp;</span>
+<span class="lineNum">     241 </span><span class="lineCov">         25 :         !serialization::fromXmlFile(state, filename.toStdString()))</span>
+<span class="lineNum">     242 </span>            :     {
+<span class="lineNum">     243 </span><span class="lineCov">          1 :         return SceneConstPtr();</span>
+<span class="lineNum">     244 </span>            :     }
+<span class="lineNum">     245 </span>            : 
+<span class="lineNum">     246 </span><span class="lineCov">         12 :     auto scene = state.getScene();</span>
+<span class="lineNum">     247 </span><span class="lineCov">          6 :     _validateContents(*scene);</span>
+<span class="lineNum">     248 </span>            : 
+<span class="lineNum">     249 </span><span class="lineCov">          6 :     auto&amp; group = scene-&gt;getGroup(0);</span>
+<span class="lineNum">     250 </span><span class="lineCov">          6 :     const auto&amp; referenceGroup = referenceScene-&gt;getGroup(0);</span>
+<span class="lineNum">     251 </span>            : 
+<span class="lineNum">     252 </span><span class="lineCov">         12 :     DisplayGroupController controller(group);</span>
+<span class="lineNum">     253 </span><span class="lineCov">          6 :     controller.updateFocusedWindowsCoordinates();</span>
+<span class="lineNum">     254 </span>            : 
+<span class="lineNum">     255 </span><span class="lineCov">          6 :     if (state.getVersion() &lt; FIRST_PIXEL_COORDINATES_FILE_VERSION)</span>
+<span class="lineNum">     256 </span><span class="lineCov">          2 :         controller.denormalize(referenceGroup.size());</span>
+<span class="lineNum">     257 </span><span class="lineCov">          4 :     else if (state.getVersion() == FIRST_PIXEL_COORDINATES_FILE_VERSION)</span>
+<span class="lineNum">     258 </span>            :     {
+<span class="lineNum">     259 </span>            :         // Approximation; only applies to FIRST_PIXEL_COORDINATES_FILE_VERSION
+<span class="lineNum">     260 </span>            :         // which did not serialize the size of the DisplayGroup
+<span class="lineNum">     261 </span><span class="lineNoCov">          0 :         assert(group.getCoordinates().isEmpty());</span>
+<span class="lineNum">     262 </span><span class="lineNoCov">          0 :         group.setCoordinates(controller.estimateSurface());</span>
+<span class="lineNum">     263 </span>            :     }
 <span class="lineNum">     264 </span>            : 
-<span class="lineNum">     265 </span><span class="lineCov">          6 :     ContentWindowPtrs filteredWindows;</span>
-<span class="lineNum">     266 </span><span class="lineCov">          3 :     filteredWindows.reserve(windows.size());</span>
-<span class="lineNum">     267 </span>            : 
-<a name="268"><span class="lineNum">     268 </span>            :     std::copy_if(windows.begin(), windows.end(),</a>
-<span class="lineNum">     269 </span>            :                  std::back_inserter(filteredWindows),
-<span class="lineNum">     270 </span><span class="lineCov">          6 :                  [](const ContentWindowPtr&amp; window) {</span>
-<span class="lineNum">     271 </span><span class="lineCov">          6 :                      return _canBeRestored(window-&gt;getContent().getType());</span>
-<span class="lineNum">     272 </span><span class="lineCov">          9 :                  });</span>
-<span class="lineNum">     273 </span><span class="lineCov">          3 :     group.setContentWindows(filteredWindows);</span>
-<a name="274"><span class="lineNum">     274 </span><span class="lineCov">          3 : }</span></a>
-<span class="lineNum">     275 </span>            : 
-<span class="lineNum">     276 </span><span class="lineCov">          3 : QFuture&lt;bool&gt; StateSerializationHelper::save(QString filename,</span>
-<span class="lineNum">     277 </span>            :                                              const QString&amp; uploadDir,
-<span class="lineNum">     278 </span>            :                                              const bool generatePreview)
-<span class="lineNum">     279 </span>            : {
-<span class="lineNum">     280 </span><span class="lineCov">          3 :     if (!filename.endsWith(SESSION_FILE_EXTENSION))</span>
-<span class="lineNum">     281 </span>            :     {
-<span class="lineNum">     282 </span><span class="lineNoCov">          0 :         filename.append(SESSION_FILE_EXTENSION);</span>
-<span class="lineNum">     283 </span><span class="lineNoCov">          0 :         print_log(LOG_VERBOSE, LOG_CONTENT, &quot;appended %s filename extension&quot;,</span>
-<span class="lineNum">     284 </span><span class="lineNoCov">          0 :                   SESSION_FILE_EXTENSION.toLocal8Bit().constData());</span>
-<span class="lineNum">     285 </span>            :     }
-<span class="lineNum">     286 </span>            : 
-<span class="lineNum">     287 </span><span class="lineCov">          6 :     print_log(LOG_INFO, LOG_CONTENT, &quot;Saving session: '%s'&quot;,</span>
-<span class="lineNum">     288 </span><span class="lineCov">          3 :               filename.toStdString().c_str());</span>
-<span class="lineNum">     289 </span>            : 
-<span class="lineNum">     290 </span><span class="lineCov">          3 :     if (!uploadDir.isEmpty())</span>
-<span class="lineNum">     291 </span>            :     {
-<span class="lineNum">     292 </span><span class="lineCov">          4 :         const auto sessionName = QFileInfo{filename}.baseName();</span>
-<span class="lineNum">     293 </span><span class="lineCov">          2 :         _relocateTempContent(*_displayGroup, uploadDir + &quot;/&quot; + sessionName);</span>
-<span class="lineNum">     294 </span>            :     }
-<span class="lineNum">     295 </span>            : 
-<a name="296"><span class="lineNum">     296 </span>            :     // Important: use xml archive not binary as they use different code paths</a>
-<span class="lineNum">     297 </span><span class="lineCov">          6 :     auto group = serialization::xmlCopy(_displayGroup);</span>
-<span class="lineNum">     298 </span><span class="lineCov">         21 :     return QtConcurrent::run([group, filename, generatePreview]() {</span>
-<span class="lineNum">     299 </span><span class="lineCov">          3 :         _filterContents(*group);</span>
-<span class="lineNum">     300 </span>            : 
-<span class="lineNum">     301 </span>            :         // Create preview before session so that thumbnail shows in file browser
-<span class="lineNum">     302 </span><span class="lineCov">          3 :         if (generatePreview)</span>
-<span class="lineNum">     303 </span><span class="lineCov">          3 :             _generatePreview(*group, filename);</span>
-<span class="lineNum">     304 </span>            : 
-<span class="lineNum">     305 </span><span class="lineCov">          3 :         if (!serialization::toXmlFile(State{group}, filename.toStdString()))</span>
-<span class="lineNum">     306 </span><span class="lineNoCov">          0 :             return false;</span>
+<span class="lineNum">     265 </span><span class="lineCov">          6 :     _adjust(*scene, *referenceScene);</span>
+<span class="lineNum">     266 </span>            : 
+<span class="lineNum">     267 </span><span class="lineCov">          6 :     scene-&gt;moveToThread(QCoreApplication::instance()-&gt;thread());</span>
+<span class="lineNum">     268 </span><span class="lineCov">          6 :     return scene;</span>
+<a name="269"><span class="lineNum">     269 </span>            : }</a>
+<span class="lineNum">     270 </span>            : 
+<span class="lineNum">     271 </span><span class="lineCov">          7 : QFuture&lt;SceneConstPtr&gt; StateSerializationHelper::load(</span>
+<span class="lineNum">     272 </span>            :     const QString&amp; filename) const
+<span class="lineNum">     273 </span>            : {
+<span class="lineNum">     274 </span><span class="lineCov">         14 :     print_log(LOG_INFO, LOG_CONTENT, &quot;Restoring session: '%s'&quot;,</span>
+<a name="275"><span class="lineNum">     275 </span><span class="lineCov">          7 :               filename.toStdString().c_str());</span></a>
+<span class="lineNum">     276 </span>            : 
+<span class="lineNum">     277 </span><span class="lineCov">         42 :     return QtConcurrent::run([ referenceScene = _scene, filename ]() {</span>
+<span class="lineNum">     278 </span>            :         return _load(filename, referenceScene);
+<span class="lineNum">     279 </span><span class="lineCov">         14 :     });</span>
+<a name="280"><span class="lineNum">     280 </span>            : }</a>
+<span class="lineNum">     281 </span>            : 
+<span class="lineNum">     282 </span><span class="lineCov">          3 : void _generatePreview(const Scene&amp; scene, const QString&amp; filename)</span>
+<span class="lineNum">     283 </span>            : {
+<span class="lineNum">     284 </span><span class="lineCov">          3 :     const auto&amp; group = scene.getGroup(0);</span>
+<span class="lineNum">     285 </span><span class="lineCov">          3 :     const auto&amp; windows = group.getContentWindows();</span>
+<span class="lineNum">     286 </span><span class="lineCov">          3 :     const auto size = group.size().toSize();</span>
+<span class="lineNum">     287 </span>            : 
+<span class="lineNum">     288 </span><span class="lineCov">          6 :     StatePreview filePreview(filename);</span>
+<span class="lineNum">     289 </span><span class="lineCov">          3 :     filePreview.generateImage(size, windows);</span>
+<span class="lineNum">     290 </span><span class="lineCov">          3 :     filePreview.saveToFile();</span>
+<a name="291"><span class="lineNum">     291 </span><span class="lineCov">          3 : }</span></a>
+<span class="lineNum">     292 </span>            : 
+<span class="lineNum">     293 </span><span class="lineCov">          3 : void _filterContents(DisplayGroup&amp; group)</span>
+<span class="lineNum">     294 </span>            : {
+<span class="lineNum">     295 </span><span class="lineCov">          3 :     const auto&amp; windows = group.getContentWindows();</span>
+<span class="lineNum">     296 </span>            : 
+<span class="lineNum">     297 </span><span class="lineCov">          6 :     ContentWindowPtrs filteredWindows;</span>
+<span class="lineNum">     298 </span><span class="lineCov">          3 :     filteredWindows.reserve(windows.size());</span>
+<span class="lineNum">     299 </span>            : 
+<a name="300"><span class="lineNum">     300 </span>            :     std::copy_if(windows.begin(), windows.end(),</a>
+<span class="lineNum">     301 </span>            :                  std::back_inserter(filteredWindows),
+<span class="lineNum">     302 </span><span class="lineCov">          6 :                  [](const ContentWindowPtr&amp; window) {</span>
+<span class="lineNum">     303 </span><span class="lineCov">          6 :                      return _canBeRestored(window-&gt;getContent().getType());</span>
+<span class="lineNum">     304 </span><span class="lineCov">          9 :                  });</span>
+<span class="lineNum">     305 </span><span class="lineCov">          3 :     group.setContentWindows(filteredWindows);</span>
+<a name="306"><span class="lineNum">     306 </span><span class="lineCov">          3 : }</span></a>
 <span class="lineNum">     307 </span>            : 
-<a name="308"><span class="lineNum">     308 </span><span class="lineCov">          3 :         return true;</span></a>
-<span class="lineNum">     309 </span><span class="lineCov">          6 :     });</span>
-<span class="lineNum">     310 </span><span class="lineCov">         96 : }</span>
+<span class="lineNum">     308 </span><span class="lineCov">          3 : void _filterContents(Scene&amp; scene)</span>
+<span class="lineNum">     309 </span>            : {
+<span class="lineNum">     310 </span><span class="lineCov">          6 :     for (auto i = 0u; i &lt; scene.getSurfaceCount(); ++i)</span>
+<span class="lineNum">     311 </span><span class="lineCov">          3 :         _filterContents(scene.getGroup(i));</span>
+<a name="312"><span class="lineNum">     312 </span><span class="lineCov">          3 : }</span></a>
+<span class="lineNum">     313 </span>            : 
+<span class="lineNum">     314 </span><span class="lineCov">          3 : QFuture&lt;bool&gt; StateSerializationHelper::save(QString filename,</span>
+<span class="lineNum">     315 </span>            :                                              const QString&amp; uploadDir,
+<span class="lineNum">     316 </span>            :                                              const bool generatePreview)
+<span class="lineNum">     317 </span>            : {
+<span class="lineNum">     318 </span><span class="lineCov">          3 :     if (!filename.endsWith(SESSION_FILE_EXTENSION))</span>
+<span class="lineNum">     319 </span>            :     {
+<span class="lineNum">     320 </span><span class="lineNoCov">          0 :         filename.append(SESSION_FILE_EXTENSION);</span>
+<span class="lineNum">     321 </span><span class="lineNoCov">          0 :         print_log(LOG_VERBOSE, LOG_CONTENT, &quot;appended %s filename extension&quot;,</span>
+<span class="lineNum">     322 </span><span class="lineNoCov">          0 :                   SESSION_FILE_EXTENSION.toLocal8Bit().constData());</span>
+<span class="lineNum">     323 </span>            :     }
+<span class="lineNum">     324 </span>            : 
+<span class="lineNum">     325 </span><span class="lineCov">          6 :     print_log(LOG_INFO, LOG_CONTENT, &quot;Saving session: '%s'&quot;,</span>
+<span class="lineNum">     326 </span><span class="lineCov">          3 :               filename.toStdString().c_str());</span>
+<span class="lineNum">     327 </span>            : 
+<span class="lineNum">     328 </span><span class="lineCov">          3 :     if (!uploadDir.isEmpty())</span>
+<span class="lineNum">     329 </span>            :     {
+<span class="lineNum">     330 </span><span class="lineCov">          4 :         const auto sessionName = QFileInfo{filename}.baseName();</span>
+<span class="lineNum">     331 </span><span class="lineCov">          2 :         _relocateTempContent(*_scene, uploadDir + &quot;/&quot; + sessionName);</span>
+<span class="lineNum">     332 </span>            :     }
+<span class="lineNum">     333 </span>            : 
+<a name="334"><span class="lineNum">     334 </span>            :     // Important: use xml archive not binary as they use different code paths</a>
+<span class="lineNum">     335 </span><span class="lineCov">          6 :     auto scene = serialization::xmlCopy(_scene);</span>
+<span class="lineNum">     336 </span><span class="lineCov">         21 :     return QtConcurrent::run([scene, filename, generatePreview]() {</span>
+<span class="lineNum">     337 </span><span class="lineCov">          3 :         _filterContents(*scene);</span>
+<span class="lineNum">     338 </span>            : 
+<span class="lineNum">     339 </span>            :         // Create preview before session so that thumbnail shows in file browser
+<span class="lineNum">     340 </span><span class="lineCov">          3 :         if (generatePreview)</span>
+<span class="lineNum">     341 </span><span class="lineCov">          3 :             _generatePreview(*scene, filename);</span>
+<span class="lineNum">     342 </span>            : 
+<span class="lineNum">     343 </span><span class="lineCov">          3 :         if (!serialization::toXmlFile(State{scene}, filename.toStdString()))</span>
+<span class="lineNum">     344 </span><span class="lineNoCov">          0 :             return false;</span>
+<span class="lineNum">     345 </span>            : 
+<a name="346"><span class="lineNum">     346 </span><span class="lineCov">          3 :         return true;</span></a>
+<span class="lineNum">     347 </span><span class="lineCov">          6 :     });</span>
+<span class="lineNum">     348 </span><span class="lineCov">         96 : }</span>
 </pre>
       </td>
     </tr>
