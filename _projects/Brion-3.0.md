@@ -4,7 +4,7 @@ version: "3.0"
 major: 3
 minor: 0
 description: The Blue Brain C++ I/O library
-updated: 16/03/18
+updated: 05/04/18
 homepage: https://github.com/BlueBrain/Brion
 repository: https://github.com/BlueBrain/Brion.git
 issuesurl: https://github.com/BlueBrain/Brion/issues
@@ -12,7 +12,7 @@ packageurl:
 license: LGPL
 maturity: EP
 maintainers: Blue Brain Project (bbp-open-source@googlegroups.com)
-contributors: Cyrille Favreau
+contributors: Jonas Karlsson
 readmetype: text/x-markdown
 ---
 # Brion

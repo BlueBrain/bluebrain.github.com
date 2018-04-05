@@ -1,5 +1,5 @@
 var searchData=
 [
-  ['updatemapping',['updateMapping',['../classbrion_1_1_compartment_report.html#a6ee6420e43db4ac5319a86b074d94ba4',1,'brion::CompartmentReport::updateMapping()'],['../classbrion_1_1_compartment_report_plugin.html#a979a0f56cfe3fc560eadc776dd865910',1,'brion::CompartmentReportPlugin::updateMapping()']]],
-  ['utilizations',['utilizations',['../classbrain_1_1_synapses.html#a080f16f481d0fc569eabaa746ef4aba9',1,'brain::Synapses']]]
+  ['target',['Target',['../classbrion_1_1_target.html#a967607b68d715c7191d56cf2d19ad6ca',1,'brion::Target::Target(const Target &amp;from)'],['../classbrion_1_1_target.html#a2c1de15976a2e1f569b0083bb56d0480',1,'brion::Target::Target(const std::string &amp;source)']]],
+  ['tojson',['toJSON',['../classbrion_1_1_version.html#a4852c8bfeec845a82718d1a42250c16a',1,'brion::Version::toJSON()'],['../classbrain_1_1_version.html#a02712f5fb5e479153827acb235bb59d4',1,'brain::Version::toJSON()']]]
 ];
