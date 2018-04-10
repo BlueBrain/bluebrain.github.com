@@ -8,7 +8,6 @@ var class_content_window_controller =
     ] ],
     [ "ContentWindowController", "class_content_window_controller.html#ae1fbfcee523c0afabeaf40a27ea13b86", null ],
     [ "adjustSize", "class_content_window_controller.html#a42007dfd0544667544dcaef7e3fea231", null ],
-    [ "adjustSizeOneToOne", "class_content_window_controller.html#ad121ca248b1a4ea27f86f5cef4d69ff7", null ],
     [ "constrainSize", "class_content_window_controller.html#a1b88c694e55003f2a30ab9d1f488557b", null ],
     [ "getMaxSize", "class_content_window_controller.html#aa749c1d5555254079c7250bead04fbf3", null ],
     [ "getMinSize", "class_content_window_controller.html#aa1ff2ae84100c3cd50ddc1d827a72cc0", null ],

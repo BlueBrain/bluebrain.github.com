@@ -10,7 +10,7 @@ var searchData=
   ['adjust',['adjust',['../class_display_group_controller.html#aca22819db57854ca08f7b91b4ed12929',1,'DisplayGroupController']]],
   ['adjustandcenter',['adjustAndCenter',['../namespacegeometry.html#a0c0237eb8f534c1d4e055e7a61cc7b1c',1,'geometry']]],
   ['adjustsize',['adjustSize',['../class_content_window_controller.html#a42007dfd0544667544dcaef7e3fea231',1,'ContentWindowController']]],
-  ['adjustsizeonetoone',['adjustSizeOneToOne',['../class_content_window_controller.html#ad121ca248b1a4ea27f86f5cef4d69ff7',1,'ContentWindowController']]],
+  ['adjustsizeonetoone',['adjustSizeOneToOne',['../class_display_group_controller.html#a3a7c54ae20b837513d4e928aa242924f',1,'DisplayGroupController']]],
   ['adjustwindowsaspectratiotocontent',['adjustWindowsAspectRatioToContent',['../class_display_group_controller.html#a9505e0a188ddbd55d0fc145e45c2690f',1,'DisplayGroupController']]],
   ['adjustzoomtocontentaspectratio',['adjustZoomToContentAspectRatio',['../class_zoom_controller.html#a154a8cd5a99be532f438bcd864dd9a9b',1,'ZoomController']]],
   ['allready',['allReady',['../class_wall_to_wall_channel.html#ae2cde7fe2d3fcbc7afb2de6b009355f4',1,'WallToWallChannel']]],

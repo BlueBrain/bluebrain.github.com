@@ -40,13 +40,13 @@ var NAVTREEINDEX =
 [
 ".html",
 "class_command_line_options.html#a4066c884c0ba91e17cdd81d93058876d",
-"class_content_window.html#ac557a80bb17253cb4c2ecb3f5f468f1a",
-"class_fps_counter.html#af7ac12793ae4f31b96439a4e12551160",
-"class_movie_synchronizer.html#a6d10e765a71f67c962837263d985b41b",
-"class_pixel_stream_window_manager.html#a46b8f7dcd44849d8bd12102735f0fa5e",
-"class_swipe_detector.html#a9315ceed6fb9ec6b39a1993c9538a407",
-"core_2api_8h.html",
-"wall_2version_8h.html#a7bd6df5f9b090e20ac173861ad71b1ee"
+"class_content_window.html#ac4a6c11c1a4cf8e83c4bca9bff8c1115",
+"class_fps_counter.html#a4f533eff274f2ff4ec9fdbd6a47de2c7",
+"class_movie_synchronizer.html#a572cd81a07a0a8c3ee946f0eed766b2a",
+"class_pixel_stream_window_manager.html#a03e923c990a174beac04a7cf91672af8",
+"class_swipe_detector.html",
+"classtide_1_1_version.html#af938b3d986124ce5dea77f03548b87fc",
+"wall_2api_8h.html#ab317918b6ad17d1a1d1df0cb1ec5d73c"
 ];
 
 var SYNCONMSG = 'click to disable panel synchronisation';

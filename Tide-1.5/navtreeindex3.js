@@ -1,5 +1,6 @@
 var NAVTREEINDEX3 =
 {
+"class_fps_counter.html#a4f533eff274f2ff4ec9fdbd6a47de2c7":[7,0,49,2],
 "class_fps_counter.html#af7ac12793ae4f31b96439a4e12551160":[7,0,49,0],
 "class_hardware_swap_group.html":[7,0,50],
 "class_hardware_swap_group.html#a4818b12691ff79d94fd7ce982172fe47":[7,0,50,4],
@@ -248,6 +249,5 @@ var NAVTREEINDEX3 =
 "class_movie_synchronizer.html":[7,0,79],
 "class_movie_synchronizer.html#a06c65503b945231682c50825c0dc2f26":[7,0,79,11],
 "class_movie_synchronizer.html#a1e1c29aee5a55c76acc32b2997ed7412":[7,0,79,9],
-"class_movie_synchronizer.html#a228b8a12cba78d7a77e3af79192a5c27":[7,0,79,4],
-"class_movie_synchronizer.html#a572cd81a07a0a8c3ee946f0eed766b2a":[7,0,79,2]
+"class_movie_synchronizer.html#a228b8a12cba78d7a77e3af79192a5c27":[7,0,79,4]
 };

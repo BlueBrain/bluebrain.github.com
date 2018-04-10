@@ -2,6 +2,7 @@ var class_display_group_controller =
 [
     [ "DisplayGroupController", "class_display_group_controller.html#ac3bd75cfaf3d6374085e2cc117beae82", null ],
     [ "adjust", "class_display_group_controller.html#aca22819db57854ca08f7b91b4ed12929", null ],
+    [ "adjustSizeOneToOne", "class_display_group_controller.html#a3a7c54ae20b837513d4e928aa242924f", null ],
     [ "adjustWindowsAspectRatioToContent", "class_display_group_controller.html#a9505e0a188ddbd55d0fc145e45c2690f", null ],
     [ "denormalize", "class_display_group_controller.html#a6d1a39818b26bcd4d47537bcbcbff9a4", null ],
     [ "deselectAll", "class_display_group_controller.html#a11b799e1af6c674f6b433a332798f556", null ],

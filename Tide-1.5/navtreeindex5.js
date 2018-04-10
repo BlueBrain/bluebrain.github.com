@@ -1,5 +1,10 @@
 var NAVTREEINDEX5 =
 {
+"class_pixel_stream_window_manager.html#a03e923c990a174beac04a7cf91672af8":[7,0,104,8],
+"class_pixel_stream_window_manager.html#a0766b8b0cde56e30de923b786009f612":[7,0,104,9],
+"class_pixel_stream_window_manager.html#a1990873d8c39ec3cd1c72f9403330e7d":[7,0,104,1],
+"class_pixel_stream_window_manager.html#a212f02234877ba3df2222e0f314cae36":[7,0,104,15],
+"class_pixel_stream_window_manager.html#a22fcff539e065134b0dce6d07bf3872f":[7,0,104,2],
 "class_pixel_stream_window_manager.html#a46b8f7dcd44849d8bd12102735f0fa5e":[7,0,104,4],
 "class_pixel_stream_window_manager.html#a582579fb754a9cc239f68b9a89eaffab":[7,0,104,3],
 "class_pixel_stream_window_manager.html#a6e68e2ca3ba0213a872e22acd082b468":[7,0,104,12],
@@ -199,9 +204,10 @@ var NAVTREEINDEX5 =
 "class_state_preview.html#adb7ad5d66ab2b54eb66e5912aa827c9a":[7,0,124,4],
 "class_state_preview.html#aea9bf32a2c4e97bae3d363e21eca1e33":[7,0,124,0],
 "class_state_serialization_helper.html":[7,0,125],
+"class_state_serialization_helper.html#a007a830248de748cbeb353d446b733a9":[7,0,125,1],
 "class_state_serialization_helper.html#a5c8e58fa1def3fb07d1d070f64c69d77":[7,0,125,0],
-"class_state_serialization_helper.html#a95b442aabb87e5c008fbdb28ea2a94b2":[7,0,125,2],
-"class_state_serialization_helper.html#aea800c644c311bc019ba7f4754abd723":[7,0,125,1],
+"class_state_serialization_helper.html#ab4e5e3b6111fe3ed1770d42a644a0a61":[7,0,125,3],
+"class_state_serialization_helper.html#aea800c644c311bc019ba7f4754abd723":[7,0,125,2],
 "class_state_thumbnail_generator.html":[7,0,126],
 "class_state_thumbnail_generator.html#a738aadd37d174137c3555ba57cd2a57c":[7,0,126,1],
 "class_state_thumbnail_generator.html#a8bee70cf435944ca72d74d3cf15c497d":[7,0,126,0],
@@ -243,11 +249,5 @@ var NAVTREEINDEX5 =
 "class_swap_synchronizer_hardware.html#affb955bf49dd296204acb21750c29b6c":[7,0,139,1],
 "class_swap_synchronizer_software.html":[7,0,140],
 "class_swap_synchronizer_software.html#a215cfd770e5bfed101ea79935ea168d4":[7,0,140,0],
-"class_swap_synchronizer_software.html#abfe6ed8b7aa8bb4a7029bc12fad0d2f6":[7,0,140,1],
-"class_swipe_detector.html":[7,0,141],
-"class_swipe_detector.html#a14bfc24188eaf060d70f63e5b9df8587":[7,0,141,0],
-"class_swipe_detector.html#a28811c95e9a17de4a65f6865744dd81a":[7,0,141,4],
-"class_swipe_detector.html#a46ca06540814e60b168233bc9f706a7f":[7,0,141,5],
-"class_swipe_detector.html#a56e9c96c90e6ceb4ddfea3f4638811e6":[7,0,141,6],
-"class_swipe_detector.html#a660b636fdbf49ec2297a20205cc04d35":[7,0,141,2]
+"class_swap_synchronizer_software.html#abfe6ed8b7aa8bb4a7029bc12fad0d2f6":[7,0,140,1]
 };

@@ -62,5 +62,6 @@ var class_content =
     [ "qmlControls", "class_content.html#af3540e434752288a35efd670186e127f", null ],
     [ "size", "class_content.html#a5c8292dbaab045c65cc9a6f1821f8efd", null ],
     [ "title", "class_content.html#afd9a0166b0789cdba7eed8070f2c429e", null ],
+    [ "uri", "class_content.html#a5b58244b063efb428c8a7dad21a04004", null ],
     [ "zoomRect", "class_content.html#ade1377306703c28f2977e0d308b3c09a", null ]
 ];
