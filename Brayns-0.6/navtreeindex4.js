@@ -120,7 +120,7 @@ var NAVTREEINDEX4 =
 "pluginapi_2version_8h.html#aec3b431747b4611d046a5be799c36a85":[6,0,81,9],
 "pluginapi_2version_8h.html#af6fac12cc372fa2c0d4a7276646db3e2":[6,0,81,7],
 "pluginapi_2version_8h_source.html":[6,0,81],
-"pluginapi_8h_source.html":[6,0,55],
+"pluginapi_8h_source.html":[6,0,54],
 "structbrayns_1_1_circuit_configuration.html":[5,0,0,14],
 "structbrayns_1_1_circuit_configuration.html#a11889b34ae9e6a3fb8df7b34f4c53794":[5,0,0,14,10],
 "structbrayns_1_1_circuit_configuration.html#a17c2d7f9c2d2a6761a206357399519fc":[5,0,0,14,13],
