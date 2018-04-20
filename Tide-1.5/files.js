@@ -193,7 +193,7 @@ var files =
     [ "WallConfiguration.h", "_wall_configuration_8h_source.html", null ],
     [ "WallFromMasterChannel.h", "_wall_from_master_channel_8h_source.html", null ],
     [ "WallRenderContext.h", "_wall_render_context_8h_source.html", null ],
-    [ "WallRenderer.h", "_wall_renderer_8h_source.html", null ],
+    [ "WallSurfaceRenderer.h", "_wall_surface_renderer_8h_source.html", null ],
     [ "WallToMasterChannel.h", "_wall_to_master_channel_8h_source.html", null ],
     [ "WallToWallChannel.h", "_wall_to_wall_channel_8h_source.html", null ],
     [ "WallWindow.h", "_wall_window_8h_source.html", null ],

@@ -165,7 +165,7 @@ var NAVTREEINDEX0 =
 "_wall_configuration_8h_source.html":[8,0,190],
 "_wall_from_master_channel_8h_source.html":[8,0,191],
 "_wall_render_context_8h_source.html":[8,0,192],
-"_wall_renderer_8h_source.html":[8,0,193],
+"_wall_surface_renderer_8h_source.html":[8,0,193],
 "_wall_to_master_channel_8h_source.html":[8,0,194],
 "_wall_to_wall_channel_8h_source.html":[8,0,195],
 "_wall_window_8h_source.html":[8,0,196],

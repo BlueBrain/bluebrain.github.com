@@ -179,7 +179,7 @@ var hierarchy =
       [ "TapAndHoldDetector", "class_tap_and_hold_detector.html", null ],
       [ "TapDetector", "class_tap_detector.html", null ],
       [ "WallFromMasterChannel", "class_wall_from_master_channel.html", null ],
-      [ "WallRenderer", "class_wall_renderer.html", null ],
+      [ "WallSurfaceRenderer", "class_wall_surface_renderer.html", null ],
       [ "WallToMasterChannel", "class_wall_to_master_channel.html", null ],
       [ "WallToWallChannel", "class_wall_to_wall_channel.html", null ]
     ] ],

@@ -177,7 +177,7 @@ var annotated_dup =
     [ "WallConfiguration", "struct_wall_configuration.html", "struct_wall_configuration" ],
     [ "WallFromMasterChannel", "class_wall_from_master_channel.html", "class_wall_from_master_channel" ],
     [ "WallRenderContext", "struct_wall_render_context.html", "struct_wall_render_context" ],
-    [ "WallRenderer", "class_wall_renderer.html", "class_wall_renderer" ],
+    [ "WallSurfaceRenderer", "class_wall_surface_renderer.html", "class_wall_surface_renderer" ],
     [ "WallToMasterChannel", "class_wall_to_master_channel.html", "class_wall_to_master_channel" ],
     [ "WallToWallChannel", "class_wall_to_wall_channel.html", "class_wall_to_wall_channel" ],
     [ "WallWindow", "class_wall_window.html", "class_wall_window" ],

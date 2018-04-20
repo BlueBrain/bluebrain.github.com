@@ -1,7 +1,6 @@
 var searchData=
 [
   ['api_2eh',['api.h',['../master_2api_8h.html',1,'']]],
-  ['maptowallpos',['mapToWallPos',['../class_master_quick_view.html#a8cca513cded41f400424556ff803684a',1,'MasterQuickView']]],
   ['markers',['Markers',['../class_markers.html',1,'']]],
   ['master',['Master',['../struct_configuration_1_1_master.html',1,'Configuration']]],
   ['masterapplication',['MasterApplication',['../class_master_application.html',1,'MasterApplication'],['../class_master_application.html#a71858edcebd4cdccd6a4507afad9789a',1,'MasterApplication::MasterApplication()']]],

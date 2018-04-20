@@ -14,7 +14,7 @@ var searchData=
   ['updatefocusedcoord',['updateFocusedCoord',['../class_automatic_layout.html#aa5c9b2eca042ee7fc7bc0b4de7a9034c',1,'AutomaticLayout::updateFocusedCoord()'],['../class_layout_engine.html#a4b2da7a8f2e346c4de3ed3162faf7e9f',1,'LayoutEngine::updateFocusedCoord()'],['../class_layout_policy.html#a58b72340cd346c3f996c8fd4213a0b11',1,'LayoutPolicy::updateFocusedCoord()']]],
   ['updatefocusedwindowscoordinates',['updateFocusedWindowsCoordinates',['../class_display_group_controller.html#a01fbbc2c1cec1793d84de3aae1c45926',1,'DisplayGroupController']]],
   ['updatepixelstream',['updatePixelStream',['../class_pixel_stream_updater.html#a148f149b1b3ebd3d11feb6b20416b518',1,'PixelStreamUpdater']]],
-  ['updaterenderedframes',['updateRenderedFrames',['../class_wall_renderer.html#a983082b28ddaa348f94071511f4b7816',1,'WallRenderer']]],
+  ['updaterenderedframes',['updateRenderedFrames',['../class_wall_surface_renderer.html#a70a43321ac37c01f9ea57827e72a07c7',1,'WallSurfaceRenderer']]],
   ['updatesizehints',['updateSizeHints',['../class_pixel_stream_window_manager.html#a8f0622d497aa3a47157912dc9f59fbfe',1,'PixelStreamWindowManager']]],
   ['updatestreamdimensions',['updateStreamDimensions',['../class_pixel_stream_window_manager.html#a212f02234877ba3df2222e0f314cae36',1,'PixelStreamWindowManager']]],
   ['updatetile',['updateTile',['../class_content_synchronizer.html#aba03b3c5af16950946e91c893d20eeaf',1,'ContentSynchronizer']]],

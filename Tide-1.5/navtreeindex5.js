@@ -1,7 +1,5 @@
 var NAVTREEINDEX5 =
 {
-"class_pixel_stream_window_manager.html#a03e923c990a174beac04a7cf91672af8":[7,0,104,8],
-"class_pixel_stream_window_manager.html#a0766b8b0cde56e30de923b786009f612":[7,0,104,9],
 "class_pixel_stream_window_manager.html#a1990873d8c39ec3cd1c72f9403330e7d":[7,0,104,1],
 "class_pixel_stream_window_manager.html#a212f02234877ba3df2222e0f314cae36":[7,0,104,15],
 "class_pixel_stream_window_manager.html#a22fcff539e065134b0dce6d07bf3872f":[7,0,104,2],
@@ -249,5 +247,7 @@ var NAVTREEINDEX5 =
 "class_swap_synchronizer_hardware.html#affb955bf49dd296204acb21750c29b6c":[7,0,139,1],
 "class_swap_synchronizer_software.html":[7,0,140],
 "class_swap_synchronizer_software.html#a215cfd770e5bfed101ea79935ea168d4":[7,0,140,0],
-"class_swap_synchronizer_software.html#abfe6ed8b7aa8bb4a7029bc12fad0d2f6":[7,0,140,1]
+"class_swap_synchronizer_software.html#abfe6ed8b7aa8bb4a7029bc12fad0d2f6":[7,0,140,1],
+"class_swipe_detector.html":[7,0,141],
+"class_swipe_detector.html#a14bfc24188eaf060d70f63e5b9df8587":[7,0,141,0]
 };

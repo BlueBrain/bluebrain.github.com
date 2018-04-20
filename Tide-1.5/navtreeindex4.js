@@ -1,7 +1,5 @@
 var NAVTREEINDEX4 =
 {
-"class_movie_synchronizer.html#a572cd81a07a0a8c3ee946f0eed766b2a":[7,0,79,2],
-"class_movie_synchronizer.html#a6d10e765a71f67c962837263d985b41b":[7,0,79,5],
 "class_movie_synchronizer.html#a916cbc692ebe85fc5e917596ad11d0ee":[7,0,79,0],
 "class_movie_synchronizer.html#aa1d8d8cafb31355778c5b5fc50b3680b":[7,0,79,7],
 "class_movie_synchronizer.html#ab94a196387bd25b0b157b969b71e5849":[7,0,79,10],
@@ -249,5 +247,7 @@ var NAVTREEINDEX4 =
 "class_pixel_stream_updater.html#aadf125779b550179707ad6edf33f27c5":[7,0,103,4],
 "class_pixel_stream_updater.html#abec2decfa2660dc4c37523b31dd30892":[7,0,103,1],
 "class_pixel_stream_updater.html#adaae2a27994e9657acc9651915a8c933":[7,0,103,5],
-"class_pixel_stream_window_manager.html":[7,0,104]
+"class_pixel_stream_window_manager.html":[7,0,104],
+"class_pixel_stream_window_manager.html#a03e923c990a174beac04a7cf91672af8":[7,0,104,8],
+"class_pixel_stream_window_manager.html#a0766b8b0cde56e30de923b786009f612":[7,0,104,9]
 };

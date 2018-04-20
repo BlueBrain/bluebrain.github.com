@@ -1,8 +1,6 @@
 var NAVTREEINDEX7 =
 {
-"classtide_1_1_version.html#af938b3d986124ce5dea77f03548b87fc":[7,0,2,0,16],
 "classtide_1_1_version.html#afdf47bdc2db574072947ff605eb4afc6":[7,0,2,0,4],
-"classtide_1_1_version.html#afdf47bdc2db574072947ff605eb4afc6":[7,0,2,0,3],
 "classtide_1_1_version.html#afdf47bdc2db574072947ff605eb4afc6":[7,0,2,0,5],
 "classwindow__not__found__error.html":[7,0,170],
 "core_2_qml_type_registration_8h_source.html":[8,0,121],
@@ -34,8 +32,8 @@ var NAVTREEINDEX7 =
 "deflect_types_8h_source.html":[8,0,37],
 "developer_guide.html":[3],
 "files.html":[8,0],
-"functions.html":[7,3,0,0],
 "functions.html":[7,3,0],
+"functions.html":[7,3,0,0],
 "functions_0x7e.html":[7,3,0,23],
 "functions_a.html":[7,3,0,1],
 "functions_b.html":[7,3,0,2],
@@ -92,8 +90,8 @@ var NAVTREEINDEX7 =
 "globals_defs.html":[8,1,1],
 "hierarchy.html":[7,2],
 "includes_8h_source.html":[8,0,67],
-"index.html":[],
 "index.html":[0],
+"index.html":[],
 "json_8h_source.html":[8,0,68],
 "jsonschema_8h_source.html":[8,0,69],
 "log_8h_source.html":[8,0,77],
@@ -128,10 +126,10 @@ var NAVTREEINDEX7 =
 "namespaceqml.html":[6,0,3],
 "namespaces.html":[6,0],
 "namespacescreens.html":[6,0,4],
-"namespaceserialization.html":[6,0,5],
 "namespaceserialization.html":[7,0,1],
-"namespaceserialization_1_1detail.html":[7,0,1,0],
+"namespaceserialization.html":[6,0,5],
 "namespaceserialization_1_1detail.html":[6,0,5,0],
+"namespaceserialization_1_1detail.html":[7,0,1,0],
 "namespacetexture_utils.html":[6,0,6],
 "namespacethumbnail.html":[6,0,7],
 "namespaceyuv.html":[6,0,8],
@@ -249,5 +247,7 @@ var NAVTREEINDEX7 =
 "wall_2api_8h.html":[8,0,2],
 "wall_2api_8h.html#a16ab85396255bfafad525acdef382d84":[8,0,2,0],
 "wall_2api_8h.html#a3402499ff2b3e66b1300f5d4939c5161":[8,0,2,1],
-"wall_2api_8h.html#a5fb5683211562e713f14c61380576806":[8,0,2,3]
+"wall_2api_8h.html#a5fb5683211562e713f14c61380576806":[8,0,2,3],
+"wall_2api_8h.html#ab317918b6ad17d1a1d1df0cb1ec5d73c":[8,0,2,2],
+"wall_2api_8h_source.html":[8,0,2]
 };
