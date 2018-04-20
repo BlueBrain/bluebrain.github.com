@@ -9,11 +9,12 @@ var annotated_dup =
       ] ],
       [ "jsonrpc", null, [
         [ "AsyncReceiver", "classrockets_1_1jsonrpc_1_1_async_receiver.html", "classrockets_1_1jsonrpc_1_1_async_receiver" ],
+        [ "CancellableReceiver", "classrockets_1_1jsonrpc_1_1_cancellable_receiver.html", "classrockets_1_1jsonrpc_1_1_cancellable_receiver" ],
         [ "Client", "classrockets_1_1jsonrpc_1_1_client.html", "classrockets_1_1jsonrpc_1_1_client" ],
+        [ "ClientRequest", "classrockets_1_1jsonrpc_1_1_client_request.html", "classrockets_1_1jsonrpc_1_1_client_request" ],
         [ "HttpCommunicator", "classrockets_1_1jsonrpc_1_1_http_communicator.html", "classrockets_1_1jsonrpc_1_1_http_communicator" ],
         [ "Notifier", "classrockets_1_1jsonrpc_1_1_notifier.html", "classrockets_1_1jsonrpc_1_1_notifier" ],
         [ "Receiver", "classrockets_1_1jsonrpc_1_1_receiver.html", "classrockets_1_1jsonrpc_1_1_receiver" ],
-        [ "ReceiverInterface", "classrockets_1_1jsonrpc_1_1_receiver_interface.html", "classrockets_1_1jsonrpc_1_1_receiver_interface" ],
         [ "Requester", "classrockets_1_1jsonrpc_1_1_requester.html", "classrockets_1_1jsonrpc_1_1_requester" ],
         [ "Response", "structrockets_1_1jsonrpc_1_1_response.html", "structrockets_1_1jsonrpc_1_1_response" ],
         [ "response_error", "classrockets_1_1jsonrpc_1_1response__error.html", "classrockets_1_1jsonrpc_1_1response__error" ],

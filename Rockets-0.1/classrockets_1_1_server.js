@@ -2,6 +2,7 @@ var classrockets_1_1_server =
 [
     [ "Server", "classrockets_1_1_server.html#ac3881cb8cadc9a57c994d9ddd4bceeac", null ],
     [ "Server", "classrockets_1_1_server.html#a8e6222b78e3375341ef8a6efb6cf7eb7", null ],
+    [ "Server", "classrockets_1_1_server.html#abab764f77ec45384067806b4c00b3e22", null ],
     [ "~Server", "classrockets_1_1_server.html#a42722cecccc10162920debf9aaf013ec", null ],
     [ "broadcastBinary", "classrockets_1_1_server.html#a9165a17b2ee66ff8978c3d4c08a7125e", null ],
     [ "broadcastText", "classrockets_1_1_server.html#adef924d8b528f676624829c7338fd68c", null ],
@@ -20,5 +21,6 @@ var classrockets_1_1_server =
     [ "handleText", "classrockets_1_1_server.html#aab147975dcd9e4db242742e2f3ccce19", null ],
     [ "handleText", "classrockets_1_1_server.html#abebcb3ca363f2905c36a5decf7ab4eff", null ],
     [ "remove", "classrockets_1_1_server.html#a4e1f56d98dbc47a5442830f7ce774359", null ],
+    [ "sendText", "classrockets_1_1_server.html#ad027f69a05a6aba54e34a3aad57ed043", null ],
     [ "setHttpFilter", "classrockets_1_1_server.html#aa471f0640af5e55ea1f88ce8357243e6", null ]
 ];

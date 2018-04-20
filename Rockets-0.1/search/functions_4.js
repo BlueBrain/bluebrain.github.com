@@ -1,5 +1,6 @@
 var searchData=
 [
+  ['get',['get',['../classrockets_1_1jsonrpc_1_1_client_request.html#abe4dc51cc42c3a71255b927a23b45112',1,'rockets::jsonrpc::ClientRequest']]],
   ['getabi',['getABI',['../classrockets_1_1_version.html#abc9187947a08e8dfbf20000650f48f6c',1,'rockets::Version']]],
   ['getconnectioncount',['getConnectionCount',['../classrockets_1_1_server.html#a18c47d48b0ce7925e8207e16839cafca',1,'rockets::Server']]],
   ['getmajor',['getMajor',['../classrockets_1_1_version.html#af204b2af67dd7fe0c584cb7f5f080b77',1,'rockets::Version']]],
