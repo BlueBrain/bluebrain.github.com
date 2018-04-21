@@ -4,7 +4,7 @@ version: "0.1"
 major: 0
 minor: 1
 description: Rockets - REST and websockets C++ library
-updated: 20/04/18
+updated: 21/04/18
 homepage: https://github.com/BlueBrain/Rockets
 repository: https://github.com/BlueBrain/Rockets.git
 issuesurl: https://github.com/BlueBrain/Rockets/issues
@@ -12,7 +12,7 @@ packageurl:
 license: LGPL
 maturity: EP
 maintainers: Blue Brain Project (bbp-open-source@googlegroups.com)
-contributors: Daniel Nachbaur
+contributors: Raphael Dumusc
 readmetype: text/x-markdown
 ---
 
