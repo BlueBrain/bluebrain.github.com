@@ -1,5 +1,8 @@
 var NAVTREEINDEX3 =
 {
+"functions_p.html":[7,3,0,12],
+"functions_r.html":[7,3,0,13],
+"functions_rela.html":[7,3,4],
 "functions_s.html":[7,3,0,14],
 "functions_t.html":[7,3,0,15],
 "functions_u.html":[7,3,0,16],
@@ -18,8 +21,8 @@ var NAVTREEINDEX3 =
 "morphology_plugin_8ipp_source.html":[8,0,21],
 "namespacebrain.html":[7,0,0],
 "namespacebrain.html":[6,0,0],
-"namespacebrain_1_1neuron.html":[7,0,0,0],
 "namespacebrain_1_1neuron.html":[6,0,0,0],
+"namespacebrain_1_1neuron.html":[7,0,0,0],
 "namespacebrion.html":[7,0,1],
 "namespacebrion.html":[6,0,1],
 "namespacemembers.html":[6,1,0],

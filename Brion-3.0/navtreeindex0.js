@@ -230,6 +230,7 @@ var NAVTREEINDEX0 =
 "classbrain_1_1neuron_1_1_morphology.html#a5f7434645c61ded7b7e24129e6f5946d":[7,0,0,0,0,11],
 "classbrain_1_1neuron_1_1_morphology.html#a6eb9ac2ec96c83dd85d6794884b44edb":[7,0,0,0,0,9],
 "classbrain_1_1neuron_1_1_morphology.html#a77a7acf9e2f42f9e5aa015d13fc0fe1d":[7,0,0,0,0,10],
+"classbrain_1_1neuron_1_1_morphology.html#a999306fb11b8521c0d5c173430e50d6f":[7,0,0,0,0,16],
 "classbrain_1_1neuron_1_1_morphology.html#aa6f8ac2ead5f027398cecf3250f9ef66":[7,0,0,0,0,7],
 "classbrain_1_1neuron_1_1_morphology.html#aa73946933a24ddce7ce6d1da36c41d50":[7,0,0,0,0,12],
 "classbrain_1_1neuron_1_1_morphology.html#ac38d721290e01bc08e2e76587b86ad4d":[7,0,0,0,0,4],
@@ -248,6 +249,5 @@ var NAVTREEINDEX0 =
 "classbrain_1_1neuron_1_1_section.html#a929e71da9372a82ab12fc650360163e4":[7,0,0,0,1,2],
 "classbrain_1_1neuron_1_1_section.html#aa05f5214f028540b0d8bd84f35087ed3":[7,0,0,0,1,6],
 "classbrain_1_1neuron_1_1_section.html#aaa07b7b364b620b9a781f30a5cd9f5ea":[7,0,0,0,1,15],
-"classbrain_1_1neuron_1_1_section.html#ab9eb3ac85be533e42f8a05914be383ac":[7,0,0,0,1,11],
-"classbrain_1_1neuron_1_1_section.html#ac34c25b88f6e3acf9b524ed0fe2a67b8":[7,0,0,0,1,1]
+"classbrain_1_1neuron_1_1_section.html#ab9eb3ac85be533e42f8a05914be383ac":[7,0,0,0,1,11]
 };

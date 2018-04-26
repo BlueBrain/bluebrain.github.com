@@ -1,5 +1,8 @@
 var NAVTREEINDEX2 =
 {
+"classbrion_1_1_spike_report.html#a7eec8b54b3b74f8c21bf80a8690fa780":[7,0,1,16,2],
+"classbrion_1_1_spike_report.html#aa112549e40ecbaecae371a87a054d991":[7,0,1,16,17],
+"classbrion_1_1_spike_report.html#aabe018d69760b2546f886877d267fcf7":[7,0,1,16,12],
 "classbrion_1_1_spike_report.html#ab199bcf8e3244591b88ada47fb8162b3":[7,0,1,16,6],
 "classbrion_1_1_spike_report.html#ab8efdf2da32129eff184b9bd260b4c49":[7,0,1,16,19],
 "classbrion_1_1_spike_report.html#abc848e1631c8293dbb2c0a5787656b3b":[7,0,1,16,1],
@@ -246,8 +249,5 @@ var NAVTREEINDEX2 =
 "functions_l.html":[7,3,0,8],
 "functions_m.html":[7,3,0,9],
 "functions_n.html":[7,3,0,10],
-"functions_o.html":[7,3,0,11],
-"functions_p.html":[7,3,0,12],
-"functions_r.html":[7,3,0,13],
-"functions_rela.html":[7,3,4]
+"functions_o.html":[7,3,0,11]
 };

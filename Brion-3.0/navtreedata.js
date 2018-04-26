@@ -42,9 +42,9 @@ var NAVTREE =
 var NAVTREEINDEX =
 [
 "Changelog.html",
-"classbrain_1_1neuron_1_1_section.html#adae5e321c2b1c6c0e711d1817e7e762f",
-"classbrion_1_1_spike_report.html#ab199bcf8e3244591b88ada47fb8162b3",
-"functions_s.html"
+"classbrain_1_1neuron_1_1_section.html#ac34c25b88f6e3acf9b524ed0fe2a67b8",
+"classbrion_1_1_spike_report.html#a7eec8b54b3b74f8c21bf80a8690fa780",
+"functions_p.html"
 ];
 
 var SYNCONMSG = 'click to disable panel synchronisation';
