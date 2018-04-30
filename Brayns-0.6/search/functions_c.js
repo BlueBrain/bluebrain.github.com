@@ -1,5 +1,4 @@
 var searchData=
 [
-  ['operator_2b_2b',['operator++',['../classbrayns_1_1_progress.html#aa362efa904cf8e93c6f2ea7c4026910b',1,'brayns::Progress']]],
-  ['operator_2b_3d',['operator+=',['../classbrayns_1_1_progress.html#af3324950d1185eccf16442ead18ec72a',1,'brayns::Progress']]]
+  ['name',['name',['../classbrayns_1_1_engine.html#ae0c323db5ffc02b9c774038d2a3305a2',1,'brayns::Engine::name()'],['../classbrayns_1_1_o_s_p_ray_engine.html#a7c9f310f686fe062947b3320672b1b3f',1,'brayns::OSPRayEngine::name()']]]
 ];

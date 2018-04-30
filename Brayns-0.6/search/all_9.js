@@ -4,10 +4,12 @@ var searchData=
   ['imagemanager',['ImageManager',['../classbrayns_1_1_image_manager.html',1,'brayns']]],
   ['impl',['impl',['../classbrayns_1_1_o_s_p_ray_camera.html#a5790eff76579edc1639f952921a24a11',1,'brayns::OSPRayCamera']]],
   ['import',['import',['../classbrayns_1_1_molecular_system_reader.html#a636bd7b06dc0b7934a83889769c53ff8',1,'brayns::MolecularSystemReader']]],
-  ['importfromfile',['importFromFile',['../classbrayns_1_1_scene_loader.html#a81ffea194cf8aa8e0c5d7030bbcd6f15',1,'brayns::SceneLoader']]],
-  ['importmeshfromfile',['importMeshFromFile',['../classbrayns_1_1_mesh_loader.html#aa8ced7a992519151016b0b7b012db37b',1,'brayns::MeshLoader']]],
+  ['importcircuit',['importCircuit',['../classbrayns_1_1_circuit_loader.html#a32e173dbd5ee2ecf214a23d823e7c7b6',1,'brayns::CircuitLoader']]],
+  ['importfromblob',['importFromBlob',['../classbrayns_1_1_loader.html#afae138fcfa9ff286408b7972dc36b10e',1,'brayns::Loader::importFromBlob()'],['../classbrayns_1_1_circuit_loader.html#a79081594d2254854fe8ee4843f5d1817',1,'brayns::CircuitLoader::importFromBlob()'],['../classbrayns_1_1_mesh_loader.html#a6e09453573595e1528696659572e4b0b',1,'brayns::MeshLoader::importFromBlob()'],['../classbrayns_1_1_molecular_system_reader.html#a223cc7678592b8f4956f2bb2282a1f42',1,'brayns::MolecularSystemReader::importFromBlob()'],['../classbrayns_1_1_x_y_z_b_loader.html#a3662e2e1ff1727a50180cc916b1277a8',1,'brayns::XYZBLoader::importFromBlob()']]],
+  ['importfromfile',['importFromFile',['../classbrayns_1_1_loader.html#a628f70ee472598a5b51d6b7b4675143e',1,'brayns::Loader::importFromFile()'],['../classbrayns_1_1_circuit_loader.html#a5ee82952e57fec254357a679af7cb9cb',1,'brayns::CircuitLoader::importFromFile()'],['../classbrayns_1_1_mesh_loader.html#a6600949b86126223ccf2562e501c82e9',1,'brayns::MeshLoader::importFromFile()'],['../classbrayns_1_1_molecular_system_reader.html#acdea2faa0a608d86334e03351ddb2bc2',1,'brayns::MolecularSystemReader::importFromFile()'],['../classbrayns_1_1_x_y_z_b_loader.html#a9b3d3c35efad2b21ec9747da1b77de5a',1,'brayns::XYZBLoader::importFromFile()']]],
   ['importpdbfile',['importPDBFile',['../classbrayns_1_1_protein_loader.html#a91c82bfd2699c0d8023a37d7e9f6327f',1,'brayns::ProteinLoader']]],
   ['importtexturefromfile',['importTextureFromFile',['../classbrayns_1_1_image_manager.html#afd351f59c98c3c0f651cf6fd401f7f28',1,'brayns::ImageManager']]],
+  ['increment',['increment',['../classbrayns_1_1_progress.html#a040143c55476623a620e1f28c2fdc903',1,'brayns::Progress']]],
   ['initializedefaultcameras',['initializeDefaultCameras',['../classbrayns_1_1_rendering_parameters.html#aae0ed47a19b6f78280ec32e6c190598f',1,'brayns::RenderingParameters']]],
   ['initializedefaultrenderers',['initializeDefaultRenderers',['../classbrayns_1_1_rendering_parameters.html#ad757f946c741873c82e46e69231e36ad',1,'brayns::RenderingParameters']]],
   ['initializematerials',['initializeMaterials',['../classbrayns_1_1_engine.html#a4d39c844e28b872a2513edf2df42f9c0',1,'brayns::Engine']]],
@@ -16,6 +18,7 @@ var searchData=
   ['isbenchmarking',['isBenchmarking',['../classbrayns_1_1_application_parameters.html#a0baa53fd46c9a6aecddeec70d2546ce2',1,'brayns::ApplicationParameters']]],
   ['ismodified',['isModified',['../classbrayns_1_1_base_object.html#ad5e3f16c81e260c2fdfcf5aa00fca6fd',1,'brayns::BaseObject']]],
   ['isready',['isReady',['../classbrayns_1_1_abstract_simulation_handler.html#aad7e9c57e1a9095c0f3c05b3fc33d332',1,'brayns::AbstractSimulationHandler']]],
+  ['issupported',['isSupported',['../classbrayns_1_1_loader_registry.html#a0b906f66a2a61c3cee2b04d6877e3b32',1,'brayns::LoaderRegistry']]],
   ['isvolumesupported',['isVolumeSupported',['../classbrayns_1_1_scene.html#a86009585882ba32e2938dde100097eea',1,'brayns::Scene::isVolumeSupported()'],['../classbrayns_1_1_o_s_p_ray_scene.html#ae4904bea5fbd897256145650bfbebbe2',1,'brayns::OSPRayScene::isVolumeSupported()']]],
   ['version_2eh',['version.h',['../io_2version_8h.html',1,'']]]
 ];

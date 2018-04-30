@@ -1,7 +1,7 @@
 var searchData=
 [
-  ['map',['map',['../classbrayns_1_1_volume_handler_1_1_volume_descriptor.html#a2d4b737d5b886e4ce8c3e59dc480d96a',1,'brayns::VolumeHandler::VolumeDescriptor']]],
-  ['markrebuildscene',['markRebuildScene',['../classbrayns_1_1_engine.html#a3371ca3d62222ab1c91e3f9aec744a2e',1,'brayns::Engine']]],
-  ['milliseconds',['milliseconds',['../classbrayns_1_1_timer.html#a8f5a63abdf4ac864d12f08e422db17c9',1,'brayns::Timer']]],
-  ['molecularsystemreader',['MolecularSystemReader',['../classbrayns_1_1_molecular_system_reader.html#ac1f51756114b9838ce9a2af3f7bdd048',1,'brayns::MolecularSystemReader']]]
+  ['load',['load',['../classbrayns_1_1_loader_registry.html#af7043cedcdd7a515ca26c9bad3720918',1,'brayns::LoaderRegistry::load()'],['../classbrayns_1_1_scene.html#acf7748801c98e36c82eeb61722898b9c',1,'brayns::Scene::load(Blob &amp;&amp;blob, const Matrix4f &amp;transformation, const size_t materialID, Loader::UpdateCallback cb)'],['../classbrayns_1_1_scene.html#a4756d6b19b715c79901f867d994d6e79',1,'brayns::Scene::load(const std::string &amp;path, const Matrix4f &amp;transformation, const size_t materialID, Loader::UpdateCallback cb)']]],
+  ['loadfromcachefile',['loadFromCacheFile',['../classbrayns_1_1_scene.html#ade17e86cbdea01b469f9ad6fbaa4a794',1,'brayns::Scene']]],
+  ['loadfromfile',['loadFromFile',['../classbrayns_1_1_transfer_function_loader.html#af598d7a7ebee8f6bc6aaf732192d4462',1,'brayns::TransferFunctionLoader']]],
+  ['loadplugins',['loadPlugins',['../classbrayns_1_1_brayns.html#a13ee3507d5f761f803383c0993bc8035',1,'brayns::Brayns']]]
 ];

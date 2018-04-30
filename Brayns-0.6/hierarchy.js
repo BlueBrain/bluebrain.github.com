@@ -7,6 +7,15 @@ var hierarchy =
     [ "brayns::AbstractSimulationHandler", "classbrayns_1_1_abstract_simulation_handler.html", [
       [ "brayns::SpikeSimulationHandler", "classbrayns_1_1_spike_simulation_handler.html", null ]
     ] ],
+    [ "brayns::AbstractTask", "classbrayns_1_1_abstract_task.html", [
+      [ "brayns::Task< T >", "classbrayns_1_1_task.html", [
+        [ "brayns::DeferredTask< T >", "classbrayns_1_1_deferred_task.html", null ]
+      ] ],
+      [ "brayns::Task< bool >", "classbrayns_1_1_task.html", [
+        [ "brayns::UploadBinaryTask", "classbrayns_1_1_upload_binary_task.html", null ],
+        [ "brayns::UploadPathTask", "classbrayns_1_1_upload_path_task.html", null ]
+      ] ]
+    ] ],
     [ "brayns::ActionInterface", "classbrayns_1_1_action_interface.html", null ],
     [ "brayns::BaseObject", "classbrayns_1_1_base_object.html", [
       [ "brayns::AbstractParameters", "classbrayns_1_1_abstract_parameters.html", [
@@ -21,16 +30,19 @@ var hierarchy =
       [ "brayns::Camera", "classbrayns_1_1_camera.html", [
         [ "brayns::OSPRayCamera", "classbrayns_1_1_o_s_p_ray_camera.html", null ]
       ] ],
-      [ "brayns::Engine::Progress", "structbrayns_1_1_engine_1_1_progress.html", null ],
       [ "brayns::FrameBuffer", "classbrayns_1_1_frame_buffer.html", [
         [ "brayns::OSPRayFrameBuffer", "classbrayns_1_1_o_s_p_ray_frame_buffer.html", null ]
       ] ],
+      [ "brayns::Progress", "classbrayns_1_1_progress.html", null ],
       [ "brayns::Scene", "classbrayns_1_1_scene.html", [
         [ "brayns::OSPRayScene", "classbrayns_1_1_o_s_p_ray_scene.html", null ]
       ] ],
       [ "brayns::Statistics", "classbrayns_1_1_statistics.html", null ],
       [ "brayns::TransferFunction", "classbrayns_1_1_transfer_function.html", null ]
     ] ],
+    [ "brayns::BinaryError", "structbrayns_1_1_binary_error.html", null ],
+    [ "brayns::BinaryParam", "structbrayns_1_1_binary_param.html", null ],
+    [ "brayns::Blob", "structbrayns_1_1_blob.html", null ],
     [ "brayns::Brayns", "classbrayns_1_1_brayns.html", null ],
     [ "brayns::CADiffusionSimulationHandler", "classbrayns_1_1_c_a_diffusion_simulation_handler.html", null ],
     [ "brayns::CircuitConfiguration", "structbrayns_1_1_circuit_configuration.html", null ],
@@ -48,18 +60,19 @@ var hierarchy =
       [ "brayns::DirectionalLight", "classbrayns_1_1_directional_light.html", null ],
       [ "brayns::PointLight", "classbrayns_1_1_point_light.html", null ]
     ] ],
+    [ "brayns::Loader", "classbrayns_1_1_loader.html", [
+      [ "brayns::CircuitLoader", "classbrayns_1_1_circuit_loader.html", null ],
+      [ "brayns::MeshLoader", "classbrayns_1_1_mesh_loader.html", null ],
+      [ "brayns::MolecularSystemReader", "classbrayns_1_1_molecular_system_reader.html", null ],
+      [ "brayns::XYZBLoader", "classbrayns_1_1_x_y_z_b_loader.html", null ]
+    ] ],
+    [ "brayns::LoaderRegistry", "classbrayns_1_1_loader_registry.html", null ],
+    [ "brayns::LoaderRegistry::LoaderInfo", "structbrayns_1_1_loader_registry_1_1_loader_info.html", null ],
     [ "brayns::Material", "classbrayns_1_1_material.html", null ],
-    [ "brayns::MeshLoader", "classbrayns_1_1_mesh_loader.html", null ],
     [ "brayns::MetaballsGenerator", "classbrayns_1_1_metaballs_generator.html", null ],
     [ "brayns::MorphologyLayout", "structbrayns_1_1_morphology_layout.html", null ],
     [ "brayns::ParametersManager", "classbrayns_1_1_parameters_manager.html", null ],
     [ "brayns::PluginAPI", "classbrayns_1_1_plugin_a_p_i.html", null ],
-    [ "brayns::Progress", "classbrayns_1_1_progress.html", null ],
-    [ "brayns::ProgressReporter", "classbrayns_1_1_progress_reporter.html", [
-      [ "brayns::MolecularSystemReader", "classbrayns_1_1_molecular_system_reader.html", null ],
-      [ "brayns::SceneLoader", "classbrayns_1_1_scene_loader.html", null ],
-      [ "brayns::XYZBLoader", "classbrayns_1_1_x_y_z_b_loader.html", null ]
-    ] ],
     [ "brayns::ProteinLoader", "classbrayns_1_1_protein_loader.html", null ],
     [ "brayns::Renderer", "classbrayns_1_1_renderer.html", [
       [ "brayns::OSPRayRenderer", "classbrayns_1_1_o_s_p_ray_renderer.html", null ]
@@ -68,8 +81,10 @@ var hierarchy =
     [ "brayns::RenderInput", "structbrayns_1_1_render_input.html", null ],
     [ "brayns::RenderOutput", "structbrayns_1_1_render_output.html", null ],
     [ "brayns::ShortcutInformation", "structbrayns_1_1_shortcut_information.html", null ],
-    [ "brayns::SnapshotParams", "structbrayns_1_1_snapshot_params.html", null ],
     [ "brayns::Sphere", "structbrayns_1_1_sphere.html", null ],
+    [ "brayns::TaskFunctor", "classbrayns_1_1_task_functor.html", [
+      [ "brayns::LoadDataFunctor", "classbrayns_1_1_load_data_functor.html", null ]
+    ] ],
     [ "brayns::Texture2D", "classbrayns_1_1_texture2_d.html", null ],
     [ "brayns::Timer", "classbrayns_1_1_timer.html", null ],
     [ "brayns::TransferFunctionLoader", "classbrayns_1_1_transfer_function_loader.html", null ],
@@ -99,6 +114,11 @@ var hierarchy =
     [ "std::exception", null, [
       [ "brayns::Exception", "classbrayns_1_1_exception.html", [
         [ "brayns::BadParameter", "classbrayns_1_1_bad_parameter.html", null ]
+      ] ],
+      [ "std::runtime_error", null, [
+        [ "brayns::TaskRuntimeError", "classbrayns_1_1_task_runtime_error.html", [
+          [ "brayns::BinaryTaskError", "classbrayns_1_1_binary_task_error.html", null ]
+        ] ]
       ] ]
     ] ]
 ];

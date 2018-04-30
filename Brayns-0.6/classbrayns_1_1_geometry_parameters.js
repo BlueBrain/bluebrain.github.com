@@ -47,7 +47,6 @@ var classbrayns_1_1_geometry_parameters =
     [ "getSaveCacheFile", "classbrayns_1_1_geometry_parameters.html#a714f28f1069bc6ea579b96300214f23f", null ],
     [ "getSceneEnvironment", "classbrayns_1_1_geometry_parameters.html#a685b7032dd4e7aefadd50cf751f88c6d", null ],
     [ "getSceneEnvironmentAsString", "classbrayns_1_1_geometry_parameters.html#a147a1faa4a169ba6d216b77c6eed1f3d", null ],
-    [ "getSceneFile", "classbrayns_1_1_geometry_parameters.html#a642c5d2a729c121b56fba29dfe263564", null ],
     [ "getSplashSceneFolder", "classbrayns_1_1_geometry_parameters.html#afafae6b6a603279400ffa9cab88d4a9f", null ],
     [ "getXYZBFile", "classbrayns_1_1_geometry_parameters.html#a5f2c583107e540802b24e08924870dbb", null ],
     [ "print", "classbrayns_1_1_geometry_parameters.html#a8c92a909fef870a14d015a6e838f3f63", null ],
@@ -83,7 +82,6 @@ var classbrayns_1_1_geometry_parameters =
     [ "_radiusMultiplier", "classbrayns_1_1_geometry_parameters.html#ae1bdb65074988e108d6b3a7410bf3155", null ],
     [ "_saveCacheFile", "classbrayns_1_1_geometry_parameters.html#ac1a61eaf6ac1efe0d75f80b5ed1a7a65", null ],
     [ "_sceneEnvironment", "classbrayns_1_1_geometry_parameters.html#a95c1c9863b9d4c6ad4ba11f8f6dae7f6", null ],
-    [ "_sceneFile", "classbrayns_1_1_geometry_parameters.html#a508a158743ffd987a1a511ae20e96dc9", null ],
     [ "_splashSceneFolder", "classbrayns_1_1_geometry_parameters.html#adbfe32e7cc0323f8fe655e98f1c1df80", null ],
     [ "_xyzbFile", "classbrayns_1_1_geometry_parameters.html#a228a1dcc789debe51ca7195402fb3019", null ]
 ];

@@ -1,4 +1,4 @@
 var searchData=
 [
-  ['triggerrender',['triggerRender',['../classbrayns_1_1_engine.html#acc472e64b447113d098d54273244f4b6',1,'brayns::Engine']]]
+  ['name',['name',['../structbrayns_1_1_binary_param.html#a7d13d73a8daba5d55643dcd2832b6814',1,'brayns::BinaryParam']]]
 ];

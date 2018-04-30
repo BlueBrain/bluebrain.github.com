@@ -1,8 +1,8 @@
 var NAVTREE =
 [
   [ "Brayns", "index.html", [
-    [ "Brayns user guide", "md__jenkins_03_workspace_oss.Brayns.documentation_build_type_Debug_platform_cscsviz-vm_sources_doc_UserGuide.html", null ],
-    [ "Change Log", "md__jenkins_03_workspace_oss.Brayns.documentation_build_type_Debug_platform_cscsviz-vm_sources_Changelog.html", null ],
+    [ "Brayns user guide", "md__jenkins_04_workspace_oss.Brayns.documentation_build_type_Debug_platform_cscsviz-vm_sources_doc_UserGuide.html", null ],
+    [ "Change Log", "md__jenkins_04_workspace_oss.Brayns.documentation_build_type_Debug_platform_cscsviz-vm_sources_Changelog.html", null ],
     [ "Application Help", "apps.html", "apps" ],
     [ "Todo List", "todo.html", null ],
     [ "Modules", "modules.html", "modules" ],
@@ -30,11 +30,11 @@ var NAVTREE =
 var NAVTREEINDEX =
 [
 ".html",
-"classbrayns_1_1_camera.html#a488bad48faaa17a0c1d2ba27bd6c19c6",
-"classbrayns_1_1_material.html#a9ac344cc9bbb7089691e21d7b1b180b9",
-"classbrayns_1_1_scene.html#a3fde13a1660dd7d2b31e50e106b6436b",
-"defines_8h_source.html",
-"structospray_1_1_clipped_perspective_camera.html#ad6fc3fcd1e4497d58e9a616d15ac5c1d"
+"classbrayns_1_1_brayns.html#a775ea688fc1a445393a5a8172fe28864",
+"classbrayns_1_1_load_data_functor.html",
+"classbrayns_1_1_rendering_parameters.html#acc24d582384ee239a48d5ab9d33bab2a",
+"classbrayns_1_1_volume_handler.html#a40de31fd2eab9adb92e3a090046a272d",
+"structbrayns_1_1_morphology_layout.html#a355fbef686222fc221cfee3aed303852"
 ];
 
 var SYNCONMSG = 'click to disable panel synchronisation';

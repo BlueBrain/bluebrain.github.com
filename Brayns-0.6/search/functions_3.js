@@ -2,8 +2,10 @@ var searchData=
 [
   ['cadiffusionsimulationhandler',['CADiffusionSimulationHandler',['../classbrayns_1_1_c_a_diffusion_simulation_handler.html#a53ecc8e7dafa8e277c33991808060f24',1,'brayns::CADiffusionSimulationHandler']]],
   ['camera',['Camera',['../classbrayns_1_1_camera.html#a4b4dbbc0c49614d9ee6cef116cedd7bc',1,'brayns::Camera']]],
-  ['cancelsnapshot',['cancelSnapshot',['../classbrayns_1_1_engine.html#ae9a9e986b3461d18507060092ef140e2',1,'brayns::Engine']]],
-  ['check',['check',['../classbrayns_1_1_version.html#a4b4666df38d8c345e91425821c18c8e0',1,'brayns::Version::check()'],['../classbrayns_1_1_version.html#a4b4666df38d8c345e91425821c18c8e0',1,'brayns::Version::check()'],['../classbrayns_1_1_version.html#a4b4666df38d8c345e91425821c18c8e0',1,'brayns::Version::check()'],['../classbrayns_1_1_version.html#a4b4666df38d8c345e91425821c18c8e0',1,'brayns::Version::check()'],['../classbrayns_1_1_version.html#a4b4666df38d8c345e91425821c18c8e0',1,'brayns::Version::check()']]],
+  ['cancel',['cancel',['../classbrayns_1_1_abstract_task.html#af1019fe39fea3201341ea4301186a911',1,'brayns::AbstractTask']]],
+  ['cancelcheck',['cancelCheck',['../classbrayns_1_1_task_functor.html#ac32d29d096272b4f62383f83eaae88e4',1,'brayns::TaskFunctor']]],
+  ['canceled',['canceled',['../classbrayns_1_1_abstract_task.html#a108ebfd245dbddf0df673e9624702f1f',1,'brayns::AbstractTask']]],
+  ['check',['check',['../classbrayns_1_1_version.html#a4b4666df38d8c345e91425821c18c8e0',1,'brayns::Version::check()'],['../classbrayns_1_1_version.html#a4b4666df38d8c345e91425821c18c8e0',1,'brayns::Version::check()'],['../classbrayns_1_1_version.html#a4b4666df38d8c345e91425821c18c8e0',1,'brayns::Version::check()'],['../classbrayns_1_1_version.html#a4b4666df38d8c345e91425821c18c8e0',1,'brayns::Version::check()'],['../classbrayns_1_1_version.html#a4b4666df38d8c345e91425821c18c8e0',1,'brayns::Version::check()'],['../classbrayns_1_1_version.html#a4b4666df38d8c345e91425821c18c8e0',1,'brayns::Version::check()']]],
   ['clear',['clear',['../classbrayns_1_1_transfer_function.html#a4dd7b9c4ac8e4942617a50f412bc6d44',1,'brayns::TransferFunction::clear()'],['../classbrayns_1_1_mesh_loader.html#af316536f70b75f105abdeb11664dcdc6',1,'brayns::MeshLoader::clear()']]],
   ['clearlights',['clearLights',['../classbrayns_1_1_scene.html#a922c519f4acc99228313732f25ee5ec6',1,'brayns::Scene']]],
   ['clippedperspectivecamera',['ClippedPerspectiveCamera',['../structospray_1_1_clipped_perspective_camera.html#a2a1f570dabdf4191768bb04893dc3b29',1,'ospray::ClippedPerspectiveCamera']]],
@@ -13,7 +15,9 @@ var searchData=
   ['commitsimulationdata',['commitSimulationData',['../classbrayns_1_1_scene.html#a3fde13a1660dd7d2b31e50e106b6436b',1,'brayns::Scene::commitSimulationData()'],['../classbrayns_1_1_o_s_p_ray_scene.html#aca3d28f390ec393d763fa27831b4dec7',1,'brayns::OSPRayScene::commitSimulationData()']]],
   ['committransferfunctiondata',['commitTransferFunctionData',['../classbrayns_1_1_scene.html#aeed6847564752be438e17e209867c3b5',1,'brayns::Scene::commitTransferFunctionData()'],['../classbrayns_1_1_o_s_p_ray_scene.html#aa8b9639a0aba20a2795d317b1a21abc5',1,'brayns::OSPRayScene::commitTransferFunctionData()']]],
   ['commitvolumedata',['commitVolumeData',['../classbrayns_1_1_scene.html#a0083284491a532d8c819cff9eb7dc227',1,'brayns::Scene::commitVolumeData()'],['../classbrayns_1_1_o_s_p_ray_scene.html#ac0d6b7acd500f2a3499de9234fcfad41',1,'brayns::OSPRayScene::commitVolumeData()']]],
+  ['consume',['consume',['../classbrayns_1_1_progress.html#a3e56606ed9283c4e4189b0d5b3b6b7cf',1,'brayns::Progress']]],
   ['continuerendering',['continueRendering',['../classbrayns_1_1_engine.html#a84b7fb62801d98aa94c325dc8f725313',1,'brayns::Engine']]],
-  ['createcamera',['createCamera',['../classbrayns_1_1_engine.html#a58d52e348ad98733338411164f21aedc',1,'brayns::Engine::createCamera()'],['../classbrayns_1_1_o_s_p_ray_engine.html#ad453f9422e40ee6dffd637185df59a7d',1,'brayns::OSPRayEngine::createCamera()']]],
-  ['createframebuffer',['createFrameBuffer',['../classbrayns_1_1_engine.html#aec1e666d07761bb99280b47dcaf1d575',1,'brayns::Engine::createFrameBuffer()'],['../classbrayns_1_1_o_s_p_ray_engine.html#ad670da3e39f053a2ed859c1da905a97e',1,'brayns::OSPRayEngine::createFrameBuffer()']]]
+  ['createcamera',['createCamera',['../classbrayns_1_1_engine.html#a193b3610b6a3db0a4cfd425ce541ad4e',1,'brayns::Engine::createCamera()'],['../classbrayns_1_1_o_s_p_ray_engine.html#a7d59b2ca3678537687311fc8e0096293',1,'brayns::OSPRayEngine::createCamera()']]],
+  ['createframebuffer',['createFrameBuffer',['../classbrayns_1_1_engine.html#a3ad20ce149c67448d40110da4f573f35',1,'brayns::Engine::createFrameBuffer()'],['../classbrayns_1_1_o_s_p_ray_engine.html#a289a41199522b39287c056f8e5d72662',1,'brayns::OSPRayEngine::createFrameBuffer()']]],
+  ['createloader',['createLoader',['../classbrayns_1_1_loader_registry.html#a8691c54eefd2046b9c717094d60dd121',1,'brayns::LoaderRegistry']]]
 ];

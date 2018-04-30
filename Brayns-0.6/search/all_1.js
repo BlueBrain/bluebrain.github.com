@@ -6,6 +6,7 @@ var searchData=
   ['abstractrenderer',['AbstractRenderer',['../classbrayns_1_1_abstract_renderer.html',1,'brayns']]],
   ['abstractsimulationhandler',['AbstractSimulationHandler',['../classbrayns_1_1_abstract_simulation_handler.html',1,'brayns']]],
   ['abstractsimulationhandler',['AbstractSimulationHandler',['../classbrayns_1_1_abstract_simulation_handler.html#a17cee8a8500abfebc5f9783bb92ec48d',1,'brayns::AbstractSimulationHandler']]],
+  ['abstracttask',['AbstractTask',['../classbrayns_1_1_abstract_task.html',1,'brayns']]],
   ['actioninterface',['ActionInterface',['../classbrayns_1_1_action_interface.html',1,'brayns']]],
   ['addcone',['addCone',['../classbrayns_1_1_scene.html#a7c9e628fd8aa9540a0804007327ecb86',1,'brayns::Scene']]],
   ['addcylinder',['addCylinder',['../classbrayns_1_1_scene.html#aa7a0617795488224f9338415213735be',1,'brayns::Scene']]],

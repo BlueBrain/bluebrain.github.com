@@ -1,4 +1,4 @@
 var searchData=
 [
-  ['updatecallback',['UpdateCallback',['../classbrayns_1_1_progress.html#a2dcbd15cdf98405e96ad9a523580bf81',1,'brayns::Progress']]]
+  ['updatecallback',['UpdateCallback',['../classbrayns_1_1_loader.html#a59c6fb7227bfb5cd353d10b7306573e8',1,'brayns::Loader']]]
 ];
