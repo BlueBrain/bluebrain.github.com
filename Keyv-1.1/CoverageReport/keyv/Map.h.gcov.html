@@ -37,7 +37,7 @@
           </tr>
           <tr>
             <td class="headerItem">Date:</td>
-            <td class="headerValue">2017-12-20 03:59:00</td>
+            <td class="headerValue">2018-05-01 03:59:31</td>
             <td></td>
             <td class="headerItem">Functions:</td>
             <td class="headerCovTableEntry">30</td>
@@ -113,320 +113,321 @@
 <span class="lineNum">      51 </span>            :      *
 <span class="lineNum">      52 </span>            :      * Depending on the URI scheme an implementation backend is chosen. If no
 <span class="lineNum">      53 </span>            :      * URI is given, a default one is selected. Available implementations are:
-<span class="lineNum">      54 </span>            :      * * ceph://path_to_ceph.conf (if KEYV_USE_RADOS is defined)
-<span class="lineNum">      55 </span>            :      * * leveldb://path (if KEYV_USE_LEVELDB is defined)
-<span class="lineNum">      56 </span>            :      * * memcached://[server] (if KEYV_USE_LIBMEMCACHED is defined)
-<span class="lineNum">      57 </span>            :      *
-<span class="lineNum">      58 </span>            :      * If no path is given for leveldb, the implementation uses
-<span class="lineNum">      59 </span>            :      * keyvMap.leveldb in the current working directory.
-<span class="lineNum">      60 </span>            :      *
-<span class="lineNum">      61 </span>            :      * If no servers are given for memcached, the implementation uses all
-<span class="lineNum">      62 </span>            :      * servers in the MEMCACHED_SERVERS environment variable, or
-<span class="lineNum">      63 </span>            :      * 127.0.0.1. MEMCACHED_SERVERS contains a comma-separated list of
-<span class="lineNum">      64 </span>            :      * servers. Each server contains the address, and optionally a
-<span class="lineNum">      65 </span>            :      * colon-separated port number.
-<span class="lineNum">      66 </span>            :      *
-<span class="lineNum">      67 </span>            :      * @param uri the storage backend and destination.
-<span class="lineNum">      68 </span>            :      * @throw std::runtime_error if no suitable implementation is found.
-<span class="lineNum">      69 </span>            :      * @throw std::runtime_error if opening the leveldb failed.
-<span class="lineNum">      70 </span>            :      * @version 1.9.2
-<span class="lineNum">      71 </span>            :      */
-<span class="lineNum">      72 </span>            :     KEYV_API explicit Map(const servus::URI&amp; uri);
-<span class="lineNum">      73 </span>            :     KEYV_API Map(Map&amp;&amp; from);
-<span class="lineNum">      74 </span>            :     KEYV_API Map&amp; operator=(Map&amp;&amp; from);
-<span class="lineNum">      75 </span>            : 
-<span class="lineNum">      76 </span>            :     /** Destruct the  map. @version 1.9.2 */
-<span class="lineNum">      77 </span>            :     KEYV_API ~Map();
-<span class="lineNum">      78 </span>            : 
-<span class="lineNum">      79 </span>            :     /**
-<span class="lineNum">      80 </span>            :      * @return true if an implementation for the given URI is available.
-<span class="lineNum">      81 </span>            :      * @version 1.9.2
-<span class="lineNum">      82 </span>            :      */
-<span class="lineNum">      83 </span>            :     KEYV_API static bool handles(const servus::URI&amp; uri);
-<span class="lineNum">      84 </span>            : 
-<span class="lineNum">      85 </span>            :     /** @return the descriptions of all available backends. @version 1.1 */
-<span class="lineNum">      86 </span>            :     KEYV_API static std::string getDescriptions();
-<span class="lineNum">      87 </span>            : 
-<span class="lineNum">      88 </span>            :     /**
-<span class="lineNum">      89 </span>            :      * Create a map which can be used for caching IO on the local system.
-<span class="lineNum">      90 </span>            :      *
-<span class="lineNum">      91 </span>            :      * The concrete implementation used depends on the system setup and
-<span class="lineNum">      92 </span>            :      * available backend implementations. If no suitable implementation is
-<span class="lineNum">      93 </span>            :      * found, a null pointer is returned.
-<span class="lineNum">      94 </span>            :      *
-<span class="lineNum">      95 </span>            :      * The current implementation returns:
-<span class="lineNum">      96 </span>            :      * * A memcached-backed cache if libmemcached is available and the
-<span class="lineNum">      97 </span>            :      *   environment variable MEMCACHED_SERVERS is set (see constructor
-<span class="lineNum">      98 </span>            :      *   documentation for details).
-<span class="lineNum">      99 </span>            :      * * A leveldb-backed cache if leveldb is available and LEVELDB_CACHE is set
-<span class="lineNum">     100 </span>            :      *   to the path for the leveldb storage.
-<span class="lineNum">     101 </span>            :      *
-<span class="lineNum">     102 </span>            :      * @return a Map for caching IO, or 0.
-<span class="lineNum">     103 </span>            :      */
-<span class="lineNum">     104 </span>            :     KEYV_API static MapPtr createCache();
-<span class="lineNum">     105 </span>            : 
-<span class="lineNum">     106 </span>            :     /**
-<span class="lineNum">     107 </span>            :      * Set the maximum number of asynchronous outstanding write operations.
-<span class="lineNum">     108 </span>            :      *
-<span class="lineNum">     109 </span>            :      * Some backend implementations support asynchronous writes, which can be
-<span class="lineNum">     110 </span>            :      * enabled by setting a non-zero queue depth. Applications then need to
-<span class="lineNum">     111 </span>            :      * quarantee that the inserted values stay valid until 'depth' other
-<span class="lineNum">     112 </span>            :      * elements have been inserted or flush() has been called. Implementations
-<span class="lineNum">     113 </span>            :      * which do not support asynchronous writes return 0.
-<span class="lineNum">     114 </span>            :      *
-<span class="lineNum">     115 </span>            :      * @return the queue depth chosen by the implementation, smaller or equal to
-<span class="lineNum">     116 </span>            :      *         the given depth.
-<span class="lineNum">     117 </span>            :      * @version 1.11
-<span class="lineNum">     118 </span>            :      */
-<span class="lineNum">     119 </span>            :     KEYV_API size_t setQueueDepth(const size_t depth);
-<span class="lineNum">     120 </span>            : 
-<span class="lineNum">     121 </span>            :     /**
-<span class="lineNum">     122 </span>            :      * Insert or update a value in the database.
-<span class="lineNum">     123 </span>            :      *
-<span class="lineNum">     124 </span>            :      * @param key the key to store the value.
-<span class="lineNum">     125 </span>            :      * @param value the value stored at the key.
-<span class="lineNum">     126 </span>            :      * @return true on success, false otherwise
-<span class="lineNum">     127 </span>            :      * @throw std::runtime_error if the value is not copyable
-<span class="lineNum">     128 </span>            :      * @version 1.9.2
-<a name="129"><span class="lineNum">     129 </span>            :      */</a>
-<span class="lineNum">     130 </span>            :     template &lt;class V&gt;
-<span class="lineNum">     131 </span><span class="lineCov">         29 :     bool insert(const std::string&amp; key, const V&amp; value)</span>
-<span class="lineNum">     132 </span>            : #if __GNUG__ &amp;&amp; __GNUC__ &lt; 5
-<span class="lineNum">     133 </span>            :     {
-<span class="lineNum">     134 </span>            :         return __has_trivial_copy(V) ? _insert(key, value, std::true_type())
-<span class="lineNum">     135 </span>            :                                      : _insert(key, value, std::false_type());
-<span class="lineNum">     136 </span>            :     }
-<span class="lineNum">     137 </span>            : #else
-<span class="lineNum">     138 </span>            :     {
-<span class="lineNum">     139 </span><span class="lineCov">         29 :         return _insert(key, value, std::is_trivially_copyable&lt;V&gt;());</span>
-<span class="lineNum">     140 </span>            :     }
-<span class="lineNum">     141 </span>            : #endif
-<span class="lineNum">     142 </span>            :     KEYV_API bool insert(const std::string&amp; key, const void* data, size_t size);
-<span class="lineNum">     143 </span>            : 
-<span class="lineNum">     144 </span>            :     /**
-<span class="lineNum">     145 </span>            :      * Insert or update a vector of values in the database.
-<span class="lineNum">     146 </span>            :      *
-<span class="lineNum">     147 </span>            :      * @param key the key to store the value.
-<span class="lineNum">     148 </span>            :      * @param values the values stored at the key.
-<span class="lineNum">     149 </span>            :      * @return true on success, false otherwise
-<span class="lineNum">     150 </span>            :      * @throw std::runtime_error if the vector values are not copyable
-<span class="lineNum">     151 </span>            :      * @version 1.9.2
-<a name="152"><span class="lineNum">     152 </span>            :      */</a>
-<span class="lineNum">     153 </span>            :     template &lt;class V&gt;
-<span class="lineNum">     154 </span><span class="lineCov">         24 :     bool insert(const std::string&amp; key, const std::vector&lt;V&gt;&amp; values)</span>
-<span class="lineNum">     155 </span>            : #if __GNUG__ &amp;&amp; __GNUC__ &lt; 5
-<span class="lineNum">     156 </span>            :     {
-<span class="lineNum">     157 </span>            :         return __has_trivial_copy(V) ? _insert(key, values, std::true_type())
-<span class="lineNum">     158 </span>            :                                      : _insert(key, values, std::false_type());
-<span class="lineNum">     159 </span>            :     }
-<span class="lineNum">     160 </span>            : #else
-<span class="lineNum">     161 </span>            :     {
-<span class="lineNum">     162 </span><span class="lineCov">         24 :         return _insert(key, values, std::is_trivially_copyable&lt;V&gt;());</span>
-<span class="lineNum">     163 </span>            :     }
-<span class="lineNum">     164 </span>            : #endif
-<span class="lineNum">     165 </span>            : 
-<span class="lineNum">     166 </span>            :     /**
-<span class="lineNum">     167 </span>            :      * Insert or update a set of values in the database.
-<span class="lineNum">     168 </span>            :      *
-<span class="lineNum">     169 </span>            :      * @param key the key to store the value.
-<span class="lineNum">     170 </span>            :      * @param values the values stored at the key.
-<span class="lineNum">     171 </span>            :      * @return true on success, false otherwise
-<span class="lineNum">     172 </span>            :      * @throw std::runtime_error if the set values are not copyable
-<span class="lineNum">     173 </span>            :      * @version 1.9.2
-<a name="174"><span class="lineNum">     174 </span>            :      */</a>
-<span class="lineNum">     175 </span>            :     template &lt;class V&gt;
-<span class="lineNum">     176 </span><span class="lineCov">          8 :     bool insert(const std::string&amp; key, const std::set&lt;V&gt;&amp; values)</span>
-<span class="lineNum">     177 </span>            :     {
-<span class="lineNum">     178 </span><span class="lineCov">          8 :         return insert(key, std::vector&lt;V&gt;(values.begin(), values.end()));</span>
-<span class="lineNum">     179 </span>            :     }
-<span class="lineNum">     180 </span>            : 
-<span class="lineNum">     181 </span>            :     /**
-<span class="lineNum">     182 </span>            :      * Retrieve a value for a key.
-<span class="lineNum">     183 </span>            :      *
-<span class="lineNum">     184 </span>            :      * @param key the key to retrieve.
-<span class="lineNum">     185 </span>            :      * @return the value, or an empty string if the key is not available.
-<span class="lineNum">     186 </span>            :      * @version 1.9.2
-<span class="lineNum">     187 </span>            :      */
-<span class="lineNum">     188 </span>            :     KEYV_API std::string operator[](const std::string&amp; key) const;
-<span class="lineNum">     189 </span>            : 
-<span class="lineNum">     190 </span>            :     /**
-<span class="lineNum">     191 </span>            :      * Retrieve a value for a key.
-<span class="lineNum">     192 </span>            :      *
-<span class="lineNum">     193 </span>            :      * @param key the key to retrieve.
-<span class="lineNum">     194 </span>            :      * @return the value, or an empty string if the key is not available.
-<span class="lineNum">     195 </span>            :      * @version 1.11
-<a name="196"><span class="lineNum">     196 </span>            :      */</a>
-<span class="lineNum">     197 </span>            :     template &lt;class V&gt;
-<span class="lineNum">     198 </span><span class="lineCov">         24 :     V get(const std::string&amp; key) const</span>
-<span class="lineNum">     199 </span>            :     {
-<span class="lineNum">     200 </span><span class="lineCov">         24 :         return _get&lt;V&gt;(key);</span>
-<span class="lineNum">     201 </span>            :     }
-<span class="lineNum">     202 </span>            : 
-<span class="lineNum">     203 </span>            :     /**
-<span class="lineNum">     204 </span>            :      * Retrieve a value as a vector for a key.
-<span class="lineNum">     205 </span>            :      *
-<span class="lineNum">     206 </span>            :      * @param key the key to retrieve.
-<span class="lineNum">     207 </span>            :      * @return the values, or an empty vector if the key is not available.
-<span class="lineNum">     208 </span>            :      * @version 1.9.2
-<span class="lineNum">     209 </span>            :      */
-<span class="lineNum">     210 </span>            :     template &lt;class V&gt;
-<span class="lineNum">     211 </span>            :     std::vector&lt;V&gt; getVector(const std::string&amp; key) const;
-<span class="lineNum">     212 </span>            : 
-<span class="lineNum">     213 </span>            :     /**
-<span class="lineNum">     214 </span>            :      * Retrieve a value as a set for a key.
-<span class="lineNum">     215 </span>            :      *
-<span class="lineNum">     216 </span>            :      * @param key the key to retrieve.
-<span class="lineNum">     217 </span>            :      * @return the values, or an empty set if the key is not available.
-<span class="lineNum">     218 </span>            :      * @version 1.9.2
-<span class="lineNum">     219 </span>            :      */
-<span class="lineNum">     220 </span>            :     template &lt;class V&gt;
-<span class="lineNum">     221 </span>            :     std::set&lt;V&gt; getSet(const std::string&amp; key) const;
-<span class="lineNum">     222 </span>            : 
-<span class="lineNum">     223 </span>            :     /**
-<span class="lineNum">     224 </span>            :      * Retrieve values from a list of keys and calls back for each found value.
-<span class="lineNum">     225 </span>            :      *
-<span class="lineNum">     226 </span>            :      * Depending on the backend implementation, this is more optimal than
-<span class="lineNum">     227 </span>            :      * calling get() for each key.
-<span class="lineNum">     228 </span>            :      *
-<span class="lineNum">     229 </span>            :      * The ownership of the returned data in the callback is not transfered, so
-<span class="lineNum">     230 </span>            :      * the value needs to be copied if needed.
-<span class="lineNum">     231 </span>            :      *
-<span class="lineNum">     232 </span>            :      * @param keys list of keys to obtain
-<span class="lineNum">     233 </span>            :      * @param func callback function which is called for each found key
-<span class="lineNum">     234 </span>            :      * @version 1.14
-<span class="lineNum">     235 </span>            :      */
-<span class="lineNum">     236 </span>            :     KEYV_API void getValues(const Strings&amp; keys,
-<span class="lineNum">     237 </span>            :                             const ConstValueFunc&amp; func) const;
-<span class="lineNum">     238 </span>            : 
-<span class="lineNum">     239 </span>            :     /**
-<span class="lineNum">     240 </span>            :      * Retrieve values from a list of keys and calls back for each found value.
-<span class="lineNum">     241 </span>            :      *
-<span class="lineNum">     242 </span>            :      * Depending on the backend implementation, this is more optimal than
-<span class="lineNum">     243 </span>            :      * calling get() for each key.
-<span class="lineNum">     244 </span>            :      *
-<span class="lineNum">     245 </span>            :      * The ownership of the returned data in the callback is transfered, so the
-<span class="lineNum">     246 </span>            :      * data must be free'd by the caller.
-<span class="lineNum">     247 </span>            :      *
-<span class="lineNum">     248 </span>            :      * @param keys list of keys to obtain
-<span class="lineNum">     249 </span>            :      * @param func callback function which is called for each found key
-<span class="lineNum">     250 </span>            :      * @version 1.14
-<span class="lineNum">     251 </span>            :      */
-<span class="lineNum">     252 </span>            :     KEYV_API void takeValues(const Strings&amp; keys, const ValueFunc&amp; func) const;
-<span class="lineNum">     253 </span>            : 
-<span class="lineNum">     254 </span>            :     /** Erase the given key from the store. @version 1.1 */
-<span class="lineNum">     255 </span>            :     KEYV_API void erase(const std::string&amp; key);
-<span class="lineNum">     256 </span>            : 
-<span class="lineNum">     257 </span>            :     /** Flush outstanding operations to the backend storage. @version 1.0 */
-<span class="lineNum">     258 </span>            :     KEYV_API bool flush();
-<span class="lineNum">     259 </span>            : 
-<span class="lineNum">     260 </span>            :     /** Enable or disable endianness conversion on reads. @version 1.0 */
-<span class="lineNum">     261 </span>            :     KEYV_API void setByteswap(const bool swap);
-<span class="lineNum">     262 </span>            : 
-<span class="lineNum">     263 </span>            : private:
-<span class="lineNum">     264 </span>            :     Map(const Map&amp;) = delete;
-<span class="lineNum">     265 </span>            :     Map&amp; operator=(const Map&amp;) = delete;
-<span class="lineNum">     266 </span>            : 
-<span class="lineNum">     267 </span>            :     class Impl;
-<span class="lineNum">     268 </span>            :     std::unique_ptr&lt;Impl&gt; _impl;
-<span class="lineNum">     269 </span>            : 
-<span class="lineNum">     270 </span>            :     KEYV_API bool _swap() const;
-<span class="lineNum">     271 </span>            : 
-<span class="lineNum">     272 </span>            :     // Enables map.insert( &quot;foo&quot;, &quot;bar&quot; ); bar is a char[4]. The funny braces
-<span class="lineNum">     273 </span>            :     // declare v as a &quot;const ref to array of four chars&quot;, not as a &quot;const array
-<a name="274"><span class="lineNum">     274 </span>            :     // to four char refs&quot;. Long live Bjarne!</a>
-<span class="lineNum">     275 </span>            :     template &lt;size_t N&gt;
-<span class="lineNum">     276 </span><span class="lineCov">         13 :     bool _insert(const std::string&amp; k, char const (&amp;v)[N],</span>
-<span class="lineNum">     277 </span>            :                  const std::true_type&amp;)
-<span class="lineNum">     278 </span>            :     {
-<span class="lineNum">     279 </span><span class="lineCov">         13 :         return insert(k, (void*)v, N - 1); // strip '0'</span>
-<span class="lineNum">     280 </span>            :     }
-<a name="281"><span class="lineNum">     281 </span>            : </a>
-<span class="lineNum">     282 </span>            :     template &lt;class V&gt;
-<span class="lineNum">     283 </span><span class="lineCov">         12 :     bool _insert(const std::string&amp; k, const V&amp; v, const std::true_type&amp;)</span>
-<span class="lineNum">     284 </span>            :     {
-<span class="lineNum">     285 </span>            :         if (std::is_pointer&lt;V&gt;::value)
-<span class="lineNum">     286 </span>            :             LBTHROW(std::runtime_error(&quot;Can't insert pointers&quot;));
-<span class="lineNum">     287 </span><span class="lineCov">         12 :         return insert(k, &amp;v, sizeof(V));</span>
-<span class="lineNum">     288 </span>            :     }
-<span class="lineNum">     289 </span>            : 
-<span class="lineNum">     290 </span>            :     template &lt;class V&gt;
-<span class="lineNum">     291 </span>            :     bool _insert(const std::string&amp;, const V&amp; v, const std::false_type&amp;)
-<span class="lineNum">     292 </span>            :     {
-<span class="lineNum">     293 </span>            :         LBTHROW(std::runtime_error(&quot;Can't insert non-POD &quot; +
-<span class="lineNum">     294 </span>            :                                    lunchbox::className(v)));
-<a name="295"><span class="lineNum">     295 </span>            :     }</a>
-<span class="lineNum">     296 </span>            :     template &lt;class V&gt;
-<span class="lineNum">     297 </span><span class="lineCov">         24 :     bool _insert(const std::string&amp; key, const std::vector&lt;V&gt;&amp; values,</span>
-<span class="lineNum">     298 </span>            :                  const std::true_type&amp;)
-<span class="lineNum">     299 </span>            :     {
-<span class="lineNum">     300 </span><span class="lineCov">         24 :         return insert(key, values.data(), values.size() * sizeof(V));</span>
-<span class="lineNum">     301 </span>            :     }
-<a name="302"><span class="lineNum">     302 </span>            : </a>
-<span class="lineNum">     303 </span>            :     template &lt;class V&gt;
-<span class="lineNum">     304 </span><span class="lineCov">         24 :     V _get(const std::string&amp; k) const</span>
-<span class="lineNum">     305 </span>            :     {
-<span class="lineNum">     306 </span>            : #if __GNUG__ &amp;&amp; __GNUC__ &lt; 5
-<span class="lineNum">     307 </span>            :         if (!__has_trivial_copy(V))
-<span class="lineNum">     308 </span>            : #else
-<span class="lineNum">     309 </span>            :         if (!std::is_trivially_copyable&lt;V&gt;::value)
-<span class="lineNum">     310 </span>            : #endif
-<span class="lineNum">     311 </span>            :             LBTHROW(std::runtime_error(&quot;Can't retrieve non-POD &quot; +
-<span class="lineNum">     312 </span>            :                                        lunchbox::className(V())));
-<span class="lineNum">     313 </span>            :         if (std::is_pointer&lt;V&gt;::value)
-<span class="lineNum">     314 </span>            :             LBTHROW(std::runtime_error(&quot;Can't retrieve pointers&quot;));
-<span class="lineNum">     315 </span>            : 
-<span class="lineNum">     316 </span><span class="lineCov">         48 :         const std::string&amp; value = (*this)[k];</span>
-<span class="lineNum">     317 </span><span class="lineCov">         24 :         if (value.size() != sizeof(V))</span>
-<span class="lineNum">     318 </span><span class="lineNoCov">          0 :             LBTHROW(std::runtime_error(std::string(&quot;Wrong value size &quot;) +</span>
-<span class="lineNum">     319 </span>            :                                        std::to_string(value.size()) +
-<span class="lineNum">     320 </span>            :                                        &quot; for type &quot; +
-<span class="lineNum">     321 </span>            :                                        lunchbox::className(V())));
-<span class="lineNum">     322 </span>            : 
-<span class="lineNum">     323 </span><span class="lineCov">         24 :         V v(*reinterpret_cast&lt;const V*&gt;(value.data()));</span>
-<span class="lineNum">     324 </span><span class="lineCov">         24 :         if (_swap())</span>
-<span class="lineNum">     325 </span><span class="lineCov">          4 :             lunchbox::byteswap(v);</span>
-<span class="lineNum">     326 </span><span class="lineCov">         48 :         return v;</span>
-<span class="lineNum">     327 </span>            :     }
-<span class="lineNum">     328 </span>            : };
-<a name="329"><span class="lineNum">     329 </span>            : </a>
-<span class="lineNum">     330 </span>            : template &lt;&gt;
-<span class="lineNum">     331 </span><span class="lineCov">          4 : inline bool Map::_insert(const std::string&amp; k, const std::string&amp; v,</span>
-<span class="lineNum">     332 </span>            :                          const std::false_type&amp;)
-<span class="lineNum">     333 </span>            : {
-<span class="lineNum">     334 </span><span class="lineCov">          4 :     return insert(k, v.data(), v.length());</span>
-<span class="lineNum">     335 </span>            : }
-<a name="336"><span class="lineNum">     336 </span>            : </a>
-<span class="lineNum">     337 </span>            : template &lt;class V&gt;
-<span class="lineNum">     338 </span><span class="lineCov">         24 : inline std::vector&lt;V&gt; Map::getVector(const std::string&amp; key) const</span>
-<span class="lineNum">     339 </span>            : {
-<span class="lineNum">     340 </span><span class="lineCov">         48 :     const std::string&amp; value = (*this)[key];</span>
-<span class="lineNum">     341 </span><span class="lineCov">         24 :     std::vector&lt;V&gt; vector(reinterpret_cast&lt;const V*&gt;(value.data()),</span>
-<span class="lineNum">     342 </span><span class="lineCov">         48 :                           reinterpret_cast&lt;const V*&gt;(value.data() +</span>
-<span class="lineNum">     343 </span><span class="lineCov">         72 :                                                      value.size()));</span>
-<span class="lineNum">     344 </span><span class="lineCov">         24 :     if (_swap() &amp;&amp; sizeof(V) != 1)</span>
-<span class="lineNum">     345 </span>            :     {
-<span class="lineNum">     346 </span><span class="lineNoCov">          0 :         for (V&amp; elem : vector)</span>
-<span class="lineNum">     347 </span><span class="lineNoCov">          0 :             lunchbox::byteswap(elem);</span>
-<span class="lineNum">     348 </span>            :     }
-<span class="lineNum">     349 </span><span class="lineCov">         48 :     return vector;</span>
-<span class="lineNum">     350 </span>            : }
-<a name="351"><span class="lineNum">     351 </span>            : </a>
-<span class="lineNum">     352 </span>            : template &lt;class V&gt;
-<span class="lineNum">     353 </span><span class="lineCov">          8 : inline std::set&lt;V&gt; Map::getSet(const std::string&amp; key) const</span>
-<span class="lineNum">     354 </span>            : {
-<span class="lineNum">     355 </span><span class="lineCov">         16 :     std::string value = (*this)[key];</span>
-<span class="lineNum">     356 </span><span class="lineCov">          8 :     V* const begin = reinterpret_cast&lt;V*&gt;(const_cast&lt;char*&gt;(value.data()));</span>
-<span class="lineNum">     357 </span><span class="lineCov">          8 :     V* const end = begin + value.size() / sizeof(V);</span>
-<span class="lineNum">     358 </span>            : 
-<span class="lineNum">     359 </span><span class="lineCov">          8 :     if (_swap() &amp;&amp; sizeof(V) != 1)</span>
-<span class="lineNum">     360 </span><span class="lineNoCov">          0 :         for (V* i = begin; i &lt; end; ++i)</span>
-<span class="lineNum">     361 </span><span class="lineNoCov">          0 :             lunchbox::byteswap(*i);</span>
-<span class="lineNum">     362 </span>            : 
-<span class="lineNum">     363 </span><span class="lineCov">         16 :     return std::set&lt;V&gt;(begin, end);</span>
-<span class="lineNum">     364 </span>            : }
+<span class="lineNum">      54 </span>            :      * * ceph://user@cluster?[store=storeName&amp;config=path&amp;keyring=path]
+<span class="lineNum">      55 </span>            :      *   (if KEYV_USE_RADOS is defined)
+<span class="lineNum">      56 </span>            :      * * leveldb://path (if KEYV_USE_LEVELDB is defined)
+<span class="lineNum">      57 </span>            :      * * memcached://[server] (if KEYV_USE_LIBMEMCACHED is defined)
+<span class="lineNum">      58 </span>            :      *
+<span class="lineNum">      59 </span>            :      * If no path is given for leveldb, the implementation uses
+<span class="lineNum">      60 </span>            :      * keyvMap.leveldb in the current working directory.
+<span class="lineNum">      61 </span>            :      *
+<span class="lineNum">      62 </span>            :      * If no servers are given for memcached, the implementation uses all
+<span class="lineNum">      63 </span>            :      * servers in the MEMCACHED_SERVERS environment variable, or
+<span class="lineNum">      64 </span>            :      * 127.0.0.1. MEMCACHED_SERVERS contains a comma-separated list of
+<span class="lineNum">      65 </span>            :      * servers. Each server contains the address, and optionally a
+<span class="lineNum">      66 </span>            :      * colon-separated port number.
+<span class="lineNum">      67 </span>            :      *
+<span class="lineNum">      68 </span>            :      * @param uri the storage backend and destination.
+<span class="lineNum">      69 </span>            :      * @throw std::runtime_error if no suitable implementation is found.
+<span class="lineNum">      70 </span>            :      * @throw std::runtime_error if opening the leveldb failed.
+<span class="lineNum">      71 </span>            :      * @version 1.9.2
+<span class="lineNum">      72 </span>            :      */
+<span class="lineNum">      73 </span>            :     KEYV_API explicit Map(const servus::URI&amp; uri);
+<span class="lineNum">      74 </span>            :     KEYV_API Map(Map&amp;&amp; from);
+<span class="lineNum">      75 </span>            :     KEYV_API Map&amp; operator=(Map&amp;&amp; from);
+<span class="lineNum">      76 </span>            : 
+<span class="lineNum">      77 </span>            :     /** Destruct the  map. @version 1.9.2 */
+<span class="lineNum">      78 </span>            :     KEYV_API ~Map();
+<span class="lineNum">      79 </span>            : 
+<span class="lineNum">      80 </span>            :     /**
+<span class="lineNum">      81 </span>            :      * @return true if an implementation for the given URI is available.
+<span class="lineNum">      82 </span>            :      * @version 1.9.2
+<span class="lineNum">      83 </span>            :      */
+<span class="lineNum">      84 </span>            :     KEYV_API static bool handles(const servus::URI&amp; uri);
+<span class="lineNum">      85 </span>            : 
+<span class="lineNum">      86 </span>            :     /** @return the descriptions of all available backends. @version 1.1 */
+<span class="lineNum">      87 </span>            :     KEYV_API static std::string getDescriptions();
+<span class="lineNum">      88 </span>            : 
+<span class="lineNum">      89 </span>            :     /**
+<span class="lineNum">      90 </span>            :      * Create a map which can be used for caching IO on the local system.
+<span class="lineNum">      91 </span>            :      *
+<span class="lineNum">      92 </span>            :      * The concrete implementation used depends on the system setup and
+<span class="lineNum">      93 </span>            :      * available backend implementations. If no suitable implementation is
+<span class="lineNum">      94 </span>            :      * found, a null pointer is returned.
+<span class="lineNum">      95 </span>            :      *
+<span class="lineNum">      96 </span>            :      * The current implementation returns:
+<span class="lineNum">      97 </span>            :      * * A memcached-backed cache if libmemcached is available and the
+<span class="lineNum">      98 </span>            :      *   environment variable MEMCACHED_SERVERS is set (see constructor
+<span class="lineNum">      99 </span>            :      *   documentation for details).
+<span class="lineNum">     100 </span>            :      * * A leveldb-backed cache if leveldb is available and LEVELDB_CACHE is set
+<span class="lineNum">     101 </span>            :      *   to the path for the leveldb storage.
+<span class="lineNum">     102 </span>            :      *
+<span class="lineNum">     103 </span>            :      * @return a Map for caching IO, or 0.
+<span class="lineNum">     104 </span>            :      */
+<span class="lineNum">     105 </span>            :     KEYV_API static MapPtr createCache();
+<span class="lineNum">     106 </span>            : 
+<span class="lineNum">     107 </span>            :     /**
+<span class="lineNum">     108 </span>            :      * Set the maximum number of asynchronous outstanding write operations.
+<span class="lineNum">     109 </span>            :      *
+<span class="lineNum">     110 </span>            :      * Some backend implementations support asynchronous writes, which can be
+<span class="lineNum">     111 </span>            :      * enabled by setting a non-zero queue depth. Applications then need to
+<span class="lineNum">     112 </span>            :      * quarantee that the inserted values stay valid until 'depth' other
+<span class="lineNum">     113 </span>            :      * elements have been inserted or flush() has been called. Implementations
+<span class="lineNum">     114 </span>            :      * which do not support asynchronous writes return 0.
+<span class="lineNum">     115 </span>            :      *
+<span class="lineNum">     116 </span>            :      * @return the queue depth chosen by the implementation, smaller or equal to
+<span class="lineNum">     117 </span>            :      *         the given depth.
+<span class="lineNum">     118 </span>            :      * @version 1.11
+<span class="lineNum">     119 </span>            :      */
+<span class="lineNum">     120 </span>            :     KEYV_API size_t setQueueDepth(const size_t depth);
+<span class="lineNum">     121 </span>            : 
+<span class="lineNum">     122 </span>            :     /**
+<span class="lineNum">     123 </span>            :      * Insert or update a value in the database.
+<span class="lineNum">     124 </span>            :      *
+<span class="lineNum">     125 </span>            :      * @param key the key to store the value.
+<span class="lineNum">     126 </span>            :      * @param value the value stored at the key.
+<span class="lineNum">     127 </span>            :      * @return true on success, false otherwise
+<span class="lineNum">     128 </span>            :      * @throw std::runtime_error if the value is not copyable
+<span class="lineNum">     129 </span>            :      * @version 1.9.2
+<a name="130"><span class="lineNum">     130 </span>            :      */</a>
+<span class="lineNum">     131 </span>            :     template &lt;class V&gt;
+<span class="lineNum">     132 </span><span class="lineCov">         36 :     bool insert(const std::string&amp; key, const V&amp; value)</span>
+<span class="lineNum">     133 </span>            : #if __GNUG__ &amp;&amp; __GNUC__ &lt; 5
+<span class="lineNum">     134 </span>            :     {
+<span class="lineNum">     135 </span>            :         return __has_trivial_copy(V) ? _insert(key, value, std::true_type())
+<span class="lineNum">     136 </span>            :                                      : _insert(key, value, std::false_type());
+<span class="lineNum">     137 </span>            :     }
+<span class="lineNum">     138 </span>            : #else
+<span class="lineNum">     139 </span>            :     {
+<span class="lineNum">     140 </span><span class="lineCov">         36 :         return _insert(key, value, std::is_trivially_copyable&lt;V&gt;());</span>
+<span class="lineNum">     141 </span>            :     }
+<span class="lineNum">     142 </span>            : #endif
+<span class="lineNum">     143 </span>            :     KEYV_API bool insert(const std::string&amp; key, const void* data, size_t size);
+<span class="lineNum">     144 </span>            : 
+<span class="lineNum">     145 </span>            :     /**
+<span class="lineNum">     146 </span>            :      * Insert or update a vector of values in the database.
+<span class="lineNum">     147 </span>            :      *
+<span class="lineNum">     148 </span>            :      * @param key the key to store the value.
+<span class="lineNum">     149 </span>            :      * @param values the values stored at the key.
+<span class="lineNum">     150 </span>            :      * @return true on success, false otherwise
+<span class="lineNum">     151 </span>            :      * @throw std::runtime_error if the vector values are not copyable
+<span class="lineNum">     152 </span>            :      * @version 1.9.2
+<a name="153"><span class="lineNum">     153 </span>            :      */</a>
+<span class="lineNum">     154 </span>            :     template &lt;class V&gt;
+<span class="lineNum">     155 </span><span class="lineCov">         30 :     bool insert(const std::string&amp; key, const std::vector&lt;V&gt;&amp; values)</span>
+<span class="lineNum">     156 </span>            : #if __GNUG__ &amp;&amp; __GNUC__ &lt; 5
+<span class="lineNum">     157 </span>            :     {
+<span class="lineNum">     158 </span>            :         return __has_trivial_copy(V) ? _insert(key, values, std::true_type())
+<span class="lineNum">     159 </span>            :                                      : _insert(key, values, std::false_type());
+<span class="lineNum">     160 </span>            :     }
+<span class="lineNum">     161 </span>            : #else
+<span class="lineNum">     162 </span>            :     {
+<span class="lineNum">     163 </span><span class="lineCov">         30 :         return _insert(key, values, std::is_trivially_copyable&lt;V&gt;());</span>
+<span class="lineNum">     164 </span>            :     }
+<span class="lineNum">     165 </span>            : #endif
+<span class="lineNum">     166 </span>            : 
+<span class="lineNum">     167 </span>            :     /**
+<span class="lineNum">     168 </span>            :      * Insert or update a set of values in the database.
+<span class="lineNum">     169 </span>            :      *
+<span class="lineNum">     170 </span>            :      * @param key the key to store the value.
+<span class="lineNum">     171 </span>            :      * @param values the values stored at the key.
+<span class="lineNum">     172 </span>            :      * @return true on success, false otherwise
+<span class="lineNum">     173 </span>            :      * @throw std::runtime_error if the set values are not copyable
+<span class="lineNum">     174 </span>            :      * @version 1.9.2
+<a name="175"><span class="lineNum">     175 </span>            :      */</a>
+<span class="lineNum">     176 </span>            :     template &lt;class V&gt;
+<span class="lineNum">     177 </span><span class="lineCov">         10 :     bool insert(const std::string&amp; key, const std::set&lt;V&gt;&amp; values)</span>
+<span class="lineNum">     178 </span>            :     {
+<span class="lineNum">     179 </span><span class="lineCov">         10 :         return insert(key, std::vector&lt;V&gt;(values.begin(), values.end()));</span>
+<span class="lineNum">     180 </span>            :     }
+<span class="lineNum">     181 </span>            : 
+<span class="lineNum">     182 </span>            :     /**
+<span class="lineNum">     183 </span>            :      * Retrieve a value for a key.
+<span class="lineNum">     184 </span>            :      *
+<span class="lineNum">     185 </span>            :      * @param key the key to retrieve.
+<span class="lineNum">     186 </span>            :      * @return the value, or an empty string if the key is not available.
+<span class="lineNum">     187 </span>            :      * @version 1.9.2
+<span class="lineNum">     188 </span>            :      */
+<span class="lineNum">     189 </span>            :     KEYV_API std::string operator[](const std::string&amp; key) const;
+<span class="lineNum">     190 </span>            : 
+<span class="lineNum">     191 </span>            :     /**
+<span class="lineNum">     192 </span>            :      * Retrieve a value for a key.
+<span class="lineNum">     193 </span>            :      *
+<span class="lineNum">     194 </span>            :      * @param key the key to retrieve.
+<span class="lineNum">     195 </span>            :      * @return the value, or an empty string if the key is not available.
+<span class="lineNum">     196 </span>            :      * @version 1.11
+<a name="197"><span class="lineNum">     197 </span>            :      */</a>
+<span class="lineNum">     198 </span>            :     template &lt;class V&gt;
+<span class="lineNum">     199 </span><span class="lineCov">         30 :     V get(const std::string&amp; key) const</span>
+<span class="lineNum">     200 </span>            :     {
+<span class="lineNum">     201 </span><span class="lineCov">         30 :         return _get&lt;V&gt;(key);</span>
+<span class="lineNum">     202 </span>            :     }
+<span class="lineNum">     203 </span>            : 
+<span class="lineNum">     204 </span>            :     /**
+<span class="lineNum">     205 </span>            :      * Retrieve a value as a vector for a key.
+<span class="lineNum">     206 </span>            :      *
+<span class="lineNum">     207 </span>            :      * @param key the key to retrieve.
+<span class="lineNum">     208 </span>            :      * @return the values, or an empty vector if the key is not available.
+<span class="lineNum">     209 </span>            :      * @version 1.9.2
+<span class="lineNum">     210 </span>            :      */
+<span class="lineNum">     211 </span>            :     template &lt;class V&gt;
+<span class="lineNum">     212 </span>            :     std::vector&lt;V&gt; getVector(const std::string&amp; key) const;
+<span class="lineNum">     213 </span>            : 
+<span class="lineNum">     214 </span>            :     /**
+<span class="lineNum">     215 </span>            :      * Retrieve a value as a set for a key.
+<span class="lineNum">     216 </span>            :      *
+<span class="lineNum">     217 </span>            :      * @param key the key to retrieve.
+<span class="lineNum">     218 </span>            :      * @return the values, or an empty set if the key is not available.
+<span class="lineNum">     219 </span>            :      * @version 1.9.2
+<span class="lineNum">     220 </span>            :      */
+<span class="lineNum">     221 </span>            :     template &lt;class V&gt;
+<span class="lineNum">     222 </span>            :     std::set&lt;V&gt; getSet(const std::string&amp; key) const;
+<span class="lineNum">     223 </span>            : 
+<span class="lineNum">     224 </span>            :     /**
+<span class="lineNum">     225 </span>            :      * Retrieve values from a list of keys and calls back for each found value.
+<span class="lineNum">     226 </span>            :      *
+<span class="lineNum">     227 </span>            :      * Depending on the backend implementation, this is more optimal than
+<span class="lineNum">     228 </span>            :      * calling get() for each key.
+<span class="lineNum">     229 </span>            :      *
+<span class="lineNum">     230 </span>            :      * The ownership of the returned data in the callback is not transfered, so
+<span class="lineNum">     231 </span>            :      * the value needs to be copied if needed.
+<span class="lineNum">     232 </span>            :      *
+<span class="lineNum">     233 </span>            :      * @param keys list of keys to obtain
+<span class="lineNum">     234 </span>            :      * @param func callback function which is called for each found key
+<span class="lineNum">     235 </span>            :      * @version 1.14
+<span class="lineNum">     236 </span>            :      */
+<span class="lineNum">     237 </span>            :     KEYV_API void getValues(const Strings&amp; keys,
+<span class="lineNum">     238 </span>            :                             const ConstValueFunc&amp; func) const;
+<span class="lineNum">     239 </span>            : 
+<span class="lineNum">     240 </span>            :     /**
+<span class="lineNum">     241 </span>            :      * Retrieve values from a list of keys and calls back for each found value.
+<span class="lineNum">     242 </span>            :      *
+<span class="lineNum">     243 </span>            :      * Depending on the backend implementation, this is more optimal than
+<span class="lineNum">     244 </span>            :      * calling get() for each key.
+<span class="lineNum">     245 </span>            :      *
+<span class="lineNum">     246 </span>            :      * The ownership of the returned data in the callback is transfered, so the
+<span class="lineNum">     247 </span>            :      * data must be free'd (with free()) by the caller.
+<span class="lineNum">     248 </span>            :      *
+<span class="lineNum">     249 </span>            :      * @param keys list of keys to obtain
+<span class="lineNum">     250 </span>            :      * @param func callback function which is called for each found key
+<span class="lineNum">     251 </span>            :      * @version 1.14
+<span class="lineNum">     252 </span>            :      */
+<span class="lineNum">     253 </span>            :     KEYV_API void takeValues(const Strings&amp; keys, const ValueFunc&amp; func) const;
+<span class="lineNum">     254 </span>            : 
+<span class="lineNum">     255 </span>            :     /** Erase the given key from the store. @version 1.1 */
+<span class="lineNum">     256 </span>            :     KEYV_API void erase(const std::string&amp; key);
+<span class="lineNum">     257 </span>            : 
+<span class="lineNum">     258 </span>            :     /** Flush outstanding operations to the backend storage. @version 1.0 */
+<span class="lineNum">     259 </span>            :     KEYV_API bool flush();
+<span class="lineNum">     260 </span>            : 
+<span class="lineNum">     261 </span>            :     /** Enable or disable endianness conversion on reads. @version 1.0 */
+<span class="lineNum">     262 </span>            :     KEYV_API void setByteswap(const bool swap);
+<span class="lineNum">     263 </span>            : 
+<span class="lineNum">     264 </span>            : private:
+<span class="lineNum">     265 </span>            :     Map(const Map&amp;) = delete;
+<span class="lineNum">     266 </span>            :     Map&amp; operator=(const Map&amp;) = delete;
+<span class="lineNum">     267 </span>            : 
+<span class="lineNum">     268 </span>            :     class Impl;
+<span class="lineNum">     269 </span>            :     std::unique_ptr&lt;Impl&gt; _impl;
+<span class="lineNum">     270 </span>            : 
+<span class="lineNum">     271 </span>            :     KEYV_API bool _swap() const;
+<span class="lineNum">     272 </span>            : 
+<span class="lineNum">     273 </span>            :     // Enables map.insert( &quot;foo&quot;, &quot;bar&quot; ); bar is a char[4]. The funny braces
+<span class="lineNum">     274 </span>            :     // declare v as a &quot;const ref to array of four chars&quot;, not as a &quot;const array
+<a name="275"><span class="lineNum">     275 </span>            :     // to four char refs&quot;. Long live Bjarne!</a>
+<span class="lineNum">     276 </span>            :     template &lt;size_t N&gt;
+<span class="lineNum">     277 </span><span class="lineCov">         16 :     bool _insert(const std::string&amp; k, char const (&amp;v)[N],</span>
+<span class="lineNum">     278 </span>            :                  const std::true_type&amp;)
+<span class="lineNum">     279 </span>            :     {
+<span class="lineNum">     280 </span><span class="lineCov">         16 :         return insert(k, (void*)v, N - 1); // strip '0'</span>
+<span class="lineNum">     281 </span>            :     }
+<a name="282"><span class="lineNum">     282 </span>            : </a>
+<span class="lineNum">     283 </span>            :     template &lt;class V&gt;
+<span class="lineNum">     284 </span><span class="lineCov">         15 :     bool _insert(const std::string&amp; k, const V&amp; v, const std::true_type&amp;)</span>
+<span class="lineNum">     285 </span>            :     {
+<span class="lineNum">     286 </span>            :         if (std::is_pointer&lt;V&gt;::value)
+<span class="lineNum">     287 </span>            :             LBTHROW(std::runtime_error(&quot;Can't insert pointers&quot;));
+<span class="lineNum">     288 </span><span class="lineCov">         15 :         return insert(k, &amp;v, sizeof(V));</span>
+<span class="lineNum">     289 </span>            :     }
+<span class="lineNum">     290 </span>            : 
+<span class="lineNum">     291 </span>            :     template &lt;class V&gt;
+<span class="lineNum">     292 </span>            :     bool _insert(const std::string&amp;, const V&amp; v, const std::false_type&amp;)
+<span class="lineNum">     293 </span>            :     {
+<span class="lineNum">     294 </span>            :         LBTHROW(std::runtime_error(&quot;Can't insert non-POD &quot; +
+<span class="lineNum">     295 </span>            :                                    lunchbox::className(v)));
+<a name="296"><span class="lineNum">     296 </span>            :     }</a>
+<span class="lineNum">     297 </span>            :     template &lt;class V&gt;
+<span class="lineNum">     298 </span><span class="lineCov">         30 :     bool _insert(const std::string&amp; key, const std::vector&lt;V&gt;&amp; values,</span>
+<span class="lineNum">     299 </span>            :                  const std::true_type&amp;)
+<span class="lineNum">     300 </span>            :     {
+<span class="lineNum">     301 </span><span class="lineCov">         30 :         return insert(key, values.data(), values.size() * sizeof(V));</span>
+<span class="lineNum">     302 </span>            :     }
+<a name="303"><span class="lineNum">     303 </span>            : </a>
+<span class="lineNum">     304 </span>            :     template &lt;class V&gt;
+<span class="lineNum">     305 </span><span class="lineCov">         30 :     V _get(const std::string&amp; k) const</span>
+<span class="lineNum">     306 </span>            :     {
+<span class="lineNum">     307 </span>            : #if __GNUG__ &amp;&amp; __GNUC__ &lt; 5
+<span class="lineNum">     308 </span>            :         if (!__has_trivial_copy(V))
+<span class="lineNum">     309 </span>            : #else
+<span class="lineNum">     310 </span>            :         if (!std::is_trivially_copyable&lt;V&gt;::value)
+<span class="lineNum">     311 </span>            : #endif
+<span class="lineNum">     312 </span>            :             LBTHROW(std::runtime_error(&quot;Can't retrieve non-POD &quot; +
+<span class="lineNum">     313 </span>            :                                        lunchbox::className(V())));
+<span class="lineNum">     314 </span>            :         if (std::is_pointer&lt;V&gt;::value)
+<span class="lineNum">     315 </span>            :             LBTHROW(std::runtime_error(&quot;Can't retrieve pointers&quot;));
+<span class="lineNum">     316 </span>            : 
+<span class="lineNum">     317 </span><span class="lineCov">         60 :         const std::string&amp; value = (*this)[k];</span>
+<span class="lineNum">     318 </span><span class="lineCov">         30 :         if (value.size() != sizeof(V))</span>
+<span class="lineNum">     319 </span><span class="lineNoCov">          0 :             LBTHROW(std::runtime_error(std::string(&quot;Wrong value size &quot;) +</span>
+<span class="lineNum">     320 </span>            :                                        std::to_string(value.size()) +
+<span class="lineNum">     321 </span>            :                                        &quot; for type &quot; +
+<span class="lineNum">     322 </span>            :                                        lunchbox::className(V())));
+<span class="lineNum">     323 </span>            : 
+<span class="lineNum">     324 </span><span class="lineCov">         30 :         V v(*reinterpret_cast&lt;const V*&gt;(value.data()));</span>
+<span class="lineNum">     325 </span><span class="lineCov">         30 :         if (_swap())</span>
+<span class="lineNum">     326 </span><span class="lineCov">          5 :             lunchbox::byteswap(v);</span>
+<span class="lineNum">     327 </span><span class="lineCov">         60 :         return v;</span>
+<span class="lineNum">     328 </span>            :     }
+<span class="lineNum">     329 </span>            : };
+<a name="330"><span class="lineNum">     330 </span>            : </a>
+<span class="lineNum">     331 </span>            : template &lt;&gt;
+<span class="lineNum">     332 </span><span class="lineCov">          5 : inline bool Map::_insert(const std::string&amp; k, const std::string&amp; v,</span>
+<span class="lineNum">     333 </span>            :                          const std::false_type&amp;)
+<span class="lineNum">     334 </span>            : {
+<span class="lineNum">     335 </span><span class="lineCov">          5 :     return insert(k, v.data(), v.length());</span>
+<span class="lineNum">     336 </span>            : }
+<a name="337"><span class="lineNum">     337 </span>            : </a>
+<span class="lineNum">     338 </span>            : template &lt;class V&gt;
+<span class="lineNum">     339 </span><span class="lineCov">         30 : inline std::vector&lt;V&gt; Map::getVector(const std::string&amp; key) const</span>
+<span class="lineNum">     340 </span>            : {
+<span class="lineNum">     341 </span><span class="lineCov">         60 :     const std::string&amp; value = (*this)[key];</span>
+<span class="lineNum">     342 </span><span class="lineCov">         30 :     std::vector&lt;V&gt; vector(reinterpret_cast&lt;const V*&gt;(value.data()),</span>
+<span class="lineNum">     343 </span><span class="lineCov">         60 :                           reinterpret_cast&lt;const V*&gt;(value.data() +</span>
+<span class="lineNum">     344 </span><span class="lineCov">         90 :                                                      value.size()));</span>
+<span class="lineNum">     345 </span><span class="lineCov">         30 :     if (_swap() &amp;&amp; sizeof(V) != 1)</span>
+<span class="lineNum">     346 </span>            :     {
+<span class="lineNum">     347 </span><span class="lineNoCov">          0 :         for (V&amp; elem : vector)</span>
+<span class="lineNum">     348 </span><span class="lineNoCov">          0 :             lunchbox::byteswap(elem);</span>
+<span class="lineNum">     349 </span>            :     }
+<span class="lineNum">     350 </span><span class="lineCov">         60 :     return vector;</span>
+<span class="lineNum">     351 </span>            : }
+<a name="352"><span class="lineNum">     352 </span>            : </a>
+<span class="lineNum">     353 </span>            : template &lt;class V&gt;
+<span class="lineNum">     354 </span><span class="lineCov">         10 : inline std::set&lt;V&gt; Map::getSet(const std::string&amp; key) const</span>
+<span class="lineNum">     355 </span>            : {
+<span class="lineNum">     356 </span><span class="lineCov">         20 :     std::string value = (*this)[key];</span>
+<span class="lineNum">     357 </span><span class="lineCov">         10 :     V* const begin = reinterpret_cast&lt;V*&gt;(const_cast&lt;char*&gt;(value.data()));</span>
+<span class="lineNum">     358 </span><span class="lineCov">         10 :     V* const end = begin + value.size() / sizeof(V);</span>
+<span class="lineNum">     359 </span>            : 
+<span class="lineNum">     360 </span><span class="lineCov">         10 :     if (_swap() &amp;&amp; sizeof(V) != 1)</span>
+<span class="lineNum">     361 </span><span class="lineNoCov">          0 :         for (V* i = begin; i &lt; end; ++i)</span>
+<span class="lineNum">     362 </span><span class="lineNoCov">          0 :             lunchbox::byteswap(*i);</span>
+<span class="lineNum">     363 </span>            : 
+<span class="lineNum">     364 </span><span class="lineCov">         20 :     return std::set&lt;V&gt;(begin, end);</span>
 <span class="lineNum">     365 </span>            : }
-<span class="lineNum">     366 </span>            : 
-<span class="lineNum">     367 </span>            : #endif // KEYV_MAP_H
+<span class="lineNum">     366 </span>            : }
+<span class="lineNum">     367 </span>            : 
+<span class="lineNum">     368 </span>            : #endif // KEYV_MAP_H
 </pre>
       </td>
     </tr>
