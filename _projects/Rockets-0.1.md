@@ -4,7 +4,7 @@ version: "0.1"
 major: 0
 minor: 1
 description: Rockets - REST and websockets C++ library
-updated: 21/04/18
+updated: 01/05/18
 homepage: https://github.com/BlueBrain/Rockets
 repository: https://github.com/BlueBrain/Rockets.git
 issuesurl: https://github.com/BlueBrain/Rockets/issues
