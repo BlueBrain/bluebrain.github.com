@@ -26,5 +26,5 @@ var searchData=
   ['buildenvironment',['buildEnvironment',['../classbrayns_1_1_scene.html#a49c9856f08fe184d3b956b4a0e55657b',1,'brayns::Scene']]],
   ['buildgeometry',['buildGeometry',['../classbrayns_1_1_scene.html#ac186f12a5217a53ebd1a8d149c8fa71f',1,'brayns::Scene::buildGeometry()'],['../classbrayns_1_1_o_s_p_ray_scene.html#ae66bac0fc386bc938be08d31ed718c65',1,'brayns::OSPRayScene::buildGeometry()']]],
   ['buildscene',['buildScene',['../classbrayns_1_1_brayns.html#afefbd02f955a375c53140e3d2e6a6909',1,'brayns::Brayns']]],
-  ['brayns_20user_20guide',['Brayns user guide',['../md__jenkins_04_workspace_oss.Brayns.documentation_build_type_Debug_platform_cscsviz-vm_sources_doc_UserGuide.html',1,'']]]
+  ['brayns_20user_20guide',['Brayns user guide',['../md__jenkins_03_workspace_oss.Brayns.documentation_build_type_Debug_platform_cscsviz-vm_sources_doc_UserGuide.html',1,'']]]
 ];

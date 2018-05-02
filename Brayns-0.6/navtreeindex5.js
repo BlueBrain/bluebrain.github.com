@@ -1,5 +1,6 @@
 var NAVTREEINDEX5 =
 {
+"structbrayns_1_1_morphology_layout.html":[5,0,0,44],
 "structbrayns_1_1_morphology_layout.html#a355fbef686222fc221cfee3aed303852":[5,0,0,44,0],
 "structbrayns_1_1_morphology_layout.html#a61b2fae31527804824b4c2be512d9534":[5,0,0,44,1],
 "structbrayns_1_1_morphology_layout.html#a8cc44739420ceee7cfd5ef288f80207e":[5,0,0,44,2],

@@ -1,6 +1,6 @@
 var classbrayns_1_1_o_s_p_ray_renderer =
 [
-    [ "OSPRayRenderer", "classbrayns_1_1_o_s_p_ray_renderer.html#afd5e26652d61e7d3f5c3275258747060", null ],
+    [ "OSPRayRenderer", "classbrayns_1_1_o_s_p_ray_renderer.html#a64bdd39699bd673a23344aae8a10abaf", null ],
     [ "~OSPRayRenderer", "classbrayns_1_1_o_s_p_ray_renderer.html#add948f2c5607af8d98b2c47567d78365", null ],
     [ "commit", "classbrayns_1_1_o_s_p_ray_renderer.html#afc1548cd946b55c1466261c2b5c31fd8", null ],
     [ "getName", "classbrayns_1_1_o_s_p_ray_renderer.html#a3b89d2f35ec42dba6c503ecade1831f2", null ],

@@ -1,6 +1,5 @@
 var classbrayns_1_1_base_object =
 [
-    [ "BaseObject", "classbrayns_1_1_base_object.html#a729a526cdf1e485c5481611e57e4ceed", null ],
     [ "~BaseObject", "classbrayns_1_1_base_object.html#a5f8035d3d9c4170919e8398aaba8e671", null ],
     [ "_updateValue", "classbrayns_1_1_base_object.html#a74ec06119ffce28516d53565d9c39fe1", null ],
     [ "isModified", "classbrayns_1_1_base_object.html#ad5e3f16c81e260c2fdfcf5aa00fca6fd", null ],

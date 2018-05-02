@@ -1,8 +1,9 @@
 var classbrayns_1_1_camera =
 [
+    [ "Camera", "classbrayns_1_1_camera.html#aeb1276d9784180d504207df232e9a5fb", null ],
     [ "Camera", "classbrayns_1_1_camera.html#a4b4dbbc0c49614d9ee6cef116cedd7bc", null ],
     [ "~Camera", "classbrayns_1_1_camera.html#a9b2df178c283598bfc54ff6dbc984d31", null ],
-    [ "commit", "classbrayns_1_1_camera.html#a0354f79ac970081e142566d3b7f8d93e", null ],
+    [ "commit", "classbrayns_1_1_camera.html#a063a6910bde97fe29b7b31ada55e5c57", null ],
     [ "getAperture", "classbrayns_1_1_camera.html#add438a8d6757cc35d463e89bb213e768", null ],
     [ "getAspectRatio", "classbrayns_1_1_camera.html#afb30957156d54cefd98ba65c29638dc9", null ],
     [ "getClipPlanes", "classbrayns_1_1_camera.html#ac1a9f9761c247311992d156a49aef7fe", null ],
@@ -21,7 +22,7 @@ var classbrayns_1_1_camera =
     [ "setAperture", "classbrayns_1_1_camera.html#a9873a3ba6d6c346e4b5051a11b2ff748", null ],
     [ "setAspectRatio", "classbrayns_1_1_camera.html#aeda21b6f02421dedc266b992fbfe89a4", null ],
     [ "setClipPlanes", "classbrayns_1_1_camera.html#ac5076f27474c37ab25469772802eb382", null ],
-    [ "setEnvironmentMap", "classbrayns_1_1_camera.html#a772e27325b19ab05e7966976bc755a44", null ],
+    [ "setEnvironmentMap", "classbrayns_1_1_camera.html#ab15da040b0164a18d30faed9740237b5", null ],
     [ "setEyeSeparation", "classbrayns_1_1_camera.html#a6f4f1b8f69cbf91e671c68e055fb9f92", null ],
     [ "setFieldOfView", "classbrayns_1_1_camera.html#a60c233a5b53c7d8bbad0a88ea753fca9", null ],
     [ "setFocalLength", "classbrayns_1_1_camera.html#adb7e9f91916e49cd6d2a4370908c8a82", null ],

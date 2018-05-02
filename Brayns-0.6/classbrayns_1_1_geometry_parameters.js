@@ -1,7 +1,6 @@
 var classbrayns_1_1_geometry_parameters =
 [
     [ "GeometryParameters", "classbrayns_1_1_geometry_parameters.html#a96a7875f7d452448da35b193921725dc", null ],
-    [ "_parse", "classbrayns_1_1_geometry_parameters.html#ad11f92d3fafcca441e3140f8aef7578d", null ],
     [ "getCircuitBoundingBox", "classbrayns_1_1_geometry_parameters.html#a2959b208a4b8af1d1114dd2c7db9cab2", null ],
     [ "getCircuitConfiguration", "classbrayns_1_1_geometry_parameters.html#a9c638f145833504619e4b2ef89452c57", null ],
     [ "getCircuitDensity", "classbrayns_1_1_geometry_parameters.html#a997c8833a1dbc94925bf051f4bd25292", null ],
@@ -49,6 +48,7 @@ var classbrayns_1_1_geometry_parameters =
     [ "getSceneEnvironmentAsString", "classbrayns_1_1_geometry_parameters.html#a147a1faa4a169ba6d216b77c6eed1f3d", null ],
     [ "getSplashSceneFolder", "classbrayns_1_1_geometry_parameters.html#afafae6b6a603279400ffa9cab88d4a9f", null ],
     [ "getXYZBFile", "classbrayns_1_1_geometry_parameters.html#a5f2c583107e540802b24e08924870dbb", null ],
+    [ "parse", "classbrayns_1_1_geometry_parameters.html#a73ac7de16c966b974774c339df0cc881", null ],
     [ "print", "classbrayns_1_1_geometry_parameters.html#a8c92a909fef870a14d015a6e838f3f63", null ],
     [ "setCircuitBoundingBox", "classbrayns_1_1_geometry_parameters.html#abcd6837d0bbb99671fb223399f59efe0", null ],
     [ "setCircuitUseSimulationModel", "classbrayns_1_1_geometry_parameters.html#a29c758e75fbd1708056cbb699b4b472c", null ],

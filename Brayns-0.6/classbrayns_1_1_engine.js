@@ -9,7 +9,7 @@ var classbrayns_1_1_engine =
     [ "continueRendering", "classbrayns_1_1_engine.html#a84b7fb62801d98aa94c325dc8f725313", null ],
     [ "createCamera", "classbrayns_1_1_engine.html#a193b3610b6a3db0a4cfd425ce541ad4e", null ],
     [ "createFrameBuffer", "classbrayns_1_1_engine.html#a3ad20ce149c67448d40110da4f573f35", null ],
-    [ "createRenderer", "classbrayns_1_1_engine.html#a23f7a8d01a815e1dbc814dfd32032d70", null ],
+    [ "createRenderer", "classbrayns_1_1_engine.html#a0da73a5f3b2a0864ab8b2e0e662aa1ed", null ],
     [ "dataMutex", "classbrayns_1_1_engine.html#a6dc3ec1094f4470e9bc88c0fa29fa91c", null ],
     [ "getActiveRenderer", "classbrayns_1_1_engine.html#a54e27af52438e4f4e0cc6d8d09928e76", null ],
     [ "getCamera", "classbrayns_1_1_engine.html#a05478fdf6ae8dd3b0716bc8be93c83f9", null ],

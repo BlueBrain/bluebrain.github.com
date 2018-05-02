@@ -1,7 +1,6 @@
 var classbrayns_1_1_rendering_parameters =
 [
     [ "RenderingParameters", "classbrayns_1_1_rendering_parameters.html#a166b41cdb3c3dcba7113e8c18d5abb4f", null ],
-    [ "_parse", "classbrayns_1_1_rendering_parameters.html#a5539459b8bc8462f6ed0b83267dd1b4c", null ],
     [ "getAccumulation", "classbrayns_1_1_rendering_parameters.html#a2df3b549c61199b65ddf134b334a2de5", null ],
     [ "getAmbientOcclusionDistance", "classbrayns_1_1_rendering_parameters.html#ac6798af9adb15fc1b0f69fc2e874e077", null ],
     [ "getAmbientOcclusionStrength", "classbrayns_1_1_rendering_parameters.html#adcfbde4abb46d610c27c3a6ec8361cff", null ],
@@ -34,6 +33,7 @@ var classbrayns_1_1_rendering_parameters =
     [ "getVarianceThreshold", "classbrayns_1_1_rendering_parameters.html#a2e15eaf4a39b43a5bb324469f118fe8b", null ],
     [ "initializeDefaultCameras", "classbrayns_1_1_rendering_parameters.html#aae0ed47a19b6f78280ec32e6c190598f", null ],
     [ "initializeDefaultRenderers", "classbrayns_1_1_rendering_parameters.html#ad757f946c741873c82e46e69231e36ad", null ],
+    [ "parse", "classbrayns_1_1_rendering_parameters.html#a0597328ac9cf2d922dde652eeb1f8eb9", null ],
     [ "print", "classbrayns_1_1_rendering_parameters.html#a59da280f420719c169f81144aabe97a4", null ],
     [ "setAmbientOcclusionDistance", "classbrayns_1_1_rendering_parameters.html#a6275a4b99ca60d214e30f0b562791f29", null ],
     [ "setAmbientOcclusionStrength", "classbrayns_1_1_rendering_parameters.html#a01604655a31239042e5fd9f9214e1b15", null ],
