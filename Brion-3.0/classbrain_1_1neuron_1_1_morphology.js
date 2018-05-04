@@ -6,6 +6,7 @@ var classbrain_1_1neuron_1_1_morphology =
     [ "Morphology", "classbrain_1_1neuron_1_1_morphology.html#a34f205916d2b3b89288414ea1ee1c03c", null ],
     [ "Morphology", "classbrain_1_1neuron_1_1_morphology.html#ac38d721290e01bc08e2e76587b86ad4d", null ],
     [ "~Morphology", "classbrain_1_1neuron_1_1_morphology.html#a0cac3aa3ec5aae81cb1ed4ef78639c89", null ],
+    [ "getBoundingBox", "classbrain_1_1neuron_1_1_morphology.html#a1bc7442383fd0fd9600543a62bc02ed2", null ],
     [ "getPoints", "classbrain_1_1neuron_1_1_morphology.html#a3b95d896d5f8d5a39c96f308a1dea5ae", null ],
     [ "getSection", "classbrain_1_1neuron_1_1_morphology.html#aa6f8ac2ead5f027398cecf3250f9ef66", null ],
     [ "getSectionIDs", "classbrain_1_1neuron_1_1_morphology.html#a4790bc90bad094f27bdfd738237a1869", null ],

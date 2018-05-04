@@ -2,6 +2,8 @@ var files =
 [
     [ "brion/api.h", "brion_2api_8h.html", "brion_2api_8h" ],
     [ "brain/api.h", "brain_2api_8h.html", "brain_2api_8h" ],
+    [ "brain/python/api.h", "brain_2python_2api_8h.html", "brain_2python_2api_8h" ],
+    [ "arrayHelpers.h", "array_helpers_8h_source.html", null ],
     [ "blueConfig.h", "blue_config_8h_source.html", null ],
     [ "brain.h", "brain_8h_source.html", null ],
     [ "brion.h", "brion_8h_source.html", null ],
@@ -17,6 +19,7 @@ var files =
     [ "defines.h", "defines_8h.html", null ],
     [ "definesLinux.h", "defines_linux_8h_source.html", null ],
     [ "enums.h", "enums_8h.html", "enums_8h" ],
+    [ "helpers.h", "helpers_8h_source.html", null ],
     [ "mesh.h", "mesh_8h_source.html", null ],
     [ "brion/morphology.h", "brion_2morphology_8h_source.html", null ],
     [ "brain/neuron/morphology.h", "brain_2neuron_2morphology_8h_source.html", null ],
@@ -25,7 +28,9 @@ var files =
     [ "nodeGroup.h", "node_group_8h_source.html", null ],
     [ "nodes.h", "nodes_8h_source.html", null ],
     [ "pluginInitData.h", "plugin_init_data_8h_source.html", null ],
+    [ "python.h", "python_8h_source.html", null ],
     [ "section.h", "section_8h_source.html", null ],
+    [ "simulation.h", "simulation_8h_source.html", null ],
     [ "soma.h", "soma_8h_source.html", null ],
     [ "spikeReport.h", "spike_report_8h_source.html", null ],
     [ "spikeReportPlugin.h", "spike_report_plugin_8h_source.html", null ],
@@ -42,5 +47,6 @@ var files =
     [ "brain/neuron/types.h", "brain_2neuron_2types_8h_source.html", null ],
     [ "brain/types.h", "brain_2types_8h_source.html", null ],
     [ "brion/version.h", "brion_2version_8h.html", "brion_2version_8h" ],
+    [ "brain/python/version.h", "brain_2python_2version_8h.html", "brain_2python_2version_8h" ],
     [ "brain/version.h", "brain_2version_8h.html", "brain_2version_8h" ]
 ];

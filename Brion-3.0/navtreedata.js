@@ -41,10 +41,10 @@ var NAVTREE =
 
 var NAVTREEINDEX =
 [
-"Changelog.html",
-"classbrain_1_1neuron_1_1_section.html#ac34c25b88f6e3acf9b524ed0fe2a67b8",
-"classbrion_1_1_spike_report.html#a7eec8b54b3b74f8c21bf80a8690fa780",
-"functions_p.html"
+".html",
+"classbrain_1_1_version.html#a24ea5374f707688abcc431d380bd8109",
+"classbrion_1_1_morphology_plugin.html#a744cf7aa1cd0aa7248dd19999905ce7a",
+"enums_8h.html#ad023e746676d235c53853a69c9c1c454a6c0995c2b7e5279a432a11f779c761bb"
 ];
 
 var SYNCONMSG = 'click to disable panel synchronisation';

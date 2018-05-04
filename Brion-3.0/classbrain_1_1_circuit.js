@@ -6,6 +6,7 @@ var classbrain_1_1_circuit =
     ] ],
     [ "Circuit", "classbrain_1_1_circuit.html#ad8018f3c4aaf467133ca254295ba53af", null ],
     [ "Circuit", "classbrain_1_1_circuit.html#aa333684a12851014e36ee5c897599599", null ],
+    [ "Circuit", "classbrain_1_1_circuit.html#a107bee9fcf24ccf5280a51b1839564d0", null ],
     [ "~Circuit", "classbrain_1_1_circuit.html#a5f39340d71b68b181d521fcc9e41fcdc", null ],
     [ "getAfferentSynapses", "classbrain_1_1_circuit.html#a75f300dea500c142ec5f3ee1c1d2456a", null ],
     [ "getEfferentSynapses", "classbrain_1_1_circuit.html#acd51c99352dcde8dad828891aa483b81", null ],
@@ -14,6 +15,7 @@ var classbrain_1_1_circuit =
     [ "getExternalAfferentSynapses", "classbrain_1_1_circuit.html#a9b6e7545ef29d0214544f6ec2d975aed", null ],
     [ "getGIDs", "classbrain_1_1_circuit.html#a36ee80e8f35795978c648acfd79253a5", null ],
     [ "getGIDs", "classbrain_1_1_circuit.html#a5480f86410d5c4aff618735090f98cf5", null ],
+    [ "getMorphologyNames", "classbrain_1_1_circuit.html#a53f55faea623d17665194d6535d76296", null ],
     [ "getMorphologyTypeNames", "classbrain_1_1_circuit.html#a85ab1b14918ec3d2015d9fe4e79c457b", null ],
     [ "getMorphologyTypes", "classbrain_1_1_circuit.html#acdaadb6bbf5c998085f3d284e22a14fa", null ],
     [ "getMorphologyURIs", "classbrain_1_1_circuit.html#a2af6cc4a5ae4691771980d15d72a56f6", null ],
@@ -23,6 +25,7 @@ var classbrain_1_1_circuit =
     [ "getRandomGIDs", "classbrain_1_1_circuit.html#a6780629e47b81063a4893f7b7cd5e415", null ],
     [ "getRandomGIDs", "classbrain_1_1_circuit.html#aa822f3a660884ad01a8e1622c7dbd860", null ],
     [ "getRotations", "classbrain_1_1_circuit.html#a457e6f64353f0b20bb1a6524c88ea3af", null ],
+    [ "getSource", "classbrain_1_1_circuit.html#ad7cd59b57ac428c09a964fecad394899", null ],
     [ "getTransforms", "classbrain_1_1_circuit.html#a4e21485b8bce2a643944e51808ee51c1", null ],
     [ "loadMorphologies", "classbrain_1_1_circuit.html#ad0d46e2775f1aaf8495b384e50e190ee", null ],
     [ "Synapses", "classbrain_1_1_circuit.html#ad80940330f0438f3c9a2bdd887c4b255", null ]

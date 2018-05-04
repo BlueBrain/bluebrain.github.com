@@ -1,6 +1,7 @@
 var searchData=
 [
   ['api_2eh',['api.h',['../brion_2api_8h.html',1,'']]],
+  ['api_2eh',['api.h',['../brain_2python_2api_8h.html',1,'']]],
   ['api_2eh',['api.h',['../brain_2api_8h.html',1,'']]],
   ['baseimpl',['BaseImpl',['../structbrain_1_1_synapses_1_1_base_impl.html',1,'brain::Synapses']]],
   ['begin',['begin',['../classbrain_1_1_synapses.html#a1c392ff82ffe765f5cbd9c8724460120',1,'brain::Synapses']]],
@@ -8,6 +9,17 @@ var searchData=
   ['blueconfig',['BlueConfig',['../classbrion_1_1_blue_config.html#afbac59429e4019abf307e9f415efdace',1,'brion::BlueConfig']]],
   ['blueconfigsection',['BlueConfigSection',['../enums_8h.html#a969f557406a58a03cd42097c6485c3fc',1,'brion::enums']]],
   ['brain',['brain',['../namespacebrain.html',1,'']]],
+  ['brain_5fpython_5frev_5fstring',['BRAIN_PYTHON_REV_STRING',['../brain_2python_2version_8h.html#a462429fb1804f83deef1aa1a74f6c9be',1,'version.h']]],
+  ['brain_5fpython_5fversion_5fabi',['BRAIN_PYTHON_VERSION_ABI',['../brain_2python_2version_8h.html#a286d55e53d94bad19ac9c10dd201bd37',1,'version.h']]],
+  ['brain_5fpython_5fversion_5fge',['BRAIN_PYTHON_VERSION_GE',['../brain_2python_2version_8h.html#ac3710d15bb0f07e11cb882486f16a848',1,'version.h']]],
+  ['brain_5fpython_5fversion_5fgt',['BRAIN_PYTHON_VERSION_GT',['../brain_2python_2version_8h.html#a4378e060d4a5eee39385c9a56b89c409',1,'version.h']]],
+  ['brain_5fpython_5fversion_5fle',['BRAIN_PYTHON_VERSION_LE',['../brain_2python_2version_8h.html#a4b68ee8a8b64b9f20db605a70d4d32db',1,'version.h']]],
+  ['brain_5fpython_5fversion_5flt',['BRAIN_PYTHON_VERSION_LT',['../brain_2python_2version_8h.html#a3e43fae5feffcd9969edaecae24000ee',1,'version.h']]],
+  ['brain_5fpython_5fversion_5fmajor',['BRAIN_PYTHON_VERSION_MAJOR',['../brain_2python_2version_8h.html#adbab58adcae6ec793242e6502919341b',1,'version.h']]],
+  ['brain_5fpython_5fversion_5fminor',['BRAIN_PYTHON_VERSION_MINOR',['../brain_2python_2version_8h.html#a93a3597b65eca55445c32b1cfecaaf15',1,'version.h']]],
+  ['brain_5fpython_5fversion_5fpatch',['BRAIN_PYTHON_VERSION_PATCH',['../brain_2python_2version_8h.html#a125e962bd15923d29d7e25d7ef25a34a',1,'version.h']]],
+  ['brain_5fpython_5fversion_5frevision',['BRAIN_PYTHON_VERSION_REVISION',['../brain_2python_2version_8h.html#a8bea973c81113a0934299ffebbc5e82d',1,'version.h']]],
+  ['brain_5fpython_5fversion_5fstring',['BRAIN_PYTHON_VERSION_STRING',['../brain_2python_2version_8h.html#a1249ddd1354d2ec9eff598b54bed57f4',1,'version.h']]],
   ['brain_5frev_5fstring',['BRAIN_REV_STRING',['../brain_2version_8h.html#a4e62f27c19693c1f33fc31c4cb650af0',1,'version.h']]],
   ['brain_5fversion_5fabi',['BRAIN_VERSION_ABI',['../brain_2version_8h.html#a43f616dc38b671e3b6afa09ea65d6ed0',1,'version.h']]],
   ['brain_5fversion_5fge',['BRAIN_VERSION_GE',['../brain_2version_8h.html#a12bdd529113976a8e97f0886e5855ca7',1,'version.h']]],
@@ -34,6 +46,7 @@ var searchData=
   ['brion_5fversion_5fstring',['BRION_VERSION_STRING',['../brion_2version_8h.html#ac67e444e6ce8ed20647801f3173b440a',1,'version.h']]],
   ['brion',['Brion',['../index.html',1,'']]],
   ['neuron',['neuron',['../namespacebrain_1_1neuron.html',1,'brain']]],
-  ['version_2eh',['version.h',['../brain_2version_8h.html',1,'']]],
-  ['version_2eh',['version.h',['../brion_2version_8h.html',1,'']]]
+  ['version_2eh',['version.h',['../brion_2version_8h.html',1,'']]],
+  ['version_2eh',['version.h',['../brain_2python_2version_8h.html',1,'']]],
+  ['version_2eh',['version.h',['../brain_2version_8h.html',1,'']]]
 ];

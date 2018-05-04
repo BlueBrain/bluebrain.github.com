@@ -2,6 +2,7 @@ var searchData=
 [
   ['seek',['seek',['../classbrion_1_1_spike_report.html#a2e1f18b9e172bec7c5aaf495f1edc590',1,'brion::SpikeReport']]],
   ['setbuffersize',['setBufferSize',['../classbrion_1_1_compartment_report.html#a8721d04fa5ef8d8b1c69b8865fcb0917',1,'brion::CompartmentReport::setBufferSize()'],['../classbrion_1_1_compartment_report_plugin.html#afd8862671b3a459bb0d891e96ff1ee24',1,'brion::CompartmentReportPlugin::setBufferSize()']]],
+  ['simulation',['Simulation',['../classbrain_1_1_simulation.html#a60119f74ca1694975695a19cf733b253',1,'brain::Simulation']]],
   ['size',['size',['../classbrain_1_1_synapses.html#a0b9ad156a0f451db5eada7365451f7e9',1,'brain::Synapses']]],
   ['spikereport',['SpikeReport',['../classbrion_1_1_spike_report.html#abc848e1631c8293dbb2c0a5787656b3b',1,'brion::SpikeReport::SpikeReport(const URI &amp;uri, int mode=MODE_READ)'],['../classbrion_1_1_spike_report.html#a7eec8b54b3b74f8c21bf80a8690fa780',1,'brion::SpikeReport::SpikeReport(const URI &amp;uri, const GIDSet &amp;ids)']]],
   ['spikereportreader',['SpikeReportReader',['../classbrain_1_1_spike_report_reader.html#a9669093776a1285091c5a2d4632d3990',1,'brain::SpikeReportReader::SpikeReportReader(const brion::URI &amp;uri)'],['../classbrain_1_1_spike_report_reader.html#a7407e8549d22155752a4b6f216b88ff7',1,'brain::SpikeReportReader::SpikeReportReader(const brion::URI &amp;uri, const GIDSet &amp;subset)']]],

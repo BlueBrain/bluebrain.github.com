@@ -2,7 +2,7 @@ var searchData=
 [
   ['cellfamily',['CellFamily',['../enums_8h.html#a8bbad79a506997aec2cc5553e927e03e',1,'brion::enums']]],
   ['changelog',['Changelog',['../Changelog.html',1,'']]],
-  ['check',['check',['../classbrion_1_1_version.html#a899ec6e0102c68a690e8b9143c7908c4',1,'brion::Version::check()'],['../classbrain_1_1_version.html#aac35171c72a47a9ccd35c7e0d2ef29b5',1,'brain::Version::check()']]],
+  ['check',['check',['../classbrion_1_1_version.html#a899ec6e0102c68a690e8b9143c7908c4',1,'brion::Version::check()'],['../classbrain__python_1_1_version.html#acc323370c89bfdbbedfaa626f8e342b9',1,'brain_python::Version::check()'],['../classbrain_1_1_version.html#aac35171c72a47a9ccd35c7e0d2ef29b5',1,'brain::Version::check()']]],
   ['circuit',['Circuit',['../classbrion_1_1_circuit.html',1,'brion']]],
   ['circuit',['Circuit',['../classbrain_1_1_circuit.html',1,'brain']]],
   ['circuit',['Circuit',['../classbrion_1_1_circuit.html#af64a9ed2225c8fc2a8f34a946892c3db',1,'brion::Circuit::Circuit(const std::string &amp;source)'],['../classbrion_1_1_circuit.html#ae550b508b82967cd9b3035d960aede77',1,'brion::Circuit::Circuit(const URI &amp;source)'],['../classbrain_1_1_circuit.html#ad8018f3c4aaf467133ca254295ba53af',1,'brain::Circuit::Circuit(const URI &amp;source)'],['../classbrain_1_1_circuit.html#aa333684a12851014e36ee5c897599599',1,'brain::Circuit::Circuit(const brion::BlueConfig &amp;blueConfig)']]],

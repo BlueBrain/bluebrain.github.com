@@ -6,6 +6,7 @@ var namespacebrain =
     [ "CompartmentReportMapping", "classbrain_1_1_compartment_report_mapping.html", "classbrain_1_1_compartment_report_mapping" ],
     [ "CompartmentReportMetaData", "structbrain_1_1_compartment_report_meta_data.html", "structbrain_1_1_compartment_report_meta_data" ],
     [ "CompartmentReportView", "classbrain_1_1_compartment_report_view.html", "classbrain_1_1_compartment_report_view" ],
+    [ "Simulation", "classbrain_1_1_simulation.html", "classbrain_1_1_simulation" ],
     [ "SpikeReportReader", "classbrain_1_1_spike_report_reader.html", "classbrain_1_1_spike_report_reader" ],
     [ "SpikeReportWriter", "classbrain_1_1_spike_report_writer.html", "classbrain_1_1_spike_report_writer" ],
     [ "Synapse", "classbrain_1_1_synapse.html", "classbrain_1_1_synapse" ],
