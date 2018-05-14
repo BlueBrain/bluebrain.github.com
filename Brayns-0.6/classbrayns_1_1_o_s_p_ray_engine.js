@@ -6,6 +6,7 @@ var classbrayns_1_1_o_s_p_ray_engine =
     [ "createCamera", "classbrayns_1_1_o_s_p_ray_engine.html#a7d59b2ca3678537687311fc8e0096293", null ],
     [ "createFrameBuffer", "classbrayns_1_1_o_s_p_ray_engine.html#a289a41199522b39287c056f8e5d72662", null ],
     [ "createRenderer", "classbrayns_1_1_o_s_p_ray_engine.html#a7b676ea15fe03c59db7e510d64c2b132", null ],
+    [ "createScene", "classbrayns_1_1_o_s_p_ray_engine.html#abc43b240e91738b7e9aff1fe52cfef1f", null ],
     [ "getMinimumFrameSize", "classbrayns_1_1_o_s_p_ray_engine.html#ab95e9bb89f2c5b0f9aa734b56789d415", null ],
     [ "getSupportedFrameSize", "classbrayns_1_1_o_s_p_ray_engine.html#a879bc415aecede0e68ed6e6b60406886", null ],
     [ "haveDeflectPixelOp", "classbrayns_1_1_o_s_p_ray_engine.html#a6b0edc0c82065dda0378b57113f329d9", null ],

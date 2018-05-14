@@ -8,5 +8,6 @@ var searchData=
   ['timer',['Timer',['../classbrayns_1_1_timer.html',1,'brayns']]],
   ['transferfunction',['TransferFunction',['../classbrayns_1_1_transfer_function.html',1,'brayns']]],
   ['transferfunctionloader',['TransferFunctionLoader',['../classbrayns_1_1_transfer_function_loader.html',1,'brayns']]],
+  ['transformation',['Transformation',['../classbrayns_1_1_transformation.html',1,'brayns']]],
   ['trianglesmesh',['TrianglesMesh',['../structbrayns_1_1_triangles_mesh.html',1,'brayns']]]
 ];

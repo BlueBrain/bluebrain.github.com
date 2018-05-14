@@ -33,12 +33,17 @@ var hierarchy =
       [ "brayns::FrameBuffer", "classbrayns_1_1_frame_buffer.html", [
         [ "brayns::OSPRayFrameBuffer", "classbrayns_1_1_o_s_p_ray_frame_buffer.html", null ]
       ] ],
+      [ "brayns::Material", "classbrayns_1_1_material.html", [
+        [ "brayns::OSPRayMaterial", "classbrayns_1_1_o_s_p_ray_material.html", null ]
+      ] ],
+      [ "brayns::ModelDescriptor", "classbrayns_1_1_model_descriptor.html", null ],
       [ "brayns::Progress", "classbrayns_1_1_progress.html", null ],
       [ "brayns::Scene", "classbrayns_1_1_scene.html", [
         [ "brayns::OSPRayScene", "classbrayns_1_1_o_s_p_ray_scene.html", null ]
       ] ],
       [ "brayns::Statistics", "classbrayns_1_1_statistics.html", null ],
-      [ "brayns::TransferFunction", "classbrayns_1_1_transfer_function.html", null ]
+      [ "brayns::TransferFunction", "classbrayns_1_1_transfer_function.html", null ],
+      [ "brayns::Transformation", "classbrayns_1_1_transformation.html", null ]
     ] ],
     [ "brayns::BinaryError", "structbrayns_1_1_binary_error.html", null ],
     [ "brayns::BinaryParam", "structbrayns_1_1_binary_param.html", null ],
@@ -64,16 +69,19 @@ var hierarchy =
       [ "brayns::CircuitLoader", "classbrayns_1_1_circuit_loader.html", null ],
       [ "brayns::MeshLoader", "classbrayns_1_1_mesh_loader.html", null ],
       [ "brayns::MolecularSystemReader", "classbrayns_1_1_molecular_system_reader.html", null ],
+      [ "brayns::ProteinLoader", "classbrayns_1_1_protein_loader.html", null ],
       [ "brayns::XYZBLoader", "classbrayns_1_1_x_y_z_b_loader.html", null ]
     ] ],
     [ "brayns::LoaderRegistry", "classbrayns_1_1_loader_registry.html", null ],
     [ "brayns::LoaderRegistry::LoaderInfo", "structbrayns_1_1_loader_registry_1_1_loader_info.html", null ],
-    [ "brayns::Material", "classbrayns_1_1_material.html", null ],
     [ "brayns::MetaballsGenerator", "classbrayns_1_1_metaballs_generator.html", null ],
+    [ "brayns::Model", "classbrayns_1_1_model.html", [
+      [ "brayns::OSPRayModel", "classbrayns_1_1_o_s_p_ray_model.html", null ]
+    ] ],
+    [ "brayns::Model::SubModel", "structbrayns_1_1_model_1_1_sub_model.html", null ],
     [ "brayns::MorphologyLayout", "structbrayns_1_1_morphology_layout.html", null ],
     [ "brayns::ParametersManager", "classbrayns_1_1_parameters_manager.html", null ],
     [ "brayns::PluginAPI", "classbrayns_1_1_plugin_a_p_i.html", null ],
-    [ "brayns::ProteinLoader", "classbrayns_1_1_protein_loader.html", null ],
     [ "brayns::Renderer", "classbrayns_1_1_renderer.html", [
       [ "brayns::OSPRayRenderer", "classbrayns_1_1_o_s_p_ray_renderer.html", null ]
     ] ],
