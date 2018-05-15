@@ -31,13 +31,13 @@
             <td class="headerValue">Tide</td>
             <td></td>
             <td class="headerItem">Lines:</td>
-            <td class="headerCovTableEntry">98</td>
-            <td class="headerCovTableEntry">107</td>
-            <td class="headerCovTableEntryHi">91.6 %</td>
+            <td class="headerCovTableEntry">96</td>
+            <td class="headerCovTableEntry">105</td>
+            <td class="headerCovTableEntryHi">91.4 %</td>
           </tr>
           <tr>
             <td class="headerItem">Date:</td>
-            <td class="headerValue">2018-04-20 06:28:01</td>
+            <td class="headerValue">2018-05-15 07:03:31</td>
             <td></td>
             <td class="headerItem">Functions:</td>
             <td class="headerCovTableEntry">15</td>
@@ -61,8 +61,8 @@
 <pre class="sourceHeading">          Line data    Source code</pre>
 <pre class="source">
 <a name="1"><span class="lineNum">       1 </span>            : /*********************************************************************/</a>
-<span class="lineNum">       2 </span>            : /* Copyright (c) 2017, EPFL/Blue Brain Project                       */
-<span class="lineNum">       3 </span>            : /*                     Raphael Dumusc &lt;raphael.dumusc@epfl.ch&gt;       */
+<span class="lineNum">       2 </span>            : /* Copyright (c) 2017-2018, EPFL/Blue Brain Project                  */
+<span class="lineNum">       3 </span>            : /*                          Raphael Dumusc &lt;raphael.dumusc@epfl.ch&gt;  */
 <span class="lineNum">       4 </span>            : /* All rights reserved.                                              */
 <span class="lineNum">       5 </span>            : /*                                                                   */
 <span class="lineNum">       6 </span>            : /* Redistribution and use in source and binary forms, with or        */
@@ -104,7 +104,7 @@
 <span class="lineNum">      42 </span>            : #include &quot;StreamImage.h&quot;
 <span class="lineNum">      43 </span>            : #include &quot;log.h&quot;
 <span class="lineNum">      44 </span>            : 
-<span class="lineNum">      45 </span>            : #include &lt;deflect/SegmentDecoder.h&gt;
+<span class="lineNum">      45 </span>            : #include &lt;deflect/server/TileDecoder.h&gt;
 <span class="lineNum">      46 </span>            : 
 <span class="lineNum">      47 </span>            : #include &lt;cmath&gt; //std::ceil
 <span class="lineNum">      48 </span>            : 
@@ -117,13 +117,13 @@
 <span class="lineNum">      55 </span><span class="lineCov">          8 :     return size &lt; targetTileSize &amp;&amp; targetTileSize % size == 0;</span>
 <a name="56"><span class="lineNum">      56 </span>            : }</a>
 <span class="lineNum">      57 </span>            : 
-<span class="lineNum">      58 </span><span class="lineCov">          4 : bool _isValidSubtile(const deflect::SegmentParameters&amp; segment)</span>
+<span class="lineNum">      58 </span><span class="lineCov">          4 : bool _isValidSubtile(const deflect::server::Tile&amp; tile)</span>
 <span class="lineNum">      59 </span>            : {
-<span class="lineNum">      60 </span><span class="lineCov">          4 :     return _isValidSize(segment.width) &amp;&amp; _isValidSize(segment.height);</span>
+<span class="lineNum">      60 </span><span class="lineCov">          4 :     return _isValidSize(tile.width) &amp;&amp; _isValidSize(tile.height);</span>
 <span class="lineNum">      61 </span>            : }
 <a name="62"><span class="lineNum">      62 </span>            : }</a>
 <span class="lineNum">      63 </span>            : 
-<span class="lineNum">      64 </span><span class="lineCov">          4 : PixelStreamAssembler::PixelStreamAssembler(deflect::FramePtr frame)</span>
+<span class="lineNum">      64 </span><span class="lineCov">          4 : PixelStreamAssembler::PixelStreamAssembler(deflect::server::FramePtr frame)</span>
 <span class="lineNum">      65 </span>            :     : _frame{frame}
 <span class="lineNum">      66 </span><span class="lineCov">          4 :     , _frameSize{_frame-&gt;computeDimensions()}</span>
 <span class="lineNum">      67 </span>            : {
@@ -133,8 +133,8 @@
 <span class="lineNum">      71 </span><span class="lineCov">          4 :     _initTargetFrame();</span>
 <a name="72"><span class="lineNum">      72 </span><span class="lineCov">          4 : }</span></a>
 <span class="lineNum">      73 </span>            : 
-<span class="lineNum">      74 </span><span class="lineCov">          8 : ImagePtr PixelStreamAssembler::getTileImage(const uint tileIndex,</span>
-<span class="lineNum">      75 </span>            :                                             deflect::SegmentDecoder&amp; decoder)
+<span class="lineNum">      74 </span><span class="lineCov">          8 : ImagePtr PixelStreamAssembler::getTileImage(</span>
+<span class="lineNum">      75 </span>            :     const uint tileIndex, deflect::server::TileDecoder&amp; decoder)
 <span class="lineNum">      76 </span>            : {
 <span class="lineNum">      77 </span><span class="lineCov">         16 :     const auto sourceTiles = _findSourceTiles(tileIndex);</span>
 <span class="lineNum">      78 </span>            : 
@@ -174,135 +174,132 @@
 <span class="lineNum">     112 </span>            : 
 <span class="lineNum">     113 </span><span class="lineCov">          4 : bool PixelStreamAssembler::_canAssemble() const</span>
 <span class="lineNum">     114 </span>            : {
-<span class="lineNum">     115 </span><span class="lineCov">          4 :     const auto&amp; sortedSegments = _frame-&gt;segments;</span>
-<span class="lineNum">     116 </span><span class="lineCov">          4 :     if (sortedSegments.size() &lt;= 1)</span>
+<span class="lineNum">     115 </span><span class="lineCov">          4 :     const auto&amp; sortedTiles = _frame-&gt;tiles;</span>
+<span class="lineNum">     116 </span><span class="lineCov">          4 :     if (sortedTiles.size() &lt;= 1)</span>
 <span class="lineNum">     117 </span><span class="lineNoCov">          0 :         return false;</span>
 <span class="lineNum">     118 </span>            : 
-<span class="lineNum">     119 </span><span class="lineCov">          4 :     const auto&amp; firstSegment = sortedSegments[0].parameters;</span>
+<span class="lineNum">     119 </span><span class="lineCov">          4 :     const auto&amp; firstTile = sortedTiles[0];</span>
 <span class="lineNum">     120 </span>            : 
-<span class="lineNum">     121 </span><span class="lineCov">          4 :     if (!_isValidSubtile(firstSegment))</span>
+<span class="lineNum">     121 </span><span class="lineCov">          4 :     if (!_isValidSubtile(firstTile))</span>
 <span class="lineNum">     122 </span><span class="lineNoCov">          0 :         return false;</span>
 <span class="lineNum">     123 </span>            : 
-<span class="lineNum">     124 </span><span class="lineCov">          4 :     const auto tileWidth = firstSegment.width;</span>
-<span class="lineNum">     125 </span><span class="lineCov">          4 :     const auto tileHeight = firstSegment.height;</span>
+<span class="lineNum">     124 </span><span class="lineCov">          4 :     const auto tileWidth = firstTile.width;</span>
+<span class="lineNum">     125 </span><span class="lineCov">          4 :     const auto tileHeight = firstTile.height;</span>
 <span class="lineNum">     126 </span>            : 
 <span class="lineNum">     127 </span><span class="lineCov">          4 :     uint currentX = 0;</span>
 <span class="lineNum">     128 </span><span class="lineCov">          4 :     uint currentY = 0;</span>
 <span class="lineNum">     129 </span><span class="lineCov">          4 :     bool eol = false;</span>
 <span class="lineNum">     130 </span>            : 
-<span class="lineNum">     131 </span><span class="lineCov">        664 :     for (const auto&amp; segment : sortedSegments)</span>
+<span class="lineNum">     131 </span><span class="lineCov">        664 :     for (const auto&amp; tile : sortedTiles)</span>
 <span class="lineNum">     132 </span>            :     {
-<span class="lineNum">     133 </span><span class="lineCov">        660 :         const auto&amp; seg = segment.parameters;</span>
-<span class="lineNum">     134 </span>            : 
-<span class="lineNum">     135 </span><span class="lineCov">        660 :         if (seg.y != currentY)</span>
-<span class="lineNum">     136 </span>            :         {
-<span class="lineNum">     137 </span><span class="lineCov">         56 :             if (!eol || seg.y != currentY + tileHeight)</span>
-<span class="lineNum">     138 </span><span class="lineNoCov">          0 :                 return false;</span>
-<span class="lineNum">     139 </span>            :             // Next line
-<span class="lineNum">     140 </span><span class="lineCov">         56 :             currentY = seg.y;</span>
-<span class="lineNum">     141 </span><span class="lineCov">         56 :             currentX = 0;</span>
-<span class="lineNum">     142 </span><span class="lineCov">         56 :             eol = false;</span>
-<span class="lineNum">     143 </span>            :         }
-<span class="lineNum">     144 </span>            : 
-<span class="lineNum">     145 </span><span class="lineCov">        660 :         if (seg.height != tileHeight)</span>
-<span class="lineNum">     146 </span>            :         {
-<span class="lineNum">     147 </span><span class="lineCov">         44 :             if (currentY + seg.height != (uint)_frameSize.height())</span>
-<span class="lineNum">     148 </span><span class="lineNoCov">          0 :                 return false;</span>
-<span class="lineNum">     149 </span>            :         }
-<span class="lineNum">     150 </span>            : 
-<span class="lineNum">     151 </span><span class="lineCov">        660 :         if (seg.x != currentX)</span>
-<span class="lineNum">     152 </span><span class="lineNoCov">          0 :             return false;</span>
-<span class="lineNum">     153 </span>            : 
-<span class="lineNum">     154 </span><span class="lineCov">       1260 :         if (seg.width != tileWidth ||</span>
-<span class="lineNum">     155 </span><span class="lineCov">        600 :             currentX + tileWidth &gt;= (uint)_frameSize.width())</span>
-<span class="lineNum">     156 </span>            :         {
-<span class="lineNum">     157 </span><span class="lineCov">         60 :             if (seg.x + seg.width != (uint)_frameSize.width())</span>
-<span class="lineNum">     158 </span><span class="lineNoCov">          0 :                 return false;</span>
-<span class="lineNum">     159 </span>            : 
-<span class="lineNum">     160 </span><span class="lineCov">         60 :             eol = true;</span>
-<span class="lineNum">     161 </span>            :         }
-<span class="lineNum">     162 </span>            : 
-<span class="lineNum">     163 </span><span class="lineCov">        660 :         currentX += seg.width;</span>
-<span class="lineNum">     164 </span>            :     }
-<span class="lineNum">     165 </span><span class="lineCov">          4 :     return true;</span>
-<a name="166"><span class="lineNum">     166 </span>            : }</a>
-<span class="lineNum">     167 </span>            : 
-<span class="lineNum">     168 </span><span class="lineCov">         66 : uint PixelStreamAssembler::_getTilesX() const</span>
-<span class="lineNum">     169 </span>            : {
-<span class="lineNum">     170 </span><span class="lineCov">         66 :     return std::ceil(float(_frameSize.width()) / targetTileSize);</span>
-<a name="171"><span class="lineNum">     171 </span>            : }</a>
-<span class="lineNum">     172 </span>            : 
-<span class="lineNum">     173 </span><span class="lineCov">         66 : uint PixelStreamAssembler::_getTilesY() const</span>
-<span class="lineNum">     174 </span>            : {
-<span class="lineNum">     175 </span><span class="lineCov">         66 :     return std::ceil(float(_frameSize.height()) / targetTileSize);</span>
-<a name="176"><span class="lineNum">     176 </span>            : }</a>
-<span class="lineNum">     177 </span>            : 
-<span class="lineNum">     178 </span><span class="lineCov">          4 : void PixelStreamAssembler::_initTargetFrame()</span>
-<span class="lineNum">     179 </span>            : {
-<span class="lineNum">     180 </span><span class="lineCov">          4 :     _assembledFrame.reset(new deflect::Frame);</span>
-<span class="lineNum">     181 </span>            : 
-<span class="lineNum">     182 </span><span class="lineCov">          4 :     const auto tilesCount = _getTilesX() * _getTilesY();</span>
-<span class="lineNum">     183 </span><span class="lineCov">          4 :     auto&amp; segments = _assembledFrame-&gt;segments;</span>
-<span class="lineNum">     184 </span><span class="lineCov">          4 :     segments.resize(tilesCount);</span>
-<span class="lineNum">     185 </span><span class="lineCov">         20 :     for (size_t i = 0; i &lt; tilesCount; ++i)</span>
-<span class="lineNum">     186 </span>            :     {
-<span class="lineNum">     187 </span><span class="lineCov">         16 :         const auto tileRect = getTileRect(i);</span>
-<span class="lineNum">     188 </span><span class="lineCov">         16 :         segments[i].parameters.width = tileRect.width();</span>
-<span class="lineNum">     189 </span><span class="lineCov">         16 :         segments[i].parameters.height = tileRect.height();</span>
-<span class="lineNum">     190 </span><span class="lineCov">         16 :         segments[i].parameters.x = tileRect.x();</span>
-<span class="lineNum">     191 </span><span class="lineCov">         16 :         segments[i].parameters.y = tileRect.y();</span>
-<span class="lineNum">     192 </span>            :     }
-<a name="193"><span class="lineNum">     193 </span><span class="lineCov">          4 : }</span></a>
-<span class="lineNum">     194 </span>            : 
-<span class="lineNum">     195 </span><span class="lineCov">          8 : Indices PixelStreamAssembler::_findSourceTiles(const uint tileIndex) const</span>
-<span class="lineNum">     196 </span>            : {
-<span class="lineNum">     197 </span><span class="lineCov">          8 :     Indices indices;</span>
-<span class="lineNum">     198 </span><span class="lineCov">          8 :     const auto tileRect = getTileRect(tileIndex);</span>
-<span class="lineNum">     199 </span><span class="lineCov">       1328 :     for (size_t i = 0; i &lt; _frame-&gt;segments.size(); ++i)</span>
-<span class="lineNum">     200 </span>            :     {
-<span class="lineNum">     201 </span><span class="lineCov">       1320 :         const auto segmentRect = toRect(_frame-&gt;segments.at(i).parameters);</span>
-<span class="lineNum">     202 </span><span class="lineCov">       1320 :         if (tileRect.intersects(segmentRect))</span>
-<span class="lineNum">     203 </span><span class="lineCov">        330 :             indices.insert(i);</span>
-<span class="lineNum">     204 </span>            :     }
-<span class="lineNum">     205 </span><span class="lineCov">          8 :     return indices;</span>
-<a name="206"><span class="lineNum">     206 </span>            : }</a>
-<span class="lineNum">     207 </span>            : 
-<span class="lineNum">     208 </span><span class="lineCov">          8 : void PixelStreamAssembler::_decodeSourceTiles(const Indices&amp; indices,</span>
-<span class="lineNum">     209 </span>            :                                               deflect::SegmentDecoder&amp; decoder)
-<span class="lineNum">     210 </span>            : {
-<span class="lineNum">     211 </span><span class="lineCov">        338 :     for (auto i : indices)</span>
-<span class="lineNum">     212 </span>            :     {
-<span class="lineNum">     213 </span><span class="lineCov">        330 :         auto&amp; segment = _frame-&gt;segments.at(i);</span>
-<span class="lineNum">     214 </span>            : 
-<span class="lineNum">     215 </span><span class="lineCov">        330 :         if (segment.parameters.dataType == deflect::DataType::jpeg)</span>
-<span class="lineNum">     216 </span>            : #ifndef DEFLECT_USE_LEGACY_LIBJPEGTURBO
-<span class="lineNum">     217 </span>            :             decoder.decodeToYUV(segment);
-<span class="lineNum">     218 </span>            : #else
-<span class="lineNum">     219 </span><span class="lineNoCov">          0 :             decoder.decode(segment);</span>
-<span class="lineNum">     220 </span>            : #endif
-<span class="lineNum">     221 </span>            :     }
-<a name="222"><span class="lineNum">     222 </span><span class="lineCov">          8 : }</span></a>
-<span class="lineNum">     223 </span>            : 
-<span class="lineNum">     224 </span><span class="lineCov">          8 : void PixelStreamAssembler::_assembleTargetTile(const uint tileIndex,</span>
-<span class="lineNum">     225 </span>            :                                                const Indices&amp; indices)
-<span class="lineNum">     226 </span>            : {
-<span class="lineNum">     227 </span><span class="lineCov">          8 :     auto&amp; target = _assembledFrame-&gt;segments[tileIndex];</span>
-<span class="lineNum">     228 </span><span class="lineCov">          8 :     if (!target.imageData.isEmpty())</span>
-<span class="lineNum">     229 </span><span class="lineNoCov">          0 :         return;</span>
-<span class="lineNum">     230 </span>            : 
-<span class="lineNum">     231 </span><span class="lineCov">          8 :     const auto type = _frame-&gt;segments[*indices.begin()].parameters.dataType;</span>
-<span class="lineNum">     232 </span>            : 
-<span class="lineNum">     233 </span><span class="lineCov">         16 :     StreamImage image{_assembledFrame, tileIndex};</span>
-<span class="lineNum">     234 </span><span class="lineCov">          8 :     target.parameters.dataType = type;</span>
-<span class="lineNum">     235 </span>            :     const auto dataSize =
-<span class="lineNum">     236 </span><span class="lineCov">          8 :         image.getDataSize(0) + image.getDataSize(1) + image.getDataSize(2);</span>
-<span class="lineNum">     237 </span><span class="lineCov">          8 :     target.imageData.resize(dataSize);</span>
-<span class="lineNum">     238 </span><span class="lineCov">        338 :     for (auto i : indices)</span>
-<span class="lineNum">     239 </span>            :     {
-<span class="lineNum">     240 </span><span class="lineCov">        660 :         const auto tile = StreamImage{_frame, (uint)i};</span>
-<a name="241"><span class="lineNum">     241 </span><span class="lineCov">        330 :         image.copy(tile, tile.getPosition() - image.getPosition());</span></a>
-<span class="lineNum">     242 </span>            :     }
-<span class="lineNum">     243 </span><span class="lineCov">         96 : }</span>
+<span class="lineNum">     133 </span><span class="lineCov">        660 :         if (tile.y != currentY)</span>
+<span class="lineNum">     134 </span>            :         {
+<span class="lineNum">     135 </span><span class="lineCov">         56 :             if (!eol || tile.y != currentY + tileHeight)</span>
+<span class="lineNum">     136 </span><span class="lineNoCov">          0 :                 return false;</span>
+<span class="lineNum">     137 </span>            :             // Next line
+<span class="lineNum">     138 </span><span class="lineCov">         56 :             currentY = tile.y;</span>
+<span class="lineNum">     139 </span><span class="lineCov">         56 :             currentX = 0;</span>
+<span class="lineNum">     140 </span><span class="lineCov">         56 :             eol = false;</span>
+<span class="lineNum">     141 </span>            :         }
+<span class="lineNum">     142 </span>            : 
+<span class="lineNum">     143 </span><span class="lineCov">        660 :         if (tile.height != tileHeight)</span>
+<span class="lineNum">     144 </span>            :         {
+<span class="lineNum">     145 </span><span class="lineCov">         44 :             if (currentY + tile.height != (uint)_frameSize.height())</span>
+<span class="lineNum">     146 </span><span class="lineNoCov">          0 :                 return false;</span>
+<span class="lineNum">     147 </span>            :         }
+<span class="lineNum">     148 </span>            : 
+<span class="lineNum">     149 </span><span class="lineCov">        660 :         if (tile.x != currentX)</span>
+<span class="lineNum">     150 </span><span class="lineNoCov">          0 :             return false;</span>
+<span class="lineNum">     151 </span>            : 
+<span class="lineNum">     152 </span><span class="lineCov">       1260 :         if (tile.width != tileWidth ||</span>
+<span class="lineNum">     153 </span><span class="lineCov">        600 :             currentX + tileWidth &gt;= (uint)_frameSize.width())</span>
+<span class="lineNum">     154 </span>            :         {
+<span class="lineNum">     155 </span><span class="lineCov">         60 :             if (tile.x + tile.width != (uint)_frameSize.width())</span>
+<span class="lineNum">     156 </span><span class="lineNoCov">          0 :                 return false;</span>
+<span class="lineNum">     157 </span>            : 
+<span class="lineNum">     158 </span><span class="lineCov">         60 :             eol = true;</span>
+<span class="lineNum">     159 </span>            :         }
+<span class="lineNum">     160 </span>            : 
+<span class="lineNum">     161 </span><span class="lineCov">        660 :         currentX += tile.width;</span>
+<span class="lineNum">     162 </span>            :     }
+<span class="lineNum">     163 </span><span class="lineCov">          4 :     return true;</span>
+<a name="164"><span class="lineNum">     164 </span>            : }</a>
+<span class="lineNum">     165 </span>            : 
+<span class="lineNum">     166 </span><span class="lineCov">         66 : uint PixelStreamAssembler::_getTilesX() const</span>
+<span class="lineNum">     167 </span>            : {
+<span class="lineNum">     168 </span><span class="lineCov">         66 :     return std::ceil(float(_frameSize.width()) / targetTileSize);</span>
+<a name="169"><span class="lineNum">     169 </span>            : }</a>
+<span class="lineNum">     170 </span>            : 
+<span class="lineNum">     171 </span><span class="lineCov">         66 : uint PixelStreamAssembler::_getTilesY() const</span>
+<span class="lineNum">     172 </span>            : {
+<span class="lineNum">     173 </span><span class="lineCov">         66 :     return std::ceil(float(_frameSize.height()) / targetTileSize);</span>
+<a name="174"><span class="lineNum">     174 </span>            : }</a>
+<span class="lineNum">     175 </span>            : 
+<span class="lineNum">     176 </span><span class="lineCov">          4 : void PixelStreamAssembler::_initTargetFrame()</span>
+<span class="lineNum">     177 </span>            : {
+<span class="lineNum">     178 </span><span class="lineCov">          4 :     _assembledFrame.reset(new deflect::server::Frame);</span>
+<span class="lineNum">     179 </span>            : 
+<span class="lineNum">     180 </span><span class="lineCov">          4 :     const auto tilesCount = _getTilesX() * _getTilesY();</span>
+<span class="lineNum">     181 </span><span class="lineCov">          4 :     auto&amp; tiles = _assembledFrame-&gt;tiles;</span>
+<span class="lineNum">     182 </span><span class="lineCov">          4 :     tiles.resize(tilesCount);</span>
+<span class="lineNum">     183 </span><span class="lineCov">         20 :     for (size_t i = 0; i &lt; tilesCount; ++i)</span>
+<span class="lineNum">     184 </span>            :     {
+<span class="lineNum">     185 </span><span class="lineCov">         16 :         const auto tileRect = getTileRect(i);</span>
+<span class="lineNum">     186 </span><span class="lineCov">         16 :         tiles[i].width = tileRect.width();</span>
+<span class="lineNum">     187 </span><span class="lineCov">         16 :         tiles[i].height = tileRect.height();</span>
+<span class="lineNum">     188 </span><span class="lineCov">         16 :         tiles[i].x = tileRect.x();</span>
+<span class="lineNum">     189 </span><span class="lineCov">         16 :         tiles[i].y = tileRect.y();</span>
+<span class="lineNum">     190 </span>            :     }
+<a name="191"><span class="lineNum">     191 </span><span class="lineCov">          4 : }</span></a>
+<span class="lineNum">     192 </span>            : 
+<span class="lineNum">     193 </span><span class="lineCov">          8 : Indices PixelStreamAssembler::_findSourceTiles(const uint tileIndex) const</span>
+<span class="lineNum">     194 </span>            : {
+<span class="lineNum">     195 </span><span class="lineCov">          8 :     Indices indices;</span>
+<span class="lineNum">     196 </span><span class="lineCov">          8 :     const auto tileRect = getTileRect(tileIndex);</span>
+<span class="lineNum">     197 </span><span class="lineCov">       1328 :     for (size_t i = 0; i &lt; _frame-&gt;tiles.size(); ++i)</span>
+<span class="lineNum">     198 </span>            :     {
+<span class="lineNum">     199 </span><span class="lineCov">       1320 :         if (tileRect.intersects(toRect(_frame-&gt;tiles.at(i))))</span>
+<span class="lineNum">     200 </span><span class="lineCov">        330 :             indices.insert(i);</span>
+<span class="lineNum">     201 </span>            :     }
+<span class="lineNum">     202 </span><span class="lineCov">          8 :     return indices;</span>
+<a name="203"><span class="lineNum">     203 </span>            : }</a>
+<span class="lineNum">     204 </span>            : 
+<span class="lineNum">     205 </span><span class="lineCov">          8 : void PixelStreamAssembler::_decodeSourceTiles(</span>
+<span class="lineNum">     206 </span>            :     const Indices&amp; indices, deflect::server::TileDecoder&amp; decoder)
+<span class="lineNum">     207 </span>            : {
+<span class="lineNum">     208 </span><span class="lineCov">        338 :     for (auto i : indices)</span>
+<span class="lineNum">     209 </span>            :     {
+<span class="lineNum">     210 </span><span class="lineCov">        330 :         auto&amp; tile = _frame-&gt;tiles.at(i);</span>
+<span class="lineNum">     211 </span>            : 
+<span class="lineNum">     212 </span><span class="lineCov">        330 :         if (tile.format == deflect::Format::jpeg)</span>
+<span class="lineNum">     213 </span>            : #ifndef DEFLECT_USE_LEGACY_LIBJPEGTURBO
+<span class="lineNum">     214 </span>            :             decoder.decodeToYUV(tile);
+<span class="lineNum">     215 </span>            : #else
+<span class="lineNum">     216 </span><span class="lineNoCov">          0 :             decoder.decode(tile);</span>
+<span class="lineNum">     217 </span>            : #endif
+<span class="lineNum">     218 </span>            :     }
+<a name="219"><span class="lineNum">     219 </span><span class="lineCov">          8 : }</span></a>
+<span class="lineNum">     220 </span>            : 
+<span class="lineNum">     221 </span><span class="lineCov">          8 : void PixelStreamAssembler::_assembleTargetTile(const uint tileIndex,</span>
+<span class="lineNum">     222 </span>            :                                                const Indices&amp; indices)
+<span class="lineNum">     223 </span>            : {
+<span class="lineNum">     224 </span><span class="lineCov">          8 :     auto&amp; target = _assembledFrame-&gt;tiles[tileIndex];</span>
+<span class="lineNum">     225 </span><span class="lineCov">          8 :     if (!target.imageData.isEmpty())</span>
+<span class="lineNum">     226 </span><span class="lineNoCov">          0 :         return;</span>
+<span class="lineNum">     227 </span>            : 
+<span class="lineNum">     228 </span><span class="lineCov">          8 :     const auto format = _frame-&gt;tiles[*indices.begin()].format;</span>
+<span class="lineNum">     229 </span>            : 
+<span class="lineNum">     230 </span><span class="lineCov">         16 :     StreamImage image{_assembledFrame, tileIndex};</span>
+<span class="lineNum">     231 </span><span class="lineCov">          8 :     target.format = format;</span>
+<span class="lineNum">     232 </span>            :     const auto dataSize =
+<span class="lineNum">     233 </span><span class="lineCov">          8 :         image.getDataSize(0) + image.getDataSize(1) + image.getDataSize(2);</span>
+<span class="lineNum">     234 </span><span class="lineCov">          8 :     target.imageData.resize(dataSize);</span>
+<span class="lineNum">     235 </span><span class="lineCov">        338 :     for (auto i : indices)</span>
+<span class="lineNum">     236 </span>            :     {
+<span class="lineNum">     237 </span><span class="lineCov">        660 :         const auto tile = StreamImage{_frame, (uint)i};</span>
+<a name="238"><span class="lineNum">     238 </span><span class="lineCov">        330 :         image.copy(tile, tile.getPosition() - image.getPosition());</span></a>
+<span class="lineNum">     239 </span>            :     }
+<span class="lineNum">     240 </span><span class="lineCov">         96 : }</span>
 </pre>
       </td>
     </tr>

@@ -12,5 +12,5 @@ var class_pixel_stream_updater =
     [ "pictureUpdated", "class_pixel_stream_updater.html#a3fb5e7ef6ef99b1edcc1671712501dc9", null ],
     [ "requestFrame", "class_pixel_stream_updater.html#aa7a5c7435ad6f310bfc66096f9dea7ee", null ],
     [ "synchronizeFrameAdvance", "class_pixel_stream_updater.html#a9cc592732bb9bbe26b161044ae1c308d", null ],
-    [ "updatePixelStream", "class_pixel_stream_updater.html#a148f149b1b3ebd3d11feb6b20416b518", null ]
+    [ "updatePixelStream", "class_pixel_stream_updater.html#ace9578f22b4f5bc874040b5ccd893f34", null ]
 ];

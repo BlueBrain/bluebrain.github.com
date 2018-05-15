@@ -215,7 +215,7 @@ var hierarchy =
     [ "Filter", null, [
       [ "RestServer", "class_rest_server.html", null ]
     ] ],
-    [ "Receiver", null, [
+    [ "AsyncReceiver", null, [
       [ "AppRemoteController", "class_app_remote_controller.html", null ],
       [ "SceneRemoteController", "class_scene_remote_controller.html", null ]
     ] ],

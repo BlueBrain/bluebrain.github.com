@@ -7,7 +7,7 @@ var class_master_to_wall_channel =
     [ "sendAsync", "class_master_to_wall_channel.html#ae6decbc8adba8ad54d9a9f8412d98935", null ],
     [ "sendAsync", "class_master_to_wall_channel.html#aaf9ac18a037e5eca708fbf3a10329deb", null ],
     [ "sendAsync", "class_master_to_wall_channel.html#a14f4b381b5a30ceb29d5bc24a977878f", null ],
-    [ "sendFrame", "class_master_to_wall_channel.html#a1872b39111c19e3ab2a098bb72fe510b", null ],
+    [ "sendFrame", "class_master_to_wall_channel.html#a4fa8da622c912ec631e64df914ec5842", null ],
     [ "sendQuit", "class_master_to_wall_channel.html#ad0d468ff235b833e89f854b067e16117", null ],
     [ "sendRequestScreenshot", "class_master_to_wall_channel.html#a942310b7cff493b7aecb2d9d25e5dc76", null ]
 ];
