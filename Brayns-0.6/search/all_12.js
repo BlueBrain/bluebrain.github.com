@@ -4,7 +4,7 @@ var searchData=
   ['the_20perspective_20camera',['The Perspective Camera',['../group__clipped__perspective__camera.html',1,'']]],
   ['task',['Task',['../classbrayns_1_1_task.html',1,'brayns']]],
   ['task',['Task',['../classbrayns_1_1_task.html#adb4c824ce065c30129e25c2973b5760b',1,'brayns::Task::Task()=default'],['../classbrayns_1_1_task.html#ac5558024a92ce91fe5c6d8cc3ffd84ee',1,'brayns::Task::Task(F &amp;&amp;functor)']]],
-  ['task_3c_20bool_20_3e',['Task&lt; bool &gt;',['../classbrayns_1_1_task.html',1,'brayns']]],
+  ['task_3c_20modeldescriptorptr_20_3e',['Task&lt; ModelDescriptorPtr &gt;',['../classbrayns_1_1_task.html',1,'brayns']]],
   ['taskfunctor',['TaskFunctor',['../classbrayns_1_1_task_functor.html',1,'brayns']]],
   ['taskruntimeerror',['TaskRuntimeError',['../classbrayns_1_1_task_runtime_error.html',1,'brayns']]],
   ['texture2d',['Texture2D',['../classbrayns_1_1_texture2_d.html',1,'brayns']]],

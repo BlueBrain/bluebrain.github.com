@@ -16,6 +16,7 @@ var searchData=
   ['milliseconds',['milliseconds',['../classbrayns_1_1_timer.html#a8f5a63abdf4ac864d12f08e422db17c9',1,'brayns::Timer']]],
   ['model',['Model',['../classbrayns_1_1_model.html',1,'brayns']]],
   ['modeldescriptor',['ModelDescriptor',['../classbrayns_1_1_model_descriptor.html',1,'brayns']]],
+  ['modelparams',['ModelParams',['../classbrayns_1_1_model_params.html',1,'brayns']]],
   ['molecularsystemreader',['MolecularSystemReader',['../classbrayns_1_1_molecular_system_reader.html#ac1f51756114b9838ce9a2af3f7bdd048',1,'brayns::MolecularSystemReader']]],
   ['molecularsystemreader',['MolecularSystemReader',['../classbrayns_1_1_molecular_system_reader.html',1,'brayns']]],
   ['morphologylayout',['MorphologyLayout',['../structbrayns_1_1_morphology_layout.html',1,'brayns']]]

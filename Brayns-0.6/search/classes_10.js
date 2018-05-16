@@ -1,7 +1,7 @@
 var searchData=
 [
   ['task',['Task',['../classbrayns_1_1_task.html',1,'brayns']]],
-  ['task_3c_20bool_20_3e',['Task&lt; bool &gt;',['../classbrayns_1_1_task.html',1,'brayns']]],
+  ['task_3c_20modeldescriptorptr_20_3e',['Task&lt; ModelDescriptorPtr &gt;',['../classbrayns_1_1_task.html',1,'brayns']]],
   ['taskfunctor',['TaskFunctor',['../classbrayns_1_1_task_functor.html',1,'brayns']]],
   ['taskruntimeerror',['TaskRuntimeError',['../classbrayns_1_1_task_runtime_error.html',1,'brayns']]],
   ['texture2d',['Texture2D',['../classbrayns_1_1_texture2_d.html',1,'brayns']]],

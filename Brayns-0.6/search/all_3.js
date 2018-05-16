@@ -30,7 +30,6 @@ var searchData=
   ['createloader',['createLoader',['../structbrayns_1_1_loader_registry_1_1_loader_info.html#a71049e352f80543c166129fc8b153885',1,'brayns::LoaderRegistry::LoaderInfo::createLoader()'],['../classbrayns_1_1_loader_registry.html#a8691c54eefd2046b9c717094d60dd121',1,'brayns::LoaderRegistry::createLoader()']]],
   ['creatematerial',['createMaterial',['../classbrayns_1_1_model.html#a0156b8880c15bda28f3610fc36947f7c',1,'brayns::Model::createMaterial()'],['../classbrayns_1_1_o_s_p_ray_model.html#a3581e95c6264bcc1913712773bec4fc6',1,'brayns::OSPRayModel::createMaterial()']]],
   ['createmissingmaterials',['createMissingMaterials',['../classbrayns_1_1_model.html#a560bb63289ddf5e2aa4e8bf717aff7bf',1,'brayns::Model']]],
-  ['createmodel',['createModel',['../classbrayns_1_1_o_s_p_ray_scene.html#af30d65dde9400c7dbe06291fed0a2db2',1,'brayns::OSPRayScene']]],
   ['cylinder',['Cylinder',['../structbrayns_1_1_cylinder.html',1,'brayns']]],
   ['change_20log',['Change Log',['../md__jenkins_03_workspace_oss.Brayns.documentation_build_type_Debug_platform_cscsviz-vm_sources_Changelog.html',1,'']]],
   ['version_2eh',['version.h',['../common_2version_8h.html',1,'']]]

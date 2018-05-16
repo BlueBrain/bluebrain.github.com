@@ -11,9 +11,9 @@ var hierarchy =
       [ "brayns::Task< T >", "classbrayns_1_1_task.html", [
         [ "brayns::DeferredTask< T >", "classbrayns_1_1_deferred_task.html", null ]
       ] ],
-      [ "brayns::Task< bool >", "classbrayns_1_1_task.html", [
-        [ "brayns::UploadBinaryTask", "classbrayns_1_1_upload_binary_task.html", null ],
-        [ "brayns::UploadPathTask", "classbrayns_1_1_upload_path_task.html", null ]
+      [ "brayns::Task< ModelDescriptorPtr >", "classbrayns_1_1_task.html", [
+        [ "brayns::AddModelFromBlobTask", "classbrayns_1_1_add_model_from_blob_task.html", null ],
+        [ "brayns::AddModelTask", "classbrayns_1_1_add_model_task.html", null ]
       ] ]
     ] ],
     [ "brayns::ActionInterface", "classbrayns_1_1_action_interface.html", null ],
@@ -36,7 +36,10 @@ var hierarchy =
       [ "brayns::Material", "classbrayns_1_1_material.html", [
         [ "brayns::OSPRayMaterial", "classbrayns_1_1_o_s_p_ray_material.html", null ]
       ] ],
-      [ "brayns::ModelDescriptor", "classbrayns_1_1_model_descriptor.html", null ],
+      [ "brayns::ModelParams", "classbrayns_1_1_model_params.html", [
+        [ "brayns::BinaryParam", "structbrayns_1_1_binary_param.html", null ],
+        [ "brayns::ModelDescriptor", "classbrayns_1_1_model_descriptor.html", null ]
+      ] ],
       [ "brayns::Progress", "classbrayns_1_1_progress.html", null ],
       [ "brayns::Scene", "classbrayns_1_1_scene.html", [
         [ "brayns::OSPRayScene", "classbrayns_1_1_o_s_p_ray_scene.html", null ]
@@ -46,7 +49,6 @@ var hierarchy =
       [ "brayns::Transformation", "classbrayns_1_1_transformation.html", null ]
     ] ],
     [ "brayns::BinaryError", "structbrayns_1_1_binary_error.html", null ],
-    [ "brayns::BinaryParam", "structbrayns_1_1_binary_param.html", null ],
     [ "brayns::Blob", "structbrayns_1_1_blob.html", null ],
     [ "brayns::Brayns", "classbrayns_1_1_brayns.html", null ],
     [ "brayns::CADiffusionSimulationHandler", "classbrayns_1_1_c_a_diffusion_simulation_handler.html", null ],
@@ -91,7 +93,7 @@ var hierarchy =
     [ "brayns::ShortcutInformation", "structbrayns_1_1_shortcut_information.html", null ],
     [ "brayns::Sphere", "structbrayns_1_1_sphere.html", null ],
     [ "brayns::TaskFunctor", "classbrayns_1_1_task_functor.html", [
-      [ "brayns::LoadDataFunctor", "classbrayns_1_1_load_data_functor.html", null ]
+      [ "brayns::LoadModelFunctor", "classbrayns_1_1_load_model_functor.html", null ]
     ] ],
     [ "brayns::Texture2D", "classbrayns_1_1_texture2_d.html", null ],
     [ "brayns::Timer", "classbrayns_1_1_timer.html", null ],
