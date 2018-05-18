@@ -88,7 +88,7 @@ var searchData=
   ['getpanels',['getPanels',['../class_display_group.html#a0b755ca3211b772a5da7339686bddcf1',1,'DisplayGroup']]],
   ['getpatch',['getPatch',['../classtide_1_1_version.html#ac9dd21fa66e56caa86f6a41dcbca2ba4',1,'tide::Version::getPatch()'],['../classtide_1_1_version.html#ac9dd21fa66e56caa86f6a41dcbca2ba4',1,'tide::Version::getPatch()'],['../classtide_1_1_version.html#ac9dd21fa66e56caa86f6a41dcbca2ba4',1,'tide::Version::getPatch()']]],
   ['getpendingstreams',['getPendingStreams',['../class_screen_lock.html#aca25da8d121dee161d71bf4de194e0c7',1,'ScreenLock']]],
-  ['getpixelstreamcontent',['getPixelStreamContent',['../class_content_factory.html#a6828401cc3443cefad31fdeaa75fbf0c',1,'ContentFactory']]],
+  ['getpixelstreamcontent',['getPixelStreamContent',['../class_content_factory.html#acf8b873f6c472c555a79f9bff1e6ff33',1,'ContentFactory']]],
   ['getposition',['getPosition',['../class_f_f_m_p_e_g_movie.html#a1a4fccc1a7b190fd7ad462b0c568709a',1,'FFMPEGMovie::getPosition()'],['../class_movie_updater.html#a5c4bd1ea41b30f51960ce2e765f9e077',1,'MovieUpdater::getPosition()'],['../class_stream_image.html#a8ea7416b0791b10bffb1f71bb9e88092',1,'StreamImage::getPosition()']]],
   ['getpositioninsec',['getPositionInSec',['../class_f_f_m_p_e_g_video_stream.html#a6e0f039858303528e97219efa68a087b',1,'FFMPEGVideoStream']]],
   ['getpreferreddimensions',['getPreferredDimensions',['../class_content.html#a508b7f5c09ffa4f5a1a7f3e89cbec489',1,'Content']]],

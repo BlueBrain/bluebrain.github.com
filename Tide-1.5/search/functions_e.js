@@ -19,7 +19,7 @@ var searchData=
   ['pinchstarted',['pinchStarted',['../class_multitouch_area.html#a9c989dba8fdecc040c302dcc76e53972',1,'MultitouchArea::pinchStarted()'],['../class_pinch_detector.html#afc5779ca07f5afc4338625e1ac8b35d3',1,'PinchDetector::pinchStarted()']]],
   ['pixelstreamassembler',['PixelStreamAssembler',['../class_pixel_stream_assembler.html#aded3d7cff04926cffe5995914782f4ab',1,'PixelStreamAssembler']]],
   ['pixelstreamclose',['pixelStreamClose',['../class_master_from_wall_channel.html#a15ab169ae1b8287bae27fea6ffbaefb0',1,'MasterFromWallChannel']]],
-  ['pixelstreamcontent',['PixelStreamContent',['../class_pixel_stream_content.html#ace06f35a28c5944c47ac13ddc33f8473',1,'PixelStreamContent']]],
+  ['pixelstreamcontent',['PixelStreamContent',['../class_pixel_stream_content.html#a48c6b1f647a5ed3acaaec920046b3a3f',1,'PixelStreamContent']]],
   ['pixelstreamcontroller',['PixelStreamController',['../class_pixel_stream_controller.html#ad8ad070db17e8626497d61c77d80b726',1,'PixelStreamController']]],
   ['pixelstreamerlauncher',['PixelStreamerLauncher',['../class_pixel_streamer_launcher.html#a911a09bff7c15873b6229cbddb0e3be7',1,'PixelStreamerLauncher']]],
   ['pixelstreampassthrough',['PixelStreamPassthrough',['../class_pixel_stream_passthrough.html#ac6a03322971e2a8b70bdeec4f2d2fe11',1,'PixelStreamPassthrough']]],
