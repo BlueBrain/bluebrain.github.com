@@ -1,13 +1,5 @@
 var NAVTREEINDEX3 =
 {
-"classbrayns_1_1_protein_loader.html#af62066c59f482d065b366243f294a03a":[5,0,0,62,0],
-"classbrayns_1_1_proximity_renderer.html":[5,0,0,63],
-"classbrayns_1_1_proximity_renderer.html#a642c9e76b80b4532cffb23d26d874267":[5,0,0,63,0],
-"classbrayns_1_1_proximity_renderer.html#aa4caa1d5f633f2a4dca4b63e7aa74bdd":[5,0,0,63,1],
-"classbrayns_1_1_proximity_renderer.html#ac927f95ac68c10d74a0afeb819eb05f3":[5,0,0,63,2],
-"classbrayns_1_1_renderer.html":[5,0,0,64],
-"classbrayns_1_1_renderer.html#a1d4d8482269c8cb2c563c9b3b64214d8":[5,0,0,64,6],
-"classbrayns_1_1_renderer.html#a4e27e9499fa4bd6b9497859222e9b8cf":[5,0,0,64,11],
 "classbrayns_1_1_renderer.html#a5cbbc2b09e2bbfa953bbe91f22a8ccd4":[5,0,0,64,1],
 "classbrayns_1_1_renderer.html#a720decaa61e05b332f87d6fc8b922789":[5,0,0,64,5],
 "classbrayns_1_1_renderer.html#a78355a8f89df7bea8c6cfaa099c09b44":[5,0,0,64,8],
@@ -249,5 +241,13 @@ var NAVTREEINDEX3 =
 "classbrayns_1_1_transformation.html#a4975b94c0080d67f968aaa81050978ec":[5,0,0,83,4],
 "classbrayns_1_1_transformation.html#a4a4d5f4e9bbd0355916519e813967113":[5,0,0,83,6],
 "classbrayns_1_1_transformation.html#a7303abc2e75a7dc771d3330f4d3429da":[5,0,0,83,3],
-"classbrayns_1_1_transformation.html#a937a06fe6d35e375f55e026f4f90df36":[5,0,0,83,0]
+"classbrayns_1_1_transformation.html#a937a06fe6d35e375f55e026f4f90df36":[5,0,0,83,0],
+"classbrayns_1_1_transformation.html#ab96dd383045c42febed8efaca30b6a12":[5,0,0,83,5],
+"classbrayns_1_1_transformation.html#ad7b6019646d3c6b540769de5b16f74d8":[5,0,0,83,7],
+"classbrayns_1_1_transformation.html#ae5fb465eb04ee45b1ba47c61fb511584":[5,0,0,83,2],
+"classbrayns_1_1_version.html":[5,0,0,85],
+"classbrayns_1_1_version.html#a2288688dd599d92fcaec2f4d4e89a72d":[5,0,0,85,45],
+"classbrayns_1_1_version.html#a2288688dd599d92fcaec2f4d4e89a72d":[5,0,0,85,47],
+"classbrayns_1_1_version.html#a2288688dd599d92fcaec2f4d4e89a72d":[5,0,0,85,48],
+"classbrayns_1_1_version.html#a2288688dd599d92fcaec2f4d4e89a72d":[5,0,0,85,49]
 };

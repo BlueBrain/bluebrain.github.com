@@ -1,6 +1,5 @@
 var NAVTREEINDEX1 =
 {
-"classbrayns_1_1_binary_task_error.html#af24c31a5feb3526397d8922c7fb7fcb6":[5,0,0,16,0],
 "classbrayns_1_1_brayns.html":[5,0,0,18],
 "classbrayns_1_1_brayns.html#a13ee3507d5f761f803383c0993bc8035":[5,0,0,18,7],
 "classbrayns_1_1_brayns.html#a18c0a0230019be4422beade2667bd6eb":[5,0,0,18,1],
@@ -52,13 +51,6 @@ var NAVTREEINDEX1 =
 "classbrayns_1_1_camera.html#aeda21b6f02421dedc266b992fbfe89a4":[5,0,0,20,20],
 "classbrayns_1_1_camera.html#afb30957156d54cefd98ba65c29638dc9":[5,0,0,20,5],
 "classbrayns_1_1_camera.html#aff5c0e3449b4dfc1d0359dcfd66994cb":[5,0,0,20,29],
-"classbrayns_1_1_circuit_loader.html":[5,0,0,22],
-"classbrayns_1_1_circuit_loader.html#a1b1c3d43773f234137af0667001580ea":[5,0,0,22,2],
-"classbrayns_1_1_circuit_loader.html#a29377ae15c82a8a518d869eed6b486ab":[5,0,0,22,1],
-"classbrayns_1_1_circuit_loader.html#a32e173dbd5ee2ecf214a23d823e7c7b6":[5,0,0,22,3],
-"classbrayns_1_1_circuit_loader.html#a38f48a92203f1855eae90825be0baff3":[5,0,0,22,0],
-"classbrayns_1_1_circuit_loader.html#abf8dd1a02eb4fb01b3db2af17ceb5e07":[5,0,0,22,4],
-"classbrayns_1_1_circuit_loader.html#adb96639094622ecc5db074f4b114098b":[5,0,0,22,5],
 "classbrayns_1_1_deferred_task.html":[5,0,0,26],
 "classbrayns_1_1_deferred_task.html#a0f113f6f673edfffb023572c3992649e":[5,0,0,26,0],
 "classbrayns_1_1_deferred_task.html#aa0c6a2de0df76b4bcf74c80413514bd0":[5,0,0,26,1],
@@ -249,5 +241,13 @@ var NAVTREEINDEX1 =
 "classbrayns_1_1_loader.html#a0618feaaee1cefc7a2ae781513f1646e":[5,0,0,39,5],
 "classbrayns_1_1_loader.html#a59c6fb7227bfb5cd353d10b7306573e8":[5,0,0,39,0],
 "classbrayns_1_1_loader.html#a9034b0fcb7e326c0b9da017d5cb78320":[5,0,0,39,1],
-"classbrayns_1_1_loader.html#abd1b502048aa770618fe6b22679df207":[5,0,0,39,3]
+"classbrayns_1_1_loader.html#abd1b502048aa770618fe6b22679df207":[5,0,0,39,3],
+"classbrayns_1_1_loader.html#ac957d6047e9738bd7995827825024771":[5,0,0,39,4],
+"classbrayns_1_1_loader.html#acb0cdfb2e8edd22ce34e73bced0afbec":[5,0,0,39,2],
+"classbrayns_1_1_loader_registry.html":[5,0,0,40],
+"classbrayns_1_1_loader_registry.html#a0b906f66a2a61c3cee2b04d6877e3b32":[5,0,0,40,2],
+"classbrayns_1_1_loader_registry.html#a44b725bbc98952a99e69feb9fb362820":[5,0,0,40,5],
+"classbrayns_1_1_loader_registry.html#a8691c54eefd2046b9c717094d60dd121":[5,0,0,40,1],
+"classbrayns_1_1_loader_registry.html#a9f965b62e7ea55f296e921c58e81d062":[5,0,0,40,4],
+"classbrayns_1_1_loader_registry.html#af7043cedcdd7a515ca26c9bad3720918":[5,0,0,40,3]
 };

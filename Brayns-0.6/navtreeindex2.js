@@ -1,13 +1,5 @@
 var NAVTREEINDEX2 =
 {
-"classbrayns_1_1_loader.html#ac957d6047e9738bd7995827825024771":[5,0,0,39,4],
-"classbrayns_1_1_loader.html#acb0cdfb2e8edd22ce34e73bced0afbec":[5,0,0,39,2],
-"classbrayns_1_1_loader_registry.html":[5,0,0,40],
-"classbrayns_1_1_loader_registry.html#a0b906f66a2a61c3cee2b04d6877e3b32":[5,0,0,40,2],
-"classbrayns_1_1_loader_registry.html#a44b725bbc98952a99e69feb9fb362820":[5,0,0,40,5],
-"classbrayns_1_1_loader_registry.html#a8691c54eefd2046b9c717094d60dd121":[5,0,0,40,1],
-"classbrayns_1_1_loader_registry.html#a9f965b62e7ea55f296e921c58e81d062":[5,0,0,40,4],
-"classbrayns_1_1_loader_registry.html#af7043cedcdd7a515ca26c9bad3720918":[5,0,0,40,3],
 "classbrayns_1_1_material.html":[5,0,0,42],
 "classbrayns_1_1_material.html#a01dc228b31251b6fd6e62e84ae330a9f":[5,0,0,42,25],
 "classbrayns_1_1_material.html#a069b79cfb104139641fa1a341ccf7fb8":[5,0,0,42,16],
@@ -249,5 +241,13 @@ var NAVTREEINDEX2 =
 "classbrayns_1_1_protein_loader.html":[5,0,0,62],
 "classbrayns_1_1_protein_loader.html#a234b5d16baedc33826802604530e0bb8":[5,0,0,62,3],
 "classbrayns_1_1_protein_loader.html#a7b20bd9f81baadf86daabf01e7aacd4f":[5,0,0,62,1],
-"classbrayns_1_1_protein_loader.html#abe5276aca1e40fe3e88a2d67f3ab2781":[5,0,0,62,2]
+"classbrayns_1_1_protein_loader.html#abe5276aca1e40fe3e88a2d67f3ab2781":[5,0,0,62,2],
+"classbrayns_1_1_protein_loader.html#af62066c59f482d065b366243f294a03a":[5,0,0,62,0],
+"classbrayns_1_1_proximity_renderer.html":[5,0,0,63],
+"classbrayns_1_1_proximity_renderer.html#a642c9e76b80b4532cffb23d26d874267":[5,0,0,63,0],
+"classbrayns_1_1_proximity_renderer.html#aa4caa1d5f633f2a4dca4b63e7aa74bdd":[5,0,0,63,1],
+"classbrayns_1_1_proximity_renderer.html#ac927f95ac68c10d74a0afeb819eb05f3":[5,0,0,63,2],
+"classbrayns_1_1_renderer.html":[5,0,0,64],
+"classbrayns_1_1_renderer.html#a1d4d8482269c8cb2c563c9b3b64214d8":[5,0,0,64,6],
+"classbrayns_1_1_renderer.html#a4e27e9499fa4bd6b9497859222e9b8cf":[5,0,0,64,11]
 };

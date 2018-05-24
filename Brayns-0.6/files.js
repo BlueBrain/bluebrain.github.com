@@ -20,7 +20,6 @@ var files =
     [ "Brayns.h", "_brayns_8h_source.html", null ],
     [ "CADiffusionSimulationHandler.h", "_c_a_diffusion_simulation_handler_8h_source.html", null ],
     [ "Camera.h", "_camera_8h_source.html", null ],
-    [ "CircuitLoader.h", "_circuit_loader_8h_source.html", null ],
     [ "ClippedPerspectiveCamera.h", "_clipped_perspective_camera_8h_source.html", null ],
     [ "common.h", "common_8h_source.html", null ],
     [ "Cone.h", "_cone_8h_source.html", null ],

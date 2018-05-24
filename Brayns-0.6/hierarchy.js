@@ -52,6 +52,7 @@ var hierarchy =
     [ "brayns::Blob", "structbrayns_1_1_blob.html", null ],
     [ "brayns::Brayns", "classbrayns_1_1_brayns.html", null ],
     [ "brayns::CADiffusionSimulationHandler", "classbrayns_1_1_c_a_diffusion_simulation_handler.html", null ],
+    [ "brayns::Chunk", "structbrayns_1_1_chunk.html", null ],
     [ "brayns::CircuitConfiguration", "structbrayns_1_1_circuit_configuration.html", null ],
     [ "brayns::Cone", "structbrayns_1_1_cone.html", null ],
     [ "brayns::ConnectivityConfiguration", "structbrayns_1_1_connectivity_configuration.html", null ],
@@ -68,7 +69,6 @@ var hierarchy =
       [ "brayns::PointLight", "classbrayns_1_1_point_light.html", null ]
     ] ],
     [ "brayns::Loader", "classbrayns_1_1_loader.html", [
-      [ "brayns::CircuitLoader", "classbrayns_1_1_circuit_loader.html", null ],
       [ "brayns::MeshLoader", "classbrayns_1_1_mesh_loader.html", null ],
       [ "brayns::MolecularSystemReader", "classbrayns_1_1_molecular_system_reader.html", null ],
       [ "brayns::ProteinLoader", "classbrayns_1_1_protein_loader.html", null ],
