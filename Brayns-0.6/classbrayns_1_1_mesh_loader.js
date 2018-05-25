@@ -1,8 +1,8 @@
 var classbrayns_1_1_mesh_loader =
 [
-    [ "MeshLoader", "classbrayns_1_1_mesh_loader.html#a9663514e0baec3a2ffd6b5dc093f77e3", null ],
+    [ "MeshLoader", "classbrayns_1_1_mesh_loader.html#a75fb1db49951fb397dda52a7fe8288d0", null ],
     [ "getMeshFilenameFromGID", "classbrayns_1_1_mesh_loader.html#ac331f9fc5f4796c5175e9b092f3b366d", null ],
     [ "getSupportedDataTypes", "classbrayns_1_1_mesh_loader.html#ab8ff7a1bb7bc6c92a7a4779a6eaeb9e4", null ],
-    [ "importFromBlob", "classbrayns_1_1_mesh_loader.html#adbdb819b51fae5e2262e872d4b69d099", null ],
-    [ "importFromFile", "classbrayns_1_1_mesh_loader.html#acffcc2c62bd16456dd9d005c4a60f279", null ]
+    [ "importFromBlob", "classbrayns_1_1_mesh_loader.html#aed54433b85129c7e78029f3baa6a8fbd", null ],
+    [ "importFromFile", "classbrayns_1_1_mesh_loader.html#a0fdd0c3ab458eb01ed2a2ed42c524e86", null ]
 ];

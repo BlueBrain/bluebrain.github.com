@@ -4,6 +4,7 @@ var classbrayns_1_1_o_s_p_ray_model =
     [ "~OSPRayModel", "classbrayns_1_1_o_s_p_ray_model.html#ac45230d967e6b7683f215cb6500fa453", null ],
     [ "buildBoundingBox", "classbrayns_1_1_o_s_p_ray_model.html#af81aee37f568dd009b0d63450e05610e", null ],
     [ "commit", "classbrayns_1_1_o_s_p_ray_model.html#a206fd49099f29cc24d0b085cf24d6608", null ],
+    [ "commitSubModels", "classbrayns_1_1_o_s_p_ray_model.html#a5d6694745a9cd8fce6fe9df777e071b6", null ],
     [ "createMaterial", "classbrayns_1_1_o_s_p_ray_model.html#a3581e95c6264bcc1913712773bec4fc6", null ],
     [ "getBoundingBoxModel", "classbrayns_1_1_o_s_p_ray_model.html#a4545842b60dbe69824a76582e55870ba", null ],
     [ "getModel", "classbrayns_1_1_o_s_p_ray_model.html#a5bb4dd223156e784aab957034d1cf96e", null ],

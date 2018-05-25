@@ -1,7 +1,7 @@
 var classbrayns_1_1_x_y_z_b_loader =
 [
-    [ "XYZBLoader", "classbrayns_1_1_x_y_z_b_loader.html#ac8b804475734be5f400aef3c085333e5", null ],
+    [ "XYZBLoader", "classbrayns_1_1_x_y_z_b_loader.html#aa4576ffb2173b5884ff2027761979f07", null ],
     [ "getSupportedDataTypes", "classbrayns_1_1_x_y_z_b_loader.html#a24c66b9e3eb8c12890cf5b3d58a1f7ce", null ],
-    [ "importFromBlob", "classbrayns_1_1_x_y_z_b_loader.html#a92a4affe2ee0f947aa8d4ff0332fa752", null ],
-    [ "importFromFile", "classbrayns_1_1_x_y_z_b_loader.html#ae9dec74c6ab9be5aa8f2c81b35f0bb4a", null ]
+    [ "importFromBlob", "classbrayns_1_1_x_y_z_b_loader.html#ad952120e7aaa9a919c23d53de76a06e4", null ],
+    [ "importFromFile", "classbrayns_1_1_x_y_z_b_loader.html#a4630fe117e596221f98b990cdf6b8d9e", null ]
 ];

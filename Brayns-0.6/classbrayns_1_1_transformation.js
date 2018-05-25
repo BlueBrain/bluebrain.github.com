@@ -1,5 +1,7 @@
 var classbrayns_1_1_transformation =
 [
+    [ "Transformation", "classbrayns_1_1_transformation.html#a518db9786091b3eb12e6ba02b7be06e4", null ],
+    [ "Transformation", "classbrayns_1_1_transformation.html#a3de3f13ec36e720c25bce2f9190a38a2", null ],
     [ "getRotation", "classbrayns_1_1_transformation.html#a937a06fe6d35e375f55e026f4f90df36", null ],
     [ "getScale", "classbrayns_1_1_transformation.html#a15d893b60d5bb6324579a53e3d5f3ea2", null ],
     [ "getTranslation", "classbrayns_1_1_transformation.html#ae5fb465eb04ee45b1ba47c61fb511584", null ],

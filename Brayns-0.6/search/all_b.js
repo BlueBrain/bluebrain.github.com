@@ -1,7 +1,7 @@
 var searchData=
 [
   ['light',['Light',['../classbrayns_1_1_light.html',1,'brayns']]],
-  ['load',['load',['../classbrayns_1_1_loader_registry.html#af7043cedcdd7a515ca26c9bad3720918',1,'brayns::LoaderRegistry::load()'],['../classbrayns_1_1_scene.html#a3ad48673ce880b2b46f375da463c8ea2',1,'brayns::Scene::load(Blob &amp;&amp;blob, const Matrix4f &amp;transformation, const size_t materialID, Loader::UpdateCallback cb)'],['../classbrayns_1_1_scene.html#ae730ea3bf8ad0dfb71fd54bd36a5a751',1,'brayns::Scene::load(const std::string &amp;path, const Matrix4f &amp;transformation, const size_t materialID, Loader::UpdateCallback cb)']]],
+  ['load',['load',['../classbrayns_1_1_loader_registry.html#af7043cedcdd7a515ca26c9bad3720918',1,'brayns::LoaderRegistry::load()'],['../classbrayns_1_1_scene.html#a3921dd41b45318e67ac241a9394ddd87',1,'brayns::Scene::load(Blob &amp;&amp;blob, const Transformation &amp;transformation, const size_t materialID, Loader::UpdateCallback cb)'],['../classbrayns_1_1_scene.html#a64fe20e158fb95feb2b0d4d82b211c6d',1,'brayns::Scene::load(const std::string &amp;path, const Transformation &amp;transformation, const size_t materialID, Loader::UpdateCallback cb)']]],
   ['loader',['Loader',['../classbrayns_1_1_loader.html',1,'brayns']]],
   ['loaderinfo',['LoaderInfo',['../structbrayns_1_1_loader_registry_1_1_loader_info.html',1,'brayns::LoaderRegistry']]],
   ['loaderregistry',['LoaderRegistry',['../classbrayns_1_1_loader_registry.html',1,'brayns']]],

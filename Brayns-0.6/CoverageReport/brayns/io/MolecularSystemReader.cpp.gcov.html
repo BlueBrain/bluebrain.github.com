@@ -37,7 +37,7 @@
           </tr>
           <tr>
             <td class="headerItem">Date:</td>
-            <td class="headerValue">2018-05-24 02:05:21</td>
+            <td class="headerValue">2018-05-25 02:57:30</td>
             <td></td>
             <td class="headerItem">Functions:</td>
             <td class="headerCovTableEntry">2</td>
@@ -95,14 +95,14 @@
 <a name="33"><span class="lineNum">      33 </span>            : namespace brayns</a>
 <span class="lineNum">      34 </span>            : {
 <span class="lineNum">      35 </span><span class="lineNoCov">          0 : MolecularSystemReader::MolecularSystemReader(</span>
-<span class="lineNum">      36 </span><span class="lineNoCov">          0 :     const GeometryParameters&amp; geometryParameters)</span>
-<span class="lineNum">      37 </span><span class="lineNoCov">          0 :     : _geometryParameters(geometryParameters)</span>
-<span class="lineNum">      38 </span>            : {
-<a name="39"><span class="lineNum">      39 </span><span class="lineNoCov">          0 : }</span></a>
-<span class="lineNum">      40 </span>            : 
-<span class="lineNum">      41 </span><span class="lineNoCov">          0 : ModelDescriptorPtr MolecularSystemReader::importFromFile(</span>
-<span class="lineNum">      42 </span>            :     const std::string&amp; fileName, Scene&amp; scene, const size_t index BRAYNS_UNUSED,
-<span class="lineNum">      43 </span>            :     const Matrix4f&amp; transformation BRAYNS_UNUSED,
+<span class="lineNum">      36 </span><span class="lineNoCov">          0 :     Scene&amp; scene, const GeometryParameters&amp; geometryParameters)</span>
+<span class="lineNum">      37 </span>            :     : Loader(scene)
+<span class="lineNum">      38 </span><span class="lineNoCov">          0 :     , _geometryParameters(geometryParameters)</span>
+<span class="lineNum">      39 </span>            : {
+<a name="40"><span class="lineNum">      40 </span><span class="lineNoCov">          0 : }</span></a>
+<span class="lineNum">      41 </span>            : 
+<span class="lineNum">      42 </span><span class="lineNoCov">          0 : ModelDescriptorPtr MolecularSystemReader::importFromFile(</span>
+<span class="lineNum">      43 </span>            :     const std::string&amp; fileName, const size_t index BRAYNS_UNUSED,
 <span class="lineNum">      44 </span>            :     const size_t defaultMaterialId BRAYNS_UNUSED)
 <span class="lineNum">      45 </span>            : {
 <span class="lineNum">      46 </span><span class="lineNoCov">          0 :     _nbProteins = 0;</span>
@@ -113,15 +113,15 @@
 <span class="lineNum">      51 </span><span class="lineNoCov">          0 :     if (!_loadPositions())</span>
 <span class="lineNum">      52 </span><span class="lineNoCov">          0 :         throw std::runtime_error(&quot;Failed to load positions&quot;);</span>
 <span class="lineNum">      53 </span>            : 
-<span class="lineNum">      54 </span><span class="lineNoCov">          0 :     if (!_createScene(scene))</span>
+<span class="lineNum">      54 </span><span class="lineNoCov">          0 :     if (!_createScene())</span>
 <span class="lineNum">      55 </span><span class="lineNoCov">          0 :         throw std::runtime_error(&quot;Failed to load scene&quot;);</span>
 <span class="lineNum">      56 </span>            : 
 <span class="lineNum">      57 </span><span class="lineNoCov">          0 :     if (!_calciumSimulationFolder.empty())</span>
 <span class="lineNum">      58 </span>            :     {
 <span class="lineNum">      59 </span>            :         CADiffusionSimulationHandlerPtr handler(
 <span class="lineNum">      60 </span><span class="lineNoCov">          0 :             new CADiffusionSimulationHandler(_calciumSimulationFolder));</span>
-<span class="lineNum">      61 </span><span class="lineNoCov">          0 :         handler-&gt;setFrame(scene, 0);</span>
-<span class="lineNum">      62 </span><span class="lineNoCov">          0 :         scene.setCADiffusionSimulationHandler(handler);</span>
+<span class="lineNum">      61 </span><span class="lineNoCov">          0 :         handler-&gt;setFrame(_scene, 0);</span>
+<span class="lineNum">      62 </span><span class="lineNoCov">          0 :         _scene.setCADiffusionSimulationHandler(handler);</span>
 <span class="lineNum">      63 </span>            :     }
 <span class="lineNum">      64 </span><span class="lineNoCov">          0 :     BRAYNS_INFO &lt;&lt; &quot;Total number of different proteins: &quot; &lt;&lt; _proteins.size()</span>
 <span class="lineNum">      65 </span><span class="lineNoCov">          0 :                 &lt;&lt; std::endl;</span>
@@ -130,7 +130,7 @@
 <span class="lineNum">      68 </span><span class="lineNoCov">          0 :     return {};</span>
 <a name="69"><span class="lineNum">      69 </span>            : }</a>
 <span class="lineNum">      70 </span>            : 
-<span class="lineNum">      71 </span><span class="lineNoCov">          0 : bool MolecularSystemReader::_createScene(Scene&amp; scene)</span>
+<span class="lineNum">      71 </span><span class="lineNoCov">          0 : bool MolecularSystemReader::_createScene()</span>
 <span class="lineNum">      72 </span>            : {
 <span class="lineNum">      73 </span><span class="lineNoCov">          0 :     uint64_t proteinCount = 0;</span>
 <span class="lineNum">      74 </span><span class="lineNoCov">          0 :     for (const auto&amp; proteinPosition : _proteinPositions)</span>
@@ -144,177 +144,175 @@
 <span class="lineNum">      82 </span><span class="lineNoCov">          0 :                     _proteinFolder + '/' + protein-&gt;second + &quot;.pdb&quot;;</span>
 <span class="lineNum">      83 </span><span class="lineNoCov">          0 :                 Matrix4f transformation;</span>
 <span class="lineNum">      84 </span><span class="lineNoCov">          0 :                 transformation.setTranslation(position);</span>
-<span class="lineNum">      85 </span><span class="lineNoCov">          0 :                 ProteinLoader loader(_geometryParameters);</span>
-<span class="lineNum">      86 </span>            :                 loader.importFromFile(pdbFilename, scene, proteinCount,
-<span class="lineNum">      87 </span><span class="lineNoCov">          0 :                                       transformation, NO_MATERIAL);</span>
-<span class="lineNum">      88 </span><span class="lineNoCov">          0 :                 ++proteinCount;</span>
-<span class="lineNum">      89 </span>            :             }
-<span class="lineNum">      90 </span>            : 
-<span class="lineNum">      91 </span><span class="lineNoCov">          0 :         if (!_meshFolder.empty())</span>
-<span class="lineNum">      92 </span>            :             // Load meshes
-<span class="lineNum">      93 </span><span class="lineNoCov">          0 :             for (const auto&amp; position : proteinPosition.second)</span>
-<span class="lineNum">      94 </span>            :             {
-<span class="lineNum">      95 </span><span class="lineNoCov">          0 :                 const Vector3f scale = {1.f, 1.f, 1.f};</span>
-<span class="lineNum">      96 </span><span class="lineNoCov">          0 :                 const Matrix4f transformation(position, scale);</span>
-<span class="lineNum">      97 </span>            :                 const size_t materialId =
-<span class="lineNum">      98 </span><span class="lineNoCov">          0 :                     _geometryParameters.getColorScheme() ==</span>
-<span class="lineNum">      99 </span>            :                             ColorScheme::protein_by_id
-<span class="lineNum">     100 </span><span class="lineNoCov">          0 :                         ? proteinCount</span>
-<span class="lineNum">     101 </span><span class="lineNoCov">          0 :                         : NO_MATERIAL;</span>
-<span class="lineNum">     102 </span>            : 
-<span class="lineNum">     103 </span>            :                 // Scale mesh to match PDB units. PDB are in angstrom, and
-<span class="lineNum">     104 </span>            :                 // positions are in micrometers
-<span class="lineNum">     105 </span><span class="lineNoCov">          0 :                 MeshLoader meshLoader(_geometryParameters);</span>
-<span class="lineNum">     106 </span>            :                 const std::string fileName =
-<span class="lineNum">     107 </span><span class="lineNoCov">          0 :                     _meshFolder + '/' + protein-&gt;second + &quot;.obj&quot;;</span>
-<span class="lineNum">     108 </span>            :                 meshLoader.importFromFile(fileName, scene, proteinCount,
-<span class="lineNum">     109 </span><span class="lineNoCov">          0 :                                           transformation, materialId);</span>
-<span class="lineNum">     110 </span>            : 
-<span class="lineNum">     111 </span><span class="lineNoCov">          0 :                 if (_proteinFolder.empty())</span>
-<span class="lineNum">     112 </span><span class="lineNoCov">          0 :                     ++proteinCount;</span>
-<span class="lineNum">     113 </span>            :             }
-<span class="lineNum">     114 </span>            : 
-<span class="lineNum">     115 </span><span class="lineNoCov">          0 :         updateProgress(&quot;Loading proteins...&quot;, proteinCount, _nbProteins);</span>
-<span class="lineNum">     116 </span>            :     }
-<span class="lineNum">     117 </span><span class="lineNoCov">          0 :     return true;</span>
-<a name="118"><span class="lineNum">     118 </span>            : }</a>
-<span class="lineNum">     119 </span>            : 
-<span class="lineNum">     120 </span><span class="lineNoCov">          0 : bool MolecularSystemReader::_loadConfiguration(const std::string&amp; fileName)</span>
-<span class="lineNum">     121 </span>            : {
-<span class="lineNum">     122 </span>            :     // Load molecular system configuration
-<span class="lineNum">     123 </span><span class="lineNoCov">          0 :     std::ifstream configurationFile(fileName, std::ios::in);</span>
-<span class="lineNum">     124 </span><span class="lineNoCov">          0 :     if (!configurationFile.good())</span>
-<span class="lineNum">     125 </span>            :     {
-<span class="lineNum">     126 </span><span class="lineNoCov">          0 :         BRAYNS_ERROR &lt;&lt; &quot;Could not open file &quot; &lt;&lt; fileName &lt;&lt; std::endl;</span>
-<span class="lineNum">     127 </span><span class="lineNoCov">          0 :         return false;</span>
-<span class="lineNum">     128 </span>            :     }
-<span class="lineNum">     129 </span>            : 
-<span class="lineNum">     130 </span><span class="lineNoCov">          0 :     std::map&lt;std::string, std::string&gt; parameters;</span>
-<span class="lineNum">     131 </span><span class="lineNoCov">          0 :     std::string line;</span>
-<span class="lineNum">     132 </span><span class="lineNoCov">          0 :     while (std::getline(configurationFile, line))</span>
-<span class="lineNum">     133 </span>            :     {
-<span class="lineNum">     134 </span><span class="lineNoCov">          0 :         std::stringstream lineStream(line);</span>
-<span class="lineNum">     135 </span><span class="lineNoCov">          0 :         std::string key, value;</span>
-<span class="lineNum">     136 </span><span class="lineNoCov">          0 :         lineStream &gt;&gt; key &gt;&gt; value;</span>
-<span class="lineNum">     137 </span><span class="lineNoCov">          0 :         parameters[key] = value;</span>
-<span class="lineNum">     138 </span>            :     }
-<span class="lineNum">     139 </span><span class="lineNoCov">          0 :     configurationFile.close();</span>
-<span class="lineNum">     140 </span>            : 
-<span class="lineNum">     141 </span><span class="lineNoCov">          0 :     _proteinFolder = parameters[&quot;ProteinFolder&quot;];</span>
-<span class="lineNum">     142 </span><span class="lineNoCov">          0 :     _meshFolder = parameters[&quot;MeshFolder&quot;];</span>
-<span class="lineNum">     143 </span><span class="lineNoCov">          0 :     _descriptorFilename = parameters[&quot;SystemDescriptor&quot;];</span>
-<span class="lineNum">     144 </span><span class="lineNoCov">          0 :     _positionsFilename = parameters[&quot;ProteinPositions&quot;];</span>
-<span class="lineNum">     145 </span><span class="lineNoCov">          0 :     _calciumSimulationFolder = parameters[&quot;CalciumPositions&quot;];</span>
-<span class="lineNum">     146 </span>            : 
-<span class="lineNum">     147 </span><span class="lineNoCov">          0 :     BRAYNS_INFO &lt;&lt; &quot;Loading molecular system&quot; &lt;&lt; std::endl;</span>
-<span class="lineNum">     148 </span><span class="lineNoCov">          0 :     BRAYNS_INFO &lt;&lt; &quot;Protein folder    : &quot; &lt;&lt; _proteinFolder &lt;&lt; std::endl;</span>
-<span class="lineNum">     149 </span><span class="lineNoCov">          0 :     BRAYNS_INFO &lt;&lt; &quot;Mesh folder       : &quot; &lt;&lt; _meshFolder &lt;&lt; std::endl;</span>
-<span class="lineNum">     150 </span><span class="lineNoCov">          0 :     BRAYNS_INFO &lt;&lt; &quot;System descriptor : &quot; &lt;&lt; _descriptorFilename &lt;&lt; std::endl;</span>
-<span class="lineNum">     151 </span><span class="lineNoCov">          0 :     BRAYNS_INFO &lt;&lt; &quot;Protein positions : &quot; &lt;&lt; _positionsFilename &lt;&lt; std::endl;</span>
-<span class="lineNum">     152 </span><span class="lineNoCov">          0 :     BRAYNS_INFO &lt;&lt; &quot;Calcium positions : &quot; &lt;&lt; _calciumSimulationFolder</span>
-<span class="lineNum">     153 </span><span class="lineNoCov">          0 :                 &lt;&lt; std::endl;</span>
-<span class="lineNum">     154 </span><span class="lineNoCov">          0 :     return true;</span>
-<a name="155"><span class="lineNum">     155 </span>            : }</a>
-<span class="lineNum">     156 </span>            : 
-<span class="lineNum">     157 </span><span class="lineNoCov">          0 : bool MolecularSystemReader::_loadProteins()</span>
-<span class="lineNum">     158 </span>            : {
-<span class="lineNum">     159 </span><span class="lineNoCov">          0 :     std::ifstream descriptorFile(_descriptorFilename, std::ios::in);</span>
-<span class="lineNum">     160 </span><span class="lineNoCov">          0 :     if (!descriptorFile.good())</span>
-<span class="lineNum">     161 </span>            :     {
-<span class="lineNum">     162 </span><span class="lineNoCov">          0 :         BRAYNS_ERROR &lt;&lt; &quot;Could not open file &quot; &lt;&lt; _descriptorFilename</span>
-<span class="lineNum">     163 </span><span class="lineNoCov">          0 :                      &lt;&lt; std::endl;</span>
-<span class="lineNum">     164 </span><span class="lineNoCov">          0 :         return false;</span>
-<span class="lineNum">     165 </span>            :     }
-<span class="lineNum">     166 </span>            : 
-<span class="lineNum">     167 </span>            :     // Load list of proteins
-<span class="lineNum">     168 </span><span class="lineNoCov">          0 :     std::string line;</span>
-<span class="lineNum">     169 </span><span class="lineNoCov">          0 :     while (descriptorFile.good() &amp;&amp; std::getline(descriptorFile, line))</span>
-<span class="lineNum">     170 </span>            :     {
-<span class="lineNum">     171 </span><span class="lineNoCov">          0 :         std::stringstream lineStream(line);</span>
-<span class="lineNum">     172 </span><span class="lineNoCov">          0 :         std::string protein;</span>
-<span class="lineNum">     173 </span>            :         size_t id;
-<span class="lineNum">     174 </span>            :         size_t instances;
-<span class="lineNum">     175 </span><span class="lineNoCov">          0 :         lineStream &gt;&gt; protein &gt;&gt; id &gt;&gt; instances;</span>
-<span class="lineNum">     176 </span><span class="lineNoCov">          0 :         if (protein.empty())</span>
-<span class="lineNum">     177 </span><span class="lineNoCov">          0 :             continue;</span>
+<span class="lineNum">      85 </span><span class="lineNoCov">          0 :                 ProteinLoader loader(_scene, _geometryParameters);</span>
+<span class="lineNum">      86 </span><span class="lineNoCov">          0 :                 loader.importFromFile(pdbFilename, proteinCount, NO_MATERIAL);</span>
+<span class="lineNum">      87 </span><span class="lineNoCov">          0 :                 ++proteinCount;</span>
+<span class="lineNum">      88 </span>            :             }
+<span class="lineNum">      89 </span>            : 
+<span class="lineNum">      90 </span><span class="lineNoCov">          0 :         if (!_meshFolder.empty())</span>
+<span class="lineNum">      91 </span>            :             // Load meshes
+<span class="lineNum">      92 </span><span class="lineNoCov">          0 :             for (const auto&amp; position : proteinPosition.second)</span>
+<span class="lineNum">      93 </span>            :             {
+<span class="lineNum">      94 </span><span class="lineNoCov">          0 :                 const Vector3f scale = {1.f, 1.f, 1.f};</span>
+<span class="lineNum">      95 </span><span class="lineNoCov">          0 :                 const Matrix4f transformation(position, scale);</span>
+<span class="lineNum">      96 </span>            :                 const size_t materialId =
+<span class="lineNum">      97 </span><span class="lineNoCov">          0 :                     _geometryParameters.getColorScheme() ==</span>
+<span class="lineNum">      98 </span>            :                             ColorScheme::protein_by_id
+<span class="lineNum">      99 </span><span class="lineNoCov">          0 :                         ? proteinCount</span>
+<span class="lineNum">     100 </span><span class="lineNoCov">          0 :                         : NO_MATERIAL;</span>
+<span class="lineNum">     101 </span>            : 
+<span class="lineNum">     102 </span>            :                 // Scale mesh to match PDB units. PDB are in angstrom, and
+<span class="lineNum">     103 </span>            :                 // positions are in micrometers
+<span class="lineNum">     104 </span><span class="lineNoCov">          0 :                 MeshLoader meshLoader(_scene, _geometryParameters);</span>
+<span class="lineNum">     105 </span>            :                 const std::string fileName =
+<span class="lineNum">     106 </span><span class="lineNoCov">          0 :                     _meshFolder + '/' + protein-&gt;second + &quot;.obj&quot;;</span>
+<span class="lineNum">     107 </span><span class="lineNoCov">          0 :                 meshLoader.importFromFile(fileName, proteinCount, materialId);</span>
+<span class="lineNum">     108 </span>            : 
+<span class="lineNum">     109 </span><span class="lineNoCov">          0 :                 if (_proteinFolder.empty())</span>
+<span class="lineNum">     110 </span><span class="lineNoCov">          0 :                     ++proteinCount;</span>
+<span class="lineNum">     111 </span>            :             }
+<span class="lineNum">     112 </span>            : 
+<span class="lineNum">     113 </span><span class="lineNoCov">          0 :         updateProgress(&quot;Loading proteins...&quot;, proteinCount, _nbProteins);</span>
+<span class="lineNum">     114 </span>            :     }
+<span class="lineNum">     115 </span><span class="lineNoCov">          0 :     return true;</span>
+<a name="116"><span class="lineNum">     116 </span>            : }</a>
+<span class="lineNum">     117 </span>            : 
+<span class="lineNum">     118 </span><span class="lineNoCov">          0 : bool MolecularSystemReader::_loadConfiguration(const std::string&amp; fileName)</span>
+<span class="lineNum">     119 </span>            : {
+<span class="lineNum">     120 </span>            :     // Load molecular system configuration
+<span class="lineNum">     121 </span><span class="lineNoCov">          0 :     std::ifstream configurationFile(fileName, std::ios::in);</span>
+<span class="lineNum">     122 </span><span class="lineNoCov">          0 :     if (!configurationFile.good())</span>
+<span class="lineNum">     123 </span>            :     {
+<span class="lineNum">     124 </span><span class="lineNoCov">          0 :         BRAYNS_ERROR &lt;&lt; &quot;Could not open file &quot; &lt;&lt; fileName &lt;&lt; std::endl;</span>
+<span class="lineNum">     125 </span><span class="lineNoCov">          0 :         return false;</span>
+<span class="lineNum">     126 </span>            :     }
+<span class="lineNum">     127 </span>            : 
+<span class="lineNum">     128 </span><span class="lineNoCov">          0 :     std::map&lt;std::string, std::string&gt; parameters;</span>
+<span class="lineNum">     129 </span><span class="lineNoCov">          0 :     std::string line;</span>
+<span class="lineNum">     130 </span><span class="lineNoCov">          0 :     while (std::getline(configurationFile, line))</span>
+<span class="lineNum">     131 </span>            :     {
+<span class="lineNum">     132 </span><span class="lineNoCov">          0 :         std::stringstream lineStream(line);</span>
+<span class="lineNum">     133 </span><span class="lineNoCov">          0 :         std::string key, value;</span>
+<span class="lineNum">     134 </span><span class="lineNoCov">          0 :         lineStream &gt;&gt; key &gt;&gt; value;</span>
+<span class="lineNum">     135 </span><span class="lineNoCov">          0 :         parameters[key] = value;</span>
+<span class="lineNum">     136 </span>            :     }
+<span class="lineNum">     137 </span><span class="lineNoCov">          0 :     configurationFile.close();</span>
+<span class="lineNum">     138 </span>            : 
+<span class="lineNum">     139 </span><span class="lineNoCov">          0 :     _proteinFolder = parameters[&quot;ProteinFolder&quot;];</span>
+<span class="lineNum">     140 </span><span class="lineNoCov">          0 :     _meshFolder = parameters[&quot;MeshFolder&quot;];</span>
+<span class="lineNum">     141 </span><span class="lineNoCov">          0 :     _descriptorFilename = parameters[&quot;SystemDescriptor&quot;];</span>
+<span class="lineNum">     142 </span><span class="lineNoCov">          0 :     _positionsFilename = parameters[&quot;ProteinPositions&quot;];</span>
+<span class="lineNum">     143 </span><span class="lineNoCov">          0 :     _calciumSimulationFolder = parameters[&quot;CalciumPositions&quot;];</span>
+<span class="lineNum">     144 </span>            : 
+<span class="lineNum">     145 </span><span class="lineNoCov">          0 :     BRAYNS_INFO &lt;&lt; &quot;Loading molecular system&quot; &lt;&lt; std::endl;</span>
+<span class="lineNum">     146 </span><span class="lineNoCov">          0 :     BRAYNS_INFO &lt;&lt; &quot;Protein folder    : &quot; &lt;&lt; _proteinFolder &lt;&lt; std::endl;</span>
+<span class="lineNum">     147 </span><span class="lineNoCov">          0 :     BRAYNS_INFO &lt;&lt; &quot;Mesh folder       : &quot; &lt;&lt; _meshFolder &lt;&lt; std::endl;</span>
+<span class="lineNum">     148 </span><span class="lineNoCov">          0 :     BRAYNS_INFO &lt;&lt; &quot;System descriptor : &quot; &lt;&lt; _descriptorFilename &lt;&lt; std::endl;</span>
+<span class="lineNum">     149 </span><span class="lineNoCov">          0 :     BRAYNS_INFO &lt;&lt; &quot;Protein positions : &quot; &lt;&lt; _positionsFilename &lt;&lt; std::endl;</span>
+<span class="lineNum">     150 </span><span class="lineNoCov">          0 :     BRAYNS_INFO &lt;&lt; &quot;Calcium positions : &quot; &lt;&lt; _calciumSimulationFolder</span>
+<span class="lineNum">     151 </span><span class="lineNoCov">          0 :                 &lt;&lt; std::endl;</span>
+<span class="lineNum">     152 </span><span class="lineNoCov">          0 :     return true;</span>
+<a name="153"><span class="lineNum">     153 </span>            : }</a>
+<span class="lineNum">     154 </span>            : 
+<span class="lineNum">     155 </span><span class="lineNoCov">          0 : bool MolecularSystemReader::_loadProteins()</span>
+<span class="lineNum">     156 </span>            : {
+<span class="lineNum">     157 </span><span class="lineNoCov">          0 :     std::ifstream descriptorFile(_descriptorFilename, std::ios::in);</span>
+<span class="lineNum">     158 </span><span class="lineNoCov">          0 :     if (!descriptorFile.good())</span>
+<span class="lineNum">     159 </span>            :     {
+<span class="lineNum">     160 </span><span class="lineNoCov">          0 :         BRAYNS_ERROR &lt;&lt; &quot;Could not open file &quot; &lt;&lt; _descriptorFilename</span>
+<span class="lineNum">     161 </span><span class="lineNoCov">          0 :                      &lt;&lt; std::endl;</span>
+<span class="lineNum">     162 </span><span class="lineNoCov">          0 :         return false;</span>
+<span class="lineNum">     163 </span>            :     }
+<span class="lineNum">     164 </span>            : 
+<span class="lineNum">     165 </span>            :     // Load list of proteins
+<span class="lineNum">     166 </span><span class="lineNoCov">          0 :     std::string line;</span>
+<span class="lineNum">     167 </span><span class="lineNoCov">          0 :     while (descriptorFile.good() &amp;&amp; std::getline(descriptorFile, line))</span>
+<span class="lineNum">     168 </span>            :     {
+<span class="lineNum">     169 </span><span class="lineNoCov">          0 :         std::stringstream lineStream(line);</span>
+<span class="lineNum">     170 </span><span class="lineNoCov">          0 :         std::string protein;</span>
+<span class="lineNum">     171 </span>            :         size_t id;
+<span class="lineNum">     172 </span>            :         size_t instances;
+<span class="lineNum">     173 </span><span class="lineNoCov">          0 :         lineStream &gt;&gt; protein &gt;&gt; id &gt;&gt; instances;</span>
+<span class="lineNum">     174 </span><span class="lineNoCov">          0 :         if (protein.empty())</span>
+<span class="lineNum">     175 </span><span class="lineNoCov">          0 :             continue;</span>
+<span class="lineNum">     176 </span>            : 
+<span class="lineNum">     177 </span><span class="lineNoCov">          0 :         _proteins[id] = protein;</span>
 <span class="lineNum">     178 </span>            : 
-<span class="lineNum">     179 </span><span class="lineNoCov">          0 :         _proteins[id] = protein;</span>
-<span class="lineNum">     180 </span>            : 
-<span class="lineNum">     181 </span><span class="lineNoCov">          0 :         if (_proteinFolder.empty())</span>
-<span class="lineNum">     182 </span><span class="lineNoCov">          0 :             continue;</span>
-<span class="lineNum">     183 </span>            : 
-<span class="lineNum">     184 </span><span class="lineNoCov">          0 :         const auto pdbFilename(_proteinFolder + '/' + protein + &quot;.pdb&quot;);</span>
-<span class="lineNum">     185 </span><span class="lineNoCov">          0 :         std::ifstream pdbFile(pdbFilename, std::ios::in);</span>
-<span class="lineNum">     186 </span><span class="lineNoCov">          0 :         if (pdbFile.good())</span>
-<span class="lineNum">     187 </span><span class="lineNoCov">          0 :             pdbFile.close();</span>
-<span class="lineNum">     188 </span>            :         else
-<span class="lineNum">     189 </span>            :         {
-<span class="lineNum">     190 </span>            :             // PDB file not present in folder, download it from RCSB.org
-<span class="lineNum">     191 </span><span class="lineNoCov">          0 :             std::string command;</span>
-<span class="lineNum">     192 </span><span class="lineNoCov">          0 :             command = &quot;wget http://www.rcsb.org/pdb/files/&quot;;</span>
-<span class="lineNum">     193 </span><span class="lineNoCov">          0 :             command += protein;</span>
-<span class="lineNum">     194 </span><span class="lineNoCov">          0 :             command += &quot;.pdb&quot;;</span>
-<span class="lineNum">     195 </span><span class="lineNoCov">          0 :             command += &quot; -P &quot;;</span>
-<span class="lineNum">     196 </span><span class="lineNoCov">          0 :             command += _proteinFolder;</span>
-<span class="lineNum">     197 </span><span class="lineNoCov">          0 :             int status = system(command.c_str());</span>
-<span class="lineNum">     198 </span><span class="lineNoCov">          0 :             BRAYNS_INFO &lt;&lt; command &lt;&lt; &quot;: &quot; &lt;&lt; status &lt;&lt; std::endl;</span>
-<span class="lineNum">     199 </span>            :         }
-<span class="lineNum">     200 </span>            :     }
-<span class="lineNum">     201 </span><span class="lineNoCov">          0 :     descriptorFile.close();</span>
-<span class="lineNum">     202 </span><span class="lineNoCov">          0 :     return true;</span>
-<a name="203"><span class="lineNum">     203 </span>            : }</a>
-<span class="lineNum">     204 </span>            : 
-<span class="lineNum">     205 </span><span class="lineNoCov">          0 : bool MolecularSystemReader::_loadPositions()</span>
-<span class="lineNum">     206 </span>            : {
-<span class="lineNum">     207 </span>            :     // Load proteins according to specified positions
-<span class="lineNum">     208 </span><span class="lineNoCov">          0 :     std::ifstream filePositions(_positionsFilename, std::ios::in);</span>
-<span class="lineNum">     209 </span><span class="lineNoCov">          0 :     if (!filePositions.good())</span>
-<span class="lineNum">     210 </span>            :     {
-<span class="lineNum">     211 </span><span class="lineNoCov">          0 :         BRAYNS_ERROR &lt;&lt; &quot;Could not open file &quot; &lt;&lt; _positionsFilename</span>
-<span class="lineNum">     212 </span><span class="lineNoCov">          0 :                      &lt;&lt; std::endl;</span>
-<span class="lineNum">     213 </span><span class="lineNoCov">          0 :         return false;</span>
-<span class="lineNum">     214 </span>            :     }
-<span class="lineNum">     215 </span>            : 
-<span class="lineNum">     216 </span>            :     // Load protein positions
-<span class="lineNum">     217 </span><span class="lineNoCov">          0 :     _nbProteins = 0;</span>
-<span class="lineNum">     218 </span><span class="lineNoCov">          0 :     std::string line;</span>
-<span class="lineNum">     219 </span><span class="lineNoCov">          0 :     while (filePositions.good() &amp;&amp; std::getline(filePositions, line))</span>
-<span class="lineNum">     220 </span>            :     {
-<span class="lineNum">     221 </span><span class="lineNoCov">          0 :         std::stringstream lineStream(line);</span>
-<span class="lineNum">     222 </span>            :         size_t id;
-<span class="lineNum">     223 </span><span class="lineNoCov">          0 :         Vector3f position;</span>
-<span class="lineNum">     224 </span><span class="lineNoCov">          0 :         lineStream &gt;&gt; id &gt;&gt; position.x() &gt;&gt; position.y() &gt;&gt; position.z();</span>
-<span class="lineNum">     225 </span>            : 
-<span class="lineNum">     226 </span><span class="lineNoCov">          0 :         if (_proteins.find(id) != _proteins.end())</span>
-<span class="lineNum">     227 </span>            :         {
-<span class="lineNum">     228 </span><span class="lineNoCov">          0 :             auto&amp; proteinPosition = _proteinPositions[id];</span>
-<span class="lineNum">     229 </span><span class="lineNoCov">          0 :             proteinPosition.push_back(position);</span>
-<span class="lineNum">     230 </span><span class="lineNoCov">          0 :             ++_nbProteins;</span>
-<span class="lineNum">     231 </span>            :         }
-<span class="lineNum">     232 </span>            :     }
-<span class="lineNum">     233 </span><span class="lineNoCov">          0 :     filePositions.close();</span>
-<span class="lineNum">     234 </span><span class="lineNoCov">          0 :     return true;</span>
-<a name="235"><span class="lineNum">     235 </span>            : }</a>
-<span class="lineNum">     236 </span>            : 
-<span class="lineNum">     237 </span><span class="lineNoCov">          0 : void MolecularSystemReader::_writePositionstoFile(const std::string&amp; filename)</span>
-<span class="lineNum">     238 </span>            : {
-<span class="lineNum">     239 </span><span class="lineNoCov">          0 :     std::ofstream outfile(filename, std::ios::binary);</span>
-<span class="lineNum">     240 </span><span class="lineNoCov">          0 :     for (const auto&amp; position : _proteinPositions)</span>
-<span class="lineNum">     241 </span>            :     {
-<span class="lineNum">     242 </span><span class="lineNoCov">          0 :         for (const auto&amp; element : position.second)</span>
-<span class="lineNum">     243 </span>            :         {
-<span class="lineNum">     244 </span><span class="lineNoCov">          0 :             const float radius = 1.f;</span>
-<span class="lineNum">     245 </span><span class="lineNoCov">          0 :             const float value = 1.f;</span>
-<span class="lineNum">     246 </span><span class="lineNoCov">          0 :             outfile.write((char*)&amp;element.x(), sizeof(float));</span>
-<span class="lineNum">     247 </span><span class="lineNoCov">          0 :             outfile.write((char*)&amp;element.y(), sizeof(float));</span>
-<span class="lineNum">     248 </span><span class="lineNoCov">          0 :             outfile.write((char*)&amp;element.z(), sizeof(float));</span>
-<span class="lineNum">     249 </span><span class="lineNoCov">          0 :             outfile.write((char*)&amp;radius, sizeof(float));</span>
-<span class="lineNum">     250 </span><span class="lineNoCov">          0 :             outfile.write((char*)&amp;value, sizeof(float));</span>
-<span class="lineNum">     251 </span>            :         }
-<span class="lineNum">     252 </span>            :     }
-<a name="253"><span class="lineNum">     253 </span><span class="lineNoCov">          0 :     outfile.close();</span></a>
-<span class="lineNum">     254 </span><span class="lineNoCov">          0 : }</span>
-<span class="lineNum">     255 </span><span class="lineCov">         48 : }</span>
+<span class="lineNum">     179 </span><span class="lineNoCov">          0 :         if (_proteinFolder.empty())</span>
+<span class="lineNum">     180 </span><span class="lineNoCov">          0 :             continue;</span>
+<span class="lineNum">     181 </span>            : 
+<span class="lineNum">     182 </span><span class="lineNoCov">          0 :         const auto pdbFilename(_proteinFolder + '/' + protein + &quot;.pdb&quot;);</span>
+<span class="lineNum">     183 </span><span class="lineNoCov">          0 :         std::ifstream pdbFile(pdbFilename, std::ios::in);</span>
+<span class="lineNum">     184 </span><span class="lineNoCov">          0 :         if (pdbFile.good())</span>
+<span class="lineNum">     185 </span><span class="lineNoCov">          0 :             pdbFile.close();</span>
+<span class="lineNum">     186 </span>            :         else
+<span class="lineNum">     187 </span>            :         {
+<span class="lineNum">     188 </span>            :             // PDB file not present in folder, download it from RCSB.org
+<span class="lineNum">     189 </span><span class="lineNoCov">          0 :             std::string command;</span>
+<span class="lineNum">     190 </span><span class="lineNoCov">          0 :             command = &quot;wget http://www.rcsb.org/pdb/files/&quot;;</span>
+<span class="lineNum">     191 </span><span class="lineNoCov">          0 :             command += protein;</span>
+<span class="lineNum">     192 </span><span class="lineNoCov">          0 :             command += &quot;.pdb&quot;;</span>
+<span class="lineNum">     193 </span><span class="lineNoCov">          0 :             command += &quot; -P &quot;;</span>
+<span class="lineNum">     194 </span><span class="lineNoCov">          0 :             command += _proteinFolder;</span>
+<span class="lineNum">     195 </span><span class="lineNoCov">          0 :             int status = system(command.c_str());</span>
+<span class="lineNum">     196 </span><span class="lineNoCov">          0 :             BRAYNS_INFO &lt;&lt; command &lt;&lt; &quot;: &quot; &lt;&lt; status &lt;&lt; std::endl;</span>
+<span class="lineNum">     197 </span>            :         }
+<span class="lineNum">     198 </span>            :     }
+<span class="lineNum">     199 </span><span class="lineNoCov">          0 :     descriptorFile.close();</span>
+<span class="lineNum">     200 </span><span class="lineNoCov">          0 :     return true;</span>
+<a name="201"><span class="lineNum">     201 </span>            : }</a>
+<span class="lineNum">     202 </span>            : 
+<span class="lineNum">     203 </span><span class="lineNoCov">          0 : bool MolecularSystemReader::_loadPositions()</span>
+<span class="lineNum">     204 </span>            : {
+<span class="lineNum">     205 </span>            :     // Load proteins according to specified positions
+<span class="lineNum">     206 </span><span class="lineNoCov">          0 :     std::ifstream filePositions(_positionsFilename, std::ios::in);</span>
+<span class="lineNum">     207 </span><span class="lineNoCov">          0 :     if (!filePositions.good())</span>
+<span class="lineNum">     208 </span>            :     {
+<span class="lineNum">     209 </span><span class="lineNoCov">          0 :         BRAYNS_ERROR &lt;&lt; &quot;Could not open file &quot; &lt;&lt; _positionsFilename</span>
+<span class="lineNum">     210 </span><span class="lineNoCov">          0 :                      &lt;&lt; std::endl;</span>
+<span class="lineNum">     211 </span><span class="lineNoCov">          0 :         return false;</span>
+<span class="lineNum">     212 </span>            :     }
+<span class="lineNum">     213 </span>            : 
+<span class="lineNum">     214 </span>            :     // Load protein positions
+<span class="lineNum">     215 </span><span class="lineNoCov">          0 :     _nbProteins = 0;</span>
+<span class="lineNum">     216 </span><span class="lineNoCov">          0 :     std::string line;</span>
+<span class="lineNum">     217 </span><span class="lineNoCov">          0 :     while (filePositions.good() &amp;&amp; std::getline(filePositions, line))</span>
+<span class="lineNum">     218 </span>            :     {
+<span class="lineNum">     219 </span><span class="lineNoCov">          0 :         std::stringstream lineStream(line);</span>
+<span class="lineNum">     220 </span>            :         size_t id;
+<span class="lineNum">     221 </span><span class="lineNoCov">          0 :         Vector3f position;</span>
+<span class="lineNum">     222 </span><span class="lineNoCov">          0 :         lineStream &gt;&gt; id &gt;&gt; position.x() &gt;&gt; position.y() &gt;&gt; position.z();</span>
+<span class="lineNum">     223 </span>            : 
+<span class="lineNum">     224 </span><span class="lineNoCov">          0 :         if (_proteins.find(id) != _proteins.end())</span>
+<span class="lineNum">     225 </span>            :         {
+<span class="lineNum">     226 </span><span class="lineNoCov">          0 :             auto&amp; proteinPosition = _proteinPositions[id];</span>
+<span class="lineNum">     227 </span><span class="lineNoCov">          0 :             proteinPosition.push_back(position);</span>
+<span class="lineNum">     228 </span><span class="lineNoCov">          0 :             ++_nbProteins;</span>
+<span class="lineNum">     229 </span>            :         }
+<span class="lineNum">     230 </span>            :     }
+<span class="lineNum">     231 </span><span class="lineNoCov">          0 :     filePositions.close();</span>
+<span class="lineNum">     232 </span><span class="lineNoCov">          0 :     return true;</span>
+<a name="233"><span class="lineNum">     233 </span>            : }</a>
+<span class="lineNum">     234 </span>            : 
+<span class="lineNum">     235 </span><span class="lineNoCov">          0 : void MolecularSystemReader::_writePositionstoFile(const std::string&amp; filename)</span>
+<span class="lineNum">     236 </span>            : {
+<span class="lineNum">     237 </span><span class="lineNoCov">          0 :     std::ofstream outfile(filename, std::ios::binary);</span>
+<span class="lineNum">     238 </span><span class="lineNoCov">          0 :     for (const auto&amp; position : _proteinPositions)</span>
+<span class="lineNum">     239 </span>            :     {
+<span class="lineNum">     240 </span><span class="lineNoCov">          0 :         for (const auto&amp; element : position.second)</span>
+<span class="lineNum">     241 </span>            :         {
+<span class="lineNum">     242 </span><span class="lineNoCov">          0 :             const float radius = 1.f;</span>
+<span class="lineNum">     243 </span><span class="lineNoCov">          0 :             const float value = 1.f;</span>
+<span class="lineNum">     244 </span><span class="lineNoCov">          0 :             outfile.write((char*)&amp;element.x(), sizeof(float));</span>
+<span class="lineNum">     245 </span><span class="lineNoCov">          0 :             outfile.write((char*)&amp;element.y(), sizeof(float));</span>
+<span class="lineNum">     246 </span><span class="lineNoCov">          0 :             outfile.write((char*)&amp;element.z(), sizeof(float));</span>
+<span class="lineNum">     247 </span><span class="lineNoCov">          0 :             outfile.write((char*)&amp;radius, sizeof(float));</span>
+<span class="lineNum">     248 </span><span class="lineNoCov">          0 :             outfile.write((char*)&amp;value, sizeof(float));</span>
+<span class="lineNum">     249 </span>            :         }
+<span class="lineNum">     250 </span>            :     }
+<a name="251"><span class="lineNum">     251 </span><span class="lineNoCov">          0 :     outfile.close();</span></a>
+<span class="lineNum">     252 </span><span class="lineNoCov">          0 : }</span>
+<span class="lineNum">     253 </span><span class="lineCov">         48 : }</span>
 </pre>
       </td>
     </tr>

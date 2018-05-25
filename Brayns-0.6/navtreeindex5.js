@@ -1,5 +1,14 @@
 var NAVTREEINDEX5 =
 {
+"structbrayns_1_1_circuit_configuration.html#a61aef6ff2f1e25b7a3db81cb56248729":[5,0,0,22,5],
+"structbrayns_1_1_circuit_configuration.html#a7f9c3f4d8e86a548ecd1dc1c3234f351":[5,0,0,22,3],
+"structbrayns_1_1_circuit_configuration.html#a9006aef36dac8699af546fde9bcff56c":[5,0,0,22,12],
+"structbrayns_1_1_circuit_configuration.html#a9b97c6bc21ff97e17c26f8c3678504f8":[5,0,0,22,11],
+"structbrayns_1_1_circuit_configuration.html#aabff701863928db83b179b4f0172f922":[5,0,0,22,7],
+"structbrayns_1_1_circuit_configuration.html#ad25b802cee4b844d1cf212b84a2fe837":[5,0,0,22,8],
+"structbrayns_1_1_circuit_configuration.html#adb29e9487d8f342c67e64b8bf41cf79c":[5,0,0,22,1],
+"structbrayns_1_1_cone.html":[5,0,0,23],
+"structbrayns_1_1_cone.html#a19ee739d743eb9bfef54048f34b0c9c4":[5,0,0,23,7],
 "structbrayns_1_1_cone.html#a351687efa58039b7b421a5f7c29a7977":[5,0,0,23,3],
 "structbrayns_1_1_cone.html#a479daddc79d49faabeb4d53375617233":[5,0,0,23,2],
 "structbrayns_1_1_cone.html#a562d73e86876a935afbd5353a940e9c7":[5,0,0,23,5],

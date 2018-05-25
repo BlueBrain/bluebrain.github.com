@@ -31,18 +31,18 @@
             <td class="headerValue">Brayns</td>
             <td></td>
             <td class="headerItem">Lines:</td>
-            <td class="headerCovTableEntry">184</td>
-            <td class="headerCovTableEntry">219</td>
-            <td class="headerCovTableEntryHi">84.0 %</td>
+            <td class="headerCovTableEntry">186</td>
+            <td class="headerCovTableEntry">222</td>
+            <td class="headerCovTableEntryHi">83.8 %</td>
           </tr>
           <tr>
             <td class="headerItem">Date:</td>
-            <td class="headerValue">2018-05-24 02:05:21</td>
+            <td class="headerValue">2018-05-25 02:57:30</td>
             <td></td>
             <td class="headerItem">Functions:</td>
-            <td class="headerCovTableEntry">11</td>
             <td class="headerCovTableEntry">12</td>
-            <td class="headerCovTableEntryHi">91.7 %</td>
+            <td class="headerCovTableEntry">13</td>
+            <td class="headerCovTableEntryHi">92.3 %</td>
           </tr>
           <tr><td><img src="../../../glass.png" width=3 height=3 alt=""></td></tr>
         </table>
@@ -376,40 +376,45 @@
 <span class="lineNum">     314 </span><span class="lineCov">         46 :         _trianglesMeshesDirty = false;</span>
 <span class="lineNum">     315 </span>            :     }
 <span class="lineNum">     316 </span>            : 
-<span class="lineNum">     317 </span><span class="lineCov">         46 :     if (_modelsDirty)</span>
-<span class="lineNum">     318 </span>            :     {
-<span class="lineNum">     319 </span><span class="lineCov">         46 :         for (const auto&amp; entry : _models)</span>
-<span class="lineNum">     320 </span>            :         {
-<span class="lineNum">     321 </span><span class="lineNoCov">          0 :             entry.model-&gt;commit();</span>
-<span class="lineNum">     322 </span><span class="lineNoCov">          0 :             auto ospModel = static_cast&lt;OSPRayModel*&gt;(entry.model.get());</span>
-<span class="lineNum">     323 </span><span class="lineNoCov">          0 :             for (const auto&amp; transform : entry.transforms)</span>
-<span class="lineNum">     324 </span>            :             {
-<span class="lineNum">     325 </span>            :                 auto instance =
-<span class="lineNum">     326 </span><span class="lineNoCov">          0 :                     ospNewInstance(ospModel-&gt;getModel(),</span>
-<span class="lineNum">     327 </span><span class="lineNoCov">          0 :                                    transformationToAffine3f(transform));</span>
-<span class="lineNum">     328 </span><span class="lineNoCov">          0 :                 ospCommit(instance);</span>
-<span class="lineNum">     329 </span><span class="lineNoCov">          0 :                 ospAddGeometry(_model, instance);</span>
-<span class="lineNum">     330 </span><span class="lineNoCov">          0 :                 ospRelease(instance);</span>
-<span class="lineNum">     331 </span>            :             }
-<span class="lineNum">     332 </span>            :         }
-<span class="lineNum">     333 </span><span class="lineCov">         46 :         _modelsDirty = false;</span>
-<span class="lineNum">     334 </span>            :     }
-<span class="lineNum">     335 </span>            : 
-<span class="lineNum">     336 </span>            :     // Commit models
-<span class="lineNum">     337 </span><span class="lineCov">         46 :     ospCommit(_model);</span>
-<span class="lineNum">     338 </span><span class="lineCov">         46 :     ospCommit(_boundingBoxModel);</span>
-<span class="lineNum">     339 </span><span class="lineCov">         46 :     ospCommit(_simulationModel);</span>
-<a name="340"><span class="lineNum">     340 </span>            : }</a>
-<span class="lineNum">     341 </span>            : 
-<span class="lineNum">     342 </span><span class="lineCov">        230 : MaterialPtr OSPRayModel::createMaterial(const size_t materialId,</span>
-<span class="lineNum">     343 </span>            :                                         const std::string&amp; name)
-<span class="lineNum">     344 </span>            : {
-<span class="lineNum">     345 </span><span class="lineCov">        230 :     MaterialPtr material = std::make_shared&lt;OSPRayMaterial&gt;();</span>
-<span class="lineNum">     346 </span><span class="lineCov">        230 :     material-&gt;setName(name);</span>
-<span class="lineNum">     347 </span><span class="lineCov">        230 :     _materials[materialId] = material;</span>
-<a name="348"><span class="lineNum">     348 </span><span class="lineCov">        230 :     return material;</span></a>
-<span class="lineNum">     349 </span>            : }
-<span class="lineNum">     350 </span><span class="lineCov">         48 : }</span>
+<span class="lineNum">     317 </span>            :     // Commit models
+<span class="lineNum">     318 </span><span class="lineCov">         46 :     ospCommit(_model);</span>
+<span class="lineNum">     319 </span><span class="lineCov">         46 :     if (_boundingBoxModel)</span>
+<span class="lineNum">     320 </span><span class="lineCov">         46 :         ospCommit(_boundingBoxModel);</span>
+<span class="lineNum">     321 </span><span class="lineCov">         46 :     ospCommit(_simulationModel);</span>
+<a name="322"><span class="lineNum">     322 </span>            : }</a>
+<span class="lineNum">     323 </span>            : 
+<span class="lineNum">     324 </span><span class="lineCov">        130 : void OSPRayModel::commitSubModels(OSPModel rootModel)</span>
+<span class="lineNum">     325 </span>            : {
+<span class="lineNum">     326 </span>            :     // why submodels have to go to the root model:
+<span class="lineNum">     327 </span>            :     // https://github.com/ospray/ospray/issues/256
+<span class="lineNum">     328 </span><span class="lineCov">        130 :     for (const auto&amp; entry : _models)</span>
+<span class="lineNum">     329 </span>            :     {
+<span class="lineNum">     330 </span><span class="lineNoCov">          0 :         auto&amp; ospModel = static_cast&lt;OSPRayModel&amp;&gt;(*entry.model);</span>
+<span class="lineNum">     331 </span>            : 
+<span class="lineNum">     332 </span><span class="lineNoCov">          0 :         ospModel.commit();</span>
+<span class="lineNum">     333 </span><span class="lineNoCov">          0 :         ospModel.commitSubModels(rootModel);</span>
+<span class="lineNum">     334 </span>            : 
+<span class="lineNum">     335 </span><span class="lineNoCov">          0 :         for (const auto&amp; transform : entry.transforms)</span>
+<span class="lineNum">     336 </span>            :         {
+<span class="lineNum">     337 </span><span class="lineNoCov">          0 :             auto instance = ospNewInstance(ospModel.getModel(),</span>
+<span class="lineNum">     338 </span><span class="lineNoCov">          0 :                                            transformationToAffine3f(transform));</span>
+<span class="lineNum">     339 </span><span class="lineNoCov">          0 :             ospCommit(instance);</span>
+<span class="lineNum">     340 </span><span class="lineNoCov">          0 :             ospAddGeometry(rootModel, instance);</span>
+<span class="lineNum">     341 </span><span class="lineNoCov">          0 :             ospRelease(instance);</span>
+<span class="lineNum">     342 </span>            :         }
+<span class="lineNum">     343 </span>            :     }
+<span class="lineNum">     344 </span><span class="lineCov">        130 :     _modelsDirty = false;</span>
+<a name="345"><span class="lineNum">     345 </span><span class="lineCov">        130 : }</span></a>
+<span class="lineNum">     346 </span>            : 
+<span class="lineNum">     347 </span><span class="lineCov">        230 : MaterialPtr OSPRayModel::createMaterial(const size_t materialId,</span>
+<span class="lineNum">     348 </span>            :                                         const std::string&amp; name)
+<span class="lineNum">     349 </span>            : {
+<span class="lineNum">     350 </span><span class="lineCov">        230 :     MaterialPtr material = std::make_shared&lt;OSPRayMaterial&gt;();</span>
+<span class="lineNum">     351 </span><span class="lineCov">        230 :     material-&gt;setName(name);</span>
+<span class="lineNum">     352 </span><span class="lineCov">        230 :     _materials[materialId] = material;</span>
+<a name="353"><span class="lineNum">     353 </span><span class="lineCov">        230 :     return material;</span></a>
+<span class="lineNum">     354 </span>            : }
+<span class="lineNum">     355 </span><span class="lineCov">         48 : }</span>
 </pre>
       </td>
     </tr>
