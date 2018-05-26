@@ -14,6 +14,7 @@ var searchData=
   ['addmodel',['addModel',['../classbrayns_1_1_model.html#accde1567f4d4b522e32c105b325c5f01',1,'brayns::Model::addModel()'],['../classbrayns_1_1_scene.html#ae7ff498e3f3fa699b087577959af8f5a',1,'brayns::Scene::addModel()']]],
   ['addmodelfromblobtask',['AddModelFromBlobTask',['../classbrayns_1_1_add_model_from_blob_task.html',1,'brayns']]],
   ['addmodeltask',['AddModelTask',['../classbrayns_1_1_add_model_task.html',1,'brayns']]],
+  ['addsdfgeometry',['addSDFGeometry',['../classbrayns_1_1_model.html#a884fb214767b5ca7700e05e49d66f615',1,'brayns::Model']]],
   ['addsphere',['addSphere',['../classbrayns_1_1_model.html#a850d89a566652c7194081aae85773aa7',1,'brayns::Model']]],
   ['animationparameters',['AnimationParameters',['../classbrayns_1_1_animation_parameters.html',1,'brayns']]],
   ['api_2eh',['api.h',['../api_8h.html',1,'']]],

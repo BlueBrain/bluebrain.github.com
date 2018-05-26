@@ -73,6 +73,7 @@ var annotated_dup =
       [ "RenderOutput", "structbrayns_1_1_render_output.html", "structbrayns_1_1_render_output" ],
       [ "Scene", "classbrayns_1_1_scene.html", "classbrayns_1_1_scene" ],
       [ "SceneParameters", "classbrayns_1_1_scene_parameters.html", "classbrayns_1_1_scene_parameters" ],
+      [ "SDFGeometry", "structbrayns_1_1_s_d_f_geometry.html", "structbrayns_1_1_s_d_f_geometry" ],
       [ "ShortcutInformation", "structbrayns_1_1_shortcut_information.html", "structbrayns_1_1_shortcut_information" ],
       [ "SimulationRenderer", "classbrayns_1_1_simulation_renderer.html", "classbrayns_1_1_simulation_renderer" ],
       [ "Sphere", "structbrayns_1_1_sphere.html", "structbrayns_1_1_sphere" ],
@@ -97,6 +98,7 @@ var annotated_dup =
       [ "ClippedPerspectiveCamera", "structospray_1_1_clipped_perspective_camera.html", "structospray_1_1_clipped_perspective_camera" ],
       [ "ExtendedCones", "structospray_1_1_extended_cones.html", "structospray_1_1_extended_cones" ],
       [ "ExtendedCylinders", "structospray_1_1_extended_cylinders.html", "structospray_1_1_extended_cylinders" ],
+      [ "ExtendedSDFGeometries", "structospray_1_1_extended_s_d_f_geometries.html", "structospray_1_1_extended_s_d_f_geometries" ],
       [ "ExtendedSpheres", "structospray_1_1_extended_spheres.html", "structospray_1_1_extended_spheres" ]
     ] ]
 ];

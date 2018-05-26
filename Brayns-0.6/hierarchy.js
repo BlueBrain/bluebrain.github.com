@@ -80,6 +80,7 @@ var hierarchy =
     [ "brayns::Model", "classbrayns_1_1_model.html", [
       [ "brayns::OSPRayModel", "classbrayns_1_1_o_s_p_ray_model.html", null ]
     ] ],
+    [ "brayns::Model::SDFGeometryData", "structbrayns_1_1_model_1_1_s_d_f_geometry_data.html", null ],
     [ "brayns::Model::SubModel", "structbrayns_1_1_model_1_1_sub_model.html", null ],
     [ "brayns::MorphologyLayout", "structbrayns_1_1_morphology_layout.html", null ],
     [ "brayns::ParametersManager", "classbrayns_1_1_parameters_manager.html", null ],
@@ -90,6 +91,7 @@ var hierarchy =
     [ "brayns::Renderer::PickResult", "structbrayns_1_1_renderer_1_1_pick_result.html", null ],
     [ "brayns::RenderInput", "structbrayns_1_1_render_input.html", null ],
     [ "brayns::RenderOutput", "structbrayns_1_1_render_output.html", null ],
+    [ "brayns::SDFGeometry", "structbrayns_1_1_s_d_f_geometry.html", null ],
     [ "brayns::ShortcutInformation", "structbrayns_1_1_shortcut_information.html", null ],
     [ "brayns::Sphere", "structbrayns_1_1_sphere.html", null ],
     [ "brayns::TaskFunctor", "classbrayns_1_1_task_functor.html", [
@@ -108,6 +110,7 @@ var hierarchy =
     [ "Geometry", null, [
       [ "ospray::ExtendedCones", "structospray_1_1_extended_cones.html", null ],
       [ "ospray::ExtendedCylinders", "structospray_1_1_extended_cylinders.html", null ],
+      [ "ospray::ExtendedSDFGeometries", "structospray_1_1_extended_s_d_f_geometries.html", null ],
       [ "ospray::ExtendedSpheres", "structospray_1_1_extended_spheres.html", null ]
     ] ],
     [ "Material", null, [
