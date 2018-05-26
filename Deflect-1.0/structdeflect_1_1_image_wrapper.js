@@ -3,6 +3,7 @@ var structdeflect_1_1_image_wrapper =
     [ "ImageWrapper", "structdeflect_1_1_image_wrapper.html#a8a4e5989c0f7f44bcf579752d3dcf6ac", null ],
     [ "getBufferSize", "structdeflect_1_1_image_wrapper.html#a1bbcaaa81b91344e9864a90c5b09fc6c", null ],
     [ "getBytesPerPixel", "structdeflect_1_1_image_wrapper.html#a6e1357a7aa3628ddc8f272a6bc340df9", null ],
+    [ "channel", "structdeflect_1_1_image_wrapper.html#a5ef4da47c028320dc9ad22fae4e6117d", null ],
     [ "compressionPolicy", "structdeflect_1_1_image_wrapper.html#a117951a971e2db4500d2a01ba6ac1e58", null ],
     [ "compressionQuality", "structdeflect_1_1_image_wrapper.html#aea79767865a32c31889e30a4c8bd5e41", null ],
     [ "data", "structdeflect_1_1_image_wrapper.html#a36c9098b98a8086e903ed777ebee9a35", null ],

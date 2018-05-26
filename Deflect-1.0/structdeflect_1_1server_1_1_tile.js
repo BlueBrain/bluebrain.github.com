@@ -1,5 +1,6 @@
 var structdeflect_1_1server_1_1_tile =
 [
+    [ "channel", "structdeflect_1_1server_1_1_tile.html#a39c36e24a103719b2e6447fb212fd94d", null ],
     [ "format", "structdeflect_1_1server_1_1_tile.html#ab3239bf344e6ce57d0c36c9cf60884f3", null ],
     [ "height", "structdeflect_1_1server_1_1_tile.html#a20dd7ce92e4296ce09d1fd0edbd85b7e", null ],
     [ "imageData", "structdeflect_1_1server_1_1_tile.html#aa7429f1c7e4e92d0022e4b601746e4df", null ],

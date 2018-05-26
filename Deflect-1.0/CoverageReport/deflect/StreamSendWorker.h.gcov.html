@@ -37,7 +37,7 @@
           </tr>
           <tr>
             <td class="headerItem">Date:</td>
-            <td class="headerValue">2018-05-05 02:30:16</td>
+            <td class="headerValue">2018-05-26 03:16:53</td>
             <td></td>
             <td class="headerItem">Functions:</td>
             <td class="headerCovTableEntry">5</td>
@@ -154,7 +154,7 @@
 <span class="lineNum">      92 </span>            :     using Promise = std::promise&lt;bool&gt;;
 <a name="93"><span class="lineNum">      93 </span>            :     using PromisePtr = std::shared_ptr&lt;Promise&gt;;</a>
 <span class="lineNum">      94 </span>            : 
-<span class="lineNum">      95 </span><span class="lineCov">      21856 :     struct Request</span>
+<span class="lineNum">      95 </span><span class="lineCov">      21938 :     struct Request</span>
 <span class="lineNum">      96 </span>            :     {
 <span class="lineNum">      97 </span>            :         PromisePtr promise;
 <span class="lineNum">      98 </span>            :         std::vector&lt;Task&gt; tasks;
@@ -165,40 +165,43 @@
 <span class="lineNum">     103 </span>            :     const std::string&amp; _id;
 <span class="lineNum">     104 </span>            : 
 <span class="lineNum">     105 </span>            :     moodycamel::BlockingConcurrentQueue&lt;Request&gt; _requests;
-<span class="lineNum">     106 </span>            :     bool _running = false;
+<span class="lineNum">     106 </span>            :     std::atomic_bool _running{false};
 <span class="lineNum">     107 </span>            :     View _currentView = View::mono;
 <span class="lineNum">     108 </span>            :     RowOrder _currentRowOrder = RowOrder::top_down;
-<span class="lineNum">     109 </span>            : 
-<span class="lineNum">     110 </span>            :     std::vector&lt;Request&gt; _dequeuedRequests;
-<span class="lineNum">     111 </span>            :     bool _pendingFinish = false;
-<span class="lineNum">     112 </span>            :     Request _finishRequest;
-<span class="lineNum">     113 </span>            : 
-<span class="lineNum">     114 </span>            :     /** Stop the worker and clear any pending send tasks. */
-<span class="lineNum">     115 </span>            :     void stop();
-<span class="lineNum">     116 </span>            : 
-<span class="lineNum">     117 </span>            :     /** Main QThread loop doing asynchronous processing of queued tasks. */
-<span class="lineNum">     118 </span>            :     void run() final;
-<span class="lineNum">     119 </span>            : 
-<span class="lineNum">     120 </span>            :     friend class deflect::test::Application; // to send pre-compressed segments
-<span class="lineNum">     121 </span>            :     friend class TaskBuilder;
-<span class="lineNum">     122 </span>            : 
-<span class="lineNum">     123 </span>            :     bool _sendOpenObserver();
-<span class="lineNum">     124 </span>            :     bool _sendOpenStream();
-<span class="lineNum">     125 </span>            :     bool _sendClose();
-<span class="lineNum">     126 </span>            :     bool _sendSegment(const Segment&amp; segment);
-<span class="lineNum">     127 </span>            :     bool _sendImageView(View view);
-<span class="lineNum">     128 </span>            :     bool _sendRowOrderIfChanged(RowOrder rowOrder);
-<span class="lineNum">     129 </span>            :     bool _sendImageRowOrder(RowOrder rowOrder);
-<span class="lineNum">     130 </span>            :     bool _sendFinish();
-<span class="lineNum">     131 </span>            :     bool _sendData(const QByteArray data);
-<span class="lineNum">     132 </span>            :     bool _sendSizeHints(const SizeHints&amp; hints);
-<span class="lineNum">     133 </span>            :     bool _sendBindEvents(const bool exclusive);
-<span class="lineNum">     134 </span>            : 
-<span class="lineNum">     135 </span>            :     bool _send(MessageType type, const QByteArray&amp; message,
-<span class="lineNum">     136 </span>            :                bool waitForBytesWritten = true);
-<span class="lineNum">     137 </span>            : };
-<span class="lineNum">     138 </span>            : }
-<span class="lineNum">     139 </span>            : #endif
+<span class="lineNum">     109 </span>            :     uint8_t _currentChannel = 0;
+<span class="lineNum">     110 </span>            : 
+<span class="lineNum">     111 </span>            :     std::vector&lt;Request&gt; _dequeuedRequests;
+<span class="lineNum">     112 </span>            :     bool _pendingFinish = false;
+<span class="lineNum">     113 </span>            :     Request _finishRequest;
+<span class="lineNum">     114 </span>            : 
+<span class="lineNum">     115 </span>            :     /** Stop the worker and clear any pending send tasks. */
+<span class="lineNum">     116 </span>            :     void stop();
+<span class="lineNum">     117 </span>            : 
+<span class="lineNum">     118 </span>            :     /** Main QThread loop doing asynchronous processing of queued tasks. */
+<span class="lineNum">     119 </span>            :     void run() final;
+<span class="lineNum">     120 </span>            : 
+<span class="lineNum">     121 </span>            :     friend class deflect::test::Application; // to send pre-compressed segments
+<span class="lineNum">     122 </span>            :     friend class TaskBuilder;
+<span class="lineNum">     123 </span>            : 
+<span class="lineNum">     124 </span>            :     bool _sendOpenObserver();
+<span class="lineNum">     125 </span>            :     bool _sendOpenStream();
+<span class="lineNum">     126 </span>            :     bool _sendClose();
+<span class="lineNum">     127 </span>            :     bool _sendSegment(const Segment&amp; segment);
+<span class="lineNum">     128 </span>            :     bool _sendImageView(View view);
+<span class="lineNum">     129 </span>            :     bool _sendRowOrderIfChanged(RowOrder rowOrder);
+<span class="lineNum">     130 </span>            :     bool _sendImageRowOrder(RowOrder rowOrder);
+<span class="lineNum">     131 </span>            :     bool _sendImageChannelIfChanged(uint8_t channel);
+<span class="lineNum">     132 </span>            :     bool _sendImageChannel(uint8_t channel);
+<span class="lineNum">     133 </span>            :     bool _sendFinish();
+<span class="lineNum">     134 </span>            :     bool _sendData(const QByteArray data);
+<span class="lineNum">     135 </span>            :     bool _sendSizeHints(const SizeHints&amp; hints);
+<span class="lineNum">     136 </span>            :     bool _sendBindEvents(const bool exclusive);
+<span class="lineNum">     137 </span>            : 
+<span class="lineNum">     138 </span>            :     bool _send(MessageType type, const QByteArray&amp; message,
+<span class="lineNum">     139 </span>            :                bool waitForBytesWritten = true);
+<span class="lineNum">     140 </span>            : };
+<span class="lineNum">     141 </span>            : }
+<span class="lineNum">     142 </span>            : #endif
 </pre>
       </td>
     </tr>
