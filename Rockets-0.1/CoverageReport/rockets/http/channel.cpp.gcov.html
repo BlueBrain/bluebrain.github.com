@@ -31,18 +31,18 @@
             <td class="headerValue">Rockets</td>
             <td></td>
             <td class="headerItem">Lines:</td>
-            <td class="headerCovTableEntry">108</td>
-            <td class="headerCovTableEntry">124</td>
-            <td class="headerCovTableEntryHi">87.1 %</td>
+            <td class="headerCovTableEntry">117</td>
+            <td class="headerCovTableEntry">132</td>
+            <td class="headerCovTableEntryHi">88.6 %</td>
           </tr>
           <tr>
             <td class="headerItem">Date:</td>
-            <td class="headerValue">2018-05-01 04:16:49</td>
+            <td class="headerValue">2018-05-29 04:16:46</td>
             <td></td>
             <td class="headerItem">Functions:</td>
-            <td class="headerCovTableEntry">16</td>
-            <td class="headerCovTableEntry">17</td>
-            <td class="headerCovTableEntryHi">94.1 %</td>
+            <td class="headerCovTableEntry">18</td>
+            <td class="headerCovTableEntry">18</td>
+            <td class="headerCovTableEntryHi">100.0 %</td>
           </tr>
           <tr><td><img src="../../glass.png" width=3 height=3 alt=""></td></tr>
         </table>
@@ -60,8 +60,8 @@
       <td>
 <pre class="sourceHeading">          Line data    Source code</pre>
 <pre class="source">
-<a name="1"><span class="lineNum">       1 </span>            : /* Copyright (c) 2017, EPFL/Blue Brain Project</a>
-<span class="lineNum">       2 </span>            :  *                     Raphael.Dumusc@epfl.ch
+<a name="1"><span class="lineNum">       1 </span>            : /* Copyright (c) 2017-2018, EPFL/Blue Brain Project</a>
+<span class="lineNum">       2 </span>            :  *                          Raphael.Dumusc@epfl.ch
 <span class="lineNum">       3 </span>            :  *
 <span class="lineNum">       4 </span>            :  * This file is part of Rockets &lt;https://github.com/BlueBrain/Rockets&gt;
 <span class="lineNum">       5 </span>            :  *
@@ -191,13 +191,13 @@
 <span class="lineNum">     129 </span><span class="lineCov">        207 :     return cors;</span>
 <a name="130"><span class="lineNum">     130 </span>            : }</a>
 <span class="lineNum">     131 </span>            : 
-<span class="lineNum">     132 </span><span class="lineNoCov">          0 : void Channel::requestCallback()</span>
+<span class="lineNum">     132 </span><span class="lineCov">        330 : void Channel::requestCallback()</span>
 <span class="lineNum">     133 </span>            : {
-<span class="lineNum">     134 </span><span class="lineNoCov">          0 :     lws_callback_on_writable(wsi);</span>
-<a name="135"><span class="lineNum">     135 </span><span class="lineNoCov">          0 : }</span></a>
+<span class="lineNum">     134 </span><span class="lineCov">        330 :     lws_callback_on_writable(wsi);</span>
+<a name="135"><span class="lineNum">     135 </span><span class="lineCov">        330 : }</span></a>
 <span class="lineNum">     136 </span>            : 
-<span class="lineNum">     137 </span><span class="lineCov">        207 : int Channel::write(const Response&amp; response,</span>
-<span class="lineNum">     138 </span>            :                    const CorsResponseHeaders&amp; corsHeaders)
+<span class="lineNum">     137 </span><span class="lineCov">        207 : int Channel::writeResponseHeaders(const CorsResponseHeaders&amp; corsHeaders,</span>
+<span class="lineNum">     138 </span>            :                                   const Response&amp; response)
 <span class="lineNum">     139 </span>            : {
 <span class="lineNum">     140 </span>            :     unsigned char buffer[HEADERS_BUFFER_SIZE];
 <span class="lineNum">     141 </span><span class="lineCov">        207 :     unsigned char* const start = buffer + LWS_PRE;</span>
@@ -235,99 +235,115 @@
 <span class="lineNum">     173 </span><span class="lineCov">        207 :     if (lws_finalize_http_header(wsi, &amp;p, end))</span>
 <span class="lineNum">     174 </span><span class="lineNoCov">          0 :         return 1;</span>
 <span class="lineNum">     175 </span>            : 
-<span class="lineNum">     176 </span><span class="lineCov">        207 :     lws_write(wsi, start, p - start, LWS_WRITE_HTTP_HEADERS);</span>
-<span class="lineNum">     177 </span>            : 
-<span class="lineNum">     178 </span><span class="lineCov">        207 :     _write(response.body, LWS_WRITE_HTTP_FINAL);</span>
+<span class="lineNum">     176 </span><span class="lineCov">        207 :     const int n = lws_write(wsi, start, p - start, LWS_WRITE_HTTP_HEADERS);</span>
+<span class="lineNum">     177 </span><span class="lineCov">        207 :     if (n &lt; 0)</span>
+<span class="lineNum">     178 </span><span class="lineNoCov">          0 :         return -1;</span>
 <span class="lineNum">     179 </span>            : 
-<span class="lineNum">     180 </span>            :     // Close and free connection if complete, else keep open
-<span class="lineNum">     181 </span><span class="lineCov">        207 :     return lws_http_transaction_completed(wsi) ? -1 : 0;</span>
-<span class="lineNum">     182 </span>            : }
-<a name="183"><span class="lineNum">     183 </span>            : </a>
-<span class="lineNum">     184 </span>            : #if LWS_LIBRARY_VERSION_NUMBER &gt;= 2001000
-<span class="lineNum">     185 </span><span class="lineCov">         48 : int Channel::writeRequestBody(const std::string&amp; body)</span>
-<span class="lineNum">     186 </span>            : {
-<span class="lineNum">     187 </span><span class="lineCov">         48 :     if (!_write(body, LWS_WRITE_HTTP))</span>
-<span class="lineNum">     188 </span><span class="lineNoCov">          0 :         return -1;</span>
-<span class="lineNum">     189 </span>            : 
-<span class="lineNum">     190 </span>            :     // Tell libwebsockets that we have finished sending the headers + body
-<span class="lineNum">     191 </span><span class="lineCov">         48 :     lws_client_http_body_pending(wsi, 0);</span>
-<span class="lineNum">     192 </span><span class="lineCov">         48 :     return 0;</span>
-<a name="193"><span class="lineNum">     193 </span>            : }</a>
-<span class="lineNum">     194 </span>            : 
-<span class="lineNum">     195 </span><span class="lineCov">        207 : Code Channel::readResponseCode() const</span>
-<span class="lineNum">     196 </span>            : {
-<span class="lineNum">     197 </span><span class="lineCov">        207 :     return Code(lws_http_client_http_response(wsi));</span>
+<span class="lineNum">     180 </span><span class="lineCov">        207 :     if (!response.body.empty())</span>
+<span class="lineNum">     181 </span>            :     {
+<span class="lineNum">     182 </span>            :         // Only one lws_write() allowed, book another callback for sending body
+<span class="lineNum">     183 </span><span class="lineCov">        123 :         requestCallback();</span>
+<span class="lineNum">     184 </span><span class="lineCov">        123 :         return 0;</span>
+<span class="lineNum">     185 </span>            :     }
+<span class="lineNum">     186 </span>            : 
+<span class="lineNum">     187 </span>            :     // Close and free connection if complete, else keep open
+<span class="lineNum">     188 </span><span class="lineCov">         84 :     return lws_http_transaction_completed(wsi) ? -1 : 0;</span>
+<a name="189"><span class="lineNum">     189 </span>            : }</a>
+<span class="lineNum">     190 </span>            : 
+<span class="lineNum">     191 </span><span class="lineCov">        123 : int Channel::writeResponseBody(const Response&amp; response)</span>
+<span class="lineNum">     192 </span>            : {
+<span class="lineNum">     193 </span><span class="lineCov">        123 :     if (!_write(response.body, LWS_WRITE_HTTP_FINAL))</span>
+<span class="lineNum">     194 </span><span class="lineNoCov">          0 :         return -1;</span>
+<span class="lineNum">     195 </span>            : 
+<span class="lineNum">     196 </span>            :     // Close and free connection if complete, else keep open
+<span class="lineNum">     197 </span><span class="lineCov">        123 :     return lws_http_transaction_completed(wsi) ? -1 : 0;</span>
 <span class="lineNum">     198 </span>            : }
-<a name="199"><span class="lineNum">     199 </span>            : #endif</a>
-<span class="lineNum">     200 </span>            : 
-<span class="lineNum">     201 </span><span class="lineCov">        207 : Response::Headers Channel::readResponseHeaders() const</span>
+<a name="199"><span class="lineNum">     199 </span>            : </a>
+<span class="lineNum">     200 </span>            : #if LWS_LIBRARY_VERSION_NUMBER &gt;= 2001000
+<span class="lineNum">     201 </span><span class="lineCov">         48 : int Channel::writeRequestBody(const std::string&amp; body)</span>
 <span class="lineNum">     202 </span>            : {
-<span class="lineNum">     203 </span><span class="lineCov">        207 :     Response::Headers headers;</span>
-<span class="lineNum">     204 </span><span class="lineCov">       1035 :     for (auto header :</span>
-<span class="lineNum">     205 </span>            :          {Header::ALLOW, Header::CONTENT_TYPE, Header::LAST_MODIFIED,
-<span class="lineNum">     206 </span><span class="lineCov">        207 :           Header::LOCATION, Header::RETRY_AFTER})</span>
-<span class="lineNum">     207 </span>            :     {
-<span class="lineNum">     208 </span><span class="lineCov">       2070 :         auto value = _readHeader(to_lws_token(header));</span>
-<span class="lineNum">     209 </span><span class="lineCov">       1035 :         if (!value.empty())</span>
-<span class="lineNum">     210 </span><span class="lineCov">        147 :             headers.emplace(header, std::move(value));</span>
-<span class="lineNum">     211 </span>            :     }
-<span class="lineNum">     212 </span><span class="lineCov">        207 :     return headers;</span>
-<a name="213"><span class="lineNum">     213 </span>            : }</a>
-<span class="lineNum">     214 </span>            : 
-<span class="lineNum">     215 </span><span class="lineCov">        207 : int Channel::writeRequestHeader(const std::string&amp; body, unsigned char** buffer,</span>
-<span class="lineNum">     216 </span>            :                                 const size_t bufferSize)
-<span class="lineNum">     217 </span>            : {
-<span class="lineNum">     218 </span>            : #if LWS_LIBRARY_VERSION_NUMBER &gt;= 2001000
-<span class="lineNum">     219 </span><span class="lineCov">        207 :     if (body.empty())</span>
-<span class="lineNum">     220 </span><span class="lineCov">        159 :         return 0;</span>
-<span class="lineNum">     221 </span>            : 
-<span class="lineNum">     222 </span><span class="lineCov">         48 :     const auto end = *buffer + bufferSize - 1;</span>
-<span class="lineNum">     223 </span>            : 
-<span class="lineNum">     224 </span><span class="lineCov">         96 :     const auto length = std::to_string(body.size());</span>
-<span class="lineNum">     225 </span><span class="lineCov">         48 :     const auto data = (unsigned char*)length.c_str();</span>
-<span class="lineNum">     226 </span><span class="lineCov">         48 :     if (lws_add_http_header_by_token(wsi, WSI_TOKEN_HTTP_CONTENT_LENGTH, data,</span>
-<span class="lineNum">     227 </span><span class="lineCov">         48 :                                      length.size(), buffer, end))</span>
-<span class="lineNum">     228 </span>            :     {
-<span class="lineNum">     229 </span><span class="lineNoCov">          0 :         return -1;</span>
-<span class="lineNum">     230 </span>            :     }
-<span class="lineNum">     231 </span><span class="lineCov">         96 :     if (lws_add_http_header_by_token(wsi, WSI_TOKEN_HTTP_CONTENT_TYPE,</span>
-<span class="lineNum">     232 </span><span class="lineCov">         48 :                                      (unsigned char*)JSON_TYPE.c_str(),</span>
-<span class="lineNum">     233 </span><span class="lineCov">         48 :                                      JSON_TYPE.size(), buffer, end))</span>
-<span class="lineNum">     234 </span>            :     {
-<span class="lineNum">     235 </span><span class="lineNoCov">          0 :         return -1;</span>
-<span class="lineNum">     236 </span>            :     }
+<span class="lineNum">     203 </span><span class="lineCov">         48 :     if (!_write(body, LWS_WRITE_HTTP_FINAL))</span>
+<span class="lineNum">     204 </span><span class="lineNoCov">          0 :         return -1;</span>
+<span class="lineNum">     205 </span>            : 
+<span class="lineNum">     206 </span>            :     // Tell libwebsockets that we have finished sending the headers + body
+<span class="lineNum">     207 </span><span class="lineCov">         48 :     lws_client_http_body_pending(wsi, 0);</span>
+<span class="lineNum">     208 </span><span class="lineCov">         48 :     return 0;</span>
+<a name="209"><span class="lineNum">     209 </span>            : }</a>
+<span class="lineNum">     210 </span>            : 
+<span class="lineNum">     211 </span><span class="lineCov">        207 : Code Channel::readResponseCode() const</span>
+<span class="lineNum">     212 </span>            : {
+<span class="lineNum">     213 </span><span class="lineCov">        207 :     return Code(lws_http_client_http_response(wsi));</span>
+<span class="lineNum">     214 </span>            : }
+<a name="215"><span class="lineNum">     215 </span>            : #endif</a>
+<span class="lineNum">     216 </span>            : 
+<span class="lineNum">     217 </span><span class="lineCov">        207 : Response::Headers Channel::readResponseHeaders() const</span>
+<span class="lineNum">     218 </span>            : {
+<span class="lineNum">     219 </span><span class="lineCov">        207 :     Response::Headers headers;</span>
+<span class="lineNum">     220 </span><span class="lineCov">       1035 :     for (auto header :</span>
+<span class="lineNum">     221 </span>            :          {Header::ALLOW, Header::CONTENT_TYPE, Header::LAST_MODIFIED,
+<span class="lineNum">     222 </span><span class="lineCov">        207 :           Header::LOCATION, Header::RETRY_AFTER})</span>
+<span class="lineNum">     223 </span>            :     {
+<span class="lineNum">     224 </span><span class="lineCov">       2070 :         auto value = _readHeader(to_lws_token(header));</span>
+<span class="lineNum">     225 </span><span class="lineCov">       1035 :         if (!value.empty())</span>
+<span class="lineNum">     226 </span><span class="lineCov">        147 :             headers.emplace(header, std::move(value));</span>
+<span class="lineNum">     227 </span>            :     }
+<span class="lineNum">     228 </span><span class="lineCov">        207 :     return headers;</span>
+<a name="229"><span class="lineNum">     229 </span>            : }</a>
+<span class="lineNum">     230 </span>            : 
+<span class="lineNum">     231 </span><span class="lineCov">        207 : int Channel::writeRequestHeader(const std::string&amp; body, unsigned char** buffer,</span>
+<span class="lineNum">     232 </span>            :                                 const size_t bufferSize)
+<span class="lineNum">     233 </span>            : {
+<span class="lineNum">     234 </span>            : #if LWS_LIBRARY_VERSION_NUMBER &gt;= 2001000
+<span class="lineNum">     235 </span><span class="lineCov">        207 :     if (body.empty())</span>
+<span class="lineNum">     236 </span><span class="lineCov">        159 :         return 0;</span>
 <span class="lineNum">     237 </span>            : 
-<span class="lineNum">     238 </span>            :     /* inform lws we have http body to send */
-<span class="lineNum">     239 </span><span class="lineCov">         48 :     lws_client_http_body_pending(wsi, 1);</span>
-<span class="lineNum">     240 </span><span class="lineCov">         48 :     lws_callback_on_writable(wsi);</span>
-<span class="lineNum">     241 </span>            : #else
-<span class="lineNum">     242 </span>            : #define UNUSED(expr) (void)(expr)
-<span class="lineNum">     243 </span>            :     UNUSED(body);
-<span class="lineNum">     244 </span>            :     UNUSED(buffer);
-<span class="lineNum">     245 </span>            :     UNUSED(bufferSize);
-<span class="lineNum">     246 </span>            : #endif
-<span class="lineNum">     247 </span><span class="lineCov">         48 :     return 0;</span>
-<a name="248"><span class="lineNum">     248 </span>            : }</a>
-<span class="lineNum">     249 </span>            : 
-<span class="lineNum">     250 </span><span class="lineCov">       2070 : std::string Channel::_readHeader(const lws_token_indexes token) const</span>
-<span class="lineNum">     251 </span>            : {
-<span class="lineNum">     252 </span><span class="lineCov">       2070 :     const int length = lws_hdr_total_length(wsi, token) + 1;</span>
-<span class="lineNum">     253 </span><span class="lineCov">       2070 :     if (length == 1 || length &gt;= MAX_HEADER_LENGTH)</span>
-<span class="lineNum">     254 </span><span class="lineCov">       1254 :         return std::string();</span>
-<span class="lineNum">     255 </span>            :     char buf[MAX_HEADER_LENGTH];
-<span class="lineNum">     256 </span><span class="lineCov">        816 :     lws_hdr_copy(wsi, buf, length, token);</span>
-<span class="lineNum">     257 </span><span class="lineCov">        816 :     return std::string(buf, (size_t)(length - 1));</span>
-<a name="258"><span class="lineNum">     258 </span>            : }</a>
-<span class="lineNum">     259 </span>            : 
-<span class="lineNum">     260 </span><span class="lineCov">        255 : bool Channel::_write(const std::string&amp; message, lws_write_protocol protocol)</span>
-<span class="lineNum">     261 </span>            : {
-<span class="lineNum">     262 </span><span class="lineCov">        510 :     auto buffer = std::string(LWS_PRE, '\0');</span>
-<span class="lineNum">     263 </span><span class="lineCov">        255 :     buffer.append(message);</span>
-<span class="lineNum">     264 </span><span class="lineCov">        255 :     auto data = (unsigned char*)(&amp;buffer.data()[LWS_PRE]);</span>
-<span class="lineNum">     265 </span><span class="lineCov">        510 :     return lws_write(wsi, data, message.size(), protocol) &gt;= 0;</span>
-<a name="266"><span class="lineNum">     266 </span>            : }</a>
-<span class="lineNum">     267 </span>            : }
-<span class="lineNum">     268 </span><span class="lineCov">         21 : }</span>
+<span class="lineNum">     238 </span><span class="lineCov">         48 :     const auto end = *buffer + bufferSize - 1;</span>
+<span class="lineNum">     239 </span>            : 
+<span class="lineNum">     240 </span><span class="lineCov">         96 :     const auto length = std::to_string(body.size());</span>
+<span class="lineNum">     241 </span><span class="lineCov">         48 :     const auto data = (unsigned char*)length.c_str();</span>
+<span class="lineNum">     242 </span><span class="lineCov">         48 :     if (lws_add_http_header_by_token(wsi, WSI_TOKEN_HTTP_CONTENT_LENGTH, data,</span>
+<span class="lineNum">     243 </span><span class="lineCov">         48 :                                      length.size(), buffer, end))</span>
+<span class="lineNum">     244 </span>            :     {
+<span class="lineNum">     245 </span><span class="lineNoCov">          0 :         return -1;</span>
+<span class="lineNum">     246 </span>            :     }
+<span class="lineNum">     247 </span><span class="lineCov">         96 :     if (lws_add_http_header_by_token(wsi, WSI_TOKEN_HTTP_CONTENT_TYPE,</span>
+<span class="lineNum">     248 </span><span class="lineCov">         48 :                                      (unsigned char*)JSON_TYPE.c_str(),</span>
+<span class="lineNum">     249 </span><span class="lineCov">         48 :                                      JSON_TYPE.size(), buffer, end))</span>
+<span class="lineNum">     250 </span>            :     {
+<span class="lineNum">     251 </span><span class="lineNoCov">          0 :         return -1;</span>
+<span class="lineNum">     252 </span>            :     }
+<span class="lineNum">     253 </span>            : 
+<span class="lineNum">     254 </span>            :     /* inform lws we have http body to send */
+<span class="lineNum">     255 </span><span class="lineCov">         48 :     lws_client_http_body_pending(wsi, 1);</span>
+<span class="lineNum">     256 </span><span class="lineCov">         48 :     lws_callback_on_writable(wsi);</span>
+<span class="lineNum">     257 </span>            : #else
+<span class="lineNum">     258 </span>            : #define UNUSED(expr) (void)(expr)
+<span class="lineNum">     259 </span>            :     UNUSED(body);
+<span class="lineNum">     260 </span>            :     UNUSED(buffer);
+<span class="lineNum">     261 </span>            :     UNUSED(bufferSize);
+<span class="lineNum">     262 </span>            : #endif
+<span class="lineNum">     263 </span><span class="lineCov">         48 :     return 0;</span>
+<a name="264"><span class="lineNum">     264 </span>            : }</a>
+<span class="lineNum">     265 </span>            : 
+<span class="lineNum">     266 </span><span class="lineCov">       2070 : std::string Channel::_readHeader(const lws_token_indexes token) const</span>
+<span class="lineNum">     267 </span>            : {
+<span class="lineNum">     268 </span><span class="lineCov">       2070 :     const int length = lws_hdr_total_length(wsi, token) + 1;</span>
+<span class="lineNum">     269 </span><span class="lineCov">       2070 :     if (length == 1 || length &gt;= MAX_HEADER_LENGTH)</span>
+<span class="lineNum">     270 </span><span class="lineCov">       1254 :         return std::string();</span>
+<span class="lineNum">     271 </span>            :     char buf[MAX_HEADER_LENGTH];
+<span class="lineNum">     272 </span><span class="lineCov">        816 :     lws_hdr_copy(wsi, buf, length, token);</span>
+<span class="lineNum">     273 </span><span class="lineCov">        816 :     return std::string(buf, (size_t)(length - 1));</span>
+<a name="274"><span class="lineNum">     274 </span>            : }</a>
+<span class="lineNum">     275 </span>            : 
+<span class="lineNum">     276 </span><span class="lineCov">        171 : bool Channel::_write(const std::string&amp; message, lws_write_protocol protocol)</span>
+<span class="lineNum">     277 </span>            : {
+<span class="lineNum">     278 </span><span class="lineCov">        342 :     auto buffer = std::string(LWS_PRE, '\0');</span>
+<span class="lineNum">     279 </span><span class="lineCov">        171 :     buffer.append(message);</span>
+<span class="lineNum">     280 </span><span class="lineCov">        171 :     auto data = (unsigned char*)(&amp;buffer.data()[LWS_PRE]);</span>
+<span class="lineNum">     281 </span><span class="lineCov">        342 :     return lws_write(wsi, data, message.size(), protocol) &gt;= 0;</span>
+<a name="282"><span class="lineNum">     282 </span>            : }</a>
+<span class="lineNum">     283 </span>            : }
+<span class="lineNum">     284 </span><span class="lineCov">         21 : }</span>
 </pre>
       </td>
     </tr>
