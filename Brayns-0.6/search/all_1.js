@@ -11,7 +11,7 @@ var searchData=
   ['addcone',['addCone',['../classbrayns_1_1_model.html#a3d2d006a3ee2f20a1ac875faa7039e83',1,'brayns::Model']]],
   ['addcylinder',['addCylinder',['../classbrayns_1_1_model.html#a11568ec350edbaa36305f927e1eb2178',1,'brayns::Model']]],
   ['addlight',['addLight',['../classbrayns_1_1_scene.html#a7d89afe05548c882153522a0a4f751ac',1,'brayns::Scene']]],
-  ['addmodel',['addModel',['../classbrayns_1_1_model.html#accde1567f4d4b522e32c105b325c5f01',1,'brayns::Model::addModel()'],['../classbrayns_1_1_scene.html#ae7ff498e3f3fa699b087577959af8f5a',1,'brayns::Scene::addModel()']]],
+  ['addmodel',['addModel',['../classbrayns_1_1_scene.html#ae7ff498e3f3fa699b087577959af8f5a',1,'brayns::Scene']]],
   ['addmodelfromblobtask',['AddModelFromBlobTask',['../classbrayns_1_1_add_model_from_blob_task.html',1,'brayns']]],
   ['addmodeltask',['AddModelTask',['../classbrayns_1_1_add_model_task.html',1,'brayns']]],
   ['addsdfgeometry',['addSDFGeometry',['../classbrayns_1_1_model.html#a884fb214767b5ca7700e05e49d66f615',1,'brayns::Model']]],

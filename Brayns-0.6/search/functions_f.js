@@ -40,7 +40,7 @@ var searchData=
   ['setradiusmultiplier',['setRadiusMultiplier',['../classbrayns_1_1_geometry_parameters.html#a39e145c39048b4ae3c8be29999bb89a4',1,'brayns::GeometryParameters']]],
   ['setsamplesperray',['setSamplesPerRay',['../classbrayns_1_1_rendering_parameters.html#a09b4edd3e71bf1b6f39dc00212ef91b3',1,'brayns::RenderingParameters']]],
   ['setsimulationhandler',['setSimulationHandler',['../classbrayns_1_1_scene.html#a0ebde9602b22c831f46ca3fa07db6795',1,'brayns::Scene']]],
-  ['setstereomode',['setStereoMode',['../classbrayns_1_1_camera.html#aff5c0e3449b4dfc1d0359dcfd66994cb',1,'brayns::Camera::setStereoMode()'],['../classbrayns_1_1_rendering_parameters.html#a47fdee5768d75511c5c6af1ae2bf33ca',1,'brayns::RenderingParameters::setStereoMode()']]],
+  ['setstereomode',['setStereoMode',['../classbrayns_1_1_camera.html#aff5c0e3449b4dfc1d0359dcfd66994cb',1,'brayns::Camera']]],
   ['settarget',['setTarget',['../classbrayns_1_1_camera.html#ac9a741fa01ace6c9cf2723a56afac43c',1,'brayns::Camera']]],
   ['setup',['setUp',['../classbrayns_1_1_camera.html#a6f0cf030cd4e0330bfa2b0abdb016267',1,'brayns::Camera']]],
   ['setvariancethreshold',['setVarianceThreshold',['../classbrayns_1_1_rendering_parameters.html#aadf26c0def3d1eb724491b48a4b94c19',1,'brayns::RenderingParameters']]],

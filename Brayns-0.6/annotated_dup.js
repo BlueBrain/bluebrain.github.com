@@ -50,6 +50,7 @@ var annotated_dup =
       [ "MetaballsGenerator", "classbrayns_1_1_metaballs_generator.html", "classbrayns_1_1_metaballs_generator" ],
       [ "Model", "classbrayns_1_1_model.html", "classbrayns_1_1_model" ],
       [ "ModelDescriptor", "classbrayns_1_1_model_descriptor.html", "classbrayns_1_1_model_descriptor" ],
+      [ "ModelInstance", "classbrayns_1_1_model_instance.html", "classbrayns_1_1_model_instance" ],
       [ "ModelParams", "classbrayns_1_1_model_params.html", "classbrayns_1_1_model_params" ],
       [ "MolecularSystemReader", "classbrayns_1_1_molecular_system_reader.html", "classbrayns_1_1_molecular_system_reader" ],
       [ "MorphologyLayout", "structbrayns_1_1_morphology_layout.html", "structbrayns_1_1_morphology_layout" ],

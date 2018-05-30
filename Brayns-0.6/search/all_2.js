@@ -24,5 +24,6 @@ var searchData=
   ['braynsviewer',['braynsViewer',['../braynsViewer.html',1,'apps']]],
   ['builddefault',['buildDefault',['../classbrayns_1_1_scene.html#a13667f2db068b46530102270f3b0e0ce',1,'brayns::Scene']]],
   ['buildscene',['buildScene',['../classbrayns_1_1_brayns.html#afefbd02f955a375c53140e3d2e6a6909',1,'brayns::Brayns']]],
+  ['brayns',['Brayns',['../index.html',1,'']]],
   ['brayns_20user_20guide',['Brayns user guide',['../md__jenkins_03_workspace_oss.Brayns.documentation_build_type_Debug_platform_cscsviz-vm_sources_doc_UserGuide.html',1,'']]]
 ];

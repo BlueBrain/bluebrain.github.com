@@ -36,9 +36,11 @@ var hierarchy =
       [ "brayns::Material", "classbrayns_1_1_material.html", [
         [ "brayns::OSPRayMaterial", "classbrayns_1_1_o_s_p_ray_material.html", null ]
       ] ],
-      [ "brayns::ModelParams", "classbrayns_1_1_model_params.html", [
-        [ "brayns::BinaryParam", "structbrayns_1_1_binary_param.html", null ],
-        [ "brayns::ModelDescriptor", "classbrayns_1_1_model_descriptor.html", null ]
+      [ "brayns::ModelInstance", "classbrayns_1_1_model_instance.html", [
+        [ "brayns::ModelParams", "classbrayns_1_1_model_params.html", [
+          [ "brayns::BinaryParam", "structbrayns_1_1_binary_param.html", null ],
+          [ "brayns::ModelDescriptor", "classbrayns_1_1_model_descriptor.html", null ]
+        ] ]
       ] ],
       [ "brayns::Progress", "classbrayns_1_1_progress.html", null ],
       [ "brayns::Scene", "classbrayns_1_1_scene.html", [
@@ -81,7 +83,6 @@ var hierarchy =
       [ "brayns::OSPRayModel", "classbrayns_1_1_o_s_p_ray_model.html", null ]
     ] ],
     [ "brayns::Model::SDFGeometryData", "structbrayns_1_1_model_1_1_s_d_f_geometry_data.html", null ],
-    [ "brayns::Model::SubModel", "structbrayns_1_1_model_1_1_sub_model.html", null ],
     [ "brayns::MorphologyLayout", "structbrayns_1_1_morphology_layout.html", null ],
     [ "brayns::ParametersManager", "classbrayns_1_1_parameters_manager.html", null ],
     [ "brayns::PluginAPI", "classbrayns_1_1_plugin_a_p_i.html", null ],

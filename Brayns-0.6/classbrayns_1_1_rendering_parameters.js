@@ -54,7 +54,6 @@ var classbrayns_1_1_rendering_parameters =
     [ "setShading", "classbrayns_1_1_rendering_parameters.html#a33b0fbe0cc1dc508517e0cc2f4f45eab", null ],
     [ "setShadows", "classbrayns_1_1_rendering_parameters.html#a596e6a22009973fc6f7833cdeaf6fd78", null ],
     [ "setSoftShadows", "classbrayns_1_1_rendering_parameters.html#a7c35f5049e32faf0958b46a77a3cdc5b", null ],
-    [ "setStereoMode", "classbrayns_1_1_rendering_parameters.html#a47fdee5768d75511c5c6af1ae2bf33ca", null ],
     [ "setVarianceThreshold", "classbrayns_1_1_rendering_parameters.html#aadf26c0def3d1eb724491b48a4b94c19", null ],
     [ "_accumulation", "classbrayns_1_1_rendering_parameters.html#a7724aecee84daa0699a5612469050c44", null ],
     [ "_ambientOcclusionDistance", "classbrayns_1_1_rendering_parameters.html#a77dc7c33535208c50802c55298b3f737", null ],

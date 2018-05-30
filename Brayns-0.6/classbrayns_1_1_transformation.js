@@ -9,5 +9,6 @@ var classbrayns_1_1_transformation =
     [ "operator==", "classbrayns_1_1_transformation.html#a4975b94c0080d67f968aaa81050978ec", null ],
     [ "setRotation", "classbrayns_1_1_transformation.html#ab96dd383045c42febed8efaca30b6a12", null ],
     [ "setScale", "classbrayns_1_1_transformation.html#a4a4d5f4e9bbd0355916519e813967113", null ],
-    [ "setTranslation", "classbrayns_1_1_transformation.html#ad7b6019646d3c6b540769de5b16f74d8", null ]
+    [ "setTranslation", "classbrayns_1_1_transformation.html#ad7b6019646d3c6b540769de5b16f74d8", null ],
+    [ "toMatrix", "classbrayns_1_1_transformation.html#a43ef93c8cb31a28596e541790e290fcc", null ]
 ];

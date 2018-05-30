@@ -19,6 +19,7 @@ var classbrayns_1_1_scene =
     [ "getCADiffusionSimulationHandler", "classbrayns_1_1_scene.html#ae18fcfd7021a6ef3c5624c0e466dbc3c", null ],
     [ "getLight", "classbrayns_1_1_scene.html#aa918d868eaed44684a990f669b333249", null ],
     [ "getLoaderRegistry", "classbrayns_1_1_scene.html#a654d1a0eb616ba1e7e1f95c672b9cfac", null ],
+    [ "getModel", "classbrayns_1_1_scene.html#a582f1a49ab0f9a16b415658b7114f46e", null ],
     [ "getModelDescriptors", "classbrayns_1_1_scene.html#a3ba8661b75a12335884de8c2a2fd596c", null ],
     [ "getNumModels", "classbrayns_1_1_scene.html#a1bb0d2bf02bd495f33cdcb8b3c0d7ad2", null ],
     [ "getParametersManager", "classbrayns_1_1_scene.html#a78801988c9aa9821747bb2c9a5af0295", null ],
