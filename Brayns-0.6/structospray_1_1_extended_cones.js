@@ -11,10 +11,9 @@ var structospray_1_1_extended_cones =
     [ "offset_center", "structospray_1_1_extended_cones.html#a586c7e4d0948e21037f39a6310b19ef7", null ],
     [ "offset_centerRadius", "structospray_1_1_extended_cones.html#afff1bf2064956d424fccb0202f3ddc0a", null ],
     [ "offset_materialID", "structospray_1_1_extended_cones.html#a48ac604545eb4a4e7c5fb12ef9ac2db6", null ],
+    [ "offset_texture_coords", "structospray_1_1_extended_cones.html#a38a069e52b9f430584b45f65bf4c2050", null ],
     [ "offset_timestamp", "structospray_1_1_extended_cones.html#a4fc94f61dcf0d8318c0db4bd794973ad", null ],
     [ "offset_up", "structospray_1_1_extended_cones.html#ad2908f90d4e60ebb57878f0618c77884", null ],
     [ "offset_upRadius", "structospray_1_1_extended_cones.html#a7c68094a1fd52029c868586b74030224", null ],
-    [ "offset_value_x", "structospray_1_1_extended_cones.html#ab27a77eb7857b8d3d022e60e12072bf6", null ],
-    [ "offset_value_y", "structospray_1_1_extended_cones.html#aab52918062400f621310efb5b79a59fa", null ],
     [ "radius", "structospray_1_1_extended_cones.html#a7d50f22971e440471e9299ab0db3998e", null ]
 ];

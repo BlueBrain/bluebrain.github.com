@@ -35,7 +35,7 @@ var NAVTREEINDEX =
 "classbrayns_1_1_plugin_a_p_i.html#aab6259aa4eba7dba2fc14ecb665fcada",
 "classbrayns_1_1_timer.html#a9930775f8b5623553604bbddf92a304a",
 "pluginapi_2version_8h_source.html",
-"version_8h.html#ae06db9b236b4f8ed1de4c3d1cbf55fe5"
+"version_8h_source.html"
 ];
 
 var SYNCONMSG = 'click to disable panel synchronisation';
