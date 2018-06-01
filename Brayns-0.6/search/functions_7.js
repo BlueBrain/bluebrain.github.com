@@ -59,7 +59,7 @@ var searchData=
   ['getfocallength',['getFocalLength',['../classbrayns_1_1_camera.html#a6fc8b59a7b5e13317810e3299f1928a4',1,'brayns::Camera']]],
   ['getfolder',['getFolder',['../classbrayns_1_1_volume_parameters.html#ab7143e2f875fab737555d9dd8215a096',1,'brayns::VolumeParameters']]],
   ['getframebuffer',['getFrameBuffer',['../classbrayns_1_1_engine.html#a651d4f6e12e6f6ea73089150ee37b8b0',1,'brayns::Engine']]],
-  ['getframedata',['getFrameData',['../classbrayns_1_1_abstract_simulation_handler.html#a0cdae90711c7ed059575c8f09ae22109',1,'brayns::AbstractSimulationHandler::getFrameData()'],['../classbrayns_1_1_spike_simulation_handler.html#a7e9ef61e6eb81d73387c4471134046e4',1,'brayns::SpikeSimulationHandler::getFrameData()']]],
+  ['getframedata',['getFrameData',['../classbrayns_1_1_abstract_simulation_handler.html#a42ef39d3b16dc58751231d4e027b731c',1,'brayns::AbstractSimulationHandler::getFrameData()'],['../classbrayns_1_1_spike_simulation_handler.html#a7e9ef61e6eb81d73387c4471134046e4',1,'brayns::SpikeSimulationHandler::getFrameData()']]],
   ['getframesize',['getFrameSize',['../classbrayns_1_1_abstract_simulation_handler.html#a94eb882faba3d4a6f4cecdfa7f3af5d8',1,'brayns::AbstractSimulationHandler']]],
   ['getgeometryparameters',['getGeometryParameters',['../classbrayns_1_1_parameters_manager.html#a42770db58f8d661744cd2e029b314295',1,'brayns::ParametersManager']]],
   ['getgeometryquality',['getGeometryQuality',['../classbrayns_1_1_geometry_parameters.html#a30dd81996271f03f798942c4d69703ec',1,'brayns::GeometryParameters']]],

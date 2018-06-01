@@ -6,6 +6,7 @@ var classbrayns_1_1_scene =
     [ "addLight", "classbrayns_1_1_scene.html#a7d89afe05548c882153522a0a4f751ac", null ],
     [ "addModel", "classbrayns_1_1_scene.html#ae7ff498e3f3fa699b087577959af8f5a", null ],
     [ "buildDefault", "classbrayns_1_1_scene.html#a13667f2db068b46530102270f3b0e0ce", null ],
+    [ "buildEnvironmentMap", "classbrayns_1_1_scene.html#a9c1e23cc6a44d8ead66774d7846d3a39", null ],
     [ "clearLights", "classbrayns_1_1_scene.html#a922c519f4acc99228313732f25ee5ec6", null ],
     [ "commit", "classbrayns_1_1_scene.html#ac87b6e21aa844c490f10382b4ae8cd76", null ],
     [ "commitLights", "classbrayns_1_1_scene.html#a0319ce64948a242a206b8c7cdd7d0a2f", null ],

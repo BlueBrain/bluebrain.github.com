@@ -1,5 +1,6 @@
 var NAVTREEINDEX1 =
 {
+"classbrayns_1_1_binary_task_error.html":[5,0,0,16],
 "classbrayns_1_1_binary_task_error.html#a5b025fff8cf56d5d5ea14ed4d7573211":[5,0,0,16,1],
 "classbrayns_1_1_binary_task_error.html#af24c31a5feb3526397d8922c7fb7fcb6":[5,0,0,16,0],
 "classbrayns_1_1_brayns.html":[5,0,0,18],
@@ -17,9 +18,10 @@ var NAVTREEINDEX1 =
 "classbrayns_1_1_brayns.html#af6ee14b3ac90d1d7bf2c1c044babfb6b":[5,0,0,18,9],
 "classbrayns_1_1_brayns.html#afefbd02f955a375c53140e3d2e6a6909":[5,0,0,18,2],
 "classbrayns_1_1_c_a_diffusion_simulation_handler.html":[5,0,0,19],
-"classbrayns_1_1_c_a_diffusion_simulation_handler.html#a53ecc8e7dafa8e277c33991808060f24":[5,0,0,19,0],
-"classbrayns_1_1_c_a_diffusion_simulation_handler.html#ad5c1e8fb12d05ae0b40b8dbca0f7a422":[5,0,0,19,1],
-"classbrayns_1_1_c_a_diffusion_simulation_handler.html#ad960ca0302cf21edcfbd940b01364b85":[5,0,0,19,2],
+"classbrayns_1_1_c_a_diffusion_simulation_handler.html#a2e843dd1d9aec4db08555b79dbf6d35b":[5,0,0,19,0],
+"classbrayns_1_1_c_a_diffusion_simulation_handler.html#a53ecc8e7dafa8e277c33991808060f24":[5,0,0,19,1],
+"classbrayns_1_1_c_a_diffusion_simulation_handler.html#ad5c1e8fb12d05ae0b40b8dbca0f7a422":[5,0,0,19,2],
+"classbrayns_1_1_c_a_diffusion_simulation_handler.html#ad960ca0302cf21edcfbd940b01364b85":[5,0,0,19,3],
 "classbrayns_1_1_camera.html":[5,0,0,20],
 "classbrayns_1_1_camera.html#a028234129f2dfd833e822421aa78cad7":[5,0,0,20,27],
 "classbrayns_1_1_camera.html#a0378b8d85d011a5b524746f4e23e34e6":[5,0,0,20,17],
@@ -247,7 +249,5 @@ var NAVTREEINDEX1 =
 "classbrayns_1_1_loader.html#a0618feaaee1cefc7a2ae781513f1646e":[5,0,0,39,6],
 "classbrayns_1_1_loader.html#a59c6fb7227bfb5cd353d10b7306573e8":[5,0,0,39,0],
 "classbrayns_1_1_loader.html#a5a47618542c6227389de50ccbfe26dfc":[5,0,0,39,1],
-"classbrayns_1_1_loader.html#a77df9331ed63d00c30f0ae1486d5fa4c":[5,0,0,39,4],
-"classbrayns_1_1_loader.html#a9034b0fcb7e326c0b9da017d5cb78320":[5,0,0,39,2],
-"classbrayns_1_1_loader.html#ac957d6047e9738bd7995827825024771":[5,0,0,39,5]
+"classbrayns_1_1_loader.html#a77df9331ed63d00c30f0ae1486d5fa4c":[5,0,0,39,4]
 };
