@@ -31,13 +31,13 @@
             <td class="headerValue">Rockets</td>
             <td></td>
             <td class="headerItem">Lines:</td>
-            <td class="headerCovTableEntry">131</td>
-            <td class="headerCovTableEntry">151</td>
-            <td class="headerCovTableEntryHi">86.8 %</td>
+            <td class="headerCovTableEntry">132</td>
+            <td class="headerCovTableEntry">153</td>
+            <td class="headerCovTableEntryHi">86.3 %</td>
           </tr>
           <tr>
             <td class="headerItem">Date:</td>
-            <td class="headerValue">2018-05-30 04:16:03</td>
+            <td class="headerValue">2018-06-01 04:18:46</td>
             <td></td>
             <td class="headerItem">Functions:</td>
             <td class="headerCovTableEntry">27</td>
@@ -196,9 +196,9 @@
 <span class="lineNum">     134 </span><span class="lineCov">        274 :     return _impl-&gt;context-&gt;getPort();</span>
 <a name="135"><span class="lineNum">     135 </span>            : }</a>
 <span class="lineNum">     136 </span>            : 
-<span class="lineNum">     137 </span><span class="lineCov">       2971 : unsigned int Server::getThreadCount() const</span>
+<span class="lineNum">     137 </span><span class="lineCov">       2411 : unsigned int Server::getThreadCount() const</span>
 <span class="lineNum">     138 </span>            : {
-<span class="lineNum">     139 </span><span class="lineCov">       2971 :     return _impl-&gt;serviceThreadPool ? _impl-&gt;serviceThreadPool-&gt;getSize() : 0;</span>
+<span class="lineNum">     139 </span><span class="lineCov">       2411 :     return _impl-&gt;serviceThreadPool ? _impl-&gt;serviceThreadPool-&gt;getSize() : 0;</span>
 <a name="140"><span class="lineNum">     140 </span>            : }</a>
 <span class="lineNum">     141 </span>            : 
 <span class="lineNum">     142 </span><span class="lineNoCov">          0 : void Server::setHttpFilter(const http::Filter* filter)</span>
@@ -309,17 +309,17 @@
 <span class="lineNum">     247 </span><span class="lineCov">        962 :     _impl-&gt;context-&gt;service(timeout_ms);</span>
 <a name="248"><span class="lineNum">     248 </span><span class="lineCov">        962 : }</span></a>
 <span class="lineNum">     249 </span>            : 
-<span class="lineNum">     250 </span><span class="lineCov">      11674 : static int callback_http(lws* wsi, const lws_callback_reasons reason,</span>
+<span class="lineNum">     250 </span><span class="lineCov">      11687 : static int callback_http(lws* wsi, const lws_callback_reasons reason,</span>
 <span class="lineNum">     251 </span>            :                          void* /*user*/, void* in, const size_t len)
 <span class="lineNum">     252 </span>            : {
 <span class="lineNum">     253 </span>            :     // Protocol may be null during the initial callbacks
-<span class="lineNum">     254 </span><span class="lineCov">      11674 :     if (auto protocol = lws_get_protocol(wsi))</span>
+<span class="lineNum">     254 </span><span class="lineCov">      11687 :     if (auto protocol = lws_get_protocol(wsi))</span>
 <span class="lineNum">     255 </span>            :     {
-<span class="lineNum">     256 </span><span class="lineCov">       8768 :         auto impl = static_cast&lt;Server::Impl*&gt;(protocol-&gt;user);</span>
-<span class="lineNum">     257 </span><span class="lineCov">       8768 :         const auto&amp; handler = impl-&gt;handler;</span>
-<span class="lineNum">     258 </span><span class="lineCov">       8768 :         auto&amp; connections = impl-&gt;connections;</span>
+<span class="lineNum">     256 </span><span class="lineCov">       8775 :         auto impl = static_cast&lt;Server::Impl*&gt;(protocol-&gt;user);</span>
+<span class="lineNum">     257 </span><span class="lineCov">       8775 :         const auto&amp; handler = impl-&gt;handler;</span>
+<span class="lineNum">     258 </span><span class="lineCov">       8775 :         auto&amp; connections = impl-&gt;connections;</span>
 <span class="lineNum">     259 </span>            : 
-<span class="lineNum">     260 </span><span class="lineCov">       8768 :         switch (reason)</span>
+<span class="lineNum">     260 </span><span class="lineCov">       8775 :         switch (reason)</span>
 <span class="lineNum">     261 </span>            :         {
 <span class="lineNum">     262 </span>            :         case LWS_CALLBACK_HTTP:
 <span class="lineNum">     263 </span><span class="lineCov">        207 :             connections.emplace(wsi, http::Connection{wsi, (const char*)in});</span>
@@ -333,63 +333,66 @@
 <span class="lineNum">     271 </span><span class="lineCov">         48 :             break;</span>
 <span class="lineNum">     272 </span>            : 
 <span class="lineNum">     273 </span>            :         case LWS_CALLBACK_HTTP_WRITEABLE:
-<span class="lineNum">     274 </span><span class="lineCov">        330 :             return handler.writeResponse(connections.at(wsi));</span>
-<span class="lineNum">     275 </span>            : 
-<span class="lineNum">     276 </span>            : #if LWS_LIBRARY_VERSION_NUMBER &gt;= 2001000
-<span class="lineNum">     277 </span>            :         case LWS_CALLBACK_HTTP_DROP_PROTOCOL: // fall-through
-<span class="lineNum">     278 </span>            : #endif
-<span class="lineNum">     279 </span>            :         case LWS_CALLBACK_CLOSED_HTTP:
-<span class="lineNum">     280 </span><span class="lineCov">        622 :             connections.erase(wsi);</span>
-<span class="lineNum">     281 </span><span class="lineCov">        622 :             break;</span>
-<span class="lineNum">     282 </span>            : 
-<span class="lineNum">     283 </span>            :         case LWS_CALLBACK_ADD_POLL_FD:
-<span class="lineNum">     284 </span><span class="lineCov">        365 :             impl-&gt;pollDescriptors.add(static_cast&lt;lws_pollargs*&gt;(in));</span>
-<span class="lineNum">     285 </span><span class="lineCov">        365 :             break;</span>
-<span class="lineNum">     286 </span>            :         case LWS_CALLBACK_DEL_POLL_FD:
-<span class="lineNum">     287 </span><span class="lineCov">        365 :             impl-&gt;pollDescriptors.remove(static_cast&lt;lws_pollargs*&gt;(in));</span>
+<span class="lineNum">     274 </span>            :             // A writable callback may exceptionally occcur without a connection
+<span class="lineNum">     275 </span><span class="lineCov">        330 :             if (connections.count(wsi))</span>
+<span class="lineNum">     276 </span><span class="lineCov">        330 :                 return handler.writeResponse(connections.at(wsi));</span>
+<span class="lineNum">     277 </span><span class="lineNoCov">          0 :             break;</span>
+<span class="lineNum">     278 </span>            : 
+<span class="lineNum">     279 </span>            : #if LWS_LIBRARY_VERSION_NUMBER &gt;= 2001000
+<span class="lineNum">     280 </span>            :         case LWS_CALLBACK_HTTP_DROP_PROTOCOL: // fall-through
+<span class="lineNum">     281 </span>            : #endif
+<span class="lineNum">     282 </span>            :         case LWS_CALLBACK_CLOSED_HTTP:
+<span class="lineNum">     283 </span><span class="lineCov">        623 :             connections.erase(wsi);</span>
+<span class="lineNum">     284 </span><span class="lineCov">        623 :             break;</span>
+<span class="lineNum">     285 </span>            : 
+<span class="lineNum">     286 </span>            :         case LWS_CALLBACK_ADD_POLL_FD:
+<span class="lineNum">     287 </span><span class="lineCov">        365 :             impl-&gt;pollDescriptors.add(static_cast&lt;lws_pollargs*&gt;(in));</span>
 <span class="lineNum">     288 </span><span class="lineCov">        365 :             break;</span>
-<span class="lineNum">     289 </span>            :         case LWS_CALLBACK_CHANGE_MODE_POLL_FD:
-<span class="lineNum">     290 </span><span class="lineCov">       1420 :             impl-&gt;pollDescriptors.update(static_cast&lt;lws_pollargs*&gt;(in));</span>
-<span class="lineNum">     291 </span><span class="lineCov">       1420 :             break;</span>
-<span class="lineNum">     292 </span>            :         default:
-<span class="lineNum">     293 </span><span class="lineCov">       5363 :             break;</span>
-<span class="lineNum">     294 </span>            :         }
-<span class="lineNum">     295 </span>            :     }
-<span class="lineNum">     296 </span><span class="lineCov">      11344 :     return 0;</span>
-<a name="297"><span class="lineNum">     297 </span>            : }</a>
-<span class="lineNum">     298 </span>            : 
-<span class="lineNum">     299 </span><span class="lineCov">        318 : static int callback_websockets(lws* wsi, const lws_callback_reasons reason,</span>
-<span class="lineNum">     300 </span>            :                                void* /*user*/, void* in, const size_t len)
-<span class="lineNum">     301 </span>            : {
-<span class="lineNum">     302 </span>            :     // Protocol may be null during the initial callbacks
-<span class="lineNum">     303 </span><span class="lineCov">        318 :     if (auto protocol = lws_get_protocol(wsi))</span>
-<span class="lineNum">     304 </span>            :     {
-<span class="lineNum">     305 </span><span class="lineCov">        318 :         auto impl = static_cast&lt;Server::Impl*&gt;(protocol-&gt;user);</span>
-<span class="lineNum">     306 </span>            : 
-<span class="lineNum">     307 </span><span class="lineCov">        318 :         switch (reason)</span>
-<span class="lineNum">     308 </span>            :         {
-<span class="lineNum">     309 </span>            :         case LWS_CALLBACK_ESTABLISHED:
-<span class="lineNum">     310 </span><span class="lineCov">         55 :             impl-&gt;openWsConnection(wsi);</span>
-<span class="lineNum">     311 </span><span class="lineCov">         55 :             impl-&gt;wsHandler.handleOpenConnection(impl-&gt;wsConnections.at(wsi));</span>
-<span class="lineNum">     312 </span><span class="lineCov">         55 :             break;</span>
-<span class="lineNum">     313 </span>            :         case LWS_CALLBACK_CLOSED:
-<span class="lineNum">     314 </span><span class="lineCov">         55 :             impl-&gt;wsHandler.handleCloseConnection(impl-&gt;wsConnections.at(wsi));</span>
-<span class="lineNum">     315 </span><span class="lineCov">         55 :             impl-&gt;closeWsConnection(wsi);</span>
-<span class="lineNum">     316 </span><span class="lineCov">         55 :             break;</span>
-<span class="lineNum">     317 </span>            :         case LWS_CALLBACK_RECEIVE:
-<span class="lineNum">     318 </span><span class="lineCov">         68 :             impl-&gt;wsHandler.handleMessage(impl-&gt;wsConnections.at(wsi),</span>
-<span class="lineNum">     319 </span><span class="lineCov">         34 :                                           (const char*)in, len);</span>
-<span class="lineNum">     320 </span><span class="lineCov">         34 :             break;</span>
-<span class="lineNum">     321 </span>            :         case LWS_CALLBACK_SERVER_WRITEABLE:
-<span class="lineNum">     322 </span><span class="lineCov">         45 :             impl-&gt;wsConnections.at(wsi)-&gt;writeMessages();</span>
-<span class="lineNum">     323 </span><span class="lineCov">         45 :             break;</span>
-<span class="lineNum">     324 </span>            :         default:
-<span class="lineNum">     325 </span><span class="lineCov">        129 :             break;</span>
-<span class="lineNum">     326 </span>            :         }
-<span class="lineNum">     327 </span>            :     }
-<a name="328"><span class="lineNum">     328 </span><span class="lineCov">        318 :     return 0;</span></a>
-<span class="lineNum">     329 </span>            : }
-<span class="lineNum">     330 </span><span class="lineCov">         21 : }</span>
+<span class="lineNum">     289 </span>            :         case LWS_CALLBACK_DEL_POLL_FD:
+<span class="lineNum">     290 </span><span class="lineCov">        365 :             impl-&gt;pollDescriptors.remove(static_cast&lt;lws_pollargs*&gt;(in));</span>
+<span class="lineNum">     291 </span><span class="lineCov">        365 :             break;</span>
+<span class="lineNum">     292 </span>            :         case LWS_CALLBACK_CHANGE_MODE_POLL_FD:
+<span class="lineNum">     293 </span><span class="lineCov">       1424 :             impl-&gt;pollDescriptors.update(static_cast&lt;lws_pollargs*&gt;(in));</span>
+<span class="lineNum">     294 </span><span class="lineCov">       1424 :             break;</span>
+<span class="lineNum">     295 </span>            :         default:
+<span class="lineNum">     296 </span><span class="lineCov">       5365 :             break;</span>
+<span class="lineNum">     297 </span>            :         }
+<span class="lineNum">     298 </span>            :     }
+<span class="lineNum">     299 </span><span class="lineCov">      11357 :     return 0;</span>
+<a name="300"><span class="lineNum">     300 </span>            : }</a>
+<span class="lineNum">     301 </span>            : 
+<span class="lineNum">     302 </span><span class="lineCov">        318 : static int callback_websockets(lws* wsi, const lws_callback_reasons reason,</span>
+<span class="lineNum">     303 </span>            :                                void* /*user*/, void* in, const size_t len)
+<span class="lineNum">     304 </span>            : {
+<span class="lineNum">     305 </span>            :     // Protocol may be null during the initial callbacks
+<span class="lineNum">     306 </span><span class="lineCov">        318 :     if (auto protocol = lws_get_protocol(wsi))</span>
+<span class="lineNum">     307 </span>            :     {
+<span class="lineNum">     308 </span><span class="lineCov">        318 :         auto impl = static_cast&lt;Server::Impl*&gt;(protocol-&gt;user);</span>
+<span class="lineNum">     309 </span>            : 
+<span class="lineNum">     310 </span><span class="lineCov">        318 :         switch (reason)</span>
+<span class="lineNum">     311 </span>            :         {
+<span class="lineNum">     312 </span>            :         case LWS_CALLBACK_ESTABLISHED:
+<span class="lineNum">     313 </span><span class="lineCov">         55 :             impl-&gt;openWsConnection(wsi);</span>
+<span class="lineNum">     314 </span><span class="lineCov">         55 :             impl-&gt;wsHandler.handleOpenConnection(impl-&gt;wsConnections.at(wsi));</span>
+<span class="lineNum">     315 </span><span class="lineCov">         55 :             break;</span>
+<span class="lineNum">     316 </span>            :         case LWS_CALLBACK_CLOSED:
+<span class="lineNum">     317 </span><span class="lineCov">         55 :             impl-&gt;wsHandler.handleCloseConnection(impl-&gt;wsConnections.at(wsi));</span>
+<span class="lineNum">     318 </span><span class="lineCov">         55 :             impl-&gt;closeWsConnection(wsi);</span>
+<span class="lineNum">     319 </span><span class="lineCov">         55 :             break;</span>
+<span class="lineNum">     320 </span>            :         case LWS_CALLBACK_RECEIVE:
+<span class="lineNum">     321 </span><span class="lineCov">         68 :             impl-&gt;wsHandler.handleMessage(impl-&gt;wsConnections.at(wsi),</span>
+<span class="lineNum">     322 </span><span class="lineCov">         34 :                                           (const char*)in, len);</span>
+<span class="lineNum">     323 </span><span class="lineCov">         34 :             break;</span>
+<span class="lineNum">     324 </span>            :         case LWS_CALLBACK_SERVER_WRITEABLE:
+<span class="lineNum">     325 </span><span class="lineCov">         45 :             impl-&gt;wsConnections.at(wsi)-&gt;writeMessages();</span>
+<span class="lineNum">     326 </span><span class="lineCov">         45 :             break;</span>
+<span class="lineNum">     327 </span>            :         default:
+<span class="lineNum">     328 </span><span class="lineCov">        129 :             break;</span>
+<span class="lineNum">     329 </span>            :         }
+<span class="lineNum">     330 </span>            :     }
+<a name="331"><span class="lineNum">     331 </span><span class="lineCov">        318 :     return 0;</span></a>
+<span class="lineNum">     332 </span>            : }
+<span class="lineNum">     333 </span><span class="lineCov">         21 : }</span>
 </pre>
       </td>
     </tr>
