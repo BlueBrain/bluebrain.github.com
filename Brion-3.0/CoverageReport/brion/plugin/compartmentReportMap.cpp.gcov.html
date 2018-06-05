@@ -31,13 +31,13 @@
             <td class="headerValue">Brion</td>
             <td></td>
             <td class="headerItem">Lines:</td>
-            <td class="headerCovTableEntry">191</td>
-            <td class="headerCovTableEntry">256</td>
-            <td class="headerCovTableEntryMed">74.6 %</td>
+            <td class="headerCovTableEntry">192</td>
+            <td class="headerCovTableEntry">257</td>
+            <td class="headerCovTableEntryMed">74.7 %</td>
           </tr>
           <tr>
             <td class="headerItem">Date:</td>
-            <td class="headerValue">2018-05-04 06:14:01</td>
+            <td class="headerValue">2018-06-05 06:17:49</td>
             <td></td>
             <td class="headerItem">Functions:</td>
             <td class="headerCovTableEntry">21</td>
@@ -111,7 +111,7 @@
 <span class="lineNum">      49 </span>            : const uint32_t _magic = 0xdb;
 <a name="50"><span class="lineNum">      50 </span>            : const size_t _queueDepth = 32768; // async queue depth, heuristic from benchmark</a>
 <span class="lineNum">      51 </span>            : #ifdef BRION_USE_OPENMP
-<span class="lineNum">      52 </span><span class="lineCov">         32 : const size_t _nThreads = omp_get_num_procs();</span>
+<span class="lineNum">      52 </span><span class="lineCov">         34 : const size_t _nThreads = omp_get_num_procs();</span>
 <span class="lineNum">      53 </span>            : #else
 <span class="lineNum">      54 </span>            : const size_t _nThreads = 1;
 <span class="lineNum">      55 </span>            : #endif
@@ -121,7 +121,7 @@
 <span class="lineNum">      59 </span>            : {
 <span class="lineNum">      60 </span>            : namespace
 <span class="lineNum">      61 </span>            : {
-<span class="lineNum">      62 </span><span class="lineCov">         32 : lunchbox::PluginRegisterer&lt;CompartmentReportMap&gt; registerer;</span>
+<span class="lineNum">      62 </span><span class="lineCov">         34 : lunchbox::PluginRegisterer&lt;CompartmentReportMap&gt; registerer;</span>
 <a name="63"><span class="lineNum">      63 </span>            : }</a>
 <span class="lineNum">      64 </span>            : 
 <span class="lineNum">      65 </span><span class="lineCov">         54 : CompartmentReportMap::CompartmentReportMap(</span>
@@ -157,17 +157,17 @@
 <span class="lineNum">      95 </span>            :     }
 <span class="lineNum">      96 </span>            : 
 <span class="lineNum">      97 </span><span class="lineCov">         50 :     if (accessMode &amp; MODE_READ)</span>
-<span class="lineNum">      98 </span><span class="lineCov">         36 :         _cacheNeuronCompartmentCounts(initData.getGIDs());</span>
+<span class="lineNum">      98 </span><span class="lineCov">         36 :         updateMapping(initData.getGIDs());</span>
 <a name="99"><span class="lineNum">      99 </span><span class="lineCov">         50 : }</span></a>
 <span class="lineNum">     100 </span>            : 
 <span class="lineNum">     101 </span><span class="lineCov">        100 : CompartmentReportMap::~CompartmentReportMap()</span>
 <span class="lineNum">     102 </span>            : {
 <a name="103"><span class="lineNum">     103 </span><span class="lineCov">        100 : }</span></a>
 <span class="lineNum">     104 </span>            : 
-<span class="lineNum">     105 </span><span class="lineCov">         68 : bool CompartmentReportMap::handles(const CompartmentReportInitData&amp; initData)</span>
+<span class="lineNum">     105 </span><span class="lineCov">         72 : bool CompartmentReportMap::handles(const CompartmentReportInitData&amp; initData)</span>
 <span class="lineNum">     106 </span>            : {
-<span class="lineNum">     107 </span><span class="lineCov">        136 :     return keyv::Map::handles(initData.getURI()) &amp;&amp;</span>
-<span class="lineNum">     108 </span><span class="lineCov">        136 :            !initData.getURI().getScheme().empty();</span>
+<span class="lineNum">     107 </span><span class="lineCov">        144 :     return keyv::Map::handles(initData.getURI()) &amp;&amp;</span>
+<span class="lineNum">     108 </span><span class="lineCov">        144 :            !initData.getURI().getScheme().empty();</span>
 <a name="109"><span class="lineNum">     109 </span>            : }</a>
 <span class="lineNum">     110 </span>            : 
 <span class="lineNum">     111 </span><span class="lineNoCov">          0 : std::string CompartmentReportMap::getDescription()</span>
@@ -441,113 +441,115 @@
 <span class="lineNum">     379 </span>            :                                &quot; GIDs out of range&quot;));
 <span class="lineNum">     380 </span><span class="lineCov">         56 :     if (!_loadHeader())</span>
 <span class="lineNum">     381 </span><span class="lineNoCov">          0 :         LBTHROW(std::runtime_error(&quot;Incomplete data source&quot;));</span>
-<a name="382"><span class="lineNum">     382 </span>            : }</a>
-<span class="lineNum">     383 </span>            : 
-<span class="lineNum">     384 </span><span class="lineCov">       3200 : bool CompartmentReportMap::_loadFrame(const size_t frameNumber,</span>
-<span class="lineNum">     385 </span>            :                                       float* buffer) const
-<span class="lineNum">     386 </span>            : {
-<span class="lineNum">     387 </span><span class="lineCov">       3200 :     if (!_readable)</span>
-<span class="lineNum">     388 </span><span class="lineNoCov">          0 :         return false;</span>
-<span class="lineNum">     389 </span>            : 
-<span class="lineNum">     390 </span><span class="lineCov">       6400 :     OffsetMap offsetMap;</span>
-<span class="lineNum">     391 </span><span class="lineCov">       3200 :     size_t offset = 0;</span>
-<span class="lineNum">     392 </span>            : 
-<span class="lineNum">     393 </span><span class="lineCov">       6400 :     Strings keys;</span>
-<span class="lineNum">     394 </span><span class="lineCov">       3200 :     keys.reserve(_gids.size());</span>
-<span class="lineNum">     395 </span>            : 
-<span class="lineNum">     396 </span><span class="lineCov">     115200 :     for (const uint32_t gid : _gids)</span>
-<span class="lineNum">     397 </span>            :     {
-<span class="lineNum">     398 </span><span class="lineCov">     112000 :         keys.push_back(_getValueKey(gid, frameNumber));</span>
-<span class="lineNum">     399 </span><span class="lineCov">     112000 :         offsetMap.emplace(keys.back(), offset);</span>
-<span class="lineNum">     400 </span><span class="lineCov">     112000 :         const CellCompartments::const_iterator i = _cellCounts.find(gid);</span>
-<span class="lineNum">     401 </span><span class="lineCov">     112000 :         if (i == _cellCounts.end())</span>
-<span class="lineNum">     402 </span>            :         {
-<span class="lineNum">     403 </span><span class="lineNoCov">          0 :             LBWARN &lt;&lt; &quot;Missing mapping for gid &quot; &lt;&lt; gid &lt;&lt; std::endl;</span>
-<span class="lineNum">     404 </span><span class="lineNoCov">          0 :             return false;</span>
-<span class="lineNum">     405 </span>            :         }
-<span class="lineNum">     406 </span>            :         const size_t size =
-<span class="lineNum">     407 </span><span class="lineCov">     112000 :             std::accumulate(i-&gt;second.begin(), i-&gt;second.end(), 0);</span>
-<span class="lineNum">     408 </span><span class="lineCov">     112000 :         offset += size;</span>
-<span class="lineNum">     409 </span>            :     }
-<span class="lineNum">     410 </span>            : 
-<span class="lineNum">     411 </span><span class="lineCov">       3200 :     return _load(buffer, keys, offsetMap);</span>
-<a name="412"><span class="lineNum">     412 </span>            : }</a>
-<span class="lineNum">     413 </span>            : 
-<span class="lineNum">     414 </span><span class="lineCov">        570 : floatsPtr CompartmentReportMap::loadNeuron(const uint32_t gid) const</span>
-<span class="lineNum">     415 </span>            : {
-<span class="lineNum">     416 </span><span class="lineCov">        570 :     if (!_readable)</span>
-<span class="lineNum">     417 </span><span class="lineNoCov">          0 :         return floatsPtr();</span>
-<span class="lineNum">     418 </span>            : 
-<span class="lineNum">     419 </span><span class="lineCov">        570 :     const size_t index = getIndex(gid);</span>
-<span class="lineNum">     420 </span>            :     const size_t nFrames =
-<span class="lineNum">     421 </span><span class="lineCov">       1140 :         (_header.endTime - _header.startTime + _header.timestep * 0.5) /</span>
-<span class="lineNum">     422 </span><span class="lineCov">       1140 :         _header.timestep;</span>
-<span class="lineNum">     423 </span><span class="lineCov">        570 :     const size_t nCompartments = getNumCompartments(index);</span>
-<span class="lineNum">     424 </span>            : 
-<span class="lineNum">     425 </span><span class="lineCov">       1140 :     floatsPtr buffer(new floats(nFrames * nCompartments));</span>
+<span class="lineNum">     382 </span>            : 
+<span class="lineNum">     383 </span><span class="lineCov">         56 :     _cacheNeuronCompartmentCounts();</span>
+<a name="384"><span class="lineNum">     384 </span>            : }</a>
+<span class="lineNum">     385 </span>            : 
+<span class="lineNum">     386 </span><span class="lineCov">       3200 : bool CompartmentReportMap::_loadFrame(const size_t frameNumber,</span>
+<span class="lineNum">     387 </span>            :                                       float* buffer) const
+<span class="lineNum">     388 </span>            : {
+<span class="lineNum">     389 </span><span class="lineCov">       3200 :     if (!_readable)</span>
+<span class="lineNum">     390 </span><span class="lineNoCov">          0 :         return false;</span>
+<span class="lineNum">     391 </span>            : 
+<span class="lineNum">     392 </span><span class="lineCov">       6400 :     OffsetMap offsetMap;</span>
+<span class="lineNum">     393 </span><span class="lineCov">       3200 :     size_t offset = 0;</span>
+<span class="lineNum">     394 </span>            : 
+<span class="lineNum">     395 </span><span class="lineCov">       6400 :     Strings keys;</span>
+<span class="lineNum">     396 </span><span class="lineCov">       3200 :     keys.reserve(_gids.size());</span>
+<span class="lineNum">     397 </span>            : 
+<span class="lineNum">     398 </span><span class="lineCov">     115200 :     for (const uint32_t gid : _gids)</span>
+<span class="lineNum">     399 </span>            :     {
+<span class="lineNum">     400 </span><span class="lineCov">     112000 :         keys.push_back(_getValueKey(gid, frameNumber));</span>
+<span class="lineNum">     401 </span><span class="lineCov">     112000 :         offsetMap.emplace(keys.back(), offset);</span>
+<span class="lineNum">     402 </span><span class="lineCov">     112000 :         const CellCompartments::const_iterator i = _cellCounts.find(gid);</span>
+<span class="lineNum">     403 </span><span class="lineCov">     112000 :         if (i == _cellCounts.end())</span>
+<span class="lineNum">     404 </span>            :         {
+<span class="lineNum">     405 </span><span class="lineNoCov">          0 :             LBWARN &lt;&lt; &quot;Missing mapping for gid &quot; &lt;&lt; gid &lt;&lt; std::endl;</span>
+<span class="lineNum">     406 </span><span class="lineNoCov">          0 :             return false;</span>
+<span class="lineNum">     407 </span>            :         }
+<span class="lineNum">     408 </span>            :         const size_t size =
+<span class="lineNum">     409 </span><span class="lineCov">     112000 :             std::accumulate(i-&gt;second.begin(), i-&gt;second.end(), 0);</span>
+<span class="lineNum">     410 </span><span class="lineCov">     112000 :         offset += size;</span>
+<span class="lineNum">     411 </span>            :     }
+<span class="lineNum">     412 </span>            : 
+<span class="lineNum">     413 </span><span class="lineCov">       3200 :     return _load(buffer, keys, offsetMap);</span>
+<a name="414"><span class="lineNum">     414 </span>            : }</a>
+<span class="lineNum">     415 </span>            : 
+<span class="lineNum">     416 </span><span class="lineCov">        570 : floatsPtr CompartmentReportMap::loadNeuron(const uint32_t gid) const</span>
+<span class="lineNum">     417 </span>            : {
+<span class="lineNum">     418 </span><span class="lineCov">        570 :     if (!_readable)</span>
+<span class="lineNum">     419 </span><span class="lineNoCov">          0 :         return floatsPtr();</span>
+<span class="lineNum">     420 </span>            : 
+<span class="lineNum">     421 </span><span class="lineCov">        570 :     const size_t index = getIndex(gid);</span>
+<span class="lineNum">     422 </span>            :     const size_t nFrames =
+<span class="lineNum">     423 </span><span class="lineCov">       1140 :         (_header.endTime - _header.startTime + _header.timestep * 0.5) /</span>
+<span class="lineNum">     424 </span><span class="lineCov">       1140 :         _header.timestep;</span>
+<span class="lineNum">     425 </span><span class="lineCov">        570 :     const size_t nCompartments = getNumCompartments(index);</span>
 <span class="lineNum">     426 </span>            : 
-<span class="lineNum">     427 </span><span class="lineCov">       1140 :     Strings keys;</span>
-<span class="lineNum">     428 </span><span class="lineCov">       1140 :     OffsetMap offsetMap;</span>
-<span class="lineNum">     429 </span><span class="lineCov">        570 :     keys.reserve(nFrames);</span>
-<span class="lineNum">     430 </span>            : 
-<span class="lineNum">     431 </span><span class="lineCov">      57570 :     for (size_t i = 0; i &lt; nFrames; ++i)</span>
-<span class="lineNum">     432 </span>            :     {
-<span class="lineNum">     433 </span><span class="lineCov">      57000 :         keys.push_back(_getValueKey(gid, i));</span>
-<span class="lineNum">     434 </span><span class="lineCov">      57000 :         offsetMap.emplace(keys.back(), i * nCompartments);</span>
-<span class="lineNum">     435 </span>            :     }
-<span class="lineNum">     436 </span>            : 
-<span class="lineNum">     437 </span><span class="lineCov">        570 :     if (_load(buffer-&gt;data(), keys, offsetMap))</span>
-<span class="lineNum">     438 </span><span class="lineCov">        570 :         return buffer;</span>
-<span class="lineNum">     439 </span><span class="lineNoCov">          0 :     return floatsPtr();</span>
-<a name="440"><span class="lineNum">     440 </span>            : }</a>
-<span class="lineNum">     441 </span>            : 
-<span class="lineNum">     442 </span><span class="lineCov">       3770 : bool CompartmentReportMap::_load(float* buffer, const Strings&amp; keys,</span>
-<span class="lineNum">     443 </span>            :                                  const OffsetMap&amp; offsets) const
-<span class="lineNum">     444 </span>            : {
-<span class="lineNum">     445 </span>            : #ifdef BRION_USE_OPENMP
-<span class="lineNum">     446 </span><span class="lineCov">       3770 :     lunchbox::a_ssize_t taken;</span>
-<span class="lineNum">     447 </span><span class="lineCov">       3770 :     omp_set_num_threads(_stores.size());</span>
-<span class="lineNum">     448 </span>            : #else
-<a name="449"><span class="lineNum">     449 </span>            :     size_t taken = 0;</a>
-<span class="lineNum">     450 </span>            : #endif
-<span class="lineNum">     451 </span><span class="lineCov">       7540 : #pragma omp parallel</span>
-<span class="lineNum">     452 </span>            :     {
-<span class="lineNum">     453 </span>            : #ifdef BRION_USE_OPENMP
-<span class="lineNum">     454 </span><span class="lineCov">       3770 :         auto&amp; store = _stores[omp_get_thread_num()];</span>
-<span class="lineNum">     455 </span><span class="lineCov">       7540 :         const size_t start = float(omp_get_thread_num()) * float(keys.size()) /</span>
-<span class="lineNum">     456 </span><span class="lineCov">       7540 :                              float(omp_get_num_threads());</span>
-<span class="lineNum">     457 </span><span class="lineCov">       7540 :         const size_t end = float(omp_get_thread_num() + 1) *</span>
-<span class="lineNum">     458 </span><span class="lineCov">       7540 :                            float(keys.size()) / float(omp_get_num_threads());</span>
-<span class="lineNum">     459 </span><span class="lineCov">       7540 :         const Strings subKeys(keys.begin() + start, keys.begin() + end);</span>
-<span class="lineNum">     460 </span>            : #else
-<span class="lineNum">     461 </span>            :         auto&amp; store = _stores.front();
-<span class="lineNum">     462 </span>            :         const Strings&amp; subKeys = keys;
-<span class="lineNum">     463 </span>            : #endif
-<span class="lineNum">     464 </span>            : 
-<a name="465"><span class="lineNum">     465 </span>            :         const auto takeValue = [buffer, &amp;offsets,</a>
-<span class="lineNum">     466 </span>            :                                 &amp;taken](const std::string&amp; key, char* data,
-<span class="lineNum">     467 </span><span class="lineCov">     676000 :                                         const size_t size) {</span>
-<span class="lineNum">     468 </span><span class="lineCov">     169000 :             const auto i = offsets.find(key);</span>
-<span class="lineNum">     469 </span><span class="lineCov">     169000 :             if (i != offsets.end())</span>
-<span class="lineNum">     470 </span>            :             {
-<span class="lineNum">     471 </span><span class="lineCov">     169000 :                 ::memcpy(buffer + i-&gt;second, data, size);</span>
-<span class="lineNum">     472 </span><span class="lineCov">     169000 :                 ++taken;</span>
-<span class="lineNum">     473 </span>            :             }
-<span class="lineNum">     474 </span><span class="lineCov">     169000 :             std::free(data);</span>
-<span class="lineNum">     475 </span><span class="lineCov">     172770 :         };</span>
-<span class="lineNum">     476 </span>            : 
-<span class="lineNum">     477 </span><span class="lineCov">       3770 :         store.takeValues(subKeys, takeValue);</span>
-<span class="lineNum">     478 </span>            :     }
-<span class="lineNum">     479 </span>            : 
-<span class="lineNum">     480 </span><span class="lineCov">       3770 :     if (size_t(taken) == keys.size())</span>
-<span class="lineNum">     481 </span><span class="lineCov">       3770 :         return true;</span>
-<span class="lineNum">     482 </span>            : 
-<span class="lineNum">     483 </span><span class="lineNoCov">          0 :     LBWARN &lt;&lt; &quot;Missing &quot; &lt;&lt; keys.size() - taken &lt;&lt; &quot; of &quot; &lt;&lt; keys.size()</span>
-<span class="lineNum">     484 </span><span class="lineNoCov">          0 :            &lt;&lt; &quot; values in report frame&quot; &lt;&lt; std::endl;</span>
-<span class="lineNum">     485 </span><span class="lineNoCov">          0 :     return false;</span>
-<a name="486"><span class="lineNum">     486 </span>            : }</a>
-<span class="lineNum">     487 </span>            : }
-<span class="lineNum">     488 </span><span class="lineCov">         96 : }</span>
+<span class="lineNum">     427 </span><span class="lineCov">       1140 :     floatsPtr buffer(new floats(nFrames * nCompartments));</span>
+<span class="lineNum">     428 </span>            : 
+<span class="lineNum">     429 </span><span class="lineCov">       1140 :     Strings keys;</span>
+<span class="lineNum">     430 </span><span class="lineCov">       1140 :     OffsetMap offsetMap;</span>
+<span class="lineNum">     431 </span><span class="lineCov">        570 :     keys.reserve(nFrames);</span>
+<span class="lineNum">     432 </span>            : 
+<span class="lineNum">     433 </span><span class="lineCov">      57570 :     for (size_t i = 0; i &lt; nFrames; ++i)</span>
+<span class="lineNum">     434 </span>            :     {
+<span class="lineNum">     435 </span><span class="lineCov">      57000 :         keys.push_back(_getValueKey(gid, i));</span>
+<span class="lineNum">     436 </span><span class="lineCov">      57000 :         offsetMap.emplace(keys.back(), i * nCompartments);</span>
+<span class="lineNum">     437 </span>            :     }
+<span class="lineNum">     438 </span>            : 
+<span class="lineNum">     439 </span><span class="lineCov">        570 :     if (_load(buffer-&gt;data(), keys, offsetMap))</span>
+<span class="lineNum">     440 </span><span class="lineCov">        570 :         return buffer;</span>
+<span class="lineNum">     441 </span><span class="lineNoCov">          0 :     return floatsPtr();</span>
+<a name="442"><span class="lineNum">     442 </span>            : }</a>
+<span class="lineNum">     443 </span>            : 
+<span class="lineNum">     444 </span><span class="lineCov">       3770 : bool CompartmentReportMap::_load(float* buffer, const Strings&amp; keys,</span>
+<span class="lineNum">     445 </span>            :                                  const OffsetMap&amp; offsets) const
+<span class="lineNum">     446 </span>            : {
+<span class="lineNum">     447 </span>            : #ifdef BRION_USE_OPENMP
+<span class="lineNum">     448 </span><span class="lineCov">       3770 :     lunchbox::a_ssize_t taken;</span>
+<span class="lineNum">     449 </span><span class="lineCov">       3770 :     omp_set_num_threads(_stores.size());</span>
+<span class="lineNum">     450 </span>            : #else
+<a name="451"><span class="lineNum">     451 </span>            :     size_t taken = 0;</a>
+<span class="lineNum">     452 </span>            : #endif
+<span class="lineNum">     453 </span><span class="lineCov">       7540 : #pragma omp parallel</span>
+<span class="lineNum">     454 </span>            :     {
+<span class="lineNum">     455 </span>            : #ifdef BRION_USE_OPENMP
+<span class="lineNum">     456 </span><span class="lineCov">       3770 :         auto&amp; store = _stores[omp_get_thread_num()];</span>
+<span class="lineNum">     457 </span><span class="lineCov">       7540 :         const size_t start = float(omp_get_thread_num()) * float(keys.size()) /</span>
+<span class="lineNum">     458 </span><span class="lineCov">       7540 :                              float(omp_get_num_threads());</span>
+<span class="lineNum">     459 </span><span class="lineCov">       7540 :         const size_t end = float(omp_get_thread_num() + 1) *</span>
+<span class="lineNum">     460 </span><span class="lineCov">       7540 :                            float(keys.size()) / float(omp_get_num_threads());</span>
+<span class="lineNum">     461 </span><span class="lineCov">       7540 :         const Strings subKeys(keys.begin() + start, keys.begin() + end);</span>
+<span class="lineNum">     462 </span>            : #else
+<span class="lineNum">     463 </span>            :         auto&amp; store = _stores.front();
+<span class="lineNum">     464 </span>            :         const Strings&amp; subKeys = keys;
+<span class="lineNum">     465 </span>            : #endif
+<span class="lineNum">     466 </span>            : 
+<a name="467"><span class="lineNum">     467 </span>            :         const auto takeValue = [buffer, &amp;offsets,</a>
+<span class="lineNum">     468 </span>            :                                 &amp;taken](const std::string&amp; key, char* data,
+<span class="lineNum">     469 </span><span class="lineCov">     676000 :                                         const size_t size) {</span>
+<span class="lineNum">     470 </span><span class="lineCov">     169000 :             const auto i = offsets.find(key);</span>
+<span class="lineNum">     471 </span><span class="lineCov">     169000 :             if (i != offsets.end())</span>
+<span class="lineNum">     472 </span>            :             {
+<span class="lineNum">     473 </span><span class="lineCov">     169000 :                 ::memcpy(buffer + i-&gt;second, data, size);</span>
+<span class="lineNum">     474 </span><span class="lineCov">     169000 :                 ++taken;</span>
+<span class="lineNum">     475 </span>            :             }
+<span class="lineNum">     476 </span><span class="lineCov">     169000 :             std::free(data);</span>
+<span class="lineNum">     477 </span><span class="lineCov">     172770 :         };</span>
+<span class="lineNum">     478 </span>            : 
+<span class="lineNum">     479 </span><span class="lineCov">       3770 :         store.takeValues(subKeys, takeValue);</span>
+<span class="lineNum">     480 </span>            :     }
+<span class="lineNum">     481 </span>            : 
+<span class="lineNum">     482 </span><span class="lineCov">       3770 :     if (size_t(taken) == keys.size())</span>
+<span class="lineNum">     483 </span><span class="lineCov">       3770 :         return true;</span>
+<span class="lineNum">     484 </span>            : 
+<span class="lineNum">     485 </span><span class="lineNoCov">          0 :     LBWARN &lt;&lt; &quot;Missing &quot; &lt;&lt; keys.size() - taken &lt;&lt; &quot; of &quot; &lt;&lt; keys.size()</span>
+<span class="lineNum">     486 </span><span class="lineNoCov">          0 :            &lt;&lt; &quot; values in report frame&quot; &lt;&lt; std::endl;</span>
+<span class="lineNum">     487 </span><span class="lineNoCov">          0 :     return false;</span>
+<a name="488"><span class="lineNum">     488 </span>            : }</a>
+<span class="lineNum">     489 </span>            : }
+<span class="lineNum">     490 </span><span class="lineCov">        102 : }</span>
 </pre>
       </td>
     </tr>
