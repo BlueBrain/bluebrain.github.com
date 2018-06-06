@@ -1,0 +1,2996 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+  "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+
+
+<html xmlns="http://www.w3.org/1999/xhtml">
+  <head>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+    
+    <title>The rtneuron package &mdash; RTNeuron 3.0 Python API documentation</title>
+    
+    <link rel="stylesheet" href="_static/classic.css" type="text/css" />
+    <link rel="stylesheet" href="_static/pygments.css" type="text/css" />
+    
+    <script type="text/javascript">
+      var DOCUMENTATION_OPTIONS = {
+        URL_ROOT:    './',
+        VERSION:     '3.0.0',
+        COLLAPSE_INDEX: false,
+        FILE_SUFFIX: '.html',
+        HAS_SOURCE:  true
+      };
+    </script>
+    <script type="text/javascript" src="_static/jquery.js"></script>
+    <script type="text/javascript" src="_static/underscore.js"></script>
+    <script type="text/javascript" src="_static/doctools.js"></script>
+    <link rel="top" title="RTNeuron 3.0 Python API documentation" href="index.html" />
+    <link rel="next" title="Code example and image gallery" href="gallery.html" />
+    <link rel="prev" title="RTNeuron Python API documentation" href="index.html" /> 
+  </head>
+  <body role="document">
+    <div class="related" role="navigation" aria-label="related navigation">
+      <h3>Navigation</h3>
+      <ul>
+        <li class="right" style="margin-right: 10px">
+          <a href="genindex.html" title="General Index"
+             accesskey="I">index</a></li>
+        <li class="right" >
+          <a href="py-modindex.html" title="Python Module Index"
+             >modules</a> |</li>
+        <li class="right" >
+          <a href="gallery.html" title="Code example and image gallery"
+             accesskey="N">next</a> |</li>
+        <li class="right" >
+          <a href="index.html" title="RTNeuron Python API documentation"
+             accesskey="P">previous</a> |</li>
+        <li class="nav-item nav-item-0"><a href="index.html">RTNeuron 3.0 Python API documentation</a> &raquo;</li> 
+      </ul>
+    </div>  
+
+    <div class="document">
+      <div class="documentwrapper">
+        <div class="bodywrapper">
+          <div class="body" role="main">
+            
+  <div class="section" id="the-rtneuron-package">
+<span id="python-api"></span><h1>The <em>rtneuron</em> package<a class="headerlink" href="#the-rtneuron-package" title="Permalink to this headline">¶</a></h1>
+<p>The entry point of the RTNeuron Python API is a package called <strong>rtneuron</strong>.
+This package contains a collections of submodules with the wrapped C++ classes
+as well as some free functions helpful for routine tasks such as displaying a
+target from a blue config file.</p>
+<p>Some examples of how to use the package can be found in the <a class="reference internal" href="gallery.html#gallery"><span>Code example and image gallery</span></a>.</p>
+<p>This page is the reference documentation for all the classes and functions
+provided by the rtneuron package. The documentation is divided in two sections,
+the first one presents the wrapping of the C++ library and the second one
+describes classes and functions that are only available in the Python package.</p>
+<div class="section" id="wrapped-c-classes">
+<h2>Wrapped C++ classes<a class="headerlink" href="#wrapped-c-classes" title="Permalink to this headline">¶</a></h2>
+<p>In reality, the C++ wrapping is a subpackage called <strong>_rtneuron</strong> which
+contains classes and other submodules for the different C++ namespaces. When
+<strong>rtneuron</strong> is imported, it brings into its namespace all the contents of
+<strong>_rtneuron</strong> and imports all the required submodules. The C++ namespace
+layout is respected whenever possible in these submodules, as in
+<strong>rtneuron.sceneops</strong> for example.</p>
+<div class="section" id="module-rtneuron._rtneuron">
+<span id="rtneuron-namespace"></span><h3>rtneuron namespace<a class="headerlink" href="#module-rtneuron._rtneuron" title="Permalink to this headline">¶</a></h3>
+<dl class="class">
+<dt id="rtneuron._rtneuron.AttributeMap">
+<em class="property">class </em><code class="descclassname">rtneuron._rtneuron.</code><code class="descname">AttributeMap</code><a class="headerlink" href="#rtneuron._rtneuron.AttributeMap" title="Permalink to this definition">¶</a></dt>
+<dd><p>An key-value storage with additional capabilities in the native code side.</p>
+<p>An attribute map is a table container that stores key-value pairs where the keys are strings and the values are scalars of type bool, int, float, string, wrapped enums and AttributeMap or Python lists of scalars of type bool, int, float, string and wrapped enums.</p>
+<p>Other wrapped types can be used as values only if their documentation states so.</p>
+<dl class="docutils">
+<dt>The attribute keys are presented as regular attributes in Python. This class defines special &#8216;__setattr__&#8217; and &#8216;__getattr__&#8217; methods to handle attribute read/writes and translation of types to/from the native code. Writting to a non existing attribute creates it. Accessing a non existing attribute raises a ValueError exception. Trying to set an attribute with an unsupported type raises a KeyError exception.**Note**</dt>
+<dd>An AttributeMap cannot be nested as part of a list of values.</dd>
+</dl>
+<p>Examples:</p>
+<div class="highlight-python"><div class="highlight"><pre><span></span>a = AttributeMap()               # Create a new attribute map.
+a.x = 10.0                       # Set a new attribute.
+print a.x + 3.3                  # Retrieve the attribute value.
+a.x = [1, &quot;hi&quot;, False]           # Resetting the previous attribute.
+a.nested = AttributeMap()        # Nesting an attribute map.
+a.nested.x = [1, AttributeMap()] # raises, AttributeMap cannot be in a list.
+a.nested.x = dict                # raises, invalid type in assignment.
+a.nested.colors = ColorMap()     # OK if ColorMap has been made available
+                                 # to AttributeMap in the wrapping.
+a.colors = [ColorMap(), 1, &quot;a&quot;]  # If the above works, this will also do.
+</pre></div>
+</div>
+<p>Native code objects that hold attribute maps can provide extra handles for attribute modification. This implies that trying to set attribute names/values unsupported by a holder can also raise exceptions.</p>
+<p>Tab completion inside an IPython shell works by the internal redefinition of the &#8216;__dir__&#8217; method. The string conversion operator is also defined to print the attributes and their values.</p>
+<dl class="method">
+<dt id="rtneuron._rtneuron.AttributeMap.__init__">
+<code class="descname">__init__</code><span class="sig-paren">(</span><em>(object)arg1</em><span class="sig-paren">)</span> &rarr; None<a class="headerlink" href="#rtneuron._rtneuron.AttributeMap.__init__" title="Permalink to this definition">¶</a></dt>
+<dd><dl class="docutils">
+<dt>__init__( (object)arg1, (dict)arg2) -&gt; object :</dt>
+<dd>Create an AttributeMap from a dictionary</dd>
+</dl>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="rtneuron._rtneuron.AttributeMap.attributeChanged">
+<code class="descname">attributeChanged</code><a class="headerlink" href="#rtneuron._rtneuron.AttributeMap.attributeChanged" title="Permalink to this definition">¶</a></dt>
+<dd><p>Signal emitted when an attribute has been changed.</p>
+<p>The name of the changed attribute is passed as the signal parameter.</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="rtneuron._rtneuron.AttributeMap.help">
+<code class="descname">help</code><span class="sig-paren">(</span><em>(AttributeMap)arg1</em><span class="sig-paren">)</span> &rarr; None :<a class="headerlink" href="#rtneuron._rtneuron.AttributeMap.help" title="Permalink to this definition">¶</a></dt>
+<dd><p>Print extra documentation of an AttributeMap instance if available</p>
+</dd></dl>
+
+</dd></dl>
+
+<dl class="class">
+<dt id="rtneuron._rtneuron.Camera">
+<em class="property">class </em><code class="descclassname">rtneuron._rtneuron.</code><code class="descname">Camera</code><a class="headerlink" href="#rtneuron._rtneuron.Camera" title="Permalink to this definition">¶</a></dt>
+<dd><p>A camera represents the frustum and the model part of the model-view transformation used for a single view.</p>
+<p>The view part of the transformation will be handled internally by the Equalizer backend as this is required in cluster configurations.</p>
+<dl class="method">
+<dt id="rtneuron._rtneuron.Camera.__init__">
+<code class="descname">__init__</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#rtneuron._rtneuron.Camera.__init__" title="Permalink to this definition">¶</a></dt>
+<dd><p>Raises an exception
+This class cannot be instantiated from Python</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="rtneuron._rtneuron.Camera.getProjectionFrustum">
+<code class="descname">getProjectionFrustum</code><span class="sig-paren">(</span><em>(Camera)arg1</em><span class="sig-paren">)</span> &rarr; tuple :<a class="headerlink" href="#rtneuron._rtneuron.Camera.getProjectionFrustum" title="Permalink to this definition">¶</a></dt>
+<dd><p>Gets the frustum definition of a perspective projection.</p>
+<p>The near parameters returned is just meant to indicate the field of view the actual parameters used for rendering are adjusted to the scene being displayed.</p>
+<p>The results are undefined if the camera is set as orthographic.</p>
+<dl class="docutils">
+<dt><strong>Return</strong></dt>
+<dd>A tuple with left, right, top, bottom, near</dd>
+</dl>
+</dd></dl>
+
+<dl class="method">
+<dt id="rtneuron._rtneuron.Camera.getProjectionMatrix">
+<code class="descname">getProjectionMatrix</code><span class="sig-paren">(</span><em>(Camera)arg1</em><span class="sig-paren">)</span> &rarr; object :<a class="headerlink" href="#rtneuron._rtneuron.Camera.getProjectionMatrix" title="Permalink to this definition">¶</a></dt>
+<dd><p>Get the camera projection matrix.</p>
+<dl class="docutils">
+<dt><strong>Return</strong></dt>
+<dd>An OpenGL ready 4x4 numpy matrix</dd>
+</dl>
+</dd></dl>
+
+<dl class="method">
+<dt id="rtneuron._rtneuron.Camera.getProjectionOrtho">
+<code class="descname">getProjectionOrtho</code><span class="sig-paren">(</span><em>(Camera)arg1</em><span class="sig-paren">)</span> &rarr; tuple :<a class="headerlink" href="#rtneuron._rtneuron.Camera.getProjectionOrtho" title="Permalink to this definition">¶</a></dt>
+<dd><p>Gets the camera frustum for orthographic projection.</p>
+<p>The results are undefined if the camera is using perspective projection.</p>
+<dl class="docutils">
+<dt><strong>Return</strong></dt>
+<dd>left, right, bottom and top</dd>
+</dl>
+</dd></dl>
+
+<dl class="method">
+<dt id="rtneuron._rtneuron.Camera.getProjectionPerspective">
+<code class="descname">getProjectionPerspective</code><span class="sig-paren">(</span><em>(Camera)arg1</em><span class="sig-paren">)</span> &rarr; tuple :<a class="headerlink" href="#rtneuron._rtneuron.Camera.getProjectionPerspective" title="Permalink to this definition">¶</a></dt>
+<dd><p>Gets the parameters of a perspective projection.</p>
+<p>The results are undefined if the camera is set as orthographic.</p>
+<dl class="docutils">
+<dt><strong>Return</strong></dt>
+<dd>A tuple with the vertical field of view and the aspect ratio.</dd>
+</dl>
+</dd></dl>
+
+<dl class="method">
+<dt id="rtneuron._rtneuron.Camera.getView">
+<code class="descname">getView</code><span class="sig-paren">(</span><em>(Camera)arg1</em><span class="sig-paren">)</span> &rarr; object :<a class="headerlink" href="#rtneuron._rtneuron.Camera.getView" title="Permalink to this definition">¶</a></dt>
+<dd><p>Get the camera position.</p>
+<dl class="docutils">
+<dt><strong>Return</strong></dt>
+<dd>A tuple (position, (axis, angle)) where position and axis are [x, y, z] lists and the angle is in degrees.</dd>
+</dl>
+</dd></dl>
+
+<dl class="method">
+<dt id="rtneuron._rtneuron.Camera.getViewMatrix">
+<code class="descname">getViewMatrix</code><span class="sig-paren">(</span><em>(Camera)arg1</em><span class="sig-paren">)</span> &rarr; object :<a class="headerlink" href="#rtneuron._rtneuron.Camera.getViewMatrix" title="Permalink to this definition">¶</a></dt>
+<dd><p>Get the camera modelview matrix.</p>
+<dl class="docutils">
+<dt><strong>Return</strong></dt>
+<dd>An OpenGL ready 4x4 numpy matrix</dd>
+</dl>
+</dd></dl>
+
+<dl class="method">
+<dt id="rtneuron._rtneuron.Camera.isOrtho">
+<code class="descname">isOrtho</code><span class="sig-paren">(</span><em>(Camera)arg1</em><span class="sig-paren">)</span> &rarr; bool :<a class="headerlink" href="#rtneuron._rtneuron.Camera.isOrtho" title="Permalink to this definition">¶</a></dt>
+<dd><dl class="docutils">
+<dt><strong>Return</strong></dt>
+<dd>True if the camera is applying orthographic projection, false otherwise</dd>
+</dl>
+</dd></dl>
+
+<dl class="method">
+<dt id="rtneuron._rtneuron.Camera.makeOrtho">
+<code class="descname">makeOrtho</code><span class="sig-paren">(</span><em>(Camera)arg1</em><span class="sig-paren">)</span> &rarr; None :<a class="headerlink" href="#rtneuron._rtneuron.Camera.makeOrtho" title="Permalink to this definition">¶</a></dt>
+<dd><p>Sets the camera to do orthographic projection preserving the current frustum.</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="rtneuron._rtneuron.Camera.makePerspective">
+<code class="descname">makePerspective</code><span class="sig-paren">(</span><em>(Camera)arg1</em><span class="sig-paren">)</span> &rarr; None :<a class="headerlink" href="#rtneuron._rtneuron.Camera.makePerspective" title="Permalink to this definition">¶</a></dt>
+<dd><p>Sets the camera to do perspective projection preserving the current frustum.</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="rtneuron._rtneuron.Camera.projectPoint">
+<code class="descname">projectPoint</code><span class="sig-paren">(</span><em>(Camera)arg1</em>, <em>(object)arg2</em><span class="sig-paren">)</span> &rarr; object :<a class="headerlink" href="#rtneuron._rtneuron.Camera.projectPoint" title="Permalink to this definition">¶</a></dt>
+<dd><p>Returns the 2D projected coordinates of a 3D point in world coordinates.</p>
+<p>The third coordinate just represents if the point is in front of (+1), coincident (0) or behind (-1) the camera. If any coordinate is &lt;-1 or &gt;1 that means that the point is outside the frustum.</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="rtneuron._rtneuron.Camera.setProjectionFrustum">
+<code class="descname">setProjectionFrustum</code><span class="sig-paren">(</span><em>(Camera)arg1</em>, <em>(float)left</em>, <em>(float)right</em>, <em>(float)bottom</em>, <em>(float)top</em><span class="optional">[</span>, <em>(float)near=0.1</em><span class="optional">]</span><span class="sig-paren">)</span> &rarr; None :<a class="headerlink" href="#rtneuron._rtneuron.Camera.setProjectionFrustum" title="Permalink to this definition">¶</a></dt>
+<dd><p>Sets the camera frustum for perspective projection.</p>
+<p>Near and far are autoadjusted by the renderer. The near value provided here is used to infer the field of view. No auto aspect ratio conservation is performed.</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="rtneuron._rtneuron.Camera.setProjectionOrtho">
+<code class="descname">setProjectionOrtho</code><span class="sig-paren">(</span><em>(Camera)arg1</em>, <em>(float)left</em>, <em>(float)right</em>, <em>(float)bottom</em>, <em>(float)top</em><span class="optional">[</span>, <em>(float)near=0.1</em><span class="optional">]</span><span class="sig-paren">)</span> &rarr; None :<a class="headerlink" href="#rtneuron._rtneuron.Camera.setProjectionOrtho" title="Permalink to this definition">¶</a></dt>
+<dd><p>Sets the camera frustum for orthographic projections.</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="rtneuron._rtneuron.Camera.setProjectionPerspective">
+<code class="descname">setProjectionPerspective</code><span class="sig-paren">(</span><em>(Camera)arg1</em>, <em>(float)verticalFOV</em><span class="sig-paren">)</span> &rarr; None :<a class="headerlink" href="#rtneuron._rtneuron.Camera.setProjectionPerspective" title="Permalink to this definition">¶</a></dt>
+<dd><p>Change the vertical field of view of the perspective projection.</p>
+<p>The aspect ratio is inferred from the current projection matrix.</p>
+<p><strong>Parameters</strong></p>
+<blockquote>
+<div><code class="docutils literal"><span class="pre">verticalFOV</span></code> -       Angle in degrees.</div></blockquote>
+</dd></dl>
+
+<dl class="method">
+<dt id="rtneuron._rtneuron.Camera.setView">
+<code class="descname">setView</code><span class="sig-paren">(</span><em>(Camera)arg1</em>, <em>(object)position</em>, <em>(object)orientation</em><span class="sig-paren">)</span> &rarr; None :<a class="headerlink" href="#rtneuron._rtneuron.Camera.setView" title="Permalink to this definition">¶</a></dt>
+<dd><p>Sets the camera position</p>
+<p><strong>Parameters</strong></p>
+<blockquote>
+<div><p><code class="docutils literal"><span class="pre">position</span></code> -       The world position of the camera</p>
+<p><code class="docutils literal"><span class="pre">orientation</span></code> -       A tuple ((x, y, z), angle) with a rotation to be applied to the camera (the initial view direction is looking down the negative z axis). The angle is in degrees.</p>
+</div></blockquote>
+</dd></dl>
+
+<dl class="method">
+<dt id="rtneuron._rtneuron.Camera.setViewLookAt">
+<code class="descname">setViewLookAt</code><span class="sig-paren">(</span><em>(Camera)arg1</em>, <em>(object)eye</em>, <em>(object)center</em>, <em>(object)up</em><span class="sig-paren">)</span> &rarr; None :<a class="headerlink" href="#rtneuron._rtneuron.Camera.setViewLookAt" title="Permalink to this definition">¶</a></dt>
+<dd><p>The same as gluLookAt.</p>
+<p>This method also sets the home position and pivotal point for manipulators that take it into account.</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="rtneuron._rtneuron.Camera.unprojectPoint">
+<code class="descname">unprojectPoint</code><span class="sig-paren">(</span><em>(Camera)arg1</em>, <em>(object)arg2</em>, <em>(float)arg3</em><span class="sig-paren">)</span> &rarr; object :<a class="headerlink" href="#rtneuron._rtneuron.Camera.unprojectPoint" title="Permalink to this definition">¶</a></dt>
+<dd><p>Return the 3D world coordinates of a projected point.</p>
+<p><strong>Parameters</strong></p>
+<blockquote>
+<div><p><code class="docutils literal"><span class="pre">point</span></code> -       The 2D normalized device coordinates of the point</p>
+<p><code class="docutils literal"><span class="pre">z</span></code> -       The z value of the 2D point in camera coordinates. Note that for points in front of the camera this value is negative.</p>
+</div></blockquote>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="rtneuron._rtneuron.Camera.viewDirty">
+<code class="descname">viewDirty</code><a class="headerlink" href="#rtneuron._rtneuron.Camera.viewDirty" title="Permalink to this definition">¶</a></dt>
+<dd><p>Emitted whenever the modelview matrix is modified by the rendering engine.</p>
+</dd></dl>
+
+</dd></dl>
+
+<dl class="class">
+<dt id="rtneuron._rtneuron.CameraManipulator">
+<em class="property">class </em><code class="descclassname">rtneuron._rtneuron.</code><code class="descname">CameraManipulator</code><a class="headerlink" href="#rtneuron._rtneuron.CameraManipulator" title="Permalink to this definition">¶</a></dt>
+<dd><p>Base class for all camera manipulators.</p>
+<p>Inherits from noncopyable</p>
+<p>Subclassed by bbp.rtneuron.CameraPathManipulator, bbp.rtneuron.TrackballManipulator, bbp.rtneuron.VRPNManipulator</p>
+<dl class="method">
+<dt id="rtneuron._rtneuron.CameraManipulator.__init__">
+<code class="descname">__init__</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#rtneuron._rtneuron.CameraManipulator.__init__" title="Permalink to this definition">¶</a></dt>
+<dd><p>Raises an exception
+This class cannot be instantiated from Python</p>
+</dd></dl>
+
+</dd></dl>
+
+<dl class="class">
+<dt id="rtneuron._rtneuron.CameraPath">
+<em class="property">class </em><code class="descclassname">rtneuron._rtneuron.</code><code class="descname">CameraPath</code><a class="headerlink" href="#rtneuron._rtneuron.CameraPath" title="Permalink to this definition">¶</a></dt>
+<dd><p>A sequence of camera keyframes with timestamps.</p>
+<dl class="class">
+<dt id="rtneuron._rtneuron.CameraPath.KeyFrame">
+<em class="property">class </em><code class="descname">KeyFrame</code><a class="headerlink" href="#rtneuron._rtneuron.CameraPath.KeyFrame" title="Permalink to this definition">¶</a></dt>
+<dd><p>Position, orientation and stereo correction of a given timestamp.</p>
+<dl class="method">
+<dt id="rtneuron._rtneuron.CameraPath.KeyFrame.__init__">
+<code class="descname">__init__</code><span class="sig-paren">(</span><em>(object)arg1</em><span class="sig-paren">)</span> &rarr; None<a class="headerlink" href="#rtneuron._rtneuron.CameraPath.KeyFrame.__init__" title="Permalink to this definition">¶</a></dt>
+<dd><p>__init__( (object)arg1, (object)arg2, (object)arg3, (float)arg4) -&gt; object</p>
+<p>__init__( (object)arg1, (View)arg2) -&gt; None</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="rtneuron._rtneuron.CameraPath.KeyFrame.orientation">
+<code class="descname">orientation</code><a class="headerlink" href="#rtneuron._rtneuron.CameraPath.KeyFrame.orientation" title="Permalink to this definition">¶</a></dt>
+<dd><p>An (x, y, z, w) tuple where x, y, z represents the rotation axis and w the rotation angle in degrees.</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="rtneuron._rtneuron.CameraPath.KeyFrame.position">
+<code class="descname">position</code><a class="headerlink" href="#rtneuron._rtneuron.CameraPath.KeyFrame.position" title="Permalink to this definition">¶</a></dt>
+<dd><p>An (x, y, z) tuple.</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="rtneuron._rtneuron.CameraPath.KeyFrame.stereoCorrection">
+<code class="descname">stereoCorrection</code><a class="headerlink" href="#rtneuron._rtneuron.CameraPath.KeyFrame.stereoCorrection" title="Permalink to this definition">¶</a></dt>
+<dd><p>A scalar multiplicative factor for the interocular distance.</p>
+</dd></dl>
+
+</dd></dl>
+
+<dl class="method">
+<dt id="rtneuron._rtneuron.CameraPath.__init__">
+<code class="descclassname">CameraPath.</code><code class="descname">__init__</code><span class="sig-paren">(</span><em>(object)arg1</em><span class="sig-paren">)</span> &rarr; None<a class="headerlink" href="#rtneuron._rtneuron.CameraPath.__init__" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="method">
+<dt id="rtneuron._rtneuron.CameraPath.addKeyFrame">
+<code class="descclassname">CameraPath.</code><code class="descname">addKeyFrame</code><span class="sig-paren">(</span><em>(CameraPath)arg1</em>, <em>(float)seconds</em>, <em>(KeyFrame)keyframe</em><span class="sig-paren">)</span> &rarr; None :<a class="headerlink" href="#rtneuron._rtneuron.CameraPath.addKeyFrame" title="Permalink to this definition">¶</a></dt>
+<dd><blockquote>
+<div><p>Adds a new key frame to the path.</p>
+<p>If there&#8217;s a key frame with that exact timing, it is replaced. Changing the old key frame from an existing reference does not affect the camera path.</p>
+</div></blockquote>
+<p>addKeyFrame( (CameraPath)arg1, (float)seconds, (View)view) -&gt; None :</p>
+<blockquote>
+<div><p>Adds a new key frame to the path from the camera and stereo correction of the given view.</p>
+<p>If there&#8217;s a key frame with that exact timing, it is replaced. Changing the old key frame from an existing reference does not affect the camera path.</p>
+</div></blockquote>
+</dd></dl>
+
+<dl class="method">
+<dt id="rtneuron._rtneuron.CameraPath.clear">
+<code class="descclassname">CameraPath.</code><code class="descname">clear</code><span class="sig-paren">(</span><em>(CameraPath)arg1</em><span class="sig-paren">)</span> &rarr; None :<a class="headerlink" href="#rtneuron._rtneuron.CameraPath.clear" title="Permalink to this definition">¶</a></dt>
+<dd><p>Clears the camera path.</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="rtneuron._rtneuron.CameraPath.getKeyFrame">
+<code class="descclassname">CameraPath.</code><code class="descname">getKeyFrame</code><span class="sig-paren">(</span><em>(CameraPath)arg1</em>, <em>(int)index</em><span class="sig-paren">)</span> &rarr; KeyFrame :<a class="headerlink" href="#rtneuron._rtneuron.CameraPath.getKeyFrame" title="Permalink to this definition">¶</a></dt>
+<dd><p>Returns the key frame at a given position.</p>
+<p>Throws if the index is out of bounds.</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="rtneuron._rtneuron.CameraPath.getKeyFrames">
+<code class="descclassname">CameraPath.</code><code class="descname">getKeyFrames</code><span class="sig-paren">(</span><em>(CameraPath)arg1</em><span class="sig-paren">)</span> &rarr; list :<a class="headerlink" href="#rtneuron._rtneuron.CameraPath.getKeyFrames" title="Permalink to this definition">¶</a></dt>
+<dd><p>Return a list of tuples (times, KeyFrame).</p>
+<p>If key frames are modified the camera path will be updated.</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="rtneuron._rtneuron.CameraPath.load">
+<code class="descclassname">CameraPath.</code><code class="descname">load</code><span class="sig-paren">(</span><em>(CameraPath)arg1</em>, <em>(str)filename</em><span class="sig-paren">)</span> &rarr; None :<a class="headerlink" href="#rtneuron._rtneuron.CameraPath.load" title="Permalink to this definition">¶</a></dt>
+<dd><p>Loads a camera path from the given file.</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="rtneuron._rtneuron.CameraPath.removeKeyFrame">
+<code class="descclassname">CameraPath.</code><code class="descname">removeKeyFrame</code><span class="sig-paren">(</span><em>(CameraPath)arg1</em>, <em>(int)index</em><span class="sig-paren">)</span> &rarr; None :<a class="headerlink" href="#rtneuron._rtneuron.CameraPath.removeKeyFrame" title="Permalink to this definition">¶</a></dt>
+<dd><p>Removes the keyframe at the given position.</p>
+<p>Throws if the index is out of bounds.</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="rtneuron._rtneuron.CameraPath.replaceKeyFrame">
+<code class="descclassname">CameraPath.</code><code class="descname">replaceKeyFrame</code><span class="sig-paren">(</span><em>(CameraPath)arg1</em>, <em>(int)index</em>, <em>(KeyFrame)frame</em><span class="sig-paren">)</span> &rarr; None :<a class="headerlink" href="#rtneuron._rtneuron.CameraPath.replaceKeyFrame" title="Permalink to this definition">¶</a></dt>
+<dd><p>Replaces a keyframe at a given position with a new one.</p>
+<p>Throws if the index is out of bounds.</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="rtneuron._rtneuron.CameraPath.save">
+<code class="descclassname">CameraPath.</code><code class="descname">save</code><span class="sig-paren">(</span><em>(CameraPath)arg1</em>, <em>(str)filename</em><span class="sig-paren">)</span> &rarr; None :<a class="headerlink" href="#rtneuron._rtneuron.CameraPath.save" title="Permalink to this definition">¶</a></dt>
+<dd><p>Writes this camera path to the given file.</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="rtneuron._rtneuron.CameraPath.setKeyFrames">
+<code class="descclassname">CameraPath.</code><code class="descname">setKeyFrames</code><span class="sig-paren">(</span><em>(CameraPath)arg1</em>, <em>(dict)frames</em><span class="sig-paren">)</span> &rarr; None :<a class="headerlink" href="#rtneuron._rtneuron.CameraPath.setKeyFrames" title="Permalink to this definition">¶</a></dt>
+<dd><p>Replaces the current path by a new one.</p>
+<p><strong>Parameters</strong></p>
+<blockquote>
+<div><code class="docutils literal"><span class="pre">frames</span></code> -       A dictionary with time in seconds as keys and KeyFrames as values</div></blockquote>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="rtneuron._rtneuron.CameraPath.startTime">
+<code class="descclassname">CameraPath.</code><code class="descname">startTime</code><a class="headerlink" href="#rtneuron._rtneuron.CameraPath.startTime" title="Permalink to this definition">¶</a></dt>
+<dd><p>The time of the earliest key frame of NaN if the path is empty.</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="rtneuron._rtneuron.CameraPath.stopTime">
+<code class="descclassname">CameraPath.</code><code class="descname">stopTime</code><a class="headerlink" href="#rtneuron._rtneuron.CameraPath.stopTime" title="Permalink to this definition">¶</a></dt>
+<dd><p>The time of the latest key frame of NaN if the path is empty.</p>
+</dd></dl>
+
+</dd></dl>
+
+<dl class="class">
+<dt id="rtneuron._rtneuron.CameraPathManipulator">
+<em class="property">class </em><code class="descclassname">rtneuron._rtneuron.</code><code class="descname">CameraPathManipulator</code><a class="headerlink" href="#rtneuron._rtneuron.CameraPathManipulator" title="Permalink to this definition">¶</a></dt>
+<dd><dl class="class">
+<dt id="rtneuron._rtneuron.CameraPathManipulator.LoopMode">
+<em class="property">class </em><code class="descname">LoopMode</code><a class="headerlink" href="#rtneuron._rtneuron.CameraPathManipulator.LoopMode" title="Permalink to this definition">¶</a></dt>
+<dd><p>The loop mode defines what to do when the end of the camera path is reached.</p>
+<dl class="docutils">
+<dt><em>Values:</em></dt>
+<dd><ul class="first last simple">
+<li>LOOP_NONE:</li>
+</ul>
+</dd>
+<dt>Do nothing. </dt>
+<dd><ul class="first last simple">
+<li>LOOP_REPEAT:</li>
+</ul>
+</dd>
+<dt>Start over the camera path. </dt>
+<dd><ul class="first last simple">
+<li>LOOP_SWING:</li>
+</ul>
+</dd>
+</dl>
+<p>Play the camera path in reserve until the start is reached and repeat</p>
+<dl class="attribute">
+<dt id="rtneuron._rtneuron.CameraPathManipulator.LoopMode.NONE">
+<code class="descname">NONE</code><em class="property"> = rtneuron._rtneuron.LoopMode.NONE</em><a class="headerlink" href="#rtneuron._rtneuron.CameraPathManipulator.LoopMode.NONE" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="attribute">
+<dt id="rtneuron._rtneuron.CameraPathManipulator.LoopMode.REPEAT">
+<code class="descname">REPEAT</code><em class="property"> = rtneuron._rtneuron.LoopMode.REPEAT</em><a class="headerlink" href="#rtneuron._rtneuron.CameraPathManipulator.LoopMode.REPEAT" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="attribute">
+<dt id="rtneuron._rtneuron.CameraPathManipulator.LoopMode.SWING">
+<code class="descname">SWING</code><em class="property"> = rtneuron._rtneuron.LoopMode.SWING</em><a class="headerlink" href="#rtneuron._rtneuron.CameraPathManipulator.LoopMode.SWING" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+</dd></dl>
+
+<dl class="method">
+<dt id="rtneuron._rtneuron.CameraPathManipulator.__init__">
+<code class="descclassname">CameraPathManipulator.</code><code class="descname">__init__</code><span class="sig-paren">(</span><em>(object)arg1</em><span class="sig-paren">)</span> &rarr; None<a class="headerlink" href="#rtneuron._rtneuron.CameraPathManipulator.__init__" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="attribute">
+<dt id="rtneuron._rtneuron.CameraPathManipulator.frameDelta">
+<code class="descclassname">CameraPathManipulator.</code><code class="descname">frameDelta</code><a class="headerlink" href="#rtneuron._rtneuron.CameraPathManipulator.frameDelta" title="Permalink to this definition">¶</a></dt>
+<dd><p>Get: 
+Return the frame delta in milliseconds</p>
+<p>Set: 
+Sets the delta time between keyframe samples (in milliseconds)</p>
+<p>Use a positive value to set a fixed delta between rendered frames. A value equal to 0 means that the camera path has to be played back in real-time.</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="rtneuron._rtneuron.CameraPathManipulator.getKeyFrame">
+<code class="descclassname">CameraPathManipulator.</code><code class="descname">getKeyFrame</code><span class="sig-paren">(</span><em>(CameraPathManipulator)arg1</em>, <em>(float)milliseconds</em><span class="sig-paren">)</span> &rarr; tuple :<a class="headerlink" href="#rtneuron._rtneuron.CameraPathManipulator.getKeyFrame" title="Permalink to this definition">¶</a></dt>
+<dd><p>Get a interpolated keyframe at the given timestamp</p>
+<dl class="docutils">
+<dt><strong>Return</strong></dt>
+<dd>A tuple (position, (axis, angle), stereoCorection) where position and axis are [x, y, z] lists and the angle is in degrees.</dd>
+<dt><strong>Version</strong></dt>
+<dd>2.4</dd>
+</dl>
+</dd></dl>
+
+<dl class="method">
+<dt id="rtneuron._rtneuron.CameraPathManipulator.load">
+<code class="descclassname">CameraPathManipulator.</code><code class="descname">load</code><span class="sig-paren">(</span><em>(CameraPathManipulator)arg1</em>, <em>(str)fileName</em><span class="sig-paren">)</span> &rarr; None :<a class="headerlink" href="#rtneuron._rtneuron.CameraPathManipulator.load" title="Permalink to this definition">¶</a></dt>
+<dd><p>Loads a camera path from a file.</p>
+<p>If the camera path contains a single keyframe the loopmode is automatically set to LOOP_NONE.</p>
+<p>Throws if an error occurs reading the file.</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="rtneuron._rtneuron.CameraPathManipulator.loopMode">
+<code class="descclassname">CameraPathManipulator.</code><code class="descname">loopMode</code><a class="headerlink" href="#rtneuron._rtneuron.CameraPathManipulator.loopMode" title="Permalink to this definition">¶</a></dt>
+<dd><p>Get: 
+Set:</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="rtneuron._rtneuron.CameraPathManipulator.playbackStart">
+<code class="descclassname">CameraPathManipulator.</code><code class="descname">playbackStart</code><a class="headerlink" href="#rtneuron._rtneuron.CameraPathManipulator.playbackStart" title="Permalink to this definition">¶</a></dt>
+<dd><p>Get: 
+Set: 
+Overrides the start time of the camera path.</p>
+<p><strong>Parameters</strong></p>
+<blockquote>
+<div><code class="docutils literal"><span class="pre">start</span></code> -       Milliseconds</div></blockquote>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="rtneuron._rtneuron.CameraPathManipulator.playbackStop">
+<code class="descclassname">CameraPathManipulator.</code><code class="descname">playbackStop</code><a class="headerlink" href="#rtneuron._rtneuron.CameraPathManipulator.playbackStop" title="Permalink to this definition">¶</a></dt>
+<dd><p>Get: 
+Set: 
+Overrides the stop time of the camera path</p>
+<p><strong>Parameters</strong></p>
+<blockquote>
+<div><code class="docutils literal"><span class="pre">end</span></code> -       Milliseconds</div></blockquote>
+</dd></dl>
+
+<dl class="method">
+<dt id="rtneuron._rtneuron.CameraPathManipulator.setPath">
+<code class="descclassname">CameraPathManipulator.</code><code class="descname">setPath</code><span class="sig-paren">(</span><em>(CameraPathManipulator)arg1</em>, <em>(CameraPath)arg2</em><span class="sig-paren">)</span> &rarr; None<a class="headerlink" href="#rtneuron._rtneuron.CameraPathManipulator.setPath" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="method">
+<dt id="rtneuron._rtneuron.CameraPathManipulator.setPlaybackInterval">
+<code class="descclassname">CameraPathManipulator.</code><code class="descname">setPlaybackInterval</code><span class="sig-paren">(</span><em>(CameraPathManipulator)arg1</em>, <em>(float)arg2</em>, <em>(float)arg3</em><span class="sig-paren">)</span> &rarr; None :<a class="headerlink" href="#rtneuron._rtneuron.CameraPathManipulator.setPlaybackInterval" title="Permalink to this definition">¶</a></dt>
+<dd><p>Overrides the start and stop time of the camera path.</p>
+<p><strong>Parameters</strong></p>
+<blockquote>
+<div><p><code class="docutils literal"><span class="pre">start</span></code> -       Milliseconds</p>
+<p><code class="docutils literal"><span class="pre">end</span></code> -       Milliseconds</p>
+</div></blockquote>
+</dd></dl>
+
+</dd></dl>
+
+<dl class="class">
+<dt id="rtneuron._rtneuron.ColorMap">
+<em class="property">class </em><code class="descclassname">rtneuron._rtneuron.</code><code class="descname">ColorMap</code><a class="headerlink" href="#rtneuron._rtneuron.ColorMap" title="Permalink to this definition">¶</a></dt>
+<dd><dl class="method">
+<dt id="rtneuron._rtneuron.ColorMap.__init__">
+<code class="descname">__init__</code><span class="sig-paren">(</span><em>(object)arg1</em><span class="sig-paren">)</span> &rarr; None<a class="headerlink" href="#rtneuron._rtneuron.ColorMap.__init__" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="method">
+<dt id="rtneuron._rtneuron.ColorMap.getColor">
+<code class="descname">getColor</code><span class="sig-paren">(</span><em>(ColorMap)arg1</em>, <em>(float)value</em><span class="sig-paren">)</span> &rarr; tuple :<a class="headerlink" href="#rtneuron._rtneuron.ColorMap.getColor" title="Permalink to this definition">¶</a></dt>
+<dd><p>Returns the color for the given value.</p>
+<dl class="docutils">
+<dt><strong>Return</strong></dt>
+<dd>The color at the given value using linear interpolation of the control points.</dd>
+</dl>
+<p><strong>Parameters</strong></p>
+<blockquote>
+<div><code class="docutils literal"><span class="pre">value</span></code> -       Clamped to current range before sampling the internal texture.</div></blockquote>
+</dd></dl>
+
+<dl class="method">
+<dt id="rtneuron._rtneuron.ColorMap.getPoints">
+<code class="descname">getPoints</code><span class="sig-paren">(</span><em>(ColorMap)arg1</em><span class="sig-paren">)</span> &rarr; dict :<a class="headerlink" href="#rtneuron._rtneuron.ColorMap.getPoints" title="Permalink to this definition">¶</a></dt>
+<dd><p>The control points of this color map.</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="rtneuron._rtneuron.ColorMap.getRange">
+<code class="descname">getRange</code><span class="sig-paren">(</span><em>(ColorMap)arg1</em><span class="sig-paren">)</span> &rarr; tuple :<a class="headerlink" href="#rtneuron._rtneuron.ColorMap.getRange" title="Permalink to this definition">¶</a></dt>
+<dd><p>Return the color map range.</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="rtneuron._rtneuron.ColorMap.load">
+<code class="descname">load</code><span class="sig-paren">(</span><em>(ColorMap)arg1</em>, <em>(str)arg2</em><span class="sig-paren">)</span> &rarr; None :<a class="headerlink" href="#rtneuron._rtneuron.ColorMap.load" title="Permalink to this definition">¶</a></dt>
+<dd><p>Load a color map from the file with the given name.</p>
+<p>Throws if an error occurs.</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="rtneuron._rtneuron.ColorMap.save">
+<code class="descname">save</code><span class="sig-paren">(</span><em>(ColorMap)arg1</em>, <em>(str)arg2</em><span class="sig-paren">)</span> &rarr; None :<a class="headerlink" href="#rtneuron._rtneuron.ColorMap.save" title="Permalink to this definition">¶</a></dt>
+<dd><p>Save a color map to a file with the given name.</p>
+<p>Throws if an error occurs.</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="rtneuron._rtneuron.ColorMap.setPoints">
+<code class="descname">setPoints</code><span class="sig-paren">(</span><em>(ColorMap)arg1</em>, <em>(dict)colorPoints</em><span class="sig-paren">)</span> &rarr; None :<a class="headerlink" href="#rtneuron._rtneuron.ColorMap.setPoints" title="Permalink to this definition">¶</a></dt>
+<dd><p>Creates the internal look up table using the map of (value, color) points given.</p>
+<p><strong>Parameters</strong></p>
+<blockquote>
+<div><code class="docutils literal"><span class="pre">colorPoints</span></code> -       The control points dictionary. The keys must be floats and the items are 4-float tuples (RGBA). If any channel is outside the range [0, 1] the underlying color map will be undefined.</div></blockquote>
+</dd></dl>
+
+<dl class="method">
+<dt id="rtneuron._rtneuron.ColorMap.setRange">
+<code class="descname">setRange</code><span class="sig-paren">(</span><em>(ColorMap)arg1</em>, <em>(float)min</em>, <em>(float)max</em><span class="sig-paren">)</span> &rarr; None :<a class="headerlink" href="#rtneuron._rtneuron.ColorMap.setRange" title="Permalink to this definition">¶</a></dt>
+<dd><p>Changes the colormap range adjusting the point values.</p>
+<p>The value of the points are ajusted to the new range and the dirty signal is emitted.</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="rtneuron._rtneuron.ColorMap.textureSize">
+<code class="descname">textureSize</code><a class="headerlink" href="#rtneuron._rtneuron.ColorMap.textureSize" title="Permalink to this definition">¶</a></dt>
+<dd><p>Set the resolution of the internal texture used for the colormap (measured in texels).</p>
+<p>The minimum texture size is bounded to 2 texels.</p>
+</dd></dl>
+
+</dd></dl>
+
+<dl class="class">
+<dt id="rtneuron._rtneuron.ColorScheme">
+<em class="property">class </em><code class="descclassname">rtneuron._rtneuron.</code><code class="descname">ColorScheme</code><a class="headerlink" href="#rtneuron._rtneuron.ColorScheme" title="Permalink to this definition">¶</a></dt>
+<dd><p>Coloring mode for structural rendering of neurons.</p>
+<dl class="docutils">
+<dt><em>Values:</em></dt>
+<dd><ul class="first last simple">
+<li>SOLID:</li>
+</ul>
+</dd>
+<dt>Render the whole neuron with its primary color. </dt>
+<dd><ul class="first last simple">
+<li>RANDOM:</li>
+</ul>
+</dd>
+<dt>Use a random color for the whole neuron. </dt>
+<dd><ul class="first last simple">
+<li>BY_BRANCH_TYPE:</li>
+</ul>
+</dd>
+<dt>Render dendrites with the primary color and axons with the secondary color. </dt>
+<dd><ul class="first last simple">
+<li>BY_WIDTH:</li>
+</ul>
+</dd>
+</dl>
+<p>Apply a different color to each vertex based on it branch width. The color is interpolated from a color map computed using both the primary and secondary colors.</p>
+<dl class="docutils">
+<dt>If simulation display is enabled, the alpha channel of the colormap is used to modulate the final rendering color. </dt>
+<dd><ul class="first last simple">
+<li>BY_DISTANCE_TO_SOMA:</li>
+</ul>
+</dd>
+</dl>
+<p>Apply per-vertex colors based on the distance to the soma. The colormap used is derived from the primary and secondary colors by default, unless a <code class="docutils literal"><span class="pre">by_distance_to_soma</span></code> colormap is set in the <code class="docutils literal"><span class="pre">colormaps</span></code> attribute or the neuron object.</p>
+<dl class="docutils">
+<dt>If simulation display is enabled, the alpha channel of the colormap is used to modulate the final rendering color. </dt>
+<dd><ul class="first last simple">
+<li>NUM_COLOR_SCHEMES</li>
+</ul>
+</dd>
+</dl>
+<dl class="attribute">
+<dt id="rtneuron._rtneuron.ColorScheme.BY_BRANCH_TYPE">
+<code class="descname">BY_BRANCH_TYPE</code><em class="property"> = rtneuron._rtneuron.ColorScheme.BY_BRANCH_TYPE</em><a class="headerlink" href="#rtneuron._rtneuron.ColorScheme.BY_BRANCH_TYPE" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="attribute">
+<dt id="rtneuron._rtneuron.ColorScheme.BY_DISTANCE_TO_SOMA">
+<code class="descname">BY_DISTANCE_TO_SOMA</code><em class="property"> = rtneuron._rtneuron.ColorScheme.BY_DISTANCE_TO_SOMA</em><a class="headerlink" href="#rtneuron._rtneuron.ColorScheme.BY_DISTANCE_TO_SOMA" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="attribute">
+<dt id="rtneuron._rtneuron.ColorScheme.BY_WIDTH">
+<code class="descname">BY_WIDTH</code><em class="property"> = rtneuron._rtneuron.ColorScheme.BY_WIDTH</em><a class="headerlink" href="#rtneuron._rtneuron.ColorScheme.BY_WIDTH" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="attribute">
+<dt id="rtneuron._rtneuron.ColorScheme.RANDOM">
+<code class="descname">RANDOM</code><em class="property"> = rtneuron._rtneuron.ColorScheme.RANDOM</em><a class="headerlink" href="#rtneuron._rtneuron.ColorScheme.RANDOM" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="attribute">
+<dt id="rtneuron._rtneuron.ColorScheme.SOLID">
+<code class="descname">SOLID</code><em class="property"> = rtneuron._rtneuron.ColorScheme.SOLID</em><a class="headerlink" href="#rtneuron._rtneuron.ColorScheme.SOLID" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+</dd></dl>
+
+<dl class="class">
+<dt id="rtneuron._rtneuron.DataBasePartitioning">
+<em class="property">class </em><code class="descclassname">rtneuron._rtneuron.</code><code class="descname">DataBasePartitioning</code><a class="headerlink" href="#rtneuron._rtneuron.DataBasePartitioning" title="Permalink to this definition">¶</a></dt>
+<dd><p>Partitioning scheme to be applied to neurons in DB (sort-last) rendering configurations.</p>
+<dl class="docutils">
+<dt><em>Values:</em></dt>
+<dd><ul class="first last simple">
+<li>NONE * ROUND_ROBIN * SPATIAL</li>
+</ul>
+</dd>
+</dl>
+<dl class="attribute">
+<dt id="rtneuron._rtneuron.DataBasePartitioning.NONE">
+<code class="descname">NONE</code><em class="property"> = rtneuron._rtneuron.DataBasePartitioning.NONE</em><a class="headerlink" href="#rtneuron._rtneuron.DataBasePartitioning.NONE" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="attribute">
+<dt id="rtneuron._rtneuron.DataBasePartitioning.ROUND_ROBIN">
+<code class="descname">ROUND_ROBIN</code><em class="property"> = rtneuron._rtneuron.DataBasePartitioning.ROUND_ROBIN</em><a class="headerlink" href="#rtneuron._rtneuron.DataBasePartitioning.ROUND_ROBIN" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="attribute">
+<dt id="rtneuron._rtneuron.DataBasePartitioning.SPATIAL">
+<code class="descname">SPATIAL</code><em class="property"> = rtneuron._rtneuron.DataBasePartitioning.SPATIAL</em><a class="headerlink" href="#rtneuron._rtneuron.DataBasePartitioning.SPATIAL" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+</dd></dl>
+
+<dl class="class">
+<dt id="rtneuron._rtneuron.NeuronLOD">
+<em class="property">class </em><code class="descclassname">rtneuron._rtneuron.</code><code class="descname">NeuronLOD</code><a class="headerlink" href="#rtneuron._rtneuron.NeuronLOD" title="Permalink to this definition">¶</a></dt>
+<dd><p>Models used for level of detail representation of neurons.</p>
+<dl class="docutils">
+<dt><em>Values:</em></dt>
+<dd><ul class="first last simple">
+<li>MEMBRANE_MESH * TUBELETS * HIGH_DETAIL_CYLINDERS * LOW_DETAIL_CYLINDERS * DETAILED_SOMA * SPHERICAL_SOMA * NUM_NEURON_LODS</li>
+</ul>
+</dd>
+</dl>
+<dl class="attribute">
+<dt id="rtneuron._rtneuron.NeuronLOD.DETAILED_SOMA">
+<code class="descname">DETAILED_SOMA</code><em class="property"> = rtneuron._rtneuron.NeuronLOD.DETAILED_SOMA</em><a class="headerlink" href="#rtneuron._rtneuron.NeuronLOD.DETAILED_SOMA" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="attribute">
+<dt id="rtneuron._rtneuron.NeuronLOD.HIGH_DETAIL_CYLINDERS">
+<code class="descname">HIGH_DETAIL_CYLINDERS</code><em class="property"> = rtneuron._rtneuron.NeuronLOD.HIGH_DETAIL_CYLINDERS</em><a class="headerlink" href="#rtneuron._rtneuron.NeuronLOD.HIGH_DETAIL_CYLINDERS" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="attribute">
+<dt id="rtneuron._rtneuron.NeuronLOD.LOW_DETAIL_CYLINDERS">
+<code class="descname">LOW_DETAIL_CYLINDERS</code><em class="property"> = rtneuron._rtneuron.NeuronLOD.LOW_DETAIL_CYLINDERS</em><a class="headerlink" href="#rtneuron._rtneuron.NeuronLOD.LOW_DETAIL_CYLINDERS" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="attribute">
+<dt id="rtneuron._rtneuron.NeuronLOD.MEMBRANE_MESH">
+<code class="descname">MEMBRANE_MESH</code><em class="property"> = rtneuron._rtneuron.NeuronLOD.MEMBRANE_MESH</em><a class="headerlink" href="#rtneuron._rtneuron.NeuronLOD.MEMBRANE_MESH" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="attribute">
+<dt id="rtneuron._rtneuron.NeuronLOD.SPHERICAL_SOMA">
+<code class="descname">SPHERICAL_SOMA</code><em class="property"> = rtneuron._rtneuron.NeuronLOD.SPHERICAL_SOMA</em><a class="headerlink" href="#rtneuron._rtneuron.NeuronLOD.SPHERICAL_SOMA" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="attribute">
+<dt id="rtneuron._rtneuron.NeuronLOD.TUBELETS">
+<code class="descname">TUBELETS</code><em class="property"> = rtneuron._rtneuron.NeuronLOD.TUBELETS</em><a class="headerlink" href="#rtneuron._rtneuron.NeuronLOD.TUBELETS" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+</dd></dl>
+
+<dl class="class">
+<dt id="rtneuron._rtneuron.PlaybackState">
+<em class="property">class </em><code class="descclassname">rtneuron._rtneuron.</code><code class="descname">PlaybackState</code><a class="headerlink" href="#rtneuron._rtneuron.PlaybackState" title="Permalink to this definition">¶</a></dt>
+<dd><p>Playback state for the simulation.</p>
+<p>State transitions are: PLAYING -&gt; PAUSED if ::<cite>SimulationPlayer.pause</cite> is called. PLAYING -&gt; FINISHED when one of the simulation window edges is reached.</p>
+<p>FINISHED -&gt; PAUSED if ::<cite>SimulationPlayer.pause</cite> is called. FINISHED -&gt; PLAYING if setSimulationTimestamp is called with a valid timestamp or setSimulationDelta is called.</p>
+<p>PAUSED -&gt; PLAYING if ::<cite>SimulationPlayer.play</cite> is called.</p>
+<dl class="docutils">
+<dt><em>Values:</em></dt>
+<dd><ul class="first last simple">
+<li>PLAYING:</li>
+</ul>
+</dd>
+<dt>State change emitted when ::<cite>SimulationPlayer.play</cite> is called and the previous state was paused or finished </dt>
+<dd><ul class="first last simple">
+<li>PAUSED:</li>
+</ul>
+</dd>
+<dt>State change emitted when ::<cite>SimulationPlayer.pause</cite> is called and the previous state was playing </dt>
+<dd><ul class="first last simple">
+<li>FINISHED:</li>
+</ul>
+</dd>
+</dl>
+<p>State change emitted when playback reaches one edge of the playback window. The signal is emmited at the moment the timestamp is requested, but the current timestamp may be older. The signal timestampChanged should be used to know exactly the timestamp of the next frame to be displayed.</p>
+<dl class="attribute">
+<dt id="rtneuron._rtneuron.PlaybackState.FINISHED">
+<code class="descname">FINISHED</code><em class="property"> = rtneuron._rtneuron.PlaybackState.FINISHED</em><a class="headerlink" href="#rtneuron._rtneuron.PlaybackState.FINISHED" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="attribute">
+<dt id="rtneuron._rtneuron.PlaybackState.PAUSED">
+<code class="descname">PAUSED</code><em class="property"> = rtneuron._rtneuron.PlaybackState.PAUSED</em><a class="headerlink" href="#rtneuron._rtneuron.PlaybackState.PAUSED" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="attribute">
+<dt id="rtneuron._rtneuron.PlaybackState.PLAYING">
+<code class="descname">PLAYING</code><em class="property"> = rtneuron._rtneuron.PlaybackState.PLAYING</em><a class="headerlink" href="#rtneuron._rtneuron.PlaybackState.PLAYING" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+</dd></dl>
+
+<dl class="class">
+<dt id="rtneuron._rtneuron.Pointer">
+<em class="property">class </em><code class="descclassname">rtneuron._rtneuron.</code><code class="descname">Pointer</code><a class="headerlink" href="#rtneuron._rtneuron.Pointer" title="Permalink to this definition">¶</a></dt>
+<dd><dl class="method">
+<dt id="rtneuron._rtneuron.Pointer.__init__">
+<code class="descname">__init__</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#rtneuron._rtneuron.Pointer.__init__" title="Permalink to this definition">¶</a></dt>
+<dd><p>Raises an exception
+This class cannot be instantiated from Python</p>
+</dd></dl>
+
+</dd></dl>
+
+<dl class="class">
+<dt id="rtneuron._rtneuron.RTNeuron">
+<em class="property">class </em><code class="descclassname">rtneuron._rtneuron.</code><code class="descname">RTNeuron</code><a class="headerlink" href="#rtneuron._rtneuron.RTNeuron" title="Permalink to this definition">¶</a></dt>
+<dd><p>The main application class.</p>
+<p>This class manages the Equalizer configuration and is the factory for other classes that are tied to a configuration (e.g. the scenes).</p>
+<p>Inherits from std.enable_shared_from_this&lt; RTNeuron &gt;</p>
+<dl class="method">
+<dt id="rtneuron._rtneuron.RTNeuron.__init__">
+<code class="descname">__init__</code><span class="sig-paren">(</span><em>(object)arg1</em><span class="optional">[</span>, <em>(list)argv=[]</em><span class="optional">[</span>, <em>(AttributeMap)attributes=rtneuron._rtneuron.AttributeMap()</em><span class="optional">]</span><span class="optional">]</span><span class="sig-paren">)</span> &rarr; None :<a class="headerlink" href="#rtneuron._rtneuron.RTNeuron.__init__" title="Permalink to this definition">¶</a></dt>
+<dd><dl class="docutils">
+<dt><strong>Version</strong></dt>
+<dd>2.4 required for the <em>profile</em> attribute.</dd>
+</dl>
+<p><strong>Parameters</strong></p>
+<blockquote>
+<div><p><code class="docutils literal"><span class="pre">argv</span></code> -       The command line argument list.</p>
+<dl class="docutils">
+<dt><code class="docutils literal"><span class="pre">attributes</span></code> -       Global application options, including:</dt>
+<dd><p class="first"><em>afferent_syn_color</em> (floatx3[+1]): Default color to use for afferent synapse glyphs</p>
+<dl class="docutils">
+<dt><em>autoadjust_simulation_window</em> (bool) Whether the simulation player window should be adjusted automatically. Simulation window adjustment occurs when:</dt>
+<dd><p class="first">::<cite>SimulationPlayer.setTimestamp</cite> is called</p>
+<p>::<cite>SimulationPlayer.play</cite> is called</p>
+<p class="last">A new simulation timestamp has been mapped and is ready for displaying. Auto-adjustment will not try to obtain the latest simulation data if it can lead to a deadlock (e.g. when the engine is already trying to do it for a previously requested timestamp).</p>
+</dd>
+</dl>
+<p><em>efferent_syn_color</em> (floatx3[+1]): Default color to use for efferent synapse glyphs</p>
+<p><em>has_gui</em> (bool): True to indicate the RTNeuron object that it&#8217;s running inside a QT application.</p>
+<p><em>neuron_color</em> (floatx3[+1]): Default color for neurons</p>
+<p><em>soma_radii</em> (AttributeMap): An attribute map indexed with morphology type names as attribute names and radii as attribute values.</p>
+<p><em>soma_radius</em> (float): Default soma radius to use if no additional information is available.</p>
+<dl class="docutils">
+<dt><em>profile</em> (AttributeMap): An attribute map with options for profiling:</dt>
+<dd><p class="first">enable (bool): Enable frame time profiling</p>
+<p>logfile (string): Log file name to write frame times.</p>
+<p class="last">compositing (bool): False to disable frame compositing, True or non present otherwise.</p>
+</dd>
+</dl>
+<p><em>view</em> (AttributeMap): An attribute map with the default view parameters (e.g. background, lod_bias, ...).</p>
+<p><em>window_width</em> (int): Width of the application window in pixels.</p>
+<p class="last"><em>window_height</em> (int): Height of the application window in pixels.</p>
+</dd>
+</dl>
+</div></blockquote>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="rtneuron._rtneuron.RTNeuron.allViews">
+<code class="descname">allViews</code><a class="headerlink" href="#rtneuron._rtneuron.RTNeuron.allViews" title="Permalink to this definition">¶</a></dt>
+<dd><p>Returns the vector of active or inactive views which belong to any layout.</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="rtneuron._rtneuron.RTNeuron.attributes">
+<code class="descname">attributes</code><a class="headerlink" href="#rtneuron._rtneuron.RTNeuron.attributes" title="Permalink to this definition">¶</a></dt>
+<dd><p>Returns a modifiable attribute map.</p>
+<p>These attributes can be modified at runtime.</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="rtneuron._rtneuron.RTNeuron.createConfig">
+<code class="descname">createConfig</code><span class="sig-paren">(</span><em>(RTNeuron)arg1</em><span class="optional">[</span>, <em>(str)configFile=''</em><span class="optional">]</span><span class="sig-paren">)</span> &rarr; None :<a class="headerlink" href="#rtneuron._rtneuron.RTNeuron.createConfig" title="Permalink to this definition">¶</a></dt>
+<dd><p>Deprecated, use init instead.</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="rtneuron._rtneuron.RTNeuron.createScene">
+<code class="descname">createScene</code><span class="sig-paren">(</span><em>(RTNeuron)arg1</em><span class="optional">[</span>, <em>(AttributeMap)attributes=rtneuron._rtneuron.AttributeMap()</em><span class="optional">]</span><span class="sig-paren">)</span> &rarr; Scene :<a class="headerlink" href="#rtneuron._rtneuron.RTNeuron.createScene" title="Permalink to this definition">¶</a></dt>
+<dd><p>Creates a Scene to be used in this application.</p>
+<p>The attribute map includes scene attributes that are passed to the scene constructor. See here for details.</p>
+<p>Currently, all scenes to be used inside a config must be created in all nodes before init is called.</p>
+<p>The application does not hold any reference to the returned scene. If the caller gets rid of the returned reference and no view holds the scene, the scene will be deallocated.</p>
+<p>Do not call from outside the main thread.</p>
+<dl class="docutils">
+<dt><strong>See</strong></dt>
+<dd>Scene.Scene</dd>
+</dl>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="rtneuron._rtneuron.RTNeuron.eventProcessorUpdated">
+<code class="descname">eventProcessorUpdated</code><a class="headerlink" href="#rtneuron._rtneuron.RTNeuron.eventProcessorUpdated" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="method">
+<dt id="rtneuron._rtneuron.RTNeuron.exit">
+<code class="descname">exit</code><span class="sig-paren">(</span><em>(RTNeuron)arg1</em><span class="sig-paren">)</span> &rarr; None :<a class="headerlink" href="#rtneuron._rtneuron.RTNeuron.exit" title="Permalink to this definition">¶</a></dt>
+<dd><p>Stops all rendering and cleans up all the resource from the current Equalizer configuration.</p>
+<p>The exited signal will be emitted when the config is considered to be done. Rendering is not stopped yet at that point.</p>
+<p>Do not call from outside the main thread.</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="rtneuron._rtneuron.RTNeuron.exitConfig">
+<code class="descname">exitConfig</code><span class="sig-paren">(</span><em>(RTNeuron)arg1</em><span class="sig-paren">)</span> &rarr; None :<a class="headerlink" href="#rtneuron._rtneuron.RTNeuron.exitConfig" title="Permalink to this definition">¶</a></dt>
+<dd><p>Deprecated, use exit instead.</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="rtneuron._rtneuron.RTNeuron.exited">
+<code class="descname">exited</code><a class="headerlink" href="#rtneuron._rtneuron.RTNeuron.exited" title="Permalink to this definition">¶</a></dt>
+<dd><p>Emitted while the config is done in Config.setDone.</p>
+<p>Frame rendering is not finished at the point. The signal indicates that the lifetime of objects that might be referenced outside of the library (e.g. in python) is about to end, so object destructions can be scheduled accordingly.</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="rtneuron._rtneuron.RTNeuron.frame">
+<code class="descname">frame</code><span class="sig-paren">(</span><em>(RTNeuron)arg1</em><span class="sig-paren">)</span> &rarr; None :<a class="headerlink" href="#rtneuron._rtneuron.RTNeuron.frame" title="Permalink to this definition">¶</a></dt>
+<dd><p>Trigger a frame.</p>
+<p>If the rendering is paused, triggers the rendering of exactly one frame.</p>
+<p>If the rendering loop is running, triggers a redraw request if the rendering loop was waiting for this event.</p>
+<p>Do not call from outside the main thread in the application node.</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="rtneuron._rtneuron.RTNeuron.frameIssued">
+<code class="descname">frameIssued</code><a class="headerlink" href="#rtneuron._rtneuron.RTNeuron.frameIssued" title="Permalink to this definition">¶</a></dt>
+<dd><p>Emitted after the internal rendering loop has finished issuing a frame.</p>
+<p>The frame is not necessarily finished at this point, but all the distributed objects are guaranteed to have been committed. This can be used for animations.</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="rtneuron._rtneuron.RTNeuron.getActiveViewEventProcessor">
+<code class="descname">getActiveViewEventProcessor</code><span class="sig-paren">(</span><em>(RTNeuron)arg1</em><span class="sig-paren">)</span> &rarr; object<a class="headerlink" href="#rtneuron._rtneuron.RTNeuron.getActiveViewEventProcessor" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="attribute">
+<dt id="rtneuron._rtneuron.RTNeuron.idle">
+<code class="descname">idle</code><a class="headerlink" href="#rtneuron._rtneuron.RTNeuron.idle" title="Permalink to this definition">¶</a></dt>
+<dd><p>Emitted when the application is idle, e.g. waiting for (user)events.</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="rtneuron._rtneuron.RTNeuron.init">
+<code class="descname">init</code><span class="sig-paren">(</span><em>(RTNeuron)arg1</em><span class="optional">[</span>, <em>(str)configFile=''</em><span class="optional">]</span><span class="sig-paren">)</span> &rarr; None :<a class="headerlink" href="#rtneuron._rtneuron.RTNeuron.init" title="Permalink to this definition">¶</a></dt>
+<dd><p>Creates the view (windows, rendering threads, event processing...) Throws if there&#8217;s a view already created.</p>
+<p>In parallel rendering configurations this function needs to call eq.client.initLocal to launch the rendering clients. Instead of blocking forever inside this function, a new thread will be created for the client loop.</p>
+<p>This function blocks until the application (or rendering client) loop is guaranteed to have been started. The rendering loop starts paused ::<cite>RTNeuron.resume</cite> must be called to start the rendering.</p>
+<p>Do not call from outside the main thread.</p>
+<p><strong>Parameters</strong></p>
+<blockquote>
+<div><code class="docutils literal"><span class="pre">config</span></code> -       Path to an Equalizer configuration file or hwsd session name.</div></blockquote>
+</dd></dl>
+
+<dl class="method">
+<dt id="rtneuron._rtneuron.RTNeuron.pause">
+<code class="descname">pause</code><span class="sig-paren">(</span><em>(RTNeuron)arg1</em><span class="sig-paren">)</span> &rarr; None :<a class="headerlink" href="#rtneuron._rtneuron.RTNeuron.pause" title="Permalink to this definition">¶</a></dt>
+<dd><p>Block rendering loop after the current frame finishes.</p>
+<p>Do not call from outside the main thread in the application node.</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="rtneuron._rtneuron.RTNeuron.player">
+<code class="descname">player</code><a class="headerlink" href="#rtneuron._rtneuron.RTNeuron.player" title="Permalink to this definition">¶</a></dt>
+<dd><p>Returns the interface object to simulation playback.</p>
+<p>A single player by default. May become an external object and shared by different views.</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="rtneuron._rtneuron.RTNeuron.record">
+<code class="descname">record</code><span class="sig-paren">(</span><em>(RTNeuron)arg1</em>, <em>(RecordingParams)arg2</em><span class="sig-paren">)</span> &rarr; None :<a class="headerlink" href="#rtneuron._rtneuron.RTNeuron.record" title="Permalink to this definition">¶</a></dt>
+<dd><p>High level function to dump the rendered frames to files.</p>
+<p>When called, the rendering loop is resumed if paused.</p>
+<p>If a camera path is given, a new camera path manipulator is created and assigned to all active views. Any previous camera manipulator will be overriden.</p>
+<p>Recording is stopped automatically when: The camera path end is reached.</p>
+<blockquote>
+<div><p>The end of the simulation window is reached.</p>
+<p>The maximum number of frames to render is reached. whichever occurs first.</p>
+</div></blockquote>
+<p>This function does not wait until all frames are finished (you can set a callback to frameIssued to count frames or use waitRecord). If the simulation delta is set to 0, no simulation playback will be performed (in that case, the current simulation window remains unmodified).</p>
+<p>If the simulation window is invalid (start &gt;= stop) it will not be considered to stop the recording.</p>
+<p>Idle anti-alias appears disabled when using this function.</p>
+<p>Changing simulation playback parameters in the player API will interfere with the results of this function.</p>
+<p>Do not call from outside the main thread.</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="rtneuron._rtneuron.RTNeuron.resume">
+<code class="descname">resume</code><span class="sig-paren">(</span><em>(RTNeuron)arg1</em><span class="sig-paren">)</span> &rarr; None :<a class="headerlink" href="#rtneuron._rtneuron.RTNeuron.resume" title="Permalink to this definition">¶</a></dt>
+<dd><p>Resume the rendering loop.</p>
+<p>Do not call from outside the main thread in the application node.</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="rtneuron._rtneuron.RTNeuron.setShareContext">
+<code class="descname">setShareContext</code><span class="sig-paren">(</span><em>(RTNeuron)arg1</em>, <em>(object)arg2</em><span class="sig-paren">)</span> &rarr; None<a class="headerlink" href="#rtneuron._rtneuron.RTNeuron.setShareContext" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="attribute">
+<dt id="rtneuron._rtneuron.RTNeuron.textureUpdated">
+<code class="descname">textureUpdated</code><a class="headerlink" href="#rtneuron._rtneuron.RTNeuron.textureUpdated" title="Permalink to this definition">¶</a></dt>
+<dd><p>Emitted after the texture that captures the appNode rendering was updated.</p>
+<p>This signal is tied to the existence of the GUI widget which takes this notification to render the UI and the texture.</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="rtneuron._rtneuron.RTNeuron.useLayout">
+<code class="descname">useLayout</code><span class="sig-paren">(</span><em>(RTNeuron)arg1</em>, <em>(str)arg2</em><span class="sig-paren">)</span> &rarr; None :<a class="headerlink" href="#rtneuron._rtneuron.RTNeuron.useLayout" title="Permalink to this definition">¶</a></dt>
+<dd><p>Change the Equalizer layout.</p>
+<p>Throws if the layout does not exist or if there is no configuration initialized. Do not call outside the main thread.</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="rtneuron._rtneuron.RTNeuron.versionString">
+<code class="descname">versionString</code><em class="property"> = 'RTNeuron 3.0.0 (c) 2006-2016 Universidad Politécnica de Madrid, Blue Brain Project'</em><a class="headerlink" href="#rtneuron._rtneuron.RTNeuron.versionString" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="attribute">
+<dt id="rtneuron._rtneuron.RTNeuron.views">
+<code class="descname">views</code><a class="headerlink" href="#rtneuron._rtneuron.RTNeuron.views" title="Permalink to this definition">¶</a></dt>
+<dd><p>Returns the vector of active views.</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="rtneuron._rtneuron.RTNeuron.wait">
+<code class="descname">wait</code><span class="sig-paren">(</span><em>(RTNeuron)arg1</em><span class="sig-paren">)</span> &rarr; None :<a class="headerlink" href="#rtneuron._rtneuron.RTNeuron.wait" title="Permalink to this definition">¶</a></dt>
+<dd><p>Wait for the Equalizer application loop to exit.</p>
+<p>This function returns inmediately if not config is active. Otherwise it blocks until some event makes the application loop to exit.</p>
+<p>While a thread is blocked in this function, calls to init. or waitRecord will block.</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="rtneuron._rtneuron.RTNeuron.waitFrame">
+<code class="descname">waitFrame</code><span class="sig-paren">(</span><em>(RTNeuron)arg1</em><span class="sig-paren">)</span> &rarr; None :<a class="headerlink" href="#rtneuron._rtneuron.RTNeuron.waitFrame" title="Permalink to this definition">¶</a></dt>
+<dd><p>Wait for a new frame to be finished.</p>
+<p>Returns inmediately if no config is active. Exiting the config will also unlock the caller. Do not call from outside the main thread in the application node.</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="rtneuron._rtneuron.RTNeuron.waitFrames">
+<code class="descname">waitFrames</code><span class="sig-paren">(</span><em>(RTNeuron)arg1</em>, <em>(int)arg2</em><span class="sig-paren">)</span> &rarr; None :<a class="headerlink" href="#rtneuron._rtneuron.RTNeuron.waitFrames" title="Permalink to this definition">¶</a></dt>
+<dd><p>Wait for at least n frames to be finished.</p>
+<p>This function resumes the rendering loop. Returns inmediately if no config is active. Exiting the config will also unlock the caller. More frames may be generated before the function returns. Do not call from outside the main thread in the application node.</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="rtneuron._rtneuron.RTNeuron.waitRecord">
+<code class="descname">waitRecord</code><span class="sig-paren">(</span><em>(RTNeuron)arg1</em><span class="sig-paren">)</span> &rarr; None :<a class="headerlink" href="#rtneuron._rtneuron.RTNeuron.waitRecord" title="Permalink to this definition">¶</a></dt>
+<dd><p>Wait for the last frame of a movie recording to be issued.</p>
+<p>Do not call outside the main thread.</p>
+</dd></dl>
+
+</dd></dl>
+
+<dl class="class">
+<dt id="rtneuron._rtneuron.RecordingParams">
+<em class="property">class </em><code class="descclassname">rtneuron._rtneuron.</code><code class="descname">RecordingParams</code><a class="headerlink" href="#rtneuron._rtneuron.RecordingParams" title="Permalink to this definition">¶</a></dt>
+<dd><p>Parameters to configure the generation of movies by ::<cite>RTNeuron.record</cite></p>
+<dl class="method">
+<dt id="rtneuron._rtneuron.RecordingParams.__init__">
+<code class="descname">__init__</code><span class="sig-paren">(</span><em>(object)arg1</em><span class="sig-paren">)</span> &rarr; None<a class="headerlink" href="#rtneuron._rtneuron.RecordingParams.__init__" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="attribute">
+<dt id="rtneuron._rtneuron.RecordingParams.cameraPath">
+<code class="descname">cameraPath</code><a class="headerlink" href="#rtneuron._rtneuron.RecordingParams.cameraPath" title="Permalink to this definition">¶</a></dt>
+<dd><p>The camera path to be used during rendering. If not assigned each view will keep its own camera manipulator.</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="rtneuron._rtneuron.RecordingParams.cameraPathDelta">
+<code class="descname">cameraPathDelta</code><a class="headerlink" href="#rtneuron._rtneuron.RecordingParams.cameraPathDelta" title="Permalink to this definition">¶</a></dt>
+<dd><p>Delta time in milliseconds which the camera path is advanced each frame. If 0 real time will be used.</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="rtneuron._rtneuron.RecordingParams.fileFormat">
+<code class="descname">fileFormat</code><a class="headerlink" href="#rtneuron._rtneuron.RecordingParams.fileFormat" title="Permalink to this definition">¶</a></dt>
+<dd><p>Extension (without dot) of the file format to use. File formats supported are those for which an OSG plugin is avaiable.</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="rtneuron._rtneuron.RecordingParams.filePrefix">
+<code class="descname">filePrefix</code><a class="headerlink" href="#rtneuron._rtneuron.RecordingParams.filePrefix" title="Permalink to this definition">¶</a></dt>
+<dd><p>Prefix to append to the output files.</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="rtneuron._rtneuron.RecordingParams.frameCount">
+<code class="descname">frameCount</code><a class="headerlink" href="#rtneuron._rtneuron.RecordingParams.frameCount" title="Permalink to this definition">¶</a></dt>
+<dd><p>If different from 0, sets the number of frames to render before stop recording.</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="rtneuron._rtneuron.RecordingParams.simulationDelta">
+<code class="descname">simulationDelta</code><a class="headerlink" href="#rtneuron._rtneuron.RecordingParams.simulationDelta" title="Permalink to this definition">¶</a></dt>
+<dd><p>Delta time milliseconds in which the simulation is advanced each frame.</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="rtneuron._rtneuron.RecordingParams.simulationEnd">
+<code class="descname">simulationEnd</code><a class="headerlink" href="#rtneuron._rtneuron.RecordingParams.simulationEnd" title="Permalink to this definition">¶</a></dt>
+<dd><p>End timestamp in milliseconds.</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="rtneuron._rtneuron.RecordingParams.simulationStart">
+<code class="descname">simulationStart</code><a class="headerlink" href="#rtneuron._rtneuron.RecordingParams.simulationStart" title="Permalink to this definition">¶</a></dt>
+<dd><p>Start timestamp in milliseconds.</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="rtneuron._rtneuron.RecordingParams.stopAtCameraPathEnd">
+<code class="descname">stopAtCameraPathEnd</code><a class="headerlink" href="#rtneuron._rtneuron.RecordingParams.stopAtCameraPathEnd" title="Permalink to this definition">¶</a></dt>
+<dd><p>Set to true to stop recording at the end of the camera path if cameraPathDelta is a positive number. The camera path time interval is considered open at the right.</p>
+</dd></dl>
+
+</dd></dl>
+
+<dl class="class">
+<dt id="rtneuron._rtneuron.RepresentationMode">
+<em class="property">class </em><code class="descclassname">rtneuron._rtneuron.</code><code class="descname">RepresentationMode</code><a class="headerlink" href="#rtneuron._rtneuron.RepresentationMode" title="Permalink to this definition">¶</a></dt>
+<dd><p>Representation mode for neurons</p>
+<dl class="docutils">
+<dt><em>Values:</em></dt>
+<dd><ul class="first last simple">
+<li>SOMA * SEGMENT_SKELETON * WHOLE_NEURON * NO_AXON * NO_DISPLAY * NUM_REPRESENTATION_MODES</li>
+</ul>
+</dd>
+</dl>
+<dl class="attribute">
+<dt id="rtneuron._rtneuron.RepresentationMode.NO_AXON">
+<code class="descname">NO_AXON</code><em class="property"> = rtneuron._rtneuron.RepresentationMode.NO_AXON</em><a class="headerlink" href="#rtneuron._rtneuron.RepresentationMode.NO_AXON" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="attribute">
+<dt id="rtneuron._rtneuron.RepresentationMode.NO_DISPLAY">
+<code class="descname">NO_DISPLAY</code><em class="property"> = rtneuron._rtneuron.RepresentationMode.NO_DISPLAY</em><a class="headerlink" href="#rtneuron._rtneuron.RepresentationMode.NO_DISPLAY" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="attribute">
+<dt id="rtneuron._rtneuron.RepresentationMode.SEGMENT_SKELETON">
+<code class="descname">SEGMENT_SKELETON</code><em class="property"> = rtneuron._rtneuron.RepresentationMode.SEGMENT_SKELETON</em><a class="headerlink" href="#rtneuron._rtneuron.RepresentationMode.SEGMENT_SKELETON" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="attribute">
+<dt id="rtneuron._rtneuron.RepresentationMode.SOMA">
+<code class="descname">SOMA</code><em class="property"> = rtneuron._rtneuron.RepresentationMode.SOMA</em><a class="headerlink" href="#rtneuron._rtneuron.RepresentationMode.SOMA" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="attribute">
+<dt id="rtneuron._rtneuron.RepresentationMode.WHOLE_NEURON">
+<code class="descname">WHOLE_NEURON</code><em class="property"> = rtneuron._rtneuron.RepresentationMode.WHOLE_NEURON</em><a class="headerlink" href="#rtneuron._rtneuron.RepresentationMode.WHOLE_NEURON" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+</dd></dl>
+
+<dl class="class">
+<dt id="rtneuron._rtneuron.Scene">
+<em class="property">class </em><code class="descclassname">rtneuron._rtneuron.</code><code class="descname">Scene</code><a class="headerlink" href="#rtneuron._rtneuron.Scene" title="Permalink to this definition">¶</a></dt>
+<dd><p>The scene to be rendered by one or more views.</p>
+<p>A scene contains the circuit elements to be displayed, additional mesh models and is associated with simulation data (this may be moved to the View class in the future).</p>
+<dl class="docutils">
+<dt>The attributes that can be passed to ::<cite>RTNeuron.createScene</cite> are the following:</dt>
+<dd><p class="first"><em>accurate_headlight</em> (bool): Apply shading assuming directional light rays from the camera position or parallel to the projection plane.</p>
+<dl class="docutils">
+<dt><em>alpha_blending</em> (AttributeMap): If provided, transparent rendering will be enabled in this scene. The attributes to configure the alpha-blending algorithm are:</dt>
+<dd><p class="first"><em>mode</em> (string): depth_peeling, multilayer_depth_peeling or fragment_linked_list if compiled with OpenGL 3 support.</p>
+<p><em>max_passes</em> (string): Maximum number of rendering passes for multipass algorithms.</p>
+<p><em>cutoff_samples</em> (string): In multipass algorithms, the number of samples returned by the occlusion query at which the frame can be considered finished.</p>
+<p class="last"><em>slices</em> (int) [only for multi-layer depth peeling]: Number of slices to use in the per-pixel depth partition of the scene. If the input attribute map is empty, transparent rendering will be disabled.</p>
+</dd>
+</dl>
+<p><em>circuit</em> (string): URI of the circuit to use for this scene.</p>
+<p><em>mesh_path</em> (string): Path where neuron meshes are located for the given circuit. This path will be try to be inferred for circuits described by Circuit/BlueConfig.</p>
+<p><em>connect_first_order_branches</em> (bool): Translate the start point of first order branches to connect them to the soma (detailed or spherical depending on the case).</p>
+<p><em>em_shading</em> (bool): Choose between regular phong or fake electron microscopy shading.</p>
+<p><em>inflatable_neurons</em> (bool): If true the neuron models can be inflated by displacing the membrame surface in the normal direction. The inflation factor is specified as a view attribute called <em>inflation_factor</em>.</p>
+<p><em>load_morphologyes</em> (bool): Whether load morphologies for calculating soma radii or not.</p>
+<dl class="docutils">
+<dt><em>lod</em> (AttributeMap): Level of detail options for different types of objects</dt>
+<dd><em>neurons</em> (AttributeMap): Each attribute is a pair of floats between [0, 1] indicating the relative range in which a particular level of detail is used. Attribute names refer to levels of detail and they can be: <em>mesh</em>, high_detail_cylinders*, <em>low_detail_cylinders</em>, <em>tubelets</em>, <em>detailed_soma</em>, spherical_soma*</dd>
+</dl>
+<p><em>mesh_based_partition</em> (bool): Use the meshes for load balancing spatial partitions. Otherwise only the morpholgies are used. This options requires use_meshes to be also true.</p>
+<p><em>partitioning</em> (DataBasePartitioning): The type of decomposition to use for DB (sort-last) partitions.</p>
+<p><em>preload_skeletons</em> (bool): Preload all the capsule skeletons used for view frustum culling into the GPU instead of doing the first type they are visible.</p>
+<p><em>unique_morphologies</em> (bool) If true, enables optimizations in spatial partitions that are only possible assuming that morphologies are unique.</p>
+<p><em>use_cuda</em> (bool): Enable CUDA based view frustums culling.</p>
+<p class="last"><em>use_meshes</em> (bool): Whether triangular meshes should be used for neurons or not.</p>
+</dd>
+</dl>
+<p>Scenes must be created using ::<cite>RTNeuron.createScene</cite> before the Equalizer configuration is started. At creation time scenes are assigned an internal ID. In multi-procress configurations (be it in the same machine or not), the scenes to used must be created in the same order to ensure the consistency of the frames.</p>
+<p>At this moment, scene changes are not propagated from the application process to the rendering clients.</p>
+<dl class="class">
+<dt id="rtneuron._rtneuron.Scene.Object">
+<em class="property">class </em><code class="descname">Object</code><a class="headerlink" href="#rtneuron._rtneuron.Scene.Object" title="Permalink to this definition">¶</a></dt>
+<dd><dl class="method">
+<dt id="rtneuron._rtneuron.Scene.Object.__init__">
+<code class="descname">__init__</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#rtneuron._rtneuron.Scene.Object.__init__" title="Permalink to this definition">¶</a></dt>
+<dd><p>Raises an exception
+This class cannot be instantiated from Python</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="rtneuron._rtneuron.Scene.Object.apply">
+<code class="descname">apply</code><span class="sig-paren">(</span><em>(Object)arg1</em>, <em>(ObjectOperation)operation</em><span class="sig-paren">)</span> &rarr; None :<a class="headerlink" href="#rtneuron._rtneuron.Scene.Object.apply" title="Permalink to this definition">¶</a></dt>
+<dd><p>Applies an operation to this scene object.</p>
+<p>The operation is applied immediately, there is no need to call ::<cite>update()</cite>. The operation is distributed to all the nodes participating in the Equalizer configuration.</p>
+<p><strong>Exceptions</strong></p>
+<blockquote>
+<div><code class="docutils literal"><span class="pre">std.runtime_error</span></code> -       if the operation does not accept this object as input.</div></blockquote>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="rtneuron._rtneuron.Scene.Object.attributes">
+<code class="descname">attributes</code><a class="headerlink" href="#rtneuron._rtneuron.Scene.Object.attributes" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="attribute">
+<dt id="rtneuron._rtneuron.Scene.Object.object">
+<code class="descname">object</code><a class="headerlink" href="#rtneuron._rtneuron.Scene.Object.object" title="Permalink to this definition">¶</a></dt>
+<dd><p>Return a copy of the object passed to the add method that returned this handler.</p>
+<p>These objects will be: A read-only numpy array of u4 for neurons, with the neuron GIDs.</p>
+<blockquote>
+<div><p>A brain.Synapses container for add{A,E}fferentNeurons</p>
+<p>A string with the model name for addModel</p>
+<p>None for addGeometry</p>
+</div></blockquote>
+</dd></dl>
+
+<dl class="method">
+<dt id="rtneuron._rtneuron.Scene.Object.query">
+<code class="descname">query</code><span class="sig-paren">(</span><em>(Object)arg1</em>, <em>(object)ids</em><span class="optional">[</span>, <em>(bool)check_ids=False</em><span class="optional">]</span><span class="sig-paren">)</span> &rarr; Object :<a class="headerlink" href="#rtneuron._rtneuron.Scene.Object.query" title="Permalink to this definition">¶</a></dt>
+<dd><p>Return a handler to a subset of the entities from this object.</p>
+<p>The function shall throw if any of the ids does not identify any entity handled by this object.</p>
+<p>Attribute changes on the subset handler will affect only the entities selected. Attribute changes on the parent handler will still affect all the entities. The child handler attributes are also updated when the parent attributes are modified. However, attribute updates on a child handler are not propagated to the attributes of any other children (regardless of having overlapping subsets). Nevertheless, when calling ::<cite>update()</cite> changes in the attributes are always made effective when needed.</p>
+<p>The lifetime of the returned object is independent of the source one, but the returned object will be invalidated (operations will throw) when the source one is deallocated or invalidated. If this function is called recursively, the new returned objects will depend on the parent of the called object.</p>
+<p>Subset handlers are not part of the objects returned by ::<cite>Scene.getObjects()</cite>.</p>
+<p>Beware that attribute updates on subhandlers may be discarded if the parent object has not been fully integrated in the scene yet (i.e., no frame including it has been rendered).</p>
+<p>This method may not be implemented by all objects.</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="rtneuron._rtneuron.Scene.Object.update">
+<code class="descname">update</code><span class="sig-paren">(</span><em>(Object)arg1</em><span class="sig-paren">)</span> &rarr; None :<a class="headerlink" href="#rtneuron._rtneuron.Scene.Object.update" title="Permalink to this definition">¶</a></dt>
+<dd><p>Issues and update operation on the scene object managed by this handler.</p>
+<p>Attributes are copied internally so it&#8217;s safe to modify the attributes after an update, however those changes won&#8217;t take effect until update is called again.</p>
+</dd></dl>
+
+</dd></dl>
+
+<dl class="class">
+<dt id="rtneuron._rtneuron.Scene.ObjectOperation">
+<em class="property">class </em><code class="descclassname">Scene.</code><code class="descname">ObjectOperation</code><a class="headerlink" href="#rtneuron._rtneuron.Scene.ObjectOperation" title="Permalink to this definition">¶</a></dt>
+<dd><dl class="method">
+<dt id="rtneuron._rtneuron.Scene.ObjectOperation.__init__">
+<code class="descname">__init__</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#rtneuron._rtneuron.Scene.ObjectOperation.__init__" title="Permalink to this definition">¶</a></dt>
+<dd><p>Raises an exception
+This class cannot be instantiated from Python</p>
+</dd></dl>
+
+</dd></dl>
+
+<dl class="method">
+<dt id="rtneuron._rtneuron.Scene.__init__">
+<code class="descclassname">Scene.</code><code class="descname">__init__</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#rtneuron._rtneuron.Scene.__init__" title="Permalink to this definition">¶</a></dt>
+<dd><p>Raises an exception
+This class cannot be instantiated from Python</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="rtneuron._rtneuron.Scene.addAfferentSynapses">
+<code class="descclassname">Scene.</code><code class="descname">addAfferentSynapses</code><span class="sig-paren">(</span><em>(Scene)arg1</em>, <em>(Synapses)synapses</em><span class="optional">[</span>, <em>(AttributeMap)attributes=rtneuron._rtneuron.AttributeMap()</em><span class="optional">]</span><span class="sig-paren">)</span> &rarr; Object :<a class="headerlink" href="#rtneuron._rtneuron.Scene.addAfferentSynapses" title="Permalink to this definition">¶</a></dt>
+<dd><p>Adds a set of synapse glyphs at their post-synaptic locations to the scene.</p>
+<p>Thread safe with regard to the rendering loop.</p>
+<dl class="docutils">
+<dt><strong>Return</strong></dt>
+<dd>An object handler to the synapse set added.</dd>
+</dl>
+<p><strong>Parameters</strong></p>
+<blockquote>
+<div><p><code class="docutils literal"><span class="pre">synapses</span></code> -       The synapse container.</p>
+<dl class="docutils">
+<dt><code class="docutils literal"><span class="pre">attributes</span></code> -       Synapse display attributes:</dt>
+<dd><p class="first">radius (float)</p>
+<p>color (floatx4)</p>
+<p class="last">surface (bool): If true, the synapses are placed on the surfaces of the geometry, or in the center otherwise</p>
+</dd>
+</dl>
+</div></blockquote>
+</dd></dl>
+
+<dl class="method">
+<dt id="rtneuron._rtneuron.Scene.addEfferentSynapses">
+<code class="descclassname">Scene.</code><code class="descname">addEfferentSynapses</code><span class="sig-paren">(</span><em>(Scene)arg1</em>, <em>(Synapses)synapses</em><span class="optional">[</span>, <em>(AttributeMap)attributes=rtneuron._rtneuron.AttributeMap()</em><span class="optional">]</span><span class="sig-paren">)</span> &rarr; Object :<a class="headerlink" href="#rtneuron._rtneuron.Scene.addEfferentSynapses" title="Permalink to this definition">¶</a></dt>
+<dd><p>Adds a set of synapse glyphs at their pre-synaptic locations to the scene.</p>
+<p>Exactly the same as the function addAfferentSynapses but for efferent synapses.</p>
+<dl class="docutils">
+<dt><strong>Return</strong></dt>
+<dd>An object handler to the synapse set added.</dd>
+</dl>
+</dd></dl>
+
+<dl class="method">
+<dt id="rtneuron._rtneuron.Scene.addGeometry">
+<code class="descclassname">Scene.</code><code class="descname">addGeometry</code><span class="sig-paren">(</span><em>(Scene)arg1</em>, <em>(object)vertices</em><span class="optional">[</span>, <em>(object)primitive=None</em><span class="optional">[</span>, <em>(object)colors=None</em><span class="optional">[</span>, <em>(object)normals=None</em><span class="optional">[</span>, <em>(AttributeMap)attributes=rtneuron._rtneuron.AttributeMap()</em><span class="optional">]</span><span class="optional">]</span><span class="optional">]</span><span class="optional">]</span><span class="sig-paren">)</span> &rarr; Object :<a class="headerlink" href="#rtneuron._rtneuron.Scene.addGeometry" title="Permalink to this definition">¶</a></dt>
+<dd><p>Adds geometry described as vertices and faces to the scene.</p>
+<dl class="docutils">
+<dt><strong>Return</strong></dt>
+<dd>An object handler to the model added.</dd>
+</dl>
+<p><strong>Parameters</strong></p>
+<blockquote>
+<div><p><code class="docutils literal"><span class="pre">vertices</span></code> -       A Nx4 numpy array of floats or a list of 4-element lists for adding points with size/radii to the scene. A Nx3 array or 3-element lists for all other cases (points with a single radius</p>
+<p><code class="docutils literal"><span class="pre">primitive</span></code> -       If None, the vertices will be added as points to the scene. For adding lines or triangles this parameter must be a MxI numpy array of integeres or N list of I-element lists, where I is 2 for lines and 3 for triangles.</p>
+<p><code class="docutils literal"><span class="pre">colors</span></code> -       An Nx4 optional numpy array or N lists of 4-element iterables for per vertex colors, or a single 4-element iterable for a global color. If not provided a default color will be used.</p>
+<p><code class="docutils literal"><span class="pre">normals</span></code> -       An optional Nx3 numpy array or a list of 3-element iterables with per vertex normals. Not used for points and spheres.</p>
+<dl class="docutils">
+<dt><code class="docutils literal"><span class="pre">attributes</span></code> -       Optional attributes concerning shading details</dt>
+<dd><p class="first">flat (bool): If true, the normal array is ignored and flat shading is used instead. If false and no normal array is provided, vertex normals are computed on the fly. Flat shading is only meaningful for triangle meshes.</p>
+<p>line_width (float): Line width. Only for line primitives.</p>
+<p>point_size (float): For points without individual size/radius this is the overall size. Its interpretation depends on the point style. For spheres, it&#8217;s the radius. For points or circles, this is the screen size in pixels. If not specified, it will default to 1.</p>
+<p class="last">point_style (string): Use &#8220;spheres&#8221; to add real 3D spheres to the scene, &#8220;points&#8221; to add round points sprites and &#8220;circles&#8221; to add circles with 1 pixel of line width (the last two use regular GL_POINTS style). The default style if not specified is points.</p>
+</dd>
+</dl>
+</div></blockquote>
+</dd></dl>
+
+<dl class="method">
+<dt id="rtneuron._rtneuron.Scene.addModel">
+<code class="descclassname">Scene.</code><code class="descname">addModel</code><span class="sig-paren">(</span><em>(Scene)arg1</em>, <em>(str)model</em>, <em>(object)transformation</em><span class="optional">[</span>, <em>(AttributeMap)attributes=rtneuron._rtneuron.AttributeMap()</em><span class="optional">]</span><span class="sig-paren">)</span> &rarr; Object :<a class="headerlink" href="#rtneuron._rtneuron.Scene.addModel" title="Permalink to this definition">¶</a></dt>
+<dd><blockquote>
+<div><p>Loads a 3D model from a file and adds it to the scene.</p>
+<dl class="docutils">
+<dt><strong>Return</strong></dt>
+<dd>An object handler to the model added.</dd>
+<dt><strong>Warning</strong></dt>
+<dd>Additional models are not divided up in DB decompositions.</dd>
+</dl>
+<p><strong>Parameters</strong></p>
+<blockquote>
+<div><p><code class="docutils literal"><span class="pre">filename</span></code> -       Model file to load.</p>
+<p><code class="docutils literal"><span class="pre">transform</span></code> -       An affine transformation to apply to the model.</p>
+<dl class="docutils">
+<dt><code class="docutils literal"><span class="pre">attributes</span></code> -       Model attributes:</dt>
+<dd><p class="first">color (floatx4) The diffuse color to be applied to the model to all parts that don&#8217;t specify any material already.</p>
+<p class="last">flat (bool): If true and the model doesn&#8217;t include it&#8217;s own shaders, a shader to render facets with flat shading will be applied. If false, it has no effect.</p>
+</dd>
+</dl>
+</div></blockquote>
+</div></blockquote>
+<p>addModel( (Scene)arg1, (str)model [, (str)transformation=&#8217;&#8217; [, (AttributeMap)attributes=&lt;rtneuron._rtneuron.AttributeMap object at 0x7f184883fa70&gt;]]) -&gt; Object :</p>
+<blockquote>
+<div><p>Convenience overload of the function above.</p>
+<dl class="docutils">
+<dt><strong>Return</strong></dt>
+<dd>An object handler to the model added.</dd>
+<dt><strong>Warning</strong></dt>
+<dd>Additional models are not divided up in DB decompositions</dd>
+</dl>
+<p><strong>Parameters</strong></p>
+<blockquote>
+<div><p><code class="docutils literal"><span class="pre">filename</span></code> -       Model file to load.</p>
+<dl class="docutils">
+<dt><code class="docutils literal"><span class="pre">transform</span></code> -       A sequence of affine transformations. The sequence is specified as a colon separated string of 3 possible transformations:</dt>
+<dd><p class="first">rotations &#8220;r&#64;x,y,z,angle&#8221;</p>
+<p>scalings &#8220;s&#64;x,y,z&#8221;</p>
+<p class="last">translations &#8220;t&#64;x,y,z&#8221;</p>
+</dd>
+</dl>
+<p><code class="docutils literal"><span class="pre">attributes</span></code> -       See function above.</p>
+</div></blockquote>
+</div></blockquote>
+</dd></dl>
+
+<dl class="method">
+<dt id="rtneuron._rtneuron.Scene.addNeurons">
+<code class="descclassname">Scene.</code><code class="descname">addNeurons</code><span class="sig-paren">(</span><em>(Scene)arg1</em>, <em>(object)neurons</em><span class="optional">[</span>, <em>(AttributeMap)attributes=rtneuron._rtneuron.AttributeMap()</em><span class="optional">]</span><span class="sig-paren">)</span> &rarr; Object :<a class="headerlink" href="#rtneuron._rtneuron.Scene.addNeurons" title="Permalink to this definition">¶</a></dt>
+<dd><p>Add a set of neurons to the scene.</p>
+<p>This is an asynchronous operation. The neuron container as well as the attribute map are copied internally so it is safe to modify them afterwards. Thread safe with regard to the rendering loop.</p>
+<dl class="docutils">
+<dt><strong>Return</strong></dt>
+<dd>An object handler to the neuron set added.</dd>
+</dl>
+<p><strong>Parameters</strong></p>
+<blockquote>
+<div><p><code class="docutils literal"><span class="pre">gids</span></code> -       The GIDs of the neurons to add.</p>
+<dl class="docutils">
+<dt><code class="docutils literal"><span class="pre">attributes</span></code> -       Neuron display attributes:</dt>
+<dd><p class="first">mode (RepresentationMode): How to display neurons. Neurons added with SOMA or NO_AXON modes cannot be switched to WHOLE_NEURON later on.</p>
+<p>color_scheme (ColorScheme): Coloring method to use. SOLID_COLOR by default is not provided</p>
+<p>color (floatx4): RGBA tuple to be used as base color for SOLID_COLOR and BY_WIDTH_COLORS color schemes.</p>
+<dl class="docutils">
+<dt>colormaps (AttributeMap): Optional submap with target specific color maps. These color maps override the color maps from the view. The supported color maps are:</dt>
+<dd><p class="first"><em>by_distance_to_soma</em>: The color map to use for the BY_DISTANCE_TO_SOMA coloring scheme.</p>
+<p><em>by_width</em>: The color map to use for the BY_WIDTH coloring scheme.</p>
+<p><em>compartments</em>: The color map to use for compartmental simulation data.</p>
+<p class="last"><em>spikes</em>: The color map to use for spike rendering. The range of this color map must be always [0, 1], otherwise the rendering results are undefined.</p>
+</dd>
+</dl>
+<p>primary_color (floatx4): An alias of the above.</p>
+<p>secondary_color (floatx4): RGBA tuple to be used as secondary color for BY_WIDTH_COLORS.</p>
+<p class="last">max_visible_branch_order (int): Changes the maximum branching order of visible sections. Use -1 to make all braches visible and 0 to make only the soma visible.</p>
+</dd>
+</dl>
+</div></blockquote>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="rtneuron._rtneuron.Scene.attributes">
+<code class="descclassname">Scene.</code><code class="descname">attributes</code><a class="headerlink" href="#rtneuron._rtneuron.Scene.attributes" title="Permalink to this definition">¶</a></dt>
+<dd><p>The runtime configurable attribute map.</p>
+<p>The modifiable attributes are: <em>alpha_blending</em> (AttributeMap): The attribute map with options for transparency algorithms. See Scene class documentation</p>
+<blockquote>
+<div><p><em>em_shading</em> (bool): See Scene class documentation</p>
+<p><em>auto_update</em> (bool): Whether scene modifications automatically trigger a dirty signal or not.</p>
+<p><em>inflatable_neurons</em> (bool): Enable/disable neuron membrame inflation along the surface normal. The inflation factor is specified as a view attribute called <em>inflation_factor</em>.</p>
+</div></blockquote>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="rtneuron._rtneuron.Scene.cellSelected">
+<code class="descclassname">Scene.</code><code class="descname">cellSelected</code><a class="headerlink" href="#rtneuron._rtneuron.Scene.cellSelected" title="Permalink to this definition">¶</a></dt>
+<dd><p>Signal emitted when a cell is selected by pick.</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="rtneuron._rtneuron.Scene.cellSetSelected">
+<code class="descclassname">Scene.</code><code class="descname">cellSetSelected</code><a class="headerlink" href="#rtneuron._rtneuron.Scene.cellSetSelected" title="Permalink to this definition">¶</a></dt>
+<dd><p>Signal emitted when a group of cells is selected by pick.</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="rtneuron._rtneuron.Scene.circuit">
+<code class="descclassname">Scene.</code><code class="descname">circuit</code><a class="headerlink" href="#rtneuron._rtneuron.Scene.circuit" title="Permalink to this definition">¶</a></dt>
+<dd><p>Get: 
+Get the current brain.Circuit to be used for this scene</p>
+<p>Set: 
+Set the brain.Circuit to be used for this scene. Throws if the scene already contains neurons or synapses.</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="rtneuron._rtneuron.Scene.circuitBoundingSphere">
+<code class="descclassname">Scene.</code><code class="descname">circuitBoundingSphere</code><a class="headerlink" href="#rtneuron._rtneuron.Scene.circuitBoundingSphere" title="Permalink to this definition">¶</a></dt>
+<dd><dl class="docutils">
+<dt><strong>Return</strong></dt>
+<dd>A tuple with the scene center and radius.</dd>
+</dl>
+</dd></dl>
+
+<dl class="method">
+<dt id="rtneuron._rtneuron.Scene.clear">
+<code class="descclassname">Scene.</code><code class="descname">clear</code><span class="sig-paren">(</span><em>(Scene)arg1</em><span class="sig-paren">)</span> &rarr; None :<a class="headerlink" href="#rtneuron._rtneuron.Scene.clear" title="Permalink to this definition">¶</a></dt>
+<dd><p>Removes all the objects from the scene.</p>
+<p>Clipping planes are removed.</p>
+<p>To be called only from the application node.</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="rtneuron._rtneuron.Scene.clearClipPlanes">
+<code class="descclassname">Scene.</code><code class="descname">clearClipPlanes</code><span class="sig-paren">(</span><em>(Scene)arg1</em><span class="sig-paren">)</span> &rarr; None<a class="headerlink" href="#rtneuron._rtneuron.Scene.clearClipPlanes" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="method">
+<dt id="rtneuron._rtneuron.Scene.clearSimulation">
+<code class="descclassname">Scene.</code><code class="descname">clearSimulation</code><span class="sig-paren">(</span><em>(Scene)arg1</em><span class="sig-paren">)</span> &rarr; None :<a class="headerlink" href="#rtneuron._rtneuron.Scene.clearSimulation" title="Permalink to this definition">¶</a></dt>
+<dd><p>Clear any simulation report from the scene.</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="rtneuron._rtneuron.Scene.getClipPlane">
+<code class="descclassname">Scene.</code><code class="descname">getClipPlane</code><span class="sig-paren">(</span><em>(Scene)arg1</em>, <em>(int)index</em><span class="sig-paren">)</span> &rarr; list :<a class="headerlink" href="#rtneuron._rtneuron.Scene.getClipPlane" title="Permalink to this definition">¶</a></dt>
+<dd><p>Queries the clip plane with a given index.</p>
+<p><strong>Exceptions</strong></p>
+<blockquote>
+<div><code class="docutils literal"><span class="pre">runtime_error</span></code> -       if no plane has been assigned in that index.</div></blockquote>
+</dd></dl>
+
+<dl class="method">
+<dt id="rtneuron._rtneuron.Scene.highlight">
+<code class="descclassname">Scene.</code><code class="descname">highlight</code><span class="sig-paren">(</span><em>(Scene)arg1</em>, <em>(object)arg2</em>, <em>(bool)arg3</em><span class="sig-paren">)</span> &rarr; None :<a class="headerlink" href="#rtneuron._rtneuron.Scene.highlight" title="Permalink to this definition">¶</a></dt>
+<dd><p>Toggle highlighing of a cell set</p>
+<p>To be called only from the application node. <strong>Parameters</strong></p>
+<blockquote>
+<div><p><code class="docutils literal"><span class="pre">gids</span></code> -       The set of cells to toggle.</p>
+<p><code class="docutils literal"><span class="pre">on</span></code> -       True to highlight the cell, false otherwise.</p>
+</div></blockquote>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="rtneuron._rtneuron.Scene.highlightedNeurons">
+<code class="descclassname">Scene.</code><code class="descname">highlightedNeurons</code><a class="headerlink" href="#rtneuron._rtneuron.Scene.highlightedNeurons" title="Permalink to this definition">¶</a></dt>
+<dd><p>Return the gids of the highlighted neurons.</p>
+<dl class="docutils">
+<dt><strong>Return</strong></dt>
+<dd>A numpy array of u4 copied from the internal list.</dd>
+</dl>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="rtneuron._rtneuron.Scene.neuronSelectionMask">
+<code class="descclassname">Scene.</code><code class="descname">neuronSelectionMask</code><a class="headerlink" href="#rtneuron._rtneuron.Scene.neuronSelectionMask" title="Permalink to this definition">¶</a></dt>
+<dd><p>Gets the set of unselectable cells.</p>
+<p>This mask affects the results of ::<cite>pick()</cite> functions.</p>
+<dl class="docutils">
+<dt><strong>Return</strong></dt>
+<dd>A numpy array of u4 with the unslectable neurons.</dd>
+</dl>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="rtneuron._rtneuron.Scene.objects">
+<code class="descclassname">Scene.</code><code class="descname">objects</code><a class="headerlink" href="#rtneuron._rtneuron.Scene.objects" title="Permalink to this definition">¶</a></dt>
+<dd><p>Returns the handlers to all objects added to the scene.</p>
+<dl class="docutils">
+<dt><strong>Return</strong></dt>
+<dd>A list of object handlers.</dd>
+</dl>
+</dd></dl>
+
+<dl class="method">
+<dt id="rtneuron._rtneuron.Scene.pick">
+<code class="descclassname">Scene.</code><code class="descname">pick</code><span class="sig-paren">(</span><em>(Scene)arg1</em>, <em>(object)origin</em>, <em>(object)direction</em><span class="sig-paren">)</span> &rarr; None :<a class="headerlink" href="#rtneuron._rtneuron.Scene.pick" title="Permalink to this definition">¶</a></dt>
+<dd><blockquote>
+<div><p>Intersection test between the pointer ray and the scene elements.</p>
+<p>May emit cellSelected or synapseSelected signals if a scene object was hit.</p>
+<p>A signal is used to communicate the result to allow decoupling the GUI event handling code from selection action callbacks.</p>
+<p><strong>Parameters</strong></p>
+<blockquote>
+<div><p><code class="docutils literal"><span class="pre">origin</span></code> -       world space origin of the pick ray</p>
+<p><code class="docutils literal"><span class="pre">direction</span></code> -       pick ray direction, does not need to be normalized</p>
+</div></blockquote>
+</div></blockquote>
+<p>pick( (Scene)arg1, (View)view, (float)left, (float)right, (float)bottom, (float)top) -&gt; None :</p>
+<blockquote>
+<div><p>Intersection test of the space region selected by a rectangular area projected using the camera from the given view.</p>
+<p>The implementation distinguishes between perspective and orthographic projections. Will emit a cellSetSelected signal with the group of somas intersected by the projection of the rectangle (both towards infinite and the camera position).</p>
+<p>A signal is used to communicate the result to allow decoupling the GUI event hanlding code from selection action callbacks.</p>
+<p><strong>Parameters</strong></p>
+<blockquote>
+<div><p><code class="docutils literal"><span class="pre">view</span></code> -</p>
+<p><code class="docutils literal"><span class="pre">left</span></code> -       Normalized position (in [0,1]) of the left side of the rectangle relative to the camera projection frustum/prism.</p>
+<p><code class="docutils literal"><span class="pre">right</span></code> -       Normalized position (in [0,1]) of the right side of the rectangle relative to the camera projection frustum/prism.</p>
+<p><code class="docutils literal"><span class="pre">bottom</span></code> -       Normalized position (in [0,1]) of the bottom side of the rectangle relative to the camera projection frustum/prism.</p>
+<p><code class="docutils literal"><span class="pre">top</span></code> -       Normalized position (in [0,1]) of the top side of the rectangle relative to the camera projection frustum/prism.</p>
+</div></blockquote>
+</div></blockquote>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="rtneuron._rtneuron.Scene.progress">
+<code class="descclassname">Scene.</code><code class="descname">progress</code><a class="headerlink" href="#rtneuron._rtneuron.Scene.progress" title="Permalink to this definition">¶</a></dt>
+<dd><p>Emitted as scene loading/creation advances.</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="rtneuron._rtneuron.Scene.remove">
+<code class="descclassname">Scene.</code><code class="descname">remove</code><span class="sig-paren">(</span><em>(Scene)arg1</em>, <em>(Object)arg2</em><span class="sig-paren">)</span> &rarr; None :<a class="headerlink" href="#rtneuron._rtneuron.Scene.remove" title="Permalink to this definition">¶</a></dt>
+<dd><p>Removes a target/model from the scene given its handler.</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="rtneuron._rtneuron.Scene.setClipPlane">
+<code class="descclassname">Scene.</code><code class="descname">setClipPlane</code><span class="sig-paren">(</span><em>(Scene)arg1</em>, <em>(int)index</em>, <em>(object)plane</em><span class="sig-paren">)</span> &rarr; None :<a class="headerlink" href="#rtneuron._rtneuron.Scene.setClipPlane" title="Permalink to this definition">¶</a></dt>
+<dd><p>Adds or modifies a clipping plane.</p>
+<p>Clipping planes are only applied to subscenes that have no spatial decomposition, otherwise they are silently ignored.</p>
+<p><strong>Parameters</strong></p>
+<blockquote>
+<div><p><code class="docutils literal"><span class="pre">index</span></code> -       Number of plane to be set. The maximum number of clipping planes is 8.</p>
+<p><code class="docutils literal"><span class="pre">plane</span></code> -       Plane equation of the clipping plane.</p>
+</div></blockquote>
+<p><strong>Exceptions</strong></p>
+<blockquote>
+<div><code class="docutils literal"><span class="pre">runtime_error</span></code> -       if index is &gt;= 8.</div></blockquote>
+</dd></dl>
+
+<dl class="method">
+<dt id="rtneuron._rtneuron.Scene.setSimulation">
+<code class="descclassname">Scene.</code><code class="descname">setSimulation</code><span class="sig-paren">(</span><em>(Scene)arg1</em>, <em>(CompartmentReport)arg2</em><span class="sig-paren">)</span> &rarr; None :<a class="headerlink" href="#rtneuron._rtneuron.Scene.setSimulation" title="Permalink to this definition">¶</a></dt>
+<dd><blockquote>
+<div>Thread safe with regard to the rendering loop.</div></blockquote>
+<p>setSimulation( (Scene)arg1, (SpikeReportReader)arg2) -&gt; None :</p>
+<blockquote>
+<div>Thread safe with regard to the rendering loop.</div></blockquote>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="rtneuron._rtneuron.Scene.somasBoundingSphere">
+<code class="descclassname">Scene.</code><code class="descname">somasBoundingSphere</code><a class="headerlink" href="#rtneuron._rtneuron.Scene.somasBoundingSphere" title="Permalink to this definition">¶</a></dt>
+<dd><dl class="docutils">
+<dt><strong>Return</strong></dt>
+<dd>The center and radius around the somas of the scene.</dd>
+</dl>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="rtneuron._rtneuron.Scene.synapseSelected">
+<code class="descclassname">Scene.</code><code class="descname">synapseSelected</code><a class="headerlink" href="#rtneuron._rtneuron.Scene.synapseSelected" title="Permalink to this definition">¶</a></dt>
+<dd><p>Signal emitted when a synapse is selected by pick. Do not store the synapse argument passed to the callback.</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="rtneuron._rtneuron.Scene.synapsesBoundingSphere">
+<code class="descclassname">Scene.</code><code class="descname">synapsesBoundingSphere</code><a class="headerlink" href="#rtneuron._rtneuron.Scene.synapsesBoundingSphere" title="Permalink to this definition">¶</a></dt>
+<dd><dl class="docutils">
+<dt><strong>Return</strong></dt>
+<dd>The center and radius around the synapses of the scene.</dd>
+</dl>
+</dd></dl>
+
+<dl class="method">
+<dt id="rtneuron._rtneuron.Scene.update">
+<code class="descclassname">Scene.</code><code class="descname">update</code><span class="sig-paren">(</span><em>(Scene)arg1</em><span class="sig-paren">)</span> &rarr; None :<a class="headerlink" href="#rtneuron._rtneuron.Scene.update" title="Permalink to this definition">¶</a></dt>
+<dd><p>To use when auto_update is false to trigger the scene update.</p>
+<p>If the auto_update attribute is false, adding/removing objects from the scene or changing attributes that modify the rendering style will not trigger a new frame and consequent scene update. This function can be used to trigger it manually.</p>
+</dd></dl>
+
+</dd></dl>
+
+<dl class="class">
+<dt id="rtneuron._rtneuron.SimulationPlayer">
+<em class="property">class </em><code class="descclassname">rtneuron._rtneuron.</code><code class="descname">SimulationPlayer</code><a class="headerlink" href="#rtneuron._rtneuron.SimulationPlayer" title="Permalink to this definition">¶</a></dt>
+<dd><p>Interface to simulation playback control.</p>
+<p>The simulation timestamp if part of the frame data, this implies that all views are rendered with the same timestamp.</p>
+<dl class="attribute">
+<dt id="rtneuron._rtneuron.SimulationPlayer.FINISHED">
+<code class="descname">FINISHED</code><em class="property"> = rtneuron._rtneuron.PlaybackState.FINISHED</em><a class="headerlink" href="#rtneuron._rtneuron.SimulationPlayer.FINISHED" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="attribute">
+<dt id="rtneuron._rtneuron.SimulationPlayer.PAUSED">
+<code class="descname">PAUSED</code><em class="property"> = rtneuron._rtneuron.PlaybackState.PAUSED</em><a class="headerlink" href="#rtneuron._rtneuron.SimulationPlayer.PAUSED" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="attribute">
+<dt id="rtneuron._rtneuron.SimulationPlayer.PLAYING">
+<code class="descname">PLAYING</code><em class="property"> = rtneuron._rtneuron.PlaybackState.PLAYING</em><a class="headerlink" href="#rtneuron._rtneuron.SimulationPlayer.PLAYING" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="method">
+<dt id="rtneuron._rtneuron.SimulationPlayer.__init__">
+<code class="descname">__init__</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#rtneuron._rtneuron.SimulationPlayer.__init__" title="Permalink to this definition">¶</a></dt>
+<dd><p>Raises an exception
+This class cannot be instantiated from Python</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="rtneuron._rtneuron.SimulationPlayer.adjustWindow">
+<code class="descname">adjustWindow</code><span class="sig-paren">(</span><em>(SimulationPlayer)arg1</em><span class="sig-paren">)</span> &rarr; None :<a class="headerlink" href="#rtneuron._rtneuron.SimulationPlayer.adjustWindow" title="Permalink to this definition">¶</a></dt>
+<dd><p>Adjusts the simulation playback window to the reports of the active scenes.</p>
+<p>The begin time will be equal to the minimum of the start time of all reports and the end time will be equal to the maximum of end time of all reports.</p>
+<p>For stream based reports, this function will try to update the end timestamp if the playback state is paused.</p>
+<p>The timestamp will be clamped to the new window and a new frame will be triggered if necessary.</p>
+<p><strong>Exceptions</strong></p>
+<blockquote>
+<div><code class="docutils literal"><span class="pre">runtime_error</span></code> -       if there&#8217;s no active scene with a report attached.</div></blockquote>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="rtneuron._rtneuron.SimulationPlayer.beginTime">
+<code class="descname">beginTime</code><a class="headerlink" href="#rtneuron._rtneuron.SimulationPlayer.beginTime" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="attribute">
+<dt id="rtneuron._rtneuron.SimulationPlayer.endTime">
+<code class="descname">endTime</code><a class="headerlink" href="#rtneuron._rtneuron.SimulationPlayer.endTime" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="attribute">
+<dt id="rtneuron._rtneuron.SimulationPlayer.finished">
+<code class="descname">finished</code><a class="headerlink" href="#rtneuron._rtneuron.SimulationPlayer.finished" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="method">
+<dt id="rtneuron._rtneuron.SimulationPlayer.pause">
+<code class="descname">pause</code><span class="sig-paren">(</span><em>(SimulationPlayer)arg1</em><span class="sig-paren">)</span> &rarr; None :<a class="headerlink" href="#rtneuron._rtneuron.SimulationPlayer.pause" title="Permalink to this definition">¶</a></dt>
+<dd><p>Pause simulation playback.</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="rtneuron._rtneuron.SimulationPlayer.play">
+<code class="descname">play</code><span class="sig-paren">(</span><em>(SimulationPlayer)arg1</em><span class="sig-paren">)</span> &rarr; None :<a class="headerlink" href="#rtneuron._rtneuron.SimulationPlayer.play" title="Permalink to this definition">¶</a></dt>
+<dd><p>Start simulation playback from the current timestamp.</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="rtneuron._rtneuron.SimulationPlayer.playbackStateChanged">
+<code class="descname">playbackStateChanged</code><a class="headerlink" href="#rtneuron._rtneuron.SimulationPlayer.playbackStateChanged" title="Permalink to this definition">¶</a></dt>
+<dd><p>Signal emitted when simulation playback state is changed.</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="rtneuron._rtneuron.SimulationPlayer.simulationDelta">
+<code class="descname">simulationDelta</code><a class="headerlink" href="#rtneuron._rtneuron.SimulationPlayer.simulationDelta" title="Permalink to this definition">¶</a></dt>
+<dd><p>The timestep between simulation frames to be used at playback.</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="rtneuron._rtneuron.SimulationPlayer.simulationDeltaChanged">
+<code class="descname">simulationDeltaChanged</code><a class="headerlink" href="#rtneuron._rtneuron.SimulationPlayer.simulationDeltaChanged" title="Permalink to this definition">¶</a></dt>
+<dd><p>Signal emitted when simulation delta is changed.</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="rtneuron._rtneuron.SimulationPlayer.timestamp">
+<code class="descname">timestamp</code><a class="headerlink" href="#rtneuron._rtneuron.SimulationPlayer.timestamp" title="Permalink to this definition">¶</a></dt>
+<dd><p>Get: 
+The timestamp being displayed currently or NaN if undefined.</p>
+<p>Set: 
+Sets the next timestamp to display and triggers rendering.</p>
+<p>It may throw when trying to move the timestamp beyond the end of a stream-based report.</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="rtneuron._rtneuron.SimulationPlayer.timestampChanged">
+<code class="descname">timestampChanged</code><a class="headerlink" href="#rtneuron._rtneuron.SimulationPlayer.timestampChanged" title="Permalink to this definition">¶</a></dt>
+<dd><p>Signal emitted whenever a new frame with a new timestamp has finished.</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="rtneuron._rtneuron.SimulationPlayer.window">
+<code class="descname">window</code><a class="headerlink" href="#rtneuron._rtneuron.SimulationPlayer.window" title="Permalink to this definition">¶</a></dt>
+<dd><p>A (double, double) tuple with the simulation playback time window.</p>
+<p>If written, the timestamp to display is clamped to the new window, a new frame is triggered if necessary and simulation window auto-adjustment is turned off (to turn it on again set RTNeuron.attributes.auto_adjust_simulation_window to True).</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="rtneuron._rtneuron.SimulationPlayer.windowChanged">
+<code class="descname">windowChanged</code><a class="headerlink" href="#rtneuron._rtneuron.SimulationPlayer.windowChanged" title="Permalink to this definition">¶</a></dt>
+<dd><p>Signal emitted when simulation window is changed.</p>
+<p>The signal is emitted be either calls to setWindow or by simulation window auto-adjustment (see ::<cite>RTNeuron.RTNeuron()</cite> for details).</p>
+</dd></dl>
+
+</dd></dl>
+
+<dl class="class">
+<dt id="rtneuron._rtneuron.TrackballManipulator">
+<em class="property">class </em><code class="descclassname">rtneuron._rtneuron.</code><code class="descname">TrackballManipulator</code><a class="headerlink" href="#rtneuron._rtneuron.TrackballManipulator" title="Permalink to this definition">¶</a></dt>
+<dd><p>Default mouse-based manipulator from OpenSceneGraph.</p>
+<p>Use the right button to zoom, middle button to pan and left button to rotate.</p>
+<p>Inherits from bbp.rtneuron.CameraManipulator</p>
+<dl class="method">
+<dt id="rtneuron._rtneuron.TrackballManipulator.__init__">
+<code class="descname">__init__</code><span class="sig-paren">(</span><em>(object)arg1</em><span class="sig-paren">)</span> &rarr; None<a class="headerlink" href="#rtneuron._rtneuron.TrackballManipulator.__init__" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="method">
+<dt id="rtneuron._rtneuron.TrackballManipulator.getHomePosition">
+<code class="descname">getHomePosition</code><span class="sig-paren">(</span><em>(TrackballManipulator)arg1</em><span class="sig-paren">)</span> &rarr; tuple :<a class="headerlink" href="#rtneuron._rtneuron.TrackballManipulator.getHomePosition" title="Permalink to this definition">¶</a></dt>
+<dd><dl class="docutils">
+<dt><strong>Return</strong></dt>
+<dd>A tuple (eye, center, up) where each one is an [x, y, z] vector</dd>
+<dt><strong>Version</strong></dt>
+<dd>2.3</dd>
+</dl>
+</dd></dl>
+
+<dl class="method">
+<dt id="rtneuron._rtneuron.TrackballManipulator.setHomePosition">
+<code class="descname">setHomePosition</code><span class="sig-paren">(</span><em>(TrackballManipulator)arg1</em>, <em>(object)eye</em>, <em>(object)center</em>, <em>(object)up</em><span class="sig-paren">)</span> &rarr; None :<a class="headerlink" href="#rtneuron._rtneuron.TrackballManipulator.setHomePosition" title="Permalink to this definition">¶</a></dt>
+<dd><dl class="docutils">
+<dt><strong>Version</strong></dt>
+<dd>2.3</dd>
+</dl>
+<p><strong>Parameters</strong></p>
+<blockquote>
+<div><p><code class="docutils literal"><span class="pre">eye</span></code> -       The reference camera position</p>
+<p><code class="docutils literal"><span class="pre">center</span></code> -       The reference pivot point for rotations</p>
+<p><code class="docutils literal"><span class="pre">up</span></code> -       The direction of the up direction in the reference orientation. The &#8220;look at&#8221; vector is (center - eye).</p>
+</div></blockquote>
+</dd></dl>
+
+</dd></dl>
+
+<dl class="class">
+<dt id="rtneuron._rtneuron.VRPNManipulator">
+<em class="property">class </em><code class="descclassname">rtneuron._rtneuron.</code><code class="descname">VRPNManipulator</code><a class="headerlink" href="#rtneuron._rtneuron.VRPNManipulator" title="Permalink to this definition">¶</a></dt>
+<dd><p>A camera manipulator which is controlled via a VRPN device. The current supported devices are space mouse and Wiimote.</p>
+<p>Inherits from bbp.rtneuron.CameraManipulator</p>
+<dl class="class">
+<dt id="rtneuron._rtneuron.VRPNManipulator.DeviceType">
+<em class="property">class </em><code class="descname">DeviceType</code><a class="headerlink" href="#rtneuron._rtneuron.VRPNManipulator.DeviceType" title="Permalink to this definition">¶</a></dt>
+<dd><dl class="attribute">
+<dt id="rtneuron._rtneuron.VRPNManipulator.DeviceType.GYRATION_MOUSE">
+<code class="descname">GYRATION_MOUSE</code><em class="property"> = rtneuron._rtneuron.DeviceType.GYRATION_MOUSE</em><a class="headerlink" href="#rtneuron._rtneuron.VRPNManipulator.DeviceType.GYRATION_MOUSE" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="attribute">
+<dt id="rtneuron._rtneuron.VRPNManipulator.DeviceType.INTERSENSE_WAND">
+<code class="descname">INTERSENSE_WAND</code><em class="property"> = rtneuron._rtneuron.DeviceType.INTERSENSE_WAND</em><a class="headerlink" href="#rtneuron._rtneuron.VRPNManipulator.DeviceType.INTERSENSE_WAND" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="attribute">
+<dt id="rtneuron._rtneuron.VRPNManipulator.DeviceType.SPACE_MOUSE">
+<code class="descname">SPACE_MOUSE</code><em class="property"> = rtneuron._rtneuron.DeviceType.SPACE_MOUSE</em><a class="headerlink" href="#rtneuron._rtneuron.VRPNManipulator.DeviceType.SPACE_MOUSE" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="attribute">
+<dt id="rtneuron._rtneuron.VRPNManipulator.DeviceType.WIIMOTE">
+<code class="descname">WIIMOTE</code><em class="property"> = rtneuron._rtneuron.DeviceType.WIIMOTE</em><a class="headerlink" href="#rtneuron._rtneuron.VRPNManipulator.DeviceType.WIIMOTE" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+</dd></dl>
+
+<dl class="method">
+<dt id="rtneuron._rtneuron.VRPNManipulator.__init__">
+<code class="descclassname">VRPNManipulator.</code><code class="descname">__init__</code><span class="sig-paren">(</span><em>(object)arg1</em>, <em>(DeviceType)types</em><span class="optional">[</span>, <em>(str)url</em><span class="optional">]</span><span class="sig-paren">)</span> &rarr; None<a class="headerlink" href="#rtneuron._rtneuron.VRPNManipulator.__init__" title="Permalink to this definition">¶</a></dt>
+<dd><p>__init__( (object)arg1, (DeviceType)type, (AttributeMap)attributes) -&gt; None :</p>
+<blockquote>
+<div><p>Create a VRPN manipulator using the given configuration</p>
+<dl class="docutils">
+<dt>For SPACE_MOUSE and WIIMOTE <em>analog</em> (string|AttributeMap): If it is a string, it contains the VRPN device URL If it is an attribute map, the map contains:</dt>
+<dd><blockquote class="first">
+<div><em>url</em> (string): The device specification for the device.</div></blockquote>
+<p class="last"><em>url</em> (string): The URL of the VRPN device. Provided for consistency with GYRATION_MOUSE and INTERSENSE_WAND and with forward compatibility in mind.</p>
+</dd>
+</dl>
+<p>If neither <em>analog</em> nor <em>url</em> are given, the URL will default to &#8220;<a class="reference external" href="mailto:WiiMote&#37;&#52;&#48;localhost">WiiMote<span>&#64;</span>localhost</a>&#8221; for WIIMOTE and &#8220;<a class="reference external" href="mailto:device&#37;&#52;&#48;localhost">device<span>&#64;</span>localhost</a>&#8221; for SPACE_MOUSE. The same device will be used for the device button. 
+<strong>Parameters</strong></p>
+<blockquote>
+<div><p><code class="docutils literal"><span class="pre">type</span></code> -       The device type.</p>
+<dl class="docutils">
+<dt><code class="docutils literal"><span class="pre">configuration</span></code> -       An attribute map with the device-specific configuration. For GYRATION_MOUSE and INTERSENSE_WAND the configuration attributes are:</dt>
+<dd><blockquote class="first">
+<div><dl class="docutils">
+<dt><em>tracker</em> (AttributeMap):</dt>
+<dd><p class="first"><em>url</em> (string): The VPRN device URL.</p>
+<p><em>sensorid</em> (int | &#8220;any&#8221; | &#8220;lowest&#8221;): The sensor ID for the tracker. Defaults to &#8220;any&#8221; if not provided.</p>
+<p><em>attitude_axis</em> (string or floatx9): A base change matrix from the device coordinates to world coordinates for the attitude axis. Defaults to the identity matrix is not given.</p>
+<p class="last"><em>position_axis</em> (string or floatx9): A base change matrix from the device coordinates to world coordinates for the tracker position. Defaults to the identity matrix is not given</p>
+</dd>
+<dt><em>button</em> (string|AttributeMap): If it is a string, it contains the VRPN device URL If it is an attribute map, the map contains:</dt>
+<dd><em>url</em> (string): The device specification for the device.</dd>
+<dt><em>analog</em> (string|AttributeMap): If it is a string, it contains the VRPN device URL If it is an attribute map, the map contains:</dt>
+<dd><em>url</em> (string): The device specification for the device.</dd>
+</dl>
+<p><em>url</em> The default URL for VRPN devices that are not specified explicitly or which do not have a <em>url</em> attribute.</p>
+</div></blockquote>
+<p class="last">Any of <em>tracker</em>, <em>analog</em> and <em>button</em> can be omitted if <em>url</em> is given. In that case, additional attributes take default values.</p>
+</dd>
+</dl>
+</div></blockquote>
+</div></blockquote>
+</dd></dl>
+
+</dd></dl>
+
+<dl class="class">
+<dt id="rtneuron._rtneuron.View">
+<em class="property">class </em><code class="descclassname">rtneuron._rtneuron.</code><code class="descname">View</code><a class="headerlink" href="#rtneuron._rtneuron.View" title="Permalink to this definition">¶</a></dt>
+<dd><p>This class represents a view on a scene.</p>
+<p>A view holds together a scene, a camera and the visual attributes that are not bound to a scene, e.g. level of detail bias, simulation color map, stereo correction. A view can also have a camera manipulator and a selection pointer. Cameras are view specific and cannot be shared.</p>
+<p>There is a one to one mapping between RTNeuron views and Equalizer views.</p>
+<dl class="docutils">
+<dt><strong>Note</strong></dt>
+<dd>Currently the simulation report is bound to the scene but this will be moved to the view in the future. The same applies to enabling/disabling alpha blending at runtime.</dd>
+</dl>
+<dl class="method">
+<dt id="rtneuron._rtneuron.View.__init__">
+<code class="descname">__init__</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#rtneuron._rtneuron.View.__init__" title="Permalink to this definition">¶</a></dt>
+<dd><p>Raises an exception
+This class cannot be instantiated from Python</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="rtneuron._rtneuron.View.attributes">
+<code class="descname">attributes</code><a class="headerlink" href="#rtneuron._rtneuron.View.attributes" title="Permalink to this definition">¶</a></dt>
+<dd><p>Attribute map with runtime configurable attributes for a View.</p>
+<p>Existing attributes are: General:   <em>background</em> (floatx4): Background color. The alpha channel of the background is considered by frame grabbing functions. If alpha equals to 1, the output images will have no alpha channel.</p>
+<blockquote>
+<div><blockquote>
+<div><em>use_roi</em> (float): Compute and use regions of interest for frame readback in parallel rendering configurations.</div></blockquote>
+<dl class="docutils">
+<dt>Appearance:</dt>
+<dd><p class="first"><em>clod_threshold</em> (float): When using continuous LOD, the unbiased distance at which the transition from pseudocylinders to tublets occurs for branches of radius 1. This value is modulated by the lod_bias. During rendering, the distance of a segment is divided by its radius before comparing it to the clod_threshold.</p>
+<dl class="docutils">
+<dt><em>colormaps</em> (AttributeMap): A map of ColorMap objects. The currently supported color maps are:</dt>
+<dd><p class="first"><em>compartments</em>: The color map to use for compartmental simulation data.</p>
+<p class="last"><em>spikes</em>: The color map to use for spike rendering. This range of this color map must be always [0, 1], otherwise the rendering results are undefined.</p>
+</dd>
+</dl>
+<p><em>display_simulation</em> (bool): Show/hide simulation data.</p>
+<p><em>idle_AA_steps</em> (int): Number of frames to accumulate in idle anti-aliasing</p>
+<p><em>highlight_color</em> (floatx4): The color applied to make highlighted neurons stand out. The highlight color replaces the base color when <em>display_simulation</em> is disabled. When <em>display_simulation</em> is enabled, the highlight color is added to the color obtained from simulation data mapping.</p>
+<p><em>inflation_factor</em> (float): Sets the offset in microns by which neuron membrane surfaces will be displaced along their normal direction. This parameter has effect only on those scenes whose <em>inflatable_neurons</em> attribute is set to true.</p>
+<p><em>lod_bias</em> (float): A number between 0 and 1 that specifies the bias in LOD selection. 0 goes for the lowest LOD and 1 for the highest.</p>
+<p><em>probe_color</em> (floatx4): The color to apply to those parts of a neuron whose simulation value is above the threshold if simulation display is enabled.</p>
+<p><em>probe_threshold</em> (float): The simulation value above which the probe color will be applied to neuron surfaces if simulation display is enabled.</p>
+<p class="last"><em>spike_tail</em> (float): Time in millisecond during which the visual representation of spikes will be still visible.</p>
+</dd>
+<dt>Frame capture</dt>
+<dd><p class="first"><em>snapshot_at_idle</em> (bool): If true, take snapshots only when the rendering thread becomes idle (e.g. antialias accumulation done). Otherwise, the snapshot is taken at the very next frame.</p>
+<p><em>output_file_prefix</em> (string): Prefix for file written during recording.</p>
+<p class="last"><em>output_file_format</em> (string): File format extension (without dot) to use during frame recording. Supported extensions are those for which OSG can find a pluging.</p>
+</dd>
+<dt>Cameras and stereo</dt>
+<dd><p class="first"><em>auto_compute_home_position</em> (bool): If true, the camera manipulator home position is recomputed automatically when the scene object is changed or when the scene emits its dirty signal.</p>
+<p><em>auto_adjust_model_scale</em> (bool): If true, every time the scene is changed the ratio between world and model scales is adjusted.</p>
+<dl class="docutils">
+<dt><em>depth_of_field</em> (AttributeMap): Attributes to enable and configure depth of field effect.</dt>
+<dd><p class="first"><em>enabled</em> (bool)</p>
+<p><em>focal_distance</em> (float): Distance to the camera in world units at which objects are in focus</p>
+<p class="last"><em>focal_range</em> (float): Distance from the focal point within objects remain in focus.</p>
+</dd>
+</dl>
+<p><em>model_scale</em> (bool) : Size hint used by Equalizer to setup orthographic projections and stereo projections. Set to 1 in order to use world coordinates in orthographic camera frustums.</p>
+<p><em>stereo_correction</em> (float): Multiplier of the scene size in relation to the observer for stereo adjustment.</p>
+<p><em>stereo</em> (bool) : Enables/disables stereoscopic rendering.</p>
+<p class="last"><em>zero_parallax_distance</em> (float): In stereo rendering, the distance from the camera in meters at which left and right eye projections converge into the same image (only meaningful for fixed position screens). All valid attributes are initialized to their default values.</p>
+</dd>
+</dl>
+</div></blockquote>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="rtneuron._rtneuron.View.camera">
+<code class="descname">camera</code><a class="headerlink" href="#rtneuron._rtneuron.View.camera" title="Permalink to this definition">¶</a></dt>
+<dd><p>Get only:</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="rtneuron._rtneuron.View.cameraManipulator">
+<code class="descname">cameraManipulator</code><a class="headerlink" href="#rtneuron._rtneuron.View.cameraManipulator" title="Permalink to this definition">¶</a></dt>
+<dd><p>Get: 
+Set: 
+Sets the manipulator that controls de camera.</p>
+<p>The camera manipulator will receive input events from this view and process them into a model matrix. At construction, a trackball manipulator is created by default.</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="rtneuron._rtneuron.View.computeHomePosition">
+<code class="descname">computeHomePosition</code><span class="sig-paren">(</span><em>(View)arg1</em><span class="sig-paren">)</span> &rarr; None :<a class="headerlink" href="#rtneuron._rtneuron.View.computeHomePosition" title="Permalink to this definition">¶</a></dt>
+<dd><p>Compute the home position for the current scene and set it to the camera manipulator.</p>
+<p>The camera position is also reset to new home position.</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="rtneuron._rtneuron.View.pointer">
+<code class="descname">pointer</code><a class="headerlink" href="#rtneuron._rtneuron.View.pointer" title="Permalink to this definition">¶</a></dt>
+<dd><p>Get: 
+Set:</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="rtneuron._rtneuron.View.record">
+<code class="descname">record</code><span class="sig-paren">(</span><em>(View)arg1</em>, <em>(bool)enable</em><span class="sig-paren">)</span> &rarr; None :<a class="headerlink" href="#rtneuron._rtneuron.View.record" title="Permalink to this definition">¶</a></dt>
+<dd><p>Enable or disable frame grabbing.</p>
+<dl class="docutils">
+<dt><strong>See</strong></dt>
+<dd>File naming attributes from View.attributes</dd>
+</dl>
+<p><strong>Parameters</strong></p>
+<blockquote>
+<div><code class="docutils literal"><span class="pre">enable</span></code> -       If true, rendered images will be written to files starting from next frame on.</div></blockquote>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="rtneuron._rtneuron.View.scene">
+<code class="descname">scene</code><a class="headerlink" href="#rtneuron._rtneuron.View.scene" title="Permalink to this definition">¶</a></dt>
+<dd><p>Get: 
+Set: 
+Sets the scene to be displayed.</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="rtneuron._rtneuron.View.snapshot">
+<code class="descname">snapshot</code><span class="sig-paren">(</span><em>(View)arg1</em>, <em>(str)fileName</em><span class="optional">[</span>, <em>(bool)waitForCompletion=True</em><span class="optional">]</span><span class="sig-paren">)</span> &rarr; None :<a class="headerlink" href="#rtneuron._rtneuron.View.snapshot" title="Permalink to this definition">¶</a></dt>
+<dd><blockquote>
+<div><p>Triggers a frame and writes the rendered image to a file.</p>
+<p>This method waits until the image has been written unless waitForCompletion is false, in which case it returns inmediately.</p>
+<p>When idle AA is enabled and the <em>snapshot_at_idle</em> attribute is set, the snapshot is taken when frame accumulation is finished.</p>
+<p>Throws if fileName is empty.</p>
+<p><strong>Parameters</strong></p>
+<blockquote>
+<div><p><code class="docutils literal"><span class="pre">fileName</span></code> -       Filename including extension. If the filename include the squence &#8220;%c&#8221; all destination channels will be captured, replacing &#8220;%c&#8221; with the channel name in the output file. Notice that this option is meaningless for the offscreen snapshot functions.</p>
+<p><code class="docutils literal"><span class="pre">waitForCompletion</span></code> -       if true, locks until the image has been written to a file.</p>
+</div></blockquote>
+</div></blockquote>
+<p>snapshot( (View)arg1, (str)fileName, (float)scale) -&gt; None :</p>
+<blockquote>
+<div><p>Triggers a frame on an auxiliary off-screen window and writes the rendered image to a file.</p>
+<p>The off-screen window can have a different size than the windows in which this view resides. The vertical field of view of the camera will be preserved.</p>
+<p>This method waits until the image has been written.</p>
+<p>When idle AA is enabled and the <em>snapshot_at_idle</em> attribute is set, the snapshot is taken when frame accumulation is finished.</p>
+<p>Throws if fileName is empty or scale is negative or zero.</p>
+<p><strong>Parameters</strong></p>
+<blockquote>
+<div><p><code class="docutils literal"><span class="pre">fileName</span></code> -       Filename including extension.</p>
+<p><code class="docutils literal"><span class="pre">scale</span></code> -       Scale factor that will be uniformly applied to the original view to obtain the final image.</p>
+</div></blockquote>
+</div></blockquote>
+<p>snapshot( (View)arg1, (str)fileName, (tuple)resolution) -&gt; None :</p>
+<blockquote>
+<div><p>Triggers a frame on an auxiliary off-screen window and writes the rendered image to a file.</p>
+<p>The off-screen window can have a different size than the windows in which this view resides. The vertical field of view of the camera will be preserved.</p>
+<p>This method waits until the image has been written.</p>
+<p>When idle AA is enabled and the <em>snapshot_at_idle</em> attribute is set, the snapshot is taken when frame accumulation is finished.</p>
+<p>Throws if fileName is empty or if any of the resolution components is 0.</p>
+<p><strong>Parameters</strong></p>
+<blockquote>
+<div><p><code class="docutils literal"><span class="pre">fileName</span></code> -       Filename including extension.</p>
+<p><code class="docutils literal"><span class="pre">resolution</span></code> -       Tuple containing the horizontal and vertical resolution that will be used to generate the final image.</p>
+</div></blockquote>
+</div></blockquote>
+</dd></dl>
+
+</dd></dl>
+
+<dl class="class">
+<dt id="rtneuron._rtneuron.WiimotePointer">
+<em class="property">class </em><code class="descclassname">rtneuron._rtneuron.</code><code class="descname">WiimotePointer</code><a class="headerlink" href="#rtneuron._rtneuron.WiimotePointer" title="Permalink to this definition">¶</a></dt>
+<dd><dl class="method">
+<dt id="rtneuron._rtneuron.WiimotePointer.__init__">
+<code class="descname">__init__</code><span class="sig-paren">(</span><em>(object)arg1</em>, <em>(str)arg2</em><span class="sig-paren">)</span> &rarr; None<a class="headerlink" href="#rtneuron._rtneuron.WiimotePointer.__init__" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+</dd></dl>
+
+</div>
+<div class="section" id="rtneuron-net-namespace">
+<h3>rtneuron.net namespace<a class="headerlink" href="#rtneuron-net-namespace" title="Permalink to this headline">¶</a></h3>
+</div>
+<div class="section" id="module-rtneuron._rtneuron._sceneops">
+<span id="rtneuron-sceneops-namespace"></span><h3>rtneuron.sceneops namespace<a class="headerlink" href="#module-rtneuron._rtneuron._sceneops" title="Permalink to this headline">¶</a></h3>
+<dl class="class">
+<dt id="rtneuron._rtneuron._sceneops.NeuronClipping">
+<em class="property">class </em><code class="descclassname">rtneuron._rtneuron._sceneops.</code><code class="descname">NeuronClipping</code><a class="headerlink" href="#rtneuron._rtneuron._sceneops.NeuronClipping" title="Permalink to this definition">¶</a></dt>
+<dd><p>This class provides a branch level clipping operation for neurons.</p>
+<p>Culling must be enabled in the scene that contains the target object. Otherwise this operation will have no effect.</p>
+<p>The clipping state to apply is specified by a set of functions to make visible/invisible ranges of the morphological sections.</p>
+<p>The culling mechanism discretizes sections in a predefined number of portions per section. Despite the API provides finer culling description, all the operations will work at the resolution defined by the implementation.</p>
+<p>The current resolution is at most 32 portions per section (regardless of the section length).</p>
+<p>Neuron clipping is affected by the representation mode in the following ways: When all representation modes are available and the mode is changed, the clipping masks are cleared before applying the masks required by the new mode.</p>
+<blockquote>
+<div><p>If the neuron was created with NO_AXON or SOMA modes, changing the representation mode does not affect the current clipping.</p>
+<p>Clipping does not have any effect on the SOMA representation mode under any circumstances.</p>
+<p>When the representation mode is NO_AXON, axon sections cannot be unclipped.</p>
+</div></blockquote>
+<p>Neuron clipping respects spatial partitions of DB configurations.</p>
+<dl class="docutils">
+<dt><strong>Version</strong></dt>
+<dd>2.7</dd>
+</dl>
+<p>Inherits from bbp.rtneuron.Scene.ObjectOperation, boost.enable_shared_from_this&lt; NeuronClipping &gt;</p>
+<dl class="method">
+<dt id="rtneuron._rtneuron._sceneops.NeuronClipping.__init__">
+<code class="descname">__init__</code><span class="sig-paren">(</span><em>(object)arg1</em><span class="sig-paren">)</span> &rarr; None<a class="headerlink" href="#rtneuron._rtneuron._sceneops.NeuronClipping.__init__" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="method">
+<dt id="rtneuron._rtneuron._sceneops.NeuronClipping.clip">
+<code class="descname">clip</code><span class="sig-paren">(</span><em>(NeuronClipping)arg1</em>, <em>(object)sections</em>, <em>(object)starts</em>, <em>(object)ends</em><span class="sig-paren">)</span> &rarr; NeuronClipping :<a class="headerlink" href="#rtneuron._rtneuron._sceneops.NeuronClipping.clip" title="Permalink to this definition">¶</a></dt>
+<dd><p>Mark section ranges for making them invisible.</p>
+<p>Discrete section portions are clipped only if the given range fully contains them. The ranges are considered as closed interval. Ranges applied to section 0 (assumed to be the soma), are always converted into [0, 1]).</p>
+<p>Subsequent calls to NeuronClipping.unclip will cut/split/remove the ranges to be applied.</p>
+<dl class="docutils">
+<dt><strong>Return</strong></dt>
+<dd>self for operation concatenation.</dd>
+</dl>
+<p><strong>Parameters</strong></p>
+<blockquote>
+<div><p><code class="docutils literal"><span class="pre">sections</span></code> -       Section id list. Ids may be repeated.</p>
+<p><code class="docutils literal"><span class="pre">starts</span></code> -       Relative start positions of the ranges. Each value must be smaller than the value at the same position of the &#8216;ends&#8217; vector, otherwise the range is ignored.</p>
+<p><code class="docutils literal"><span class="pre">ends</span></code> -       Relative end positions of the ranges. Each value must be greater than the value at the same position of the &#8216;starts&#8217; vector, otherwise the range is ignored.</p>
+</div></blockquote>
+<p><strong>Exceptions</strong></p>
+<blockquote>
+<div><code class="docutils literal"><span class="pre">std.invalid_argument</span></code> -       if arrays have not the same size or if a range is ill-defined.</div></blockquote>
+</dd></dl>
+
+<dl class="method">
+<dt id="rtneuron._rtneuron._sceneops.NeuronClipping.clipAll">
+<code class="descname">clipAll</code><span class="sig-paren">(</span><em>(NeuronClipping)arg1</em><span class="optional">[</span>, <em>(bool)alsoSoma=False</em><span class="optional">]</span><span class="sig-paren">)</span> &rarr; NeuronClipping :<a class="headerlink" href="#rtneuron._rtneuron._sceneops.NeuronClipping.clipAll" title="Permalink to this definition">¶</a></dt>
+<dd><p>Make all neurites and optionally the soma invisible.</p>
+<dl class="docutils">
+<dt><strong>Return</strong></dt>
+<dd>self for operation concatenation.</dd>
+</dl>
+<p><strong>Parameters</strong></p>
+<blockquote>
+<div><code class="docutils literal"><span class="pre">alsoSoma</span></code> -       If true, the soma will be clipped.</div></blockquote>
+</dd></dl>
+
+<dl class="method">
+<dt id="rtneuron._rtneuron._sceneops.NeuronClipping.unclip">
+<code class="descname">unclip</code><span class="sig-paren">(</span><em>(NeuronClipping)arg1</em>, <em>(object)sections</em>, <em>(object)starts</em>, <em>(object)ends</em><span class="sig-paren">)</span> &rarr; NeuronClipping :<a class="headerlink" href="#rtneuron._rtneuron._sceneops.NeuronClipping.unclip" title="Permalink to this definition">¶</a></dt>
+<dd><p>Mark section ranges for making them invisible.</p>
+<p>Discrete section portions are clipped only if the given range fully contains them. The ranges are considered as closed interval. Ranges applied to section 0 (assumed to be the soma), are always converted into [0, 1]).</p>
+<p>Subsequent calls to NeuronClipping.unclip will cut/split/remove the ranges to be applied.</p>
+<dl class="docutils">
+<dt><strong>Return</strong></dt>
+<dd>self for operation concatenation.</dd>
+</dl>
+<p><strong>Parameters</strong></p>
+<blockquote>
+<div><p><code class="docutils literal"><span class="pre">sections</span></code> -       Section id list. Ids may be repeated.</p>
+<p><code class="docutils literal"><span class="pre">starts</span></code> -       Relative start positions of the ranges. Each value must be smaller than the value at the same position of the &#8216;ends&#8217; vector, otherwise the range is ignored.</p>
+<p><code class="docutils literal"><span class="pre">ends</span></code> -       Relative end positions of the ranges. Each value must be greater than the value at the same position of the &#8216;starts&#8217; vector, otherwise the range is ignored.</p>
+</div></blockquote>
+<p><strong>Exceptions</strong></p>
+<blockquote>
+<div><code class="docutils literal"><span class="pre">std.invalid_argument</span></code> -       if arrays have not the same size or if a range is ill-defined.</div></blockquote>
+</dd></dl>
+
+<dl class="method">
+<dt id="rtneuron._rtneuron._sceneops.NeuronClipping.unclipAfferentBranches">
+<code class="descname">unclipAfferentBranches</code><span class="sig-paren">(</span><em>(NeuronClipping)arg1</em>, <em>(int)arg2</em>, <em>(Morphology)arg3</em>, <em>(Synapses)arg4</em><span class="sig-paren">)</span> &rarr; NeuronClipping :<a class="headerlink" href="#rtneuron._rtneuron._sceneops.NeuronClipping.unclipAfferentBranches" title="Permalink to this definition">¶</a></dt>
+<dd><p>Apply the unclip masks that make visible the portions of efferent branches (dendrites) that connect soma of a neuron to the given synapses.</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="rtneuron._rtneuron._sceneops.NeuronClipping.unclipAll">
+<code class="descname">unclipAll</code><span class="sig-paren">(</span><em>(NeuronClipping)arg1</em><span class="sig-paren">)</span> &rarr; NeuronClipping :<a class="headerlink" href="#rtneuron._rtneuron._sceneops.NeuronClipping.unclipAll" title="Permalink to this definition">¶</a></dt>
+<dd><p>Make all neurites and the soma visible.</p>
+<dl class="docutils">
+<dt><strong>Return</strong></dt>
+<dd>self for operation concatenation.</dd>
+</dl>
+</dd></dl>
+
+<dl class="method">
+<dt id="rtneuron._rtneuron._sceneops.NeuronClipping.unclipEfferentBranches">
+<code class="descname">unclipEfferentBranches</code><span class="sig-paren">(</span><em>(NeuronClipping)arg1</em>, <em>(int)arg2</em>, <em>(Morphology)arg3</em>, <em>(Synapses)arg4</em><span class="sig-paren">)</span> &rarr; NeuronClipping :<a class="headerlink" href="#rtneuron._rtneuron._sceneops.NeuronClipping.unclipEfferentBranches" title="Permalink to this definition">¶</a></dt>
+<dd><p>Apply the unclip masks that make visible the portions of afferent branches (axon) that connect soma of a neuron to the given synapses.</p>
+</dd></dl>
+
+</dd></dl>
+
+</div>
+<div class="section" id="module-rtneuron">
+<span id="free-functions"></span><h3>Free functions<a class="headerlink" href="#module-rtneuron" title="Permalink to this headline">¶</a></h3>
+<dl class="function">
+<dt id="rtneuron.add_hexagonal_prism">
+<code class="descclassname">rtneuron.</code><code class="descname">add_hexagonal_prism</code><span class="sig-paren">(</span><em>scene, center, height, radius, color=[0.2, 0.4, 1.0, 0.2], line_width=2.5</em><span class="sig-paren">)</span><a class="headerlink" href="#rtneuron.add_hexagonal_prism" title="Permalink to this definition">¶</a></dt>
+<dd><p>Add an hexagonal prism to a scene.</p>
+<p>The prism is added as two objects, one for the faces and another one
+with an outline. The outline is rendered with black lines using GL_LINES.
+The line width can be chosen, but it must be &gt;= 1.</p>
+</dd></dl>
+
+<dl class="function">
+<dt id="rtneuron.apply_compartment_report">
+<code class="descclassname">rtneuron.</code><code class="descname">apply_compartment_report</code><span class="sig-paren">(</span><em>simulation</em>, <em>scene_or_view</em>, <em>report_name</em><span class="sig-paren">)</span><a class="headerlink" href="#rtneuron.apply_compartment_report" title="Permalink to this definition">¶</a></dt>
+<dd><p>Load compartment report and apply it to the given scene.</p>
+<p>The second parameter can be a Scene or a View. If a View is given,
+simulation display will be enabled on it.</p>
+</dd></dl>
+
+<dl class="function">
+<dt id="rtneuron.apply_spike_data">
+<code class="descclassname">rtneuron.</code><code class="descname">apply_spike_data</code><span class="sig-paren">(</span><em>simulation_or_filename</em>, <em>scene_or_view</em><span class="sig-paren">)</span><a class="headerlink" href="#rtneuron.apply_spike_data" title="Permalink to this definition">¶</a></dt>
+<dd><p>Load a spike file and apply it to the given scene.</p>
+<p>The first parameter can be a Scene or a View. If a View is given,
+simulation display will be enabled on it.</p>
+</dd></dl>
+
+<dl class="function">
+<dt id="rtneuron.create_scene">
+<code class="descclassname">rtneuron.</code><code class="descname">create_scene</code><span class="sig-paren">(</span><em>engine</em>, <em>simulation</em>, <em>neuron_targets</em>, <em>report_name=None</em>, <em>spikes=None</em>, <em>scene_attributes=None</em><span class="sig-paren">)</span><a class="headerlink" href="#rtneuron.create_scene" title="Permalink to this definition">¶</a></dt>
+<dd><p>Create a scene object for an engine, add the given targets
+and setup simulation.</p>
+</dd></dl>
+
+<dl class="function">
+<dt id="rtneuron.display_circuit">
+<code class="descclassname">rtneuron.</code><code class="descname">display_circuit</code><span class="sig-paren">(</span><em>config=None</em>, <em>target=('Column'</em>, <em>{'mode': rtneuron._rtneuron.RepresentationMode.SOMA})</em>, <em>report=None</em>, <em>spikes=None</em>, <em>eq_config=''</em>, <em>argv=None</em>, <em>opengl_share_context=None</em><span class="sig-paren">)</span><a class="headerlink" href="#rtneuron.display_circuit" title="Permalink to this definition">¶</a></dt>
+<dd><p>Opens a simulation configuration and displays the given targets.</p>
+<p>If no config is provided this function will try to load the Kaust
+circuit from a known location, otherwise it will try to load the test
+data set.</p>
+<p>The target specification can be rather complex so it deserves a detailed
+explanation:</p>
+<ul class="simple">
+<li>A target can be a single target element or a list of targets elements.</li>
+<li>Each element can be a target key or a tuple of key and attributes.</li>
+<li>Target keys can be of one of these types:<ul>
+<li>integer: Cell identifiers</li>
+<li>numpy arrays of dtype u4, u8 or i4</li>
+<li>string: Target labels. A target label can be in the form
+regex[%number], where regex is a valid Python regular expression
+and the optional suffix specifies a random subsampling of the target
+to a given percentage, e.g. Layer_[23]%10 will result in a 10% of
+targets Layer_2 and Layer_3.</li>
+<li>an iterable object: Each element being a cell identifier.</li>
+</ul>
+</li>
+<li>The attributes for a target can be either AttributeMap objects or
+dictionaries. Possible attributes are documented in Scene.addNeurons</li>
+</ul>
+<p>The following are examples of target specifications:</p>
+<ul>
+<li><p class="first">&#8216;Column&#8217;</p>
+</li>
+<li><p class="first">(&#8216;MiniColumn_0&#8217;, {&#8216;mode&#8217;: RepresentationMode.SOMA})</p>
+</li>
+<li><p class="first">[&#8216;Layer1&#8217;, &#8216;Layer2&#8217;]</p>
+</li>
+<li><p class="first">numpy.array([1, 2, 3, 4, 5], dtype=&#8221;u4&#8221;)</p>
+</li>
+<li><dl class="first docutils">
+<dt>[(123, {&#8216;color&#8217;: [1, 0, 0, 1]}),</dt>
+<dd><p class="first last">(range(1, 100), {&#8216;color&#8217;: [0, 0.5, 1, 1]})]</p>
+</dd>
+</dl>
+</li>
+</ul>
+<p>A compartment report name can be provided.
+The spikes parameter can take a file name to read a spike report from a
+file or True to use the default spike report of the config.</p>
+<p>The optional parameter share_context can be used to pass a QOpenGLContext
+to be assigned to the engine before init is called. This is used
+to integrate Qt overlays using the classes in the rtneuron.gui module.</p>
+<p>This function affects two global variables of the rtneuron module:</p>
+<ul class="simple">
+<li>engine, the RTNeuron engine. If already existing, the current
+configuration is exited before anything else, if not a new one
+is created.</li>
+<li>simulation, the brain.Simulation opened.</li>
+</ul>
+<p>Multi-node configurations are not supported by this method. Trying to
+do so has undefined behaviour (most probably a deadlock).</p>
+</dd></dl>
+
+<dl class="function">
+<dt id="rtneuron.display_empty_scene">
+<code class="descclassname">rtneuron.</code><code class="descname">display_empty_scene</code><span class="sig-paren">(</span><em>scene_attributes=&lt;rtneuron._rtneuron.AttributeMap object&gt;</em>, <em>argv=None</em>, <em>opengl_share_context=None</em><span class="sig-paren">)</span><a class="headerlink" href="#rtneuron.display_empty_scene" title="Permalink to this definition">¶</a></dt>
+<dd><p>Instantiate an RTNeuron engine with an empty scene.</p>
+<p>Return the view object.</p>
+</dd></dl>
+
+<dl class="function">
+<dt id="rtneuron.display_morphology_file">
+<code class="descclassname">rtneuron.</code><code class="descname">display_morphology_file</code><span class="sig-paren">(</span><em>file_name</em>, <em>use_tubelets=True</em>, <em>soma=True</em>, <em>argv=None</em><span class="sig-paren">)</span><a class="headerlink" href="#rtneuron.display_morphology_file" title="Permalink to this definition">¶</a></dt>
+<dd><p>Display a morphology given its HDF5 file.</p>
+<p>Parameters:
+- file_name (str): The path to the swc or h5 morphology path
+- use_tubelets (bool): If true, render branches using tubelets, otherwise</p>
+<blockquote>
+<div>use pseudo-cylinders.</div></blockquote>
+<ul class="simple">
+<li>show_soma (bool): Add to the model an approximation of the soma as a
+sphere.</li>
+</ul>
+<p>Temporary files with the circuit paths and description are created to
+be able to load the morphology and create a scene to be displayed.
+The morphology is shown using only tubelets, so no mesh is required.
+View frustum culling is disabled.</p>
+</dd></dl>
+
+<dl class="function">
+<dt id="rtneuron.display_shared_synapses">
+<code class="descclassname">rtneuron.</code><code class="descname">display_shared_synapses</code><span class="sig-paren">(</span><em>presynaptic</em>, <em>postsynaptic</em>, <em>afferent=True</em>, <em>attributes=None</em><span class="sig-paren">)</span><a class="headerlink" href="#rtneuron.display_shared_synapses" title="Permalink to this definition">¶</a></dt>
+<dd><p>Adds the afferent or efferent location of the synapses at which a
+presynaptic target innervates a postsynaptic one.</p>
+<p>This function assumes that an engine and simulation are already
+setup. Synapses are added to the scene of the first view of the current
+enginen.</p>
+<p>The neurons of both targets are supposed to be loaded as well as the
+morphologies of the presynaptic neurons for efferent locations and
+the morphologies of the postsynaptic neurons for afferent locations.
+For synapses that project into the soma, the presynaptic morphologies are
+also needed to find the afferent positions.</p>
+<p>If the neurons are missing an exception will be thrown.</p>
+<p>If a morphology is not available to compute the location of a synapse
+the synapse will be skipped and a warning message printed.</p>
+<p>The pre and postsynaptic targets can be:</p>
+<ul class="simple">
+<li>integer: Cell identifiers</li>
+<li>an iterable of integers</li>
+<li>a numpy array of u4, u8 or i4</li>
+<li>string: A target labels</li>
+</ul>
+<p>The optional attributes parameter takes an AttributeMap as input.</p>
+</dd></dl>
+
+<dl class="function">
+<dt id="rtneuron.display_synapses">
+<code class="descclassname">rtneuron.</code><code class="descname">display_synapses</code><span class="sig-paren">(</span><em>targets</em>, <em>afferent=True</em>, <em>attributes=None</em><span class="sig-paren">)</span><a class="headerlink" href="#rtneuron.display_synapses" title="Permalink to this definition">¶</a></dt>
+<dd><p>Adds the afferent or efferent synapses of a given cell target to the
+scene of the first view of the current application.</p>
+<p>This function assumes that an application and simulation are already
+setup. Synapses are added to the scene of the first view of the current
+application.</p>
+<p>The neurons of the given target (and efferent neurons in case of efferent
+synapses or soma afferent synapses) and the morphologies needed to find
+the locations of the synapses are also supposed to be already loaded.
+If the neurons are missing an exception will be thrown.</p>
+<p>Synapses for which the morphology needed to compute the location is
+missing are skipped (an warning message will be printed in this case).</p>
+<p>The target can be:</p>
+<ul class="simple">
+<li>integer: Cell identifiers</li>
+<li>an iterable of integers</li>
+<li>a numpy array of u4, u8 or i4</li>
+<li>string: A target label</li>
+</ul>
+<p>The optional attributes parameter takes an AttributeMap as input.</p>
+</dd></dl>
+
+<dl class="function">
+<dt id="rtneuron.snapshot_to_notebook">
+<code class="descclassname">rtneuron.</code><code class="descname">snapshot_to_notebook</code><span class="sig-paren">(</span><em>view</em><span class="sig-paren">)</span><a class="headerlink" href="#rtneuron.snapshot_to_notebook" title="Permalink to this definition">¶</a></dt>
+<dd><p>Takes a snaphost of the given view and adds the image to the active
+IPython notebook.</p>
+</dd></dl>
+
+<dl class="function">
+<dt id="rtneuron.start_app">
+<code class="descclassname">rtneuron.</code><code class="descname">start_app</code><span class="sig-paren">(</span><em>name='projections'</em>, <em>*args</em>, <em>**kwargs</em><span class="sig-paren">)</span><a class="headerlink" href="#rtneuron.start_app" title="Permalink to this definition">¶</a></dt>
+<dd><p>Startup the app with the given name</p>
+<p>Apps are searched as modules under rtneuron.apps. List and keyword
+arguments are forwarded to the app initialization function.</p>
+</dd></dl>
+
+<dl class="function">
+<dt id="rtneuron.start_shell">
+<code class="descclassname">rtneuron.</code><code class="descname">start_shell</code><span class="sig-paren">(</span><em>local_ns=None</em>, <em>module=None</em><span class="sig-paren">)</span><a class="headerlink" href="#rtneuron.start_shell" title="Permalink to this definition">¶</a></dt>
+<dd><p>Start an IPython shell.</p>
+<p>The namespace of the IPython shell is the namespace of the rtneuron
+module unless another one is provided.
+A regular Python console is started if IPython is not available.</p>
+</dd></dl>
+
+</div>
+</div>
+<div class="section" id="helper-modules">
+<h2>Helper modules<a class="headerlink" href="#helper-modules" title="Permalink to this headline">¶</a></h2>
+<div class="section" id="module-rtneuron.util">
+<span id="rtneuron-util"></span><h3>rtneuron.util<a class="headerlink" href="#module-rtneuron.util" title="Permalink to this headline">¶</a></h3>
+<dl class="function">
+<dt id="rtneuron.util.key_to_gids">
+<code class="descclassname">rtneuron.util.</code><code class="descname">key_to_gids</code><span class="sig-paren">(</span><em>key</em>, <em>simulation</em><span class="sig-paren">)</span><a class="headerlink" href="#rtneuron.util.key_to_gids" title="Permalink to this definition">¶</a></dt>
+<dd><p>Convert a target key to a GID array</p>
+<p>A key can be:
+- An integer
+- An str with a target name or regex
+- A numpy array of type u4, u8 or i4
+- An iterable of integers.</p>
+</dd></dl>
+
+<dl class="function">
+<dt id="rtneuron.util.targets_to_gids">
+<code class="descclassname">rtneuron.util.</code><code class="descname">targets_to_gids</code><span class="sig-paren">(</span><em>targets</em>, <em>simulation</em><span class="sig-paren">)</span><a class="headerlink" href="#rtneuron.util.targets_to_gids" title="Permalink to this definition">¶</a></dt>
+<dd><p>Return a numpy array with the gids of the targets given.
+Targets can be any object accepted by key_to_gids or an iterable of any of
+those.</p>
+</dd></dl>
+
+<span class="target" id="module-rtneuron.util.camera"></span><dl class="function">
+<dt id="rtneuron.util.camera.set_manipulator_home_position">
+<code class="descclassname">rtneuron.util.camera.</code><code class="descname">set_manipulator_home_position</code><span class="sig-paren">(</span><em>view</em>, <em>target</em>, <em>**kwargs</em><span class="sig-paren">)</span><a class="headerlink" href="#rtneuron.util.camera.set_manipulator_home_position" title="Permalink to this definition">¶</a></dt>
+<dd><p>Sets the home positions of the camera manipulator of the given view
+to a front view of the input cell target.</p>
+<p>The input target can be one of:
+- single cell GID as integer
+- a numpy array of u4, i4 or u8
+- a string with a target label (regular expressions included)
+- an iterable object, each element being a cell identifier</p>
+<p>The keyword arguments used to fit the viewpoint are:</p>
+<ul class="simple">
+<li>air_pixels: a list of two floats with the desired fraction of empty
+horizontal and vertical space. This applies to the method used to
+frame the cell somas, i.e, branches are not considered.
+The default value is [0.1, 0.1].</li>
+<li>fit_point_generator: the function used to determine the position
+of a neuron.
+Possible values:<ul>
+<li>rtneuron.util.camera.soma_positions              (default, fastest)</li>
+<li>rtneuron.util.camera.dendrite_endpoint_positions (more precise, slower)</li>
+</ul>
+</li>
+<li>point_radius: If provided, the points to be bound will be considered
+spheres of the given radius. If ommited and the fit point list has
+a single point, it will be considered as a sphere of radius 200.</li>
+<li>aspect_ratio: ratio of width/height of the image.
+The default corresponds to the default frustum</li>
+<li>vertical_fov: vertical field of view angle in degrees of the camera
+to be used.
+The default corresponds to the default frustum.</li>
+</ul>
+</dd></dl>
+
+<dl class="function">
+<dt id="rtneuron.util.camera.soma_positions">
+<code class="descclassname">rtneuron.util.camera.</code><code class="descname">soma_positions</code><span class="sig-paren">(</span><em>gids</em>, <em>circuit</em><span class="sig-paren">)</span><a class="headerlink" href="#rtneuron.util.camera.soma_positions" title="Permalink to this definition">¶</a></dt>
+<dd><p>Return the position of the soma of a given neuron.</p>
+</dd></dl>
+
+<span class="target" id="module-rtneuron.util.camera.Paths"></span><dl class="function">
+<dt id="rtneuron.util.camera.Paths.apply_camera_path">
+<code class="descclassname">rtneuron.util.camera.Paths.</code><code class="descname">apply_camera_path</code><span class="sig-paren">(</span><em>path</em>, <em>view</em><span class="sig-paren">)</span><a class="headerlink" href="#rtneuron.util.camera.Paths.apply_camera_path" title="Permalink to this definition">¶</a></dt>
+<dd><p>Apply a camera path to a view using a  camera path manipulator.</p>
+</dd></dl>
+
+<dl class="function">
+<dt id="rtneuron.util.camera.Paths.flythrough">
+<code class="descclassname">rtneuron.util.camera.Paths.</code><code class="descname">flythrough</code><span class="sig-paren">(</span><em>simulation</em>, <em>targets</em>, <em>duration=10</em>, <em>**kwargs</em><span class="sig-paren">)</span><a class="headerlink" href="#rtneuron.util.camera.Paths.flythrough" title="Permalink to this definition">¶</a></dt>
+<dd><p>Return a camera path of a flythrough of a cell target.</p>
+<p>This function will load the simulation config file given and all the neurons
+associated with the target specification. The camera position is
+computed based only on the soma positions and corresponds to a front
+view of the circuit. The path duration must be in seconds.</p>
+<p>The targets parameter can be:</p>
+<ul class="simple">
+<li>A cell GID (as integer)</li>
+<li>An iterable of GIDs</li>
+<li>A target labels (as a string)</li>
+<li>A list of any of the above</li>
+</ul>
+<p>The optional keyword arguments are:</p>
+<ul class="simple">
+<li>samples: Number of keyframes to generate</li>
+<li>speedup: From 1 to inf, this parameter specifies a speed up for
+the initial camera speed. Use 1 for a linear camera path, if higher
+that one the camera will start faster and will decrease its speed
+non-linearly and monotonically. Recommended values are between 1
+and 3.
+The default value is 1.</li>
+</ul>
+<p>The keyword arguments used to fit the viewpoint are:</p>
+<ul class="simple">
+<li>air_pixels: a list of two floats with the desired fraction of empty
+horizontal and vertical space. This applies to the method used to
+frame the cell somas, i.e, branches are not considered.
+The default value is [0.1, 0.1].</li>
+<li>fit_point_generator: the function used to determine the position
+of a neuron.
+Possible values:<ul>
+<li>rtneuron.util.camera.soma_positions              (default, fastest)</li>
+<li>rtneuron.util.camera.dendrite_endpoint_positions (more precise, slower)</li>
+</ul>
+</li>
+<li>point_radius: If provided, the points to be bound will be considered
+spheres of the given radius. If ommited and the fit point list has
+a single point, it will be considered as a sphere of radius 200.</li>
+<li>aspect_ratio: ratio of width/height of the image.
+The default corresponds to the default frustum</li>
+<li>vertical_fov: vertical field of view angle in degrees of the camera
+to be used.
+The default corresponds to the default frustum.</li>
+</ul>
+</dd></dl>
+
+<dl class="function">
+<dt id="rtneuron.util.camera.Paths.front_to_top_rotation">
+<code class="descclassname">rtneuron.util.camera.Paths.</code><code class="descname">front_to_top_rotation</code><span class="sig-paren">(</span><em>simulation</em>, <em>targets</em>, <em>duration=10</em>, <em>**kwargs</em><span class="sig-paren">)</span><a class="headerlink" href="#rtneuron.util.camera.Paths.front_to_top_rotation" title="Permalink to this definition">¶</a></dt>
+<dd><p>Return a camera path of a rotation from front to top view of
+a set of circuit targets.</p>
+<p>This function will load the simulation config file given and all the neurons
+associated with the target specification. The front and top camera
+positions are  computed based on the soma positions.
+The path duration is in seconds.</p>
+<p>The targets parameter can be:</p>
+<ul class="simple">
+<li>A cell GID (as integer)</li>
+<li>An iterable of GIDs</li>
+<li>A target labels (as a string)</li>
+<li>A list of any of the above</li>
+</ul>
+<p>The optional keyword arguments are:</p>
+<ul class="simple">
+<li>timing: A [0..1]-&gt;[0..1] function used to map sample timestamps
+from a uniform distribution to any user given distribution.</li>
+<li>samples: Number of keyframes to generate</li>
+</ul>
+<p>The keyword arguments used to fit the viewpoint are:</p>
+<ul class="simple">
+<li>air_pixels: a list of two floats with the desired fraction of empty
+horizontal and vertical space. This applies to the method used to
+frame the cell somas, i.e, branches are not considered.
+The default value is [0.1, 0.1].</li>
+<li>fit_point_generator: the function used to determine the position
+of a neuron.
+Possible values:<ul>
+<li>rtneuron.util.camera.soma_positions              (default, fastest)</li>
+<li>rtneuron.util.camera.dendrite_endpoint_positions (more precise, slower)</li>
+</ul>
+</li>
+<li>point_radius: If provided, the points to be bound will be considered
+spheres of the given radius. If ommited and the fit point list has
+a single point, it will be considered as a sphere of radius 200.</li>
+<li>aspect_ratio: ratio of width/height of the image.
+The default corresponds to the default frustum</li>
+<li>vertical_fov: vertical field of view angle in degrees of the camera
+to be used.
+The default corresponds to the default frustum.</li>
+</ul>
+</dd></dl>
+
+<dl class="function">
+<dt id="rtneuron.util.camera.Paths.front_view">
+<code class="descclassname">rtneuron.util.camera.Paths.</code><code class="descname">front_view</code><span class="sig-paren">(</span><em>simulation</em>, <em>targets</em>, <em>**kwargs</em><span class="sig-paren">)</span><a class="headerlink" href="#rtneuron.util.camera.Paths.front_view" title="Permalink to this definition">¶</a></dt>
+<dd><p>Return a camera path with a front view a cell target.</p>
+<p>This function will load the blue config file given and all the neurons
+associated with the target specification. The camera position is
+computed based only on the soma positions.</p>
+<p>The target parameter can be:</p>
+<ul class="simple">
+<li>A cell GID (as integer)</li>
+<li>An iterable of GIDs</li>
+<li>A target label (as a string)</li>
+<li>A list of any of the above</li>
+</ul>
+<p>The keyword arguments used to fit the viewpoint are:</p>
+<ul class="simple">
+<li>air_pixels: a list of two floats with the desired fraction of empty
+horizontal and vertical space. This applies to the method used to
+frame the cell somas, i.e, branches are not considered.
+The default value is [0.1, 0.1].</li>
+<li>fit_point_generator: the function used to determine the position
+of a neuron.
+Possible values:<ul>
+<li>rtneuron.util.camera.soma_positions              (default, fastest)</li>
+<li>rtneuron.util.camera.dendrite_endpoint_positions (more precise, slower)</li>
+</ul>
+</li>
+<li>point_radius: If provided, the points to be bound will be considered
+spheres of the given radius. If ommited and the fit point list has
+a single point, it will be considered as a sphere of radius 200.</li>
+<li>aspect_ratio: ratio of width/height of the image.
+The default corresponds to the default frustum</li>
+<li>vertical_fov: vertical field of view angle in degrees of the camera
+to be used.
+The default corresponds to the default frustum.</li>
+</ul>
+</dd></dl>
+
+<dl class="function">
+<dt id="rtneuron.util.camera.Paths.make_front_view">
+<code class="descclassname">rtneuron.util.camera.Paths.</code><code class="descname">make_front_view</code><span class="sig-paren">(</span><em>view</em>, <em>**kwargs</em><span class="sig-paren">)</span><a class="headerlink" href="#rtneuron.util.camera.Paths.make_front_view" title="Permalink to this definition">¶</a></dt>
+<dd><p>Setup the camera position of the given view to look from the front
+at the neurons on the view&#8217;s scene.</p>
+<p>The keyword arguments used to fit the viewpoint are:</p>
+<ul class="simple">
+<li>air_pixels: a list of two floats with the desired fraction of empty
+horizontal and vertical space. This applies to the method used to
+frame the cell somas, i.e, branches are not considered.
+The default value is [0.1, 0.1].</li>
+<li>fit_point_generator: the function used to determine the position
+of a neuron.
+Possible values:<ul>
+<li>rtneuron.util.camera.soma_positions              (default, fastest)</li>
+<li>rtneuron.util.camera.dendrite_endpoint_positions (more precise, slower)</li>
+</ul>
+</li>
+<li>point_radius: If provided, the points to be bound will be considered
+spheres of the given radius. If ommited and the fit point list has
+a single point, it will be considered as a sphere of radius 200.</li>
+<li>aspect_ratio: ratio of width/height of the image.
+The default corresponds to the default frustum</li>
+<li>vertical_fov: vertical field of view angle in degrees of the camera
+to be used.
+The default corresponds to the default frustum.</li>
+</ul>
+</dd></dl>
+
+<dl class="function">
+<dt id="rtneuron.util.camera.Paths.make_top_view">
+<code class="descclassname">rtneuron.util.camera.Paths.</code><code class="descname">make_top_view</code><span class="sig-paren">(</span><em>view</em>, <em>**kwargs</em><span class="sig-paren">)</span><a class="headerlink" href="#rtneuron.util.camera.Paths.make_top_view" title="Permalink to this definition">¶</a></dt>
+<dd><p>Setup the camera position of the given view to look from the top
+at the neurons on the view&#8217;s scene.</p>
+<p>The keyword arguments used to fit the viewpoint are:</p>
+<ul class="simple">
+<li>air_pixels: a list of two floats with the desired fraction of empty
+horizontal and vertical space. This applies to the method used to
+frame the cell somas, i.e, branches are not considered.
+The default value is [0.1, 0.1].</li>
+<li>fit_point_generator: the function used to determine the position
+of a neuron.
+Possible values:<ul>
+<li>rtneuron.util.camera.soma_positions              (default, fastest)</li>
+<li>rtneuron.util.camera.dendrite_endpoint_positions (more precise, slower)</li>
+</ul>
+</li>
+<li>point_radius: If provided, the points to be bound will be considered
+spheres of the given radius. If ommited and the fit point list has
+a single point, it will be considered as a sphere of radius 200.</li>
+<li>aspect_ratio: ratio of width/height of the image.
+The default corresponds to the default frustum</li>
+<li>vertical_fov: vertical field of view angle in degrees of the camera
+to be used.
+The default corresponds to the default frustum.</li>
+</ul>
+</dd></dl>
+
+<dl class="function">
+<dt id="rtneuron.util.camera.Paths.rotate_around">
+<code class="descclassname">rtneuron.util.camera.Paths.</code><code class="descname">rotate_around</code><span class="sig-paren">(</span><em>simulation</em>, <em>targets</em>, <em>duration=10</em>, <em>**kwargs</em><span class="sig-paren">)</span><a class="headerlink" href="#rtneuron.util.camera.Paths.rotate_around" title="Permalink to this definition">¶</a></dt>
+<dd><p>Return a camera path of a front view rotation around a circuit target.</p>
+<p>This function will load the simulation config file given and all the neurons
+associated with the target specification. The start position is computed
+based on the soma positions. The path duration is in seconds.</p>
+<p>The target parameter can be:</p>
+<ul class="simple">
+<li>A cell GID (as integer)</li>
+<li>An iterable of GIDs</li>
+<li>A target labels (as a string)</li>
+<li>A list of any of the above</li>
+</ul>
+<p>The keyword arguments used to fit the viewpoint are:</p>
+<ul class="simple">
+<li>air_pixels: a list of two floats with the desired fraction of empty
+horizontal and vertical space. This applies to the method used to
+frame the cell somas, i.e, branches are not considered.
+The default value is [0.1, 0.1].</li>
+<li>fit_point_generator: the function used to determine the position
+of a neuron.
+Possible values:<ul>
+<li>rtneuron.util.camera.soma_positions              (default, fastest)</li>
+<li>rtneuron.util.camera.dendrite_endpoint_positions (more precise, slower)</li>
+</ul>
+</li>
+<li>point_radius: If provided, the points to be bound will be considered
+spheres of the given radius. If ommited and the fit point list has
+a single point, it will be considered as a sphere of radius 200.</li>
+<li>aspect_ratio: ratio of width/height of the image.
+The default corresponds to the default frustum</li>
+<li>vertical_fov: vertical field of view angle in degrees of the camera
+to be used.
+The default corresponds to the default frustum.</li>
+</ul>
+</dd></dl>
+
+<dl class="function">
+<dt id="rtneuron.util.camera.Paths.rotation">
+<code class="descclassname">rtneuron.util.camera.Paths.</code><code class="descname">rotation</code><span class="sig-paren">(</span><em>look_at, axis, start, angle, up=[0, 1, 0], duration=10, **kwargs</em><span class="sig-paren">)</span><a class="headerlink" href="#rtneuron.util.camera.Paths.rotation" title="Permalink to this definition">¶</a></dt>
+<dd><p>Return a camera path of a rotation around an arbitrary axis with a
+fixation point.</p>
+<p>The parameters are:</p>
+<ul class="simple">
+<li>look_at: The point at which the camera will look. The rotation axis
+is also placed at this point.</li>
+<li>axis: A normalized vector used as rotation axis. The rotation sense
+is defined applying the right-hand rule to this vector.</li>
+<li>start: The initial camera position. The distance of this point to center
+is preserved.</li>
+<li>angle: The rotation angle of the final position in radians.</li>
+<li>up: A normalized vector or one of the strings &#8220;axis&#8221; or &#8220;tangent&#8221;.
+This parameter defines the vector to which the y axis of the camera is
+aligned. If a normalized vector is given, that direction is used.  For
+&#8220;axis&#8221;, the axis direction is used. For &#8220;tangent&#8221;, the up direction lies
+on the rotation plane and is tangent to the circular trajectory.</li>
+</ul>
+<p>The optional keyword arguments are:</p>
+<ul class="simple">
+<li>samples: Number of keyframes to generate</li>
+<li>timing: A [0..1]-&gt;[0..1] function used to map sample timestamps
+from a uniform distribution to any user given distribution.</li>
+</ul>
+</dd></dl>
+
+<dl class="function">
+<dt id="rtneuron.util.camera.Paths.top_view">
+<code class="descclassname">rtneuron.util.camera.Paths.</code><code class="descname">top_view</code><span class="sig-paren">(</span><em>simulation</em>, <em>targets</em>, <em>**kwargs</em><span class="sig-paren">)</span><a class="headerlink" href="#rtneuron.util.camera.Paths.top_view" title="Permalink to this definition">¶</a></dt>
+<dd><p>Return a camera path with a top view of a cell target.</p>
+<p>This function will load the simulation config file given and all the neurons
+associated with the target specification. The camera position is
+computed based only on the soma positions.</p>
+<p>The target parameter can be:</p>
+<ul class="simple">
+<li>A cell GID (as integer)</li>
+<li>An iterable of GIDs</li>
+<li>A target labels (as a string)</li>
+<li>A list of any of the above</li>
+</ul>
+<p>The keyword arguments used to fit the viewpoint are:</p>
+<ul class="simple">
+<li>air_pixels: a list of two floats with the desired fraction of empty
+horizontal and vertical space. This applies to the method used to
+frame the cell somas, i.e, branches are not considered.
+The default value is [0.1, 0.1].</li>
+<li>fit_point_generator: the function used to determine the position
+of a neuron.
+Possible values:<ul>
+<li>rtneuron.util.camera.soma_positions              (default, fastest)</li>
+<li>rtneuron.util.camera.dendrite_endpoint_positions (more precise, slower)</li>
+</ul>
+</li>
+<li>point_radius: If provided, the points to be bound will be considered
+spheres of the given radius. If ommited and the fit point list has
+a single point, it will be considered as a sphere of radius 200.</li>
+<li>aspect_ratio: ratio of width/height of the image.
+The default corresponds to the default frustum</li>
+<li>vertical_fov: vertical field of view angle in degrees of the camera
+to be used.
+The default corresponds to the default frustum.</li>
+</ul>
+</dd></dl>
+
+<span class="target" id="module-rtneuron.util.camera.Ortho"></span><dl class="function">
+<dt id="rtneuron.util.camera.Ortho.front_ortho">
+<code class="descclassname">rtneuron.util.camera.Ortho.</code><code class="descname">front_ortho</code><span class="sig-paren">(</span><em>simulation</em>, <em>targets</em>, <em>**kwargs</em><span class="sig-paren">)</span><a class="headerlink" href="#rtneuron.util.camera.Ortho.front_ortho" title="Permalink to this definition">¶</a></dt>
+<dd><p>Return the frustum parameters for an orthogonal front view of a cell
+target.</p>
+<p>This function will load a simulation configuration file to get the soma
+position of the neurons given their gids. The frustum size is
+computed based only on these positions. In order to frame the
+scene correctly an additional camera path has to be set up.</p>
+<p>The target parameter can be:</p>
+<ul class="simple">
+<li>A cell GID (as integer)</li>
+<li>A numpy array of u4, u8 or i4</li>
+<li>A target labels (as a string)</li>
+<li>A list of any of the above</li>
+</ul>
+<p>The keyword arguments used to fit the viewpoint are:</p>
+<ul class="simple">
+<li>air_pixels: a list of two floats with the desired fraction of empty
+horizontal and vertical space. This applies to the method used to
+frame the cell somas, i.e, branches are not considered.
+The default value is [0.1, 0.1].</li>
+<li>fit_point_generator: the function used to determine the position
+of a neuron.
+Possible values:<ul>
+<li>rtneuron.util.camera.soma_positions              (default, fastest)</li>
+<li>rtneuron.util.camera.dendrite_endpoint_positions (more precise, slower)</li>
+</ul>
+</li>
+<li>point_radius: If provided, the points to be bound will be considered
+spheres of the given radius. If ommited and the fit point list has
+a single point, it will be considered as a sphere of radius 200.</li>
+<li>aspect_ratio: ratio of width/height of the image.
+The default corresponds to the default frustum</li>
+<li>vertical_fov: vertical field of view angle in degrees of the camera
+to be used.
+The default corresponds to the default frustum.</li>
+</ul>
+</dd></dl>
+
+<dl class="function">
+<dt id="rtneuron.util.camera.Ortho.make_front_ortho">
+<code class="descclassname">rtneuron.util.camera.Ortho.</code><code class="descname">make_front_ortho</code><span class="sig-paren">(</span><em>view</em>, <em>**kwargs</em><span class="sig-paren">)</span><a class="headerlink" href="#rtneuron.util.camera.Ortho.make_front_ortho" title="Permalink to this definition">¶</a></dt>
+<dd><p>Setup the camera projection and position of the given view to do
+an orthographic front projection of the neurons on its scene.</p>
+<p>The keyword arguments used to fit the viewpoint are:</p>
+<ul class="simple">
+<li>air_pixels: a list of two floats with the desired fraction of empty
+horizontal and vertical space. This applies to the method used to
+frame the cell somas, i.e, branches are not considered.
+The default value is [0.1, 0.1].</li>
+<li>fit_point_generator: the function used to determine the position
+of a neuron.
+Possible values:<ul>
+<li>rtneuron.util.camera.soma_positions              (default, fastest)</li>
+<li>rtneuron.util.camera.dendrite_endpoint_positions (more precise, slower)</li>
+</ul>
+</li>
+<li>point_radius: If provided, the points to be bound will be considered
+spheres of the given radius. If ommited and the fit point list has
+a single point, it will be considered as a sphere of radius 200.</li>
+<li>aspect_ratio: ratio of width/height of the image.
+The default corresponds to the default frustum</li>
+<li>vertical_fov: vertical field of view angle in degrees of the camera
+to be used.
+The default corresponds to the default frustum.</li>
+</ul>
+</dd></dl>
+
+<dl class="function">
+<dt id="rtneuron.util.camera.Ortho.make_top_ortho">
+<code class="descclassname">rtneuron.util.camera.Ortho.</code><code class="descname">make_top_ortho</code><span class="sig-paren">(</span><em>view</em>, <em>**kwargs</em><span class="sig-paren">)</span><a class="headerlink" href="#rtneuron.util.camera.Ortho.make_top_ortho" title="Permalink to this definition">¶</a></dt>
+<dd><p>Setup a the camera projection and position of the given view to do
+an orthographic top projection of the neurons on its scene.</p>
+<p>The keyword arguments used to fit the viewpoint are:</p>
+<ul class="simple">
+<li>air_pixels: a list of two floats with the desired fraction of empty
+horizontal and vertical space. This applies to the method used to
+frame the cell somas, i.e, branches are not considered.
+The default value is [0.1, 0.1].</li>
+<li>fit_point_generator: the function used to determine the position
+of a neuron.
+Possible values:<ul>
+<li>rtneuron.util.camera.soma_positions              (default, fastest)</li>
+<li>rtneuron.util.camera.dendrite_endpoint_positions (more precise, slower)</li>
+</ul>
+</li>
+<li>point_radius: If provided, the points to be bound will be considered
+spheres of the given radius. If ommited and the fit point list has
+a single point, it will be considered as a sphere of radius 200.</li>
+<li>aspect_ratio: ratio of width/height of the image.
+The default corresponds to the default frustum</li>
+<li>vertical_fov: vertical field of view angle in degrees of the camera
+to be used.
+The default corresponds to the default frustum.</li>
+</ul>
+</dd></dl>
+
+<dl class="function">
+<dt id="rtneuron.util.camera.Ortho.top_ortho">
+<code class="descclassname">rtneuron.util.camera.Ortho.</code><code class="descname">top_ortho</code><span class="sig-paren">(</span><em>simulation</em>, <em>targets</em>, <em>**kwargs</em><span class="sig-paren">)</span><a class="headerlink" href="#rtneuron.util.camera.Ortho.top_ortho" title="Permalink to this definition">¶</a></dt>
+<dd><p>Return the frustum parameters for an orthogonal top view of a cell
+target.</p>
+<p>This function will load the blueconfig file given and all the neurons
+associated with the target specification. The frustum size is
+computed based only on the soma positions. In order to frame the
+scene correctly an additional camera path has to be set up.</p>
+<p>The target parameter can be:</p>
+<ul class="simple">
+<li>A cell GID (as integer)</li>
+<li>A numpy array of u4, u8 or i4</li>
+<li>A target labels (as a string)</li>
+<li>A list of any of the above</li>
+</ul>
+<p>The keyword arguments used to fit the viewpoint are:</p>
+<ul class="simple">
+<li>air_pixels: a list of two floats with the desired fraction of empty
+horizontal and vertical space. This applies to the method used to
+frame the cell somas, i.e, branches are not considered.
+The default value is [0.1, 0.1].</li>
+<li>fit_point_generator: the function used to determine the position
+of a neuron.
+Possible values:<ul>
+<li>rtneuron.util.camera.soma_positions              (default, fastest)</li>
+<li>rtneuron.util.camera.dendrite_endpoint_positions (more precise, slower)</li>
+</ul>
+</li>
+<li>point_radius: If provided, the points to be bound will be considered
+spheres of the given radius. If ommited and the fit point list has
+a single point, it will be considered as a sphere of radius 200.</li>
+<li>aspect_ratio: ratio of width/height of the image.
+The default corresponds to the default frustum</li>
+<li>vertical_fov: vertical field of view angle in degrees of the camera
+to be used.
+The default corresponds to the default frustum.</li>
+</ul>
+</dd></dl>
+
+</div>
+<div class="section" id="module-rtneuron.sceneops">
+<span id="rtneuron-sceneops"></span><h3>rtneuron.sceneops<a class="headerlink" href="#module-rtneuron.sceneops" title="Permalink to this headline">¶</a></h3>
+<span class="target" id="module-rtneuron.sceneops.SynapticProjections"></span><dl class="class">
+<dt id="rtneuron.sceneops.SynapticProjections.SynapticProjections">
+<em class="property">class </em><code class="descclassname">rtneuron.sceneops.SynapticProjections.</code><code class="descname">SynapticProjections</code><span class="sig-paren">(</span><em>scene, presynaptic_color=[0.0, 0.5, 1.0, 1.0], postsynaptic_color=[1.0, 0.0, 0.0, 1.0], unselected_color=[0, 0, 0, 0.1], target_mode=rtneuron._rtneuron.RepresentationMode.WHOLE_NEURON, clip_branches=True</em><span class="sig-paren">)</span><a class="headerlink" href="#rtneuron.sceneops.SynapticProjections.SynapticProjections" title="Permalink to this definition">¶</a></dt>
+<dd><p>This class provides functions to show synaptic projections in a
+given scene/microcircuit.</p>
+<p>It provides an easy way to display retrograde and anterograde projections
+for cells selected in the scene and a method to display the synaptic
+pathways from a pre-synaptic target to a post-synaptic target.</p>
+<p>A callback is hooked to the cellSelected signal from a scene to show:</p>
+<ul class="simple">
+<li>No cell selected, all displayed with somas</li>
+<li>Retrograde projections: A post-synaptic cell and its pre-synaptic cells
+with the selected representation mode and colors</li>
+<li>Anterograde projections: A pre-synaptic cell and its post-synaptic cells
+with the selected representation mode and colors</li>
+</ul>
+<p>The representation modes for pre/post synaptic sets are:</p>
+<ul class="simple">
+<li>Soma only</li>
+<li>Whole detailed neurons</li>
+<li>Detailed neuron with branch-level clipping to show only the portions
+of the branches that run along the path that connects the soma of the
+presynaptic cell to the soma of the postsynaptic cell through each
+synapse.</li>
+</ul>
+<p>For synaptic projections between two sets, the detailed representation with
+branch level culling is always used.</p>
+<dl class="method">
+<dt id="rtneuron.sceneops.SynapticProjections.SynapticProjections.__init__">
+<code class="descname">__init__</code><span class="sig-paren">(</span><em>scene, presynaptic_color=[0.0, 0.5, 1.0, 1.0], postsynaptic_color=[1.0, 0.0, 0.0, 1.0], unselected_color=[0, 0, 0, 0.1], target_mode=rtneuron._rtneuron.RepresentationMode.WHOLE_NEURON, clip_branches=True</em><span class="sig-paren">)</span><a class="headerlink" href="#rtneuron.sceneops.SynapticProjections.SynapticProjections.__init__" title="Permalink to this definition">¶</a></dt>
+<dd><p>Store the circuit and scene information and hook a callback to
+the scene.cellCelected signal to switch between the different
+synaptic projections modes.</p>
+<p>Parameters:</p>
+<ul class="simple">
+<li>presynaptic_color: Color to use for presynaptic cells</li>
+<li>postsynaptic_color: Color to use for postsynaptic cells</li>
+<li>unselected_color: Color to use for cells which are not part of
+the anterograde or retrograde set of a selected cell.</li>
+<li>target_mode: Representation mode to use for the anterograde/retrograde
+cell set</li>
+<li>clip_branches: target_mode is WHOLE_NEURON, apply fine-grained
+clipping to branches to highlight only the paths that connect the
+pre and post-synaptic somas through each synapse.</li>
+</ul>
+</dd></dl>
+
+<dl class="method">
+<dt id="rtneuron.sceneops.SynapticProjections.SynapticProjections.set_postsynaptic_attributes">
+<code class="descname">set_postsynaptic_attributes</code><span class="sig-paren">(</span><em>attributes</em><span class="sig-paren">)</span><a class="headerlink" href="#rtneuron.sceneops.SynapticProjections.SynapticProjections.set_postsynaptic_attributes" title="Permalink to this definition">¶</a></dt>
+<dd><p>Sets the given attributes on the handlers of connected, postsynaptic
+only cells.</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="rtneuron.sceneops.SynapticProjections.SynapticProjections.set_presynaptic_attributes">
+<code class="descname">set_presynaptic_attributes</code><span class="sig-paren">(</span><em>attributes</em><span class="sig-paren">)</span><a class="headerlink" href="#rtneuron.sceneops.SynapticProjections.SynapticProjections.set_presynaptic_attributes" title="Permalink to this definition">¶</a></dt>
+<dd><p>Sets the given attributes on the handlers of connected, presynaptic
+only cells.</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="rtneuron.sceneops.SynapticProjections.SynapticProjections.show_anterograde_projections">
+<code class="descname">show_anterograde_projections</code><span class="sig-paren">(</span><em>gid</em>, <em>subset=None</em><span class="sig-paren">)</span><a class="headerlink" href="#rtneuron.sceneops.SynapticProjections.SynapticProjections.show_anterograde_projections" title="Permalink to this definition">¶</a></dt>
+<dd><p>Find the postsynaptic cells of the given one and display them
+according to the current attributes for mode, color and clipping.</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="rtneuron.sceneops.SynapticProjections.SynapticProjections.show_retrograde_projections">
+<code class="descname">show_retrograde_projections</code><span class="sig-paren">(</span><em>gid</em>, <em>subset=None</em><span class="sig-paren">)</span><a class="headerlink" href="#rtneuron.sceneops.SynapticProjections.SynapticProjections.show_retrograde_projections" title="Permalink to this definition">¶</a></dt>
+<dd><p>Find the presynaptic cells of the given one and display them
+according to the current attributes for mode, color and clipping.</p>
+</dd></dl>
+
+</dd></dl>
+
+</div>
+</div>
+</div>
+
+
+          </div>
+        </div>
+      </div>
+      <div class="sphinxsidebar" role="navigation" aria-label="main navigation">
+        <div class="sphinxsidebarwrapper">
+  <h3><a href="index.html">Table Of Contents</a></h3>
+  <ul>
+<li><a class="reference internal" href="#">The <em>rtneuron</em> package</a><ul>
+<li><a class="reference internal" href="#wrapped-c-classes">Wrapped C++ classes</a><ul>
+<li><a class="reference internal" href="#module-rtneuron._rtneuron">rtneuron namespace</a></li>
+<li><a class="reference internal" href="#rtneuron-net-namespace">rtneuron.net namespace</a></li>
+<li><a class="reference internal" href="#module-rtneuron._rtneuron._sceneops">rtneuron.sceneops namespace</a></li>
+<li><a class="reference internal" href="#module-rtneuron">Free functions</a></li>
+</ul>
+</li>
+<li><a class="reference internal" href="#helper-modules">Helper modules</a><ul>
+<li><a class="reference internal" href="#module-rtneuron.util">rtneuron.util</a></li>
+<li><a class="reference internal" href="#module-rtneuron.sceneops">rtneuron.sceneops</a></li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+
+  <h4>Previous topic</h4>
+  <p class="topless"><a href="index.html"
+                        title="previous chapter">RTNeuron Python API documentation</a></p>
+  <h4>Next topic</h4>
+  <p class="topless"><a href="gallery.html"
+                        title="next chapter">Code example and image gallery</a></p>
+  <div role="note" aria-label="source link">
+    <h3>This Page</h3>
+    <ul class="this-page-menu">
+      <li><a href="_sources/api.txt"
+            rel="nofollow">Show Source</a></li>
+    </ul>
+   </div>
+<div id="searchbox" style="display: none" role="search">
+  <h3>Quick search</h3>
+    <form class="search" action="search.html" method="get">
+      <input type="text" name="q" />
+      <input type="submit" value="Go" />
+      <input type="hidden" name="check_keywords" value="yes" />
+      <input type="hidden" name="area" value="default" />
+    </form>
+    <p class="searchtip" style="font-size: 90%">
+    Enter search terms or a module, class or function name.
+    </p>
+</div>
+<script type="text/javascript">$('#searchbox').show(0);</script>
+        </div>
+      </div>
+      <div class="clearer"></div>
+    </div>
+    <div class="related" role="navigation" aria-label="related navigation">
+      <h3>Navigation</h3>
+      <ul>
+        <li class="right" style="margin-right: 10px">
+          <a href="genindex.html" title="General Index"
+             >index</a></li>
+        <li class="right" >
+          <a href="py-modindex.html" title="Python Module Index"
+             >modules</a> |</li>
+        <li class="right" >
+          <a href="gallery.html" title="Code example and image gallery"
+             >next</a> |</li>
+        <li class="right" >
+          <a href="index.html" title="RTNeuron Python API documentation"
+             >previous</a> |</li>
+        <li class="nav-item nav-item-0"><a href="index.html">RTNeuron 3.0 Python API documentation</a> &raquo;</li> 
+      </ul>
+    </div>
+    <div class="footer" role="contentinfo">
+        &copy; Copyright 2016, Cajal Blue Brain BBP/EPFL.
+      Created using <a href="http://sphinx-doc.org/">Sphinx</a> 1.3.
+    </div>
+  </body>
+</html>

@@ -1,0 +1,7 @@
+set(RTNEURON_MATURITY "EP")
+set(RTNEURON_DESCRIPTION "Scalable rendering tool for the visualization of Neuron simulation data.")
+set(RTNEURON_GIT_ROOT_URL "https://github.com/BlueBrain/RTNeuron.git")
+set(RTNEURON_PACKAGE_URL "")
+set(RTNEURON_CI_URL "https://travis-ci.org/BlueBrain/RTNeuron")
+set(RTNEURON_CI_PNG "https://travis-ci.org/BlueBrain/RTNeuron.png")
+set(RTNEURON_ISSUES_URL "https://github.com/BlueBrain/RTNeuron/issues")
