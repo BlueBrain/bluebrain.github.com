@@ -1,0 +1,7 @@
+set(OSGTRANSPARENCY_MATURITY "EP")
+set(OSGTRANSPARENCY_DESCRIPTION "OSG library for transparency rendering algorithms")
+set(OSGTRANSPARENCY_GIT_ROOT_URL "https://github.com/BlueBrain/osgTransparency.git")
+set(OSGTRANSPARENCY_PACKAGE_URL "")
+set(OSGTRANSPARENCY_CI_URL "https://travis-ci.org/BlueBrain/osgTransparency")
+set(OSGTRANSPARENCY_CI_PNG "https://travis-ci.org/BlueBrain/osgTransparency.png")
+set(OSGTRANSPARENCY_ISSUES_URL "https://github.com/BlueBrain/osgTransparency/issues")
