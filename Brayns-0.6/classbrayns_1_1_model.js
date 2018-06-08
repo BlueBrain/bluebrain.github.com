@@ -10,7 +10,7 @@ var classbrayns_1_1_model =
     [ "buildBoundingBox", "classbrayns_1_1_model.html#a8d35f831b0bdf4dc8abfc8fe9cf852a6", null ],
     [ "commit", "classbrayns_1_1_model.html#ae8be849d25bd5b8568e4e3ff2cd6a965", null ],
     [ "createMaterial", "classbrayns_1_1_model.html#a0156b8880c15bda28f3610fc36947f7c", null ],
-    [ "createMissingMaterials", "classbrayns_1_1_model.html#a560bb63289ddf5e2aa4e8bf717aff7bf", null ],
+    [ "createMissingMaterials", "classbrayns_1_1_model.html#a423f628996f18f7e37b561c7ae78ca27", null ],
     [ "dirty", "classbrayns_1_1_model.html#af459e225d811eb15f2a52b03a7a0d64d", null ],
     [ "empty", "classbrayns_1_1_model.html#aa686c6b25b25c7664f2a020c0b5d4f3a", null ],
     [ "getBounds", "classbrayns_1_1_model.html#ae43809af76609c7d87f1d12b1dae385d", null ],

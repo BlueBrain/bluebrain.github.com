@@ -86,6 +86,7 @@ var hierarchy =
     [ "brayns::MorphologyLayout", "structbrayns_1_1_morphology_layout.html", null ],
     [ "brayns::ParametersManager", "classbrayns_1_1_parameters_manager.html", null ],
     [ "brayns::PluginAPI", "classbrayns_1_1_plugin_a_p_i.html", null ],
+    [ "brayns::PluginParam", "structbrayns_1_1_plugin_param.html", null ],
     [ "brayns::Renderer", "classbrayns_1_1_renderer.html", [
       [ "brayns::OSPRayRenderer", "classbrayns_1_1_o_s_p_ray_renderer.html", null ]
     ] ],
@@ -121,6 +122,7 @@ var hierarchy =
       [ "brayns::AbstractRenderer", "classbrayns_1_1_abstract_renderer.html", [
         [ "brayns::BasicRenderer", "classbrayns_1_1_basic_renderer.html", null ],
         [ "brayns::ParticleRenderer", "classbrayns_1_1_particle_renderer.html", null ],
+        [ "brayns::PathTracingRenderer", "classbrayns_1_1_path_tracing_renderer.html", null ],
         [ "brayns::ProximityRenderer", "classbrayns_1_1_proximity_renderer.html", null ],
         [ "brayns::SimulationRenderer", "classbrayns_1_1_simulation_renderer.html", null ]
       ] ]

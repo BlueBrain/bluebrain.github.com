@@ -41,8 +41,6 @@ var classbrayns_1_1_geometry_parameters =
     [ "getRadiusCorrection", "classbrayns_1_1_geometry_parameters.html#a9692b5115e51135d82cfd73cecaa57ea", null ],
     [ "getRadiusMultiplier", "classbrayns_1_1_geometry_parameters.html#aa30da0183d6105d77c165273d8ea7e2a", null ],
     [ "getSaveCacheFile", "classbrayns_1_1_geometry_parameters.html#a714f28f1069bc6ea579b96300214f23f", null ],
-    [ "getSceneEnvironment", "classbrayns_1_1_geometry_parameters.html#a685b7032dd4e7aefadd50cf751f88c6d", null ],
-    [ "getSceneEnvironmentAsString", "classbrayns_1_1_geometry_parameters.html#a147a1faa4a169ba6d216b77c6eed1f3d", null ],
     [ "parse", "classbrayns_1_1_geometry_parameters.html#a73ac7de16c966b974774c339df0cc881", null ],
     [ "print", "classbrayns_1_1_geometry_parameters.html#a8c92a909fef870a14d015a6e838f3f63", null ],
     [ "setCircuitBoundingBox", "classbrayns_1_1_geometry_parameters.html#abcd6837d0bbb99671fb223399f59efe0", null ],
@@ -70,6 +68,5 @@ var classbrayns_1_1_geometry_parameters =
     [ "_NESTReport", "classbrayns_1_1_geometry_parameters.html#aa2be964bce9af447ba8a9c6acade04e6", null ],
     [ "_radiusCorrection", "classbrayns_1_1_geometry_parameters.html#a1475d03f548abf61f54b286db7d4bdf3", null ],
     [ "_radiusMultiplier", "classbrayns_1_1_geometry_parameters.html#ae1bdb65074988e108d6b3a7410bf3155", null ],
-    [ "_saveCacheFile", "classbrayns_1_1_geometry_parameters.html#ac1a61eaf6ac1efe0d75f80b5ed1a7a65", null ],
-    [ "_sceneEnvironment", "classbrayns_1_1_geometry_parameters.html#a95c1c9863b9d4c6ad4ba11f8f6dae7f6", null ]
+    [ "_saveCacheFile", "classbrayns_1_1_geometry_parameters.html#ac1a61eaf6ac1efe0d75f80b5ed1a7a65", null ]
 ];

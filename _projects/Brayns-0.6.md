@@ -4,7 +4,7 @@ version: "0.6"
 major: 0
 minor: 6
 description: Hardware Agnostic Ray-Tracer
-updated: 01/06/18
+updated: 09/06/18
 homepage: https://github.com/BlueBrain/Brayns
 repository: https://github.com/BlueBrain/Brayns.git
 issuesurl: https://github.com/BlueBrain/Brayns/issues
@@ -149,11 +149,6 @@ cmake .. -DBRAYNS_BRION_ENABLED=ON:OFF
 #### Enable/Disable [Deflect](https://github.com/BlueBrain/Deflect) for streaming to [Tide](https://github.com/BlueBrain/Tide), the Tiled Interactive DisplayWall environment.
 ```
 cmake .. -DBRAYNS_DEFLECT_ENABLED=ON:OFF
-```
-
-#### Enable/Disable [ImageMagick](http://www.imagemagick.org) image loading
-```
-cmake .. -DBRAYNS_IMAGEMAGICK_ENABLED=ON:OFF
 ```
 
 #### Enable/Disable HTTP/REST/Websockets interface.

@@ -34,7 +34,6 @@ var classbrayns_1_1_engine =
     [ "reshape", "classbrayns_1_1_engine.html#a840980ce1525d0e767140ca591deafb0", null ],
     [ "setActiveRenderer", "classbrayns_1_1_engine.html#a65a906caa0f052f74d57a646d7457a05", null ],
     [ "setDefaultCamera", "classbrayns_1_1_engine.html#a206d534f22b8265dd2d9c5d335980487", null ],
-    [ "setDefaultEpsilon", "classbrayns_1_1_engine.html#a09847c925ccc8aa4c98a2b5a7d7f1fec", null ],
     [ "setKeepRunning", "classbrayns_1_1_engine.html#a9eeb56f21e8fc9c34eb926f6d706a546", null ],
     [ "_activeRenderer", "classbrayns_1_1_engine.html#aedb79bf2ab3061ccb26b1fac6546895f", null ],
     [ "_camera", "classbrayns_1_1_engine.html#ac7dbf55501f7be270776d028005a91f1", null ],

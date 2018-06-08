@@ -63,6 +63,7 @@ var files =
     [ "parameters.h", "parameters_8h_source.html", null ],
     [ "ParametersManager.h", "_parameters_manager_8h_source.html", null ],
     [ "ParticleRenderer.h", "_particle_renderer_8h_source.html", null ],
+    [ "PathTracingRenderer.h", "_path_tracing_renderer_8h_source.html", null ],
     [ "pluginapi.h", "pluginapi_8h_source.html", null ],
     [ "PluginAPI.h", "_plugin_a_p_i_8h_source.html", null ],
     [ "PointLight.h", "_point_light_8h_source.html", null ],
