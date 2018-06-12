@@ -9,6 +9,7 @@ var classbrain_1_1_circuit =
     [ "Circuit", "classbrain_1_1_circuit.html#a107bee9fcf24ccf5280a51b1839564d0", null ],
     [ "~Circuit", "classbrain_1_1_circuit.html#a5f39340d71b68b181d521fcc9e41fcdc", null ],
     [ "getAfferentSynapses", "classbrain_1_1_circuit.html#a75f300dea500c142ec5f3ee1c1d2456a", null ],
+    [ "getAttribute", "classbrain_1_1_circuit.html#abb24cf2ca8dd5fca588feb650b89ad8a", null ],
     [ "getEfferentSynapses", "classbrain_1_1_circuit.html#acd51c99352dcde8dad828891aa483b81", null ],
     [ "getElectrophysiologyTypeNames", "classbrain_1_1_circuit.html#a55e006f47d22c19b383752e55e04ec19", null ],
     [ "getElectrophysiologyTypes", "classbrain_1_1_circuit.html#a1ef23f6f2ca7e62bf1102b5b31324bc6", null ],

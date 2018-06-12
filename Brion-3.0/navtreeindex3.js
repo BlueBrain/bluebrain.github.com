@@ -1,5 +1,6 @@
 var NAVTREEINDEX3 =
 {
+"enums_8h.html#ad023e746676d235c53853a69c9c1c454a69f14cd0070b6440f6d189749639a41b":[8,0,18,10,17],
 "enums_8h.html#ad023e746676d235c53853a69c9c1c454a6c0995c2b7e5279a432a11f779c761bb":[8,0,18,10,11],
 "enums_8h.html#ad023e746676d235c53853a69c9c1c454a6f0ca5ca17c653510160c909be1acfc2":[8,0,18,10,7],
 "enums_8h.html#ad023e746676d235c53853a69c9c1c454a842c90193134478bdf2096c832d37834":[8,0,18,10,8],
@@ -77,12 +78,12 @@ var NAVTREEINDEX3 =
 "morphologyRead.html":[2,6],
 "morphology_plugin_8h_source.html":[8,0,23],
 "morphology_plugin_8ipp_source.html":[8,0,24],
-"namespacebrain.html":[6,0,0],
 "namespacebrain.html":[7,0,0],
-"namespacebrain_1_1neuron.html":[7,0,0,0],
+"namespacebrain.html":[6,0,0],
 "namespacebrain_1_1neuron.html":[6,0,0,0],
-"namespacebrion.html":[7,0,2],
+"namespacebrain_1_1neuron.html":[7,0,0,0],
 "namespacebrion.html":[6,0,1],
+"namespacebrion.html":[7,0,2],
 "namespacemembers.html":[6,1,0],
 "namespacemembers_enum.html":[6,1,4],
 "namespacemembers_func.html":[6,1,1],

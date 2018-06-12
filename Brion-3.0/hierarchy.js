@@ -1,7 +1,6 @@
 var hierarchy =
 [
     [ "noncopyable", null, [
-      [ "brain::neuron::Morphology", "classbrain_1_1neuron_1_1_morphology.html", null ],
       [ "brain::SpikeReportWriter", "classbrain_1_1_spike_report_writer.html", null ],
       [ "brion::Circuit", "classbrion_1_1_circuit.html", null ],
       [ "brion::CompartmentReport", "classbrion_1_1_compartment_report.html", null ],
@@ -17,6 +16,7 @@ var hierarchy =
     [ "brain::CompartmentReportMapping::IndexEntry", "structbrain_1_1_compartment_report_mapping_1_1_index_entry.html", null ],
     [ "brain::CompartmentReportMetaData", "structbrain_1_1_compartment_report_meta_data.html", null ],
     [ "brain::CompartmentReportView", "classbrain_1_1_compartment_report_view.html", null ],
+    [ "brain::neuron::Morphology", "classbrain_1_1neuron_1_1_morphology.html", null ],
     [ "brain::neuron::Section", "classbrain_1_1neuron_1_1_section.html", null ],
     [ "brain::neuron::Soma", "classbrain_1_1neuron_1_1_soma.html", null ],
     [ "brain::Simulation", "classbrain_1_1_simulation.html", null ],
