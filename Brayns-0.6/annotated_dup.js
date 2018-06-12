@@ -27,7 +27,6 @@ var annotated_dup =
       [ "Chunk", "structbrayns_1_1_chunk.html", "structbrayns_1_1_chunk" ],
       [ "CircuitConfiguration", "structbrayns_1_1_circuit_configuration.html", "structbrayns_1_1_circuit_configuration" ],
       [ "Cone", "structbrayns_1_1_cone.html", "structbrayns_1_1_cone" ],
-      [ "ConnectivityConfiguration", "structbrayns_1_1_connectivity_configuration.html", "structbrayns_1_1_connectivity_configuration" ],
       [ "Cylinder", "structbrayns_1_1_cylinder.html", "structbrayns_1_1_cylinder" ],
       [ "DeferredTask", "classbrayns_1_1_deferred_task.html", "classbrayns_1_1_deferred_task" ],
       [ "DirectionalLight", "classbrayns_1_1_directional_light.html", "classbrayns_1_1_directional_light" ],

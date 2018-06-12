@@ -57,7 +57,6 @@ var hierarchy =
     [ "brayns::Chunk", "structbrayns_1_1_chunk.html", null ],
     [ "brayns::CircuitConfiguration", "structbrayns_1_1_circuit_configuration.html", null ],
     [ "brayns::Cone", "structbrayns_1_1_cone.html", null ],
-    [ "brayns::ConnectivityConfiguration", "structbrayns_1_1_connectivity_configuration.html", null ],
     [ "brayns::Cylinder", "structbrayns_1_1_cylinder.html", null ],
     [ "brayns::Engine", "classbrayns_1_1_engine.html", [
       [ "brayns::OSPRayEngine", "classbrayns_1_1_o_s_p_ray_engine.html", null ]
