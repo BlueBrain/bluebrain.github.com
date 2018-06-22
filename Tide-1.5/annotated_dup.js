@@ -51,6 +51,7 @@ var annotated_dup =
     [ "DoubleTapDetector", "class_double_tap_detector.html", "class_double_tap_detector" ],
     [ "DynamicTextureContent", "class_dynamic_texture_content.html", "class_dynamic_texture_content" ],
     [ "ElapsedTimer", "class_elapsed_timer.html", "class_elapsed_timer" ],
+    [ "ErrorContent", "class_error_content.html", "class_error_content" ],
     [ "FFMPEGFrame", "class_f_f_m_p_e_g_frame.html", "class_f_f_m_p_e_g_frame" ],
     [ "FFMPEGMovie", "class_f_f_m_p_e_g_movie.html", "class_f_f_m_p_e_g_movie" ],
     [ "FFMPEGPicture", "class_f_f_m_p_e_g_picture.html", "class_f_f_m_p_e_g_picture" ],

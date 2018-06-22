@@ -21,7 +21,7 @@ var searchData=
   ['sendstart',['sendStart',['../class_master_to_forker_channel.html#a547b10de3a77ceaa1cf7822bedba9949',1,'MasterToForkerChannel']]],
   ['sendtowebengine',['sendToWebengine',['../class_qml_key_injector.html#a27b0dbd0ae7fe2a0fd8da384ccaff785',1,'QmlKeyInjector']]],
   ['serialize',['serialize',['../namespacejson.html#a0bffc1dcaed598ff214886e35dfae1e4',1,'json']]],
-  ['sessionloaded',['sessionLoaded',['../class_master_window.html#a164344eaecdeee48fa714fbe39e0298a',1,'MasterWindow']]],
+  ['sessionloaded',['sessionLoaded',['../class_master_window.html#a791ba8b8261b79ff04be3e6f17719c64',1,'MasterWindow']]],
   ['setactivehandle',['setActiveHandle',['../class_content_window.html#aedda82443d698625d64b047bfacefcf0',1,'ContentWindow']]],
   ['setactivekeyid',['setActiveKeyId',['../class_keyboard_state.html#a9f090fa5c6ec36058d57463f678c5316',1,'KeyboardState']]],
   ['setactivesurface',['setActiveSurface',['../class_background_widget.html#afa0a0e85eeb9974c41d3a0db03dde0f6',1,'BackgroundWidget']]],

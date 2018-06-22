@@ -6,5 +6,5 @@ var class_master_window =
     [ "getQuickView", "class_master_window.html#a26ca4a8f7a1309b778a078410e2e3262", null ],
     [ "openWebBrowser", "class_master_window.html#ad1b8be6eda7e02a5aea26e8af5dfb03c", null ],
     [ "openWhiteboard", "class_master_window.html#ac0a920175719368d86fe0753b7a75e2f", null ],
-    [ "sessionLoaded", "class_master_window.html#a164344eaecdeee48fa714fbe39e0298a", null ]
+    [ "sessionLoaded", "class_master_window.html#a791ba8b8261b79ff04be3e6f17719c64", null ]
 ];

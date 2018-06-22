@@ -45,6 +45,7 @@ var files =
     [ "DoubleTapDetector.h", "_double_tap_detector_8h_source.html", null ],
     [ "DynamicTextureContent.h", "_dynamic_texture_content_8h_source.html", null ],
     [ "ElapsedTimer.h", "_elapsed_timer_8h_source.html", null ],
+    [ "ErrorContent.h", "_error_content_8h_source.html", null ],
     [ "FFMPEGDefines.h", "_f_f_m_p_e_g_defines_8h_source.html", null ],
     [ "FFMPEGFrame.h", "_f_f_m_p_e_g_frame_8h_source.html", null ],
     [ "FFMPEGMovie.h", "_f_f_m_p_e_g_movie_8h_source.html", null ],

@@ -118,7 +118,9 @@ var hierarchy =
         [ "ImagePyramidContent", "class_image_pyramid_content.html", null ],
         [ "MovieContent", "class_movie_content.html", null ],
         [ "PixelStreamContent", "class_pixel_stream_content.html", null ],
-        [ "TextureContent", "class_texture_content.html", null ],
+        [ "TextureContent", "class_texture_content.html", [
+          [ "ErrorContent", "class_error_content.html", null ]
+        ] ],
         [ "VectorialContent", "class_vectorial_content.html", [
           [ "PDFContent", "class_p_d_f_content.html", null ],
           [ "SVGContent", "class_s_v_g_content.html", null ]

@@ -30,7 +30,7 @@ var searchData=
   ['serialize',['serialize',['../structserialization_1_1detail_1_1serialize.html',1,'serialization::detail']]],
   ['serialize',['serialize',['../namespacejson.html#a0bffc1dcaed598ff214886e35dfae1e4',1,'json']]],
   ['serialize_3c_200_20_3e',['serialize&lt; 0 &gt;',['../structserialization_1_1detail_1_1serialize_3_010_01_4.html',1,'serialization::detail']]],
-  ['sessionloaded',['sessionLoaded',['../class_master_window.html#a164344eaecdeee48fa714fbe39e0298a',1,'MasterWindow']]],
+  ['sessionloaded',['sessionLoaded',['../class_master_window.html#a791ba8b8261b79ff04be3e6f17719c64',1,'MasterWindow']]],
   ['sessions',['sessions',['../struct_configuration_1_1_folders.html#a56a420f24374e8a89301819b51bec5c9',1,'Configuration::Folders']]],
   ['setactivehandle',['setActiveHandle',['../class_content_window.html#aedda82443d698625d64b047bfacefcf0',1,'ContentWindow']]],
   ['setactivekeyid',['setActiveKeyId',['../class_keyboard_state.html#a9f090fa5c6ec36058d57463f678c5316',1,'KeyboardState']]],
