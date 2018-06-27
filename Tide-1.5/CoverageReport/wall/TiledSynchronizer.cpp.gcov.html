@@ -37,7 +37,7 @@
           </tr>
           <tr>
             <td class="headerItem">Date:</td>
-            <td class="headerValue">2018-06-22 06:25:08</td>
+            <td class="headerValue">2018-06-27 06:34:06</td>
             <td></td>
             <td class="headerItem">Functions:</td>
             <td class="headerCovTableEntry">2</td>
@@ -124,71 +124,72 @@
 <span class="lineNum">      62 </span><span class="lineNoCov">          0 : void TiledSynchronizer::updateTiles()</span>
 <span class="lineNum">      63 </span>            : {
 <span class="lineNum">      64 </span><span class="lineNoCov">          0 :     const auto&amp; source = getDataSource();</span>
-<span class="lineNum">      65 </span><span class="lineNoCov">          0 :     Indices visibleSet = source.computeVisibleSet(_visibleTilesArea, _lod);</span>
-<span class="lineNum">      66 </span><span class="lineNoCov">          0 :     visibleSet = set_difference(visibleSet, _ignoreSet);</span>
-<span class="lineNum">      67 </span>            : 
-<span class="lineNum">      68 </span><span class="lineNoCov">          0 :     const Indices addedTiles = set_difference(visibleSet, _visibleSet);</span>
-<span class="lineNum">      69 </span><span class="lineNoCov">          0 :     const Indices removedTiles = set_difference(_visibleSet, visibleSet);</span>
-<span class="lineNum">      70 </span>            : 
-<span class="lineNum">      71 </span><span class="lineNoCov">          0 :     for (auto i : addedTiles)</span>
-<span class="lineNum">      72 </span>            :     {
-<span class="lineNum">      73 </span>            :         const auto type =
-<span class="lineNum">      74 </span><span class="lineNoCov">          0 :             source.isDynamic() ? TextureType::Dynamic : TextureType::Static;</span>
-<span class="lineNum">      75 </span><span class="lineNoCov">          0 :         emit addTile(Tile::create(i, source.getTileRect(i), type));</span>
-<span class="lineNum">      76 </span>            :     }
-<span class="lineNum">      77 </span>            : 
-<span class="lineNum">      78 </span><span class="lineNoCov">          0 :     if (_updateExistingTiles)</span>
-<span class="lineNum">      79 </span>            :     {
-<span class="lineNum">      80 </span><span class="lineNoCov">          0 :         const Indices currentTiles = set_difference(_visibleSet, removedTiles);</span>
-<span class="lineNum">      81 </span><span class="lineNoCov">          0 :         for (auto i : currentTiles)</span>
-<span class="lineNum">      82 </span><span class="lineNoCov">          0 :             emit updateTile(i, source.getTileRect(i));</span>
-<span class="lineNum">      83 </span>            :     }
-<span class="lineNum">      84 </span>            : 
-<span class="lineNum">      85 </span><span class="lineNoCov">          0 :     if (_policy == SwapTilesSynchronously)</span>
-<span class="lineNum">      86 </span>            :     {
-<span class="lineNum">      87 </span><span class="lineNoCov">          0 :         if (_updateExistingTiles)</span>
-<span class="lineNum">      88 </span>            :         {
-<span class="lineNum">      89 </span><span class="lineNoCov">          0 :             _syncSet = visibleSet;</span>
-<span class="lineNum">      90 </span><span class="lineNoCov">          0 :             _syncSwapPending = true;</span>
-<span class="lineNum">      91 </span>            :         }
-<span class="lineNum">      92 </span>            :         else
-<span class="lineNum">      93 </span><span class="lineNoCov">          0 :             _syncSet = set_difference(_syncSet, removedTiles);</span>
-<span class="lineNum">      94 </span>            :     }
-<span class="lineNum">      95 </span>            : 
-<span class="lineNum">      96 </span><span class="lineNoCov">          0 :     for (auto i : removedTiles)</span>
-<span class="lineNum">      97 </span><span class="lineNoCov">          0 :         _removeTile(i);</span>
-<span class="lineNum">      98 </span><span class="lineNoCov">          0 :     _removeLaterSet = set_difference(_removeLaterSet, addedTiles);</span>
-<span class="lineNum">      99 </span>            : 
-<span class="lineNum">     100 </span><span class="lineNoCov">          0 :     _visibleSet = visibleSet;</span>
-<a name="101"><span class="lineNum">     101 </span><span class="lineNoCov">          0 : }</span></a>
-<span class="lineNum">     102 </span>            : 
-<span class="lineNum">     103 </span><span class="lineNoCov">          0 : bool TiledSynchronizer::canSwapTiles() const</span>
-<span class="lineNum">     104 </span>            : {
-<span class="lineNum">     105 </span><span class="lineNoCov">          0 :     return _syncSwapPending &amp;&amp; set_difference(_syncSet, _tilesReadySet).empty();</span>
-<a name="106"><span class="lineNum">     106 </span>            : }</a>
-<span class="lineNum">     107 </span>            : 
-<span class="lineNum">     108 </span><span class="lineNoCov">          0 : void TiledSynchronizer::swapTiles()</span>
-<span class="lineNum">     109 </span>            : {
-<span class="lineNum">     110 </span><span class="lineNoCov">          0 :     for (auto i : _removeLaterSet)</span>
-<span class="lineNum">     111 </span><span class="lineNoCov">          0 :         emit removeTile(i);</span>
-<span class="lineNum">     112 </span><span class="lineNoCov">          0 :     _removeLaterSet.clear();</span>
-<span class="lineNum">     113 </span>            : 
-<span class="lineNum">     114 </span><span class="lineNoCov">          0 :     for (auto&amp; tile : _tilesReadyToSwap)</span>
-<span class="lineNum">     115 </span><span class="lineNoCov">          0 :         tile-&gt;swapImage();</span>
-<span class="lineNum">     116 </span><span class="lineNoCov">          0 :     _tilesReadyToSwap.clear();</span>
-<span class="lineNum">     117 </span><span class="lineNoCov">          0 :     _tilesReadySet.clear();</span>
-<span class="lineNum">     118 </span><span class="lineNoCov">          0 :     _syncSet.clear();</span>
-<span class="lineNum">     119 </span>            : 
-<span class="lineNum">     120 </span><span class="lineNoCov">          0 :     _syncSwapPending = false;</span>
-<a name="121"><span class="lineNum">     121 </span><span class="lineNoCov">          0 : }</span></a>
-<span class="lineNum">     122 </span>            : 
-<span class="lineNum">     123 </span><span class="lineNoCov">          0 : void TiledSynchronizer::_removeTile(const size_t tileIndex)</span>
-<span class="lineNum">     124 </span>            : {
-<span class="lineNum">     125 </span><span class="lineNoCov">          0 :     if (_policy == SwapTilesSynchronously &amp;&amp; _syncSwapPending)</span>
-<span class="lineNum">     126 </span><span class="lineNoCov">          0 :         _removeLaterSet.insert(tileIndex);</span>
-<a name="127"><span class="lineNum">     127 </span>            :     else</a>
-<span class="lineNum">     128 </span><span class="lineNoCov">          0 :         emit removeTile(tileIndex);</span>
-<span class="lineNum">     129 </span><span class="lineCov">         96 : }</span>
+<span class="lineNum">      65 </span>            :     auto visibleSet =
+<span class="lineNum">      66 </span><span class="lineNoCov">          0 :         source.computeVisibleSet(_visibleTilesArea, _lod, _channel);</span>
+<span class="lineNum">      67 </span><span class="lineNoCov">          0 :     visibleSet = set_difference(visibleSet, _ignoreSet);</span>
+<span class="lineNum">      68 </span>            : 
+<span class="lineNum">      69 </span><span class="lineNoCov">          0 :     const auto addedTiles = set_difference(visibleSet, _visibleSet);</span>
+<span class="lineNum">      70 </span><span class="lineNoCov">          0 :     const auto removedTiles = set_difference(_visibleSet, visibleSet);</span>
+<span class="lineNum">      71 </span>            : 
+<span class="lineNum">      72 </span><span class="lineNoCov">          0 :     for (auto i : addedTiles)</span>
+<span class="lineNum">      73 </span>            :     {
+<span class="lineNum">      74 </span>            :         const auto type =
+<span class="lineNum">      75 </span><span class="lineNoCov">          0 :             source.isDynamic() ? TextureType::Dynamic : TextureType::Static;</span>
+<span class="lineNum">      76 </span><span class="lineNoCov">          0 :         emit addTile(Tile::create(i, source.getTileRect(i), type));</span>
+<span class="lineNum">      77 </span>            :     }
+<span class="lineNum">      78 </span>            : 
+<span class="lineNum">      79 </span><span class="lineNoCov">          0 :     if (_updateExistingTiles)</span>
+<span class="lineNum">      80 </span>            :     {
+<span class="lineNum">      81 </span><span class="lineNoCov">          0 :         const auto currentTiles = set_difference(_visibleSet, removedTiles);</span>
+<span class="lineNum">      82 </span><span class="lineNoCov">          0 :         for (auto i : currentTiles)</span>
+<span class="lineNum">      83 </span><span class="lineNoCov">          0 :             emit updateTile(i, source.getTileRect(i));</span>
+<span class="lineNum">      84 </span>            :     }
+<span class="lineNum">      85 </span>            : 
+<span class="lineNum">      86 </span><span class="lineNoCov">          0 :     if (_policy == SwapTilesSynchronously)</span>
+<span class="lineNum">      87 </span>            :     {
+<span class="lineNum">      88 </span><span class="lineNoCov">          0 :         if (_updateExistingTiles)</span>
+<span class="lineNum">      89 </span>            :         {
+<span class="lineNum">      90 </span><span class="lineNoCov">          0 :             _syncSet = visibleSet;</span>
+<span class="lineNum">      91 </span><span class="lineNoCov">          0 :             _syncSwapPending = true;</span>
+<span class="lineNum">      92 </span>            :         }
+<span class="lineNum">      93 </span>            :         else
+<span class="lineNum">      94 </span><span class="lineNoCov">          0 :             _syncSet = set_difference(_syncSet, removedTiles);</span>
+<span class="lineNum">      95 </span>            :     }
+<span class="lineNum">      96 </span>            : 
+<span class="lineNum">      97 </span><span class="lineNoCov">          0 :     for (auto i : removedTiles)</span>
+<span class="lineNum">      98 </span><span class="lineNoCov">          0 :         _removeTile(i);</span>
+<span class="lineNum">      99 </span><span class="lineNoCov">          0 :     _removeLaterSet = set_difference(_removeLaterSet, addedTiles);</span>
+<span class="lineNum">     100 </span>            : 
+<span class="lineNum">     101 </span><span class="lineNoCov">          0 :     _visibleSet = visibleSet;</span>
+<a name="102"><span class="lineNum">     102 </span><span class="lineNoCov">          0 : }</span></a>
+<span class="lineNum">     103 </span>            : 
+<span class="lineNum">     104 </span><span class="lineNoCov">          0 : bool TiledSynchronizer::canSwapTiles() const</span>
+<span class="lineNum">     105 </span>            : {
+<span class="lineNum">     106 </span><span class="lineNoCov">          0 :     return _syncSwapPending &amp;&amp; set_difference(_syncSet, _tilesReadySet).empty();</span>
+<a name="107"><span class="lineNum">     107 </span>            : }</a>
+<span class="lineNum">     108 </span>            : 
+<span class="lineNum">     109 </span><span class="lineNoCov">          0 : void TiledSynchronizer::swapTiles()</span>
+<span class="lineNum">     110 </span>            : {
+<span class="lineNum">     111 </span><span class="lineNoCov">          0 :     for (auto i : _removeLaterSet)</span>
+<span class="lineNum">     112 </span><span class="lineNoCov">          0 :         emit removeTile(i);</span>
+<span class="lineNum">     113 </span><span class="lineNoCov">          0 :     _removeLaterSet.clear();</span>
+<span class="lineNum">     114 </span>            : 
+<span class="lineNum">     115 </span><span class="lineNoCov">          0 :     for (auto&amp; tile : _tilesReadyToSwap)</span>
+<span class="lineNum">     116 </span><span class="lineNoCov">          0 :         tile-&gt;swapImage();</span>
+<span class="lineNum">     117 </span><span class="lineNoCov">          0 :     _tilesReadyToSwap.clear();</span>
+<span class="lineNum">     118 </span><span class="lineNoCov">          0 :     _tilesReadySet.clear();</span>
+<span class="lineNum">     119 </span><span class="lineNoCov">          0 :     _syncSet.clear();</span>
+<span class="lineNum">     120 </span>            : 
+<span class="lineNum">     121 </span><span class="lineNoCov">          0 :     _syncSwapPending = false;</span>
+<a name="122"><span class="lineNum">     122 </span><span class="lineNoCov">          0 : }</span></a>
+<span class="lineNum">     123 </span>            : 
+<span class="lineNum">     124 </span><span class="lineNoCov">          0 : void TiledSynchronizer::_removeTile(const size_t tileIndex)</span>
+<span class="lineNum">     125 </span>            : {
+<span class="lineNum">     126 </span><span class="lineNoCov">          0 :     if (_policy == SwapTilesSynchronously &amp;&amp; _syncSwapPending)</span>
+<span class="lineNum">     127 </span><span class="lineNoCov">          0 :         _removeLaterSet.insert(tileIndex);</span>
+<a name="128"><span class="lineNum">     128 </span>            :     else</a>
+<span class="lineNum">     129 </span><span class="lineNoCov">          0 :         emit removeTile(tileIndex);</span>
+<span class="lineNum">     130 </span><span class="lineCov">         96 : }</span>
 </pre>
       </td>
     </tr>

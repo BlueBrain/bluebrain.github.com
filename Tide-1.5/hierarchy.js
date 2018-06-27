@@ -80,6 +80,7 @@ var hierarchy =
     ] ],
     [ "PixelStreamProcessor", "class_pixel_stream_processor.html", [
       [ "PixelStreamAssembler", "class_pixel_stream_assembler.html", null ],
+      [ "PixelStreamChannelAssembler", "class_pixel_stream_channel_assembler.html", null ],
       [ "PixelStreamPassthrough", "class_pixel_stream_passthrough.html", null ]
     ] ],
     [ "ProbeResult", "struct_probe_result.html", null ],
@@ -117,7 +118,9 @@ var hierarchy =
         [ "DynamicTextureContent", "class_dynamic_texture_content.html", null ],
         [ "ImagePyramidContent", "class_image_pyramid_content.html", null ],
         [ "MovieContent", "class_movie_content.html", null ],
-        [ "PixelStreamContent", "class_pixel_stream_content.html", null ],
+        [ "MultiChannelContent", "class_multi_channel_content.html", [
+          [ "PixelStreamContent", "class_pixel_stream_content.html", null ]
+        ] ],
         [ "TextureContent", "class_texture_content.html", [
           [ "ErrorContent", "class_error_content.html", null ]
         ] ],
@@ -161,6 +164,7 @@ var hierarchy =
       [ "MasterToForkerChannel", "class_master_to_forker_channel.html", null ],
       [ "MasterToWallChannel", "class_master_to_wall_channel.html", null ],
       [ "MovieUpdater", "class_movie_updater.html", null ],
+      [ "MultiChannelWindowController", "class_multi_channel_window_controller.html", null ],
       [ "Options", "class_options.html", null ],
       [ "PanDetector", "class_pan_detector.html", null ],
       [ "PDFTiler", "class_p_d_f_tiler.html", null ],

@@ -9,6 +9,7 @@ var class_tiled_synchronizer =
     [ "onSwapReady", "class_tiled_synchronizer.html#a8ae5165f31bd9575d16a2849c46eb256", null ],
     [ "swapTiles", "class_tiled_synchronizer.html#a66b1596107ae5c900f74142247f830ea", null ],
     [ "updateTiles", "class_tiled_synchronizer.html#a87ca86829ead6c83dbaba10fb67a2940", null ],
+    [ "_channel", "class_tiled_synchronizer.html#a397b544b5f7a00e38512b1042719c663", null ],
     [ "_ignoreSet", "class_tiled_synchronizer.html#a661e203de9c571ab12a1fb0a2bda0c69", null ],
     [ "_lod", "class_tiled_synchronizer.html#a6fbe44ca96d25a41cd1db23e6437c696", null ],
     [ "_updateExistingTiles", "class_tiled_synchronizer.html#a6562348f5dfdb774990e49e1e817cc29", null ],

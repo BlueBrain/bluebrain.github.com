@@ -9,6 +9,7 @@ var searchData=
   ['pdftiler',['PDFTiler',['../class_p_d_f_tiler.html',1,'']]],
   ['pinchdetector',['PinchDetector',['../class_pinch_detector.html',1,'']]],
   ['pixelstreamassembler',['PixelStreamAssembler',['../class_pixel_stream_assembler.html',1,'']]],
+  ['pixelstreamchannelassembler',['PixelStreamChannelAssembler',['../class_pixel_stream_channel_assembler.html',1,'']]],
   ['pixelstreamcontent',['PixelStreamContent',['../class_pixel_stream_content.html',1,'']]],
   ['pixelstreamcontroller',['PixelStreamController',['../class_pixel_stream_controller.html',1,'']]],
   ['pixelstreamerlauncher',['PixelStreamerLauncher',['../class_pixel_streamer_launcher.html',1,'']]],

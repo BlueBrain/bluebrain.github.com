@@ -16,6 +16,6 @@ var searchData=
   ['height',['height',['../class_content.html#a0ac15e1ba630bc6c6f98d47529f4c48c',1,'Content']]],
   ['hidelauncher',['hideLauncher',['../class_scene_controller.html#aa17cea719c50c3bb25e9ad2141b955a3',1,'SceneController']]],
   ['hidepanels',['hidePanels',['../class_display_group_controller.html#a30c12fa5deb6859f9304b47ab7bc7722',1,'DisplayGroupController']]],
-  ['hidewindow',['hideWindow',['../class_pixel_stream_window_manager.html#a74bb0eb12ff7357fef0fbbd1d9c92aff',1,'PixelStreamWindowManager']]],
+  ['hidewindows',['hideWindows',['../class_pixel_stream_window_manager.html#aaa0472063b87b5ad26e14e04afeba879',1,'PixelStreamWindowManager']]],
   ['htmlcontent',['HtmlContent',['../class_html_content.html#a93b3d15ad820691f576ec7cccdef6dc3',1,'HtmlContent']]]
 ];

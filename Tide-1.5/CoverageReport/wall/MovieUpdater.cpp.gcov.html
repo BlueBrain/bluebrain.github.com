@@ -37,7 +37,7 @@
           </tr>
           <tr>
             <td class="headerItem">Date:</td>
-            <td class="headerValue">2018-06-22 06:25:08</td>
+            <td class="headerValue">2018-06-27 06:34:06</td>
             <td></td>
             <td class="headerItem">Functions:</td>
             <td class="headerCovTableEntry">2</td>
@@ -170,198 +170,202 @@
 <span class="lineNum">     108 </span><span class="lineNoCov">          0 :     return QRect(0, 0, _ffmpegMovie-&gt;getWidth(), _ffmpegMovie-&gt;getHeight());</span>
 <a name="109"><span class="lineNum">     109 </span>            : }</a>
 <span class="lineNum">     110 </span>            : 
-<span class="lineNum">     111 </span><span class="lineNoCov">          0 : QSize MovieUpdater::getTilesArea(const uint lod) const</span>
+<span class="lineNum">     111 </span><span class="lineNoCov">          0 : QSize MovieUpdater::getTilesArea(const uint lod, const uint channel) const</span>
 <span class="lineNum">     112 </span>            : {
 <span class="lineNum">     113 </span>            :     Q_UNUSED(lod);
-<span class="lineNum">     114 </span><span class="lineNoCov">          0 :     return getTileRect(0).size();</span>
-<a name="115"><span class="lineNum">     115 </span>            : }</a>
-<span class="lineNum">     116 </span>            : 
-<span class="lineNum">     117 </span><span class="lineNoCov">          0 : ImagePtr MovieUpdater::getTileImage(const uint tileIndex,</span>
-<span class="lineNum">     118 </span>            :                                     const deflect::View view) const
-<span class="lineNum">     119 </span>            : {
-<span class="lineNum">     120 </span>            :     Q_UNUSED(tileIndex);
-<span class="lineNum">     121 </span>            : 
-<span class="lineNum">     122 </span>            :     // WAR bug: concurrent calls to this function may occur when the movie was
-<span class="lineNum">     123 </span>            :     // obstruced by another window and becomes visible again, resulting in a
-<span class="lineNum">     124 </span>            :     // segfault in: FFMPEGMovie::getFrame() -&gt;
-<span class="lineNum">     125 </span>            :     // FFMPEGVideoStream::decodePictureForLastPacket() -&gt; sws_scale().
-<span class="lineNum">     126 </span><span class="lineNoCov">          0 :     const QMutexLocker lockGetImage(&amp;_getImageMutex);</span>
-<span class="lineNum">     127 </span>            : 
-<span class="lineNum">     128 </span><span class="lineNoCov">          0 :     if (_ffmpegMovie-&gt;isStereo() &amp;&amp; _pictureLeftOrMono &amp;&amp; _pictureRight)</span>
-<span class="lineNum">     129 </span>            :     {
-<span class="lineNum">     130 </span>            :         return view == deflect::View::right_eye ? _pictureRight
-<span class="lineNum">     131 </span><span class="lineNoCov">          0 :                                                 : _pictureLeftOrMono;</span>
-<span class="lineNum">     132 </span>            :     }
-<span class="lineNum">     133 </span><span class="lineNoCov">          0 :     else if (_pictureLeftOrMono)</span>
-<span class="lineNum">     134 </span><span class="lineNoCov">          0 :         return _pictureLeftOrMono;</span>
-<span class="lineNum">     135 </span>            : 
-<span class="lineNum">     136 </span>            :     double timestamp;
-<span class="lineNum">     137 </span>            :     {
-<span class="lineNum">     138 </span><span class="lineNoCov">          0 :         const QMutexLocker lock(&amp;_mutex);</span>
-<span class="lineNum">     139 </span><span class="lineNoCov">          0 :         timestamp = _sharedTimestamp;</span>
-<span class="lineNum">     140 </span>            :     }
-<span class="lineNum">     141 </span>            : 
-<span class="lineNum">     142 </span><span class="lineNoCov">          0 :     auto image = _ffmpegMovie-&gt;getFrame(timestamp);</span>
-<span class="lineNum">     143 </span>            : 
-<span class="lineNum">     144 </span><span class="lineNoCov">          0 :     const bool loopBack = _loop &amp;&amp; !image;</span>
-<span class="lineNum">     145 </span><span class="lineNoCov">          0 :     if (loopBack)</span>
-<span class="lineNum">     146 </span><span class="lineNoCov">          0 :         image = _ffmpegMovie-&gt;getFrame(0.0);</span>
-<span class="lineNum">     147 </span>            : 
-<span class="lineNum">     148 </span>            :     {
-<span class="lineNum">     149 </span><span class="lineNoCov">          0 :         const QMutexLocker lock(&amp;_mutex);</span>
-<span class="lineNum">     150 </span><span class="lineNoCov">          0 :         _currentPosition = _ffmpegMovie-&gt;getPosition();</span>
-<span class="lineNum">     151 </span>            :         // stay inSync for start != 0.0 and loop conditions
-<span class="lineNum">     152 </span><span class="lineNoCov">          0 :         _sharedTimestamp = _currentPosition;</span>
-<span class="lineNum">     153 </span>            :         // WAR a risk of deadlock when skipping movies with incorrect duration
-<span class="lineNum">     154 </span><span class="lineNoCov">          0 :         _loopedBack = loopBack;</span>
+<span class="lineNum">     114 </span>            :     Q_UNUSED(channel);
+<span class="lineNum">     115 </span>            : 
+<span class="lineNum">     116 </span><span class="lineNoCov">          0 :     return getTileRect(0).size();</span>
+<a name="117"><span class="lineNum">     117 </span>            : }</a>
+<span class="lineNum">     118 </span>            : 
+<span class="lineNum">     119 </span><span class="lineNoCov">          0 : Indices MovieUpdater::computeVisibleSet(const QRectF&amp; visibleTilesArea,</span>
+<span class="lineNum">     120 </span>            :                                         const uint lod,
+<span class="lineNum">     121 </span>            :                                         const uint channel) const
+<span class="lineNum">     122 </span>            : {
+<span class="lineNum">     123 </span>            :     Q_UNUSED(lod);
+<span class="lineNum">     124 </span>            :     Q_UNUSED(channel);
+<span class="lineNum">     125 </span>            : 
+<span class="lineNum">     126 </span><span class="lineNoCov">          0 :     if (visibleTilesArea.isEmpty())</span>
+<span class="lineNum">     127 </span><span class="lineNoCov">          0 :         return Indices();</span>
+<span class="lineNum">     128 </span>            : 
+<span class="lineNum">     129 </span><span class="lineNoCov">          0 :     return {0};</span>
+<a name="130"><span class="lineNum">     130 </span>            : }</a>
+<span class="lineNum">     131 </span>            : 
+<span class="lineNum">     132 </span><span class="lineNoCov">          0 : ImagePtr MovieUpdater::getTileImage(const uint tileIndex,</span>
+<span class="lineNum">     133 </span>            :                                     const deflect::View view) const
+<span class="lineNum">     134 </span>            : {
+<span class="lineNum">     135 </span>            :     Q_UNUSED(tileIndex);
+<span class="lineNum">     136 </span>            : 
+<span class="lineNum">     137 </span>            :     // WAR bug: concurrent calls to this function may occur when the movie was
+<span class="lineNum">     138 </span>            :     // obstruced by another window and becomes visible again, resulting in a
+<span class="lineNum">     139 </span>            :     // segfault in: FFMPEGMovie::getFrame() -&gt;
+<span class="lineNum">     140 </span>            :     // FFMPEGVideoStream::decodePictureForLastPacket() -&gt; sws_scale().
+<span class="lineNum">     141 </span><span class="lineNoCov">          0 :     const QMutexLocker lockGetImage(&amp;_getImageMutex);</span>
+<span class="lineNum">     142 </span>            : 
+<span class="lineNum">     143 </span><span class="lineNoCov">          0 :     if (_ffmpegMovie-&gt;isStereo() &amp;&amp; _pictureLeftOrMono &amp;&amp; _pictureRight)</span>
+<span class="lineNum">     144 </span>            :     {
+<span class="lineNum">     145 </span>            :         return view == deflect::View::right_eye ? _pictureRight
+<span class="lineNum">     146 </span><span class="lineNoCov">          0 :                                                 : _pictureLeftOrMono;</span>
+<span class="lineNum">     147 </span>            :     }
+<span class="lineNum">     148 </span><span class="lineNoCov">          0 :     else if (_pictureLeftOrMono)</span>
+<span class="lineNum">     149 </span><span class="lineNoCov">          0 :         return _pictureLeftOrMono;</span>
+<span class="lineNum">     150 </span>            : 
+<span class="lineNum">     151 </span>            :     double timestamp;
+<span class="lineNum">     152 </span>            :     {
+<span class="lineNum">     153 </span><span class="lineNoCov">          0 :         const QMutexLocker lock(&amp;_mutex);</span>
+<span class="lineNum">     154 </span><span class="lineNoCov">          0 :         timestamp = _sharedTimestamp;</span>
 <span class="lineNum">     155 </span>            :     }
-<span class="lineNum">     156 </span><span class="lineNoCov">          0 :     if (_ffmpegMovie-&gt;isStereo())</span>
-<span class="lineNum">     157 </span>            :     {
-<span class="lineNum">     158 </span><span class="lineNoCov">          0 :         _splitSideBySide(*image, _pictureLeftOrMono, _pictureRight);</span>
-<span class="lineNum">     159 </span>            :         return view == deflect::View::right_eye ? _pictureRight
-<span class="lineNum">     160 </span><span class="lineNoCov">          0 :                                                 : _pictureLeftOrMono;</span>
-<span class="lineNum">     161 </span>            :     }
-<span class="lineNum">     162 </span><span class="lineNoCov">          0 :     _pictureLeftOrMono = image;</span>
-<span class="lineNum">     163 </span><span class="lineNoCov">          0 :     return image;</span>
-<a name="164"><span class="lineNum">     164 </span>            : }</a>
-<span class="lineNum">     165 </span>            : 
-<span class="lineNum">     166 </span><span class="lineNoCov">          0 : Indices MovieUpdater::computeVisibleSet(const QRectF&amp; visibleTilesArea,</span>
-<span class="lineNum">     167 </span>            :                                         const uint lod) const
-<span class="lineNum">     168 </span>            : {
-<span class="lineNum">     169 </span>            :     Q_UNUSED(lod);
-<span class="lineNum">     170 </span>            : 
-<span class="lineNum">     171 </span><span class="lineNoCov">          0 :     if (visibleTilesArea.isEmpty())</span>
-<span class="lineNum">     172 </span><span class="lineNoCov">          0 :         return Indices();</span>
-<span class="lineNum">     173 </span>            : 
-<span class="lineNum">     174 </span><span class="lineNoCov">          0 :     return {0};</span>
-<a name="175"><span class="lineNum">     175 </span>            : }</a>
-<span class="lineNum">     176 </span>            : 
-<span class="lineNum">     177 </span><span class="lineNoCov">          0 : uint MovieUpdater::getMaxLod() const</span>
-<span class="lineNum">     178 </span>            : {
-<span class="lineNum">     179 </span><span class="lineNoCov">          0 :     return 0;</span>
-<a name="180"><span class="lineNum">     180 </span>            : }</a>
-<span class="lineNum">     181 </span>            : 
-<span class="lineNum">     182 </span><span class="lineNoCov">          0 : void MovieUpdater::getNextFrame()</span>
-<span class="lineNum">     183 </span>            : {
-<span class="lineNum">     184 </span><span class="lineNoCov">          0 :     _readyForNextFrame = true;</span>
-<a name="185"><span class="lineNum">     185 </span><span class="lineNoCov">          0 : }</span></a>
-<span class="lineNum">     186 </span>            : 
-<span class="lineNum">     187 </span><span class="lineNoCov">          0 : QString MovieUpdater::getStatistics() const</span>
-<span class="lineNum">     188 </span>            : {
-<span class="lineNum">     189 </span><span class="lineNoCov">          0 :     const auto frameDuration = _ffmpegMovie-&gt;getFrameDuration();</span>
-<span class="lineNum">     190 </span><span class="lineNoCov">          0 :     const auto fps = QString::number(1.0 / frameDuration, 'g', 3);</span>
-<span class="lineNum">     191 </span><span class="lineNoCov">          0 :     const auto progress = QString::number(getPosition() * 100.0, 'g', 3);</span>
-<span class="lineNum">     192 </span><span class="lineNoCov">          0 :     return QString(&quot;%2 fps %3 %&quot;).arg(fps, progress);</span>
-<a name="193"><span class="lineNum">     193 </span>            : }</a>
-<span class="lineNum">     194 </span>            : 
-<span class="lineNum">     195 </span><span class="lineNoCov">          0 : qreal MovieUpdater::getPosition() const</span>
-<span class="lineNum">     196 </span>            : {
-<span class="lineNum">     197 </span><span class="lineNoCov">          0 :     return _sharedTimestamp / _ffmpegMovie-&gt;getDuration();</span>
-<a name="198"><span class="lineNum">     198 </span>            : }</a>
-<span class="lineNum">     199 </span>            : 
-<span class="lineNum">     200 </span><span class="lineNoCov">          0 : bool MovieUpdater::isSkipping() const</span>
-<span class="lineNum">     201 </span>            : {
-<span class="lineNum">     202 </span><span class="lineNoCov">          0 :     return _skipping;</span>
-<a name="203"><span class="lineNum">     203 </span>            : }</a>
-<span class="lineNum">     204 </span>            : 
-<span class="lineNum">     205 </span><span class="lineNoCov">          0 : bool MovieUpdater::isPaused() const</span>
-<span class="lineNum">     206 </span>            : {
-<span class="lineNum">     207 </span><span class="lineNoCov">          0 :     return _paused;</span>
-<a name="208"><span class="lineNum">     208 </span>            : }</a>
-<span class="lineNum">     209 </span>            : 
-<span class="lineNum">     210 </span><span class="lineNoCov">          0 : qreal MovieUpdater::getSkipPosition() const</span>
-<span class="lineNum">     211 </span>            : {
-<span class="lineNum">     212 </span><span class="lineNoCov">          0 :     return _skipPosition / _ffmpegMovie-&gt;getDuration();</span>
-<a name="213"><span class="lineNum">     213 </span>            : }</a>
-<span class="lineNum">     214 </span>            : 
-<span class="lineNum">     215 </span><span class="lineNoCov">          0 : void MovieUpdater::synchronizeFrameAdvance(WallToWallChannel&amp; channel)</span>
-<span class="lineNum">     216 </span>            : {
-<span class="lineNum">     217 </span><span class="lineNoCov">          0 :     bool visible = false;</span>
-<span class="lineNum">     218 </span><span class="lineNoCov">          0 :     for (auto synchronizer : synchronizers)</span>
-<span class="lineNum">     219 </span>            :     {
-<span class="lineNum">     220 </span><span class="lineNoCov">          0 :         auto movieSynchronizer = static_cast&lt;MovieSynchronizer*&gt;(synchronizer);</span>
-<span class="lineNum">     221 </span><span class="lineNoCov">          0 :         visible = visible || movieSynchronizer-&gt;hasVisibleTiles();</span>
-<span class="lineNum">     222 </span>            :     }
-<span class="lineNum">     223 </span>            : 
-<span class="lineNum">     224 </span><span class="lineNoCov">          0 :     const double frameDuration = _ffmpegMovie-&gt;getFrameDuration();</span>
-<span class="lineNum">     225 </span>            : 
-<span class="lineNum">     226 </span><span class="lineNoCov">          0 :     bool inSync = false;</span>
-<span class="lineNum">     227 </span>            :     {
-<span class="lineNum">     228 </span>            :         // protect _sharedTimestamp &amp; _currentPosition from getTileImage()
-<span class="lineNum">     229 </span><span class="lineNoCov">          0 :         const QMutexLocker lock(&amp;_mutex);</span>
-<span class="lineNum">     230 </span>            : 
-<span class="lineNum">     231 </span>            :         // Jump to the skip position
-<span class="lineNum">     232 </span><span class="lineNoCov">          0 :         if (_skipping &amp;&amp; !_loopedBack)</span>
-<span class="lineNum">     233 </span><span class="lineNoCov">          0 :             _sharedTimestamp = _skipPosition;</span>
+<span class="lineNum">     156 </span>            : 
+<span class="lineNum">     157 </span><span class="lineNoCov">          0 :     auto image = _ffmpegMovie-&gt;getFrame(timestamp);</span>
+<span class="lineNum">     158 </span>            : 
+<span class="lineNum">     159 </span><span class="lineNoCov">          0 :     const bool loopBack = _loop &amp;&amp; !image;</span>
+<span class="lineNum">     160 </span><span class="lineNoCov">          0 :     if (loopBack)</span>
+<span class="lineNum">     161 </span><span class="lineNoCov">          0 :         image = _ffmpegMovie-&gt;getFrame(0.0);</span>
+<span class="lineNum">     162 </span>            : 
+<span class="lineNum">     163 </span>            :     {
+<span class="lineNum">     164 </span><span class="lineNoCov">          0 :         const QMutexLocker lock(&amp;_mutex);</span>
+<span class="lineNum">     165 </span><span class="lineNoCov">          0 :         _currentPosition = _ffmpegMovie-&gt;getPosition();</span>
+<span class="lineNum">     166 </span>            :         // stay inSync for start != 0.0 and loop conditions
+<span class="lineNum">     167 </span><span class="lineNoCov">          0 :         _sharedTimestamp = _currentPosition;</span>
+<span class="lineNum">     168 </span>            :         // WAR a risk of deadlock when skipping movies with incorrect duration
+<span class="lineNum">     169 </span><span class="lineNoCov">          0 :         _loopedBack = loopBack;</span>
+<span class="lineNum">     170 </span>            :     }
+<span class="lineNum">     171 </span><span class="lineNoCov">          0 :     if (_ffmpegMovie-&gt;isStereo())</span>
+<span class="lineNum">     172 </span>            :     {
+<span class="lineNum">     173 </span><span class="lineNoCov">          0 :         _splitSideBySide(*image, _pictureLeftOrMono, _pictureRight);</span>
+<span class="lineNum">     174 </span>            :         return view == deflect::View::right_eye ? _pictureRight
+<span class="lineNum">     175 </span><span class="lineNoCov">          0 :                                                 : _pictureLeftOrMono;</span>
+<span class="lineNum">     176 </span>            :     }
+<span class="lineNum">     177 </span><span class="lineNoCov">          0 :     _pictureLeftOrMono = image;</span>
+<span class="lineNum">     178 </span><span class="lineNoCov">          0 :     return image;</span>
+<a name="179"><span class="lineNum">     179 </span>            : }</a>
+<span class="lineNum">     180 </span>            : 
+<span class="lineNum">     181 </span><span class="lineNoCov">          0 : uint MovieUpdater::getMaxLod() const</span>
+<span class="lineNum">     182 </span>            : {
+<span class="lineNum">     183 </span><span class="lineNoCov">          0 :     return 0;</span>
+<a name="184"><span class="lineNum">     184 </span>            : }</a>
+<span class="lineNum">     185 </span>            : 
+<span class="lineNum">     186 </span><span class="lineNoCov">          0 : void MovieUpdater::getNextFrame()</span>
+<span class="lineNum">     187 </span>            : {
+<span class="lineNum">     188 </span><span class="lineNoCov">          0 :     _readyForNextFrame = true;</span>
+<a name="189"><span class="lineNum">     189 </span><span class="lineNoCov">          0 : }</span></a>
+<span class="lineNum">     190 </span>            : 
+<span class="lineNum">     191 </span><span class="lineNoCov">          0 : QString MovieUpdater::getStatistics() const</span>
+<span class="lineNum">     192 </span>            : {
+<span class="lineNum">     193 </span><span class="lineNoCov">          0 :     const auto frameDuration = _ffmpegMovie-&gt;getFrameDuration();</span>
+<span class="lineNum">     194 </span><span class="lineNoCov">          0 :     const auto fps = QString::number(1.0 / frameDuration, 'g', 3);</span>
+<span class="lineNum">     195 </span><span class="lineNoCov">          0 :     const auto progress = QString::number(getPosition() * 100.0, 'g', 3);</span>
+<span class="lineNum">     196 </span><span class="lineNoCov">          0 :     return QString(&quot;%2 fps %3 %&quot;).arg(fps, progress);</span>
+<a name="197"><span class="lineNum">     197 </span>            : }</a>
+<span class="lineNum">     198 </span>            : 
+<span class="lineNum">     199 </span><span class="lineNoCov">          0 : qreal MovieUpdater::getPosition() const</span>
+<span class="lineNum">     200 </span>            : {
+<span class="lineNum">     201 </span><span class="lineNoCov">          0 :     return _sharedTimestamp / _ffmpegMovie-&gt;getDuration();</span>
+<a name="202"><span class="lineNum">     202 </span>            : }</a>
+<span class="lineNum">     203 </span>            : 
+<span class="lineNum">     204 </span><span class="lineNoCov">          0 : bool MovieUpdater::isSkipping() const</span>
+<span class="lineNum">     205 </span>            : {
+<span class="lineNum">     206 </span><span class="lineNoCov">          0 :     return _skipping;</span>
+<a name="207"><span class="lineNum">     207 </span>            : }</a>
+<span class="lineNum">     208 </span>            : 
+<span class="lineNum">     209 </span><span class="lineNoCov">          0 : bool MovieUpdater::isPaused() const</span>
+<span class="lineNum">     210 </span>            : {
+<span class="lineNum">     211 </span><span class="lineNoCov">          0 :     return _paused;</span>
+<a name="212"><span class="lineNum">     212 </span>            : }</a>
+<span class="lineNum">     213 </span>            : 
+<span class="lineNum">     214 </span><span class="lineNoCov">          0 : qreal MovieUpdater::getSkipPosition() const</span>
+<span class="lineNum">     215 </span>            : {
+<span class="lineNum">     216 </span><span class="lineNoCov">          0 :     return _skipPosition / _ffmpegMovie-&gt;getDuration();</span>
+<a name="217"><span class="lineNum">     217 </span>            : }</a>
+<span class="lineNum">     218 </span>            : 
+<span class="lineNum">     219 </span><span class="lineNoCov">          0 : void MovieUpdater::synchronizeFrameAdvance(WallToWallChannel&amp; channel)</span>
+<span class="lineNum">     220 </span>            : {
+<span class="lineNum">     221 </span><span class="lineNoCov">          0 :     bool visible = false;</span>
+<span class="lineNum">     222 </span><span class="lineNoCov">          0 :     for (auto synchronizer : synchronizers)</span>
+<span class="lineNum">     223 </span>            :     {
+<span class="lineNum">     224 </span><span class="lineNoCov">          0 :         auto movieSynchronizer = static_cast&lt;MovieSynchronizer*&gt;(synchronizer);</span>
+<span class="lineNum">     225 </span><span class="lineNoCov">          0 :         visible = visible || movieSynchronizer-&gt;hasVisibleTiles();</span>
+<span class="lineNum">     226 </span>            :     }
+<span class="lineNum">     227 </span>            : 
+<span class="lineNum">     228 </span><span class="lineNoCov">          0 :     const double frameDuration = _ffmpegMovie-&gt;getFrameDuration();</span>
+<span class="lineNum">     229 </span>            : 
+<span class="lineNum">     230 </span><span class="lineNoCov">          0 :     bool inSync = false;</span>
+<span class="lineNum">     231 </span>            :     {
+<span class="lineNum">     232 </span>            :         // protect _sharedTimestamp &amp; _currentPosition from getTileImage()
+<span class="lineNum">     233 </span><span class="lineNoCov">          0 :         const QMutexLocker lock(&amp;_mutex);</span>
 <span class="lineNum">     234 </span>            : 
-<span class="lineNum">     235 </span><span class="lineNoCov">          0 :         inSync = std::abs(_sharedTimestamp - _currentPosition) &lt;= frameDuration;</span>
-<span class="lineNum">     236 </span>            :     }
-<span class="lineNum">     237 </span>            : 
-<span class="lineNum">     238 </span>            :     // If any visible updater is out-of-sync, only update those ones. This
-<span class="lineNum">     239 </span>            :     // causes a seek in the movie to _sharedTimestamp. The time stands still in
-<span class="lineNum">     240 </span>            :     // this case to avoid seeking of all processes if this seek takes longer
-<span class="lineNum">     241 </span>            :     // than frameDuration.
-<span class="lineNum">     242 </span><span class="lineNoCov">          0 :     if (!channel.allReady(inSync || !visible))</span>
-<span class="lineNum">     243 </span>            :     {
-<span class="lineNum">     244 </span><span class="lineNoCov">          0 :         _timer.resetTime(channel.getTime());</span>
-<span class="lineNum">     245 </span><span class="lineNoCov">          0 :         if (_readyForNextFrame)</span>
-<span class="lineNum">     246 </span><span class="lineNoCov">          0 :             _triggerFrameUpdate();</span>
-<span class="lineNum">     247 </span><span class="lineNoCov">          0 :         return;</span>
-<span class="lineNum">     248 </span>            :     }
-<span class="lineNum">     249 </span>            : 
-<span class="lineNum">     250 </span>            :     // Don't advance time if paused or skipping
-<span class="lineNum">     251 </span><span class="lineNoCov">          0 :     if (_paused || _skipping)</span>
-<span class="lineNum">     252 </span>            :     {
-<span class="lineNum">     253 </span><span class="lineNoCov">          0 :         _timer.resetTime(channel.getTime());</span>
-<span class="lineNum">     254 </span><span class="lineNoCov">          0 :         if (_skipping &amp;&amp; _readyForNextFrame)</span>
-<span class="lineNum">     255 </span><span class="lineNoCov">          0 :             if (channel.allReady(!inSync || !visible))</span>
-<span class="lineNum">     256 </span><span class="lineNoCov">          0 :                 _triggerFrameUpdate();</span>
-<span class="lineNum">     257 </span><span class="lineNoCov">          0 :         return;</span>
-<span class="lineNum">     258 </span>            :     }
-<span class="lineNum">     259 </span>            : 
-<span class="lineNum">     260 </span>            :     // If everybody is in sync, do a proper increment and throttle to movie
-<span class="lineNum">     261 </span>            :     // frame duration and decode speed accordingly.
-<span class="lineNum">     262 </span><span class="lineNoCov">          0 :     _timer.setCurrentTime(channel.getTime());</span>
-<span class="lineNum">     263 </span><span class="lineNoCov">          0 :     _elapsedTime += _timer.getElapsedTimeInSeconds();</span>
-<span class="lineNum">     264 </span><span class="lineNoCov">          0 :     if (_elapsedTime &lt; frameDuration || !_readyForNextFrame)</span>
-<span class="lineNum">     265 </span><span class="lineNoCov">          0 :         return;</span>
-<span class="lineNum">     266 </span>            :     {
-<span class="lineNum">     267 </span>            :         // protect _sharedTimestamp &amp; _currentPosition from getTileImage()
-<span class="lineNum">     268 </span><span class="lineNoCov">          0 :         const QMutexLocker lock(&amp;_mutex);</span>
-<span class="lineNum">     269 </span>            : 
-<span class="lineNum">     270 </span>            :         // advance to the next frame, keep correct elapsedTime as vsync
-<span class="lineNum">     271 </span>            :         // frequency of this function might not match movie frequency.
-<span class="lineNum">     272 </span><span class="lineNoCov">          0 :         _sharedTimestamp = _currentPosition + frameDuration;</span>
-<span class="lineNum">     273 </span><span class="lineNoCov">          0 :         _elapsedTime -= frameDuration;</span>
-<span class="lineNum">     274 </span>            : 
-<span class="lineNum">     275 </span>            :         // Always exchange timestamp for processes where _currentPosition is not
-<span class="lineNum">     276 </span>            :         // advancing to allow seek if visible again.
-<span class="lineNum">     277 </span><span class="lineNoCov">          0 :         _exchangeSharedTimestamp(channel, visible &amp;&amp; inSync);</span>
-<span class="lineNum">     278 </span>            :     }
-<span class="lineNum">     279 </span>            :     // unlock _mutex before to avoid deadlocks
-<span class="lineNum">     280 </span><span class="lineNoCov">          0 :     _triggerFrameUpdate();</span>
-<a name="281"><span class="lineNum">     281 </span>            : }</a>
-<span class="lineNum">     282 </span>            : 
-<span class="lineNum">     283 </span><span class="lineNoCov">          0 : void MovieUpdater::_triggerFrameUpdate()</span>
-<span class="lineNum">     284 </span>            : {
-<span class="lineNum">     285 </span><span class="lineNoCov">          0 :     _readyForNextFrame = false;</span>
-<span class="lineNum">     286 </span><span class="lineNoCov">          0 :     _pictureLeftOrMono.reset();</span>
-<span class="lineNum">     287 </span><span class="lineNoCov">          0 :     _pictureRight.reset();</span>
-<span class="lineNum">     288 </span><span class="lineNoCov">          0 :     emit pictureUpdated();</span>
-<a name="289"><span class="lineNum">     289 </span><span class="lineNoCov">          0 : }</span></a>
-<span class="lineNum">     290 </span>            : 
-<span class="lineNum">     291 </span><span class="lineNoCov">          0 : void MovieUpdater::_exchangeSharedTimestamp(WallToWallChannel&amp; channel,</span>
-<span class="lineNum">     292 </span>            :                                             const bool isCandidate)
-<span class="lineNum">     293 </span>            : {
-<span class="lineNum">     294 </span><span class="lineNoCov">          0 :     const int leader = channel.electLeader(isCandidate);</span>
-<span class="lineNum">     295 </span><span class="lineNoCov">          0 :     if (leader &lt; 0)</span>
-<span class="lineNum">     296 </span><span class="lineNoCov">          0 :         return;</span>
-<span class="lineNum">     297 </span>            : 
-<span class="lineNum">     298 </span><span class="lineNoCov">          0 :     if (leader == channel.getRank())</span>
-<span class="lineNum">     299 </span><span class="lineNoCov">          0 :         channel.broadcast(_sharedTimestamp);</span>
-<a name="300"><span class="lineNum">     300 </span>            :     else</a>
-<span class="lineNum">     301 </span><span class="lineNoCov">          0 :         _sharedTimestamp = channel.receiveTimestampBroadcast(leader);</span>
-<span class="lineNum">     302 </span><span class="lineCov">         96 : }</span>
+<span class="lineNum">     235 </span>            :         // Jump to the skip position
+<span class="lineNum">     236 </span><span class="lineNoCov">          0 :         if (_skipping &amp;&amp; !_loopedBack)</span>
+<span class="lineNum">     237 </span><span class="lineNoCov">          0 :             _sharedTimestamp = _skipPosition;</span>
+<span class="lineNum">     238 </span>            : 
+<span class="lineNum">     239 </span><span class="lineNoCov">          0 :         inSync = std::abs(_sharedTimestamp - _currentPosition) &lt;= frameDuration;</span>
+<span class="lineNum">     240 </span>            :     }
+<span class="lineNum">     241 </span>            : 
+<span class="lineNum">     242 </span>            :     // If any visible updater is out-of-sync, only update those ones. This
+<span class="lineNum">     243 </span>            :     // causes a seek in the movie to _sharedTimestamp. The time stands still in
+<span class="lineNum">     244 </span>            :     // this case to avoid seeking of all processes if this seek takes longer
+<span class="lineNum">     245 </span>            :     // than frameDuration.
+<span class="lineNum">     246 </span><span class="lineNoCov">          0 :     if (!channel.allReady(inSync || !visible))</span>
+<span class="lineNum">     247 </span>            :     {
+<span class="lineNum">     248 </span><span class="lineNoCov">          0 :         _timer.resetTime(channel.getTime());</span>
+<span class="lineNum">     249 </span><span class="lineNoCov">          0 :         if (_readyForNextFrame)</span>
+<span class="lineNum">     250 </span><span class="lineNoCov">          0 :             _triggerFrameUpdate();</span>
+<span class="lineNum">     251 </span><span class="lineNoCov">          0 :         return;</span>
+<span class="lineNum">     252 </span>            :     }
+<span class="lineNum">     253 </span>            : 
+<span class="lineNum">     254 </span>            :     // Don't advance time if paused or skipping
+<span class="lineNum">     255 </span><span class="lineNoCov">          0 :     if (_paused || _skipping)</span>
+<span class="lineNum">     256 </span>            :     {
+<span class="lineNum">     257 </span><span class="lineNoCov">          0 :         _timer.resetTime(channel.getTime());</span>
+<span class="lineNum">     258 </span><span class="lineNoCov">          0 :         if (_skipping &amp;&amp; _readyForNextFrame)</span>
+<span class="lineNum">     259 </span><span class="lineNoCov">          0 :             if (channel.allReady(!inSync || !visible))</span>
+<span class="lineNum">     260 </span><span class="lineNoCov">          0 :                 _triggerFrameUpdate();</span>
+<span class="lineNum">     261 </span><span class="lineNoCov">          0 :         return;</span>
+<span class="lineNum">     262 </span>            :     }
+<span class="lineNum">     263 </span>            : 
+<span class="lineNum">     264 </span>            :     // If everybody is in sync, do a proper increment and throttle to movie
+<span class="lineNum">     265 </span>            :     // frame duration and decode speed accordingly.
+<span class="lineNum">     266 </span><span class="lineNoCov">          0 :     _timer.setCurrentTime(channel.getTime());</span>
+<span class="lineNum">     267 </span><span class="lineNoCov">          0 :     _elapsedTime += _timer.getElapsedTimeInSeconds();</span>
+<span class="lineNum">     268 </span><span class="lineNoCov">          0 :     if (_elapsedTime &lt; frameDuration || !_readyForNextFrame)</span>
+<span class="lineNum">     269 </span><span class="lineNoCov">          0 :         return;</span>
+<span class="lineNum">     270 </span>            :     {
+<span class="lineNum">     271 </span>            :         // protect _sharedTimestamp &amp; _currentPosition from getTileImage()
+<span class="lineNum">     272 </span><span class="lineNoCov">          0 :         const QMutexLocker lock(&amp;_mutex);</span>
+<span class="lineNum">     273 </span>            : 
+<span class="lineNum">     274 </span>            :         // advance to the next frame, keep correct elapsedTime as vsync
+<span class="lineNum">     275 </span>            :         // frequency of this function might not match movie frequency.
+<span class="lineNum">     276 </span><span class="lineNoCov">          0 :         _sharedTimestamp = _currentPosition + frameDuration;</span>
+<span class="lineNum">     277 </span><span class="lineNoCov">          0 :         _elapsedTime -= frameDuration;</span>
+<span class="lineNum">     278 </span>            : 
+<span class="lineNum">     279 </span>            :         // Always exchange timestamp for processes where _currentPosition is not
+<span class="lineNum">     280 </span>            :         // advancing to allow seek if visible again.
+<span class="lineNum">     281 </span><span class="lineNoCov">          0 :         _exchangeSharedTimestamp(channel, visible &amp;&amp; inSync);</span>
+<span class="lineNum">     282 </span>            :     }
+<span class="lineNum">     283 </span>            :     // unlock _mutex before to avoid deadlocks
+<span class="lineNum">     284 </span><span class="lineNoCov">          0 :     _triggerFrameUpdate();</span>
+<a name="285"><span class="lineNum">     285 </span>            : }</a>
+<span class="lineNum">     286 </span>            : 
+<span class="lineNum">     287 </span><span class="lineNoCov">          0 : void MovieUpdater::_triggerFrameUpdate()</span>
+<span class="lineNum">     288 </span>            : {
+<span class="lineNum">     289 </span><span class="lineNoCov">          0 :     _readyForNextFrame = false;</span>
+<span class="lineNum">     290 </span><span class="lineNoCov">          0 :     _pictureLeftOrMono.reset();</span>
+<span class="lineNum">     291 </span><span class="lineNoCov">          0 :     _pictureRight.reset();</span>
+<span class="lineNum">     292 </span><span class="lineNoCov">          0 :     emit pictureUpdated();</span>
+<a name="293"><span class="lineNum">     293 </span><span class="lineNoCov">          0 : }</span></a>
+<span class="lineNum">     294 </span>            : 
+<span class="lineNum">     295 </span><span class="lineNoCov">          0 : void MovieUpdater::_exchangeSharedTimestamp(WallToWallChannel&amp; channel,</span>
+<span class="lineNum">     296 </span>            :                                             const bool isCandidate)
+<span class="lineNum">     297 </span>            : {
+<span class="lineNum">     298 </span><span class="lineNoCov">          0 :     const int leader = channel.electLeader(isCandidate);</span>
+<span class="lineNum">     299 </span><span class="lineNoCov">          0 :     if (leader &lt; 0)</span>
+<span class="lineNum">     300 </span><span class="lineNoCov">          0 :         return;</span>
+<span class="lineNum">     301 </span>            : 
+<span class="lineNum">     302 </span><span class="lineNoCov">          0 :     if (leader == channel.getRank())</span>
+<span class="lineNum">     303 </span><span class="lineNoCov">          0 :         channel.broadcast(_sharedTimestamp);</span>
+<a name="304"><span class="lineNum">     304 </span>            :     else</a>
+<span class="lineNum">     305 </span><span class="lineNoCov">          0 :         _sharedTimestamp = channel.receiveTimestampBroadcast(leader);</span>
+<span class="lineNum">     306 </span><span class="lineCov">         96 : }</span>
 </pre>
       </td>
     </tr>

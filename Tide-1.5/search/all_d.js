@@ -28,6 +28,8 @@ var searchData=
   ['mpichannel',['MPIChannel',['../class_m_p_i_channel.html',1,'MPIChannel'],['../class_m_p_i_channel.html#a3d6135b9ea469f6242b8396699ee74fd',1,'MPIChannel::MPIChannel(int argc, char *argv[])'],['../class_m_p_i_channel.html#a466aa85d1bc711eca37eb73eb0101126',1,'MPIChannel::MPIChannel(const MPIChannel &amp;parent, int color, int key)']]],
   ['mpicontext',['MPIContext',['../class_m_p_i_context.html',1,'MPIContext'],['../class_m_p_i_context.html#a1fc58d205deca92b9a9a307d49a124cb',1,'MPIContext::MPIContext()']]],
   ['mpiheader',['MPIHeader',['../struct_m_p_i_header.html',1,'']]],
+  ['multichannelcontent',['MultiChannelContent',['../class_multi_channel_content.html',1,'MultiChannelContent'],['../class_multi_channel_content.html#a324183e85e7cf08e6a021c034b4003a1',1,'MultiChannelContent::MultiChannelContent()']]],
+  ['multichannelwindowcontroller',['MultiChannelWindowController',['../class_multi_channel_window_controller.html',1,'MultiChannelWindowController'],['../class_multi_channel_window_controller.html#abb1766b901c6aa93d6bdb41545ae29fa',1,'MultiChannelWindowController::MultiChannelWindowController()']]],
   ['multitoucharea',['MultitouchArea',['../class_multitouch_area.html',1,'MultitouchArea'],['../class_multitouch_area.html#a9dc4b134e58f75bcb697f0d3452f98de',1,'MultitouchArea::MultitouchArea()']]],
   ['version_2eh',['version.h',['../master_2version_8h.html',1,'']]]
 ];

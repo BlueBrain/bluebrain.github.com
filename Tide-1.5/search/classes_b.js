@@ -17,5 +17,7 @@ var searchData=
   ['mpichannel',['MPIChannel',['../class_m_p_i_channel.html',1,'']]],
   ['mpicontext',['MPIContext',['../class_m_p_i_context.html',1,'']]],
   ['mpiheader',['MPIHeader',['../struct_m_p_i_header.html',1,'']]],
+  ['multichannelcontent',['MultiChannelContent',['../class_multi_channel_content.html',1,'']]],
+  ['multichannelwindowcontroller',['MultiChannelWindowController',['../class_multi_channel_window_controller.html',1,'']]],
   ['multitoucharea',['MultitouchArea',['../class_multitouch_area.html',1,'']]]
 ];
