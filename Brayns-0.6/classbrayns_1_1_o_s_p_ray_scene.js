@@ -10,5 +10,6 @@ var classbrayns_1_1_o_s_p_ray_scene =
     [ "createModel", "classbrayns_1_1_o_s_p_ray_scene.html#af30d65dde9400c7dbe06291fed0a2db2", null ],
     [ "getModel", "classbrayns_1_1_o_s_p_ray_scene.html#a815cac7dcab54157b4402ab2e3716cd2", null ],
     [ "isVolumeSupported", "classbrayns_1_1_o_s_p_ray_scene.html#ae4904bea5fbd897256145650bfbebbe2", null ],
+    [ "resetVolumeHandler", "classbrayns_1_1_o_s_p_ray_scene.html#a99df0c28f94004cc845124dc60dff074", null ],
     [ "simulationModelImpl", "classbrayns_1_1_o_s_p_ray_scene.html#affa5ae2b92e4f28306e7da2289fc244a", null ]
 ];

@@ -48,7 +48,8 @@ var hierarchy =
       ] ],
       [ "brayns::Statistics", "classbrayns_1_1_statistics.html", null ],
       [ "brayns::TransferFunction", "classbrayns_1_1_transfer_function.html", null ],
-      [ "brayns::Transformation", "classbrayns_1_1_transformation.html", null ]
+      [ "brayns::Transformation", "classbrayns_1_1_transformation.html", null ],
+      [ "brayns::VolumeHandler", "classbrayns_1_1_volume_handler.html", null ]
     ] ],
     [ "brayns::BinaryError", "structbrayns_1_1_binary_error.html", null ],
     [ "brayns::Blob", "structbrayns_1_1_blob.html", null ],
@@ -103,7 +104,6 @@ var hierarchy =
     [ "brayns::TransferFunctionLoader", "classbrayns_1_1_transfer_function_loader.html", null ],
     [ "brayns::TrianglesMesh", "structbrayns_1_1_triangles_mesh.html", null ],
     [ "brayns::Version", "classbrayns_1_1_version.html", null ],
-    [ "brayns::VolumeHandler", "classbrayns_1_1_volume_handler.html", null ],
     [ "brayns::VolumeHandler::VolumeDescriptor", "classbrayns_1_1_volume_handler_1_1_volume_descriptor.html", null ],
     [ "Camera", null, [
       [ "ospray::ClippedPerspectiveCamera", "structospray_1_1_clipped_perspective_camera.html", null ]

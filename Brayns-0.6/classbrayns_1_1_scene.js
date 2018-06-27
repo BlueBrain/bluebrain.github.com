@@ -35,6 +35,7 @@ var classbrayns_1_1_scene =
     [ "removeLight", "classbrayns_1_1_scene.html#a681a8a7e95f279226a0ac02f2b8f4201", null ],
     [ "removeModel", "classbrayns_1_1_scene.html#a584399067b238f719a1d0d6ad2460f29", null ],
     [ "reset", "classbrayns_1_1_scene.html#a0056f019a5261be6f131b8eb38de2169", null ],
+    [ "resetVolumeHandler", "classbrayns_1_1_scene.html#a723bfc04b45db2b15b338de108818af3", null ],
     [ "saveToCacheFile", "classbrayns_1_1_scene.html#a0d835b82330c961a0d7967ac08f96567", null ],
     [ "setCADiffusionSimulationHandler", "classbrayns_1_1_scene.html#a6dd8458feefbd6d61c5e9a44b477acdd", null ],
     [ "setMaterialsColorMap", "classbrayns_1_1_scene.html#a52fa731a8e9151be10333853a44aad0d", null ],
@@ -51,5 +52,6 @@ var classbrayns_1_1_scene =
     [ "_renderers", "classbrayns_1_1_scene.html#aa0cca6536dd4bcf637400573d63e863a", null ],
     [ "_simulationHandler", "classbrayns_1_1_scene.html#a9281e36fb7f70ec4eed939c751ea3cd6", null ],
     [ "_transferFunction", "classbrayns_1_1_scene.html#a6360f6b0aeeda0267d02ad189f5da3bc", null ],
-    [ "_volumeHandler", "classbrayns_1_1_scene.html#ac606c4a4c92aa682a80f801654dd2fd4", null ]
+    [ "_volumeHandler", "classbrayns_1_1_scene.html#ac606c4a4c92aa682a80f801654dd2fd4", null ],
+    [ "_volumeModelId", "classbrayns_1_1_scene.html#aa1c1b15ec0738c5fa4a684a53ffa9647", null ]
 ];

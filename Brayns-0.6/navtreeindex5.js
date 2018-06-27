@@ -1,5 +1,8 @@
 var NAVTREEINDEX5 =
 {
+"pluginapi_8h_source.html":[6,0,64],
+"structbrayns_1_1_binary_error.html":[5,0,0,14],
+"structbrayns_1_1_binary_error.html#a9e5d2753428fe88d61abdde3789b3144":[5,0,0,14,0],
 "structbrayns_1_1_binary_param.html":[5,0,0,15],
 "structbrayns_1_1_binary_param.html#a50964aa1d6ec351c6f186ffe924da95b":[5,0,0,15,1],
 "structbrayns_1_1_binary_param.html#a63cb97178ae2f48e8dd526d5281a192e":[5,0,0,15,0],
