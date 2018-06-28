@@ -1,0 +1,474 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+
+<html lang="en">
+
+<head>
+  <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+  <title>LCOV - Brayns - plugins/engines/ospray/OSPRayScene.cpp</title>
+  <link rel="stylesheet" type="text/css" href="../../../gcov.css">
+</head>
+
+<body>
+
+  <table width="100%" border=0 cellspacing=0 cellpadding=0>
+    <tr><td class="title">LCOV - code coverage report</td></tr>
+    <tr><td class="ruler"><img src="../../../glass.png" width=3 height=3 alt=""></td></tr>
+
+    <tr>
+      <td width="100%">
+        <table cellpadding=1 border=0 width="100%">
+          <tr>
+            <td width="10%" class="headerItem">Current view:</td>
+            <td width="35%" class="headerValue"><a href="../../../index.html">top level</a> - <a href="index.html">plugins/engines/ospray</a> - OSPRayScene.cpp<span style="font-size: 80%;"> (source / <a href="OSPRayScene.cpp.func-sort-c.html">functions</a>)</span></td>
+            <td width="5%"></td>
+            <td width="15%"></td>
+            <td width="10%" class="headerCovTableHead">Hit</td>
+            <td width="10%" class="headerCovTableHead">Total</td>
+            <td width="15%" class="headerCovTableHead">Coverage</td>
+          </tr>
+          <tr>
+            <td class="headerItem">Test:</td>
+            <td class="headerValue">Brayns</td>
+            <td></td>
+            <td class="headerItem">Lines:</td>
+            <td class="headerCovTableEntry">145</td>
+            <td class="headerCovTableEntry">225</td>
+            <td class="headerCovTableEntryMed">64.4 %</td>
+          </tr>
+          <tr>
+            <td class="headerItem">Date:</td>
+            <td class="headerValue">2018-06-29 01:43:17</td>
+            <td></td>
+            <td class="headerItem">Functions:</td>
+            <td class="headerCovTableEntry">11</td>
+            <td class="headerCovTableEntry">13</td>
+            <td class="headerCovTableEntryHi">84.6 %</td>
+          </tr>
+          <tr><td><img src="../../../glass.png" width=3 height=3 alt=""></td></tr>
+        </table>
+      </td>
+    </tr>
+
+    <tr><td class="ruler"><img src="../../../glass.png" width=3 height=3 alt=""></td></tr>
+  </table>
+
+  <table cellpadding=0 cellspacing=0 border=0>
+    <tr>
+      <td><br></td>
+    </tr>
+    <tr>
+      <td>
+<pre class="sourceHeading">          Line data    Source code</pre>
+<pre class="source">
+<a name="1"><span class="lineNum">       1 </span>            : /* Copyright (c) 2015-2017, EPFL/Blue Brain Project</a>
+<span class="lineNum">       2 </span>            :  * All rights reserved. Do not distribute without permission.
+<span class="lineNum">       3 </span>            :  * Responsible Author: Cyrille Favreau &lt;cyrille.favreau@epfl.ch&gt;
+<span class="lineNum">       4 </span>            :  *
+<span class="lineNum">       5 </span>            :  * This file is part of Brayns &lt;https://github.com/BlueBrain/Brayns&gt;
+<span class="lineNum">       6 </span>            :  *
+<span class="lineNum">       7 </span>            :  * This library is free software; you can redistribute it and/or modify it under
+<span class="lineNum">       8 </span>            :  * the terms of the GNU Lesser General Public License version 3.0 as published
+<span class="lineNum">       9 </span>            :  * by the Free Software Foundation.
+<span class="lineNum">      10 </span>            :  *
+<span class="lineNum">      11 </span>            :  * This library is distributed in the hope that it will be useful, but WITHOUT
+<span class="lineNum">      12 </span>            :  * ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS
+<span class="lineNum">      13 </span>            :  * FOR A PARTICULAR PURPOSE.  See the GNU Lesser General Public License for more
+<span class="lineNum">      14 </span>            :  * details.
+<span class="lineNum">      15 </span>            :  *
+<span class="lineNum">      16 </span>            :  * You should have received a copy of the GNU Lesser General Public License
+<span class="lineNum">      17 </span>            :  * along with this library; if not, write to the Free Software Foundation, Inc.,
+<span class="lineNum">      18 </span>            :  * 51 Franklin Street, Fifth Floor, Boston, MA 02110-1301 USA.
+<span class="lineNum">      19 </span>            :  */
+<span class="lineNum">      20 </span>            : 
+<span class="lineNum">      21 </span>            : #include &quot;OSPRayScene.h&quot;
+<span class="lineNum">      22 </span>            : #include &quot;OSPRayMaterial.h&quot;
+<span class="lineNum">      23 </span>            : #include &quot;OSPRayModel.h&quot;
+<span class="lineNum">      24 </span>            : #include &quot;OSPRayRenderer.h&quot;
+<span class="lineNum">      25 </span>            : #include &quot;utils.h&quot;
+<span class="lineNum">      26 </span>            : 
+<span class="lineNum">      27 </span>            : #include &lt;brayns/common/ImageManager.h&gt;
+<span class="lineNum">      28 </span>            : #include &lt;brayns/common/Transformation.h&gt;
+<span class="lineNum">      29 </span>            : #include &lt;brayns/common/light/DirectionalLight.h&gt;
+<span class="lineNum">      30 </span>            : #include &lt;brayns/common/light/PointLight.h&gt;
+<span class="lineNum">      31 </span>            : #include &lt;brayns/common/log.h&gt;
+<span class="lineNum">      32 </span>            : #include &lt;brayns/common/scene/Model.h&gt;
+<span class="lineNum">      33 </span>            : #include &lt;brayns/common/simulation/AbstractSimulationHandler.h&gt;
+<span class="lineNum">      34 </span>            : #include &lt;brayns/common/volume/VolumeHandler.h&gt;
+<span class="lineNum">      35 </span>            : 
+<span class="lineNum">      36 </span>            : #include &lt;brayns/parameters/GeometryParameters.h&gt;
+<span class="lineNum">      37 </span>            : #include &lt;brayns/parameters/ParametersManager.h&gt;
+<span class="lineNum">      38 </span>            : #include &lt;brayns/parameters/SceneParameters.h&gt;
+<span class="lineNum">      39 </span>            : 
+<span class="lineNum">      40 </span>            : #include &lt;boost/algorithm/string/predicate.hpp&gt; // ends_with
+<span class="lineNum">      41 </span>            : 
+<a name="42"><span class="lineNum">      42 </span>            : namespace brayns</a>
+<span class="lineNum">      43 </span>            : {
+<span class="lineNum">      44 </span><span class="lineCov">         36 : OSPRayScene::OSPRayScene(const Renderers&amp; renderers,</span>
+<span class="lineNum">      45 </span>            :                          ParametersManager&amp; parametersManager,
+<span class="lineNum">      46 </span><span class="lineCov">         36 :                          const size_t memoryManagementFlags)</span>
+<span class="lineNum">      47 </span>            :     : Scene(renderers, parametersManager)
+<span class="lineNum">      48 </span><span class="lineCov">         36 :     , _memoryManagementFlags(memoryManagementFlags)</span>
+<span class="lineNum">      49 </span>            : {
+<span class="lineNum">      50 </span><span class="lineCov">         36 :     _backgroundMaterial = std::make_shared&lt;OSPRayMaterial&gt;();</span>
+<a name="51"><span class="lineNum">      51 </span><span class="lineCov">         36 : }</span></a>
+<span class="lineNum">      52 </span>            : 
+<span class="lineNum">      53 </span><span class="lineCov">         72 : OSPRayScene::~OSPRayScene()</span>
+<span class="lineNum">      54 </span>            : {
+<span class="lineNum">      55 </span><span class="lineCov">         36 :     if (_ospSimulationData)</span>
+<span class="lineNum">      56 </span><span class="lineNoCov">          0 :         ospRelease(_ospSimulationData);</span>
+<span class="lineNum">      57 </span>            : 
+<span class="lineNum">      58 </span><span class="lineCov">         36 :     if (_ospVolumeData)</span>
+<span class="lineNum">      59 </span><span class="lineNoCov">          0 :         ospRelease(_ospVolumeData);</span>
+<span class="lineNum">      60 </span>            : 
+<span class="lineNum">      61 </span><span class="lineCov">         36 :     if (_ospTransferFunctionDiffuseData)</span>
+<span class="lineNum">      62 </span><span class="lineCov">         36 :         ospRelease(_ospTransferFunctionDiffuseData);</span>
+<span class="lineNum">      63 </span>            : 
+<span class="lineNum">      64 </span><span class="lineCov">         36 :     if (_ospTransferFunctionEmissionData)</span>
+<span class="lineNum">      65 </span><span class="lineCov">         36 :         ospRelease(_ospTransferFunctionEmissionData);</span>
+<span class="lineNum">      66 </span>            : 
+<span class="lineNum">      67 </span><span class="lineCov">         72 :     for (auto&amp; light : _ospLights)</span>
+<span class="lineNum">      68 </span><span class="lineCov">         36 :         ospRelease(light);</span>
+<span class="lineNum">      69 </span><span class="lineCov">         36 :     _ospLights.clear();</span>
+<span class="lineNum">      70 </span>            : 
+<span class="lineNum">      71 </span><span class="lineCov">         36 :     if (_rootModel)</span>
+<span class="lineNum">      72 </span><span class="lineCov">         36 :         ospRelease(_rootModel);</span>
+<span class="lineNum">      73 </span>            : 
+<span class="lineNum">      74 </span><span class="lineCov">         36 :     if (_rootSimulationModel)</span>
+<span class="lineNum">      75 </span><span class="lineNoCov">          0 :         ospRelease(_rootSimulationModel);</span>
+<a name="76"><span class="lineNum">      76 </span><span class="lineCov">         36 : }</span></a>
+<span class="lineNum">      77 </span>            : 
+<span class="lineNum">      78 </span><span class="lineCov">        754 : void OSPRayScene::commit()</span>
+<span class="lineNum">      79 </span>            : {
+<span class="lineNum">      80 </span><span class="lineCov">        754 :     const bool rebuildScene = isModified();</span>
+<span class="lineNum">      81 </span>            : 
+<span class="lineNum">      82 </span><span class="lineCov">        754 :     commitVolumeData();</span>
+<span class="lineNum">      83 </span><span class="lineCov">        754 :     commitSimulationData();</span>
+<span class="lineNum">      84 </span><span class="lineCov">        754 :     commitTransferFunctionData();</span>
+<span class="lineNum">      85 </span>            : 
+<span class="lineNum">      86 </span><span class="lineCov">        754 :     if (!rebuildScene)</span>
+<span class="lineNum">      87 </span><span class="lineCov">        688 :         return;</span>
+<span class="lineNum">      88 </span>            : 
+<span class="lineNum">      89 </span><span class="lineCov">         66 :     _activeModels.clear();</span>
+<span class="lineNum">      90 </span>            : 
+<span class="lineNum">      91 </span><span class="lineCov">         66 :     if (_rootModel)</span>
+<span class="lineNum">      92 </span><span class="lineCov">         30 :         ospRelease(_rootModel);</span>
+<span class="lineNum">      93 </span><span class="lineCov">         66 :     _rootModel = ospNewModel();</span>
+<span class="lineNum">      94 </span>            : 
+<span class="lineNum">      95 </span><span class="lineCov">         66 :     if (_rootSimulationModel)</span>
+<span class="lineNum">      96 </span><span class="lineNoCov">          0 :         ospRelease(_rootSimulationModel);</span>
+<span class="lineNum">      97 </span><span class="lineCov">         66 :     _rootSimulationModel = nullptr;</span>
+<span class="lineNum">      98 </span>            : 
+<span class="lineNum">      99 </span><span class="lineCov">        132 :     std::shared_lock&lt;std::shared_timed_mutex&gt; lock(_modelMutex);</span>
+<span class="lineNum">     100 </span><span class="lineCov">        196 :     for (auto modelDescriptor : _modelDescriptors)</span>
+<span class="lineNum">     101 </span>            :     {
+<span class="lineNum">     102 </span><span class="lineCov">        144 :         if (!modelDescriptor-&gt;getEnabled())</span>
+<span class="lineNum">     103 </span><span class="lineCov">         14 :             continue;</span>
+<span class="lineNum">     104 </span>            : 
+<span class="lineNum">     105 </span>            :         // keep models from being deleted via removeModel() as long as we use
+<span class="lineNum">     106 </span>            :         // them here
+<span class="lineNum">     107 </span><span class="lineCov">        130 :         _activeModels.push_back(modelDescriptor);</span>
+<span class="lineNum">     108 </span>            : 
+<span class="lineNum">     109 </span><span class="lineCov">        130 :         auto&amp; impl = static_cast&lt;OSPRayModel&amp;&gt;(modelDescriptor-&gt;getModel());</span>
+<span class="lineNum">     110 </span><span class="lineCov">        130 :         const auto&amp; transformation = modelDescriptor-&gt;getTransformation();</span>
+<span class="lineNum">     111 </span>            : 
+<span class="lineNum">     112 </span><span class="lineCov">        130 :         BRAYNS_DEBUG &lt;&lt; &quot;Committing &quot; &lt;&lt; modelDescriptor-&gt;getName()</span>
+<span class="lineNum">     113 </span><span class="lineCov">        130 :                      &lt;&lt; std::endl;</span>
+<span class="lineNum">     114 </span>            : 
+<span class="lineNum">     115 </span><span class="lineCov">        130 :         if (modelDescriptor-&gt;getVisible() &amp;&amp; impl.getUseSimulationModel())</span>
+<span class="lineNum">     116 </span>            :         {
+<span class="lineNum">     117 </span><span class="lineNoCov">          0 :             if (!_rootSimulationModel)</span>
+<span class="lineNum">     118 </span><span class="lineNoCov">          0 :                 _rootSimulationModel = ospNewModel();</span>
+<span class="lineNum">     119 </span><span class="lineNoCov">          0 :             addInstance(_rootSimulationModel, impl.getSimulationModel(),</span>
+<span class="lineNum">     120 </span><span class="lineNoCov">          0 :                         transformation);</span>
+<span class="lineNum">     121 </span>            :         }
+<span class="lineNum">     122 </span>            : 
+<span class="lineNum">     123 </span><span class="lineCov">        130 :         Boxf instancesBounds;</span>
+<span class="lineNum">     124 </span><span class="lineCov">        130 :         const auto&amp; modelBounds = modelDescriptor-&gt;getModel().getBounds();</span>
+<span class="lineNum">     125 </span><span class="lineCov">        262 :         for (const auto&amp; instance : modelDescriptor-&gt;getInstances())</span>
+<span class="lineNum">     126 </span>            :         {
+<span class="lineNum">     127 </span>            :             const auto instanceTransform =
+<span class="lineNum">     128 </span><span class="lineCov">        264 :                 transformation * instance.getTransformation();</span>
+<span class="lineNum">     129 </span>            : 
+<span class="lineNum">     130 </span><span class="lineCov">        132 :             if (modelDescriptor-&gt;getBoundingBox() &amp;&amp; instance.getBoundingBox())</span>
+<span class="lineNum">     131 </span><span class="lineCov">          6 :                 addInstance(_rootModel, impl.getBoundingBoxModel(),</span>
+<span class="lineNum">     132 </span><span class="lineCov">          6 :                             instanceTransform);</span>
+<span class="lineNum">     133 </span>            : 
+<span class="lineNum">     134 </span><span class="lineCov">        132 :             if (modelDescriptor-&gt;getVisible() &amp;&amp; instance.getVisible())</span>
+<span class="lineNum">     135 </span><span class="lineCov">        126 :                 addInstance(_rootModel, impl.getModel(), instanceTransform);</span>
+<span class="lineNum">     136 </span>            : 
+<span class="lineNum">     137 </span><span class="lineCov">        132 :             instancesBounds.merge(transformBox(modelBounds, instanceTransform));</span>
+<span class="lineNum">     138 </span>            :         }
+<span class="lineNum">     139 </span>            : 
+<span class="lineNum">     140 </span><span class="lineCov">        130 :         if (modelDescriptor-&gt;getBoundingBox())</span>
+<span class="lineNum">     141 </span>            :         {
+<span class="lineNum">     142 </span><span class="lineCov">          8 :             Transformation instancesTransform;</span>
+<span class="lineNum">     143 </span><span class="lineCov">          8 :             instancesTransform.setTranslation(instancesBounds.getCenter() -</span>
+<span class="lineNum">     144 </span><span class="lineCov">         12 :                                               modelBounds.getCenter());</span>
+<span class="lineNum">     145 </span><span class="lineCov">          8 :             instancesTransform.setScale(instancesBounds.getSize() /</span>
+<span class="lineNum">     146 </span><span class="lineCov">         12 :                                         modelBounds.getSize());</span>
+<span class="lineNum">     147 </span>            : 
+<span class="lineNum">     148 </span><span class="lineCov">          4 :             addInstance(_rootModel, impl.getBoundingBoxModel(),</span>
+<span class="lineNum">     149 </span><span class="lineCov">          4 :                         instancesTransform);</span>
+<span class="lineNum">     150 </span>            :         }
+<span class="lineNum">     151 </span>            : 
+<span class="lineNum">     152 </span><span class="lineCov">        130 :         impl.logInformation();</span>
+<span class="lineNum">     153 </span>            :     }
+<span class="lineNum">     154 </span><span class="lineCov">         66 :     BRAYNS_DEBUG &lt;&lt; &quot;Committing root models&quot; &lt;&lt; std::endl;</span>
+<span class="lineNum">     155 </span><span class="lineCov">         66 :     ospCommit(_rootModel);</span>
+<span class="lineNum">     156 </span><span class="lineCov">         66 :     if (_rootSimulationModel)</span>
+<span class="lineNum">     157 </span><span class="lineNoCov">          0 :         ospCommit(_rootSimulationModel);</span>
+<span class="lineNum">     158 </span>            : 
+<span class="lineNum">     159 </span><span class="lineCov">         66 :     _computeBounds();</span>
+<a name="160"><span class="lineNum">     160 </span>            : }</a>
+<span class="lineNum">     161 </span>            : 
+<span class="lineNum">     162 </span><span class="lineCov">         36 : bool OSPRayScene::commitLights()</span>
+<span class="lineNum">     163 </span>            : {
+<span class="lineNum">     164 </span><span class="lineCov">         36 :     size_t lightCount = 0;</span>
+<span class="lineNum">     165 </span><span class="lineCov">         72 :     for (const auto&amp; light : _lights)</span>
+<span class="lineNum">     166 </span>            :     {
+<span class="lineNum">     167 </span>            :         DirectionalLight* directionalLight =
+<span class="lineNum">     168 </span><span class="lineCov">         36 :             dynamic_cast&lt;DirectionalLight*&gt;(light.get());</span>
+<span class="lineNum">     169 </span><span class="lineCov">         36 :         if (directionalLight)</span>
+<span class="lineNum">     170 </span>            :         {
+<span class="lineNum">     171 </span><span class="lineCov">         36 :             if (_ospLights.size() &lt;= lightCount)</span>
+<span class="lineNum">     172 </span><span class="lineCov">         36 :                 _ospLights.push_back(ospNewLight(nullptr, &quot;DirectionalLight&quot;));</span>
+<span class="lineNum">     173 </span>            : 
+<span class="lineNum">     174 </span><span class="lineCov">         36 :             const Vector3f color = directionalLight-&gt;getColor();</span>
+<span class="lineNum">     175 </span><span class="lineCov">         36 :             ospSet3f(_ospLights[lightCount], &quot;color&quot;, color.x(), color.y(),</span>
+<span class="lineNum">     176 </span><span class="lineCov">         72 :                      color.z());</span>
+<span class="lineNum">     177 </span><span class="lineCov">         36 :             const Vector3f direction = directionalLight-&gt;getDirection();</span>
+<span class="lineNum">     178 </span><span class="lineCov">         72 :             ospSet3f(_ospLights[lightCount], &quot;direction&quot;, direction.x(),</span>
+<span class="lineNum">     179 </span><span class="lineCov">        108 :                      direction.y(), direction.z());</span>
+<span class="lineNum">     180 </span><span class="lineCov">         36 :             ospSet1f(_ospLights[lightCount], &quot;intensity&quot;,</span>
+<span class="lineNum">     181 </span><span class="lineCov">         36 :                      directionalLight-&gt;getIntensity());</span>
+<span class="lineNum">     182 </span><span class="lineCov">         36 :             ospCommit(_ospLights[lightCount]);</span>
+<span class="lineNum">     183 </span><span class="lineCov">         36 :             ++lightCount;</span>
+<span class="lineNum">     184 </span>            :         }
+<span class="lineNum">     185 </span>            :         else
+<span class="lineNum">     186 </span>            :         {
+<span class="lineNum">     187 </span><span class="lineNoCov">          0 :             PointLight* pointLight = dynamic_cast&lt;PointLight*&gt;(light.get());</span>
+<span class="lineNum">     188 </span><span class="lineNoCov">          0 :             if (pointLight)</span>
+<span class="lineNum">     189 </span>            :             {
+<span class="lineNum">     190 </span><span class="lineNoCov">          0 :                 if (_ospLights.size() &lt;= lightCount)</span>
+<span class="lineNum">     191 </span><span class="lineNoCov">          0 :                     _ospLights.push_back(ospNewLight(nullptr, &quot;PointLight&quot;));</span>
+<span class="lineNum">     192 </span>            : 
+<span class="lineNum">     193 </span><span class="lineNoCov">          0 :                 const Vector3f position = pointLight-&gt;getPosition();</span>
+<span class="lineNum">     194 </span><span class="lineNoCov">          0 :                 ospSet3f(_ospLights[lightCount], &quot;position&quot;, position.x(),</span>
+<span class="lineNum">     195 </span><span class="lineNoCov">          0 :                          position.y(), position.z());</span>
+<span class="lineNum">     196 </span><span class="lineNoCov">          0 :                 const Vector3f color = pointLight-&gt;getColor();</span>
+<span class="lineNum">     197 </span><span class="lineNoCov">          0 :                 ospSet3f(_ospLights[lightCount], &quot;color&quot;, color.x(), color.y(),</span>
+<span class="lineNum">     198 </span><span class="lineNoCov">          0 :                          color.z());</span>
+<span class="lineNum">     199 </span><span class="lineNoCov">          0 :                 ospSet1f(_ospLights[lightCount], &quot;intensity&quot;,</span>
+<span class="lineNum">     200 </span><span class="lineNoCov">          0 :                          pointLight-&gt;getIntensity());</span>
+<span class="lineNum">     201 </span><span class="lineNoCov">          0 :                 ospSet1f(_ospLights[lightCount], &quot;radius&quot;,</span>
+<span class="lineNum">     202 </span><span class="lineNoCov">          0 :                          pointLight-&gt;getCutoffDistance());</span>
+<span class="lineNum">     203 </span><span class="lineNoCov">          0 :                 ospCommit(_ospLights[lightCount]);</span>
+<span class="lineNum">     204 </span><span class="lineNoCov">          0 :                 ++lightCount;</span>
+<span class="lineNum">     205 </span>            :             }
+<span class="lineNum">     206 </span>            :         }
+<span class="lineNum">     207 </span>            :     }
+<span class="lineNum">     208 </span>            : 
+<span class="lineNum">     209 </span><span class="lineCov">         36 :     if (!_ospLightData)</span>
+<span class="lineNum">     210 </span>            :     {
+<span class="lineNum">     211 </span><span class="lineCov">         72 :         _ospLightData = ospNewData(_ospLights.size(), OSP_OBJECT,</span>
+<span class="lineNum">     212 </span><span class="lineCov">         72 :                                    &amp;_ospLights[0], _memoryManagementFlags);</span>
+<span class="lineNum">     213 </span><span class="lineCov">         36 :         ospCommit(_ospLightData);</span>
+<span class="lineNum">     214 </span><span class="lineCov">        268 :         for (auto renderer : _renderers)</span>
+<span class="lineNum">     215 </span>            :         {
+<span class="lineNum">     216 </span>            :             auto impl =
+<span class="lineNum">     217 </span><span class="lineCov">        232 :                 std::static_pointer_cast&lt;OSPRayRenderer&gt;(renderer)-&gt;impl();</span>
+<span class="lineNum">     218 </span><span class="lineCov">        232 :             ospSetData(impl, &quot;lights&quot;, _ospLightData);</span>
+<span class="lineNum">     219 </span>            :         }
+<span class="lineNum">     220 </span>            :     }
+<span class="lineNum">     221 </span><span class="lineCov">         36 :     return true;</span>
+<a name="222"><span class="lineNum">     222 </span>            : }</a>
+<span class="lineNum">     223 </span>            : 
+<span class="lineNum">     224 </span><span class="lineCov">        754 : bool OSPRayScene::commitTransferFunctionData()</span>
+<span class="lineNum">     225 </span>            : {
+<span class="lineNum">     226 </span><span class="lineCov">        754 :     if (!_transferFunction.isModified())</span>
+<span class="lineNum">     227 </span><span class="lineCov">        718 :         return false;</span>
+<span class="lineNum">     228 </span>            : 
+<span class="lineNum">     229 </span><span class="lineCov">         36 :     if (_ospTransferFunctionDiffuseData)</span>
+<span class="lineNum">     230 </span><span class="lineNoCov">          0 :         ospRelease(_ospTransferFunctionDiffuseData);</span>
+<span class="lineNum">     231 </span>            : 
+<span class="lineNum">     232 </span><span class="lineCov">         36 :     if (_ospTransferFunctionEmissionData)</span>
+<span class="lineNum">     233 </span><span class="lineNoCov">          0 :         ospRelease(_ospTransferFunctionEmissionData);</span>
+<span class="lineNum">     234 </span>            : 
+<span class="lineNum">     235 </span><span class="lineCov">         36 :     _ospTransferFunctionDiffuseData =</span>
+<span class="lineNum">     236 </span><span class="lineCov">         72 :         ospNewData(_transferFunction.getDiffuseColors().size(), OSP_FLOAT4,</span>
+<span class="lineNum">     237 </span><span class="lineCov">         36 :                    _transferFunction.getDiffuseColors().data(),</span>
+<span class="lineNum">     238 </span><span class="lineCov">         36 :                    _memoryManagementFlags);</span>
+<span class="lineNum">     239 </span><span class="lineCov">         36 :     ospCommit(_ospTransferFunctionDiffuseData);</span>
+<span class="lineNum">     240 </span>            : 
+<span class="lineNum">     241 </span><span class="lineCov">         36 :     _ospTransferFunctionEmissionData =</span>
+<span class="lineNum">     242 </span><span class="lineCov">         72 :         ospNewData(_transferFunction.getEmissionIntensities().size(),</span>
+<span class="lineNum">     243 </span>            :                    OSP_FLOAT3,
+<span class="lineNum">     244 </span><span class="lineCov">         36 :                    _transferFunction.getEmissionIntensities().data(),</span>
+<span class="lineNum">     245 </span><span class="lineCov">         36 :                    _memoryManagementFlags);</span>
+<span class="lineNum">     246 </span><span class="lineCov">         36 :     ospCommit(_ospTransferFunctionEmissionData);</span>
+<span class="lineNum">     247 </span>            : 
+<span class="lineNum">     248 </span><span class="lineCov">        268 :     for (const auto&amp; renderer : _renderers)</span>
+<span class="lineNum">     249 </span>            :     {
+<span class="lineNum">     250 </span><span class="lineCov">        232 :         auto impl = std::static_pointer_cast&lt;OSPRayRenderer&gt;(renderer)-&gt;impl();</span>
+<span class="lineNum">     251 </span>            : 
+<span class="lineNum">     252 </span>            :         // Transfer function Diffuse colors
+<span class="lineNum">     253 </span><span class="lineCov">        232 :         ospSetData(impl, &quot;transferFunctionDiffuseData&quot;,</span>
+<span class="lineNum">     254 </span><span class="lineCov">        232 :                    _ospTransferFunctionDiffuseData);</span>
+<span class="lineNum">     255 </span>            : 
+<span class="lineNum">     256 </span>            :         // Transfer function emission data
+<span class="lineNum">     257 </span><span class="lineCov">        232 :         ospSetData(impl, &quot;transferFunctionEmissionData&quot;,</span>
+<span class="lineNum">     258 </span><span class="lineCov">        232 :                    _ospTransferFunctionEmissionData);</span>
+<span class="lineNum">     259 </span>            : 
+<span class="lineNum">     260 </span>            :         // Transfer function size
+<span class="lineNum">     261 </span><span class="lineCov">        232 :         ospSet1i(impl, &quot;transferFunctionSize&quot;,</span>
+<span class="lineNum">     262 </span><span class="lineCov">        464 :                  _transferFunction.getDiffuseColors().size());</span>
+<span class="lineNum">     263 </span>            : 
+<span class="lineNum">     264 </span>            :         // Transfer function range
+<span class="lineNum">     265 </span><span class="lineCov">        232 :         ospSet1f(impl, &quot;transferFunctionMinValue&quot;,</span>
+<span class="lineNum">     266 </span><span class="lineCov">        464 :                  _transferFunction.getValuesRange().x());</span>
+<span class="lineNum">     267 </span><span class="lineCov">        232 :         ospSet1f(impl, &quot;transferFunctionRange&quot;,</span>
+<span class="lineNum">     268 </span><span class="lineCov">        232 :                  _transferFunction.getValuesRange().y() -</span>
+<span class="lineNum">     269 </span><span class="lineCov">        464 :                      _transferFunction.getValuesRange().x());</span>
+<span class="lineNum">     270 </span><span class="lineCov">        232 :         ospCommit(impl);</span>
+<span class="lineNum">     271 </span>            :     }
+<span class="lineNum">     272 </span><span class="lineCov">         36 :     _transferFunction.resetModified();</span>
+<span class="lineNum">     273 </span><span class="lineCov">         36 :     markModified();</span>
+<span class="lineNum">     274 </span><span class="lineCov">         36 :     return true;</span>
+<a name="275"><span class="lineNum">     275 </span>            : }</a>
+<span class="lineNum">     276 </span>            : 
+<span class="lineNum">     277 </span><span class="lineCov">         52 : void OSPRayScene::resetVolumeHandler()</span>
+<span class="lineNum">     278 </span>            : {
+<span class="lineNum">     279 </span><span class="lineCov">         52 :     Scene::resetVolumeHandler();</span>
+<span class="lineNum">     280 </span>            : 
+<span class="lineNum">     281 </span>            :     // Release previous data
+<span class="lineNum">     282 </span><span class="lineCov">         52 :     if (_ospVolumeData)</span>
+<span class="lineNum">     283 </span><span class="lineNoCov">          0 :         ospRelease(_ospVolumeData);</span>
+<span class="lineNum">     284 </span><span class="lineCov">         52 :     _ospVolumeData = nullptr;</span>
+<span class="lineNum">     285 </span><span class="lineCov">         52 :     _ospVolumeDataSize = 0;</span>
+<span class="lineNum">     286 </span>            : 
+<span class="lineNum">     287 </span>            :     // An empty array has to be assigned to the renderers
+<span class="lineNum">     288 </span><span class="lineCov">        468 :     for (const auto&amp; renderer : _renderers)</span>
+<span class="lineNum">     289 </span>            :     {
+<span class="lineNum">     290 </span><span class="lineCov">        416 :         auto impl = std::static_pointer_cast&lt;OSPRayRenderer&gt;(renderer)-&gt;impl();</span>
+<span class="lineNum">     291 </span><span class="lineCov">        416 :         ospSetData(impl, &quot;volumeData&quot;, 0);</span>
+<span class="lineNum">     292 </span>            :     }
+<a name="293"><span class="lineNum">     293 </span><span class="lineCov">         52 : }</span></a>
+<span class="lineNum">     294 </span>            : 
+<span class="lineNum">     295 </span><span class="lineCov">        754 : void OSPRayScene::commitVolumeData()</span>
+<span class="lineNum">     296 </span>            : {
+<span class="lineNum">     297 </span><span class="lineCov">        754 :     auto&amp; vp = _parametersManager.getVolumeParameters();</span>
+<span class="lineNum">     298 </span><span class="lineCov">        754 :     const auto&amp; ap = _parametersManager.getAnimationParameters();</span>
+<span class="lineNum">     299 </span><span class="lineCov">       1456 :     if ((_volumeHandler &amp;&amp; _volumeHandler-&gt;isModified()) || ap.isModified() ||</span>
+<span class="lineNum">     300 </span><span class="lineCov">        702 :         vp.isModified())</span>
+<span class="lineNum">     301 </span>            :     {
+<span class="lineNum">     302 </span><span class="lineCov">         52 :         resetVolumeHandler();</span>
+<span class="lineNum">     303 </span>            : 
+<span class="lineNum">     304 </span><span class="lineCov">         52 :         if (!getVolumeHandler())</span>
+<span class="lineNum">     305 </span><span class="lineCov">         52 :             return;</span>
+<span class="lineNum">     306 </span>            : 
+<span class="lineNum">     307 </span><span class="lineNoCov">          0 :         const auto animationFrame = ap.getFrame();</span>
+<span class="lineNum">     308 </span><span class="lineNoCov">          0 :         _volumeHandler-&gt;setCurrentIndex(animationFrame);</span>
+<span class="lineNum">     309 </span><span class="lineNoCov">          0 :         _volumeHandler-&gt;resetModified();</span>
+<span class="lineNum">     310 </span><span class="lineNoCov">          0 :         auto data = _volumeHandler-&gt;getData();</span>
+<span class="lineNum">     311 </span><span class="lineNoCov">          0 :         if (data)</span>
+<span class="lineNum">     312 </span>            :         {
+<span class="lineNum">     313 </span>            :             // Mark volume parameters as unmodified
+<span class="lineNum">     314 </span><span class="lineNoCov">          0 :             vp.resetModified();</span>
+<span class="lineNum">     315 </span>            : 
+<span class="lineNum">     316 </span>            :             // Set volume data to renderers
+<span class="lineNum">     317 </span><span class="lineNoCov">          0 :             _ospVolumeDataSize = _volumeHandler-&gt;getSize();</span>
+<span class="lineNum">     318 </span><span class="lineNoCov">          0 :             _ospVolumeData = ospNewData(_ospVolumeDataSize, OSP_UCHAR, data,</span>
+<span class="lineNum">     319 </span><span class="lineNoCov">          0 :                                         _memoryManagementFlags);</span>
+<span class="lineNum">     320 </span><span class="lineNoCov">          0 :             ospCommit(_ospVolumeData);</span>
+<span class="lineNum">     321 </span>            : 
+<span class="lineNum">     322 </span><span class="lineNoCov">          0 :             const auto&amp; dimensions = _volumeHandler-&gt;getDimensions();</span>
+<span class="lineNum">     323 </span><span class="lineNoCov">          0 :             for (const auto&amp; renderer : _renderers)</span>
+<span class="lineNum">     324 </span>            :             {
+<span class="lineNum">     325 </span>            :                 auto impl =
+<span class="lineNum">     326 </span><span class="lineNoCov">          0 :                     std::static_pointer_cast&lt;OSPRayRenderer&gt;(renderer)-&gt;impl();</span>
+<span class="lineNum">     327 </span>            : 
+<span class="lineNum">     328 </span><span class="lineNoCov">          0 :                 ospSetData(impl, &quot;volumeData&quot;, _ospVolumeData);</span>
+<span class="lineNum">     329 </span><span class="lineNoCov">          0 :                 ospSet3i(impl, &quot;volumeDimensions&quot;, dimensions.x(),</span>
+<span class="lineNum">     330 </span><span class="lineNoCov">          0 :                          dimensions.y(), dimensions.z());</span>
+<span class="lineNum">     331 </span>            :                 const auto&amp; elementSpacing =
+<span class="lineNum">     332 </span><span class="lineNoCov">          0 :                     _parametersManager.getVolumeParameters()</span>
+<span class="lineNum">     333 </span><span class="lineNoCov">          0 :                         .getElementSpacing();</span>
+<span class="lineNum">     334 </span><span class="lineNoCov">          0 :                 ospSet3f(impl, &quot;volumeElementSpacing&quot;, elementSpacing.x(),</span>
+<span class="lineNum">     335 </span><span class="lineNoCov">          0 :                          elementSpacing.y(), elementSpacing.z());</span>
+<span class="lineNum">     336 </span>            :                 const auto&amp; offset =
+<span class="lineNum">     337 </span><span class="lineNoCov">          0 :                     _parametersManager.getVolumeParameters().getOffset();</span>
+<span class="lineNum">     338 </span><span class="lineNoCov">          0 :                 ospSet3f(impl, &quot;volumeOffset&quot;, offset.x(), offset.y(),</span>
+<span class="lineNum">     339 </span><span class="lineNoCov">          0 :                          offset.z());</span>
+<span class="lineNum">     340 </span><span class="lineNoCov">          0 :                 const auto epsilon = _volumeHandler-&gt;getEpsilon(</span>
+<span class="lineNum">     341 </span><span class="lineNoCov">          0 :                     elementSpacing, _parametersManager.getRenderingParameters()</span>
+<span class="lineNum">     342 </span><span class="lineNoCov">          0 :                                         .getSamplesPerRay());</span>
+<span class="lineNum">     343 </span><span class="lineNoCov">          0 :                 ospSet1f(impl, &quot;volumeEpsilon&quot;, epsilon);</span>
+<span class="lineNum">     344 </span>            :             }
+<span class="lineNum">     345 </span><span class="lineNoCov">          0 :             BRAYNS_INFO &lt;&lt; &quot;Commited volume data. Dimensions: &quot; &lt;&lt; dimensions</span>
+<span class="lineNum">     346 </span><span class="lineNoCov">          0 :                         &lt;&lt; std::endl;</span>
+<span class="lineNum">     347 </span><span class="lineNoCov">          0 :             markModified();</span>
+<span class="lineNum">     348 </span>            :         }
+<span class="lineNum">     349 </span>            :     }
+<a name="350"><span class="lineNum">     350 </span>            : }</a>
+<span class="lineNum">     351 </span>            : 
+<span class="lineNum">     352 </span><span class="lineCov">        754 : void OSPRayScene::commitSimulationData()</span>
+<span class="lineNum">     353 </span>            : {
+<span class="lineNum">     354 </span><span class="lineCov">        754 :     if (!_simulationHandler)</span>
+<span class="lineNum">     355 </span><span class="lineCov">        754 :         return;</span>
+<span class="lineNum">     356 </span>            : 
+<span class="lineNum">     357 </span>            :     const auto animationFrame =
+<span class="lineNum">     358 </span><span class="lineNoCov">          0 :         _parametersManager.getAnimationParameters().getFrame();</span>
+<span class="lineNum">     359 </span>            : 
+<span class="lineNum">     360 </span><span class="lineNoCov">          0 :     if (_ospSimulationData &amp;&amp;</span>
+<span class="lineNum">     361 </span><span class="lineNoCov">          0 :         _simulationHandler-&gt;getCurrentFrame() == animationFrame)</span>
+<span class="lineNum">     362 </span>            :     {
+<span class="lineNum">     363 </span><span class="lineNoCov">          0 :         return;</span>
+<span class="lineNum">     364 </span>            :     }
+<span class="lineNum">     365 </span>            : 
+<span class="lineNum">     366 </span><span class="lineNoCov">          0 :     auto frameData = _simulationHandler-&gt;getFrameData(animationFrame);</span>
+<span class="lineNum">     367 </span>            : 
+<span class="lineNum">     368 </span><span class="lineNoCov">          0 :     if (!frameData)</span>
+<span class="lineNum">     369 </span><span class="lineNoCov">          0 :         return;</span>
+<span class="lineNum">     370 </span>            : 
+<span class="lineNum">     371 </span><span class="lineNoCov">          0 :     if (_ospSimulationData)</span>
+<span class="lineNum">     372 </span><span class="lineNoCov">          0 :         ospRelease(_ospSimulationData);</span>
+<span class="lineNum">     373 </span><span class="lineNoCov">          0 :     _ospSimulationData =</span>
+<span class="lineNum">     374 </span><span class="lineNoCov">          0 :         ospNewData(_simulationHandler-&gt;getFrameSize(), OSP_FLOAT, frameData,</span>
+<span class="lineNum">     375 </span><span class="lineNoCov">          0 :                    _memoryManagementFlags);</span>
+<span class="lineNum">     376 </span><span class="lineNoCov">          0 :     ospCommit(_ospSimulationData);</span>
+<span class="lineNum">     377 </span>            : 
+<span class="lineNum">     378 </span><span class="lineNoCov">          0 :     for (const auto&amp; renderer : _renderers)</span>
+<span class="lineNum">     379 </span>            :     {
+<span class="lineNum">     380 </span><span class="lineNoCov">          0 :         auto impl = std::static_pointer_cast&lt;OSPRayRenderer&gt;(renderer)-&gt;impl();</span>
+<span class="lineNum">     381 </span><span class="lineNoCov">          0 :         ospSetData(impl, &quot;simulationData&quot;, _ospSimulationData);</span>
+<span class="lineNum">     382 </span><span class="lineNoCov">          0 :         ospSet1i(impl, &quot;simulationDataSize&quot;,</span>
+<span class="lineNum">     383 </span><span class="lineNoCov">          0 :                  _simulationHandler-&gt;getFrameSize());</span>
+<span class="lineNum">     384 </span><span class="lineNoCov">          0 :         ospCommit(impl);</span>
+<span class="lineNum">     385 </span>            :     }
+<span class="lineNum">     386 </span><span class="lineNoCov">          0 :     markModified(); // triggers framebuffer clear</span>
+<a name="387"><span class="lineNum">     387 </span>            : }</a>
+<span class="lineNum">     388 </span>            : 
+<span class="lineNum">     389 </span><span class="lineNoCov">          0 : bool OSPRayScene::isVolumeSupported(const std::string&amp; volumeFile) const</span>
+<span class="lineNum">     390 </span>            : {
+<span class="lineNum">     391 </span><span class="lineNoCov">          0 :     return boost::algorithm::ends_with(volumeFile, &quot;.raw&quot;);</span>
+<a name="392"><span class="lineNum">     392 </span>            : }</a>
+<span class="lineNum">     393 </span>            : 
+<span class="lineNum">     394 </span><span class="lineCov">         54 : ModelPtr OSPRayScene::createModel() const</span>
+<span class="lineNum">     395 </span>            : {
+<a name="396"><span class="lineNum">     396 </span><span class="lineCov">         54 :     return std::make_unique&lt;OSPRayModel&gt;();</span></a>
+<span class="lineNum">     397 </span>            : }
+<span class="lineNum">     398 </span><span class="lineCov">         54 : }</span>
+</pre>
+      </td>
+    </tr>
+  </table>
+  <br>
+
+  <table width="100%" border=0 cellspacing=0 cellpadding=0>
+    <tr><td class="ruler"><img src="../../../glass.png" width=3 height=3 alt=""></td></tr>
+    <tr><td class="versionInfo">Generated by: <a href="http://ltp.sourceforge.net/coverage/lcov.php" target="_parent">LCOV version 1.11</a></td></tr>
+  </table>
+  <br>
+
+</body>
+</html>
