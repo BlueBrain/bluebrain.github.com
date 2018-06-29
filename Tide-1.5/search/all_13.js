@@ -1,7 +1,8 @@
 var searchData=
 [
   ['detail',['detail',['../namespaceserialization_1_1detail.html',1,'serialization']]],
-  ['save',['save',['../class_configuration.html#af8fbe3f7ad79653dc6bf100bd7b77a6d',1,'Configuration::save() const '],['../class_configuration.html#a73d1fdbf347319f3afbb7ef3245d6eaf',1,'Configuration::save(const QString &amp;filename) const '],['../class_app_remote_controller.html#a2d825499b64fccac70fec5ac2f0449ba',1,'AppRemoteController::save()'],['../class_state_serialization_helper.html#ab4e5e3b6111fe3ed1770d42a644a0a61',1,'StateSerializationHelper::save()']]],
+  ['save',['save',['../class_app_remote_controller.html#a2d825499b64fccac70fec5ac2f0449ba',1,'AppRemoteController::save()'],['../class_state_serialization_helper.html#ab4e5e3b6111fe3ed1770d42a644a0a61',1,'StateSerializationHelper::save()']]],
+  ['savebackgroundchanges',['saveBackgroundChanges',['../class_configuration.html#a7d5d7858b5b5432e184b5f32ab3e988e',1,'Configuration::saveBackgroundChanges() const '],['../class_configuration.html#a436e6cd803e747ba4126dd24bd656fa0',1,'Configuration::saveBackgroundChanges(const QString &amp;filename) const ']]],
   ['savedir',['saveDir',['../struct_configuration_1_1_whiteboard.html#aecf3e89979811970bb9d63e8dcb18545',1,'Configuration::Whiteboard']]],
   ['savetofile',['saveToFile',['../class_state_preview.html#ab9451a422ef3233febfffae46eb82b91',1,'StatePreview']]],
   ['scale',['scale',['../class_content_window_controller.html#a0692b71b65e4d3fcae4e6648a7c2f93a',1,'ContentWindowController::scale()'],['../class_display_group_controller.html#aa76ed17f5cb0257daff3d77719edfd06',1,'DisplayGroupController::scale()']]],
@@ -104,6 +105,7 @@ var searchData=
   ['streamwindowclosed',['streamWindowClosed',['../class_pixel_stream_window_manager.html#a7ddea42df9209eb399a2844bb36bd97e',1,'PixelStreamWindowManager']]],
   ['surface',['Surface',['../class_surface.html',1,'']]],
   ['surfaceconfig',['SurfaceConfig',['../struct_surface_config.html',1,'']]],
+  ['surfaceconfigvalidator',['SurfaceConfigValidator',['../class_surface_config_validator.html',1,'']]],
   ['surfaceindex',['surfaceIndex',['../struct_screen.html#ac8f83b5c59ad0534e717ba0f49559699',1,'Screen']]],
   ['surfaces',['surfaces',['../class_configuration.html#a19fed63d5297ee2fd0f60a7db192e7c7',1,'Configuration::surfaces()'],['../struct_wall_configuration.html#a3e227cc3edb55bdb59b0941ecdfe0a66',1,'WallConfiguration::surfaces()']]],
   ['svg',['SVG',['../class_s_v_g.html',1,'SVG'],['../class_s_v_g.html#a3474f26fa7ac0b471564acd9c7b13721',1,'SVG::SVG(const QString &amp;uri)'],['../class_s_v_g.html#af34129c53df4a18f880e4f2ebfcb9cd8',1,'SVG::SVG(const QByteArray &amp;svgData)']]],

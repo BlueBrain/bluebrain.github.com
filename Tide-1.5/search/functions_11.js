@@ -1,6 +1,7 @@
 var searchData=
 [
-  ['save',['save',['../class_configuration.html#af8fbe3f7ad79653dc6bf100bd7b77a6d',1,'Configuration::save() const '],['../class_configuration.html#a73d1fdbf347319f3afbb7ef3245d6eaf',1,'Configuration::save(const QString &amp;filename) const '],['../class_app_remote_controller.html#a2d825499b64fccac70fec5ac2f0449ba',1,'AppRemoteController::save()'],['../class_state_serialization_helper.html#ab4e5e3b6111fe3ed1770d42a644a0a61',1,'StateSerializationHelper::save()']]],
+  ['save',['save',['../class_app_remote_controller.html#a2d825499b64fccac70fec5ac2f0449ba',1,'AppRemoteController::save()'],['../class_state_serialization_helper.html#ab4e5e3b6111fe3ed1770d42a644a0a61',1,'StateSerializationHelper::save()']]],
+  ['savebackgroundchanges',['saveBackgroundChanges',['../class_configuration.html#a7d5d7858b5b5432e184b5f32ab3e988e',1,'Configuration::saveBackgroundChanges() const '],['../class_configuration.html#a436e6cd803e747ba4126dd24bd656fa0',1,'Configuration::saveBackgroundChanges(const QString &amp;filename) const ']]],
   ['savetofile',['saveToFile',['../class_state_preview.html#ab9451a422ef3233febfffae46eb82b91',1,'StatePreview']]],
   ['scale',['scale',['../class_content_window_controller.html#a0692b71b65e4d3fcae4e6648a7c2f93a',1,'ContentWindowController::scale()'],['../class_display_group_controller.html#aa76ed17f5cb0257daff3d77719edfd06',1,'DisplayGroupController::scale()']]],
   ['scenecontroller',['SceneController',['../class_scene_controller.html#acc3732a60d89babdc9ce7ee338d420a5',1,'SceneController']]],

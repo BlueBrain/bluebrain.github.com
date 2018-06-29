@@ -1,5 +1,4 @@
 var searchData=
 [
-  ['resizehandle',['ResizeHandle',['../class_content_window.html#af5552777e12df60145e680e38e861536',1,'ContentWindow']]],
-  ['resizepolicy',['ResizePolicy',['../class_content_window.html#adc11965d3ad67c21d4c737b6f0cb7bcd',1,'ContentWindow']]]
+  ['interaction',['Interaction',['../class_content.html#a696d2c945254b9d37928253bc5159cc6',1,'Content']]]
 ];

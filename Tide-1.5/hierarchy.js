@@ -20,6 +20,7 @@ var hierarchy =
     [ "Configuration::Settings", "struct_configuration_1_1_settings.html", null ],
     [ "Configuration::Webbrowser", "struct_configuration_1_1_webbrowser.html", null ],
     [ "Configuration::Whiteboard", "struct_configuration_1_1_whiteboard.html", null ],
+    [ "ConfigurationWriter", "class_configuration_writer.html", null ],
     [ "ContentFactory", "class_content_factory.html", null ],
     [ "ContentLoader", "class_content_loader.html", null ],
     [ "DataSource", "class_data_source.html", [
@@ -56,6 +57,7 @@ var hierarchy =
       [ "boost::serialization::is_bitwise_serializable< std::chrono::duration< Rep, Period > >", "structboost_1_1serialization_1_1is__bitwise__serializable_3_01std_1_1chrono_1_1duration_3_01_rep_00_01_period_01_4_01_4.html", null ],
       [ "boost::serialization::is_bitwise_serializable< std::chrono::time_point< C, D > >", "structboost_1_1serialization_1_1is__bitwise__serializable_3_01std_1_1chrono_1_1time__point_3_01_c_00_01_d_01_4_01_4.html", null ]
     ] ],
+    [ "LauncherPlacer", "class_launcher_placer.html", null ],
     [ "LayoutPolicy", "class_layout_policy.html", [
       [ "AutomaticLayout", "class_automatic_layout.html", null ],
       [ "LayoutEngine", "class_layout_engine.html", null ]
@@ -249,12 +251,14 @@ var hierarchy =
     ] ],
     [ "std::exception", null, [
       [ "std::runtime_error", null, [
+        [ "dimensions_mismatch", "classdimensions__mismatch.html", null ],
         [ "invalid_surface_index_error", "classinvalid__surface__index__error.html", null ],
         [ "window_not_found_error", "classwindow__not__found__error.html", null ]
       ] ]
     ] ],
     [ "Surface", "class_surface.html", null ],
     [ "SurfaceConfig", "struct_surface_config.html", null ],
+    [ "SurfaceConfigValidator", "class_surface_config_validator.html", null ],
     [ "SVG", "class_s_v_g.html", null ],
     [ "SVGBackend", "class_s_v_g_backend.html", [
       [ "SVGQtGpuBackend", "class_s_v_g_qt_gpu_backend.html", null ]

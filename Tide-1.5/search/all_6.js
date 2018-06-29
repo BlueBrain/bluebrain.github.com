@@ -18,6 +18,7 @@ var searchData=
   ['focusselected',['focusSelected',['../class_display_group_controller.html#a0786c06785a566b126edb19ab1666f8c',1,'DisplayGroupController']]],
   ['folders',['Folders',['../struct_configuration_1_1_folders.html',1,'Configuration']]],
   ['folderthumbnailgenerator',['FolderThumbnailGenerator',['../class_folder_thumbnail_generator.html',1,'FolderThumbnailGenerator'],['../class_folder_thumbnail_generator.html#ace3c4e536cc2bf77331cfd4f20bec2a9',1,'FolderThumbnailGenerator::FolderThumbnailGenerator()']]],
+  ['format',['Format',['../class_configuration_writer.html#a357bb6466b6bc6710bd1dab06fb18a88',1,'ConfigurationWriter']]],
   ['fpscounter',['FpsCounter',['../class_fps_counter.html',1,'']]],
   ['frombinary',['fromBinary',['../namespaceserialization.html#aa24d755e1234ca14bc68c4377f674299',1,'serialization']]],
   ['fromxmlfile',['fromXmlFile',['../namespaceserialization.html#a00c40e41ef0c2fdd90c49aafbc1ece9b',1,'serialization']]],

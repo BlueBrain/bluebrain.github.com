@@ -1,6 +1,7 @@
 var searchData=
 [
   ['launch',['launch',['../class_pixel_streamer_launcher.html#afc419a30fbbfad12deed8cba43427723',1,'PixelStreamerLauncher']]],
+  ['launcherplacer',['LauncherPlacer',['../class_launcher_placer.html#a28de7888d62f03fd88bc04b9afa2d281',1,'LauncherPlacer']]],
   ['legacyloadxml',['legacyLoadXML',['../class_state.html#a9d239d0be957febba6229da5a599124e',1,'State']]],
   ['list',['list',['../class_file_browser.html#ac579ed222b7b7b091513c5868645ba35',1,'FileBrowser']]],
   ['load',['load',['../class_content_loader.html#a3001ad42bf2610f9cd3bf727ba53b3f0',1,'ContentLoader::load()'],['../class_master_application.html#a937bf094a4c3c49419f6dc9477e1cd84',1,'MasterApplication::load()'],['../class_app_remote_controller.html#a7f703ba6d6d7a77a431370c692732ee2',1,'AppRemoteController::load()'],['../class_state_serialization_helper.html#a68ac952da91b48895c6cddf0dca3fb66',1,'StateSerializationHelper::load()']]],

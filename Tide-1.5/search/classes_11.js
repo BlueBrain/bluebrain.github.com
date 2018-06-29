@@ -18,6 +18,7 @@ var searchData=
   ['streamthumbnailgenerator',['StreamThumbnailGenerator',['../class_stream_thumbnail_generator.html',1,'']]],
   ['surface',['Surface',['../class_surface.html',1,'']]],
   ['surfaceconfig',['SurfaceConfig',['../struct_surface_config.html',1,'']]],
+  ['surfaceconfigvalidator',['SurfaceConfigValidator',['../class_surface_config_validator.html',1,'']]],
   ['svg',['SVG',['../class_s_v_g.html',1,'']]],
   ['svgbackend',['SVGBackend',['../class_s_v_g_backend.html',1,'']]],
   ['svgcontent',['SVGContent',['../class_s_v_g_content.html',1,'']]],
