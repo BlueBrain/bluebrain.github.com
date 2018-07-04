@@ -96,6 +96,8 @@ var searchData=
   ['getplugins',['getPlugins',['../classbrayns_1_1_application_parameters.html#ae4da77a030c9dab348a6e90063d5f86f',1,'brayns::ApplicationParameters']]],
   ['getport',['getPort',['../classbrayns_1_1_stream_parameters.html#a0ac4da4e8b03ecfa7d60e3c1a3fb0c86',1,'brayns::StreamParameters']]],
   ['getposition',['getPosition',['../classbrayns_1_1_camera.html#a36cac1e98a3ea0be98b1813cba7f75e3',1,'brayns::Camera']]],
+  ['getproperties',['getProperties',['../classbrayns_1_1_property_map.html#a7a198b621bb18514984930624e199d23',1,'brayns::PropertyMap']]],
+  ['getproperty',['getProperty',['../classbrayns_1_1_property_map.html#a39edd3f89201ea727cac790fd05707d3',1,'brayns::PropertyMap::getProperty(const std::string &amp;name, T valIfNotFound)'],['../classbrayns_1_1_property_map.html#abc7c6cfb9fcea7e2e386da7944887e00',1,'brayns::PropertyMap::getProperty(const std::string &amp;name)']]],
   ['getquality',['getQuality',['../classbrayns_1_1_stream_parameters.html#a15f5932a44ab771bd516ae7a54a50d4e',1,'brayns::StreamParameters']]],
   ['getrenderer',['getRenderer',['../classbrayns_1_1_engine.html#af961a55c58767fdc61b67497abcbf7bb',1,'brayns::Engine']]],
   ['getrenderers',['getRenderers',['../classbrayns_1_1_rendering_parameters.html#a4c01720746de6ba46178db830d24e1d1',1,'brayns::RenderingParameters']]],

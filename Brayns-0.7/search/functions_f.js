@@ -34,6 +34,8 @@ var searchData=
   ['setposition',['setPosition',['../classbrayns_1_1_camera.html#a9e019f22770dd3dff66e399965d326f3',1,'brayns::Camera::setPosition()'],['../classbrayns_1_1_point_light.html#a14c49779d4e61b944511e07c7f7cad13',1,'brayns::PointLight::setPosition()']]],
   ['setprogresscallback',['setProgressCallback',['../classbrayns_1_1_loader.html#ac957d6047e9738bd7995827825024771',1,'brayns::Loader']]],
   ['setprogressfunc',['setProgressFunc',['../classbrayns_1_1_task_functor.html#ad8283ae7984fbd41e7d5e61e57238ad3',1,'brayns::TaskFunctor']]],
+  ['setproperties',['setProperties',['../classbrayns_1_1_camera.html#a8b5098c11326a64ff6d28d8acf8896f4',1,'brayns::Camera']]],
+  ['setproperty',['setProperty',['../classbrayns_1_1_property_map.html#a76fa77aded78ff4493e77219a58b59a4',1,'brayns::PropertyMap::setProperty(const std::string &amp;name, const T &amp;t)'],['../classbrayns_1_1_property_map.html#a9ec43c008e2aa8f72aba98136559bea2',1,'brayns::PropertyMap::setProperty(const Property &amp;newProperty)']]],
   ['setradiuscorrection',['setRadiusCorrection',['../classbrayns_1_1_geometry_parameters.html#a6bbfa8e688f9395347b8d3d535b93834',1,'brayns::GeometryParameters']]],
   ['setradiusmultiplier',['setRadiusMultiplier',['../classbrayns_1_1_geometry_parameters.html#a39e145c39048b4ae3c8be29999bb89a4',1,'brayns::GeometryParameters']]],
   ['setsamplesperray',['setSamplesPerRay',['../classbrayns_1_1_rendering_parameters.html#a09b4edd3e71bf1b6f39dc00212ef91b3',1,'brayns::RenderingParameters']]],

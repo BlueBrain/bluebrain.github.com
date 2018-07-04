@@ -87,6 +87,8 @@ var hierarchy =
     [ "brayns::ParametersManager", "classbrayns_1_1_parameters_manager.html", null ],
     [ "brayns::PluginAPI", "classbrayns_1_1_plugin_a_p_i.html", null ],
     [ "brayns::PluginParam", "structbrayns_1_1_plugin_param.html", null ],
+    [ "brayns::PropertyMap", "classbrayns_1_1_property_map.html", null ],
+    [ "brayns::PropertyMap::Property", "structbrayns_1_1_property_map_1_1_property.html", null ],
     [ "brayns::Renderer", "classbrayns_1_1_renderer.html", [
       [ "brayns::OSPRayRenderer", "classbrayns_1_1_o_s_p_ray_renderer.html", null ]
     ] ],
@@ -96,6 +98,8 @@ var hierarchy =
     [ "brayns::SDFGeometry", "structbrayns_1_1_s_d_f_geometry.html", null ],
     [ "brayns::ShortcutInformation", "structbrayns_1_1_shortcut_information.html", null ],
     [ "brayns::Sphere", "structbrayns_1_1_sphere.html", null ],
+    [ "brayns::Streamline", "structbrayns_1_1_streamline.html", null ],
+    [ "brayns::StreamlinesData", "structbrayns_1_1_streamlines_data.html", null ],
     [ "brayns::TaskFunctor", "classbrayns_1_1_task_functor.html", [
       [ "brayns::LoadModelFunctor", "classbrayns_1_1_load_model_functor.html", null ]
     ] ],

@@ -9,5 +9,7 @@ var searchData=
   ['sphere',['Sphere',['../structbrayns_1_1_sphere.html',1,'brayns']]],
   ['spikesimulationhandler',['SpikeSimulationHandler',['../classbrayns_1_1_spike_simulation_handler.html',1,'brayns']]],
   ['statistics',['Statistics',['../classbrayns_1_1_statistics.html',1,'brayns']]],
+  ['streamline',['Streamline',['../structbrayns_1_1_streamline.html',1,'brayns']]],
+  ['streamlinesdata',['StreamlinesData',['../structbrayns_1_1_streamlines_data.html',1,'brayns']]],
   ['streamparameters',['StreamParameters',['../classbrayns_1_1_stream_parameters.html',1,'brayns']]]
 ];

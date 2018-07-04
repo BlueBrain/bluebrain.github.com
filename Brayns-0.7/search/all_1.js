@@ -16,6 +16,7 @@ var searchData=
   ['addmodeltask',['AddModelTask',['../classbrayns_1_1_add_model_task.html',1,'brayns']]],
   ['addsdfgeometry',['addSDFGeometry',['../classbrayns_1_1_model.html#a884fb214767b5ca7700e05e49d66f615',1,'brayns::Model']]],
   ['addsphere',['addSphere',['../classbrayns_1_1_model.html#a850d89a566652c7194081aae85773aa7',1,'brayns::Model']]],
+  ['addstreamline',['addStreamline',['../classbrayns_1_1_model.html#a4120048ceaf47ad3e72303c48e5bc967',1,'brayns::Model']]],
   ['animationparameters',['AnimationParameters',['../classbrayns_1_1_animation_parameters.html',1,'brayns']]],
   ['api_2eh',['api.h',['../api_8h.html',1,'']]],
   ['applicationparameters',['ApplicationParameters',['../classbrayns_1_1_application_parameters.html',1,'brayns']]],

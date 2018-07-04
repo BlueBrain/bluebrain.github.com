@@ -29,7 +29,10 @@ var classbrayns_1_1_camera =
     [ "setInitialState", "classbrayns_1_1_camera.html#ad75ab39d4ae7e333b1fa76143d7e2bc5", null ],
     [ "setInitialState", "classbrayns_1_1_camera.html#a028234129f2dfd833e822421aa78cad7", null ],
     [ "setPosition", "classbrayns_1_1_camera.html#a9e019f22770dd3dff66e399965d326f3", null ],
+    [ "setProperties", "classbrayns_1_1_camera.html#a8b5098c11326a64ff6d28d8acf8896f4", null ],
     [ "setStereoMode", "classbrayns_1_1_camera.html#aff5c0e3449b4dfc1d0359dcfd66994cb", null ],
     [ "setTarget", "classbrayns_1_1_camera.html#ac9a741fa01ace6c9cf2723a56afac43c", null ],
-    [ "setUp", "classbrayns_1_1_camera.html#a6f0cf030cd4e0330bfa2b0abdb016267", null ]
+    [ "setUp", "classbrayns_1_1_camera.html#a6f0cf030cd4e0330bfa2b0abdb016267", null ],
+    [ "updateProperties", "classbrayns_1_1_camera.html#a6841a02435e379f330583d9f804bc312", null ],
+    [ "_properties", "classbrayns_1_1_camera.html#a773f424bb9dc99eece6fa783810eeed1", null ]
 ];

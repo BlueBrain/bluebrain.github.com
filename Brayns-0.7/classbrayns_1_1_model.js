@@ -7,6 +7,7 @@ var classbrayns_1_1_model =
     [ "addCylinder", "classbrayns_1_1_model.html#a11568ec350edbaa36305f927e1eb2178", null ],
     [ "addSDFGeometry", "classbrayns_1_1_model.html#a884fb214767b5ca7700e05e49d66f615", null ],
     [ "addSphere", "classbrayns_1_1_model.html#a850d89a566652c7194081aae85773aa7", null ],
+    [ "addStreamline", "classbrayns_1_1_model.html#a4120048ceaf47ad3e72303c48e5bc967", null ],
     [ "buildBoundingBox", "classbrayns_1_1_model.html#a8d35f831b0bdf4dc8abfc8fe9cf852a6", null ],
     [ "commit", "classbrayns_1_1_model.html#ae8be849d25bd5b8568e4e3ff2cd6a965", null ],
     [ "createMaterial", "classbrayns_1_1_model.html#a0156b8880c15bda28f3610fc36947f7c", null ],
@@ -41,6 +42,8 @@ var classbrayns_1_1_model =
     [ "_sizeInBytes", "classbrayns_1_1_model.html#ab0bb59ea6a490945e5ffc858f0612afe", null ],
     [ "_spheres", "classbrayns_1_1_model.html#a972270f41b10e1110bd1b7342ce2351a", null ],
     [ "_spheresDirty", "classbrayns_1_1_model.html#a232f099016aba67c13f57f7553cbcab5", null ],
+    [ "_streamlines", "classbrayns_1_1_model.html#adb56051b8476b61a230a4c67dfaa2ef8", null ],
+    [ "_streamlinesDirty", "classbrayns_1_1_model.html#a6c4ea614ef4b982de97bce24f5e5a99c", null ],
     [ "_trianglesMeshes", "classbrayns_1_1_model.html#a69c8dc6e04668d81ef7adf289c64fb67", null ],
     [ "_trianglesMeshesDirty", "classbrayns_1_1_model.html#a8b8f1db5ede9add3033b479d7934c740", null ],
     [ "_useSimulationModel", "classbrayns_1_1_model.html#a9648511d583385a6ecc14d1d56eba18e", null ]
