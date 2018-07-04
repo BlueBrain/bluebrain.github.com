@@ -7,7 +7,6 @@ var class_command_line_options =
     [ "parse", "class_command_line_options.html#a5d1040e4ba091f5d7c28f61e9dd68d94", null ],
     [ "showSyntax", "class_command_line_options.html#a68181e21059723b97e097ae95c1b9085", null ],
     [ "contentsDir", "class_command_line_options.html#ab7cd283b62baab8cf7a25bd7f45b2383", null ],
-    [ "demoServiceImageDir", "class_command_line_options.html#a5e04bf6fdcb1f918731f8588ed6a3a7c", null ],
     [ "demoServiceUrl", "class_command_line_options.html#a4ead55603361012a1a4f39919dbf5cfb", null ],
     [ "height", "class_command_line_options.html#a3a7eec8ef2410ed46673170165810b93", null ],
     [ "saveDir", "class_command_line_options.html#aaf7d43715b16ea84716260ca412cef4f", null ],

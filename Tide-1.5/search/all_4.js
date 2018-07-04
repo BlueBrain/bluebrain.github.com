@@ -11,7 +11,6 @@ var searchData=
   ['defaultthumbnailgenerator',['DefaultThumbnailGenerator',['../class_default_thumbnail_generator.html',1,'DefaultThumbnailGenerator'],['../class_default_thumbnail_generator.html#a14ab9ac15f6aafe5af81118753797c88',1,'DefaultThumbnailGenerator::DefaultThumbnailGenerator()']]],
   ['defaulturl',['defaultUrl',['../struct_configuration_1_1_webbrowser.html#a5baa3668beb5855cc3662d2d9673c553',1,'Configuration::Webbrowser']]],
   ['defines_2eh',['defines.h',['../defines_8h.html',1,'']]],
-  ['demoserviceimagedir',['demoServiceImageDir',['../struct_configuration_1_1_launcher.html#acbecd5e6e1d3e6989c9b519fffb1fd02',1,'Configuration::Launcher']]],
   ['demoserviceurl',['demoServiceUrl',['../struct_configuration_1_1_launcher.html#af6822fd1c1cd9aeff673457c68e5bc3e',1,'Configuration::Launcher']]],
   ['denormalize',['denormalize',['../class_display_group_controller.html#a6d1a39818b26bcd4d47537bcbcbff9a4',1,'DisplayGroupController']]],
   ['desc',['desc',['../class_command_line_parser.html#a3d555fab2fc4cf169d4c3ca91af062a2',1,'CommandLineParser']]],

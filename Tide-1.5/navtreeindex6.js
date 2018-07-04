@@ -1,6 +1,5 @@
 var NAVTREEINDEX6 =
 {
-"class_surface.html#a514db71111931cfa3158a56643fcee6e":[7,0,136,0],
 "class_surface.html#a79c52e3d827dbd604b114aaa0efc1bd1":[7,0,136,1],
 "class_surface.html#a9a4b5d241dbcd2cc80aa552843f8aa27":[7,0,136,6],
 "class_surface.html#aad7e1ed94b3a4f3b01368655622db937":[7,0,136,3],
@@ -249,5 +248,6 @@ var NAVTREEINDEX6 =
 "class_zoom_helper.html#a5760461293225a311428c21c1ea37a6f":[7,0,182,3],
 "class_zoom_helper.html#aff004d20b08cde45e73825a3f6c6662b":[7,0,182,2],
 "classdimensions__mismatch.html":[7,0,34],
-"classes.html":[7,1]
+"classes.html":[7,1],
+"classinvalid__surface__index__error.html":[7,0,63]
 };

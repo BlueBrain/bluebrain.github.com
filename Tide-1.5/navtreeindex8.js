@@ -1,7 +1,5 @@
 var NAVTREEINDEX8 =
 {
-"struct_wall_configuration.html#a73913c1c2caa45f21a47f98fa01d33ec":[7,0,171,2],
-"struct_wall_render_context.html":[7,0,173],
 "struct_wall_render_context.html#a04c10d839c6050ca710a083a6591c6c6":[7,0,173,4],
 "struct_wall_render_context.html#a81405df7f6bff176843362746586bc53":[7,0,173,5],
 "struct_wall_render_context.html#a87ed2e2fb1af35b3e553947b492a5fea":[7,0,173,3],
