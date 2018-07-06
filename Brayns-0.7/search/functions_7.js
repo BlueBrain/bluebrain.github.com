@@ -132,5 +132,6 @@ var searchData=
   ['getvariancethreshold',['getVarianceThreshold',['../classbrayns_1_1_rendering_parameters.html#a2e15eaf4a39b43a5bb324469f118fe8b',1,'brayns::RenderingParameters']]],
   ['getvolumehandler',['getVolumeHandler',['../classbrayns_1_1_scene.html#a5074d2cb2ed54551637fdcd21b25809c',1,'brayns::Scene']]],
   ['getvolumeparameters',['getVolumeParameters',['../classbrayns_1_1_parameters_manager.html#af96aa3d61e0e96870b7027570c832829',1,'brayns::ParametersManager']]],
-  ['getwindowsize',['getWindowSize',['../classbrayns_1_1_application_parameters.html#a1ee6735655020055be53a2140348d353',1,'brayns::ApplicationParameters']]]
+  ['getwindowsize',['getWindowSize',['../classbrayns_1_1_application_parameters.html#a1ee6735655020055be53a2140348d353',1,'brayns::ApplicationParameters']]],
+  ['getzeroparallaxplane',['getZeroParallaxPlane',['../classbrayns_1_1_camera.html#a9ae248b33e7603e8b2a93942fe21a4f0',1,'brayns::Camera']]]
 ];

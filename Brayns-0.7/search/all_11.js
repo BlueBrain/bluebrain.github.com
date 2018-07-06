@@ -48,6 +48,7 @@ var searchData=
   ['settarget',['setTarget',['../classbrayns_1_1_camera.html#ac9a741fa01ace6c9cf2723a56afac43c',1,'brayns::Camera']]],
   ['setup',['setUp',['../classbrayns_1_1_camera.html#a6f0cf030cd4e0330bfa2b0abdb016267',1,'brayns::Camera']]],
   ['setvariancethreshold',['setVarianceThreshold',['../classbrayns_1_1_rendering_parameters.html#aadf26c0def3d1eb724491b48a4b94c19',1,'brayns::RenderingParameters']]],
+  ['setzeroparallaxplane',['setZeroParallaxPlane',['../classbrayns_1_1_camera.html#aafcc171a2bef73836b7ce32ea4b09206',1,'brayns::Camera']]],
   ['shortcutinformation',['ShortcutInformation',['../structbrayns_1_1_shortcut_information.html',1,'brayns']]],
   ['simulationrenderer',['SimulationRenderer',['../classbrayns_1_1_simulation_renderer.html',1,'brayns']]],
   ['size',['size',['../structbrayns_1_1_binary_param.html#a50964aa1d6ec351c6f186ffe924da95b',1,'brayns::BinaryParam']]],

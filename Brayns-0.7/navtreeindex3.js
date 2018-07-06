@@ -1,5 +1,7 @@
 var NAVTREEINDEX3 =
 {
+"classbrayns_1_1_particle_renderer.html#a3854e6979cc19f8158ef28ceaaef9318":[5,0,0,58,1],
+"classbrayns_1_1_particle_renderer.html#a92fc5f6863414f74849be424e90e1264":[5,0,0,58,0],
 "classbrayns_1_1_particle_renderer.html#af77fad98b58d93e68c2b716fb3d69b30":[5,0,0,58,2],
 "classbrayns_1_1_path_tracing_renderer.html":[5,0,0,59],
 "classbrayns_1_1_path_tracing_renderer.html#a5074c24a6fa02e73ab26e34af231206d":[5,0,0,59,2],
@@ -247,7 +249,5 @@ var NAVTREEINDEX3 =
 "classbrayns_1_1_texture2_d.html":[5,0,0,85],
 "classbrayns_1_1_texture2_d.html#a0fe61d697b5bf71b5f57d48b79e03b1b":[5,0,0,85,6],
 "classbrayns_1_1_texture2_d.html#a1d6f2f2deedb4d4bab804018ca46563c":[5,0,0,85,7],
-"classbrayns_1_1_texture2_d.html#a2a002ff5c9ca023e79d09df0da8f0b4d":[5,0,0,85,3],
-"classbrayns_1_1_texture2_d.html#a63884c727d3840f77e4f64e1d9e66125":[5,0,0,85,5],
-"classbrayns_1_1_texture2_d.html#a72fe8b40242a202fc2b82fb44c49ef3a":[5,0,0,85,2]
+"classbrayns_1_1_texture2_d.html#a2a002ff5c9ca023e79d09df0da8f0b4d":[5,0,0,85,3]
 };

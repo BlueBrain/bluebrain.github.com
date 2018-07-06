@@ -44,6 +44,7 @@ var searchData=
   ['settarget',['setTarget',['../classbrayns_1_1_camera.html#ac9a741fa01ace6c9cf2723a56afac43c',1,'brayns::Camera']]],
   ['setup',['setUp',['../classbrayns_1_1_camera.html#a6f0cf030cd4e0330bfa2b0abdb016267',1,'brayns::Camera']]],
   ['setvariancethreshold',['setVarianceThreshold',['../classbrayns_1_1_rendering_parameters.html#aadf26c0def3d1eb724491b48a4b94c19',1,'brayns::RenderingParameters']]],
+  ['setzeroparallaxplane',['setZeroParallaxPlane',['../classbrayns_1_1_camera.html#aafcc171a2bef73836b7ce32ea4b09206',1,'brayns::Camera']]],
   ['spikesimulationhandler',['SpikeSimulationHandler',['../classbrayns_1_1_spike_simulation_handler.html#aae5dc41c31d6b1a5473075eaf0c54fc9',1,'brayns::SpikeSimulationHandler']]],
   ['start',['start',['../classbrayns_1_1_timer.html#aa4b955ae78d2e06e444eb7b4ecba62d4',1,'brayns::Timer']]],
   ['stop',['stop',['../classbrayns_1_1_timer.html#ab45e9548afa774cc5eaf70cb6c54975d',1,'brayns::Timer']]],

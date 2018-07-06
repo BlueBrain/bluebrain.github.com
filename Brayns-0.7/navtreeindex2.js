@@ -1,5 +1,7 @@
 var NAVTREEINDEX2 =
 {
+"classbrayns_1_1_loader.html#a5a47618542c6227389de50ccbfe26dfc":[5,0,0,38,1],
+"classbrayns_1_1_loader.html#a77df9331ed63d00c30f0ae1486d5fa4c":[5,0,0,38,4],
 "classbrayns_1_1_loader.html#a9034b0fcb7e326c0b9da017d5cb78320":[5,0,0,38,2],
 "classbrayns_1_1_loader.html#ac957d6047e9738bd7995827825024771":[5,0,0,38,5],
 "classbrayns_1_1_loader.html#af999f38f667c81b601dd1da6f2fea5c4":[5,0,0,38,3],
@@ -247,7 +249,5 @@ var NAVTREEINDEX2 =
 "classbrayns_1_1_parameters_manager.html#af0a2f6ace6b34e1d9782841eec23180b":[5,0,0,57,7],
 "classbrayns_1_1_parameters_manager.html#af1446cfbea9a2fb9348a8625bd69bb18":[5,0,0,57,12],
 "classbrayns_1_1_parameters_manager.html#af96aa3d61e0e96870b7027570c832829":[5,0,0,57,8],
-"classbrayns_1_1_particle_renderer.html":[5,0,0,58],
-"classbrayns_1_1_particle_renderer.html#a3854e6979cc19f8158ef28ceaaef9318":[5,0,0,58,1],
-"classbrayns_1_1_particle_renderer.html#a92fc5f6863414f74849be424e90e1264":[5,0,0,58,0]
+"classbrayns_1_1_particle_renderer.html":[5,0,0,58]
 };

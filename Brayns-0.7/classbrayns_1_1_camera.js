@@ -16,6 +16,7 @@ var classbrayns_1_1_camera =
     [ "getTarget", "classbrayns_1_1_camera.html#a488bad48faaa17a0c1d2ba27bd6c19c6", null ],
     [ "getType", "classbrayns_1_1_camera.html#a0922ca991159fe5fc401bae15597230e", null ],
     [ "getUp", "classbrayns_1_1_camera.html#aea0f9370d5b1662f8192f11030fe3af8", null ],
+    [ "getZeroParallaxPlane", "classbrayns_1_1_camera.html#a9ae248b33e7603e8b2a93942fe21a4f0", null ],
     [ "operator=", "classbrayns_1_1_camera.html#ad6a5be060c28f9f42a023cff0af66303", null ],
     [ "reset", "classbrayns_1_1_camera.html#a0378b8d85d011a5b524746f4e23e34e6", null ],
     [ "set", "classbrayns_1_1_camera.html#aa9c603ed3a0047c98a670480bcda8b51", null ],
@@ -33,6 +34,7 @@ var classbrayns_1_1_camera =
     [ "setStereoMode", "classbrayns_1_1_camera.html#aff5c0e3449b4dfc1d0359dcfd66994cb", null ],
     [ "setTarget", "classbrayns_1_1_camera.html#ac9a741fa01ace6c9cf2723a56afac43c", null ],
     [ "setUp", "classbrayns_1_1_camera.html#a6f0cf030cd4e0330bfa2b0abdb016267", null ],
+    [ "setZeroParallaxPlane", "classbrayns_1_1_camera.html#aafcc171a2bef73836b7ce32ea4b09206", null ],
     [ "updateProperties", "classbrayns_1_1_camera.html#a6841a02435e379f330583d9f804bc312", null ],
     [ "_properties", "classbrayns_1_1_camera.html#a773f424bb9dc99eece6fa783810eeed1", null ]
 ];
