@@ -4,7 +4,7 @@ version: "1.0"
 major: 1
 minor: 0
 description: A fast C++ library for streaming pixels and events
-updated: 26/05/18
+updated: 06/07/18
 homepage: https://github.com/BlueBrain/Deflect
 repository: https://github.com/BlueBrain/Deflect.git
 issuesurl: https://github.com/BlueBrain/Deflect/issues
@@ -12,7 +12,7 @@ packageurl:
 license: LGPL
 maturity: EP
 maintainers: Blue Brain Project (bbp-open-source@googlegroups.com)
-contributors: Daniel Nachbaur
+contributors: Jonas Karlsson
 readmetype: text/x-markdown
 ---
 # Deflect
