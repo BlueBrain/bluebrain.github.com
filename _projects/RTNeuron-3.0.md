@@ -4,7 +4,7 @@ version: "3.0"
 major: 3
 minor: 0
 description: Scalable rendering tool for the visualization of Neuron simulation data.
-updated: 22/06/18
+updated: 07/07/18
 homepage: https://github.com/BlueBrain/RTNeuron
 repository: https://github.com/BlueBrain/RTNeuron.git
 issuesurl: https://github.com/BlueBrain/RTNeuron/issues
