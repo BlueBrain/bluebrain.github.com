@@ -6,9 +6,17 @@ var index =
       [ "Release master", "release_notes.html#release_notes_master", [
         [ "Introduction", "release_notes.html#Introduction_master", null ],
         [ "New in this release", "release_notes.html#New_in_this_release_master", [
-          [ "API Changes", "release_notes.html#API_Changes_master", null ],
-          [ "CLI Changes", "release_notes.html#CLI_Changes_master", null ],
-          [ "Deprecation", "release_notes.html#Deprecation_master", null ]
+          [ "New Features", "release_notes.html#New_Features_master", null ],
+          [ "Optimizations", "release_notes.html#Optimizations_master", null ],
+          [ "Bug fixes", "release_notes.html#Bug_fixes_master", null ]
+        ] ]
+      ] ],
+      [ "Release 3.0.0", "release_notes.html#release_notes_3_0_0", [
+        [ "Introduction", "release_notes.html#Introduction_3_0_0", null ],
+        [ "New in this release", "release_notes.html#New_in_this_release_3_0_0", [
+          [ "API Changes", "release_notes.html#API_Changes_3_0_0", null ],
+          [ "CLI Changes", "release_notes.html#CLI_Changes_3_0_0", null ],
+          [ "Deprecation", "release_notes.html#Deprecation_3_0_0", null ]
         ] ]
       ] ],
       [ "Release 2.13.0", "release_notes.html#release_notes_2_13_0", [
