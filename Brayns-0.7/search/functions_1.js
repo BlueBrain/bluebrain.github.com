@@ -9,6 +9,6 @@ var searchData=
   ['addsdfgeometry',['addSDFGeometry',['../classbrayns_1_1_model.html#a884fb214767b5ca7700e05e49d66f615',1,'brayns::Model']]],
   ['addsphere',['addSphere',['../classbrayns_1_1_model.html#a850d89a566652c7194081aae85773aa7',1,'brayns::Model']]],
   ['addstreamline',['addStreamline',['../classbrayns_1_1_model.html#a4120048ceaf47ad3e72303c48e5bc967',1,'brayns::Model']]],
-  ['attachsimulationtocachefile',['attachSimulationToCacheFile',['../classbrayns_1_1_abstract_simulation_handler.html#afbda00e17fa6bd162a4263f89a55c379',1,'brayns::AbstractSimulationHandler']]],
-  ['attachvolumetofile',['attachVolumeToFile',['../classbrayns_1_1_volume_handler.html#a66fb70e7039ace4fde9250bc92afaead',1,'brayns::VolumeHandler']]]
+  ['addvolume',['addVolume',['../classbrayns_1_1_model.html#a0cf2f3bd716ddcb9e68701b9b9ce41b0',1,'brayns::Model']]],
+  ['attachsimulationtocachefile',['attachSimulationToCacheFile',['../classbrayns_1_1_abstract_simulation_handler.html#afbda00e17fa6bd162a4263f89a55c379',1,'brayns::AbstractSimulationHandler']]]
 ];

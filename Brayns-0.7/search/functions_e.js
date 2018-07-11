@@ -7,6 +7,7 @@ var searchData=
   ['registerrequest',['registerRequest',['../classbrayns_1_1_action_interface.html#aa848f4a0c303b0686ccdcc72c9e1d6c7',1,'brayns::ActionInterface::registerRequest(const std::string &amp;name, const std::function&lt; RetVal(Params)&gt; &amp;action)'],['../classbrayns_1_1_action_interface.html#a67f15a5be2bc8ece423e2bb494dee99c',1,'brayns::ActionInterface::registerRequest(const std::string &amp;name, const std::function&lt; RetVal()&gt; &amp;action)']]],
   ['removelight',['removeLight',['../classbrayns_1_1_scene.html#a681a8a7e95f279226a0ac02f2b8f4201',1,'brayns::Scene']]],
   ['removemodel',['removeModel',['../classbrayns_1_1_scene.html#a584399067b238f719a1d0d6ad2460f29',1,'brayns::Scene']]],
+  ['removevolume',['removeVolume',['../classbrayns_1_1_model.html#a0dcbdba6c5b454ef420edfa126ebae76',1,'brayns::Model']]],
   ['render',['render',['../classbrayns_1_1_brayns.html#a40a8a684cb1caf39e10f4b56dce58292',1,'brayns::Brayns::render(const RenderInput &amp;renderInput, RenderOutput &amp;renderOutput)'],['../classbrayns_1_1_brayns.html#a775ea688fc1a445393a5a8172fe28864',1,'brayns::Brayns::render()'],['../classbrayns_1_1_engine.html#addcc1b550a6783cf5ea893a58cdc4faa',1,'brayns::Engine::render()']]],
   ['renderonly',['renderOnly',['../classbrayns_1_1_brayns.html#aba196920e95b281191a234bedaf62963',1,'brayns::Brayns']]],
   ['reset',['reset',['../classbrayns_1_1_camera.html#a0378b8d85d011a5b524746f4e23e34e6',1,'brayns::Camera']]],

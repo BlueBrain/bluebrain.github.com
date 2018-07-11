@@ -1,6 +1,5 @@
 var searchData=
 [
-  ['unmap',['unmap',['../classbrayns_1_1_volume_handler_1_1_volume_descriptor.html#a3c3adefe331b28d5e6e07871d3250263',1,'brayns::VolumeHandler::VolumeDescriptor']]],
   ['update',['update',['../classbrayns_1_1_progress.html#a11abbe394dc77f68ce0d5c4fd3a366d6',1,'brayns::Progress']]],
   ['updatecallback',['UpdateCallback',['../classbrayns_1_1_loader.html#a59c6fb7227bfb5cd353d10b7306573e8',1,'brayns::Loader']]],
   ['updateprogress',['updateProgress',['../classbrayns_1_1_loader.html#a0618feaaee1cefc7a2ae781513f1646e',1,'brayns::Loader']]],

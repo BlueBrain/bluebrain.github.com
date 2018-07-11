@@ -14,9 +14,11 @@ var searchData=
   ['committransferfunctiondata',['commitTransferFunctionData',['../classbrayns_1_1_scene.html#a1050f001aa9a33e578e634f5b46b20e4',1,'brayns::Scene::commitTransferFunctionData()'],['../classbrayns_1_1_o_s_p_ray_scene.html#afb35ff0103c2b8472a66ace60452c8e5',1,'brayns::OSPRayScene::commitTransferFunctionData()']]],
   ['consume',['consume',['../classbrayns_1_1_progress.html#a3e56606ed9283c4e4189b0d5b3b6b7cf',1,'brayns::Progress']]],
   ['continuerendering',['continueRendering',['../classbrayns_1_1_engine.html#a84b7fb62801d98aa94c325dc8f725313',1,'brayns::Engine']]],
+  ['createbrickedvolume',['createBrickedVolume',['../classbrayns_1_1_scene.html#a6798df0c86c13dc9c611a09c8455707e',1,'brayns::Scene::createBrickedVolume()'],['../classbrayns_1_1_o_s_p_ray_scene.html#a152b063b158d9ab24c14968f1ed2c192',1,'brayns::OSPRayScene::createBrickedVolume()']]],
   ['createcamera',['createCamera',['../classbrayns_1_1_engine.html#a193b3610b6a3db0a4cfd425ce541ad4e',1,'brayns::Engine::createCamera()'],['../classbrayns_1_1_o_s_p_ray_engine.html#a7d59b2ca3678537687311fc8e0096293',1,'brayns::OSPRayEngine::createCamera()']]],
   ['createframebuffer',['createFrameBuffer',['../classbrayns_1_1_engine.html#a3ad20ce149c67448d40110da4f573f35',1,'brayns::Engine::createFrameBuffer()'],['../classbrayns_1_1_o_s_p_ray_engine.html#a289a41199522b39287c056f8e5d72662',1,'brayns::OSPRayEngine::createFrameBuffer()']]],
   ['createloader',['createLoader',['../classbrayns_1_1_loader_registry.html#a8691c54eefd2046b9c717094d60dd121',1,'brayns::LoaderRegistry']]],
   ['creatematerial',['createMaterial',['../classbrayns_1_1_model.html#a0156b8880c15bda28f3610fc36947f7c',1,'brayns::Model::createMaterial()'],['../classbrayns_1_1_o_s_p_ray_model.html#a3581e95c6264bcc1913712773bec4fc6',1,'brayns::OSPRayModel::createMaterial()']]],
-  ['createmissingmaterials',['createMissingMaterials',['../classbrayns_1_1_model.html#a423f628996f18f7e37b561c7ae78ca27',1,'brayns::Model']]]
+  ['createmissingmaterials',['createMissingMaterials',['../classbrayns_1_1_model.html#a423f628996f18f7e37b561c7ae78ca27',1,'brayns::Model']]],
+  ['createshareddatavolume',['createSharedDataVolume',['../classbrayns_1_1_scene.html#a0dcf87268729de1293b666dc3ec0674d',1,'brayns::Scene::createSharedDataVolume()'],['../classbrayns_1_1_o_s_p_ray_scene.html#a667d051887bb94ec414033e21f38ee4d',1,'brayns::OSPRayScene::createSharedDataVolume()']]]
 ];

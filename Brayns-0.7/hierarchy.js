@@ -49,7 +49,18 @@ var hierarchy =
       [ "brayns::Statistics", "classbrayns_1_1_statistics.html", null ],
       [ "brayns::TransferFunction", "classbrayns_1_1_transfer_function.html", null ],
       [ "brayns::Transformation", "classbrayns_1_1_transformation.html", null ],
-      [ "brayns::VolumeHandler", "classbrayns_1_1_volume_handler.html", null ]
+      [ "brayns::Volume", "classbrayns_1_1_volume.html", [
+        [ "brayns::BrickedVolume", "classbrayns_1_1_bricked_volume.html", [
+          [ "brayns::OSPRayBrickedVolume", "classbrayns_1_1_o_s_p_ray_bricked_volume.html", null ]
+        ] ],
+        [ "brayns::OSPRayVolume", "classbrayns_1_1_o_s_p_ray_volume.html", [
+          [ "brayns::OSPRayBrickedVolume", "classbrayns_1_1_o_s_p_ray_bricked_volume.html", null ],
+          [ "brayns::OSPRaySharedDataVolume", "classbrayns_1_1_o_s_p_ray_shared_data_volume.html", null ]
+        ] ],
+        [ "brayns::SharedDataVolume", "classbrayns_1_1_shared_data_volume.html", [
+          [ "brayns::OSPRaySharedDataVolume", "classbrayns_1_1_o_s_p_ray_shared_data_volume.html", null ]
+        ] ]
+      ] ]
     ] ],
     [ "brayns::BinaryError", "structbrayns_1_1_binary_error.html", null ],
     [ "brayns::Blob", "structbrayns_1_1_blob.html", null ],
@@ -74,6 +85,7 @@ var hierarchy =
       [ "brayns::MeshLoader", "classbrayns_1_1_mesh_loader.html", null ],
       [ "brayns::MolecularSystemReader", "classbrayns_1_1_molecular_system_reader.html", null ],
       [ "brayns::ProteinLoader", "classbrayns_1_1_protein_loader.html", null ],
+      [ "brayns::VolumeLoader", "classbrayns_1_1_volume_loader.html", null ],
       [ "brayns::XYZBLoader", "classbrayns_1_1_x_y_z_b_loader.html", null ]
     ] ],
     [ "brayns::LoaderRegistry", "classbrayns_1_1_loader_registry.html", null ],
@@ -108,7 +120,6 @@ var hierarchy =
     [ "brayns::TransferFunctionLoader", "classbrayns_1_1_transfer_function_loader.html", null ],
     [ "brayns::TrianglesMesh", "structbrayns_1_1_triangles_mesh.html", null ],
     [ "brayns::Version", "classbrayns_1_1_version.html", null ],
-    [ "brayns::VolumeHandler::VolumeDescriptor", "classbrayns_1_1_volume_handler_1_1_volume_descriptor.html", null ],
     [ "Camera", null, [
       [ "ospray::ClippedPerspectiveCamera", "structospray_1_1_clipped_perspective_camera.html", null ]
     ] ],

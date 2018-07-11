@@ -18,6 +18,7 @@ var files =
     [ "BasicRenderer.h", "_basic_renderer_8h_source.html", null ],
     [ "brayns.h", "brayns_8h_source.html", null ],
     [ "Brayns.h", "_brayns_8h_source.html", null ],
+    [ "BrickedVolume.h", "_bricked_volume_8h_source.html", null ],
     [ "CADiffusionSimulationHandler.h", "_c_a_diffusion_simulation_handler_8h_source.html", null ],
     [ "Camera.h", "_camera_8h_source.html", null ],
     [ "ClippedPerspectiveCamera.h", "_clipped_perspective_camera_8h_source.html", null ],
@@ -60,6 +61,7 @@ var files =
     [ "OSPRayModel.h", "_o_s_p_ray_model_8h_source.html", null ],
     [ "OSPRayRenderer.h", "_o_s_p_ray_renderer_8h_source.html", null ],
     [ "OSPRayScene.h", "_o_s_p_ray_scene_8h_source.html", null ],
+    [ "OSPRayVolume.h", "_o_s_p_ray_volume_8h_source.html", null ],
     [ "parameters.h", "parameters_8h_source.html", null ],
     [ "ParametersManager.h", "_parameters_manager_8h_source.html", null ],
     [ "ParticleRenderer.h", "_particle_renderer_8h_source.html", null ],
@@ -76,6 +78,7 @@ var files =
     [ "Scene.h", "_scene_8h_source.html", null ],
     [ "SceneParameters.h", "_scene_parameters_8h_source.html", null ],
     [ "SDFGeometry.h", "_s_d_f_geometry_8h_source.html", null ],
+    [ "SharedDataVolume.h", "_shared_data_volume_8h_source.html", null ],
     [ "SimulationRenderer.h", "_simulation_renderer_8h_source.html", null ],
     [ "Sphere.h", "_sphere_8h_source.html", null ],
     [ "SpikeSimulationHandler.h", "_spike_simulation_handler_8h_source.html", null ],
@@ -99,7 +102,8 @@ var files =
     [ "pluginapi/version.h", "pluginapi_2version_8h.html", "pluginapi_2version_8h" ],
     [ "tasks/version.h", "tasks_2version_8h.html", "tasks_2version_8h" ],
     [ "version.h", "version_8h.html", "version_8h" ],
-    [ "VolumeHandler.h", "_volume_handler_8h_source.html", null ],
+    [ "Volume.h", "_volume_8h_source.html", null ],
+    [ "VolumeLoader.h", "_volume_loader_8h_source.html", null ],
     [ "VolumeParameters.h", "_volume_parameters_8h_source.html", null ],
     [ "XYZBLoader.h", "_x_y_z_b_loader_8h_source.html", null ]
 ];

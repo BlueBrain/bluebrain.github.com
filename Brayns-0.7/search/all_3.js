@@ -22,11 +22,13 @@ var searchData=
   ['cone',['Cone',['../structbrayns_1_1_cone.html',1,'brayns']]],
   ['consume',['consume',['../classbrayns_1_1_progress.html#a3e56606ed9283c4e4189b0d5b3b6b7cf',1,'brayns::Progress']]],
   ['continuerendering',['continueRendering',['../classbrayns_1_1_engine.html#a84b7fb62801d98aa94c325dc8f725313',1,'brayns::Engine']]],
+  ['createbrickedvolume',['createBrickedVolume',['../classbrayns_1_1_scene.html#a6798df0c86c13dc9c611a09c8455707e',1,'brayns::Scene::createBrickedVolume()'],['../classbrayns_1_1_o_s_p_ray_scene.html#a152b063b158d9ab24c14968f1ed2c192',1,'brayns::OSPRayScene::createBrickedVolume()']]],
   ['createcamera',['createCamera',['../classbrayns_1_1_engine.html#a193b3610b6a3db0a4cfd425ce541ad4e',1,'brayns::Engine::createCamera()'],['../classbrayns_1_1_o_s_p_ray_engine.html#a7d59b2ca3678537687311fc8e0096293',1,'brayns::OSPRayEngine::createCamera()']]],
   ['createframebuffer',['createFrameBuffer',['../classbrayns_1_1_engine.html#a3ad20ce149c67448d40110da4f573f35',1,'brayns::Engine::createFrameBuffer()'],['../classbrayns_1_1_o_s_p_ray_engine.html#a289a41199522b39287c056f8e5d72662',1,'brayns::OSPRayEngine::createFrameBuffer()']]],
   ['createloader',['createLoader',['../structbrayns_1_1_loader_registry_1_1_loader_info.html#a71049e352f80543c166129fc8b153885',1,'brayns::LoaderRegistry::LoaderInfo::createLoader()'],['../classbrayns_1_1_loader_registry.html#a8691c54eefd2046b9c717094d60dd121',1,'brayns::LoaderRegistry::createLoader()']]],
   ['creatematerial',['createMaterial',['../classbrayns_1_1_model.html#a0156b8880c15bda28f3610fc36947f7c',1,'brayns::Model::createMaterial()'],['../classbrayns_1_1_o_s_p_ray_model.html#a3581e95c6264bcc1913712773bec4fc6',1,'brayns::OSPRayModel::createMaterial()']]],
   ['createmissingmaterials',['createMissingMaterials',['../classbrayns_1_1_model.html#a423f628996f18f7e37b561c7ae78ca27',1,'brayns::Model']]],
+  ['createshareddatavolume',['createSharedDataVolume',['../classbrayns_1_1_scene.html#a0dcf87268729de1293b666dc3ec0674d',1,'brayns::Scene::createSharedDataVolume()'],['../classbrayns_1_1_o_s_p_ray_scene.html#a667d051887bb94ec414033e21f38ee4d',1,'brayns::OSPRayScene::createSharedDataVolume()']]],
   ['cylinder',['Cylinder',['../structbrayns_1_1_cylinder.html',1,'brayns']]],
   ['change_20log',['Change Log',['../md__jenkins_03_workspace_oss.Brayns.documentation_build_type_Debug_platform_cscsviz-vm_sources_Changelog.html',1,'']]],
   ['version_2eh',['version.h',['../common_2version_8h.html',1,'']]]
