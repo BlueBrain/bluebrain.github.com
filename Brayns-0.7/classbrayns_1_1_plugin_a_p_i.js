@@ -6,5 +6,6 @@ var classbrayns_1_1_plugin_a_p_i =
     [ "getCameraManipulator", "classbrayns_1_1_plugin_a_p_i.html#a62b48682ae9c377730c78af26e02d232", null ],
     [ "getKeyboardHandler", "classbrayns_1_1_plugin_a_p_i.html#aab6259aa4eba7dba2fc14ecb665fcada", null ],
     [ "getParametersManager", "classbrayns_1_1_plugin_a_p_i.html#aaea89cf1573db310a3622430159680ee", null ],
+    [ "getRenderer", "classbrayns_1_1_plugin_a_p_i.html#a363076cb3d4521194f83a55ffeb8fa07", null ],
     [ "getScene", "classbrayns_1_1_plugin_a_p_i.html#af60f973776379660bb8e439c1a825f44", null ]
 ];

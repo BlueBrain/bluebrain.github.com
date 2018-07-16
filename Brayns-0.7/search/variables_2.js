@@ -1,4 +1,4 @@
 var searchData=
 [
-  ['glossiness',['glossiness',['../structbrayns_1_1obj_1_1_extended_o_b_j_material.html#a8c1310fb56a9c0fb94311e447f7be4e6',1,'brayns::obj::ExtendedOBJMaterial']]]
+  ['enums',['enums',['../structbrayns_1_1_property_map_1_1_property.html#ad78a7ed871bdf8543a509b4739ee7db9',1,'brayns::PropertyMap::Property']]]
 ];

@@ -1,4 +1,4 @@
 var searchData=
 [
-  ['progress',['progress',['../classbrayns_1_1_abstract_task.html#a9c4958935de14f9db7480e9bb3566735',1,'brayns::AbstractTask']]]
+  ['label',['label',['../structbrayns_1_1_property_map_1_1_property.html#abba00791cb38864ac81de9039337f41f',1,'brayns::PropertyMap::Property']]]
 ];

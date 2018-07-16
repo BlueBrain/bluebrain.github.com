@@ -27,9 +27,6 @@ var hierarchy =
         [ "brayns::StreamParameters", "classbrayns_1_1_stream_parameters.html", null ],
         [ "brayns::VolumeParameters", "classbrayns_1_1_volume_parameters.html", null ]
       ] ],
-      [ "brayns::Camera", "classbrayns_1_1_camera.html", [
-        [ "brayns::OSPRayCamera", "classbrayns_1_1_o_s_p_ray_camera.html", null ]
-      ] ],
       [ "brayns::FrameBuffer", "classbrayns_1_1_frame_buffer.html", [
         [ "brayns::OSPRayFrameBuffer", "classbrayns_1_1_o_s_p_ray_frame_buffer.html", null ]
       ] ],
@@ -43,6 +40,14 @@ var hierarchy =
         ] ]
       ] ],
       [ "brayns::Progress", "classbrayns_1_1_progress.html", null ],
+      [ "brayns::PropertyObject", "classbrayns_1_1_property_object.html", [
+        [ "brayns::Camera", "classbrayns_1_1_camera.html", [
+          [ "brayns::OSPRayCamera", "classbrayns_1_1_o_s_p_ray_camera.html", null ]
+        ] ],
+        [ "brayns::Renderer", "classbrayns_1_1_renderer.html", [
+          [ "brayns::OSPRayRenderer", "classbrayns_1_1_o_s_p_ray_renderer.html", null ]
+        ] ]
+      ] ],
       [ "brayns::Scene", "classbrayns_1_1_scene.html", [
         [ "brayns::OSPRayScene", "classbrayns_1_1_o_s_p_ray_scene.html", null ]
       ] ],
@@ -101,9 +106,6 @@ var hierarchy =
     [ "brayns::PluginParam", "structbrayns_1_1_plugin_param.html", null ],
     [ "brayns::PropertyMap", "classbrayns_1_1_property_map.html", null ],
     [ "brayns::PropertyMap::Property", "structbrayns_1_1_property_map_1_1_property.html", null ],
-    [ "brayns::Renderer", "classbrayns_1_1_renderer.html", [
-      [ "brayns::OSPRayRenderer", "classbrayns_1_1_o_s_p_ray_renderer.html", null ]
-    ] ],
     [ "brayns::Renderer::PickResult", "structbrayns_1_1_renderer_1_1_pick_result.html", null ],
     [ "brayns::RenderInput", "structbrayns_1_1_render_input.html", null ],
     [ "brayns::RenderOutput", "structbrayns_1_1_render_output.html", null ],

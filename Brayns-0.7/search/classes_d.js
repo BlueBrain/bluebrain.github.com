@@ -10,6 +10,7 @@ var searchData=
   ['progress',['Progress',['../classbrayns_1_1_progress.html',1,'brayns']]],
   ['property',['Property',['../structbrayns_1_1_property_map_1_1_property.html',1,'brayns::PropertyMap']]],
   ['propertymap',['PropertyMap',['../classbrayns_1_1_property_map.html',1,'brayns']]],
+  ['propertyobject',['PropertyObject',['../classbrayns_1_1_property_object.html',1,'brayns']]],
   ['proteinloader',['ProteinLoader',['../classbrayns_1_1_protein_loader.html',1,'brayns']]],
   ['proximityrenderer',['ProximityRenderer',['../classbrayns_1_1_proximity_renderer.html',1,'brayns']]]
 ];

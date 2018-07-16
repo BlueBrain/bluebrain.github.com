@@ -71,6 +71,7 @@ var files =
     [ "PointLight.h", "_point_light_8h_source.html", null ],
     [ "Progress.h", "_progress_8h_source.html", null ],
     [ "PropertyMap.h", "_property_map_8h_source.html", null ],
+    [ "PropertyObject.h", "_property_object_8h_source.html", null ],
     [ "ProteinLoader.h", "_protein_loader_8h_source.html", null ],
     [ "ProximityRenderer.h", "_proximity_renderer_8h_source.html", null ],
     [ "Renderer.h", "_renderer_8h_source.html", null ],
