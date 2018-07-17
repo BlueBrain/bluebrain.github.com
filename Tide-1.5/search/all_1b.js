@@ -4,8 +4,6 @@ var searchData=
   ['_7ecommandlineparser',['~CommandLineParser',['../class_command_line_parser.html#a77dce9e183275e2b11466e4f0398cfce',1,'CommandLineParser']]],
   ['_7econtentcontroller',['~ContentController',['../class_content_controller.html#a163809b078fbd897aef5507a12e2b733',1,'ContentController']]],
   ['_7econtentsynchronizer',['~ContentSynchronizer',['../class_content_synchronizer.html#aac4d27f2dcb82846eb5e94a8f281aa5f',1,'ContentSynchronizer']]],
-  ['_7econtentwindow',['~ContentWindow',['../class_content_window.html#a048c11ac7d49072c2655e7adb0737844',1,'ContentWindow']]],
-  ['_7econtentwindowrenderer',['~ContentWindowRenderer',['../class_content_window_renderer.html#a10990485246eb5cb37cc5b9636cc18ab',1,'ContentWindowRenderer']]],
   ['_7edataprovider',['~DataProvider',['../class_data_provider.html#a1c76c2428e3e3f2c96401a3693366e2a',1,'DataProvider']]],
   ['_7edisplaygroup',['~DisplayGroup',['../class_display_group.html#ae621c03bd2408c8ece4a61237efca355',1,'DisplayGroup']]],
   ['_7effmpegframe',['~FFMPEGFrame',['../class_f_f_m_p_e_g_frame.html#ad233e8ca905bf16f4361665ba24a7661',1,'FFMPEGFrame']]],
@@ -32,5 +30,7 @@ var searchData=
   ['_7etiffpyramidreader',['~TiffPyramidReader',['../class_tiff_pyramid_reader.html#a2d45866756f830e4e5d63e5706d7e5aa',1,'TiffPyramidReader']]],
   ['_7ewallapplication',['~WallApplication',['../class_wall_application.html#a8178cc81cec13ae323948ade5a76227a',1,'WallApplication']]],
   ['_7ewallsurfacerenderer',['~WallSurfaceRenderer',['../class_wall_surface_renderer.html#aecdb53b4ac01c1c0544209fcd050bdc2',1,'WallSurfaceRenderer']]],
+  ['_7ewindow',['~Window',['../class_window.html#a245d821e6016fa1f6970ccbbedd635f6',1,'Window']]],
+  ['_7ewindowrenderer',['~WindowRenderer',['../class_window_renderer.html#a9daed3b6182947278310e20d9fd58f80',1,'WindowRenderer']]],
   ['_7ezoomcontroller',['~ZoomController',['../class_zoom_controller.html#a717fd48c85e5ab55b8a283a8666b3426',1,'ZoomController']]]
 ];

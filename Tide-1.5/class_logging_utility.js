@@ -8,9 +8,9 @@ var class_logging_utility =
     [ "getScreenStateModificationTime", "class_logging_utility.html#a4b5d1a690e5cd0152c0334c01eedb810", null ],
     [ "getWindowCount", "class_logging_utility.html#aaf9f91a24f75a993fa0318795a95ebbe", null ],
     [ "getWindowCountModificationTime", "class_logging_utility.html#a89e008250592c091486e31fcd3d652be", null ],
-    [ "logContentWindowAdded", "class_logging_utility.html#a9040d787b2a0270c559312c94481614c", null ],
-    [ "logContentWindowMovedToFront", "class_logging_utility.html#ab9bec43efc96e41e2d1b4d9d49ee22c7", null ],
-    [ "logContentWindowRemoved", "class_logging_utility.html#ad16815722f3db7c7dc9f0b403b0eb8c6", null ],
     [ "logScreenStateChanged", "class_logging_utility.html#a6c829a4f7330d2ccb113ed5b6480e4c6", null ],
+    [ "logWindowAdded", "class_logging_utility.html#af0b8faeaa6074168ed50d4d40928b7b7", null ],
+    [ "logWindowMovedToFront", "class_logging_utility.html#aeb9ccda5e90bb07ce80c301cfe42c0bd", null ],
+    [ "logWindowRemoved", "class_logging_utility.html#a717d3647b5aecf38dcf33817e54d2a32", null ],
     [ "monitor", "class_logging_utility.html#a4e9cb82ac1b68a0eb67bb015d218bf40", null ]
 ];

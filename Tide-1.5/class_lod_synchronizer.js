@@ -6,7 +6,7 @@ var class_lod_synchronizer =
     [ "getDataSource", "class_lod_synchronizer.html#ade270bed0110dd8809be28c330ee5664", null ],
     [ "getStatistics", "class_lod_synchronizer.html#af3da3292f6724a75e51f42028370d295", null ],
     [ "getTilesArea", "class_lod_synchronizer.html#a71b8164252aa4844d0f9d3b5241c1850", null ],
-    [ "update", "class_lod_synchronizer.html#a5954e68efdac62476dca84251c416c51", null ],
-    [ "update", "class_lod_synchronizer.html#a8bdabb39680a1af690de2ba61919cf86", null ],
+    [ "update", "class_lod_synchronizer.html#a87f4bd1a5a28d60e19aaaa41908f875d", null ],
+    [ "update", "class_lod_synchronizer.html#a8e99ccd066b855149d5a45b4fca70397", null ],
     [ "updateTiles", "class_lod_synchronizer.html#a292d58ed84e619f1c77705650f9f90cd", null ]
 ];

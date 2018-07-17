@@ -1,4 +1,4 @@
 var searchData=
 [
-  ['coordinates',['Coordinates',['../class_content_window_controller.html#a8c5180701a60b6c4c3761cc9feca6c50',1,'ContentWindowController']]]
+  ['coordinates',['Coordinates',['../class_window_controller.html#a31a7f16521cc267808a14019236a1dbf',1,'WindowController']]]
 ];

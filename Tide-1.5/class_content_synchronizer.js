@@ -18,7 +18,7 @@ var class_content_synchronizer =
     [ "statisticsChanged", "class_content_synchronizer.html#a8b2131d6b3874d8d932a101ec3dcde05", null ],
     [ "swapTiles", "class_content_synchronizer.html#a14b80f86cc9fdc0274dfda29ea5374c2", null ],
     [ "tilesAreaChanged", "class_content_synchronizer.html#aac807a9cb073a52d88a80ceca93b34a3", null ],
-    [ "update", "class_content_synchronizer.html#ae364f07df110634b5f1999ae6f0d3ac6", null ],
+    [ "update", "class_content_synchronizer.html#ae4600555d7d806973b3d3106e5f778c7", null ],
     [ "updateTile", "class_content_synchronizer.html#aba03b3c5af16950946e91c893d20eeaf", null ],
     [ "updateTiles", "class_content_synchronizer.html#a77e159f1e0ba5a7fdbb1f1ae39454984", null ],
     [ "zoomContextTileChanged", "class_content_synchronizer.html#addacc933144498d3686f4f2fc54d828a", null ],

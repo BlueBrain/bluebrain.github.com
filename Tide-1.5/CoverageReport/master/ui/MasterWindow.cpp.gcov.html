@@ -37,7 +37,7 @@
           </tr>
           <tr>
             <td class="headerItem">Date:</td>
-            <td class="headerValue">2018-07-04 06:31:02</td>
+            <td class="headerValue">2018-07-17 06:28:18</td>
             <td></td>
             <td class="headerItem">Functions:</td>
             <td class="headerCovTableEntry">2</td>
@@ -112,10 +112,10 @@
 <span class="lineNum">      50 </span>            : #include &quot;log.h&quot;
 <span class="lineNum">      51 </span>            : #include &quot;scene/Background.h&quot;
 <span class="lineNum">      52 </span>            : #include &quot;scene/ContentFactory.h&quot;
-<span class="lineNum">      53 </span>            : #include &quot;scene/ContentWindow.h&quot;
-<span class="lineNum">      54 </span>            : #include &quot;scene/DisplayGroup.h&quot;
-<span class="lineNum">      55 </span>            : #include &quot;scene/Options.h&quot;
-<span class="lineNum">      56 </span>            : #include &quot;scene/Scene.h&quot;
+<span class="lineNum">      53 </span>            : #include &quot;scene/DisplayGroup.h&quot;
+<span class="lineNum">      54 </span>            : #include &quot;scene/Options.h&quot;
+<span class="lineNum">      55 </span>            : #include &quot;scene/Scene.h&quot;
+<span class="lineNum">      56 </span>            : #include &quot;scene/Window.h&quot;
 <span class="lineNum">      57 </span>            : #if TIDE_ENABLE_WEBBROWSER_SUPPORT
 <span class="lineNum">      58 </span>            : #include &quot;WebbrowserWidget.h&quot;
 <span class="lineNum">      59 </span>            : #endif
@@ -445,226 +445,227 @@
 <span class="lineNum">     383 </span><span class="lineNoCov">          0 : void MasterWindow::_addSurfacesTabViews(const Configuration&amp; config,</span>
 <span class="lineNum">     384 </span>            :                                         ScreenLockPtr lock)
 <span class="lineNum">     385 </span>            : {
-<span class="lineNum">     386 </span><span class="lineNoCov">          0 :     for (auto i = 0u; i &lt; _scene-&gt;getSurfaces().size(); ++i)</span>
+<span class="lineNum">     386 </span><span class="lineNoCov">          0 :     for (auto i = 0u; i &lt; _scene-&gt;getSurfaceCount(); ++i)</span>
 <span class="lineNum">     387 </span>            :     {
-<span class="lineNum">     388 </span><span class="lineNoCov">          0 :         auto group = _scene-&gt;getGroup(i).shared_from_this();</span>
-<span class="lineNum">     389 </span><span class="lineNoCov">          0 :         const auto&amp; surface = config.surfaces[i];</span>
-<span class="lineNum">     390 </span><span class="lineNoCov">          0 :         const auto tabTitle = QString{&quot;Display group %1&quot;}.arg(i);</span>
-<span class="lineNum">     391 </span>            :         auto quickView = std::make_unique&lt;MasterQuickView&gt;(surface, i, group,
-<span class="lineNum">     392 </span><span class="lineNoCov">          0 :                                                            _options, lock);</span>
-<span class="lineNum">     393 </span><span class="lineNoCov">          0 :         if (i == 0)</span>
-<span class="lineNum">     394 </span><span class="lineNoCov">          0 :             _quickView = quickView.get(); // keep a reference for mouse -&gt; touch</span>
-<span class="lineNum">     395 </span><span class="lineNoCov">          0 :         _addDisplayGroupTabView(std::move(quickView), tabTitle);</span>
-<span class="lineNum">     396 </span>            :     }
-<a name="397"><span class="lineNum">     397 </span><span class="lineNoCov">          0 : }</span></a>
-<span class="lineNum">     398 </span>            : 
-<span class="lineNum">     399 </span><span class="lineNoCov">          0 : void MasterWindow::_addDisplayGroupTabView(</span>
-<span class="lineNum">     400 </span>            :     std::unique_ptr&lt;MasterQuickView&gt; quickView, const QString&amp; title)
-<span class="lineNum">     401 </span>            : {
-<span class="lineNum">     402 </span><span class="lineNoCov">          0 :     auto mainTabWidget = static_cast&lt;QTabWidget*&gt;(centralWidget());</span>
-<span class="lineNum">     403 </span>            : 
-<span class="lineNum">     404 </span>            :     // The QWidget wrapper *has* to retain ownership to the masterQuickView.
-<span class="lineNum">     405 </span>            :     // It is not possible to detach the masterQuickView from its parent wrapper
-<span class="lineNum">     406 </span>            :     // in the MasterWindow destructor. The parentChanged event doesn't have
-<span class="lineNum">     407 </span>            :     // time to be processed correctly resulting in a double-delete.
-<span class="lineNum">     408 </span><span class="lineNoCov">          0 :     mainTabWidget-&gt;addTab(QWidget::createWindowContainer(quickView.release()),</span>
-<span class="lineNum">     409 </span><span class="lineNoCov">          0 :                           title);</span>
-<a name="410"><span class="lineNum">     410 </span><span class="lineNoCov">          0 : }</span></a>
-<span class="lineNum">     411 </span>            : 
-<span class="lineNum">     412 </span><span class="lineNoCov">          0 : void MasterWindow::_openContent()</span>
-<span class="lineNum">     413 </span>            : {
-<span class="lineNum">     414 </span><span class="lineNoCov">          0 :     const auto filter = ContentFactory::getSupportedFilesFilterAsString();</span>
-<span class="lineNum">     415 </span>            : 
-<span class="lineNum">     416 </span>            :     const auto filename =
-<span class="lineNum">     417 </span><span class="lineNoCov">          0 :         QFileDialog::getOpenFileName(this, tr(&quot;Choose content&quot;), _contentFolder,</span>
-<span class="lineNum">     418 </span><span class="lineNoCov">          0 :                                      filter);</span>
-<span class="lineNum">     419 </span><span class="lineNoCov">          0 :     if (filename.isEmpty())</span>
-<span class="lineNum">     420 </span><span class="lineNoCov">          0 :         return;</span>
-<span class="lineNum">     421 </span>            : 
-<span class="lineNum">     422 </span><span class="lineNoCov">          0 :     _contentFolder = QFileInfo(filename).absoluteDir().path();</span>
-<span class="lineNum">     423 </span>            : 
-<span class="lineNum">     424 </span><span class="lineNoCov">          0 :     ContentLoader loader(_getActiveGroup());</span>
-<span class="lineNum">     425 </span><span class="lineNoCov">          0 :     if (!loader.load(filename))</span>
-<span class="lineNum">     426 </span>            :     {
-<span class="lineNum">     427 </span><span class="lineNoCov">          0 :         QMessageBox messageBox;</span>
-<span class="lineNum">     428 </span><span class="lineNoCov">          0 :         messageBox.setText(loader.isAlreadyOpen(filename)</span>
-<span class="lineNum">     429 </span>            :                                ? &quot;File already open.&quot;
-<span class="lineNum">     430 </span><span class="lineNoCov">          0 :                                : &quot;Unsupported file.&quot;);</span>
-<span class="lineNum">     431 </span><span class="lineNoCov">          0 :         messageBox.exec();</span>
-<span class="lineNum">     432 </span>            :     }
-<a name="433"><span class="lineNum">     433 </span>            : }</a>
-<span class="lineNum">     434 </span>            : 
-<span class="lineNum">     435 </span><span class="lineNoCov">          0 : void MasterWindow::_addContentDirectory(const QString&amp; directoryName,</span>
-<span class="lineNum">     436 </span>            :                                         const QSize&amp; gridSize)
-<span class="lineNum">     437 </span>            : {
-<span class="lineNum">     438 </span><span class="lineNoCov">          0 :     QDir directory(directoryName);</span>
-<span class="lineNum">     439 </span><span class="lineNoCov">          0 :     directory.setFilter(QDir::Files);</span>
-<span class="lineNum">     440 </span><span class="lineNoCov">          0 :     directory.setNameFilters(ContentFactory::getSupportedFilesFilter());</span>
-<span class="lineNum">     441 </span>            : 
-<span class="lineNum">     442 </span><span class="lineNoCov">          0 :     const auto list = directory.entryInfoList();</span>
-<span class="lineNum">     443 </span>            : 
-<span class="lineNum">     444 </span>            :     // Prevent opening of folders with an excessively large number of items
-<span class="lineNum">     445 </span><span class="lineNoCov">          0 :     if (list.size() &gt; 16)</span>
-<span class="lineNum">     446 </span>            :     {
-<span class="lineNum">     447 </span><span class="lineNoCov">          0 :         QString msg = &quot;Opening this folder will create &quot; +</span>
-<span class="lineNum">     448 </span><span class="lineNoCov">          0 :                       QString::number(list.size()) +</span>
-<span class="lineNum">     449 </span><span class="lineNoCov">          0 :                       &quot; content elements. Are you sure you want to continue?&quot;;</span>
-<span class="lineNum">     450 </span>            : 
-<span class="lineNum">     451 </span>            :         const auto reply =
-<span class="lineNum">     452 </span><span class="lineNoCov">          0 :             QMessageBox::question(this, &quot;Warning&quot;, msg,</span>
-<span class="lineNum">     453 </span><span class="lineNoCov">          0 :                                   QMessageBox::Yes | QMessageBox::No);</span>
-<span class="lineNum">     454 </span><span class="lineNoCov">          0 :         if (reply != QMessageBox::Yes)</span>
-<span class="lineNum">     455 </span><span class="lineNoCov">          0 :             return;</span>
-<span class="lineNum">     456 </span>            :     }
-<span class="lineNum">     457 </span>            : 
-<span class="lineNum">     458 </span><span class="lineNoCov">          0 :     ContentLoader{_getActiveGroup()}.loadDir(directoryName, gridSize);</span>
-<a name="459"><span class="lineNum">     459 </span>            : }</a>
-<span class="lineNum">     460 </span>            : 
-<span class="lineNum">     461 </span><span class="lineNoCov">          0 : void MasterWindow::_openContentsDirectory()</span>
-<span class="lineNum">     462 </span>            : {
-<span class="lineNum">     463 </span>            :     const auto dirName =
-<span class="lineNum">     464 </span><span class="lineNoCov">          0 :         QFileDialog::getExistingDirectory(this, QString(), _contentFolder);</span>
-<span class="lineNum">     465 </span><span class="lineNoCov">          0 :     if (dirName.isEmpty())</span>
-<span class="lineNum">     466 </span><span class="lineNoCov">          0 :         return;</span>
-<span class="lineNum">     467 </span>            : 
-<span class="lineNum">     468 </span><span class="lineNoCov">          0 :     _contentFolder = dirName;</span>
-<span class="lineNum">     469 </span>            : 
-<span class="lineNum">     470 </span><span class="lineNoCov">          0 :     const auto gridX = QInputDialog::getInt(this, &quot;Grid X dimension&quot;,</span>
-<span class="lineNum">     471 </span><span class="lineNoCov">          0 :                                             &quot;Grid X dimension&quot;, 0, 0);</span>
-<span class="lineNum">     472 </span><span class="lineNoCov">          0 :     const auto gridY = QInputDialog::getInt(this, &quot;Grid Y dimension&quot;,</span>
-<span class="lineNum">     473 </span><span class="lineNoCov">          0 :                                             &quot;Grid Y dimension&quot;, 0, 0);</span>
-<span class="lineNum">     474 </span><span class="lineNoCov">          0 :     _addContentDirectory(dirName, {gridX, gridY});</span>
-<a name="475"><span class="lineNum">     475 </span>            : }</a>
-<span class="lineNum">     476 </span>            : 
-<span class="lineNum">     477 </span><span class="lineNoCov">          0 : void MasterWindow::_openSession()</span>
-<span class="lineNum">     478 </span>            : {
-<span class="lineNum">     479 </span>            :     const auto filename =
-<span class="lineNum">     480 </span>            :         QFileDialog::getOpenFileName(this, &quot;Load Session&quot;, _sessionFolder,
-<span class="lineNum">     481 </span><span class="lineNoCov">          0 :                                      SESSION_FILES_FILTER);</span>
-<span class="lineNum">     482 </span><span class="lineNoCov">          0 :     if (filename.isEmpty())</span>
-<span class="lineNum">     483 </span><span class="lineNoCov">          0 :         return;</span>
-<span class="lineNum">     484 </span>            : 
-<span class="lineNum">     485 </span><span class="lineNoCov">          0 :     _sessionFolder = QFileInfo(filename).absoluteDir().path();</span>
-<span class="lineNum">     486 </span>            : 
-<span class="lineNum">     487 </span><span class="lineNoCov">          0 :     _loadSession(filename);</span>
-<a name="488"><span class="lineNum">     488 </span>            : }</a>
-<span class="lineNum">     489 </span>            : 
-<span class="lineNum">     490 </span><span class="lineNoCov">          0 : void MasterWindow::_saveSession()</span>
-<span class="lineNum">     491 </span>            : {
-<span class="lineNum">     492 </span>            :     const auto filename =
-<span class="lineNum">     493 </span>            :         QFileDialog::getSaveFileName(this, &quot;Save Session&quot;, _sessionFolder,
-<span class="lineNum">     494 </span><span class="lineNoCov">          0 :                                      SESSION_FILES_FILTER);</span>
-<span class="lineNum">     495 </span><span class="lineNoCov">          0 :     if (filename.isEmpty())</span>
-<span class="lineNum">     496 </span><span class="lineNoCov">          0 :         return;</span>
-<span class="lineNum">     497 </span>            : 
-<span class="lineNum">     498 </span><span class="lineNoCov">          0 :     _sessionFolder = QFileInfo(filename).absoluteDir().path();</span>
-<span class="lineNum">     499 </span><span class="lineNoCov">          0 :     _saveSessionOp.setFuture(</span>
-<span class="lineNum">     500 </span><span class="lineNoCov">          0 :         StateSerializationHelper(_scene).save(filename, _tmpDir, _uploadDir));</span>
-<a name="501"><span class="lineNum">     501 </span>            : }</a>
-<span class="lineNum">     502 </span>            : 
-<span class="lineNum">     503 </span><span class="lineNoCov">          0 : void MasterWindow::_loadSession(const QString&amp; filename)</span>
-<span class="lineNum">     504 </span>            : {
-<span class="lineNum">     505 </span><span class="lineNoCov">          0 :     _loadSessionOp.setFuture(StateSerializationHelper(_scene).load(filename));</span>
-<a name="506"><span class="lineNum">     506 </span><span class="lineNoCov">          0 : }</span></a>
-<span class="lineNum">     507 </span>            : 
-<span class="lineNum">     508 </span><span class="lineNoCov">          0 : void MasterWindow::_openAboutWidget()</span>
-<span class="lineNum">     509 </span>            : {
-<span class="lineNum">     510 </span><span class="lineNoCov">          0 :     const int revision = tide::Version::getRevision();</span>
-<span class="lineNum">     511 </span>            : 
-<span class="lineNum">     512 </span><span class="lineNoCov">          0 :     std::ostringstream aboutMsg;</span>
-<span class="lineNum">     513 </span><span class="lineNoCov">          0 :     aboutMsg &lt;&lt; &quot;Current version: &quot; &lt;&lt; tide::Version::getString();</span>
-<span class="lineNum">     514 </span><span class="lineNoCov">          0 :     aboutMsg &lt;&lt; std::endl;</span>
-<span class="lineNum">     515 </span><span class="lineNoCov">          0 :     aboutMsg &lt;&lt; &quot;SCM revision: &quot; &lt;&lt; std::hex &lt;&lt; revision &lt;&lt; std::dec;</span>
-<span class="lineNum">     516 </span>            : 
-<span class="lineNum">     517 </span><span class="lineNoCov">          0 :     QMessageBox::about(this, &quot;About Tide&quot;, aboutMsg.str().c_str());</span>
-<a name="518"><span class="lineNum">     518 </span><span class="lineNoCov">          0 : }</span></a>
-<span class="lineNum">     519 </span>            : 
-<span class="lineNum">     520 </span><span class="lineNoCov">          0 : uint MasterWindow::_getActiveSceneIndex() const</span>
-<span class="lineNum">     521 </span>            : {
-<span class="lineNum">     522 </span><span class="lineNoCov">          0 :     return static_cast&lt;QTabWidget*&gt;(centralWidget())-&gt;currentIndex();</span>
-<a name="523"><span class="lineNum">     523 </span>            : }</a>
-<span class="lineNum">     524 </span>            : 
-<span class="lineNum">     525 </span><span class="lineNoCov">          0 : DisplayGroup&amp; MasterWindow::_getActiveGroup()</span>
-<span class="lineNum">     526 </span>            : {
-<span class="lineNum">     527 </span><span class="lineNoCov">          0 :     return _scene-&gt;getGroup(_getActiveSceneIndex());</span>
-<a name="528"><span class="lineNum">     528 </span>            : }</a>
-<span class="lineNum">     529 </span>            : 
-<span class="lineNum">     530 </span><span class="lineNoCov">          0 : QStringList MasterWindow::_extractValidContentUrls(const QMimeData* mimeData)</span>
-<span class="lineNum">     531 </span>            : {
-<span class="lineNum">     532 </span><span class="lineNoCov">          0 :     QStringList pathList;</span>
-<span class="lineNum">     533 </span>            : 
-<span class="lineNum">     534 </span><span class="lineNoCov">          0 :     if (mimeData-&gt;hasUrls())</span>
-<span class="lineNum">     535 </span>            :     {
-<span class="lineNum">     536 </span><span class="lineNoCov">          0 :         for (const auto&amp; url : mimeData-&gt;urls())</span>
-<span class="lineNum">     537 </span>            :         {
-<span class="lineNum">     538 </span>            :             const auto extension =
-<span class="lineNum">     539 </span><span class="lineNoCov">          0 :                 QFileInfo(url.toLocalFile().toLower()).suffix();</span>
-<span class="lineNum">     540 </span><span class="lineNoCov">          0 :             if (ContentFactory::getSupportedExtensions().contains(extension))</span>
-<span class="lineNum">     541 </span><span class="lineNoCov">          0 :                 pathList.append(url.toLocalFile());</span>
-<span class="lineNum">     542 </span>            :         }
-<span class="lineNum">     543 </span>            :     }
-<span class="lineNum">     544 </span>            : 
-<span class="lineNum">     545 </span><span class="lineNoCov">          0 :     return pathList;</span>
-<a name="546"><span class="lineNum">     546 </span>            : }</a>
-<span class="lineNum">     547 </span>            : 
-<span class="lineNum">     548 </span><span class="lineNoCov">          0 : QStringList MasterWindow::_extractFolderUrls(const QMimeData* mimeData)</span>
-<span class="lineNum">     549 </span>            : {
-<span class="lineNum">     550 </span><span class="lineNoCov">          0 :     QStringList pathList;</span>
-<span class="lineNum">     551 </span>            : 
-<span class="lineNum">     552 </span><span class="lineNoCov">          0 :     if (mimeData-&gt;hasUrls())</span>
-<span class="lineNum">     553 </span>            :     {
-<span class="lineNum">     554 </span><span class="lineNoCov">          0 :         for (const auto&amp; url : mimeData-&gt;urls())</span>
-<span class="lineNum">     555 </span>            :         {
-<span class="lineNum">     556 </span><span class="lineNoCov">          0 :             if (QDir(url.toLocalFile()).exists())</span>
-<span class="lineNum">     557 </span><span class="lineNoCov">          0 :                 pathList.append(url.toLocalFile());</span>
-<span class="lineNum">     558 </span>            :         }
-<span class="lineNum">     559 </span>            :     }
-<span class="lineNum">     560 </span>            : 
-<span class="lineNum">     561 </span><span class="lineNoCov">          0 :     return pathList;</span>
-<a name="562"><span class="lineNum">     562 </span>            : }</a>
-<span class="lineNum">     563 </span>            : 
-<span class="lineNum">     564 </span><span class="lineNoCov">          0 : QString MasterWindow::_extractSessionFile(const QMimeData* mimeData)</span>
-<span class="lineNum">     565 </span>            : {
-<span class="lineNum">     566 </span><span class="lineNoCov">          0 :     QList&lt;QUrl&gt; urlList = mimeData-&gt;urls();</span>
-<span class="lineNum">     567 </span><span class="lineNoCov">          0 :     if (urlList.size() == 1)</span>
-<span class="lineNum">     568 </span>            :     {
-<span class="lineNum">     569 </span><span class="lineNoCov">          0 :         QUrl url = urlList[0];</span>
-<span class="lineNum">     570 </span>            :         const QString extension =
-<span class="lineNum">     571 </span><span class="lineNoCov">          0 :             QFileInfo(url.toLocalFile().toLower()).suffix();</span>
-<span class="lineNum">     572 </span><span class="lineNoCov">          0 :         if (extension == &quot;dcx&quot;)</span>
-<span class="lineNum">     573 </span><span class="lineNoCov">          0 :             return url.toLocalFile();</span>
-<span class="lineNum">     574 </span>            :     }
-<span class="lineNum">     575 </span><span class="lineNoCov">          0 :     return QString();</span>
-<a name="576"><span class="lineNum">     576 </span>            : }</a>
-<span class="lineNum">     577 </span>            : 
-<span class="lineNum">     578 </span><span class="lineNoCov">          0 : void MasterWindow::dragEnterEvent(QDragEnterEvent* dragEvent)</span>
-<span class="lineNum">     579 </span>            : {
-<span class="lineNum">     580 </span><span class="lineNoCov">          0 :     const QMimeData* mimeData = dragEvent-&gt;mimeData();</span>
-<span class="lineNum">     581 </span><span class="lineNoCov">          0 :     const QStringList&amp; pathList = _extractValidContentUrls(mimeData);</span>
-<span class="lineNum">     582 </span><span class="lineNoCov">          0 :     const QStringList&amp; dirList = _extractFolderUrls(mimeData);</span>
-<span class="lineNum">     583 </span><span class="lineNoCov">          0 :     const QString&amp; sessionFile = _extractSessionFile(mimeData);</span>
-<span class="lineNum">     584 </span>            : 
-<span class="lineNum">     585 </span><span class="lineNoCov">          0 :     if (!pathList.empty() || !dirList.empty() || !sessionFile.isNull())</span>
-<span class="lineNum">     586 </span><span class="lineNoCov">          0 :         dragEvent-&gt;acceptProposedAction();</span>
-<a name="587"><span class="lineNum">     587 </span><span class="lineNoCov">          0 : }</span></a>
-<span class="lineNum">     588 </span>            : 
-<span class="lineNum">     589 </span><span class="lineNoCov">          0 : void MasterWindow::dropEvent(QDropEvent* dropEvt)</span>
-<span class="lineNum">     590 </span>            : {
-<span class="lineNum">     591 </span><span class="lineNoCov">          0 :     const auto urls = _extractValidContentUrls(dropEvt-&gt;mimeData());</span>
-<span class="lineNum">     592 </span><span class="lineNoCov">          0 :     ContentLoader loader(_getActiveGroup());</span>
-<span class="lineNum">     593 </span><span class="lineNoCov">          0 :     for (const auto&amp; url : urls)</span>
-<span class="lineNum">     594 </span><span class="lineNoCov">          0 :         loader.load(url);</span>
-<span class="lineNum">     595 </span>            : 
-<span class="lineNum">     596 </span><span class="lineNoCov">          0 :     const auto folders = _extractFolderUrls(dropEvt-&gt;mimeData());</span>
-<span class="lineNum">     597 </span><span class="lineNoCov">          0 :     if (!folders.isEmpty())</span>
-<span class="lineNum">     598 </span><span class="lineNoCov">          0 :         _addContentDirectory(folders[0]); // Only one directory at a time</span>
-<span class="lineNum">     599 </span>            : 
-<span class="lineNum">     600 </span><span class="lineNoCov">          0 :     const auto sessionFile = _extractSessionFile(dropEvt-&gt;mimeData());</span>
-<span class="lineNum">     601 </span><span class="lineNoCov">          0 :     if (!sessionFile.isNull())</span>
-<span class="lineNum">     602 </span><span class="lineNoCov">          0 :         _loadSession(sessionFile);</span>
-<a name="603"><span class="lineNum">     603 </span>            : </a>
-<span class="lineNum">     604 </span><span class="lineNoCov">          0 :     dropEvt-&gt;acceptProposedAction();</span>
-<span class="lineNum">     605 </span><span class="lineCov">        102 : }</span>
+<span class="lineNum">     388 </span><span class="lineNoCov">          0 :         auto&amp; surface = _scene-&gt;getSurface(i);</span>
+<span class="lineNum">     389 </span><span class="lineNoCov">          0 :         const auto&amp; surfaceConfig = config.surfaces[i];</span>
+<span class="lineNum">     390 </span><span class="lineNoCov">          0 :         const auto tabTitle = QString{&quot;Surface %1&quot;}.arg(i);</span>
+<span class="lineNum">     391 </span>            :         auto quickView =
+<span class="lineNum">     392 </span>            :             std::make_unique&lt;MasterQuickView&gt;(surfaceConfig, surface, _options,
+<span class="lineNum">     393 </span><span class="lineNoCov">          0 :                                               lock);</span>
+<span class="lineNum">     394 </span><span class="lineNoCov">          0 :         if (i == 0)</span>
+<span class="lineNum">     395 </span><span class="lineNoCov">          0 :             _quickView = quickView.get(); // keep a reference for mouse -&gt; touch</span>
+<span class="lineNum">     396 </span><span class="lineNoCov">          0 :         _addDisplayGroupTabView(std::move(quickView), tabTitle);</span>
+<span class="lineNum">     397 </span>            :     }
+<a name="398"><span class="lineNum">     398 </span><span class="lineNoCov">          0 : }</span></a>
+<span class="lineNum">     399 </span>            : 
+<span class="lineNum">     400 </span><span class="lineNoCov">          0 : void MasterWindow::_addDisplayGroupTabView(</span>
+<span class="lineNum">     401 </span>            :     std::unique_ptr&lt;MasterQuickView&gt; quickView, const QString&amp; title)
+<span class="lineNum">     402 </span>            : {
+<span class="lineNum">     403 </span><span class="lineNoCov">          0 :     auto mainTabWidget = static_cast&lt;QTabWidget*&gt;(centralWidget());</span>
+<span class="lineNum">     404 </span>            : 
+<span class="lineNum">     405 </span>            :     // The QWidget wrapper *has* to retain ownership to the masterQuickView.
+<span class="lineNum">     406 </span>            :     // It is not possible to detach the masterQuickView from its parent wrapper
+<span class="lineNum">     407 </span>            :     // in the MasterWindow destructor. The parentChanged event doesn't have
+<span class="lineNum">     408 </span>            :     // time to be processed correctly resulting in a double-delete.
+<span class="lineNum">     409 </span><span class="lineNoCov">          0 :     mainTabWidget-&gt;addTab(QWidget::createWindowContainer(quickView.release()),</span>
+<span class="lineNum">     410 </span><span class="lineNoCov">          0 :                           title);</span>
+<a name="411"><span class="lineNum">     411 </span><span class="lineNoCov">          0 : }</span></a>
+<span class="lineNum">     412 </span>            : 
+<span class="lineNum">     413 </span><span class="lineNoCov">          0 : void MasterWindow::_openContent()</span>
+<span class="lineNum">     414 </span>            : {
+<span class="lineNum">     415 </span><span class="lineNoCov">          0 :     const auto filter = ContentFactory::getSupportedFilesFilterAsString();</span>
+<span class="lineNum">     416 </span>            : 
+<span class="lineNum">     417 </span>            :     const auto filename =
+<span class="lineNum">     418 </span><span class="lineNoCov">          0 :         QFileDialog::getOpenFileName(this, tr(&quot;Choose content&quot;), _contentFolder,</span>
+<span class="lineNum">     419 </span><span class="lineNoCov">          0 :                                      filter);</span>
+<span class="lineNum">     420 </span><span class="lineNoCov">          0 :     if (filename.isEmpty())</span>
+<span class="lineNum">     421 </span><span class="lineNoCov">          0 :         return;</span>
+<span class="lineNum">     422 </span>            : 
+<span class="lineNum">     423 </span><span class="lineNoCov">          0 :     _contentFolder = QFileInfo(filename).absoluteDir().path();</span>
+<span class="lineNum">     424 </span>            : 
+<span class="lineNum">     425 </span><span class="lineNoCov">          0 :     ContentLoader loader(_getActiveGroup());</span>
+<span class="lineNum">     426 </span><span class="lineNoCov">          0 :     if (!loader.load(filename))</span>
+<span class="lineNum">     427 </span>            :     {
+<span class="lineNum">     428 </span><span class="lineNoCov">          0 :         QMessageBox messageBox;</span>
+<span class="lineNum">     429 </span><span class="lineNoCov">          0 :         messageBox.setText(loader.isAlreadyOpen(filename)</span>
+<span class="lineNum">     430 </span>            :                                ? &quot;File already open.&quot;
+<span class="lineNum">     431 </span><span class="lineNoCov">          0 :                                : &quot;Unsupported file.&quot;);</span>
+<span class="lineNum">     432 </span><span class="lineNoCov">          0 :         messageBox.exec();</span>
+<span class="lineNum">     433 </span>            :     }
+<a name="434"><span class="lineNum">     434 </span>            : }</a>
+<span class="lineNum">     435 </span>            : 
+<span class="lineNum">     436 </span><span class="lineNoCov">          0 : void MasterWindow::_addContentDirectory(const QString&amp; directoryName,</span>
+<span class="lineNum">     437 </span>            :                                         const QSize&amp; gridSize)
+<span class="lineNum">     438 </span>            : {
+<span class="lineNum">     439 </span><span class="lineNoCov">          0 :     QDir directory(directoryName);</span>
+<span class="lineNum">     440 </span><span class="lineNoCov">          0 :     directory.setFilter(QDir::Files);</span>
+<span class="lineNum">     441 </span><span class="lineNoCov">          0 :     directory.setNameFilters(ContentFactory::getSupportedFilesFilter());</span>
+<span class="lineNum">     442 </span>            : 
+<span class="lineNum">     443 </span><span class="lineNoCov">          0 :     const auto list = directory.entryInfoList();</span>
+<span class="lineNum">     444 </span>            : 
+<span class="lineNum">     445 </span>            :     // Prevent opening of folders with an excessively large number of items
+<span class="lineNum">     446 </span><span class="lineNoCov">          0 :     if (list.size() &gt; 16)</span>
+<span class="lineNum">     447 </span>            :     {
+<span class="lineNum">     448 </span><span class="lineNoCov">          0 :         QString msg = &quot;Opening this folder will create &quot; +</span>
+<span class="lineNum">     449 </span><span class="lineNoCov">          0 :                       QString::number(list.size()) +</span>
+<span class="lineNum">     450 </span><span class="lineNoCov">          0 :                       &quot; content elements. Are you sure you want to continue?&quot;;</span>
+<span class="lineNum">     451 </span>            : 
+<span class="lineNum">     452 </span>            :         const auto reply =
+<span class="lineNum">     453 </span><span class="lineNoCov">          0 :             QMessageBox::question(this, &quot;Warning&quot;, msg,</span>
+<span class="lineNum">     454 </span><span class="lineNoCov">          0 :                                   QMessageBox::Yes | QMessageBox::No);</span>
+<span class="lineNum">     455 </span><span class="lineNoCov">          0 :         if (reply != QMessageBox::Yes)</span>
+<span class="lineNum">     456 </span><span class="lineNoCov">          0 :             return;</span>
+<span class="lineNum">     457 </span>            :     }
+<span class="lineNum">     458 </span>            : 
+<span class="lineNum">     459 </span><span class="lineNoCov">          0 :     ContentLoader{_getActiveGroup()}.loadDir(directoryName, gridSize);</span>
+<a name="460"><span class="lineNum">     460 </span>            : }</a>
+<span class="lineNum">     461 </span>            : 
+<span class="lineNum">     462 </span><span class="lineNoCov">          0 : void MasterWindow::_openContentsDirectory()</span>
+<span class="lineNum">     463 </span>            : {
+<span class="lineNum">     464 </span>            :     const auto dirName =
+<span class="lineNum">     465 </span><span class="lineNoCov">          0 :         QFileDialog::getExistingDirectory(this, QString(), _contentFolder);</span>
+<span class="lineNum">     466 </span><span class="lineNoCov">          0 :     if (dirName.isEmpty())</span>
+<span class="lineNum">     467 </span><span class="lineNoCov">          0 :         return;</span>
+<span class="lineNum">     468 </span>            : 
+<span class="lineNum">     469 </span><span class="lineNoCov">          0 :     _contentFolder = dirName;</span>
+<span class="lineNum">     470 </span>            : 
+<span class="lineNum">     471 </span><span class="lineNoCov">          0 :     const auto gridX = QInputDialog::getInt(this, &quot;Grid X dimension&quot;,</span>
+<span class="lineNum">     472 </span><span class="lineNoCov">          0 :                                             &quot;Grid X dimension&quot;, 0, 0);</span>
+<span class="lineNum">     473 </span><span class="lineNoCov">          0 :     const auto gridY = QInputDialog::getInt(this, &quot;Grid Y dimension&quot;,</span>
+<span class="lineNum">     474 </span><span class="lineNoCov">          0 :                                             &quot;Grid Y dimension&quot;, 0, 0);</span>
+<span class="lineNum">     475 </span><span class="lineNoCov">          0 :     _addContentDirectory(dirName, {gridX, gridY});</span>
+<a name="476"><span class="lineNum">     476 </span>            : }</a>
+<span class="lineNum">     477 </span>            : 
+<span class="lineNum">     478 </span><span class="lineNoCov">          0 : void MasterWindow::_openSession()</span>
+<span class="lineNum">     479 </span>            : {
+<span class="lineNum">     480 </span>            :     const auto filename =
+<span class="lineNum">     481 </span>            :         QFileDialog::getOpenFileName(this, &quot;Load Session&quot;, _sessionFolder,
+<span class="lineNum">     482 </span><span class="lineNoCov">          0 :                                      SESSION_FILES_FILTER);</span>
+<span class="lineNum">     483 </span><span class="lineNoCov">          0 :     if (filename.isEmpty())</span>
+<span class="lineNum">     484 </span><span class="lineNoCov">          0 :         return;</span>
+<span class="lineNum">     485 </span>            : 
+<span class="lineNum">     486 </span><span class="lineNoCov">          0 :     _sessionFolder = QFileInfo(filename).absoluteDir().path();</span>
+<span class="lineNum">     487 </span>            : 
+<span class="lineNum">     488 </span><span class="lineNoCov">          0 :     _loadSession(filename);</span>
+<a name="489"><span class="lineNum">     489 </span>            : }</a>
+<span class="lineNum">     490 </span>            : 
+<span class="lineNum">     491 </span><span class="lineNoCov">          0 : void MasterWindow::_saveSession()</span>
+<span class="lineNum">     492 </span>            : {
+<span class="lineNum">     493 </span>            :     const auto filename =
+<span class="lineNum">     494 </span>            :         QFileDialog::getSaveFileName(this, &quot;Save Session&quot;, _sessionFolder,
+<span class="lineNum">     495 </span><span class="lineNoCov">          0 :                                      SESSION_FILES_FILTER);</span>
+<span class="lineNum">     496 </span><span class="lineNoCov">          0 :     if (filename.isEmpty())</span>
+<span class="lineNum">     497 </span><span class="lineNoCov">          0 :         return;</span>
+<span class="lineNum">     498 </span>            : 
+<span class="lineNum">     499 </span><span class="lineNoCov">          0 :     _sessionFolder = QFileInfo(filename).absoluteDir().path();</span>
+<span class="lineNum">     500 </span><span class="lineNoCov">          0 :     _saveSessionOp.setFuture(</span>
+<span class="lineNum">     501 </span><span class="lineNoCov">          0 :         StateSerializationHelper(_scene).save(filename, _tmpDir, _uploadDir));</span>
+<a name="502"><span class="lineNum">     502 </span>            : }</a>
+<span class="lineNum">     503 </span>            : 
+<span class="lineNum">     504 </span><span class="lineNoCov">          0 : void MasterWindow::_loadSession(const QString&amp; filename)</span>
+<span class="lineNum">     505 </span>            : {
+<span class="lineNum">     506 </span><span class="lineNoCov">          0 :     _loadSessionOp.setFuture(StateSerializationHelper(_scene).load(filename));</span>
+<a name="507"><span class="lineNum">     507 </span><span class="lineNoCov">          0 : }</span></a>
+<span class="lineNum">     508 </span>            : 
+<span class="lineNum">     509 </span><span class="lineNoCov">          0 : void MasterWindow::_openAboutWidget()</span>
+<span class="lineNum">     510 </span>            : {
+<span class="lineNum">     511 </span><span class="lineNoCov">          0 :     const int revision = tide::Version::getRevision();</span>
+<span class="lineNum">     512 </span>            : 
+<span class="lineNum">     513 </span><span class="lineNoCov">          0 :     std::ostringstream aboutMsg;</span>
+<span class="lineNum">     514 </span><span class="lineNoCov">          0 :     aboutMsg &lt;&lt; &quot;Current version: &quot; &lt;&lt; tide::Version::getString();</span>
+<span class="lineNum">     515 </span><span class="lineNoCov">          0 :     aboutMsg &lt;&lt; std::endl;</span>
+<span class="lineNum">     516 </span><span class="lineNoCov">          0 :     aboutMsg &lt;&lt; &quot;SCM revision: &quot; &lt;&lt; std::hex &lt;&lt; revision &lt;&lt; std::dec;</span>
+<span class="lineNum">     517 </span>            : 
+<span class="lineNum">     518 </span><span class="lineNoCov">          0 :     QMessageBox::about(this, &quot;About Tide&quot;, aboutMsg.str().c_str());</span>
+<a name="519"><span class="lineNum">     519 </span><span class="lineNoCov">          0 : }</span></a>
+<span class="lineNum">     520 </span>            : 
+<span class="lineNum">     521 </span><span class="lineNoCov">          0 : uint MasterWindow::_getActiveSceneIndex() const</span>
+<span class="lineNum">     522 </span>            : {
+<span class="lineNum">     523 </span><span class="lineNoCov">          0 :     return static_cast&lt;QTabWidget*&gt;(centralWidget())-&gt;currentIndex();</span>
+<a name="524"><span class="lineNum">     524 </span>            : }</a>
+<span class="lineNum">     525 </span>            : 
+<span class="lineNum">     526 </span><span class="lineNoCov">          0 : DisplayGroup&amp; MasterWindow::_getActiveGroup()</span>
+<span class="lineNum">     527 </span>            : {
+<span class="lineNum">     528 </span><span class="lineNoCov">          0 :     return _scene-&gt;getGroup(_getActiveSceneIndex());</span>
+<a name="529"><span class="lineNum">     529 </span>            : }</a>
+<span class="lineNum">     530 </span>            : 
+<span class="lineNum">     531 </span><span class="lineNoCov">          0 : QStringList MasterWindow::_extractValidContentUrls(const QMimeData* mimeData)</span>
+<span class="lineNum">     532 </span>            : {
+<span class="lineNum">     533 </span><span class="lineNoCov">          0 :     QStringList pathList;</span>
+<span class="lineNum">     534 </span>            : 
+<span class="lineNum">     535 </span><span class="lineNoCov">          0 :     if (mimeData-&gt;hasUrls())</span>
+<span class="lineNum">     536 </span>            :     {
+<span class="lineNum">     537 </span><span class="lineNoCov">          0 :         for (const auto&amp; url : mimeData-&gt;urls())</span>
+<span class="lineNum">     538 </span>            :         {
+<span class="lineNum">     539 </span>            :             const auto extension =
+<span class="lineNum">     540 </span><span class="lineNoCov">          0 :                 QFileInfo(url.toLocalFile().toLower()).suffix();</span>
+<span class="lineNum">     541 </span><span class="lineNoCov">          0 :             if (ContentFactory::getSupportedExtensions().contains(extension))</span>
+<span class="lineNum">     542 </span><span class="lineNoCov">          0 :                 pathList.append(url.toLocalFile());</span>
+<span class="lineNum">     543 </span>            :         }
+<span class="lineNum">     544 </span>            :     }
+<span class="lineNum">     545 </span>            : 
+<span class="lineNum">     546 </span><span class="lineNoCov">          0 :     return pathList;</span>
+<a name="547"><span class="lineNum">     547 </span>            : }</a>
+<span class="lineNum">     548 </span>            : 
+<span class="lineNum">     549 </span><span class="lineNoCov">          0 : QStringList MasterWindow::_extractFolderUrls(const QMimeData* mimeData)</span>
+<span class="lineNum">     550 </span>            : {
+<span class="lineNum">     551 </span><span class="lineNoCov">          0 :     QStringList pathList;</span>
+<span class="lineNum">     552 </span>            : 
+<span class="lineNum">     553 </span><span class="lineNoCov">          0 :     if (mimeData-&gt;hasUrls())</span>
+<span class="lineNum">     554 </span>            :     {
+<span class="lineNum">     555 </span><span class="lineNoCov">          0 :         for (const auto&amp; url : mimeData-&gt;urls())</span>
+<span class="lineNum">     556 </span>            :         {
+<span class="lineNum">     557 </span><span class="lineNoCov">          0 :             if (QDir(url.toLocalFile()).exists())</span>
+<span class="lineNum">     558 </span><span class="lineNoCov">          0 :                 pathList.append(url.toLocalFile());</span>
+<span class="lineNum">     559 </span>            :         }
+<span class="lineNum">     560 </span>            :     }
+<span class="lineNum">     561 </span>            : 
+<span class="lineNum">     562 </span><span class="lineNoCov">          0 :     return pathList;</span>
+<a name="563"><span class="lineNum">     563 </span>            : }</a>
+<span class="lineNum">     564 </span>            : 
+<span class="lineNum">     565 </span><span class="lineNoCov">          0 : QString MasterWindow::_extractSessionFile(const QMimeData* mimeData)</span>
+<span class="lineNum">     566 </span>            : {
+<span class="lineNum">     567 </span><span class="lineNoCov">          0 :     QList&lt;QUrl&gt; urlList = mimeData-&gt;urls();</span>
+<span class="lineNum">     568 </span><span class="lineNoCov">          0 :     if (urlList.size() == 1)</span>
+<span class="lineNum">     569 </span>            :     {
+<span class="lineNum">     570 </span><span class="lineNoCov">          0 :         QUrl url = urlList[0];</span>
+<span class="lineNum">     571 </span>            :         const QString extension =
+<span class="lineNum">     572 </span><span class="lineNoCov">          0 :             QFileInfo(url.toLocalFile().toLower()).suffix();</span>
+<span class="lineNum">     573 </span><span class="lineNoCov">          0 :         if (extension == &quot;dcx&quot;)</span>
+<span class="lineNum">     574 </span><span class="lineNoCov">          0 :             return url.toLocalFile();</span>
+<span class="lineNum">     575 </span>            :     }
+<span class="lineNum">     576 </span><span class="lineNoCov">          0 :     return QString();</span>
+<a name="577"><span class="lineNum">     577 </span>            : }</a>
+<span class="lineNum">     578 </span>            : 
+<span class="lineNum">     579 </span><span class="lineNoCov">          0 : void MasterWindow::dragEnterEvent(QDragEnterEvent* dragEvent)</span>
+<span class="lineNum">     580 </span>            : {
+<span class="lineNum">     581 </span><span class="lineNoCov">          0 :     const QMimeData* mimeData = dragEvent-&gt;mimeData();</span>
+<span class="lineNum">     582 </span><span class="lineNoCov">          0 :     const QStringList&amp; pathList = _extractValidContentUrls(mimeData);</span>
+<span class="lineNum">     583 </span><span class="lineNoCov">          0 :     const QStringList&amp; dirList = _extractFolderUrls(mimeData);</span>
+<span class="lineNum">     584 </span><span class="lineNoCov">          0 :     const QString&amp; sessionFile = _extractSessionFile(mimeData);</span>
+<span class="lineNum">     585 </span>            : 
+<span class="lineNum">     586 </span><span class="lineNoCov">          0 :     if (!pathList.empty() || !dirList.empty() || !sessionFile.isNull())</span>
+<span class="lineNum">     587 </span><span class="lineNoCov">          0 :         dragEvent-&gt;acceptProposedAction();</span>
+<a name="588"><span class="lineNum">     588 </span><span class="lineNoCov">          0 : }</span></a>
+<span class="lineNum">     589 </span>            : 
+<span class="lineNum">     590 </span><span class="lineNoCov">          0 : void MasterWindow::dropEvent(QDropEvent* dropEvt)</span>
+<span class="lineNum">     591 </span>            : {
+<span class="lineNum">     592 </span><span class="lineNoCov">          0 :     const auto urls = _extractValidContentUrls(dropEvt-&gt;mimeData());</span>
+<span class="lineNum">     593 </span><span class="lineNoCov">          0 :     ContentLoader loader(_getActiveGroup());</span>
+<span class="lineNum">     594 </span><span class="lineNoCov">          0 :     for (const auto&amp; url : urls)</span>
+<span class="lineNum">     595 </span><span class="lineNoCov">          0 :         loader.load(url);</span>
+<span class="lineNum">     596 </span>            : 
+<span class="lineNum">     597 </span><span class="lineNoCov">          0 :     const auto folders = _extractFolderUrls(dropEvt-&gt;mimeData());</span>
+<span class="lineNum">     598 </span><span class="lineNoCov">          0 :     if (!folders.isEmpty())</span>
+<span class="lineNum">     599 </span><span class="lineNoCov">          0 :         _addContentDirectory(folders[0]); // Only one directory at a time</span>
+<span class="lineNum">     600 </span>            : 
+<span class="lineNum">     601 </span><span class="lineNoCov">          0 :     const auto sessionFile = _extractSessionFile(dropEvt-&gt;mimeData());</span>
+<span class="lineNum">     602 </span><span class="lineNoCov">          0 :     if (!sessionFile.isNull())</span>
+<span class="lineNum">     603 </span><span class="lineNoCov">          0 :         _loadSession(sessionFile);</span>
+<a name="604"><span class="lineNum">     604 </span>            : </a>
+<span class="lineNum">     605 </span><span class="lineNoCov">          0 :     dropEvt-&gt;acceptProposedAction();</span>
+<span class="lineNum">     606 </span><span class="lineCov">        102 : }</span>
 </pre>
       </td>
     </tr>

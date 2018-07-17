@@ -10,5 +10,9 @@ var searchData=
   ['wallwindow',['WallWindow',['../class_wall_window.html',1,'']]],
   ['webbrowser',['Webbrowser',['../struct_configuration_1_1_webbrowser.html',1,'Configuration']]],
   ['whiteboard',['Whiteboard',['../struct_configuration_1_1_whiteboard.html',1,'Configuration']]],
-  ['window_5fnot_5ffound_5ferror',['window_not_found_error',['../classwindow__not__found__error.html',1,'']]]
+  ['window',['Window',['../class_window.html',1,'']]],
+  ['window_5fnot_5ffound_5ferror',['window_not_found_error',['../classwindow__not__found__error.html',1,'']]],
+  ['windowcontroller',['WindowController',['../class_window_controller.html',1,'']]],
+  ['windowlistwidgetitem',['WindowListWidgetItem',['../class_window_list_widget_item.html',1,'']]],
+  ['windowrenderer',['WindowRenderer',['../class_window_renderer.html',1,'']]]
 ];

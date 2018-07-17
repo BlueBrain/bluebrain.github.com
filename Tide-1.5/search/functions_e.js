@@ -21,7 +21,7 @@ var searchData=
   ['pixelstreamchannelassembler',['PixelStreamChannelAssembler',['../class_pixel_stream_channel_assembler.html#a323d9bb77c4a73bc2032c31317c65ed1',1,'PixelStreamChannelAssembler']]],
   ['pixelstreamclose',['pixelStreamClose',['../class_master_from_wall_channel.html#a15ab169ae1b8287bae27fea6ffbaefb0',1,'MasterFromWallChannel']]],
   ['pixelstreamcontent',['PixelStreamContent',['../class_pixel_stream_content.html#a48c6b1f647a5ed3acaaec920046b3a3f',1,'PixelStreamContent']]],
-  ['pixelstreamcontroller',['PixelStreamController',['../class_pixel_stream_controller.html#ad8ad070db17e8626497d61c77d80b726',1,'PixelStreamController']]],
+  ['pixelstreamcontroller',['PixelStreamController',['../class_pixel_stream_controller.html#a4f461ac34a4d6331abeae05c196333c7',1,'PixelStreamController']]],
   ['pixelstreamerlauncher',['PixelStreamerLauncher',['../class_pixel_streamer_launcher.html#a911a09bff7c15873b6229cbddb0e3be7',1,'PixelStreamerLauncher']]],
   ['pixelstreampassthrough',['PixelStreamPassthrough',['../class_pixel_stream_passthrough.html#ac6a03322971e2a8b70bdeec4f2d2fe11',1,'PixelStreamPassthrough']]],
   ['pixelstreamsynchronizer',['PixelStreamSynchronizer',['../class_pixel_stream_synchronizer.html#a85e426d30f4726b4a9715da18affd34b',1,'PixelStreamSynchronizer']]],

@@ -1,6 +1,6 @@
 var class_pixel_stream_controller =
 [
-    [ "PixelStreamController", "class_pixel_stream_controller.html#ad8ad070db17e8626497d61c77d80b726", null ],
+    [ "PixelStreamController", "class_pixel_stream_controller.html#a4f461ac34a4d6331abeae05c196333c7", null ],
     [ "addTouchPoint", "class_pixel_stream_controller.html#a3e08ce907871191b23390d5d893023eb", null ],
     [ "doubleTap", "class_pixel_stream_controller.html#a0f90b17b7c9b364c40cf8c7743843df0", null ],
     [ "keyPress", "class_pixel_stream_controller.html#af2726b58d52868969b13225553192f55", null ],

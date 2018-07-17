@@ -9,7 +9,7 @@ var class_movie_synchronizer =
     [ "hasVisibleTiles", "class_movie_synchronizer.html#acb015c4c36cbdc0823ef4d48314d55d5", null ],
     [ "sliderPositionChanged", "class_movie_synchronizer.html#aa1d8d8cafb31355778c5b5fc50b3680b", null ],
     [ "swapTiles", "class_movie_synchronizer.html#ae3234c1d2ea0e660e57cc019559b63ba", null ],
-    [ "update", "class_movie_synchronizer.html#a1e1c29aee5a55c76acc32b2997ed7412", null ],
+    [ "update", "class_movie_synchronizer.html#a607c2911b21f3f5aa3dcecfb7eab750b", null ],
     [ "updateTiles", "class_movie_synchronizer.html#ab94a196387bd25b0b157b969b71e5849", null ],
     [ "sliderPosition", "class_movie_synchronizer.html#a06c65503b945231682c50825c0dc2f26", null ]
 ];

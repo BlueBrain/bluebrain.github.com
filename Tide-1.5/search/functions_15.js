@@ -10,5 +10,12 @@ var searchData=
   ['walltowallchannel',['WallToWallChannel',['../class_wall_to_wall_channel.html#aba4b1dba030d03dde3e677ded75a688f',1,'WallToWallChannel']]],
   ['wallwindow',['WallWindow',['../class_wall_window.html#a045168ed50a2597258370380ccf3ca51',1,'WallWindow']]],
   ['width',['width',['../class_content.html#add67cf2f0ec836aabd24a088473f9e9d',1,'Content']]],
+  ['window',['Window',['../class_window.html#ac97ec2620292e4177e64adcb7c7623e4',1,'Window::Window(ContentPtr content, WindowType type=DEFAULT)'],['../class_window.html#afca36f69bb39806aac25789bf361f771',1,'Window::Window(ContentPtr content, const QUuid &amp;uuid)']]],
+  ['windowadded',['windowAdded',['../class_display_group.html#a2bfb7cd3f4d59271d0611c8a23ac2acd',1,'DisplayGroup']]],
+  ['windowcontroller',['WindowController',['../class_window_controller.html#a342bcc2a323e9c508c7d12c00c202254',1,'WindowController']]],
+  ['windowlistwidgetitem',['WindowListWidgetItem',['../class_window_list_widget_item.html#a5b92274cb279a4cbf097d353055650d8',1,'WindowListWidgetItem']]],
+  ['windowmovedtofront',['windowMovedToFront',['../class_display_group.html#a2030d8c3a652c717fe8bb4073f79331f',1,'DisplayGroup']]],
+  ['windowremoved',['windowRemoved',['../class_display_group.html#a9f6df462f2f2b66d19e9c3a74b59943f',1,'DisplayGroup']]],
+  ['windowrenderer',['WindowRenderer',['../class_window_renderer.html#ace9faa98cf93f02468421d7c70dab12f',1,'WindowRenderer']]],
   ['write',['write',['../class_configuration_writer.html#a780b77cafacb0474ddc8c44f9e284b56',1,'ConfigurationWriter::write()'],['../namespacejson.html#a18a89d3140c6db399e296fa9b9e9d71f',1,'json::write()']]]
 ];

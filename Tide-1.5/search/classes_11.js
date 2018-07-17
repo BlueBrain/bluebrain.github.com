@@ -10,6 +10,7 @@ var searchData=
   ['serialize_3c_200_20_3e',['serialize&lt; 0 &gt;',['../structserialization_1_1detail_1_1serialize_3_010_01_4.html',1,'serialization::detail']]],
   ['settings',['Settings',['../struct_configuration_1_1_settings.html',1,'Configuration']]],
   ['sharednetworkbarrier',['SharedNetworkBarrier',['../class_shared_network_barrier.html',1,'']]],
+  ['smart_5fptr_5fiterator_5fwrapper',['smart_ptr_iterator_wrapper',['../struct_iterable_smart_ptr_collection_1_1smart__ptr__iterator__wrapper.html',1,'IterableSmartPtrCollection']]],
   ['state',['State',['../class_state.html',1,'']]],
   ['statepreview',['StatePreview',['../class_state_preview.html',1,'']]],
   ['stateserializationhelper',['StateSerializationHelper',['../class_state_serialization_helper.html',1,'']]],

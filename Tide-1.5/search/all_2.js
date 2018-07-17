@@ -3,7 +3,7 @@ var searchData=
   ['background',['Background',['../class_background.html',1,'Background'],['../struct_surface_config.html#a6ece8bcbfeab2fad15f07b3209929f70',1,'SurfaceConfig::background()']]],
   ['backgroundrenderer',['BackgroundRenderer',['../class_background_renderer.html',1,'']]],
   ['backgroundwidget',['BackgroundWidget',['../class_background_widget.html',1,'BackgroundWidget'],['../class_background_widget.html#a40ae856ce7aa50c3d458e51633600e61',1,'BackgroundWidget::BackgroundWidget()']]],
-  ['backupmodeandzoom',['backupModeAndZoom',['../class_content_window.html#af0212e3772f2a91e4d89aa3dc213642e',1,'ContentWindow']]],
+  ['backupmodeandzoom',['backupModeAndZoom',['../class_window.html#a68ceb81f3556bb4d2bec345b5a0710e5',1,'Window']]],
   ['basicsynchronizer',['BasicSynchronizer',['../class_basic_synchronizer.html',1,'BasicSynchronizer'],['../class_basic_synchronizer.html#a343ca5d5f6872766b0cd019111cd5427',1,'BasicSynchronizer::BasicSynchronizer()']]],
   ['binarycopy',['binaryCopy',['../namespaceserialization.html#abce197c425fd8d15ba9d64d0285f095a',1,'serialization']]],
   ['block',['block',['../class_rest_server.html#a888ac42d3cc938c30b7b2612a2f771a3',1,'RestServer']]],

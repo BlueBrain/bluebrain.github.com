@@ -10,7 +10,6 @@ var searchData=
   ['denormalize',['denormalize',['../class_display_group_controller.html#a6d1a39818b26bcd4d47537bcbcbff9a4',1,'DisplayGroupController']]],
   ['deselectall',['deselectAll',['../class_display_group_controller.html#a11b799e1af6c674f6b433a332798f556',1,'DisplayGroupController']]],
   ['deserialize',['deserialize',['../namespacejson.html#a0967138b7ad6bf5625bc03d2419770f6',1,'json::deserialize(const QJsonValue &amp;value, std::vector&lt; T &gt; &amp;result)'],['../namespacejson.html#ad2b9767fc729b24d3e9470b796db4c3b',1,'json::deserialize(const std::string &amp;json, DeserializableT &amp;object)']]],
-  ['displaygroup',['DisplayGroup',['../class_display_group.html#a779255c3aa959085ad613850286dd43d',1,'DisplayGroup']]],
   ['displaygroupcontroller',['DisplayGroupController',['../class_display_group_controller.html#ac3bd75cfaf3d6374085e2cc117beae82',1,'DisplayGroupController']]],
   ['displaygrouplistwidget',['DisplayGroupListWidget',['../class_display_group_list_widget.html#a4e7f56488a6238d1577d539c7913dafb',1,'DisplayGroupListWidget']]],
   ['displaygrouprenderer',['DisplayGroupRenderer',['../class_display_group_renderer.html#a28f826f808620ecb70233a5d1efb4ba4',1,'DisplayGroupRenderer']]],

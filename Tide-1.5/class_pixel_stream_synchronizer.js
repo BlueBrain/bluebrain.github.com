@@ -7,6 +7,6 @@ var class_pixel_stream_synchronizer =
     [ "getTilesArea", "class_pixel_stream_synchronizer.html#aef5f2c1d82075573f156051fdf0b7028", null ],
     [ "getView", "class_pixel_stream_synchronizer.html#a1726390659b465f580378430d6752420", null ],
     [ "swapTiles", "class_pixel_stream_synchronizer.html#a569cb6650bdde963252360f2f668a6eb", null ],
-    [ "update", "class_pixel_stream_synchronizer.html#aa32e353578381044b7b30f5e4bbc9b16", null ],
+    [ "update", "class_pixel_stream_synchronizer.html#aa20746328bad9e0cc23d7c7778f7e2ad", null ],
     [ "updateTiles", "class_pixel_stream_synchronizer.html#a29ee133c55863a9657126fdf29489a80", null ]
 ];

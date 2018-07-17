@@ -57,6 +57,8 @@ var hierarchy =
       [ "boost::serialization::is_bitwise_serializable< std::chrono::duration< Rep, Period > >", "structboost_1_1serialization_1_1is__bitwise__serializable_3_01std_1_1chrono_1_1duration_3_01_rep_00_01_period_01_4_01_4.html", null ],
       [ "boost::serialization::is_bitwise_serializable< std::chrono::time_point< C, D > >", "structboost_1_1serialization_1_1is__bitwise__serializable_3_01std_1_1chrono_1_1time__point_3_01_c_00_01_d_01_4_01_4.html", null ]
     ] ],
+    [ "IterableSmartPtrCollection< ContainerT >", "class_iterable_smart_ptr_collection.html", null ],
+    [ "IterableSmartPtrCollection< ContainerT >::smart_ptr_iterator_wrapper< is_const_iterator >", "struct_iterable_smart_ptr_collection_1_1smart__ptr__iterator__wrapper.html", null ],
     [ "LauncherPlacer", "class_launcher_placer.html", null ],
     [ "LayoutPolicy", "class_layout_policy.html", [
       [ "AutomaticLayout", "class_automatic_layout.html", null ],
@@ -107,7 +109,7 @@ var hierarchy =
       [ "DisplayGroupListWidget", "class_display_group_list_widget.html", null ]
     ] ],
     [ "QListWidgetItem", null, [
-      [ "ContentWindowListWidgetItem", "class_content_window_list_widget_item.html", null ]
+      [ "WindowListWidgetItem", "class_window_list_widget_item.html", null ]
     ] ],
     [ "QMainWindow", null, [
       [ "MasterWindow", "class_master_window.html", null ]
@@ -148,8 +150,7 @@ var hierarchy =
           [ "PixelStreamSynchronizer", "class_pixel_stream_synchronizer.html", null ]
         ] ]
       ] ],
-      [ "ContentWindowController", "class_content_window_controller.html", null ],
-      [ "ContentWindowRenderer", "class_content_window_renderer.html", null ],
+      [ "ContextMenu", "class_context_menu.html", null ],
       [ "CountdownStatus", "class_countdown_status.html", null ],
       [ "DataProvider", "class_data_provider.html", null ],
       [ "DisplayGroupController", "class_display_group_controller.html", null ],
@@ -175,21 +176,24 @@ var hierarchy =
       [ "PixelStreamUpdater", "class_pixel_stream_updater.html", null ],
       [ "PixelStreamWindowManager", "class_pixel_stream_window_manager.html", null ],
       [ "Rectangle", "class_rectangle.html", [
-        [ "ContentWindow", "class_content_window.html", null ],
-        [ "DisplayGroup", "class_display_group.html", null ]
+        [ "DisplayGroup", "class_display_group.html", null ],
+        [ "Window", "class_window.html", null ]
       ] ],
       [ "RenderController", "class_render_controller.html", null ],
       [ "Scene", "class_scene.html", null ],
       [ "SceneController", "class_scene_controller.html", null ],
       [ "ScreenLock", "class_screen_lock.html", null ],
       [ "ScreenshotAssembler", "class_screenshot_assembler.html", null ],
+      [ "Surface", "class_surface.html", null ],
       [ "SwipeDetector", "class_swipe_detector.html", null ],
       [ "TapAndHoldDetector", "class_tap_and_hold_detector.html", null ],
       [ "TapDetector", "class_tap_detector.html", null ],
       [ "WallFromMasterChannel", "class_wall_from_master_channel.html", null ],
       [ "WallSurfaceRenderer", "class_wall_surface_renderer.html", null ],
       [ "WallToMasterChannel", "class_wall_to_master_channel.html", null ],
-      [ "WallToWallChannel", "class_wall_to_wall_channel.html", null ]
+      [ "WallToWallChannel", "class_wall_to_wall_channel.html", null ],
+      [ "WindowController", "class_window_controller.html", null ],
+      [ "WindowRenderer", "class_window_renderer.html", null ]
     ] ],
     [ "QQuickImageProvider", null, [
       [ "ThumbnailProvider", "class_thumbnail_provider.html", null ]
@@ -242,6 +246,7 @@ var hierarchy =
     [ "enable_shared_from_this", null, [
       [ "Background", "class_background.html", null ],
       [ "CanvasNode", "class_canvas_node.html", null ],
+      [ "ContextMenu", "class_context_menu.html", null ],
       [ "DisplayGroup", "class_display_group.html", null ],
       [ "Markers", "class_markers.html", null ],
       [ "Options", "class_options.html", null ],
@@ -256,7 +261,6 @@ var hierarchy =
         [ "window_not_found_error", "classwindow__not__found__error.html", null ]
       ] ]
     ] ],
-    [ "Surface", "class_surface.html", null ],
     [ "SurfaceConfig", "struct_surface_config.html", null ],
     [ "SurfaceConfigValidator", "class_surface_config_validator.html", null ],
     [ "SVG", "class_s_v_g.html", null ],

@@ -19,7 +19,7 @@ var searchData=
   ['developer_20guide',['Developer Guide',['../developer_guide.html',1,'']]],
   ['dimensions_5fmismatch',['dimensions_mismatch',['../classdimensions__mismatch.html',1,'']]],
   ['display',['display',['../struct_configuration_1_1_launcher.html#a955876f2943805f50ff1647b5c507486',1,'Configuration::Launcher::display()'],['../struct_configuration_1_1_master.html#a096ab48958d60377d6661ea828932934',1,'Configuration::Master::display()'],['../struct_screen.html#a1c5e1ff3329de63d2be20f47e27fa94f',1,'Screen::display()']]],
-  ['displaygroup',['DisplayGroup',['../class_display_group.html',1,'DisplayGroup'],['../class_display_group.html#a779255c3aa959085ad613850286dd43d',1,'DisplayGroup::DisplayGroup()']]],
+  ['displaygroup',['DisplayGroup',['../class_display_group.html',1,'']]],
   ['displaygroupcontroller',['DisplayGroupController',['../class_display_group_controller.html',1,'DisplayGroupController'],['../class_display_group_controller.html#ac3bd75cfaf3d6374085e2cc117beae82',1,'DisplayGroupController::DisplayGroupController()']]],
   ['displaygrouplistwidget',['DisplayGroupListWidget',['../class_display_group_list_widget.html',1,'DisplayGroupListWidget'],['../class_display_group_list_widget.html#a4e7f56488a6238d1577d539c7913dafb',1,'DisplayGroupListWidget::DisplayGroupListWidget()']]],
   ['displaygrouprenderer',['DisplayGroupRenderer',['../class_display_group_renderer.html',1,'DisplayGroupRenderer'],['../class_display_group_renderer.html#a28f826f808620ecb70233a5d1efb4ba4',1,'DisplayGroupRenderer::DisplayGroupRenderer()']]],

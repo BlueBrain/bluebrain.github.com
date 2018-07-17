@@ -1,9 +1,9 @@
 var class_content_controller =
 [
-    [ "ContentController", "class_content_controller.html#a240145e12c4fa73fedde818ae272c1fc", null ],
+    [ "ContentController", "class_content_controller.html#ad47bedf89f88c7fc2d9b732732943901", null ],
     [ "~ContentController", "class_content_controller.html#a163809b078fbd897aef5507a12e2b733", null ],
     [ "addTouchPoint", "class_content_controller.html#a6cf401ad1095bb131fcc2bf3ec6f70a1", null ],
-    [ "create", "class_content_controller.html#a4cf751b013cf5572698e3a2367b29f5f", null ],
+    [ "create", "class_content_controller.html#a8955b4735b19c373bdbaf77ca09dccae", null ],
     [ "doubleTap", "class_content_controller.html#aeac27fc69621726d9730653ed3c4523f", null ],
     [ "getNormalizedPoint", "class_content_controller.html#a66136f5a4852437cdb1d8700aee2b762", null ],
     [ "keyPress", "class_content_controller.html#a035c5ceb2b442b585dd4652ad714e135", null ],
@@ -22,5 +22,5 @@ var class_content_controller =
     [ "touchBegin", "class_content_controller.html#a11cbc48f09b282b145f463503d68be66", null ],
     [ "touchEnd", "class_content_controller.html#a84404d838aa009ccb2803b0bc71db50e", null ],
     [ "updateTouchPoint", "class_content_controller.html#a7ec83d5731526fa0d3160db596410e12", null ],
-    [ "_contentWindow", "class_content_controller.html#a94a1be1b885754ca2f8ca87f7a9daa57", null ]
+    [ "_window", "class_content_controller.html#a290bdba287333c07b7b420d256c28d05", null ]
 ];

@@ -8,6 +8,6 @@ var class_basic_synchronizer =
     [ "getTilesArea", "class_basic_synchronizer.html#a14fadea5476d8730c894507a0f5da688", null ],
     [ "onSwapReady", "class_basic_synchronizer.html#abd26eebc223e5d5dc5f0442f51fce2fd", null ],
     [ "swapTiles", "class_basic_synchronizer.html#ac32980f2fbbfe5acc52cf22430927c09", null ],
-    [ "update", "class_basic_synchronizer.html#ad541e1610630640018bc0f377939a627", null ],
+    [ "update", "class_basic_synchronizer.html#a684e3d0deb6988520f82eab79c3345c9", null ],
     [ "updateTiles", "class_basic_synchronizer.html#ad96bfa9fbffc0ccfff474affb6d40d62", null ]
 ];
