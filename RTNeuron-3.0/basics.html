@@ -141,13 +141,13 @@ $ help(display_circuit)
 Basic Concepts</h1>
 <p>There are a few basic concepts that are used inside this guide which refer to the main objects handled by an instance of RTNeuron. There is no need to understand what these objects are if you plan to use RTNeuron only from the command line, but if you ever intend to use the Python shell it is worth getting some basic understanding.</p>
 <ul>
-<li>The <b>application</b>: This is the main object that holds everything together and handles the Equalizer configuration. The lifetime of views, scenes and the simulation player is subject to the lifetime of the application.</li>
+<li>The <b>engine</b>: This is the main object that holds everything together and handles the Equalizer configuration. The lifetime of views, scenes and the simulation player is subject to the lifetime of the engine.</li>
 <li><b>Camera</b>: A camera defines the parameters of the 3D to 2D projection (orthographic or perspective) and the position and orientation of the projection plane (both projections) and projection point (only perspective).</li>
 <li><b>Scene</b>: A scene handles the geometric representation of all the objects to be displayed (neurons, synapses and additional polygonal meshes) as well as the simulation data to be mapped on the neurons. This implies that it is not possible to reuse a scene to display two different simulations at the same time. Currently, most shading style properties are scene properties, in particular:<ul>
 <li>Whether alpha blending is enabled and the algorithm to use together with its parameters.</li>
 <li>Pseudo electron microscopy shading.</li>
 </ul>
-Objects can be added and removed from a scene, but please note that these operations can be expensive <dl class="section warning"><dt>Warning</dt><dd>In parallel rendering configurations the changes in scenes are currently not propagated from the application node (the node running the interpreter) to the clients.</dd></dl>
+Objects can be added and removed from a scene, but please note that these operations can be expensive <dl class="section warning"><dt>Warning</dt><dd>In parallel rendering configurations the changes in scenes are currently not propagated from the master node (the node running the interpreter) to the clients.</dd></dl>
 Some of the scene responsibilities will be moved to views in the future.</li>
 <li><b>Scene</b> <b>object handler</b>: For each object added to the scene, a handler to it is created. An object handler provides the functionality to modify properties like the display mode and color of the object. Changes to scene handlers are applied by modifying an <a href="python/api.html#rtneuron._rtneuron.AttributeMap"><b>rtneuron.AttributeMap</b></a> they contain and then calling an update method.</li>
 <li>The <b>simulation player</b>: This objects exposes the methods to change the simulation frame being displayed, start and stop simulation playback and control playback speed.</li>
@@ -157,12 +157,12 @@ Some of the scene responsibilities will be moved to views in the future.</li>
 <li>Idle mode anti-aliasing.</li>
 <li>The level of detail bias.</li>
 </ul>
-There is a one to one mapping between RTNeuron views and Equalizer views. That means that if the application is started with an Equalizer configuration file, a View will be created for each view present in the configuration file.</li>
+There is a one to one mapping between RTNeuron views and Equalizer views. That means that if the engine is started with an Equalizer configuration file, a View will be created for each view present in the configuration file.</li>
 </ul>
 <h2><a class="anchor" id="predefined_objects"></a>
 Basic objects in the Python shell</h2>
 <p>The objects described above map to objects actually exposed by the Python/C++ library. When RTNeuron is started with something to display and the <code>--shell</code> option, the interpreter contains these predefined variables:</p><ul>
-<li><b>app</b> (<a href="python/api.html#rtneuron._rtneuron.RTNeuron"><b>rtneuron.RTNeuron</b></a>): The RTNeuron application object. The simulation player API (<a href="python/api.html#rtneuron._rtneuron.SimulationPlayer"><b>rtneuron.SimulationPlayer</b></a>) is accessible through an attribute called <b>player</b>.</li>
+<li><b>engine</b> (<a href="python/api.html#rtneuron._rtneuron.RTNeuron"><b>rtneuron.RTNeuron</b></a>): The RTNeuron engine object. The simulation player API (<a href="python/api.html#rtneuron._rtneuron.SimulationPlayer"><b>rtneuron.SimulationPlayer</b></a>) is accessible through an attribute called <b>player</b>.</li>
 <li><b>simulation</b> (brain.Simulation): This is the brain.Simulation representing the simulation config.</li>
 <li><b>scene</b> (<a href="python/api.html#rtneuron._rtneuron.Scene"><b>rtneuron.Scene</b></a>): The scene with the targets and models being displayed. The list <b>scene.objects</b> is a read only attribute that contains the handlers for the objects in the scene (<a href="python/api.html#rtneuron._rtneuron.Scene.Object"><b>rtneuron.Scene.Object</b></a>). Each handler has at least two attributes and two methods:<ul>
 <li><b>attributes</b>: An <a href="python/api.html#rtneuron._rtneuron.AttributeMap"><b>rtneuron.AttributeMap</b></a> to modify object properties</li>
@@ -219,7 +219,7 @@ Helper Python functions to populate scenes</h2>
 </ul>
 <p>The <em>target attributes</em> can be a Python dict of (name, value) pairs or an <a href="python/api.html#rtneuron._rtneuron.AttributeMap"><b>rtneuron.AttributeMap</b></a>. Possible attributes are documented in <a href="python/api.html#rtneuron._rtneuron.Scene.addNeurons"><b>rtneuron.Scene.addNeurons</b></a> and in the next section.</p>
 <p>This function affects global variables of the <code>rtneuron</code> module (the variables from the interpreter that reference the same objects are also updated):</p><ul>
-<li><b>app</b>: the <a href="python/api.html#rtneuron._rtneuron.RTNeuron"><b>rtneuron.RTNeuron</b></a> object. If already existing, the current configuration is exited before anything else. If needed a new application is created.</li>
+<li><b>engine</b>: the <a href="python/api.html#rtneuron._rtneuron.RTNeuron"><b>rtneuron.RTNeuron</b></a> object. If already existing, the current configuration is exited before anything else. If needed a new engine is created.</li>
 <li><b>simulation</b>: the brain.Simulation, replaced with a new one using the blue config file given.</li>
 <li><b>scene</b>: Replaced with the new one.</li>
 <li><b>view</b>: Replaced with first view of the new configuration.</li>
@@ -263,7 +263,7 @@ Pre and postsynaptic positions of 3 synapses shared between 2 neurons. Added wit
 </div>
 <h2><a class="anchor" id="manual_scenes"></a>
 Creating, populating and modifying scenes manually</h2>
-<p>Scenes can only be created using the method <a href="python/api.html#rtneuron._rtneuron.RTNeuron.createScene"><b>rtneuron.RTNeuron.createScene</b></a> and before the Equalizer configuration is started by the application object. The method createScene can take an optional <a class="el" href="classbbp_1_1rtneuron_1_1AttributeMap.html" title="An attribute map that stores arbitrary values using strings as keys. ">AttributeMap</a> to override the default scene parameters. Some of these options are explained in the <a class="el" href="advanced.html">Advanced usage and recipes</a> as well at the reference manual.</p>
+<p>Scenes can only be created using the method <a href="python/api.html#rtneuron._rtneuron.RTNeuron.createScene"><b>rtneuron.RTNeuron.createScene</b></a> and before the Equalizer configuration is started by the engine object. The method createScene can take an optional <a class="el" href="classbbp_1_1rtneuron_1_1AttributeMap.html" title="An attribute map that stores arbitrary values using strings as keys. ">AttributeMap</a> to override the default scene parameters. Some of these options are explained in the <a class="el" href="advanced.html">Advanced usage and recipes</a> as well at the reference manual.</p>
 <p>Once a scene is created objects can be added or removed at any moment. Note however, that it is better to modify a scene when it is not attached to any view because scene modifications trigger potentially costly operations. Automatic scenes updates can be enabled and disable with the scene attribute called <code><b>auto_update</b></code> and triggered manually with <a href="python/api.html#rtneuron._rtneuron.Scene::update"><b>rtneuron.Scene::update</b></a>. However, note that scenes are also updated when a frame is triggered by any other reason (e.g. camera manipulation with the mouse).</p>
 <p>The functions used to add/remove objects to a scene can be applied to scenes that have been created either from the command line or using <code><b>display_circuit</b></code>. Each object type is added using a different function, but all can be removed passing the proper object handler to the <a class="el" href="classbbp_1_1rtneuron_1_1Scene.html#a329d0a163983de5f738a314ce5f25367" title="Removes a target/model from the scene given its handler. ">Scene.remove</a>. Functions to add objects to the scene always return a handler to the object added. All the objects contained inside a scene can be accessed using the property <a href="python/api.html#rtneuron._rtneuron.Scene.objects"><b>rtneuron.Scene.objects</b></a>.</p>
 <h3>Adding neuron targets</h3>
@@ -667,7 +667,7 @@ Rotate around example</div></div>
 <p>All the functions return a camera path, see the section on <a class="el" href="basics.html#camera_path_manipulator">camera path manipulators</a> to learn how to attach the camera path to a view. The functions <code>make_front_view</code> and <code>make_top_view</code> are different from the rest. These functions take a view as argument, and use it to inspect the scene attached to the view, create a key frame and apply it to the view (no camera path is created).</p>
 <h3><a class="anchor" id="camera_path_recording"></a>
 Recording camera paths</h3>
-<p>It is possible to record a camera path while the camera is manipulated interactively. For that purpose there is a helper object called CameraPathRecorder. This object takes an application and view in its constructor. To start recording a camera path call <code>startRecording</code>. Each time a frame is issued, the current camera position will be registered in a camera path. Use <code>stopRecording</code> to stop registering and <code>getCameraPath</code> to retrieve the path. Notice that key frames are only registered when a frame is issued, so once you stop moving the camera no spurious key frames will be generated before you can save it.</p>
+<p>It is possible to record a camera path while the camera is manipulated interactively. For that purpose there is a helper object called CameraPathRecorder. This object takes an engine and view in its constructor. To start recording a camera path call <code>startRecording</code>. Each time a frame is issued, the current camera position will be registered in a camera path. Use <code>stopRecording</code> to stop registering and <code>getCameraPath</code> to retrieve the path. Notice that key frames are only registered when a frame is issued, so once you stop moving the camera no spurious key frames will be generated before you can save it.</p>
 <dl class="section note"><dt>Note</dt><dd>The programming reference for CameraPathRecorder is not available online, but it is present in the Python console.</dd></dl>
 <h3><a class="anchor" id="camera_path_file_format"></a>
 Camera path file format</h3>
@@ -715,12 +715,12 @@ Frame capture and movie generation</h1>
 <h2><a class="anchor" id="cli_frame_grabbing"></a>
 Frame capture from the command line</h2>
 <p>In order to capture frames from the command line, use the option <code>&ndash;grab-frames</code>. This option will make RTNeuron dump a file per view and rendered frame from the moment the circuit is loaded and displayed. By default, the files are dumped into the working directory using file names like <code>prefix_nnnnnn.png</code>, where prefix is <code>frame</code> if there a single view or <code>prefix_view_</code> if there are two or more views, being <code>view</code> the name of the view taken from the Equalizer configuration (the file format and common file prefix can be changed with <code>&ndash;file-format</code> and <code>&ndash;file-prefix</code>, the common file prefix can include an absolute path).</p>
-<p>Frame recording will be finished in any of the following cases, whichever happens first (apart from application exit):</p><ul>
+<p>Frame recording will be finished in any of the following cases, whichever happens first (apart from engine exit):</p><ul>
 <li>If a camera path with more than one key frame (i.e. the begin and end times are different) has been provided, when the camera path end is reached.</li>
 <li>If a simulation report has been provided, when the end of the simulation window has been reached.</li>
-<li>If the command line option <code>&ndash;frame-count <em>frames</em></code> has been given, after <em>frames</em> frames have been rendered starting from the first frame in which the circuit is displayed. In this case, the application will also exit automatically. This option is ignored when <code>&ndash;shell</code> is also present in the command line.</li>
+<li>If the command line option <code>&ndash;frame-count <em>frames</em></code> has been given, after <em>frames</em> frames have been rendered starting from the first frame in which the circuit is displayed. In this case, the engine will also exit automatically. This option is ignored when <code>&ndash;shell</code> is also present in the command line.</li>
 </ul>
-<dl class="section note"><dt>Note</dt><dd>The results of the recording are undefined if the Equalizer layout is changed on-the-fly. The most probable outcome is that no frames will be captured for the views that were not active at application start up. For more information on layouts (and other advanced Equalizer configuration) refer to <a class="el" href="advanced.html#display_config">Display configuration</a>.</dd></dl>
+<dl class="section note"><dt>Note</dt><dd>The results of the recording are undefined if the Equalizer layout is changed on-the-fly. The most probable outcome is that no frames will be captured for the views that were not active at engine start up. For more information on layouts (and other advanced Equalizer configuration) refer to <a class="el" href="advanced.html#display_config">Display configuration</a>.</dd></dl>
 <h2><a class="anchor" id="console_frame_grabbing"></a>
 Frame capture from the Python interpreter</h2>
 <p>Inside the Python interpreter (or a Python script) there are 3 methods to dump the content of views into files. One of them is using <a href="python/api.html#rtneuron._rtneuron.RTNeuron.record"><b>rtneuron.RTNeuron.record</b></a> <a href="python/api.html#rtneuron._rtneuron.RecordingParams"><b>rtneuron.RecordingParams</b></a>, the other two require direct manipulation of view objects.</p>
@@ -754,7 +754,7 @@ View API for frame grabbing</h3>
 <div id="nav-path" class="navpath"><!-- id is needed for treeview function! -->
   <ul>
     <li class="navelem"><a class="el" href="index.html">Documentation</a></li><li class="navelem"><a class="el" href="user_guide.html">User Guide</a></li>
-    <li class="footer">Generated on Tue Jul 10 2018 07:22:58 for RTNeuron by
+    <li class="footer">Generated on Wed Jul 18 2018 03:58:30 for RTNeuron by
     <a href="http://www.doxygen.org/index.html">
     <img class="footer" src="doxygen.png" alt="doxygen"/></a> 1.8.11 </li>
   </ul>
