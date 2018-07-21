@@ -22,6 +22,7 @@ var NAVTREE =
         [ "All", "functions.html", "functions_dup" ],
         [ "Functions", "functions_func.html", "functions_func" ],
         [ "Variables", "functions_vars.html", null ],
+        [ "Typedefs", "functions_type.html", null ],
         [ "Enumerations", "functions_enum.html", null ],
         [ "Properties", "functions_prop.html", null ]
       ] ]
@@ -39,14 +40,14 @@ var NAVTREE =
 var NAVTREEINDEX =
 [
 ".html",
-"class_canvas_node.html#ae0994e3640e5ed02eb06ca8c94851feb",
-"class_data_source.html#a43d2d50fc4971aa75f19e8c0130bc721",
-"class_keyboard_state.html#a12003d64f13c436576a23aa2ff7a7a01",
-"class_multitouch_area.html#aebe0754fc96dc5e04b66a398234ac497",
-"class_rectangle.html#a0a704c38262fba6f8dd446e9f63ec859",
-"class_texture_node.html#ae374df1090fe5b368e5b10b2458298be",
-"class_window_controller.html#a3e86a0fd011d578220ba0c2e69162153",
-"struct_iterable_smart_ptr_collection_1_1smart__ptr__iterator__wrapper.html#a05db944f099ea19a49e0f446a766729d"
+"class_cached_data_source.html",
+"class_display_group.html#a159b27f545c4eac2ca9c726364a2b25f",
+"class_keyboard_state.html#a4ff688ff02533993c505243f0e7318cb",
+"class_options.html#a030a6b4703878307bccf05cd90f796b5",
+"class_render_controller.html#a4cc0d3aef3078e6a7393babe51c8ceb2",
+"class_texture_node_y_u_v.html",
+"class_window_list_widget_item.html#a0faad4cf4dfa835416b02186831ab407",
+"struct_iterable_smart_ptr_collection_1_1smart__ptr__iterator__wrapper.html#a5f9d3645e42507172469a44d0f6eeae3"
 ];
 
 var SYNCONMSG = 'click to disable panel synchronisation';

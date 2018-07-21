@@ -8,7 +8,7 @@ var searchData=
   ['filebrowser',['FileBrowser',['../class_file_browser.html',1,'FileBrowser'],['../class_file_browser.html#a250e003ff50847569f031e11dab70050',1,'FileBrowser::FileBrowser()']]],
   ['fileinfohelper',['FileInfoHelper',['../class_file_info_helper.html',1,'']]],
   ['filereceiver',['FileReceiver',['../class_file_receiver.html',1,'']]],
-  ['find',['find',['../namespacescreens.html#a308b55f0f686e5b8c8265ff84c20949b',1,'screens']]],
+  ['find',['find',['../namespaceqscreens.html#a5ed19351ef660811603037944dc256fb',1,'qscreens']]],
   ['findavailablefilepath',['findAvailableFilePath',['../class_state_serialization_helper.html#a007a830248de748cbeb353d446b733a9',1,'StateSerializationHelper']]],
   ['findlevel',['findLevel',['../class_tiff_pyramid_reader.html#a9ad7a76ee0d00ca86babe8e7a00684b8',1,'TiffPyramidReader']]],
   ['findtoppyramidlevel',['findTopPyramidLevel',['../class_tiff_pyramid_reader.html#adba8e32f05b98218282f42e5644c2790',1,'TiffPyramidReader']]],

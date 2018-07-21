@@ -93,7 +93,6 @@ var hierarchy =
     ] ],
     [ "ProcessForker", "class_process_forker.html", null ],
     [ "QAbstractListModel", null, [
-      [ "ContentActionsModel", "class_content_actions_model.html", null ],
       [ "Markers", "class_markers.html", null ]
     ] ],
     [ "QApplication", null, [
@@ -116,6 +115,7 @@ var hierarchy =
     ] ],
     [ "QmlKeyInjector", "class_qml_key_injector.html", null ],
     [ "QObject", null, [
+      [ "ActivityLogger", "class_activity_logger.html", null ],
       [ "AppRemoteController", "class_app_remote_controller.html", null ],
       [ "Background", "class_background.html", null ],
       [ "Content", "class_content.html", [
@@ -133,8 +133,8 @@ var hierarchy =
           [ "SVGContent", "class_s_v_g_content.html", null ]
         ] ]
       ] ],
-      [ "ContentAction", "class_content_action.html", null ],
       [ "ContentController", "class_content_controller.html", [
+        [ "MovieController", "class_movie_controller.html", null ],
         [ "PixelStreamController", "class_pixel_stream_controller.html", null ],
         [ "ZoomController", "class_zoom_controller.html", [
           [ "PDFController", "class_p_d_f_controller.html", null ]
@@ -151,6 +151,7 @@ var hierarchy =
         ] ]
       ] ],
       [ "ContextMenu", "class_context_menu.html", null ],
+      [ "ContextMenuController", "class_context_menu_controller.html", null ],
       [ "CountdownStatus", "class_countdown_status.html", null ],
       [ "DataProvider", "class_data_provider.html", null ],
       [ "DisplayGroupController", "class_display_group_controller.html", null ],
@@ -159,8 +160,8 @@ var hierarchy =
       [ "FileReceiver", "class_file_receiver.html", null ],
       [ "HtmlSelectReplacer", "class_html_select_replacer.html", null ],
       [ "InactivityTimer", "class_inactivity_timer.html", null ],
+      [ "KeyboardController", "class_keyboard_controller.html", null ],
       [ "KeyboardState", "class_keyboard_state.html", null ],
-      [ "LoggingUtility", "class_logging_utility.html", null ],
       [ "MasterDisplayGroupRenderer", "class_master_display_group_renderer.html", null ],
       [ "MasterFromWallChannel", "class_master_from_wall_channel.html", null ],
       [ "MasterSurfaceRenderer", "class_master_surface_renderer.html", null ],
@@ -193,7 +194,8 @@ var hierarchy =
       [ "WallToMasterChannel", "class_wall_to_master_channel.html", null ],
       [ "WallToWallChannel", "class_wall_to_wall_channel.html", null ],
       [ "WindowController", "class_window_controller.html", null ],
-      [ "WindowRenderer", "class_window_renderer.html", null ]
+      [ "WindowRenderer", "class_window_renderer.html", null ],
+      [ "WindowTouchController", "class_window_touch_controller.html", null ]
     ] ],
     [ "QQuickImageProvider", null, [
       [ "ThumbnailProvider", "class_thumbnail_provider.html", null ]
@@ -272,6 +274,14 @@ var hierarchy =
       [ "SwapSynchronizerSoftware", "class_swap_synchronizer_software.html", null ]
     ] ],
     [ "SwapSynchronizerFactory", "class_swap_synchronizer_factory.html", null ],
+    [ "SwapSyncObject< T >", "class_swap_sync_object.html", null ],
+    [ "SwapSyncObject< bool >", "class_swap_sync_object.html", null ],
+    [ "SwapSyncObject< CountdownStatusPtr >", "class_swap_sync_object.html", null ],
+    [ "SwapSyncObject< deflect::server::FramePtr >", "class_swap_sync_object.html", null ],
+    [ "SwapSyncObject< MarkersPtr >", "class_swap_sync_object.html", null ],
+    [ "SwapSyncObject< OptionsPtr >", "class_swap_sync_object.html", null ],
+    [ "SwapSyncObject< ScenePtr >", "class_swap_sync_object.html", null ],
+    [ "SwapSyncObject< ScreenLockPtr >", "class_swap_sync_object.html", null ],
     [ "TextureNode", "class_texture_node.html", [
       [ "TextureNodeRGBA", "class_texture_node_r_g_b_a.html", null ],
       [ "TextureNodeYUV", "class_texture_node_y_u_v.html", null ]

@@ -1,7 +1,7 @@
 var searchData=
 [
   ['takescreenshot',['takeScreenshot',['../class_app_remote_controller.html#a5eaf77e43de754ce7bee11734e2c6795',1,'AppRemoteController']]],
-  ['tap',['tap',['../class_multitouch_area.html#ad10f067038cca27820ec0da46630b7ec',1,'MultitouchArea::tap()'],['../class_tap_detector.html#ac7b0f69cf359dd1a4adadba8e4dd2554',1,'TapDetector::tap()']]],
+  ['tap',['tap',['../class_multitouch_area.html#ad10f067038cca27820ec0da46630b7ec',1,'MultitouchArea::tap()'],['../class_tap_detector.html#afc2bca5d6d510c1a573cfac31a4d295e',1,'TapDetector::tap()']]],
   ['tapandhold',['tapAndHold',['../class_multitouch_area.html#a968c008c352f09cb24486ed8257b0968',1,'MultitouchArea::tapAndHold()'],['../class_tap_and_hold_detector.html#ac74ae2cad949de85e7983238d1794634',1,'TapAndHoldDetector::tapAndHold()']]],
   ['testpattern',['TestPattern',['../class_test_pattern.html#aa9a87351a6bc76073c704d7b120dca9f',1,'TestPattern']]],
   ['texturecontent',['TextureContent',['../class_texture_content.html#a34ede22c00496d1f2309d56c0bfcf70b',1,'TextureContent']]],
@@ -26,7 +26,5 @@ var searchData=
   ['touchpointremoved',['touchPointRemoved',['../class_multitouch_area.html#a67c43e38ec50bc56871ad09e3ce97d96',1,'MultitouchArea']]],
   ['touchpointupdated',['touchPointUpdated',['../class_multitouch_area.html#a59d40a182cea4744da1ce4be5ec75c31',1,'MultitouchArea']]],
   ['touchstarted',['touchStarted',['../class_multitouch_area.html#a9930406bdbbcb1a9ad99f10d691e2313',1,'MultitouchArea']]],
-  ['toxmlfile',['toXmlFile',['../namespaceserialization.html#adcd3a4acf763ce23192c136ac0d816d7',1,'serialization']]],
-  ['trigger',['trigger',['../class_content_action.html#ad38737ffd4ee0b2623f00f0326136df3',1,'ContentAction']]],
-  ['triggered',['triggered',['../class_content_action.html#ad53201dc988d6e4aa0ec81e9c820045d',1,'ContentAction']]]
+  ['toxmlfile',['toXmlFile',['../namespaceserialization.html#adcd3a4acf763ce23192c136ac0d816d7',1,'serialization']]]
 ];

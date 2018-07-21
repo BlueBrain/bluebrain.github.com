@@ -1,7 +1,7 @@
 var class_content_factory =
 [
     [ "getContent", "class_content_factory.html#afe819dd6acbe85688da779e3c538b72a", null ],
-    [ "getContentTypeForFile", "class_content_factory.html#a74978c0900870f45c3bb46a2450e6288", null ],
+    [ "getContentTypeForFile", "class_content_factory.html#a5d5772ab4f0bead04b5644f841fed92f", null ],
     [ "getErrorContent", "class_content_factory.html#a84850ef5ede866487425e6858c50cf58", null ],
     [ "getErrorContent", "class_content_factory.html#a81dab14c8b3ae8da6d380a655e728d7d", null ],
     [ "getPixelStreamContent", "class_content_factory.html#acf8b873f6c472c555a79f9bff1e6ff33", null ],

@@ -1,7 +1,8 @@
 var class_wall_window =
 [
-    [ "WallWindow", "class_wall_window.html#a045168ed50a2597258370380ccf3ca51", null ],
     [ "~WallWindow", "class_wall_window.html#aca989978978fb722ef8a3a8ac1b73bc6", null ],
+    [ "create", "class_wall_window.html#a3c81d109e1f94d071f5e81f0d7abe6cd", null ],
+    [ "createWindows", "class_wall_window.html#a8cd2691a136c83caaf46be1969cbb3c6", null ],
     [ "getSurfaceIndex", "class_wall_window.html#a9301f97052680ddcefd4efd17099a420", null ],
     [ "imageGrabbed", "class_wall_window.html#a594fe1a5cf3b0466ec8721110fad1726", null ],
     [ "isInitialized", "class_wall_window.html#a9df5c46df4b8d658ae674c98d9928c08", null ],

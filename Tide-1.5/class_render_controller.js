@@ -1,7 +1,7 @@
 var class_render_controller =
 [
-    [ "RenderController", "class_render_controller.html#a1f8774ca631c26c43a4635febb4a51ba", null ],
-    [ "requestRender", "class_render_controller.html#a03859226465bc3c22b3634fde287ecf6", null ],
+    [ "RenderController", "class_render_controller.html#aa9ba155a0243d73825b15e2c90d85982", null ],
+    [ "~RenderController", "class_render_controller.html#afd49ab33df338771f69bb41598fa1598", null ],
     [ "screenshotRendered", "class_render_controller.html#ab210e667eb0a85131a6a7e0947df6aba", null ],
     [ "updateCountdownStatus", "class_render_controller.html#ac170572bb63409f8354eda58c816db85", null ],
     [ "updateLock", "class_render_controller.html#a4cc0d3aef3078e6a7393babe51c8ceb2", null ],

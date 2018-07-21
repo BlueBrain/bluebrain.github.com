@@ -4,7 +4,7 @@ var namespaces =
     [ "json", "namespacejson.html", null ],
     [ "MathUtils", "namespace_math_utils.html", null ],
     [ "qml", "namespaceqml.html", null ],
-    [ "screens", "namespacescreens.html", null ],
+    [ "qscreens", "namespaceqscreens.html", null ],
     [ "serialization", "namespaceserialization.html", "namespaceserialization" ],
     [ "textureUtils", "namespacetexture_utils.html", null ],
     [ "thumbnail", "namespacethumbnail.html", null ],

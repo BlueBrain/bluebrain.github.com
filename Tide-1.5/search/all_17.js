@@ -11,7 +11,7 @@ var searchData=
   ['wallsurfacerenderer',['WallSurfaceRenderer',['../class_wall_surface_renderer.html',1,'WallSurfaceRenderer'],['../class_wall_surface_renderer.html#af32dbfa84f891b8d9fe7c6f5c20ea1b5',1,'WallSurfaceRenderer::WallSurfaceRenderer()']]],
   ['walltomasterchannel',['WallToMasterChannel',['../class_wall_to_master_channel.html',1,'WallToMasterChannel'],['../class_wall_to_master_channel.html#a566e3c97ead7e0578a81e11d2d24adcd',1,'WallToMasterChannel::WallToMasterChannel()']]],
   ['walltowallchannel',['WallToWallChannel',['../class_wall_to_wall_channel.html',1,'WallToWallChannel'],['../class_wall_to_wall_channel.html#aba4b1dba030d03dde3e677ded75a688f',1,'WallToWallChannel::WallToWallChannel()']]],
-  ['wallwindow',['WallWindow',['../class_wall_window.html',1,'WallWindow'],['../class_wall_window.html#a045168ed50a2597258370380ccf3ca51',1,'WallWindow::WallWindow()']]],
+  ['wallwindow',['WallWindow',['../class_wall_window.html',1,'']]],
   ['webbrowser',['Webbrowser',['../struct_configuration_1_1_webbrowser.html',1,'Configuration']]],
   ['webserviceport',['webservicePort',['../struct_configuration_1_1_master.html#a935d08841b7cf26f81cd52f52cdfa0ba',1,'Configuration::Master']]],
   ['whiteboard',['Whiteboard',['../struct_configuration_1_1_whiteboard.html',1,'Configuration']]],
@@ -26,6 +26,7 @@ var searchData=
   ['windowremoved',['windowRemoved',['../class_display_group.html#a9f6df462f2f2b66d19e9c3a74b59943f',1,'DisplayGroup']]],
   ['windowrenderer',['WindowRenderer',['../class_window_renderer.html',1,'WindowRenderer'],['../class_window_renderer.html#ace9faa98cf93f02468421d7c70dab12f',1,'WindowRenderer::WindowRenderer()']]],
   ['windowstate',['WindowState',['../class_window.html#adaf783476a94b5122e6c01a5003efc21',1,'Window']]],
+  ['windowtouchcontroller',['WindowTouchController',['../class_window_touch_controller.html',1,'WindowTouchController'],['../class_window_touch_controller.html#a15012ee2fc61260d3a9f05647b4936ea',1,'WindowTouchController::WindowTouchController()']]],
   ['windowtype',['WindowType',['../class_window.html#af334e9ffc511fb6b24db90a1a5c56007',1,'Window']]],
   ['write',['write',['../class_configuration_writer.html#a780b77cafacb0474ddc8c44f9e284b56',1,'ConfigurationWriter::write()'],['../namespacejson.html#a18a89d3140c6db399e296fa9b9e9d71f',1,'json::write()']]]
 ];

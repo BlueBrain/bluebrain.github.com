@@ -19,6 +19,9 @@ var class_window_controller =
     [ "resizeRelative", "class_window_controller.html#a4429d850a12a9c000c4e926a45527b8f", null ],
     [ "scale", "class_window_controller.html#a3e86a0fd011d578220ba0c2e69162153", null ],
     [ "scale", "class_window_controller.html#adb29f6b4750f9ddb98b352b7e7a1903c", null ],
+    [ "startResizing", "class_window_controller.html#ab4c90ce90f373e5ddb12cc66e665552e", null ],
+    [ "stopResizing", "class_window_controller.html#af0d15f28069b7a45b77e3152a3968b87", null ],
+    [ "toggleResizeMode", "class_window_controller.html#a631b434571a8a0fc69f1af3a2e10b2ab", null ],
     [ "toggleSelected", "class_window_controller.html#a81de343492d52fe1835b0758f0722799", null ],
     [ "toogleFullscreenMaxSize", "class_window_controller.html#a5d73b9e606e5b0776edd99ea80dc8660", null ]
 ];

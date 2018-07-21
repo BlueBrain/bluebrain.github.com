@@ -18,9 +18,8 @@ var searchData=
   ['lodsynchronizer',['LodSynchronizer',['../class_lod_synchronizer.html',1,'LodSynchronizer'],['../class_lod_synchronizer.html#ae056d0d5f9312d67b95f6fb0d39cc8f8',1,'LodSynchronizer::LodSynchronizer()']]],
   ['lodtiler',['LodTiler',['../class_lod_tiler.html',1,'LodTiler'],['../class_lod_tiler.html#a6fb20a5bd71ee276d60d95f57a197517',1,'LodTiler::LodTiler()']]],
   ['lodtools',['LodTools',['../class_lod_tools.html',1,'LodTools'],['../class_lod_tools.html#a31ca10c2a26eca743f63827cdd7d7b15',1,'LodTools::LodTools()']]],
-  ['loggingutility',['LoggingUtility',['../class_logging_utility.html',1,'']]],
-  ['logscreenstatechanged',['logScreenStateChanged',['../class_logging_utility.html#a6c829a4f7330d2ccb113ed5b6480e4c6',1,'LoggingUtility']]],
-  ['logwindowadded',['logWindowAdded',['../class_logging_utility.html#af0b8faeaa6074168ed50d4d40928b7b7',1,'LoggingUtility']]],
-  ['logwindowmovedtofront',['logWindowMovedToFront',['../class_logging_utility.html#aeb9ccda5e90bb07ce80c301cfe42c0bd',1,'LoggingUtility']]],
-  ['logwindowremoved',['logWindowRemoved',['../class_logging_utility.html#a717d3647b5aecf38dcf33817e54d2a32',1,'LoggingUtility']]]
+  ['logscreenstatechanged',['logScreenStateChanged',['../class_activity_logger.html#ad94a9b8a77353f7e855ff86a158e67d1',1,'ActivityLogger']]],
+  ['logwindowadded',['logWindowAdded',['../class_activity_logger.html#aae57ea1db2a0993113bd6dc537e3a5d7',1,'ActivityLogger']]],
+  ['logwindowmovedtofront',['logWindowMovedToFront',['../class_activity_logger.html#a18f8cbc9c6063fd04ad8c534e9bd51f8',1,'ActivityLogger']]],
+  ['logwindowremoved',['logWindowRemoved',['../class_activity_logger.html#a88e51e750d949f6229c883464aaa0026',1,'ActivityLogger']]]
 ];

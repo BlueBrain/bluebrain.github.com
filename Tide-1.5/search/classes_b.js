@@ -11,6 +11,7 @@ var searchData=
   ['mastertowallchannel',['MasterToWallChannel',['../class_master_to_wall_channel.html',1,'']]],
   ['masterwindow',['MasterWindow',['../class_master_window.html',1,'']]],
   ['moviecontent',['MovieContent',['../class_movie_content.html',1,'']]],
+  ['moviecontroller',['MovieController',['../class_movie_controller.html',1,'']]],
   ['moviesynchronizer',['MovieSynchronizer',['../class_movie_synchronizer.html',1,'']]],
   ['moviethumbnailgenerator',['MovieThumbnailGenerator',['../class_movie_thumbnail_generator.html',1,'']]],
   ['movieupdater',['MovieUpdater',['../class_movie_updater.html',1,'']]],

@@ -14,5 +14,6 @@ var searchData=
   ['window_5fnot_5ffound_5ferror',['window_not_found_error',['../classwindow__not__found__error.html',1,'']]],
   ['windowcontroller',['WindowController',['../class_window_controller.html',1,'']]],
   ['windowlistwidgetitem',['WindowListWidgetItem',['../class_window_list_widget_item.html',1,'']]],
-  ['windowrenderer',['WindowRenderer',['../class_window_renderer.html',1,'']]]
+  ['windowrenderer',['WindowRenderer',['../class_window_renderer.html',1,'']]],
+  ['windowtouchcontroller',['WindowTouchController',['../class_window_touch_controller.html',1,'']]]
 ];

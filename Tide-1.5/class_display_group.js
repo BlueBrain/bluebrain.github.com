@@ -24,7 +24,7 @@ var class_display_group =
     [ "modified", "class_display_group.html#a2d45f47c71869da3799d9e1c88274cbd", null ],
     [ "moveToFront", "class_display_group.html#aafe7bf48272e14c2fb95710f300a26da", null ],
     [ "moveToThread", "class_display_group.html#a8273099bf01b9991adb9c454ba576836", null ],
-    [ "remove", "class_display_group.html#a74c5df783c962e6384d1113bcc249716", null ],
+    [ "remove", "class_display_group.html#ae16ff8b525ad5ffe3cab8de32b0a8252", null ],
     [ "removeFocusedWindow", "class_display_group.html#a29234475a215f0c30b9f56eeb71fa62b", null ],
     [ "replaceWindows", "class_display_group.html#ab3cf777a6e746c65f7d454fd3b410b3c", null ],
     [ "selectedUrisChanged", "class_display_group.html#a5f2824a6989c6d25251b84c594037d18", null ],

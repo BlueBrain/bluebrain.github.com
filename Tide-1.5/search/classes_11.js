@@ -30,5 +30,13 @@ var searchData=
   ['swapsynchronizerfactory',['SwapSynchronizerFactory',['../class_swap_synchronizer_factory.html',1,'']]],
   ['swapsynchronizerhardware',['SwapSynchronizerHardware',['../class_swap_synchronizer_hardware.html',1,'']]],
   ['swapsynchronizersoftware',['SwapSynchronizerSoftware',['../class_swap_synchronizer_software.html',1,'']]],
+  ['swapsyncobject',['SwapSyncObject',['../class_swap_sync_object.html',1,'']]],
+  ['swapsyncobject_3c_20bool_20_3e',['SwapSyncObject&lt; bool &gt;',['../class_swap_sync_object.html',1,'']]],
+  ['swapsyncobject_3c_20countdownstatusptr_20_3e',['SwapSyncObject&lt; CountdownStatusPtr &gt;',['../class_swap_sync_object.html',1,'']]],
+  ['swapsyncobject_3c_20deflect_3a_3aserver_3a_3aframeptr_20_3e',['SwapSyncObject&lt; deflect::server::FramePtr &gt;',['../class_swap_sync_object.html',1,'']]],
+  ['swapsyncobject_3c_20markersptr_20_3e',['SwapSyncObject&lt; MarkersPtr &gt;',['../class_swap_sync_object.html',1,'']]],
+  ['swapsyncobject_3c_20optionsptr_20_3e',['SwapSyncObject&lt; OptionsPtr &gt;',['../class_swap_sync_object.html',1,'']]],
+  ['swapsyncobject_3c_20sceneptr_20_3e',['SwapSyncObject&lt; ScenePtr &gt;',['../class_swap_sync_object.html',1,'']]],
+  ['swapsyncobject_3c_20screenlockptr_20_3e',['SwapSyncObject&lt; ScreenLockPtr &gt;',['../class_swap_sync_object.html',1,'']]],
   ['swipedetector',['SwipeDetector',['../class_swipe_detector.html',1,'']]]
 ];
