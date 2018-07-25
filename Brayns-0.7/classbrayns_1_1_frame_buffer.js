@@ -13,7 +13,7 @@ var classbrayns_1_1_frame_buffer =
     [ "map", "classbrayns_1_1_frame_buffer.html#a1edf0c6ad75ec3102cc5549391844125", null ],
     [ "numAccumFrames", "classbrayns_1_1_frame_buffer.html#a434c0ecaf569460c0b45998b2a672cc1", null ],
     [ "resize", "classbrayns_1_1_frame_buffer.html#ad299b7acc0823946c46d2d8c4c211921", null ],
-    [ "setAccumulation", "classbrayns_1_1_frame_buffer.html#a5de93d691ecdf8cab6b06b714f86a3da", null ],
+    [ "setAccumulation", "classbrayns_1_1_frame_buffer.html#a6605b948db8ae2ab9c167a69e8d68b3f", null ],
     [ "unmap", "classbrayns_1_1_frame_buffer.html#a165f845d96342690001f987e39f5c411", null ],
     [ "_accumFrames", "classbrayns_1_1_frame_buffer.html#a72c5d5b99510ce3b7f0fe25e552c5e64", null ],
     [ "_accumulation", "classbrayns_1_1_frame_buffer.html#aac5ca090b769e5f9d46830006ebbe0d9", null ],
