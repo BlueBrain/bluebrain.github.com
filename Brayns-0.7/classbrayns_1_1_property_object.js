@@ -1,5 +1,6 @@
 var classbrayns_1_1_property_object =
 [
+    [ "clonePropertiesFrom", "classbrayns_1_1_property_object.html#a8d6ad46b65b32439443194e49fac2b9c", null ],
     [ "getCurrentType", "classbrayns_1_1_property_object.html#aa734499cbc7b731d3067febc6404c547", null ],
     [ "getProperty", "classbrayns_1_1_property_object.html#a193f26124fd6b17361712bf73d3e3d37", null ],
     [ "getPropertyMap", "classbrayns_1_1_property_object.html#a86305e70af8a31b766e5ec125d823a8c", null ],
