@@ -179,16 +179,15 @@ var NAVTREEINDEX2 =
 "classbrayns_1_1_o_s_p_ray_engine.html#ab95e9bb89f2c5b0f9aa734b56789d415":[5,0,0,53,7],
 "classbrayns_1_1_o_s_p_ray_frame_buffer.html":[5,0,0,54],
 "classbrayns_1_1_o_s_p_ray_frame_buffer.html#a00f2bf266d2ebee31f91a90b70965370":[5,0,0,54,5],
+"classbrayns_1_1_o_s_p_ray_frame_buffer.html#a0384387c0a099a1e73ec26cb79e0f154":[5,0,0,54,6],
 "classbrayns_1_1_o_s_p_ray_frame_buffer.html#a23825f1c02046006457e3a8158cf90ce":[5,0,0,54,2],
 "classbrayns_1_1_o_s_p_ray_frame_buffer.html#a32121271b53b6d3ea9c6249f0d04a9d2":[5,0,0,54,8],
 "classbrayns_1_1_o_s_p_ray_frame_buffer.html#a45b3d0b9867642284c52d2ce341712d9":[5,0,0,54,11],
 "classbrayns_1_1_o_s_p_ray_frame_buffer.html#a55fb86858ff87cf168acc92c5667d4d3":[5,0,0,54,3],
 "classbrayns_1_1_o_s_p_ray_frame_buffer.html#a790c46f12e34114bfc14f56a4429ed0d":[5,0,0,54,9],
-"classbrayns_1_1_o_s_p_ray_frame_buffer.html#a8658d22a1a48434b0c0eb5d12b82d8ff":[5,0,0,54,6],
-"classbrayns_1_1_o_s_p_ray_frame_buffer.html#a882f9920a1a0d1e7dd223b0742741910":[5,0,0,54,12],
-"classbrayns_1_1_o_s_p_ray_frame_buffer.html#a8df54f6edf8f1a8aa189df0091c004ec":[5,0,0,54,7],
+"classbrayns_1_1_o_s_p_ray_frame_buffer.html#a8658d22a1a48434b0c0eb5d12b82d8ff":[5,0,0,54,7],
 "classbrayns_1_1_o_s_p_ray_frame_buffer.html#a943b34ad5dd33c9945b7c9181f0c9db8":[5,0,0,54,0],
-"classbrayns_1_1_o_s_p_ray_frame_buffer.html#abf27f142890aca0452a7ed66a0fac40b":[5,0,0,54,13],
+"classbrayns_1_1_o_s_p_ray_frame_buffer.html#abf27f142890aca0452a7ed66a0fac40b":[5,0,0,54,12],
 "classbrayns_1_1_o_s_p_ray_frame_buffer.html#acb0d6eba323f9bda529d87ad22ec1faa":[5,0,0,54,4],
 "classbrayns_1_1_o_s_p_ray_frame_buffer.html#ae5860c1cf3bc84a71a86cac02c9acd9f":[5,0,0,54,1],
 "classbrayns_1_1_o_s_p_ray_frame_buffer.html#aed816a3c2b8b12ed81d3c0920dd8efb8":[5,0,0,54,10],
@@ -249,5 +248,6 @@ var NAVTREEINDEX2 =
 "classbrayns_1_1_parameters_manager.html#a0a0967c0597705f2c6f936a2cfc98b3c":[5,0,0,61,11],
 "classbrayns_1_1_parameters_manager.html#a0c96d24bee61aaa727c92db0aeeeb0c0":[5,0,0,61,13],
 "classbrayns_1_1_parameters_manager.html#a1d25e34639dbb420f9a3405b556a88b0":[5,0,0,61,14],
-"classbrayns_1_1_parameters_manager.html#a2bc6a8dbef296ff837e33911cf3e4e55":[5,0,0,61,6]
+"classbrayns_1_1_parameters_manager.html#a2bc6a8dbef296ff837e33911cf3e4e55":[5,0,0,61,6],
+"classbrayns_1_1_parameters_manager.html#a2fc48e699c64648868460809b3343a51":[5,0,0,61,15]
 };

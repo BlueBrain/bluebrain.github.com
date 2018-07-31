@@ -6,12 +6,11 @@ var classbrayns_1_1_o_s_p_ray_frame_buffer =
     [ "enableDeflectPixelOp", "classbrayns_1_1_o_s_p_ray_frame_buffer.html#a55fb86858ff87cf168acc92c5667d4d3", null ],
     [ "getColorBuffer", "classbrayns_1_1_o_s_p_ray_frame_buffer.html#acb0d6eba323f9bda529d87ad22ec1faa", null ],
     [ "getDepthBuffer", "classbrayns_1_1_o_s_p_ray_frame_buffer.html#a00f2bf266d2ebee31f91a90b70965370", null ],
+    [ "getScopeLock", "classbrayns_1_1_o_s_p_ray_frame_buffer.html#a0384387c0a099a1e73ec26cb79e0f154", null ],
     [ "impl", "classbrayns_1_1_o_s_p_ray_frame_buffer.html#a8658d22a1a48434b0c0eb5d12b82d8ff", null ],
-    [ "lock", "classbrayns_1_1_o_s_p_ray_frame_buffer.html#a8df54f6edf8f1a8aa189df0091c004ec", null ],
     [ "map", "classbrayns_1_1_o_s_p_ray_frame_buffer.html#a32121271b53b6d3ea9c6249f0d04a9d2", null ],
     [ "resize", "classbrayns_1_1_o_s_p_ray_frame_buffer.html#a790c46f12e34114bfc14f56a4429ed0d", null ],
     [ "setAccumulation", "classbrayns_1_1_o_s_p_ray_frame_buffer.html#aed816a3c2b8b12ed81d3c0920dd8efb8", null ],
     [ "setStreamingParams", "classbrayns_1_1_o_s_p_ray_frame_buffer.html#a45b3d0b9867642284c52d2ce341712d9", null ],
-    [ "unlock", "classbrayns_1_1_o_s_p_ray_frame_buffer.html#a882f9920a1a0d1e7dd223b0742741910", null ],
     [ "unmap", "classbrayns_1_1_o_s_p_ray_frame_buffer.html#abf27f142890aca0452a7ed66a0fac40b", null ]
 ];

@@ -31,13 +31,13 @@
             <td class="headerValue">Brayns</td>
             <td></td>
             <td class="headerItem">Lines:</td>
-            <td class="headerCovTableEntry">149</td>
-            <td class="headerCovTableEntry">187</td>
-            <td class="headerCovTableEntryMed">79.7 %</td>
+            <td class="headerCovTableEntry">157</td>
+            <td class="headerCovTableEntry">195</td>
+            <td class="headerCovTableEntryHi">80.5 %</td>
           </tr>
           <tr>
             <td class="headerItem">Date:</td>
-            <td class="headerValue">2018-07-28 01:29:54</td>
+            <td class="headerValue">2018-07-31 02:48:57</td>
             <td></td>
             <td class="headerItem">Functions:</td>
             <td class="headerCovTableEntry">14</td>
@@ -160,314 +160,327 @@
 <span class="lineNum">      98 </span><span class="lineCov">         12 :     auto model = _scene.createModel();</span>
 <span class="lineNum">      99 </span><span class="lineCov">          6 :     importMesh(fileName, *model, index, {}, defaultMaterialId);</span>
 <span class="lineNum">     100 </span>            : 
-<span class="lineNum">     101 </span><span class="lineCov">         12 :     return std::make_shared&lt;ModelDescriptor&gt;(std::move(model), fileName);</span>
-<a name="102"><span class="lineNum">     102 </span>            : }</a>
+<span class="lineNum">     101 </span><span class="lineCov">         12 :     Transformation transformation;</span>
+<span class="lineNum">     102 </span><span class="lineCov">          6 :     transformation.setRotationCenter(model-&gt;getBounds().getCenter());</span>
 <span class="lineNum">     103 </span>            : 
-<span class="lineNum">     104 </span><span class="lineCov">          4 : ModelDescriptorPtr MeshLoader::importFromBlob(Blob&amp;&amp; blob, const size_t index,</span>
-<span class="lineNum">     105 </span>            :                                               const size_t defaultMaterialId)
-<span class="lineNum">     106 </span>            : {
-<span class="lineNum">     107 </span><span class="lineCov">          8 :     Assimp::Importer importer;</span>
-<span class="lineNum">     108 </span><span class="lineCov">          4 :     importer.SetProgressHandler(new ProgressWatcher(*this, blob.name));</span>
+<span class="lineNum">     104 </span>            :     auto modelDescriptor =
+<span class="lineNum">     105 </span><span class="lineCov">          6 :         std::make_shared&lt;ModelDescriptor&gt;(std::move(model), fileName);</span>
+<span class="lineNum">     106 </span><span class="lineCov">          6 :     modelDescriptor-&gt;setTransformation(transformation);</span>
+<span class="lineNum">     107 </span><span class="lineCov">         12 :     return modelDescriptor;</span>
+<a name="108"><span class="lineNum">     108 </span>            : }</a>
 <span class="lineNum">     109 </span>            : 
-<span class="lineNum">     110 </span>            :     const aiScene* aiScene =
-<span class="lineNum">     111 </span><span class="lineCov">          8 :         importer.ReadFileFromMemory(blob.data.data(), blob.data.size(),</span>
-<span class="lineNum">     112 </span><span class="lineCov">          8 :                                     _getQuality(), blob.type.c_str());</span>
-<span class="lineNum">     113 </span>            : 
-<span class="lineNum">     114 </span><span class="lineCov">          4 :     if (!aiScene)</span>
-<span class="lineNum">     115 </span><span class="lineNoCov">          0 :         throw std::runtime_error(importer.GetErrorString());</span>
-<span class="lineNum">     116 </span>            : 
-<span class="lineNum">     117 </span><span class="lineCov">          4 :     if (!aiScene-&gt;HasMeshes())</span>
-<span class="lineNum">     118 </span><span class="lineNoCov">          0 :         throw std::runtime_error(&quot;No meshes found&quot;);</span>
+<span class="lineNum">     110 </span><span class="lineCov">          4 : ModelDescriptorPtr MeshLoader::importFromBlob(Blob&amp;&amp; blob, const size_t index,</span>
+<span class="lineNum">     111 </span>            :                                               const size_t defaultMaterialId)
+<span class="lineNum">     112 </span>            : {
+<span class="lineNum">     113 </span><span class="lineCov">          8 :     Assimp::Importer importer;</span>
+<span class="lineNum">     114 </span><span class="lineCov">          4 :     importer.SetProgressHandler(new ProgressWatcher(*this, blob.name));</span>
+<span class="lineNum">     115 </span>            : 
+<span class="lineNum">     116 </span>            :     const aiScene* aiScene =
+<span class="lineNum">     117 </span><span class="lineCov">          8 :         importer.ReadFileFromMemory(blob.data.data(), blob.data.size(),</span>
+<span class="lineNum">     118 </span><span class="lineCov">          8 :                                     _getQuality(), blob.type.c_str());</span>
 <span class="lineNum">     119 </span>            : 
-<span class="lineNum">     120 </span><span class="lineCov">          8 :     auto model = _scene.createModel();</span>
-<span class="lineNum">     121 </span><span class="lineCov">          4 :     _postLoad(aiScene, *model, index, {}, defaultMaterialId);</span>
-<span class="lineNum">     122 </span><span class="lineCov">          8 :     return std::make_shared&lt;ModelDescriptor&gt;(std::move(model), blob.name);</span>
-<a name="123"><span class="lineNum">     123 </span>            : }</a>
-<span class="lineNum">     124 </span>            : 
-<span class="lineNum">     125 </span><span class="lineCov">         10 : void MeshLoader::_createMaterials(Model&amp; model, const aiScene* aiScene,</span>
-<span class="lineNum">     126 </span>            :                                   const std::string&amp; folder)
-<span class="lineNum">     127 </span>            : {
-<span class="lineNum">     128 </span><span class="lineCov">         10 :     BRAYNS_DEBUG &lt;&lt; &quot;Loading &quot; &lt;&lt; aiScene-&gt;mNumMaterials &lt;&lt; &quot; materials&quot;</span>
-<span class="lineNum">     129 </span><span class="lineCov">         10 :                  &lt;&lt; std::endl;</span>
-<span class="lineNum">     130 </span>            : 
-<span class="lineNum">     131 </span><span class="lineCov">         20 :     for (size_t m = 0; m &lt; aiScene-&gt;mNumMaterials; ++m)</span>
-<span class="lineNum">     132 </span>            :     {
-<span class="lineNum">     133 </span><span class="lineCov">         10 :         aiMaterial* aimaterial = aiScene-&gt;mMaterials[m];</span>
-<span class="lineNum">     134 </span>            : 
-<span class="lineNum">     135 </span><span class="lineCov">         10 :         aiString valueString;</span>
-<span class="lineNum">     136 </span><span class="lineCov">         10 :         aimaterial-&gt;Get(AI_MATKEY_NAME, valueString);</span>
-<span class="lineNum">     137 </span><span class="lineCov">         20 :         std::string name{valueString.C_Str()};</span>
-<span class="lineNum">     138 </span><span class="lineCov">         20 :         auto material = model.createMaterial(m, name);</span>
-<span class="lineNum">     139 </span>            : 
-<span class="lineNum">     140 </span>            :         struct TextureTypeMapping
-<span class="lineNum">     141 </span>            :         {
-<span class="lineNum">     142 </span>            :             aiTextureType aiType;
-<span class="lineNum">     143 </span>            :             TextureType type;
-<span class="lineNum">     144 </span>            :         };
-<span class="lineNum">     145 </span>            : 
-<span class="lineNum">     146 </span><span class="lineCov">         10 :         const size_t NB_TEXTURE_TYPES = 6;</span>
-<span class="lineNum">     147 </span>            :         TextureTypeMapping textureTypeMapping[NB_TEXTURE_TYPES] = {
-<span class="lineNum">     148 </span>            :             {aiTextureType_DIFFUSE, TextureType::TT_DIFFUSE},
-<span class="lineNum">     149 </span>            :             {aiTextureType_NORMALS, TextureType::TT_NORMALS},
-<span class="lineNum">     150 </span>            :             {aiTextureType_SPECULAR, TextureType::TT_SPECULAR},
-<span class="lineNum">     151 </span>            :             {aiTextureType_EMISSIVE, TextureType::TT_EMISSIVE},
-<span class="lineNum">     152 </span>            :             {aiTextureType_OPACITY, TextureType::TT_OPACITY},
-<span class="lineNum">     153 </span><span class="lineCov">         10 :             {aiTextureType_REFLECTION, TextureType::TT_REFLECTION}};</span>
-<span class="lineNum">     154 </span>            : 
-<span class="lineNum">     155 </span><span class="lineCov">         70 :         for (size_t textureType = 0; textureType &lt; NB_TEXTURE_TYPES;</span>
-<span class="lineNum">     156 </span>            :              ++textureType)
-<span class="lineNum">     157 </span>            :         {
-<span class="lineNum">     158 </span><span class="lineCov">         60 :             if (aimaterial-&gt;GetTextureCount(</span>
-<span class="lineNum">     159 </span>            :                     textureTypeMapping[textureType].aiType) &gt; 0)
-<span class="lineNum">     160 </span>            :             {
-<span class="lineNum">     161 </span><span class="lineNoCov">          0 :                 aiString path;</span>
-<span class="lineNum">     162 </span><span class="lineNoCov">          0 :                 if (aimaterial-&gt;GetTexture(</span>
-<span class="lineNum">     163 </span>            :                         textureTypeMapping[textureType].aiType, 0, &amp;path,
-<span class="lineNum">     164 </span>            :                         nullptr, nullptr, nullptr, nullptr,
-<span class="lineNum">     165 </span>            :                         nullptr) == AI_SUCCESS)
-<span class="lineNum">     166 </span>            :                 {
-<span class="lineNum">     167 </span><span class="lineNoCov">          0 :                     const std::string fileName = folder + &quot;/&quot; + path.data;</span>
-<span class="lineNum">     168 </span><span class="lineNoCov">          0 :                     BRAYNS_DEBUG &lt;&lt; &quot;Loading texture: &quot; &lt;&lt; fileName</span>
-<span class="lineNum">     169 </span><span class="lineNoCov">          0 :                                  &lt;&lt; std::endl;</span>
-<span class="lineNum">     170 </span><span class="lineNoCov">          0 :                     material-&gt;setTexture(fileName,</span>
-<span class="lineNum">     171 </span><span class="lineNoCov">          0 :                                          textureTypeMapping[textureType].type);</span>
-<span class="lineNum">     172 </span>            :                 }
-<span class="lineNum">     173 </span>            :             }
-<span class="lineNum">     174 </span>            :         }
-<span class="lineNum">     175 </span>            : 
-<span class="lineNum">     176 </span><span class="lineCov">         10 :         aiColor4D value4f(0.f);</span>
-<span class="lineNum">     177 </span>            :         float value1f;
-<span class="lineNum">     178 </span><span class="lineCov">         10 :         if (aimaterial-&gt;Get(AI_MATKEY_COLOR_DIFFUSE, value4f) == AI_SUCCESS)</span>
-<span class="lineNum">     179 </span><span class="lineCov">         10 :             material-&gt;setDiffuseColor({value4f.r, value4f.g, value4f.b});</span>
-<span class="lineNum">     180 </span>            : 
-<span class="lineNum">     181 </span><span class="lineCov">         10 :         value1f = 0.f;</span>
-<span class="lineNum">     182 </span><span class="lineCov">         10 :         if (aimaterial-&gt;Get(AI_MATKEY_OPACITY, value1f) != AI_SUCCESS)</span>
-<span class="lineNum">     183 </span><span class="lineNoCov">          0 :             material-&gt;setOpacity(value4f.a);</span>
-<span class="lineNum">     184 </span>            :         else
-<span class="lineNum">     185 </span><span class="lineCov">         10 :             material-&gt;setOpacity(value1f);</span>
-<span class="lineNum">     186 </span>            : 
-<span class="lineNum">     187 </span><span class="lineCov">         10 :         value1f = 0.f;</span>
-<span class="lineNum">     188 </span><span class="lineCov">         10 :         if (aimaterial-&gt;Get(AI_MATKEY_REFLECTIVITY, value1f) == AI_SUCCESS)</span>
-<span class="lineNum">     189 </span><span class="lineNoCov">          0 :             material-&gt;setReflectionIndex(value1f);</span>
-<span class="lineNum">     190 </span>            : 
-<span class="lineNum">     191 </span><span class="lineCov">         10 :         value4f = aiColor4D(0.f);</span>
-<span class="lineNum">     192 </span><span class="lineCov">         10 :         if (aimaterial-&gt;Get(AI_MATKEY_COLOR_SPECULAR, value4f) == AI_SUCCESS)</span>
-<span class="lineNum">     193 </span><span class="lineCov">         10 :             material-&gt;setSpecularColor({value4f.r, value4f.g, value4f.b});</span>
-<span class="lineNum">     194 </span>            : 
-<span class="lineNum">     195 </span><span class="lineCov">         10 :         value1f = 0.f;</span>
-<span class="lineNum">     196 </span><span class="lineCov">         10 :         if (aimaterial-&gt;Get(AI_MATKEY_SHININESS, value1f) == AI_SUCCESS)</span>
-<span class="lineNum">     197 </span>            :         {
-<span class="lineNum">     198 </span><span class="lineCov">         10 :             if (value1f == 0.f)</span>
-<span class="lineNum">     199 </span><span class="lineCov">         10 :                 material-&gt;setSpecularColor({0.f, 0.f, 0.f});</span>
-<span class="lineNum">     200 </span><span class="lineCov">         10 :             material-&gt;setSpecularExponent(value1f);</span>
-<span class="lineNum">     201 </span>            :         }
-<span class="lineNum">     202 </span>            : 
-<span class="lineNum">     203 </span><span class="lineCov">         10 :         value4f = aiColor4D(0.f);</span>
-<span class="lineNum">     204 </span><span class="lineCov">         10 :         if (aimaterial-&gt;Get(AI_MATKEY_COLOR_EMISSIVE, value4f) == AI_SUCCESS)</span>
-<span class="lineNum">     205 </span><span class="lineCov">         10 :             material-&gt;setEmission(value4f.r);</span>
-<span class="lineNum">     206 </span>            : 
-<span class="lineNum">     207 </span><span class="lineCov">         10 :         value1f = 0.f;</span>
-<span class="lineNum">     208 </span><span class="lineCov">         10 :         if (aimaterial-&gt;Get(AI_MATKEY_REFRACTI, value1f) == AI_SUCCESS)</span>
-<span class="lineNum">     209 </span><span class="lineCov">         10 :             if (value1f != 0.f)</span>
-<span class="lineNum">     210 </span><span class="lineCov">         10 :                 material-&gt;setRefractionIndex(value1f);</span>
-<span class="lineNum">     211 </span>            :     }
-<a name="212"><span class="lineNum">     212 </span><span class="lineCov">         10 : }</span></a>
-<span class="lineNum">     213 </span>            : 
-<span class="lineNum">     214 </span><span class="lineCov">         10 : void MeshLoader::_postLoad(const aiScene* aiScene, Model&amp; model,</span>
-<span class="lineNum">     215 </span>            :                            const size_t index, const Matrix4f&amp; transformation,
-<span class="lineNum">     216 </span>            :                            const size_t defaultMaterialId,
-<span class="lineNum">     217 </span>            :                            const std::string&amp; folder)
-<span class="lineNum">     218 </span>            : {
-<span class="lineNum">     219 </span>            :     const size_t materialId =
-<span class="lineNum">     220 </span><span class="lineCov">         10 :         _geometryParameters.getColorScheme() == ColorScheme::neuron_by_id</span>
-<span class="lineNum">     221 </span><span class="lineCov">         10 :             ? index</span>
-<span class="lineNum">     222 </span><span class="lineCov">         10 :             : defaultMaterialId;</span>
-<span class="lineNum">     223 </span>            : 
-<span class="lineNum">     224 </span><span class="lineCov">         10 :     if (materialId == NO_MATERIAL)</span>
-<span class="lineNum">     225 </span><span class="lineCov">         10 :         _createMaterials(model, aiScene, folder);</span>
+<span class="lineNum">     120 </span><span class="lineCov">          4 :     if (!aiScene)</span>
+<span class="lineNum">     121 </span><span class="lineNoCov">          0 :         throw std::runtime_error(importer.GetErrorString());</span>
+<span class="lineNum">     122 </span>            : 
+<span class="lineNum">     123 </span><span class="lineCov">          4 :     if (!aiScene-&gt;HasMeshes())</span>
+<span class="lineNum">     124 </span><span class="lineNoCov">          0 :         throw std::runtime_error(&quot;No meshes found&quot;);</span>
+<span class="lineNum">     125 </span>            : 
+<span class="lineNum">     126 </span><span class="lineCov">          8 :     auto model = _scene.createModel();</span>
+<span class="lineNum">     127 </span><span class="lineCov">          4 :     _postLoad(aiScene, *model, index, {}, defaultMaterialId);</span>
+<span class="lineNum">     128 </span>            : 
+<span class="lineNum">     129 </span><span class="lineCov">          8 :     Transformation transformation;</span>
+<span class="lineNum">     130 </span><span class="lineCov">          4 :     transformation.setRotationCenter(model-&gt;getBounds().getCenter());</span>
+<span class="lineNum">     131 </span>            : 
+<span class="lineNum">     132 </span>            :     auto modelDescriptor =
+<span class="lineNum">     133 </span><span class="lineCov">          4 :         std::make_shared&lt;ModelDescriptor&gt;(std::move(model), blob.name);</span>
+<span class="lineNum">     134 </span><span class="lineCov">          4 :     modelDescriptor-&gt;setTransformation(transformation);</span>
+<span class="lineNum">     135 </span><span class="lineCov">          8 :     return modelDescriptor;</span>
+<a name="136"><span class="lineNum">     136 </span>            : }</a>
+<span class="lineNum">     137 </span>            : 
+<span class="lineNum">     138 </span><span class="lineCov">         10 : void MeshLoader::_createMaterials(Model&amp; model, const aiScene* aiScene,</span>
+<span class="lineNum">     139 </span>            :                                   const std::string&amp; folder)
+<span class="lineNum">     140 </span>            : {
+<span class="lineNum">     141 </span><span class="lineCov">         10 :     BRAYNS_DEBUG &lt;&lt; &quot;Loading &quot; &lt;&lt; aiScene-&gt;mNumMaterials &lt;&lt; &quot; materials&quot;</span>
+<span class="lineNum">     142 </span><span class="lineCov">         10 :                  &lt;&lt; std::endl;</span>
+<span class="lineNum">     143 </span>            : 
+<span class="lineNum">     144 </span><span class="lineCov">         20 :     for (size_t m = 0; m &lt; aiScene-&gt;mNumMaterials; ++m)</span>
+<span class="lineNum">     145 </span>            :     {
+<span class="lineNum">     146 </span><span class="lineCov">         10 :         aiMaterial* aimaterial = aiScene-&gt;mMaterials[m];</span>
+<span class="lineNum">     147 </span>            : 
+<span class="lineNum">     148 </span><span class="lineCov">         10 :         aiString valueString;</span>
+<span class="lineNum">     149 </span><span class="lineCov">         10 :         aimaterial-&gt;Get(AI_MATKEY_NAME, valueString);</span>
+<span class="lineNum">     150 </span><span class="lineCov">         20 :         std::string name{valueString.C_Str()};</span>
+<span class="lineNum">     151 </span><span class="lineCov">         20 :         auto material = model.createMaterial(m, name);</span>
+<span class="lineNum">     152 </span>            : 
+<span class="lineNum">     153 </span>            :         struct TextureTypeMapping
+<span class="lineNum">     154 </span>            :         {
+<span class="lineNum">     155 </span>            :             aiTextureType aiType;
+<span class="lineNum">     156 </span>            :             TextureType type;
+<span class="lineNum">     157 </span>            :         };
+<span class="lineNum">     158 </span>            : 
+<span class="lineNum">     159 </span><span class="lineCov">         10 :         const size_t NB_TEXTURE_TYPES = 6;</span>
+<span class="lineNum">     160 </span>            :         TextureTypeMapping textureTypeMapping[NB_TEXTURE_TYPES] = {
+<span class="lineNum">     161 </span>            :             {aiTextureType_DIFFUSE, TextureType::TT_DIFFUSE},
+<span class="lineNum">     162 </span>            :             {aiTextureType_NORMALS, TextureType::TT_NORMALS},
+<span class="lineNum">     163 </span>            :             {aiTextureType_SPECULAR, TextureType::TT_SPECULAR},
+<span class="lineNum">     164 </span>            :             {aiTextureType_EMISSIVE, TextureType::TT_EMISSIVE},
+<span class="lineNum">     165 </span>            :             {aiTextureType_OPACITY, TextureType::TT_OPACITY},
+<span class="lineNum">     166 </span><span class="lineCov">         10 :             {aiTextureType_REFLECTION, TextureType::TT_REFLECTION}};</span>
+<span class="lineNum">     167 </span>            : 
+<span class="lineNum">     168 </span><span class="lineCov">         70 :         for (size_t textureType = 0; textureType &lt; NB_TEXTURE_TYPES;</span>
+<span class="lineNum">     169 </span>            :              ++textureType)
+<span class="lineNum">     170 </span>            :         {
+<span class="lineNum">     171 </span><span class="lineCov">         60 :             if (aimaterial-&gt;GetTextureCount(</span>
+<span class="lineNum">     172 </span>            :                     textureTypeMapping[textureType].aiType) &gt; 0)
+<span class="lineNum">     173 </span>            :             {
+<span class="lineNum">     174 </span><span class="lineNoCov">          0 :                 aiString path;</span>
+<span class="lineNum">     175 </span><span class="lineNoCov">          0 :                 if (aimaterial-&gt;GetTexture(</span>
+<span class="lineNum">     176 </span>            :                         textureTypeMapping[textureType].aiType, 0, &amp;path,
+<span class="lineNum">     177 </span>            :                         nullptr, nullptr, nullptr, nullptr,
+<span class="lineNum">     178 </span>            :                         nullptr) == AI_SUCCESS)
+<span class="lineNum">     179 </span>            :                 {
+<span class="lineNum">     180 </span><span class="lineNoCov">          0 :                     const std::string fileName = folder + &quot;/&quot; + path.data;</span>
+<span class="lineNum">     181 </span><span class="lineNoCov">          0 :                     BRAYNS_DEBUG &lt;&lt; &quot;Loading texture: &quot; &lt;&lt; fileName</span>
+<span class="lineNum">     182 </span><span class="lineNoCov">          0 :                                  &lt;&lt; std::endl;</span>
+<span class="lineNum">     183 </span><span class="lineNoCov">          0 :                     material-&gt;setTexture(fileName,</span>
+<span class="lineNum">     184 </span><span class="lineNoCov">          0 :                                          textureTypeMapping[textureType].type);</span>
+<span class="lineNum">     185 </span>            :                 }
+<span class="lineNum">     186 </span>            :             }
+<span class="lineNum">     187 </span>            :         }
+<span class="lineNum">     188 </span>            : 
+<span class="lineNum">     189 </span><span class="lineCov">         10 :         aiColor4D value4f(0.f);</span>
+<span class="lineNum">     190 </span>            :         float value1f;
+<span class="lineNum">     191 </span><span class="lineCov">         10 :         if (aimaterial-&gt;Get(AI_MATKEY_COLOR_DIFFUSE, value4f) == AI_SUCCESS)</span>
+<span class="lineNum">     192 </span><span class="lineCov">         10 :             material-&gt;setDiffuseColor({value4f.r, value4f.g, value4f.b});</span>
+<span class="lineNum">     193 </span>            : 
+<span class="lineNum">     194 </span><span class="lineCov">         10 :         value1f = 0.f;</span>
+<span class="lineNum">     195 </span><span class="lineCov">         10 :         if (aimaterial-&gt;Get(AI_MATKEY_OPACITY, value1f) != AI_SUCCESS)</span>
+<span class="lineNum">     196 </span><span class="lineNoCov">          0 :             material-&gt;setOpacity(value4f.a);</span>
+<span class="lineNum">     197 </span>            :         else
+<span class="lineNum">     198 </span><span class="lineCov">         10 :             material-&gt;setOpacity(value1f);</span>
+<span class="lineNum">     199 </span>            : 
+<span class="lineNum">     200 </span><span class="lineCov">         10 :         value1f = 0.f;</span>
+<span class="lineNum">     201 </span><span class="lineCov">         10 :         if (aimaterial-&gt;Get(AI_MATKEY_REFLECTIVITY, value1f) == AI_SUCCESS)</span>
+<span class="lineNum">     202 </span><span class="lineNoCov">          0 :             material-&gt;setReflectionIndex(value1f);</span>
+<span class="lineNum">     203 </span>            : 
+<span class="lineNum">     204 </span><span class="lineCov">         10 :         value4f = aiColor4D(0.f);</span>
+<span class="lineNum">     205 </span><span class="lineCov">         10 :         if (aimaterial-&gt;Get(AI_MATKEY_COLOR_SPECULAR, value4f) == AI_SUCCESS)</span>
+<span class="lineNum">     206 </span><span class="lineCov">         10 :             material-&gt;setSpecularColor({value4f.r, value4f.g, value4f.b});</span>
+<span class="lineNum">     207 </span>            : 
+<span class="lineNum">     208 </span><span class="lineCov">         10 :         value1f = 0.f;</span>
+<span class="lineNum">     209 </span><span class="lineCov">         10 :         if (aimaterial-&gt;Get(AI_MATKEY_SHININESS, value1f) == AI_SUCCESS)</span>
+<span class="lineNum">     210 </span>            :         {
+<span class="lineNum">     211 </span><span class="lineCov">         10 :             if (value1f == 0.f)</span>
+<span class="lineNum">     212 </span><span class="lineCov">         10 :                 material-&gt;setSpecularColor({0.f, 0.f, 0.f});</span>
+<span class="lineNum">     213 </span><span class="lineCov">         10 :             material-&gt;setSpecularExponent(value1f);</span>
+<span class="lineNum">     214 </span>            :         }
+<span class="lineNum">     215 </span>            : 
+<span class="lineNum">     216 </span><span class="lineCov">         10 :         value4f = aiColor4D(0.f);</span>
+<span class="lineNum">     217 </span><span class="lineCov">         10 :         if (aimaterial-&gt;Get(AI_MATKEY_COLOR_EMISSIVE, value4f) == AI_SUCCESS)</span>
+<span class="lineNum">     218 </span><span class="lineCov">         10 :             material-&gt;setEmission(value4f.r);</span>
+<span class="lineNum">     219 </span>            : 
+<span class="lineNum">     220 </span><span class="lineCov">         10 :         value1f = 0.f;</span>
+<span class="lineNum">     221 </span><span class="lineCov">         10 :         if (aimaterial-&gt;Get(AI_MATKEY_REFRACTI, value1f) == AI_SUCCESS)</span>
+<span class="lineNum">     222 </span><span class="lineCov">         10 :             if (value1f != 0.f)</span>
+<span class="lineNum">     223 </span><span class="lineCov">         10 :                 material-&gt;setRefractionIndex(value1f);</span>
+<span class="lineNum">     224 </span>            :     }
+<a name="225"><span class="lineNum">     225 </span><span class="lineCov">         10 : }</span></a>
 <span class="lineNum">     226 </span>            : 
-<span class="lineNum">     227 </span><span class="lineCov">         10 :     size_t nbVertices = 0;</span>
-<span class="lineNum">     228 </span><span class="lineCov">         10 :     size_t nbFaces = 0;</span>
-<span class="lineNum">     229 </span><span class="lineCov">         20 :     std::map&lt;size_t, size_t&gt; indexOffsets;</span>
-<span class="lineNum">     230 </span>            : 
-<span class="lineNum">     231 </span><span class="lineCov">         10 :     const auto trfm = aiScene-&gt;mRootNode-&gt;mTransformation;</span>
-<span class="lineNum">     232 </span><span class="lineCov">         10 :     Matrix4f matrix;</span>
-<span class="lineNum">     233 </span><span class="lineCov">         10 :     matrix.setRow(0, {trfm.a1, trfm.a2, trfm.a3, trfm.a4});</span>
-<span class="lineNum">     234 </span><span class="lineCov">         10 :     matrix.setRow(1, {trfm.b1, trfm.b2, trfm.b3, trfm.b4});</span>
-<span class="lineNum">     235 </span><span class="lineCov">         10 :     matrix.setRow(2, {trfm.c1, trfm.c2, trfm.c3, trfm.c4});</span>
-<span class="lineNum">     236 </span><span class="lineCov">         10 :     matrix.setRow(3, {trfm.d1, trfm.d2, trfm.d3, trfm.d4});</span>
-<span class="lineNum">     237 </span><span class="lineCov">         10 :     matrix = matrix * transformation;</span>
-<span class="lineNum">     238 </span>            : 
-<span class="lineNum">     239 </span><span class="lineCov">         20 :     for (size_t m = 0; m &lt; aiScene-&gt;mNumMeshes; ++m)</span>
-<span class="lineNum">     240 </span>            :     {
-<span class="lineNum">     241 </span><span class="lineCov">         10 :         auto mesh = aiScene-&gt;mMeshes[m];</span>
-<span class="lineNum">     242 </span>            :         auto id =
-<span class="lineNum">     243 </span><span class="lineCov">         10 :             (materialId != NO_MATERIAL ? materialId : mesh-&gt;mMaterialIndex);</span>
-<span class="lineNum">     244 </span><span class="lineCov">         10 :         auto&amp; triangleMeshes = model.getTrianglesMeshes()[id];</span>
-<span class="lineNum">     245 </span>            : 
-<span class="lineNum">     246 </span><span class="lineCov">         10 :         nbVertices += mesh-&gt;mNumVertices;</span>
-<span class="lineNum">     247 </span><span class="lineCov">         10 :         triangleMeshes.vertices.reserve(nbVertices);</span>
-<span class="lineNum">     248 </span><span class="lineCov">         10 :         if (mesh-&gt;HasNormals())</span>
-<span class="lineNum">     249 </span><span class="lineCov">         10 :             triangleMeshes.normals.reserve(nbVertices);</span>
-<span class="lineNum">     250 </span><span class="lineCov">         10 :         if (mesh-&gt;HasTextureCoords(0))</span>
-<span class="lineNum">     251 </span><span class="lineNoCov">          0 :             triangleMeshes.textureCoordinates.reserve(nbVertices);</span>
-<span class="lineNum">     252 </span><span class="lineCov">         10 :         if (mesh-&gt;HasVertexColors(0))</span>
-<span class="lineNum">     253 </span><span class="lineNoCov">          0 :             triangleMeshes.colors.reserve(nbVertices);</span>
-<span class="lineNum">     254 </span><span class="lineCov">      80770 :         for (size_t i = 0; i &lt; mesh-&gt;mNumVertices; ++i)</span>
-<span class="lineNum">     255 </span>            :         {
-<span class="lineNum">     256 </span><span class="lineCov">      80760 :             const auto&amp; v = mesh-&gt;mVertices[i];</span>
-<span class="lineNum">     257 </span>            :             const Vector3f transformedVertex =
-<span class="lineNum">     258 </span><span class="lineCov">      80760 :                 matrix * Vector4f(v.x, v.y, v.z, 1.f);</span>
-<span class="lineNum">     259 </span><span class="lineCov">      80760 :             triangleMeshes.vertices.push_back(transformedVertex);</span>
-<span class="lineNum">     260 </span><span class="lineCov">      80760 :             model.updateBounds(transformedVertex);</span>
-<span class="lineNum">     261 </span><span class="lineCov">      80760 :             if (mesh-&gt;HasNormals())</span>
-<span class="lineNum">     262 </span>            :             {
-<span class="lineNum">     263 </span><span class="lineCov">      80760 :                 const auto&amp; n = mesh-&gt;mNormals[i];</span>
-<span class="lineNum">     264 </span><span class="lineCov">      80760 :                 const Vector4f normal = matrix * Vector4f(n.x, n.y, n.z, 0.f);</span>
-<span class="lineNum">     265 </span>            :                 const Vector3f transformedNormal = {normal.x(), normal.y(),
-<span class="lineNum">     266 </span><span class="lineCov">      80760 :                                                     normal.z()};</span>
-<span class="lineNum">     267 </span><span class="lineCov">      80760 :                 triangleMeshes.normals.push_back(transformedNormal);</span>
-<span class="lineNum">     268 </span>            :             }
-<span class="lineNum">     269 </span>            : 
-<span class="lineNum">     270 </span><span class="lineCov">      80760 :             if (mesh-&gt;HasTextureCoords(0))</span>
-<span class="lineNum">     271 </span>            :             {
-<span class="lineNum">     272 </span><span class="lineNoCov">          0 :                 const auto&amp; t = mesh-&gt;mTextureCoords[0][i];</span>
-<span class="lineNum">     273 </span><span class="lineNoCov">          0 :                 triangleMeshes.textureCoordinates.push_back({t.x, -t.y});</span>
-<span class="lineNum">     274 </span>            :             }
-<span class="lineNum">     275 </span>            : 
-<span class="lineNum">     276 </span><span class="lineCov">      80760 :             if (mesh-&gt;HasVertexColors(0))</span>
-<span class="lineNum">     277 </span>            :             {
-<span class="lineNum">     278 </span><span class="lineNoCov">          0 :                 const auto&amp; c = mesh-&gt;mColors[0][i];</span>
-<span class="lineNum">     279 </span><span class="lineNoCov">          0 :                 triangleMeshes.colors.push_back({c.r, c.g, c.b, c.a});</span>
-<span class="lineNum">     280 </span>            :             }
-<span class="lineNum">     281 </span>            :         }
-<span class="lineNum">     282 </span><span class="lineCov">         10 :         bool nonTriangulatedFaces = false;</span>
-<span class="lineNum">     283 </span><span class="lineCov">         10 :         nbFaces += mesh-&gt;mNumFaces;</span>
-<span class="lineNum">     284 </span><span class="lineCov">         10 :         triangleMeshes.indices.reserve(nbFaces);</span>
-<span class="lineNum">     285 </span><span class="lineCov">         10 :         const size_t offset = indexOffsets[mesh-&gt;mMaterialIndex];</span>
-<span class="lineNum">     286 </span><span class="lineCov">      26930 :         for (size_t f = 0; f &lt; mesh-&gt;mNumFaces; ++f)</span>
-<span class="lineNum">     287 </span>            :         {
-<span class="lineNum">     288 </span><span class="lineCov">      26920 :             if (mesh-&gt;mFaces[f].mNumIndices == 3)</span>
-<span class="lineNum">     289 </span>            :             {
-<span class="lineNum">     290 </span><span class="lineCov">      26920 :                 triangleMeshes.indices.push_back(</span>
-<span class="lineNum">     291 </span><span class="lineCov">      80760 :                     Vector3ui(offset + mesh-&gt;mFaces[f].mIndices[0],</span>
-<span class="lineNum">     292 </span><span class="lineCov">      26920 :                               offset + mesh-&gt;mFaces[f].mIndices[1],</span>
-<span class="lineNum">     293 </span><span class="lineCov">      53840 :                               offset + mesh-&gt;mFaces[f].mIndices[2]));</span>
-<span class="lineNum">     294 </span>            :             }
-<span class="lineNum">     295 </span>            :             else
-<span class="lineNum">     296 </span><span class="lineNoCov">          0 :                 nonTriangulatedFaces = true;</span>
-<span class="lineNum">     297 </span>            :         }
-<span class="lineNum">     298 </span><span class="lineCov">         10 :         if (nonTriangulatedFaces)</span>
-<span class="lineNum">     299 </span>            :             BRAYNS_DEBUG
-<span class="lineNum">     300 </span><span class="lineNoCov">          0 :                 &lt;&lt; &quot;Some faces are not triangulated and have been removed&quot;</span>
-<span class="lineNum">     301 </span><span class="lineNoCov">          0 :                 &lt;&lt; std::endl;</span>
-<span class="lineNum">     302 </span><span class="lineCov">         10 :         indexOffsets[mesh-&gt;mMaterialIndex] += mesh-&gt;mNumVertices;</span>
-<span class="lineNum">     303 </span>            :     }
-<span class="lineNum">     304 </span>            : 
-<span class="lineNum">     305 </span><span class="lineCov">         10 :     BRAYNS_DEBUG &lt;&lt; &quot;Loaded &quot; &lt;&lt; nbVertices &lt;&lt; &quot; vertices and &quot; &lt;&lt; nbFaces</span>
-<span class="lineNum">     306 </span><span class="lineCov">         10 :                  &lt;&lt; &quot; faces&quot; &lt;&lt; std::endl;</span>
-<a name="307"><span class="lineNum">     307 </span><span class="lineCov">         10 : }</span></a>
-<span class="lineNum">     308 </span>            : 
-<span class="lineNum">     309 </span><span class="lineCov">         10 : size_t MeshLoader::_getQuality() const</span>
-<span class="lineNum">     310 </span>            : {
-<span class="lineNum">     311 </span><span class="lineCov">         10 :     switch (_geometryParameters.getGeometryQuality())</span>
-<span class="lineNum">     312 </span>            :     {
-<span class="lineNum">     313 </span>            :     case GeometryQuality::low:
-<span class="lineNum">     314 </span>            :     case GeometryQuality::medium:
-<span class="lineNum">     315 </span><span class="lineNoCov">          0 :         return aiProcessPreset_TargetRealtime_Fast;</span>
-<span class="lineNum">     316 </span>            :     case GeometryQuality::high:
-<span class="lineNum">     317 </span>            :     default:
-<span class="lineNum">     318 </span><span class="lineCov">         10 :         return aiProcess_GenSmoothNormals | aiProcess_Triangulate;</span>
-<span class="lineNum">     319 </span>            :     }
-<a name="320"><span class="lineNum">     320 </span>            : }</a>
+<span class="lineNum">     227 </span><span class="lineCov">         10 : void MeshLoader::_postLoad(const aiScene* aiScene, Model&amp; model,</span>
+<span class="lineNum">     228 </span>            :                            const size_t index, const Matrix4f&amp; transformation,
+<span class="lineNum">     229 </span>            :                            const size_t defaultMaterialId,
+<span class="lineNum">     230 </span>            :                            const std::string&amp; folder)
+<span class="lineNum">     231 </span>            : {
+<span class="lineNum">     232 </span>            :     const size_t materialId =
+<span class="lineNum">     233 </span><span class="lineCov">         10 :         _geometryParameters.getColorScheme() == ColorScheme::neuron_by_id</span>
+<span class="lineNum">     234 </span><span class="lineCov">         10 :             ? index</span>
+<span class="lineNum">     235 </span><span class="lineCov">         10 :             : defaultMaterialId;</span>
+<span class="lineNum">     236 </span>            : 
+<span class="lineNum">     237 </span><span class="lineCov">         10 :     if (materialId == NO_MATERIAL)</span>
+<span class="lineNum">     238 </span><span class="lineCov">         10 :         _createMaterials(model, aiScene, folder);</span>
+<span class="lineNum">     239 </span>            : 
+<span class="lineNum">     240 </span><span class="lineCov">         10 :     size_t nbVertices = 0;</span>
+<span class="lineNum">     241 </span><span class="lineCov">         10 :     size_t nbFaces = 0;</span>
+<span class="lineNum">     242 </span><span class="lineCov">         20 :     std::map&lt;size_t, size_t&gt; indexOffsets;</span>
+<span class="lineNum">     243 </span>            : 
+<span class="lineNum">     244 </span><span class="lineCov">         10 :     const auto trfm = aiScene-&gt;mRootNode-&gt;mTransformation;</span>
+<span class="lineNum">     245 </span><span class="lineCov">         10 :     Matrix4f matrix;</span>
+<span class="lineNum">     246 </span><span class="lineCov">         10 :     matrix.setRow(0, {trfm.a1, trfm.a2, trfm.a3, trfm.a4});</span>
+<span class="lineNum">     247 </span><span class="lineCov">         10 :     matrix.setRow(1, {trfm.b1, trfm.b2, trfm.b3, trfm.b4});</span>
+<span class="lineNum">     248 </span><span class="lineCov">         10 :     matrix.setRow(2, {trfm.c1, trfm.c2, trfm.c3, trfm.c4});</span>
+<span class="lineNum">     249 </span><span class="lineCov">         10 :     matrix.setRow(3, {trfm.d1, trfm.d2, trfm.d3, trfm.d4});</span>
+<span class="lineNum">     250 </span><span class="lineCov">         10 :     matrix = matrix * transformation;</span>
+<span class="lineNum">     251 </span>            : 
+<span class="lineNum">     252 </span><span class="lineCov">         20 :     for (size_t m = 0; m &lt; aiScene-&gt;mNumMeshes; ++m)</span>
+<span class="lineNum">     253 </span>            :     {
+<span class="lineNum">     254 </span><span class="lineCov">         10 :         auto mesh = aiScene-&gt;mMeshes[m];</span>
+<span class="lineNum">     255 </span>            :         auto id =
+<span class="lineNum">     256 </span><span class="lineCov">         10 :             (materialId != NO_MATERIAL ? materialId : mesh-&gt;mMaterialIndex);</span>
+<span class="lineNum">     257 </span><span class="lineCov">         10 :         auto&amp; triangleMeshes = model.getTrianglesMeshes()[id];</span>
+<span class="lineNum">     258 </span>            : 
+<span class="lineNum">     259 </span><span class="lineCov">         10 :         nbVertices += mesh-&gt;mNumVertices;</span>
+<span class="lineNum">     260 </span><span class="lineCov">         10 :         triangleMeshes.vertices.reserve(nbVertices);</span>
+<span class="lineNum">     261 </span><span class="lineCov">         10 :         if (mesh-&gt;HasNormals())</span>
+<span class="lineNum">     262 </span><span class="lineCov">         10 :             triangleMeshes.normals.reserve(nbVertices);</span>
+<span class="lineNum">     263 </span><span class="lineCov">         10 :         if (mesh-&gt;HasTextureCoords(0))</span>
+<span class="lineNum">     264 </span><span class="lineNoCov">          0 :             triangleMeshes.textureCoordinates.reserve(nbVertices);</span>
+<span class="lineNum">     265 </span><span class="lineCov">         10 :         if (mesh-&gt;HasVertexColors(0))</span>
+<span class="lineNum">     266 </span><span class="lineNoCov">          0 :             triangleMeshes.colors.reserve(nbVertices);</span>
+<span class="lineNum">     267 </span><span class="lineCov">      80770 :         for (size_t i = 0; i &lt; mesh-&gt;mNumVertices; ++i)</span>
+<span class="lineNum">     268 </span>            :         {
+<span class="lineNum">     269 </span><span class="lineCov">      80760 :             const auto&amp; v = mesh-&gt;mVertices[i];</span>
+<span class="lineNum">     270 </span>            :             const Vector3f transformedVertex =
+<span class="lineNum">     271 </span><span class="lineCov">      80760 :                 matrix * Vector4f(v.x, v.y, v.z, 1.f);</span>
+<span class="lineNum">     272 </span><span class="lineCov">      80760 :             triangleMeshes.vertices.push_back(transformedVertex);</span>
+<span class="lineNum">     273 </span><span class="lineCov">      80760 :             model.updateBounds(transformedVertex);</span>
+<span class="lineNum">     274 </span><span class="lineCov">      80760 :             if (mesh-&gt;HasNormals())</span>
+<span class="lineNum">     275 </span>            :             {
+<span class="lineNum">     276 </span><span class="lineCov">      80760 :                 const auto&amp; n = mesh-&gt;mNormals[i];</span>
+<span class="lineNum">     277 </span><span class="lineCov">      80760 :                 const Vector4f normal = matrix * Vector4f(n.x, n.y, n.z, 0.f);</span>
+<span class="lineNum">     278 </span>            :                 const Vector3f transformedNormal = {normal.x(), normal.y(),
+<span class="lineNum">     279 </span><span class="lineCov">      80760 :                                                     normal.z()};</span>
+<span class="lineNum">     280 </span><span class="lineCov">      80760 :                 triangleMeshes.normals.push_back(transformedNormal);</span>
+<span class="lineNum">     281 </span>            :             }
+<span class="lineNum">     282 </span>            : 
+<span class="lineNum">     283 </span><span class="lineCov">      80760 :             if (mesh-&gt;HasTextureCoords(0))</span>
+<span class="lineNum">     284 </span>            :             {
+<span class="lineNum">     285 </span><span class="lineNoCov">          0 :                 const auto&amp; t = mesh-&gt;mTextureCoords[0][i];</span>
+<span class="lineNum">     286 </span><span class="lineNoCov">          0 :                 triangleMeshes.textureCoordinates.push_back({t.x, -t.y});</span>
+<span class="lineNum">     287 </span>            :             }
+<span class="lineNum">     288 </span>            : 
+<span class="lineNum">     289 </span><span class="lineCov">      80760 :             if (mesh-&gt;HasVertexColors(0))</span>
+<span class="lineNum">     290 </span>            :             {
+<span class="lineNum">     291 </span><span class="lineNoCov">          0 :                 const auto&amp; c = mesh-&gt;mColors[0][i];</span>
+<span class="lineNum">     292 </span><span class="lineNoCov">          0 :                 triangleMeshes.colors.push_back({c.r, c.g, c.b, c.a});</span>
+<span class="lineNum">     293 </span>            :             }
+<span class="lineNum">     294 </span>            :         }
+<span class="lineNum">     295 </span><span class="lineCov">         10 :         bool nonTriangulatedFaces = false;</span>
+<span class="lineNum">     296 </span><span class="lineCov">         10 :         nbFaces += mesh-&gt;mNumFaces;</span>
+<span class="lineNum">     297 </span><span class="lineCov">         10 :         triangleMeshes.indices.reserve(nbFaces);</span>
+<span class="lineNum">     298 </span><span class="lineCov">         10 :         const size_t offset = indexOffsets[mesh-&gt;mMaterialIndex];</span>
+<span class="lineNum">     299 </span><span class="lineCov">      26930 :         for (size_t f = 0; f &lt; mesh-&gt;mNumFaces; ++f)</span>
+<span class="lineNum">     300 </span>            :         {
+<span class="lineNum">     301 </span><span class="lineCov">      26920 :             if (mesh-&gt;mFaces[f].mNumIndices == 3)</span>
+<span class="lineNum">     302 </span>            :             {
+<span class="lineNum">     303 </span><span class="lineCov">      26920 :                 triangleMeshes.indices.push_back(</span>
+<span class="lineNum">     304 </span><span class="lineCov">      80760 :                     Vector3ui(offset + mesh-&gt;mFaces[f].mIndices[0],</span>
+<span class="lineNum">     305 </span><span class="lineCov">      26920 :                               offset + mesh-&gt;mFaces[f].mIndices[1],</span>
+<span class="lineNum">     306 </span><span class="lineCov">      53840 :                               offset + mesh-&gt;mFaces[f].mIndices[2]));</span>
+<span class="lineNum">     307 </span>            :             }
+<span class="lineNum">     308 </span>            :             else
+<span class="lineNum">     309 </span><span class="lineNoCov">          0 :                 nonTriangulatedFaces = true;</span>
+<span class="lineNum">     310 </span>            :         }
+<span class="lineNum">     311 </span><span class="lineCov">         10 :         if (nonTriangulatedFaces)</span>
+<span class="lineNum">     312 </span>            :             BRAYNS_DEBUG
+<span class="lineNum">     313 </span><span class="lineNoCov">          0 :                 &lt;&lt; &quot;Some faces are not triangulated and have been removed&quot;</span>
+<span class="lineNum">     314 </span><span class="lineNoCov">          0 :                 &lt;&lt; std::endl;</span>
+<span class="lineNum">     315 </span><span class="lineCov">         10 :         indexOffsets[mesh-&gt;mMaterialIndex] += mesh-&gt;mNumVertices;</span>
+<span class="lineNum">     316 </span>            :     }
+<span class="lineNum">     317 </span>            : 
+<span class="lineNum">     318 </span><span class="lineCov">         10 :     BRAYNS_DEBUG &lt;&lt; &quot;Loaded &quot; &lt;&lt; nbVertices &lt;&lt; &quot; vertices and &quot; &lt;&lt; nbFaces</span>
+<span class="lineNum">     319 </span><span class="lineCov">         10 :                  &lt;&lt; &quot; faces&quot; &lt;&lt; std::endl;</span>
+<a name="320"><span class="lineNum">     320 </span><span class="lineCov">         10 : }</span></a>
 <span class="lineNum">     321 </span>            : 
-<span class="lineNum">     322 </span><span class="lineNoCov">          0 : std::string MeshLoader::getMeshFilenameFromGID(const uint64_t gid)</span>
+<span class="lineNum">     322 </span><span class="lineCov">         10 : size_t MeshLoader::_getQuality() const</span>
 <span class="lineNum">     323 </span>            : {
-<span class="lineNum">     324 </span>            :     const auto meshedMorphologiesFolder =
-<span class="lineNum">     325 </span><span class="lineNoCov">          0 :         _geometryParameters.getCircuitMeshFolder();</span>
-<span class="lineNum">     326 </span>            :     auto meshFilenamePattern =
-<span class="lineNum">     327 </span><span class="lineNoCov">          0 :         _geometryParameters.getCircuitMeshFilenamePattern();</span>
-<span class="lineNum">     328 </span><span class="lineNoCov">          0 :     const std::string gidAsString = std::to_string(gid);</span>
-<span class="lineNum">     329 </span><span class="lineNoCov">          0 :     const std::string GID = &quot;{gid}&quot;;</span>
-<span class="lineNum">     330 </span><span class="lineNoCov">          0 :     if (!meshFilenamePattern.empty())</span>
-<span class="lineNum">     331 </span>            :         meshFilenamePattern.replace(meshFilenamePattern.find(GID), GID.length(),
-<span class="lineNum">     332 </span><span class="lineNoCov">          0 :                                     gidAsString);</span>
-<span class="lineNum">     333 </span>            :     else
-<span class="lineNum">     334 </span><span class="lineNoCov">          0 :         meshFilenamePattern = gidAsString;</span>
-<span class="lineNum">     335 </span><span class="lineNoCov">          0 :     return meshedMorphologiesFolder + &quot;/&quot; + meshFilenamePattern;</span>
-<a name="336"><span class="lineNum">     336 </span>            : }</a>
-<span class="lineNum">     337 </span>            : 
-<span class="lineNum">     338 </span><span class="lineCov">          6 : void MeshLoader::importMesh(const std::string&amp; fileName, Model&amp; model,</span>
-<span class="lineNum">     339 </span>            :                             const size_t index,
-<span class="lineNum">     340 </span>            :                             const vmml::Matrix4f&amp; transformation,
-<span class="lineNum">     341 </span>            :                             const size_t defaultMaterialId)
-<span class="lineNum">     342 </span>            : {
-<span class="lineNum">     343 </span><span class="lineCov">         12 :     const boost::filesystem::path file = fileName;</span>
-<span class="lineNum">     344 </span><span class="lineCov">         12 :     Assimp::Importer importer;</span>
-<span class="lineNum">     345 </span><span class="lineCov">          6 :     importer.SetProgressHandler(new ProgressWatcher(*this, fileName));</span>
-<span class="lineNum">     346 </span><span class="lineCov">          6 :     if (!importer.IsExtensionSupported(file.extension().c_str()))</span>
-<span class="lineNum">     347 </span>            :     {
-<span class="lineNum">     348 </span><span class="lineNoCov">          0 :         std::stringstream msg;</span>
-<span class="lineNum">     349 </span><span class="lineNoCov">          0 :         msg &lt;&lt; &quot;File extension &quot; &lt;&lt; file.extension() &lt;&lt; &quot; is not supported&quot;;</span>
-<span class="lineNum">     350 </span><span class="lineNoCov">          0 :         throw std::runtime_error(msg.str());</span>
-<span class="lineNum">     351 </span>            :     }
-<span class="lineNum">     352 </span>            : 
-<span class="lineNum">     353 </span><span class="lineCov">         12 :     std::ifstream meshFile(fileName, std::ios::in);</span>
-<span class="lineNum">     354 </span><span class="lineCov">          6 :     if (!meshFile.good())</span>
-<span class="lineNum">     355 </span><span class="lineNoCov">          0 :         throw std::runtime_error(&quot;Could not open file &quot; + fileName);</span>
-<span class="lineNum">     356 </span><span class="lineCov">          6 :     meshFile.close();</span>
-<span class="lineNum">     357 </span>            : 
-<span class="lineNum">     358 </span><span class="lineCov">          6 :     const aiScene* aiScene = importer.ReadFile(fileName.c_str(), _getQuality());</span>
-<span class="lineNum">     359 </span>            : 
-<span class="lineNum">     360 </span><span class="lineCov">          6 :     if (!aiScene)</span>
-<span class="lineNum">     361 </span>            :     {
-<span class="lineNum">     362 </span><span class="lineNoCov">          0 :         std::stringstream msg;</span>
-<span class="lineNum">     363 </span>            :         msg &lt;&lt; &quot;Error parsing mesh &quot; &lt;&lt; fileName.c_str() &lt;&lt; &quot;: &quot;
-<span class="lineNum">     364 </span><span class="lineNoCov">          0 :             &lt;&lt; importer.GetErrorString();</span>
-<span class="lineNum">     365 </span><span class="lineNoCov">          0 :         throw std::runtime_error(msg.str());</span>
-<span class="lineNum">     366 </span>            :     }
-<span class="lineNum">     367 </span>            : 
-<span class="lineNum">     368 </span><span class="lineCov">          6 :     if (!aiScene-&gt;HasMeshes())</span>
-<span class="lineNum">     369 </span><span class="lineNoCov">          0 :         throw std::runtime_error(&quot;Error finding meshes in scene&quot;);</span>
+<span class="lineNum">     324 </span><span class="lineCov">         10 :     switch (_geometryParameters.getGeometryQuality())</span>
+<span class="lineNum">     325 </span>            :     {
+<span class="lineNum">     326 </span>            :     case GeometryQuality::low:
+<span class="lineNum">     327 </span>            :     case GeometryQuality::medium:
+<span class="lineNum">     328 </span><span class="lineNoCov">          0 :         return aiProcessPreset_TargetRealtime_Fast;</span>
+<span class="lineNum">     329 </span>            :     case GeometryQuality::high:
+<span class="lineNum">     330 </span>            :     default:
+<span class="lineNum">     331 </span><span class="lineCov">         10 :         return aiProcess_GenSmoothNormals | aiProcess_Triangulate;</span>
+<span class="lineNum">     332 </span>            :     }
+<a name="333"><span class="lineNum">     333 </span>            : }</a>
+<span class="lineNum">     334 </span>            : 
+<span class="lineNum">     335 </span><span class="lineNoCov">          0 : std::string MeshLoader::getMeshFilenameFromGID(const uint64_t gid)</span>
+<span class="lineNum">     336 </span>            : {
+<span class="lineNum">     337 </span>            :     const auto meshedMorphologiesFolder =
+<span class="lineNum">     338 </span><span class="lineNoCov">          0 :         _geometryParameters.getCircuitMeshFolder();</span>
+<span class="lineNum">     339 </span>            :     auto meshFilenamePattern =
+<span class="lineNum">     340 </span><span class="lineNoCov">          0 :         _geometryParameters.getCircuitMeshFilenamePattern();</span>
+<span class="lineNum">     341 </span><span class="lineNoCov">          0 :     const std::string gidAsString = std::to_string(gid);</span>
+<span class="lineNum">     342 </span><span class="lineNoCov">          0 :     const std::string GID = &quot;{gid}&quot;;</span>
+<span class="lineNum">     343 </span><span class="lineNoCov">          0 :     if (!meshFilenamePattern.empty())</span>
+<span class="lineNum">     344 </span>            :         meshFilenamePattern.replace(meshFilenamePattern.find(GID), GID.length(),
+<span class="lineNum">     345 </span><span class="lineNoCov">          0 :                                     gidAsString);</span>
+<span class="lineNum">     346 </span>            :     else
+<span class="lineNum">     347 </span><span class="lineNoCov">          0 :         meshFilenamePattern = gidAsString;</span>
+<span class="lineNum">     348 </span><span class="lineNoCov">          0 :     return meshedMorphologiesFolder + &quot;/&quot; + meshFilenamePattern;</span>
+<a name="349"><span class="lineNum">     349 </span>            : }</a>
+<span class="lineNum">     350 </span>            : 
+<span class="lineNum">     351 </span><span class="lineCov">          6 : void MeshLoader::importMesh(const std::string&amp; fileName, Model&amp; model,</span>
+<span class="lineNum">     352 </span>            :                             const size_t index,
+<span class="lineNum">     353 </span>            :                             const vmml::Matrix4f&amp; transformation,
+<span class="lineNum">     354 </span>            :                             const size_t defaultMaterialId)
+<span class="lineNum">     355 </span>            : {
+<span class="lineNum">     356 </span><span class="lineCov">         12 :     const boost::filesystem::path file = fileName;</span>
+<span class="lineNum">     357 </span><span class="lineCov">         12 :     Assimp::Importer importer;</span>
+<span class="lineNum">     358 </span><span class="lineCov">          6 :     importer.SetProgressHandler(new ProgressWatcher(*this, fileName));</span>
+<span class="lineNum">     359 </span><span class="lineCov">          6 :     if (!importer.IsExtensionSupported(file.extension().c_str()))</span>
+<span class="lineNum">     360 </span>            :     {
+<span class="lineNum">     361 </span><span class="lineNoCov">          0 :         std::stringstream msg;</span>
+<span class="lineNum">     362 </span><span class="lineNoCov">          0 :         msg &lt;&lt; &quot;File extension &quot; &lt;&lt; file.extension() &lt;&lt; &quot; is not supported&quot;;</span>
+<span class="lineNum">     363 </span><span class="lineNoCov">          0 :         throw std::runtime_error(msg.str());</span>
+<span class="lineNum">     364 </span>            :     }
+<span class="lineNum">     365 </span>            : 
+<span class="lineNum">     366 </span><span class="lineCov">         12 :     std::ifstream meshFile(fileName, std::ios::in);</span>
+<span class="lineNum">     367 </span><span class="lineCov">          6 :     if (!meshFile.good())</span>
+<span class="lineNum">     368 </span><span class="lineNoCov">          0 :         throw std::runtime_error(&quot;Could not open file &quot; + fileName);</span>
+<span class="lineNum">     369 </span><span class="lineCov">          6 :     meshFile.close();</span>
 <span class="lineNum">     370 </span>            : 
-<span class="lineNum">     371 </span><span class="lineCov">         12 :     boost::filesystem::path filepath = fileName;</span>
+<span class="lineNum">     371 </span><span class="lineCov">          6 :     const aiScene* aiScene = importer.ReadFile(fileName.c_str(), _getQuality());</span>
 <span class="lineNum">     372 </span>            : 
-<span class="lineNum">     373 </span><span class="lineCov">          6 :     _postLoad(aiScene, model, index, transformation, defaultMaterialId,</span>
-<span class="lineNum">     374 </span><span class="lineCov">         12 :               filepath.parent_path().string());</span>
-<span class="lineNum">     375 </span><span class="lineCov">          6 : }</span>
-<span class="lineNum">     376 </span>            : #else
-<span class="lineNum">     377 </span>            : const std::runtime_error NO_ASSIMP(
-<span class="lineNum">     378 </span>            :     &quot;The assimp library is required to load meshes&quot;);
-<span class="lineNum">     379 </span>            : 
-<span class="lineNum">     380 </span>            : ModelDescriptorPtr MeshLoader::importFromFile(const std::string&amp;, const size_t,
-<span class="lineNum">     381 </span>            :                                               const size_t)
-<span class="lineNum">     382 </span>            : {
-<span class="lineNum">     383 </span>            :     throw NO_ASSIMP;
-<span class="lineNum">     384 </span>            : }
+<span class="lineNum">     373 </span><span class="lineCov">          6 :     if (!aiScene)</span>
+<span class="lineNum">     374 </span>            :     {
+<span class="lineNum">     375 </span><span class="lineNoCov">          0 :         std::stringstream msg;</span>
+<span class="lineNum">     376 </span>            :         msg &lt;&lt; &quot;Error parsing mesh &quot; &lt;&lt; fileName.c_str() &lt;&lt; &quot;: &quot;
+<span class="lineNum">     377 </span><span class="lineNoCov">          0 :             &lt;&lt; importer.GetErrorString();</span>
+<span class="lineNum">     378 </span><span class="lineNoCov">          0 :         throw std::runtime_error(msg.str());</span>
+<span class="lineNum">     379 </span>            :     }
+<span class="lineNum">     380 </span>            : 
+<span class="lineNum">     381 </span><span class="lineCov">          6 :     if (!aiScene-&gt;HasMeshes())</span>
+<span class="lineNum">     382 </span><span class="lineNoCov">          0 :         throw std::runtime_error(&quot;Error finding meshes in scene&quot;);</span>
+<span class="lineNum">     383 </span>            : 
+<span class="lineNum">     384 </span><span class="lineCov">         12 :     boost::filesystem::path filepath = fileName;</span>
 <span class="lineNum">     385 </span>            : 
-<span class="lineNum">     386 </span>            : ModelDescriptorPtr MeshLoader::importFromBlob(Blob&amp;&amp;, const size_t,
-<span class="lineNum">     387 </span>            :                                               const size_t)
-<span class="lineNum">     388 </span>            : {
-<span class="lineNum">     389 </span>            :     throw NO_ASSIMP;
-<span class="lineNum">     390 </span>            : }
-<span class="lineNum">     391 </span>            : 
-<span class="lineNum">     392 </span>            : void MeshLoader::_createMaterials(Model&amp;, const aiScene*, const std::string&amp;)
-<span class="lineNum">     393 </span>            : {
-<span class="lineNum">     394 </span>            :     throw NO_ASSIMP;
-<span class="lineNum">     395 </span>            : }
-<span class="lineNum">     396 </span>            : 
-<span class="lineNum">     397 </span>            : void MeshLoader::_postLoad(const aiScene*, Model&amp;, const size_t,
-<span class="lineNum">     398 </span>            :                            const Matrix4f&amp;, size_t, const std::string&amp;)
-<span class="lineNum">     399 </span>            : {
-<span class="lineNum">     400 </span>            :     throw NO_ASSIMP;
-<span class="lineNum">     401 </span>            : }
-<span class="lineNum">     402 </span>            : 
-<span class="lineNum">     403 </span>            : size_t MeshLoader::_getQuality() const
-<span class="lineNum">     404 </span>            : {
-<span class="lineNum">     405 </span>            :     throw NO_ASSIMP;
-<a name="406"><span class="lineNum">     406 </span>            : }</a>
-<span class="lineNum">     407 </span>            : #endif
-<span class="lineNum">     408 </span><span class="lineCov">         72 : } // namespace brayns</span>
+<span class="lineNum">     386 </span><span class="lineCov">          6 :     _postLoad(aiScene, model, index, transformation, defaultMaterialId,</span>
+<span class="lineNum">     387 </span><span class="lineCov">         12 :               filepath.parent_path().string());</span>
+<span class="lineNum">     388 </span><span class="lineCov">          6 : }</span>
+<span class="lineNum">     389 </span>            : #else
+<span class="lineNum">     390 </span>            : const std::runtime_error NO_ASSIMP(
+<span class="lineNum">     391 </span>            :     &quot;The assimp library is required to load meshes&quot;);
+<span class="lineNum">     392 </span>            : 
+<span class="lineNum">     393 </span>            : ModelDescriptorPtr MeshLoader::importFromFile(const std::string&amp;, const size_t,
+<span class="lineNum">     394 </span>            :                                               const size_t)
+<span class="lineNum">     395 </span>            : {
+<span class="lineNum">     396 </span>            :     throw NO_ASSIMP;
+<span class="lineNum">     397 </span>            : }
+<span class="lineNum">     398 </span>            : 
+<span class="lineNum">     399 </span>            : ModelDescriptorPtr MeshLoader::importFromBlob(Blob&amp;&amp;, const size_t,
+<span class="lineNum">     400 </span>            :                                               const size_t)
+<span class="lineNum">     401 </span>            : {
+<span class="lineNum">     402 </span>            :     throw NO_ASSIMP;
+<span class="lineNum">     403 </span>            : }
+<span class="lineNum">     404 </span>            : 
+<span class="lineNum">     405 </span>            : void MeshLoader::_createMaterials(Model&amp;, const aiScene*, const std::string&amp;)
+<span class="lineNum">     406 </span>            : {
+<span class="lineNum">     407 </span>            :     throw NO_ASSIMP;
+<span class="lineNum">     408 </span>            : }
+<span class="lineNum">     409 </span>            : 
+<span class="lineNum">     410 </span>            : Vector3f MeshLoader::_postLoad(const aiScene*, Model&amp;, const size_t,
+<span class="lineNum">     411 </span>            :                                const Matrix4f&amp;, size_t, const std::string&amp;)
+<span class="lineNum">     412 </span>            : {
+<span class="lineNum">     413 </span>            :     throw NO_ASSIMP;
+<span class="lineNum">     414 </span>            : }
+<span class="lineNum">     415 </span>            : 
+<span class="lineNum">     416 </span>            : size_t MeshLoader::_getQuality() const
+<span class="lineNum">     417 </span>            : {
+<span class="lineNum">     418 </span>            :     throw NO_ASSIMP;
+<a name="419"><span class="lineNum">     419 </span>            : }</a>
+<span class="lineNum">     420 </span>            : #endif
+<span class="lineNum">     421 </span><span class="lineCov">         72 : } // namespace brayns</span>
 </pre>
       </td>
     </tr>

@@ -1,5 +1,6 @@
 var NAVTREEINDEX5 =
 {
+"pluginapi_2version_8h.html#a4d697b7dac7e97b28fecf7714fea4d8f":[6,0,100,10],
 "pluginapi_2version_8h.html#a689d3561485abd45ee50411137295ee0":[6,0,100,2],
 "pluginapi_2version_8h.html#aa92a565dac0a7e3edbc52f24802aa925":[6,0,100,6],
 "pluginapi_2version_8h.html#aae1fd1122c42331f598c0152baa6572a":[6,0,100,11],
@@ -248,6 +249,5 @@ var NAVTREEINDEX5 =
 "structospray_1_1_extended_spheres.html#a2ae094765956f7e3521d61711ff771d3":[5,0,1,4,13],
 "structospray_1_1_extended_spheres.html#a35fe1079da30fe2229111b895e484108":[5,0,1,4,4],
 "structospray_1_1_extended_spheres.html#a37fad265868796da992359fe465a90e8":[5,0,1,4,8],
-"structospray_1_1_extended_spheres.html#a3a22e3c6ba38e9585bef343a0855cdb7":[5,0,1,4,5],
-"structospray_1_1_extended_spheres.html#a6cb65bd6634e12fe9d15d34cd5ba98d5":[5,0,1,4,12]
+"structospray_1_1_extended_spheres.html#a3a22e3c6ba38e9585bef343a0855cdb7":[5,0,1,4,5]
 };
