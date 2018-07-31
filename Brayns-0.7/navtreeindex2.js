@@ -1,5 +1,7 @@
 var NAVTREEINDEX2 =
 {
+"classbrayns_1_1_material.html#a069b79cfb104139641fa1a341ccf7fb8":[5,0,0,42,16],
+"classbrayns_1_1_material.html#a09778f0633b347188536eeb0c9634761":[5,0,0,42,1],
 "classbrayns_1_1_material.html#a0e596db4263e72d240100e10b3baf331":[5,0,0,42,26],
 "classbrayns_1_1_material.html#a1575ee6d4361aa7a25935c1c2fefe1d8":[5,0,0,42,24],
 "classbrayns_1_1_material.html#a1978498301ea772932b42dc6266a04f9":[5,0,0,42,0],
@@ -247,7 +249,5 @@ var NAVTREEINDEX2 =
 "classbrayns_1_1_parameters_manager.html":[5,0,0,61],
 "classbrayns_1_1_parameters_manager.html#a0a0967c0597705f2c6f936a2cfc98b3c":[5,0,0,61,11],
 "classbrayns_1_1_parameters_manager.html#a0c96d24bee61aaa727c92db0aeeeb0c0":[5,0,0,61,13],
-"classbrayns_1_1_parameters_manager.html#a1d25e34639dbb420f9a3405b556a88b0":[5,0,0,61,14],
-"classbrayns_1_1_parameters_manager.html#a2bc6a8dbef296ff837e33911cf3e4e55":[5,0,0,61,6],
-"classbrayns_1_1_parameters_manager.html#a2fc48e699c64648868460809b3343a51":[5,0,0,61,15]
+"classbrayns_1_1_parameters_manager.html#a1d25e34639dbb420f9a3405b556a88b0":[5,0,0,61,14]
 };
