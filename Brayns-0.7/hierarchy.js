@@ -144,9 +144,6 @@ var hierarchy =
       ] ]
     ] ],
     [ "std::exception", null, [
-      [ "brayns::Exception", "classbrayns_1_1_exception.html", [
-        [ "brayns::BadParameter", "classbrayns_1_1_bad_parameter.html", null ]
-      ] ],
       [ "std::runtime_error", null, [
         [ "brayns::TaskRuntimeError", "classbrayns_1_1_task_runtime_error.html", [
           [ "brayns::BinaryTaskError", "classbrayns_1_1_binary_task_error.html", null ]

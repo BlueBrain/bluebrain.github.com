@@ -30,7 +30,6 @@ var files =
     [ "DirectionalLight.h", "_directional_light_8h_source.html", null ],
     [ "Engine.h", "_engine_8h_source.html", null ],
     [ "errors.h", "errors_8h_source.html", null ],
-    [ "exceptions.h", "exceptions_8h_source.html", null ],
     [ "ExtendedCones.h", "_extended_cones_8h_source.html", null ],
     [ "ExtendedCylinders.h", "_extended_cylinders_8h_source.html", null ],
     [ "ExtendedOBJMaterial.h", "_extended_o_b_j_material_8h_source.html", null ],
