@@ -109,6 +109,8 @@ var hierarchy =
     [ "brayns::Renderer::PickResult", "structbrayns_1_1_renderer_1_1_pick_result.html", null ],
     [ "brayns::RenderInput", "structbrayns_1_1_render_input.html", null ],
     [ "brayns::RenderOutput", "structbrayns_1_1_render_output.html", null ],
+    [ "brayns::RpcDescription", "structbrayns_1_1_rpc_description.html", null ],
+    [ "brayns::RpcParameterDescription", "structbrayns_1_1_rpc_parameter_description.html", null ],
     [ "brayns::SDFGeometry", "structbrayns_1_1_s_d_f_geometry.html", null ],
     [ "brayns::ShortcutInformation", "structbrayns_1_1_shortcut_information.html", null ],
     [ "brayns::Sphere", "structbrayns_1_1_sphere.html", null ],
@@ -119,7 +121,6 @@ var hierarchy =
     ] ],
     [ "brayns::Texture2D", "classbrayns_1_1_texture2_d.html", null ],
     [ "brayns::Timer", "classbrayns_1_1_timer.html", null ],
-    [ "brayns::TransferFunctionLoader", "classbrayns_1_1_transfer_function_loader.html", null ],
     [ "brayns::TrianglesMesh", "structbrayns_1_1_triangles_mesh.html", null ],
     [ "brayns::Version", "classbrayns_1_1_version.html", null ],
     [ "Camera", null, [

@@ -6,5 +6,6 @@ var classbrayns_1_1_o_s_p_ray_camera =
     [ "createOSPCamera", "classbrayns_1_1_o_s_p_ray_camera.html#a085a14ab0546268367051f2fd36315f7", null ],
     [ "impl", "classbrayns_1_1_o_s_p_ray_camera.html#a5790eff76579edc1639f952921a24a11", null ],
     [ "isSideBySideStereo", "classbrayns_1_1_o_s_p_ray_camera.html#adabb08c5133524a94860c5a84e782bf5", null ],
+    [ "setClipPlanes", "classbrayns_1_1_o_s_p_ray_camera.html#a5f8886af0f2c1e3f350b9741d78d59bf", null ],
     [ "setEnvironmentMap", "classbrayns_1_1_o_s_p_ray_camera.html#ab0b292441fd978c5a3f98285e6d70249", null ]
 ];

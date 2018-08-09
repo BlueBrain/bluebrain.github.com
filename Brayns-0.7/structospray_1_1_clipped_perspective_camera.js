@@ -12,7 +12,7 @@ var structospray_1_1_clipped_perspective_camera =
     [ "apertureRadius", "structospray_1_1_clipped_perspective_camera.html#aa6f3a169485672212c3f2fe3963b43a9", null ],
     [ "architectural", "structospray_1_1_clipped_perspective_camera.html#aa8157201ed8e72ecd05a62a4bcfd68c0", null ],
     [ "aspect", "structospray_1_1_clipped_perspective_camera.html#adc56c42e57fae19743d0ce013e5e1926", null ],
-    [ "clipPlanes", "structospray_1_1_clipped_perspective_camera.html#ad6fc3fcd1e4497d58e9a616d15ac5c1d", null ],
+    [ "clipPlanes", "structospray_1_1_clipped_perspective_camera.html#a6c1a3c0c3ea99e3334a82efdd8fc09f8", null ],
     [ "focusDistance", "structospray_1_1_clipped_perspective_camera.html#a66054cb796ddfcf6e0ae8b03fdcae0a3", null ],
     [ "fovy", "structospray_1_1_clipped_perspective_camera.html#a510c291e7521bc64c8f325734044c016", null ],
     [ "interpupillaryDistance", "structospray_1_1_clipped_perspective_camera.html#a1fcdf6859e7c9dc982106af69c28a11f", null ],

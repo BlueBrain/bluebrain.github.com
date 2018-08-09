@@ -1,5 +1,7 @@
 var NAVTREEINDEX2 =
 {
+"classbrayns_1_1_material.html#a1575ee6d4361aa7a25935c1c2fefe1d8":[5,0,0,40,24],
+"classbrayns_1_1_material.html#a1978498301ea772932b42dc6266a04f9":[5,0,0,40,0],
 "classbrayns_1_1_material.html#a229549e4b1e5e466fd5b9aa4b7fb21a0":[5,0,0,40,13],
 "classbrayns_1_1_material.html#a278a47978d8afb9da49950d7f54a2145":[5,0,0,40,30],
 "classbrayns_1_1_material.html#a338b04df849062cbe3a9db657f63ae1d":[5,0,0,40,8],
@@ -157,8 +159,9 @@ var NAVTREEINDEX2 =
 "classbrayns_1_1_o_s_p_ray_camera.html#a085a14ab0546268367051f2fd36315f7":[5,0,0,50,3],
 "classbrayns_1_1_o_s_p_ray_camera.html#a4d0d1cd0dc21287c004888322417da9f":[5,0,0,50,2],
 "classbrayns_1_1_o_s_p_ray_camera.html#a5790eff76579edc1639f952921a24a11":[5,0,0,50,4],
+"classbrayns_1_1_o_s_p_ray_camera.html#a5f8886af0f2c1e3f350b9741d78d59bf":[5,0,0,50,6],
 "classbrayns_1_1_o_s_p_ray_camera.html#a81a3e1497a892aacc3e7bc30fca47e79":[5,0,0,50,1],
-"classbrayns_1_1_o_s_p_ray_camera.html#ab0b292441fd978c5a3f98285e6d70249":[5,0,0,50,6],
+"classbrayns_1_1_o_s_p_ray_camera.html#ab0b292441fd978c5a3f98285e6d70249":[5,0,0,50,7],
 "classbrayns_1_1_o_s_p_ray_camera.html#ab41faba195e24665793e7bc90a830ca6":[5,0,0,50,0],
 "classbrayns_1_1_o_s_p_ray_camera.html#adabb08c5133524a94860c5a84e782bf5":[5,0,0,50,5],
 "classbrayns_1_1_o_s_p_ray_engine.html":[5,0,0,51],
@@ -246,8 +249,5 @@ var NAVTREEINDEX2 =
 "classbrayns_1_1_parameters_manager.html#a0c96d24bee61aaa727c92db0aeeeb0c0":[5,0,0,59,13],
 "classbrayns_1_1_parameters_manager.html#a1d25e34639dbb420f9a3405b556a88b0":[5,0,0,59,14],
 "classbrayns_1_1_parameters_manager.html#a2bc6a8dbef296ff837e33911cf3e4e55":[5,0,0,59,6],
-"classbrayns_1_1_parameters_manager.html#a2fc48e699c64648868460809b3343a51":[5,0,0,59,15],
-"classbrayns_1_1_parameters_manager.html#a3558f229417081e9ed7eee77acfa73f0":[5,0,0,59,5],
-"classbrayns_1_1_parameters_manager.html#a42770db58f8d661744cd2e029b314295":[5,0,0,59,4],
-"classbrayns_1_1_parameters_manager.html#a512452ae6195a30b5c733f75c7ea1c54":[5,0,0,59,10]
+"classbrayns_1_1_parameters_manager.html#a2fc48e699c64648868460809b3343a51":[5,0,0,59,15]
 };

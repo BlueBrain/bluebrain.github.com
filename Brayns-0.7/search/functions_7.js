@@ -23,7 +23,7 @@ var searchData=
   ['getcircuitsimulationhistogramsize',['getCircuitSimulationHistogramSize',['../classbrayns_1_1_geometry_parameters.html#afced4e2eecd722d9e420ff31f39310cb',1,'brayns::GeometryParameters']]],
   ['getcircuittargets',['getCircuitTargets',['../classbrayns_1_1_geometry_parameters.html#a25a7829d755ede1f39504a3d1480f85b',1,'brayns::GeometryParameters']]],
   ['getcircuitusesimulationmodel',['getCircuitUseSimulationModel',['../classbrayns_1_1_geometry_parameters.html#a8030ea887fe8686908ed37f5f3c2885b',1,'brayns::GeometryParameters']]],
-  ['getclipplanes',['getClipPlanes',['../classbrayns_1_1_camera.html#ac1a9f9761c247311992d156a49aef7fe',1,'brayns::Camera']]],
+  ['getclipplanes',['getClipPlanes',['../classbrayns_1_1_scene.html#ac93106413e783f9717fab918ca061df3',1,'brayns::Scene']]],
   ['getcolorscheme',['getColorScheme',['../classbrayns_1_1_geometry_parameters.html#a0cefb9cea6665e61900ebc08846bc6e3',1,'brayns::GeometryParameters']]],
   ['getcompression',['getCompression',['../classbrayns_1_1_stream_parameters.html#a249dd6d75a30e1052a54a2d9a4aed910',1,'brayns::StreamParameters']]],
   ['getcones',['getCones',['../classbrayns_1_1_model.html#ae00997d5d60dfdad6d4230e865c3d7f8',1,'brayns::Model']]],

@@ -7,7 +7,7 @@ var searchData=
   ['set',['set',['../classbrayns_1_1_camera.html#aa9c603ed3a0047c98a670480bcda8b51',1,'brayns::Camera::set()'],['../classbrayns_1_1_parameters_manager.html#a1d25e34639dbb420f9a3405b556a88b0',1,'brayns::ParametersManager::set()']]],
   ['setcadiffusionsimulationhandler',['setCADiffusionSimulationHandler',['../classbrayns_1_1_scene.html#a6dd8458feefbd6d61c5e9a44b477acdd',1,'brayns::Scene']]],
   ['setcanceltoken',['setCancelToken',['../classbrayns_1_1_task_functor.html#a0463073aa21dd20ffa10309757d2e52b',1,'brayns::TaskFunctor']]],
-  ['setclipplanes',['setClipPlanes',['../classbrayns_1_1_camera.html#ac5076f27474c37ab25469772802eb382',1,'brayns::Camera']]],
+  ['setclipplanes',['setClipPlanes',['../classbrayns_1_1_scene.html#a3ddc35fd0ef9276bd869d770487b0c31',1,'brayns::Scene::setClipPlanes()'],['../classbrayns_1_1_o_s_p_ray_camera.html#a5f8886af0f2c1e3f350b9741d78d59bf',1,'brayns::OSPRayCamera::setClipPlanes()']]],
   ['setcolor',['setColor',['../classbrayns_1_1_light.html#ac418f89179bfb0698b73c001729d9423',1,'brayns::Light']]],
   ['setcurrenttype',['setCurrentType',['../classbrayns_1_1_property_object.html#a7be001331636293e20b0ad923bd0d47c',1,'brayns::PropertyObject']]],
   ['setcutoffdistance',['setCutoffDistance',['../classbrayns_1_1_point_light.html#a782a3fb04f2cf4a089a738e5bc105698',1,'brayns::PointLight']]],
