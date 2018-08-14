@@ -13,7 +13,9 @@ var classbrayns_1_1_model_descriptor =
     [ "getMetadata", "classbrayns_1_1_model_descriptor.html#acb98cc83ce963ca386c7401ea35570eb", null ],
     [ "getModel", "classbrayns_1_1_model_descriptor.html#acf89bc84fd1828df074e7d68457def1a", null ],
     [ "getModel", "classbrayns_1_1_model_descriptor.html#a77b85c9c080c84d33416a990cc689e73", null ],
+    [ "getProperties", "classbrayns_1_1_model_descriptor.html#acacd1ef190d35ca8de61a398543a3b27", null ],
     [ "operator=", "classbrayns_1_1_model_descriptor.html#a3afb742331e94155a79f89a1335b75d4", null ],
     [ "operator=", "classbrayns_1_1_model_descriptor.html#a9a79ad0cc43def3fb653add2173f22c9", null ],
-    [ "removeInstance", "classbrayns_1_1_model_descriptor.html#a0362eb38b6971c5b1268dedf88399357", null ]
+    [ "removeInstance", "classbrayns_1_1_model_descriptor.html#a0362eb38b6971c5b1268dedf88399357", null ],
+    [ "setProperties", "classbrayns_1_1_model_descriptor.html#ae7ce3e18714abe5e0cf1f4105161d9f2", null ]
 ];

@@ -1,5 +1,7 @@
 var NAVTREEINDEX6 =
 {
+"structospray_1_1_extended_s_d_f_geometries.html#ac9c08c2c71aa68a43d72c020516b1b87":[5,0,1,3,3],
+"structospray_1_1_extended_s_d_f_geometries.html#ad8cfa5c51adba571de1944e9fb7ef386":[5,0,1,3,5],
 "structospray_1_1_extended_s_d_f_geometries.html#ae6dfbe5bb592f1c9cb20e9f6f8e317e8":[5,0,1,3,11],
 "structospray_1_1_extended_spheres.html":[5,0,1,4],
 "structospray_1_1_extended_spheres.html#a0315bd498884a696f44feb8cdb884bee":[5,0,1,4,2],
