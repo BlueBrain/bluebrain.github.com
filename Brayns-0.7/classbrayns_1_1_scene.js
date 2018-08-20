@@ -16,7 +16,7 @@ var classbrayns_1_1_scene =
     [ "createSharedDataVolume", "classbrayns_1_1_scene.html#a0dcf87268729de1293b666dc3ec0674d", null ],
     [ "empty", "classbrayns_1_1_scene.html#a637be3e4e463527da2f316b520c20bcd", null ],
     [ "getBackgroundMaterial", "classbrayns_1_1_scene.html#a2f84d6d35402cf5955a30af7362a9bf0", null ],
-    [ "getBounds", "classbrayns_1_1_scene.html#a7d531db1a51d4dbd9f21c9e740806b7d", null ],
+    [ "getBounds", "classbrayns_1_1_scene.html#a292adbd1714685a5f249575074a1fa06", null ],
     [ "getCADiffusionSimulationHandler", "classbrayns_1_1_scene.html#ae18fcfd7021a6ef3c5624c0e466dbc3c", null ],
     [ "getClipPlanes", "classbrayns_1_1_scene.html#ac93106413e783f9717fab918ca061df3", null ],
     [ "getLight", "classbrayns_1_1_scene.html#aa918d868eaed44684a990f669b333249", null ],

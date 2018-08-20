@@ -20,6 +20,7 @@ var structbrayns_1_1_property_map_1_1_property =
     [ "min", "structbrayns_1_1_property_map_1_1_property.html#a7e86ba2945438fde4b5d35bb1de3cbc1", null ],
     [ "readOnly", "structbrayns_1_1_property_map_1_1_property.html#a3ec97fb552e32665d8eb577ad99c4daa", null ],
     [ "set", "structbrayns_1_1_property_map_1_1_property.html#aa26ddec1acb5ee7d35b29237a3948ccc", null ],
+    [ "setChangedCallback", "structbrayns_1_1_property_map_1_1_property.html#abbdd9ee79f75aaceb32e23b89ef66d17", null ],
     [ "PropertyMap", "structbrayns_1_1_property_map_1_1_property.html#a4c8018a0604445818ecd990fe449a63c", null ],
     [ "enums", "structbrayns_1_1_property_map_1_1_property.html#ad78a7ed871bdf8543a509b4739ee7db9", null ],
     [ "label", "structbrayns_1_1_property_map_1_1_property.html#abba00791cb38864ac81de9039337f41f", null ],

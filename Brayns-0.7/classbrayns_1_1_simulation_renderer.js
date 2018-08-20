@@ -1,11 +1,12 @@
 var classbrayns_1_1_simulation_renderer =
 [
-    [ "Shading", "classbrayns_1_1_simulation_renderer.html#a486ab39da511bcfe78196c8a9e7d1ed4", [
-      [ "none", "classbrayns_1_1_simulation_renderer.html#a486ab39da511bcfe78196c8a9e7d1ed4a334c4a4c42fdb79d7ebc3e73b517e6f8", null ],
-      [ "diffuse", "classbrayns_1_1_simulation_renderer.html#a486ab39da511bcfe78196c8a9e7d1ed4aa2b8f01051e9b67acd6050985ce2422f", null ],
-      [ "electron", "classbrayns_1_1_simulation_renderer.html#a486ab39da511bcfe78196c8a9e7d1ed4a1b85623431169fedc9a20ecf24df3f54", null ]
-    ] ],
-    [ "SimulationRenderer", "classbrayns_1_1_simulation_renderer.html#a941a4ac2580f7fe1273eba83f3b31032", null ],
-    [ "commit", "classbrayns_1_1_simulation_renderer.html#af3807e12a84ddcd858ab9273ec0ad9fc", null ],
-    [ "toString", "classbrayns_1_1_simulation_renderer.html#a4280c3da33ea1c1e327550870e676f00", null ]
+    [ "commit", "classbrayns_1_1_simulation_renderer.html#aa4b2a3f79ab192568fb5a1eb96634b2e", null ],
+    [ "_alphaCorrection", "classbrayns_1_1_simulation_renderer.html#acb2e357717721f836d07546cca840dea", null ],
+    [ "_simulationData", "classbrayns_1_1_simulation_renderer.html#acb77692debea79b9808910bfd747cefc", null ],
+    [ "_simulationDataSize", "classbrayns_1_1_simulation_renderer.html#ad17663be4639f845662d4f1e107d751f", null ],
+    [ "_transferFunctionDiffuseData", "classbrayns_1_1_simulation_renderer.html#aca10c74a8707085d52f40e373aa664bf", null ],
+    [ "_transferFunctionEmissionData", "classbrayns_1_1_simulation_renderer.html#a22a52856157fa305c431501a98166540", null ],
+    [ "_transferFunctionMinValue", "classbrayns_1_1_simulation_renderer.html#a9f832dd953f4b70b2cca8e96e135e654", null ],
+    [ "_transferFunctionRange", "classbrayns_1_1_simulation_renderer.html#aa1023ddedb08098f847569ba2fa08eab", null ],
+    [ "_transferFunctionSize", "classbrayns_1_1_simulation_renderer.html#a993113c10b7574145243741516e47597", null ]
 ];
