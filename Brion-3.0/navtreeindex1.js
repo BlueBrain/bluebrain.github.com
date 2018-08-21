@@ -1,5 +1,6 @@
 var NAVTREEINDEX1 =
 {
+"classbrain_1_1_version.html#a02712f5fb5e479153827acb235bb59d4":[7,0,0,13,9],
 "classbrain_1_1_version.html#a0cb8e05a1caccacf4eff6cf82b760cdf":[7,0,0,13,4],
 "classbrain_1_1_version.html#a24ea5374f707688abcc431d380bd8109":[7,0,0,13,8],
 "classbrain_1_1_version.html#a276cd79796e68f291ecb809b93f656d0":[7,0,0,13,3],
@@ -248,6 +249,5 @@ var NAVTREEINDEX1 =
 "classbrion_1_1_morphology_plugin.html#a37b17b386042890525c947a64ac73d7c":[7,0,2,12,23],
 "classbrion_1_1_morphology_plugin.html#a5b6dea7733e163c2d740fc9fdd46ba74":[7,0,2,12,7],
 "classbrion_1_1_morphology_plugin.html#a63adc722f3aa5b5c6c3626649faf2413":[7,0,2,12,6],
-"classbrion_1_1_morphology_plugin.html#a68ebc7b60bffd78155be342bbd752c9d":[7,0,2,12,21],
-"classbrion_1_1_morphology_plugin.html#a6d1393f3251077d8bc5b4f2b5dc18d47":[7,0,2,12,15]
+"classbrion_1_1_morphology_plugin.html#a68ebc7b60bffd78155be342bbd752c9d":[7,0,2,12,21]
 };

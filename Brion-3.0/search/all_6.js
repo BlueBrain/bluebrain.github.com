@@ -95,7 +95,7 @@ var searchData=
   ['getprojectionsource',['getProjectionSource',['../classbrion_1_1_blue_config.html#a0d172776265bfdd7d0866d5f2bef6cc7',1,'brion::BlueConfig']]],
   ['getproperties',['getProperties',['../classbrion_1_1_csv_config.html#ab4055a9c6ea54548a0eed2ebf2ec2edc',1,'brion::CsvConfig']]],
   ['getproperty',['getProperty',['../classbrion_1_1_csv_config.html#a304567864cfd28f2b743ac7140fc045e',1,'brion::CsvConfig']]],
-  ['getrandomgids',['getRandomGIDs',['../classbrain_1_1_circuit.html#a6780629e47b81063a4893f7b7cd5e415',1,'brain::Circuit::getRandomGIDs(float fraction, const std::string &amp;target) const '],['../classbrain_1_1_circuit.html#aa822f3a660884ad01a8e1622c7dbd860',1,'brain::Circuit::getRandomGIDs(float fraction) const ']]],
+  ['getrandomgids',['getRandomGIDs',['../classbrain_1_1_circuit.html#a8daf307da62d13253c41e7bd7f7421f2',1,'brain::Circuit::getRandomGIDs(float fraction, const std::string &amp;target, size_t seed) const '],['../classbrain_1_1_circuit.html#a6780629e47b81063a4893f7b7cd5e415',1,'brain::Circuit::getRandomGIDs(float fraction, const std::string &amp;target) const '],['../classbrain_1_1_circuit.html#aa822f3a660884ad01a8e1622c7dbd860',1,'brain::Circuit::getRandomGIDs(float fraction) const ']]],
   ['getreader',['getReader',['../classbrain_1_1_compartment_report_view.html#ab663f8c8ebee9b8eb37e2b4523610be2',1,'brain::CompartmentReportView']]],
   ['getremaining',['getRemaining',['../classbrain_1_1_synapses_stream.html#a755792a56bcc3607e480b41e159098f4',1,'brain::SynapsesStream']]],
   ['getreportsource',['getReportSource',['../classbrion_1_1_blue_config.html#a30f64c0386fc846429a3dda70b5214cb',1,'brion::BlueConfig']]],

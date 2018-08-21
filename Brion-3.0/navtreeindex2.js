@@ -1,5 +1,6 @@
 var NAVTREEINDEX2 =
 {
+"classbrion_1_1_morphology_plugin.html#a6d1393f3251077d8bc5b4f2b5dc18d47":[7,0,2,12,15],
 "classbrion_1_1_morphology_plugin.html#a70c95b12d40d47d78d370827832474bd":[7,0,2,12,11],
 "classbrion_1_1_morphology_plugin.html#a744cf7aa1cd0aa7248dd19999905ce7a":[7,0,2,12,4],
 "classbrion_1_1_morphology_plugin.html#a769cf62d237f9319d2f10af5cbcee44c":[7,0,2,12,18],
@@ -248,6 +249,5 @@ var NAVTREEINDEX2 =
 "enums_8h.html#ad023e746676d235c53853a69c9c1c454a55c6371ca49dc06658700e6b8a2f9354":[8,0,18,10,21],
 "enums_8h.html#ad023e746676d235c53853a69c9c1c454a57f2da08360a642af2ae15680d872a5c":[8,0,18,10,10],
 "enums_8h.html#ad023e746676d235c53853a69c9c1c454a5a1e37e4be1b2c520ce357f4f2e7a614":[8,0,18,10,6],
-"enums_8h.html#ad023e746676d235c53853a69c9c1c454a6777c6a9a4a5e4622f76ed6cdf359072":[8,0,18,10,2],
-"enums_8h.html#ad023e746676d235c53853a69c9c1c454a678f80e66e404f565f816505b6676606":[8,0,18,10,18]
+"enums_8h.html#ad023e746676d235c53853a69c9c1c454a6777c6a9a4a5e4622f76ed6cdf359072":[8,0,18,10,2]
 };
