@@ -1,16 +1,12 @@
 var searchData=
 [
-  ['scene',['Scene',['../classbrayns_1_1_scene.html',1,'brayns']]],
-  ['sceneparameters',['SceneParameters',['../classbrayns_1_1_scene_parameters.html',1,'brayns']]],
-  ['sdfgeometry',['SDFGeometry',['../structbrayns_1_1_s_d_f_geometry.html',1,'brayns']]],
-  ['sdfgeometrydata',['SDFGeometryData',['../structbrayns_1_1_model_1_1_s_d_f_geometry_data.html',1,'brayns::Model']]],
-  ['shareddatavolume',['SharedDataVolume',['../classbrayns_1_1_shared_data_volume.html',1,'brayns']]],
-  ['shortcutinformation',['ShortcutInformation',['../structbrayns_1_1_shortcut_information.html',1,'brayns']]],
-  ['simulationrenderer',['SimulationRenderer',['../classbrayns_1_1_simulation_renderer.html',1,'brayns']]],
-  ['sphere',['Sphere',['../structbrayns_1_1_sphere.html',1,'brayns']]],
-  ['spikesimulationhandler',['SpikeSimulationHandler',['../classbrayns_1_1_spike_simulation_handler.html',1,'brayns']]],
-  ['statistics',['Statistics',['../classbrayns_1_1_statistics.html',1,'brayns']]],
-  ['streamline',['Streamline',['../structbrayns_1_1_streamline.html',1,'brayns']]],
-  ['streamlinesdata',['StreamlinesData',['../structbrayns_1_1_streamlines_data.html',1,'brayns']]],
-  ['streamparameters',['StreamParameters',['../classbrayns_1_1_stream_parameters.html',1,'brayns']]]
+  ['task',['Task',['../classbrayns_1_1_task.html',1,'brayns']]],
+  ['task_3c_20modeldescriptorptr_20_3e',['Task&lt; ModelDescriptorPtr &gt;',['../classbrayns_1_1_task.html',1,'brayns']]],
+  ['taskfunctor',['TaskFunctor',['../classbrayns_1_1_task_functor.html',1,'brayns']]],
+  ['taskruntimeerror',['TaskRuntimeError',['../classbrayns_1_1_task_runtime_error.html',1,'brayns']]],
+  ['texture2d',['Texture2D',['../classbrayns_1_1_texture2_d.html',1,'brayns']]],
+  ['timer',['Timer',['../classbrayns_1_1_timer.html',1,'brayns']]],
+  ['transferfunction',['TransferFunction',['../classbrayns_1_1_transfer_function.html',1,'brayns']]],
+  ['transformation',['Transformation',['../classbrayns_1_1_transformation.html',1,'brayns']]],
+  ['trianglesmesh',['TrianglesMesh',['../structbrayns_1_1_triangles_mesh.html',1,'brayns']]]
 ];

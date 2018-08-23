@@ -9,7 +9,7 @@ var classbrayns_1_1_model_descriptor =
     [ "getEnabled", "classbrayns_1_1_model_descriptor.html#a96c425015e6270c0f55266bd874e55a6", null ],
     [ "getInstance", "classbrayns_1_1_model_descriptor.html#a19f8db3cb53d4c7f0ffac2c48e4f0302", null ],
     [ "getInstances", "classbrayns_1_1_model_descriptor.html#a7a34a366ed61658514173c2862de9106", null ],
-    [ "getInstancesBounds", "classbrayns_1_1_model_descriptor.html#ae796d6b1b306ee6aad6b788b2a592131", null ],
+    [ "getInstancesBounds", "classbrayns_1_1_model_descriptor.html#a9c5db9b5fd05264b06f4f1b7b8d1353d", null ],
     [ "getMetadata", "classbrayns_1_1_model_descriptor.html#acb98cc83ce963ca386c7401ea35570eb", null ],
     [ "getModel", "classbrayns_1_1_model_descriptor.html#acf89bc84fd1828df074e7d68457def1a", null ],
     [ "getModel", "classbrayns_1_1_model_descriptor.html#a77b85c9c080c84d33416a990cc689e73", null ],

@@ -5,7 +5,6 @@ var NAVTREE =
     [ "Change Log", "md__jenkins_03_workspace_oss.Brayns.documentation_build_type_Debug_platform_cscsviz-vm_sources_Changelog.html", null ],
     [ "Application Help", "apps.html", "apps" ],
     [ "Todo List", "todo.html", null ],
-    [ "Modules", "modules.html", "modules" ],
     [ "Classes", "annotated.html", [
       [ "Class List", "annotated.html", "annotated_dup" ],
       [ "Class Index", "classes.html", null ],
@@ -30,12 +29,11 @@ var NAVTREE =
 var NAVTREEINDEX =
 [
 ".html",
-"classbrayns_1_1_application_parameters.html#ab63e2298df144b6b1bed796ac6219a19",
-"classbrayns_1_1_loader_registry.html",
-"classbrayns_1_1_o_s_p_ray_scene.html#ae7908e67cd061b4d5295f8dc17b8c4a2",
-"classbrayns_1_1_task_functor.html",
-"parameters_2version_8h.html",
-"structospray_1_1_extended_cylinders.html#a4492602fc1cad680b1da015962665135"
+"classbrayns_1_1_c_a_diffusion_simulation_handler.html",
+"classbrayns_1_1_material.html#af52e6da5515dcc072820a75b3d4b2e71",
+"classbrayns_1_1_scene.html#a0d835b82330c961a0d7967ac08f96567",
+"classbrayns_1_1_volume_parameters.html#ad0eb637217c6a20500f2c2dd56822994",
+"structbrayns_1_1_s_d_f_geometry.html#a685ba5f6b8879657499d7da7829352f9"
 ];
 
 var SYNCONMSG = 'click to disable panel synchronisation';

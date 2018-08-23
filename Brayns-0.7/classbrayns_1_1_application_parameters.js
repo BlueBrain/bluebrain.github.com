@@ -46,5 +46,5 @@ var classbrayns_1_1_application_parameters =
     [ "_positionalArgs", "classbrayns_1_1_application_parameters.html#ace25f094de3f50303d288a4e00bd8029", null ],
     [ "_synchronousMode", "classbrayns_1_1_application_parameters.html#a009b3f6f47312cea14345ea4e3973706", null ],
     [ "_tmpFolder", "classbrayns_1_1_application_parameters.html#a63a6ca2aa1ef2abd0b7adb00cccfa53c", null ],
-    [ "_windowSize", "classbrayns_1_1_application_parameters.html#a577714cdc198b526b751db55841cb264", null ]
+    [ "_windowSize", "classbrayns_1_1_application_parameters.html#aa556af11079356c6139899073886b4ff", null ]
 ];

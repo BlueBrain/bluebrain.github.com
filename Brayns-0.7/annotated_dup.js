@@ -1,23 +1,16 @@
 var annotated_dup =
 [
     [ "brayns", null, [
-      [ "obj", null, [
-        [ "ExtendedOBJMaterial", "structbrayns_1_1obj_1_1_extended_o_b_j_material.html", "structbrayns_1_1obj_1_1_extended_o_b_j_material" ]
-      ] ],
       [ "AbstractManipulator", "classbrayns_1_1_abstract_manipulator.html", "classbrayns_1_1_abstract_manipulator" ],
       [ "AbstractParameters", "classbrayns_1_1_abstract_parameters.html", "classbrayns_1_1_abstract_parameters" ],
-      [ "AbstractRenderer", "classbrayns_1_1_abstract_renderer.html", "classbrayns_1_1_abstract_renderer" ],
       [ "AbstractSimulationHandler", "classbrayns_1_1_abstract_simulation_handler.html", "classbrayns_1_1_abstract_simulation_handler" ],
       [ "AbstractTask", "classbrayns_1_1_abstract_task.html", "classbrayns_1_1_abstract_task" ],
       [ "ActionInterface", "classbrayns_1_1_action_interface.html", "classbrayns_1_1_action_interface" ],
       [ "AddModelFromBlobTask", "classbrayns_1_1_add_model_from_blob_task.html", "classbrayns_1_1_add_model_from_blob_task" ],
       [ "AddModelTask", "classbrayns_1_1_add_model_task.html", "classbrayns_1_1_add_model_task" ],
-      [ "AdvancedSimulationRenderer", "classbrayns_1_1_advanced_simulation_renderer.html", "classbrayns_1_1_advanced_simulation_renderer" ],
       [ "AnimationParameters", "classbrayns_1_1_animation_parameters.html", "classbrayns_1_1_animation_parameters" ],
       [ "ApplicationParameters", "classbrayns_1_1_application_parameters.html", "classbrayns_1_1_application_parameters" ],
       [ "BaseObject", "classbrayns_1_1_base_object.html", "classbrayns_1_1_base_object" ],
-      [ "BasicRenderer", "classbrayns_1_1_basic_renderer.html", "classbrayns_1_1_basic_renderer" ],
-      [ "BasicSimulationRenderer", "classbrayns_1_1_basic_simulation_renderer.html", "classbrayns_1_1_basic_simulation_renderer" ],
       [ "BinaryError", "structbrayns_1_1_binary_error.html", "structbrayns_1_1_binary_error" ],
       [ "BinaryParam", "structbrayns_1_1_binary_param.html", "structbrayns_1_1_binary_param" ],
       [ "BinaryTaskError", "classbrayns_1_1_binary_task_error.html", "classbrayns_1_1_binary_task_error" ],
@@ -33,6 +26,7 @@ var annotated_dup =
       [ "DeferredTask", "classbrayns_1_1_deferred_task.html", "classbrayns_1_1_deferred_task" ],
       [ "DirectionalLight", "classbrayns_1_1_directional_light.html", "classbrayns_1_1_directional_light" ],
       [ "Engine", "classbrayns_1_1_engine.html", "classbrayns_1_1_engine" ],
+      [ "EngineFactory", "classbrayns_1_1_engine_factory.html", "classbrayns_1_1_engine_factory" ],
       [ "ExtensionPlugin", "classbrayns_1_1_extension_plugin.html", "classbrayns_1_1_extension_plugin" ],
       [ "FlyingModeManipulator", "classbrayns_1_1_flying_mode_manipulator.html", "classbrayns_1_1_flying_mode_manipulator" ],
       [ "FrameBuffer", "classbrayns_1_1_frame_buffer.html", "classbrayns_1_1_frame_buffer" ],
@@ -54,18 +48,7 @@ var annotated_dup =
       [ "ModelParams", "classbrayns_1_1_model_params.html", "classbrayns_1_1_model_params" ],
       [ "MolecularSystemReader", "classbrayns_1_1_molecular_system_reader.html", "classbrayns_1_1_molecular_system_reader" ],
       [ "MorphologyLayout", "structbrayns_1_1_morphology_layout.html", "structbrayns_1_1_morphology_layout" ],
-      [ "OSPRayBrickedVolume", "classbrayns_1_1_o_s_p_ray_bricked_volume.html", "classbrayns_1_1_o_s_p_ray_bricked_volume" ],
-      [ "OSPRayCamera", "classbrayns_1_1_o_s_p_ray_camera.html", "classbrayns_1_1_o_s_p_ray_camera" ],
-      [ "OSPRayEngine", "classbrayns_1_1_o_s_p_ray_engine.html", "classbrayns_1_1_o_s_p_ray_engine" ],
-      [ "OSPRayFrameBuffer", "classbrayns_1_1_o_s_p_ray_frame_buffer.html", "classbrayns_1_1_o_s_p_ray_frame_buffer" ],
-      [ "OSPRayMaterial", "classbrayns_1_1_o_s_p_ray_material.html", "classbrayns_1_1_o_s_p_ray_material" ],
-      [ "OSPRayModel", "classbrayns_1_1_o_s_p_ray_model.html", "classbrayns_1_1_o_s_p_ray_model" ],
-      [ "OSPRayRenderer", "classbrayns_1_1_o_s_p_ray_renderer.html", "classbrayns_1_1_o_s_p_ray_renderer" ],
-      [ "OSPRayScene", "classbrayns_1_1_o_s_p_ray_scene.html", "classbrayns_1_1_o_s_p_ray_scene" ],
-      [ "OSPRaySharedDataVolume", "classbrayns_1_1_o_s_p_ray_shared_data_volume.html", "classbrayns_1_1_o_s_p_ray_shared_data_volume" ],
-      [ "OSPRayVolume", "classbrayns_1_1_o_s_p_ray_volume.html", "classbrayns_1_1_o_s_p_ray_volume" ],
       [ "ParametersManager", "classbrayns_1_1_parameters_manager.html", "classbrayns_1_1_parameters_manager" ],
-      [ "PathTracingRenderer", "classbrayns_1_1_path_tracing_renderer.html", "classbrayns_1_1_path_tracing_renderer" ],
       [ "PluginAPI", "classbrayns_1_1_plugin_a_p_i.html", "classbrayns_1_1_plugin_a_p_i" ],
       [ "PluginParam", "structbrayns_1_1_plugin_param.html", "structbrayns_1_1_plugin_param" ],
       [ "PointLight", "classbrayns_1_1_point_light.html", "classbrayns_1_1_point_light" ],
@@ -73,7 +56,6 @@ var annotated_dup =
       [ "PropertyMap", "classbrayns_1_1_property_map.html", "classbrayns_1_1_property_map" ],
       [ "PropertyObject", "classbrayns_1_1_property_object.html", "classbrayns_1_1_property_object" ],
       [ "ProteinLoader", "classbrayns_1_1_protein_loader.html", "classbrayns_1_1_protein_loader" ],
-      [ "ProximityRenderer", "classbrayns_1_1_proximity_renderer.html", "classbrayns_1_1_proximity_renderer" ],
       [ "Renderer", "classbrayns_1_1_renderer.html", "classbrayns_1_1_renderer" ],
       [ "RenderingParameters", "classbrayns_1_1_rendering_parameters.html", "classbrayns_1_1_rendering_parameters" ],
       [ "RenderInput", "structbrayns_1_1_render_input.html", "structbrayns_1_1_render_input" ],
@@ -85,7 +67,6 @@ var annotated_dup =
       [ "SDFGeometry", "structbrayns_1_1_s_d_f_geometry.html", "structbrayns_1_1_s_d_f_geometry" ],
       [ "SharedDataVolume", "classbrayns_1_1_shared_data_volume.html", "classbrayns_1_1_shared_data_volume" ],
       [ "ShortcutInformation", "structbrayns_1_1_shortcut_information.html", "structbrayns_1_1_shortcut_information" ],
-      [ "SimulationRenderer", "classbrayns_1_1_simulation_renderer.html", "classbrayns_1_1_simulation_renderer" ],
       [ "Sphere", "structbrayns_1_1_sphere.html", "structbrayns_1_1_sphere" ],
       [ "SpikeSimulationHandler", "classbrayns_1_1_spike_simulation_handler.html", "classbrayns_1_1_spike_simulation_handler" ],
       [ "Statistics", "classbrayns_1_1_statistics.html", "classbrayns_1_1_statistics" ],
@@ -105,12 +86,5 @@ var annotated_dup =
       [ "VolumeLoader", "classbrayns_1_1_volume_loader.html", "classbrayns_1_1_volume_loader" ],
       [ "VolumeParameters", "classbrayns_1_1_volume_parameters.html", "classbrayns_1_1_volume_parameters" ],
       [ "XYZBLoader", "classbrayns_1_1_x_y_z_b_loader.html", "classbrayns_1_1_x_y_z_b_loader" ]
-    ] ],
-    [ "ospray", null, [
-      [ "ClippedPerspectiveCamera", "structospray_1_1_clipped_perspective_camera.html", "structospray_1_1_clipped_perspective_camera" ],
-      [ "ExtendedCones", "structospray_1_1_extended_cones.html", "structospray_1_1_extended_cones" ],
-      [ "ExtendedCylinders", "structospray_1_1_extended_cylinders.html", "structospray_1_1_extended_cylinders" ],
-      [ "ExtendedSDFGeometries", "structospray_1_1_extended_s_d_f_geometries.html", "structospray_1_1_extended_s_d_f_geometries" ],
-      [ "ExtendedSpheres", "structospray_1_1_extended_spheres.html", "structospray_1_1_extended_spheres" ]
     ] ]
 ];

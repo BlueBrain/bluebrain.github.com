@@ -27,12 +27,8 @@ var hierarchy =
         [ "brayns::StreamParameters", "classbrayns_1_1_stream_parameters.html", null ],
         [ "brayns::VolumeParameters", "classbrayns_1_1_volume_parameters.html", null ]
       ] ],
-      [ "brayns::FrameBuffer", "classbrayns_1_1_frame_buffer.html", [
-        [ "brayns::OSPRayFrameBuffer", "classbrayns_1_1_o_s_p_ray_frame_buffer.html", null ]
-      ] ],
-      [ "brayns::Material", "classbrayns_1_1_material.html", [
-        [ "brayns::OSPRayMaterial", "classbrayns_1_1_o_s_p_ray_material.html", null ]
-      ] ],
+      [ "brayns::FrameBuffer", "classbrayns_1_1_frame_buffer.html", null ],
+      [ "brayns::Material", "classbrayns_1_1_material.html", null ],
       [ "brayns::ModelInstance", "classbrayns_1_1_model_instance.html", [
         [ "brayns::ModelParams", "classbrayns_1_1_model_params.html", [
           [ "brayns::BinaryParam", "structbrayns_1_1_binary_param.html", null ],
@@ -41,30 +37,16 @@ var hierarchy =
       ] ],
       [ "brayns::Progress", "classbrayns_1_1_progress.html", null ],
       [ "brayns::PropertyObject", "classbrayns_1_1_property_object.html", [
-        [ "brayns::Camera", "classbrayns_1_1_camera.html", [
-          [ "brayns::OSPRayCamera", "classbrayns_1_1_o_s_p_ray_camera.html", null ]
-        ] ],
-        [ "brayns::Renderer", "classbrayns_1_1_renderer.html", [
-          [ "brayns::OSPRayRenderer", "classbrayns_1_1_o_s_p_ray_renderer.html", null ]
-        ] ]
+        [ "brayns::Camera", "classbrayns_1_1_camera.html", null ],
+        [ "brayns::Renderer", "classbrayns_1_1_renderer.html", null ]
       ] ],
-      [ "brayns::Scene", "classbrayns_1_1_scene.html", [
-        [ "brayns::OSPRayScene", "classbrayns_1_1_o_s_p_ray_scene.html", null ]
-      ] ],
+      [ "brayns::Scene", "classbrayns_1_1_scene.html", null ],
       [ "brayns::Statistics", "classbrayns_1_1_statistics.html", null ],
       [ "brayns::TransferFunction", "classbrayns_1_1_transfer_function.html", null ],
       [ "brayns::Transformation", "classbrayns_1_1_transformation.html", null ],
       [ "brayns::Volume", "classbrayns_1_1_volume.html", [
-        [ "brayns::BrickedVolume", "classbrayns_1_1_bricked_volume.html", [
-          [ "brayns::OSPRayBrickedVolume", "classbrayns_1_1_o_s_p_ray_bricked_volume.html", null ]
-        ] ],
-        [ "brayns::OSPRayVolume", "classbrayns_1_1_o_s_p_ray_volume.html", [
-          [ "brayns::OSPRayBrickedVolume", "classbrayns_1_1_o_s_p_ray_bricked_volume.html", null ],
-          [ "brayns::OSPRaySharedDataVolume", "classbrayns_1_1_o_s_p_ray_shared_data_volume.html", null ]
-        ] ],
-        [ "brayns::SharedDataVolume", "classbrayns_1_1_shared_data_volume.html", [
-          [ "brayns::OSPRaySharedDataVolume", "classbrayns_1_1_o_s_p_ray_shared_data_volume.html", null ]
-        ] ]
+        [ "brayns::BrickedVolume", "classbrayns_1_1_bricked_volume.html", null ],
+        [ "brayns::SharedDataVolume", "classbrayns_1_1_shared_data_volume.html", null ]
       ] ]
     ] ],
     [ "brayns::BinaryError", "structbrayns_1_1_binary_error.html", null ],
@@ -75,9 +57,8 @@ var hierarchy =
     [ "brayns::CircuitConfiguration", "structbrayns_1_1_circuit_configuration.html", null ],
     [ "brayns::Cone", "structbrayns_1_1_cone.html", null ],
     [ "brayns::Cylinder", "structbrayns_1_1_cylinder.html", null ],
-    [ "brayns::Engine", "classbrayns_1_1_engine.html", [
-      [ "brayns::OSPRayEngine", "classbrayns_1_1_o_s_p_ray_engine.html", null ]
-    ] ],
+    [ "brayns::Engine", "classbrayns_1_1_engine.html", null ],
+    [ "brayns::EngineFactory", "classbrayns_1_1_engine_factory.html", null ],
     [ "brayns::ExtensionPlugin", "classbrayns_1_1_extension_plugin.html", null ],
     [ "brayns::Histogram", "structbrayns_1_1_histogram.html", null ],
     [ "brayns::ImageManager", "classbrayns_1_1_image_manager.html", null ],
@@ -96,9 +77,7 @@ var hierarchy =
     [ "brayns::LoaderRegistry", "classbrayns_1_1_loader_registry.html", null ],
     [ "brayns::LoaderRegistry::LoaderInfo", "structbrayns_1_1_loader_registry_1_1_loader_info.html", null ],
     [ "brayns::MetaballsGenerator", "classbrayns_1_1_metaballs_generator.html", null ],
-    [ "brayns::Model", "classbrayns_1_1_model.html", [
-      [ "brayns::OSPRayModel", "classbrayns_1_1_o_s_p_ray_model.html", null ]
-    ] ],
+    [ "brayns::Model", "classbrayns_1_1_model.html", null ],
     [ "brayns::Model::SDFGeometryData", "structbrayns_1_1_model_1_1_s_d_f_geometry_data.html", null ],
     [ "brayns::MorphologyLayout", "structbrayns_1_1_morphology_layout.html", null ],
     [ "brayns::ParametersManager", "classbrayns_1_1_parameters_manager.html", null ],
@@ -123,29 +102,6 @@ var hierarchy =
     [ "brayns::Timer", "classbrayns_1_1_timer.html", null ],
     [ "brayns::TrianglesMesh", "structbrayns_1_1_triangles_mesh.html", null ],
     [ "brayns::Version", "classbrayns_1_1_version.html", null ],
-    [ "Camera", null, [
-      [ "ospray::ClippedPerspectiveCamera", "structospray_1_1_clipped_perspective_camera.html", null ]
-    ] ],
-    [ "Geometry", null, [
-      [ "ospray::ExtendedCones", "structospray_1_1_extended_cones.html", null ],
-      [ "ospray::ExtendedCylinders", "structospray_1_1_extended_cylinders.html", null ],
-      [ "ospray::ExtendedSDFGeometries", "structospray_1_1_extended_s_d_f_geometries.html", null ],
-      [ "ospray::ExtendedSpheres", "structospray_1_1_extended_spheres.html", null ]
-    ] ],
-    [ "Material", null, [
-      [ "brayns::obj::ExtendedOBJMaterial", "structbrayns_1_1obj_1_1_extended_o_b_j_material.html", null ]
-    ] ],
-    [ "Renderer", null, [
-      [ "brayns::AbstractRenderer", "classbrayns_1_1_abstract_renderer.html", [
-        [ "brayns::AdvancedSimulationRenderer", "classbrayns_1_1_advanced_simulation_renderer.html", null ],
-        [ "brayns::BasicRenderer", "classbrayns_1_1_basic_renderer.html", null ],
-        [ "brayns::PathTracingRenderer", "classbrayns_1_1_path_tracing_renderer.html", null ],
-        [ "brayns::ProximityRenderer", "classbrayns_1_1_proximity_renderer.html", null ],
-        [ "brayns::SimulationRenderer", "classbrayns_1_1_simulation_renderer.html", [
-          [ "brayns::BasicSimulationRenderer", "classbrayns_1_1_basic_simulation_renderer.html", null ]
-        ] ]
-      ] ]
-    ] ],
     [ "std::exception", null, [
       [ "std::runtime_error", null, [
         [ "brayns::TaskRuntimeError", "classbrayns_1_1_task_runtime_error.html", [
