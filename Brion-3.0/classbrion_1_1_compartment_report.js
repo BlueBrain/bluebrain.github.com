@@ -30,5 +30,6 @@ var classbrion_1_1_compartment_report =
     [ "writeCompartments", "classbrion_1_1_compartment_report.html#a5bd85b1c9847c5800215e4bb8aeda1eb", null ],
     [ "writeFrame", "classbrion_1_1_compartment_report.html#a99d8f094705905a7e3ba82148f2e1edf", null ],
     [ "writeFrame", "classbrion_1_1_compartment_report.html#a8a8a4761c60dc6ffad746c1d1add15b9", null ],
+    [ "writeFrame", "classbrion_1_1_compartment_report.html#a1f2be41d8aa1adf6c13c1b2511d7fe50", null ],
     [ "writeHeader", "classbrion_1_1_compartment_report.html#af1f676daad38067f23312eba1b7cad35", null ]
 ];

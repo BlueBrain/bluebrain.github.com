@@ -27,5 +27,6 @@ var classbrion_1_1_compartment_report_plugin =
     [ "updateMapping", "classbrion_1_1_compartment_report_plugin.html#a979a0f56cfe3fc560eadc776dd865910", null ],
     [ "writeCompartments", "classbrion_1_1_compartment_report_plugin.html#a1ee8f2b01df7aec46ea21b8925e359eb", null ],
     [ "writeFrame", "classbrion_1_1_compartment_report_plugin.html#a172ef06d7223e75b905c3452418847f2", null ],
+    [ "writeFrame", "classbrion_1_1_compartment_report_plugin.html#ac4442510711d677c9eef6f8b765a64aa", null ],
     [ "writeHeader", "classbrion_1_1_compartment_report_plugin.html#ae98a1abce9c55a66a4091e6632a27e2c", null ]
 ];

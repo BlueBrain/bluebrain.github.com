@@ -43,8 +43,8 @@ var NAVTREEINDEX =
 [
 ".html",
 "classbrain_1_1_version.html#a02712f5fb5e479153827acb235bb59d4",
-"classbrion_1_1_morphology_plugin.html#a6d1393f3251077d8bc5b4f2b5dc18d47",
-"enums_8h.html#ad023e746676d235c53853a69c9c1c454a678f80e66e404f565f816505b6676606"
+"classbrion_1_1_morphology_plugin.html#a63adc722f3aa5b5c6c3626649faf2413",
+"enums_8h.html#ad023e746676d235c53853a69c9c1c454a5a1e37e4be1b2c520ce357f4f2e7a614"
 ];
 
 var SYNCONMSG = 'click to disable panel synchronisation';
