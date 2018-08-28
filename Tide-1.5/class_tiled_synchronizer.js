@@ -6,6 +6,7 @@ var class_tiled_synchronizer =
     ] ],
     [ "TiledSynchronizer", "class_tiled_synchronizer.html#a70ae3f4171110fc5308407e870044fcd", null ],
     [ "canSwapTiles", "class_tiled_synchronizer.html#a25d7a4e588651907f5de2a7d843590d9", null ],
+    [ "hasVisibleTiles", "class_tiled_synchronizer.html#a69da8a8e217091c199dff1d5753ded49", null ],
     [ "onSwapReady", "class_tiled_synchronizer.html#a8ae5165f31bd9575d16a2849c46eb256", null ],
     [ "swapTiles", "class_tiled_synchronizer.html#a66b1596107ae5c900f74142247f830ea", null ],
     [ "updateTiles", "class_tiled_synchronizer.html#a87ca86829ead6c83dbaba10fb67a2940", null ],

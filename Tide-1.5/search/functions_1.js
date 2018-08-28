@@ -12,6 +12,7 @@ var searchData=
   ['adjustsizeonetoone',['adjustSizeOneToOne',['../class_display_group_controller.html#a3a7c54ae20b837513d4e928aa242924f',1,'DisplayGroupController']]],
   ['adjustwindowsaspectratiotocontent',['adjustWindowsAspectRatioToContent',['../class_display_group_controller.html#a9505e0a188ddbd55d0fc145e45c2690f',1,'DisplayGroupController']]],
   ['adjustzoomtocontentaspectratio',['adjustZoomToContentAspectRatio',['../class_zoom_controller.html#a154a8cd5a99be532f438bcd864dd9a9b',1,'ZoomController']]],
+  ['allownextframe',['allowNextFrame',['../class_data_source.html#a6fba3169037584caf2ad85c040494552',1,'DataSource::allowNextFrame()'],['../class_movie_updater.html#a97167747cfda7cd6b99f1d2167b7c652',1,'MovieUpdater::allowNextFrame()'],['../class_pixel_stream_updater.html#af09431e47795288b4ec61c0a3680877a',1,'PixelStreamUpdater::allowNextFrame()']]],
   ['allready',['allReady',['../class_wall_to_wall_channel.html#ae2cde7fe2d3fcbc7afb2de6b009355f4',1,'WallToWallChannel']]],
   ['apply',['apply',['../class_scene_controller.html#a494df041ca57ad093df2932a0d3aa69a',1,'SceneController']]],
   ['appremotecontroller',['AppRemoteController',['../class_app_remote_controller.html#ad4ceca65aa34b12930e8f7d32299d4d3',1,'AppRemoteController']]]

@@ -1,11 +1,13 @@
 var searchData=
 [
   ['image',['Image',['../class_image.html',1,'']]],
+  ['imagecontent',['ImageContent',['../class_image_content.html',1,'ImageContent'],['../class_image_content.html#a9d9fb1b1453b48e613fb474a0537e56f',1,'ImageContent::ImageContent()']]],
   ['imagegrabbed',['imageGrabbed',['../class_wall_window.html#a594fe1a5cf3b0466ec8721110fad1726',1,'WallWindow']]],
   ['imageloaded',['imageLoaded',['../class_data_provider.html#aa9a946e0bc4a9b3198be15b159d3bc5b',1,'DataProvider']]],
   ['imagepyramidcontent',['ImagePyramidContent',['../class_image_pyramid_content.html',1,'ImagePyramidContent'],['../class_image_pyramid_content.html#afc3b21948f6c00850d193980081aa11b',1,'ImagePyramidContent::ImagePyramidContent()']]],
   ['imagepyramiddatasource',['ImagePyramidDataSource',['../class_image_pyramid_data_source.html',1,'ImagePyramidDataSource'],['../class_image_pyramid_data_source.html#ac397eafadab0288bc7df40c47631b40c',1,'ImagePyramidDataSource::ImagePyramidDataSource()']]],
   ['imagepyramidthumbnailgenerator',['ImagePyramidThumbnailGenerator',['../class_image_pyramid_thumbnail_generator.html',1,'ImagePyramidThumbnailGenerator'],['../class_image_pyramid_thumbnail_generator.html#ab2f43ff822d3913a527a752cf6126377',1,'ImagePyramidThumbnailGenerator::ImagePyramidThumbnailGenerator()']]],
+  ['imagereader',['ImageReader',['../class_image_reader.html',1,'']]],
   ['imagesource',['ImageSource',['../class_image_source.html',1,'ImageSource'],['../class_image_source.html#acca0d3d0e1927f39881e365007f9d51c',1,'ImageSource::ImageSource()']]],
   ['imagethumbnailgenerator',['ImageThumbnailGenerator',['../class_image_thumbnail_generator.html',1,'ImageThumbnailGenerator'],['../class_image_thumbnail_generator.html#a6791458d13dff3625fc2706de3b828b1',1,'ImageThumbnailGenerator::ImageThumbnailGenerator()']]],
   ['implementation_5flevel_3c_20std_3a_3achrono_3a_3aduration_3c_20rep_2c_20period_20_3e_20_3e',['implementation_level&lt; std::chrono::duration&lt; Rep, Period &gt; &gt;',['../structboost_1_1serialization_1_1implementation__level_3_01std_1_1chrono_1_1duration_3_01_rep_00_01_period_01_4_01_4.html',1,'boost::serialization']]],
@@ -26,7 +28,6 @@ var searchData=
   ['isdynamic',['isDynamic',['../class_data_source.html#a54629350c073612b09217a9084b27951',1,'DataSource::isDynamic()'],['../class_movie_updater.html#acb9214e61207fb88a7b02f2a3e6f0c4e',1,'MovieUpdater::isDynamic()'],['../class_pixel_stream_updater.html#a6b6f0f98115ff72c07749519e8c82974',1,'PixelStreamUpdater::isDynamic()']]],
   ['isempty',['isEmpty',['../class_display_group.html#a2bd3c3a118c0a2be043c10bb6ca8c3dd',1,'DisplayGroup']]],
   ['isfocused',['isFocused',['../class_window.html#a60def4b725b043de2212a89f61dee968',1,'Window']]],
-  ['isfree',['isFree',['../class_canvas_node.html#a22d5f4b5651aa8c6543ebf407ba54b6f',1,'CanvasNode']]],
   ['isfullscreen',['isFullscreen',['../class_window.html#a0b62ec2815986e6412cd6cc388ac4fd7',1,'Window']]],
   ['isgpuimage',['isGpuImage',['../class_image.html#ac3e10f35fb8dd895bda5627f43d96907',1,'Image::isGpuImage()'],['../class_s_v_g_gpu_image.html#ac344a36d69cb8d45ea8103d8b752de02',1,'SVGGpuImage::isGpuImage()']]],
   ['ishidden',['isHidden',['../class_window.html#a44d30890d5e2db014bb477f80ad889f1',1,'Window']]],

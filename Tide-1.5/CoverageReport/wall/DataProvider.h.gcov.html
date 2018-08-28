@@ -32,16 +32,16 @@
             <td></td>
             <td class="headerItem">Lines:</td>
             <td class="headerCovTableEntry">0</td>
-            <td class="headerCovTableEntry">4</td>
+            <td class="headerCovTableEntry">2</td>
             <td class="headerCovTableEntryLo">0.0 %</td>
           </tr>
           <tr>
             <td class="headerItem">Date:</td>
-            <td class="headerValue">2018-07-21 06:33:22</td>
+            <td class="headerValue">2018-08-28 06:27:55</td>
             <td></td>
             <td class="headerItem">Functions:</td>
             <td class="headerCovTableEntry">0</td>
-            <td class="headerCovTableEntry">9</td>
+            <td class="headerCovTableEntry">4</td>
             <td class="headerCovTableEntryLo">0.0 %</td>
           </tr>
           <tr><td><img src="../glass.png" width=3 height=3 alt=""></td></tr>
@@ -102,125 +102,102 @@
 <span class="lineNum">      40 </span>            : #ifndef DATAPROVIDER_H
 <span class="lineNum">      41 </span>            : #define DATAPROVIDER_H
 <span class="lineNum">      42 </span>            : 
-<span class="lineNum">      43 </span>            : #include &quot;config.h&quot;
+<span class="lineNum">      43 </span>            : #include &quot;synchronizers/ContentSynchronizer.h&quot;
 <span class="lineNum">      44 </span>            : #include &quot;types.h&quot;
 <span class="lineNum">      45 </span>            : 
-<span class="lineNum">      46 </span>            : #include &quot;synchronizers/ContentSynchronizer.h&quot;
-<span class="lineNum">      47 </span>            : #if TIDE_USE_TIFF
-<span class="lineNum">      48 </span>            : #include &quot;datasources/ImagePyramidDataSource.h&quot;
-<span class="lineNum">      49 </span>            : #endif
-<span class="lineNum">      50 </span>            : #include &quot;datasources/ImageSource.h&quot;
-<span class="lineNum">      51 </span>            : #if TIDE_ENABLE_PDF_SUPPORT
-<span class="lineNum">      52 </span>            : #include &quot;datasources/PDFTiler.h&quot;
-<span class="lineNum">      53 </span>            : #endif
-<span class="lineNum">      54 </span>            : #include &quot;datasources/SVGTiler.h&quot;
-<span class="lineNum">      55 </span>            : 
-<span class="lineNum">      56 </span>            : #include &lt;QFutureWatcher&gt;
-<span class="lineNum">      57 </span>            : #include &lt;QList&gt;
-<span class="lineNum">      58 </span>            : #include &lt;QObject&gt;
-<span class="lineNum">      59 </span>            : 
-<span class="lineNum">      60 </span>            : /**
-<span class="lineNum">      61 </span>            :  * Load image data in parallel.
-<span class="lineNum">      62 </span>            :  */
-<span class="lineNum">      63 </span>            : class DataProvider : public QObject
-<span class="lineNum">      64 </span>            : {
-<span class="lineNum">      65 </span>            :     Q_OBJECT
-<span class="lineNum">      66 </span>            :     Q_DISABLE_COPY(DataProvider)
-<span class="lineNum">      67 </span>            : 
-<a name="68"><span class="lineNum">      68 </span>            : public:</a>
-<span class="lineNum">      69 </span>            :     /** Construct a data provider. */
-<span class="lineNum">      70 </span><span class="lineNoCov">          0 :     DataProvider() = default;</span>
+<span class="lineNum">      46 </span>            : #include &lt;QFutureWatcher&gt;
+<span class="lineNum">      47 </span>            : #include &lt;QList&gt;
+<span class="lineNum">      48 </span>            : #include &lt;QObject&gt;
+<span class="lineNum">      49 </span>            : 
+<span class="lineNum">      50 </span>            : /**
+<span class="lineNum">      51 </span>            :  * Load tile images in parallel, synchronizing tiles swap and frame advance.
+<span class="lineNum">      52 </span>            :  */
+<span class="lineNum">      53 </span>            : class DataProvider : public QObject
+<span class="lineNum">      54 </span>            : {
+<span class="lineNum">      55 </span>            :     Q_OBJECT
+<span class="lineNum">      56 </span>            :     Q_DISABLE_COPY(DataProvider)
+<span class="lineNum">      57 </span>            : 
+<a name="58"><span class="lineNum">      58 </span>            : public:</a>
+<span class="lineNum">      59 </span>            :     /** Construct a data provider. */
+<span class="lineNum">      60 </span><span class="lineNoCov">          0 :     DataProvider() = default;</span>
+<span class="lineNum">      61 </span>            : 
+<span class="lineNum">      62 </span>            :     /** Destructor. */
+<span class="lineNum">      63 </span>            :     ~DataProvider();
+<span class="lineNum">      64 </span>            : 
+<span class="lineNum">      65 </span>            :     /**
+<span class="lineNum">      66 </span>            :      * Update the data sources when the scene has changed.
+<span class="lineNum">      67 </span>            :      *
+<span class="lineNum">      68 </span>            :      * @param scene with updated information.
+<span class="lineNum">      69 </span>            :      */
+<span class="lineNum">      70 </span>            :     void updateDataSources(const Scene&amp; scene);
 <span class="lineNum">      71 </span>            : 
-<span class="lineNum">      72 </span>            :     /** Destructor. */
-<span class="lineNum">      73 </span>            :     ~DataProvider();
-<span class="lineNum">      74 </span>            : 
-<span class="lineNum">      75 </span>            :     /** @return a ContentSynchronizer for the given content. */
-<span class="lineNum">      76 </span>            :     std::unique_ptr&lt;ContentSynchronizer&gt; createSynchronizer(
-<span class="lineNum">      77 </span>            :         const Window&amp; window, deflect::View view);
-<span class="lineNum">      78 </span>            : 
-<span class="lineNum">      79 </span>            :     /**
-<span class="lineNum">      80 </span>            :      * Update the data sources with information from a new scene.
-<span class="lineNum">      81 </span>            :      *
-<span class="lineNum">      82 </span>            :      * @param scene with updated information for the movies/pdfs/streams.
-<span class="lineNum">      83 </span>            :      */
-<span class="lineNum">      84 </span>            :     void updateDataSources(const Scene&amp; scene);
-<span class="lineNum">      85 </span>            : 
-<span class="lineNum">      86 </span>            :     /**
-<span class="lineNum">      87 </span>            :      * Synchronize the swap of Tiles just before rendering for movies/streams.
-<span class="lineNum">      88 </span>            :      *
-<span class="lineNum">      89 </span>            :      * @param channel to synchonize swap accross all wall processes.
-<span class="lineNum">      90 </span>            :      */
-<span class="lineNum">      91 </span>            :     void synchronizeTilesSwap(WallToWallChannel&amp; channel);
-<span class="lineNum">      92 </span>            : 
-<span class="lineNum">      93 </span>            : public slots:
-<span class="lineNum">      94 </span>            :     /** Load an image asynchronously. */
-<span class="lineNum">      95 </span>            :     void loadAsync(TilePtr tile, deflect::View view);
-<span class="lineNum">      96 </span>            : 
-<span class="lineNum">      97 </span>            :     /** Add a new frame. */
-<span class="lineNum">      98 </span>            :     void setNewFrame(deflect::server::FramePtr frame);
-<span class="lineNum">      99 </span>            : 
-<span class="lineNum">     100 </span>            : signals:
-<span class="lineNum">     101 </span>            :     /** Emitted to request a new frame after a successful swap. */
-<span class="lineNum">     102 </span>            :     void requestFrame(QString uri);
-<span class="lineNum">     103 </span>            : 
-<span class="lineNum">     104 </span>            :     /** Emitted to request the pixel stream to close if an error occured. */
-<span class="lineNum">     105 </span>            :     void closePixelStream(QString uri);
-<span class="lineNum">     106 </span>            : 
-<span class="lineNum">     107 </span>            :     /** Emitted to request a new rendering after a tile image was loaded. */
-<span class="lineNum">     108 </span>            :     void imageLoaded();
-<span class="lineNum">     109 </span>            : 
-<span class="lineNum">     110 </span>            : private:
-<span class="lineNum">     111 </span>            :     using Watcher = QFutureWatcher&lt;void&gt;;
-<span class="lineNum">     112 </span>            :     QList&lt;Watcher*&gt; _watchers;
-<span class="lineNum">     113 </span>            : 
-<span class="lineNum">     114 </span>            : #if TIDE_ENABLE_MOVIE_SUPPORT
-<span class="lineNum">     115 </span>            :     std::map&lt;QUuid, std::shared_ptr&lt;MovieUpdater&gt;&gt; _movieSources;
-<span class="lineNum">     116 </span>            : #endif
-<span class="lineNum">     117 </span>            :     std::map&lt;QString, std::shared_ptr&lt;PixelStreamUpdater&gt;&gt; _streamSources;
+<span class="lineNum">      72 </span>            :     /**
+<span class="lineNum">      73 </span>            :      * Create a ContentSynchronizer for the given window and view.
+<span class="lineNum">      74 </span>            :      *
+<span class="lineNum">      75 </span>            :      * A data source must alread exist for the target content; so this function
+<span class="lineNum">      76 </span>            :      * must be called *after* updateDataSources.
+<span class="lineNum">      77 </span>            :      */
+<span class="lineNum">      78 </span>            :     std::unique_ptr&lt;ContentSynchronizer&gt; createSynchronizer(
+<span class="lineNum">      79 </span>            :         const Window&amp; window, deflect::View view);
+<span class="lineNum">      80 </span>            : 
+<span class="lineNum">      81 </span>            :     /**
+<span class="lineNum">      82 </span>            :      * Synchronize the swap of Tiles just before rendering.
+<span class="lineNum">      83 </span>            :      *
+<span class="lineNum">      84 </span>            :      * @param channel to synchonize swap accross all wall processes.
+<span class="lineNum">      85 </span>            :      */
+<span class="lineNum">      86 </span>            :     void synchronizeTilesSwap(WallToWallChannel&amp; channel);
+<span class="lineNum">      87 </span>            : 
+<span class="lineNum">      88 </span>            :     /**
+<span class="lineNum">      89 </span>            :      * Synchronize the update of Tiles just before rendering.
+<span class="lineNum">      90 </span>            :      *
+<span class="lineNum">      91 </span>            :      * @param channel to synchonize the update accross all wall processes.
+<span class="lineNum">      92 </span>            :      */
+<span class="lineNum">      93 </span>            :     void synchronizeTilesUpdate(WallToWallChannel&amp; channel);
+<span class="lineNum">      94 </span>            : 
+<span class="lineNum">      95 </span>            : public slots:
+<span class="lineNum">      96 </span>            :     /** Start loading a tile image asynchronously. */
+<span class="lineNum">      97 </span>            :     void loadAsync(TilePtr tile, deflect::View view);
+<span class="lineNum">      98 </span>            : 
+<span class="lineNum">      99 </span>            :     /** Update the frame for an existing PixelStream data source. */
+<span class="lineNum">     100 </span>            :     void setNewFrame(deflect::server::FramePtr frame);
+<span class="lineNum">     101 </span>            : 
+<span class="lineNum">     102 </span>            : signals:
+<span class="lineNum">     103 </span>            :     /** Emitted to request a new frame for a stream after a successful swap. */
+<span class="lineNum">     104 </span>            :     void requestPixelStreamFrame(QString uri);
+<span class="lineNum">     105 </span>            : 
+<span class="lineNum">     106 </span>            :     /** Emitted to request the pixel stream to close if an error occured. */
+<span class="lineNum">     107 </span>            :     void closePixelStream(QString uri);
+<span class="lineNum">     108 </span>            : 
+<span class="lineNum">     109 </span>            :     /** Emitted to request a new rendering after a tile image was loaded. */
+<span class="lineNum">     110 </span>            :     void imageLoaded();
+<span class="lineNum">     111 </span>            : 
+<span class="lineNum">     112 </span>            : private:
+<span class="lineNum">     113 </span>            :     using Watcher = QFutureWatcher&lt;void&gt;;
+<span class="lineNum">     114 </span>            :     QList&lt;Watcher*&gt; _watchers;
+<span class="lineNum">     115 </span>            : 
+<span class="lineNum">     116 </span>            :     std::map&lt;QUuid, DataSourceSharedPtr&gt; _dataSources;
+<a name="117"><span class="lineNum">     117 </span>            :     std::map&lt;QString, QUuid&gt; _streamSources;</a>
 <span class="lineNum">     118 </span>            : 
-<span class="lineNum">     119 </span>            :     std::map&lt;QUuid, std::weak_ptr&lt;ImageSource&gt;&gt; _imageSources;
-<span class="lineNum">     120 </span>            : #if TIDE_USE_TIFF
-<span class="lineNum">     121 </span>            :     std::map&lt;QUuid, std::weak_ptr&lt;ImagePyramidDataSource&gt;&gt; _imagePyrSources;
-<span class="lineNum">     122 </span>            : #endif
-<span class="lineNum">     123 </span>            : #if TIDE_ENABLE_PDF_SUPPORT
-<span class="lineNum">     124 </span>            :     std::map&lt;QUuid, std::weak_ptr&lt;PDFTiler&gt;&gt; _pdfSources;
-<span class="lineNum">     125 </span>            : #endif
-<span class="lineNum">     126 </span>            :     std::map&lt;QUuid, std::weak_ptr&lt;SVGTiler&gt;&gt; _svgSources;
-<span class="lineNum">     127 </span>            : 
-<a name="128"><span class="lineNum">     128 </span>            :     void _updateDataSource(const Content&amp; content, const QUuid&amp; id);</a>
-<span class="lineNum">     129 </span>            : 
-<span class="lineNum">     130 </span><span class="lineNoCov">          0 :     struct TileUpdateInfo</span>
-<span class="lineNum">     131 </span>            :     {
-<span class="lineNum">     132 </span>            :         TileWeakPtr tile;
-<span class="lineNum">     133 </span>            :         deflect::View view;
-<span class="lineNum">     134 </span>            :     };
-<span class="lineNum">     135 </span>            :     using TileUpdateList = std::vector&lt;TileUpdateInfo&gt;;
-<span class="lineNum">     136 </span>            :     std::map&lt;uint, TileUpdateList&gt; _tileImageRequests;
+<span class="lineNum">     119 </span><span class="lineNoCov">          0 :     struct TileUpdateInfo</span>
+<span class="lineNum">     120 </span>            :     {
+<span class="lineNum">     121 </span>            :         TileWeakPtr tile;
+<span class="lineNum">     122 </span>            :         deflect::View view;
+<span class="lineNum">     123 </span>            :     };
+<span class="lineNum">     124 </span>            :     using TileUpdateList = std::vector&lt;TileUpdateInfo&gt;;
+<span class="lineNum">     125 </span>            :     std::map&lt;uint, TileUpdateList&gt; _tileImageRequests;
+<span class="lineNum">     126 </span>            : 
+<span class="lineNum">     127 </span>            :     void _createOrUpdateDataSource(const Content&amp; content, const QUuid&amp; id);
+<span class="lineNum">     128 </span>            :     DataSourceSharedPtr _getOrCreateDataSource(const Content&amp; content,
+<span class="lineNum">     129 </span>            :                                                const QUuid&amp; id);
+<span class="lineNum">     130 </span>            : 
+<span class="lineNum">     131 </span>            :     void _updateTiles();
+<span class="lineNum">     132 </span>            :     void _startTileImageRequests(DataSourceSharedPtr source);
+<span class="lineNum">     133 </span>            :     void _handleStreamError(const QString&amp; uri);
+<span class="lineNum">     134 </span>            :     void _load(DataSourceSharedPtr source, const TileUpdateList&amp; tileList);
+<span class="lineNum">     135 </span>            :     void _handleFinished();
+<span class="lineNum">     136 </span>            : };
 <span class="lineNum">     137 </span>            : 
-<span class="lineNum">     138 </span>            :     using DataSourcePtr = std::shared_ptr&lt;DataSource&gt;;
-<span class="lineNum">     139 </span>            :     void _processTileImageRequests(DataSourcePtr source);
-<span class="lineNum">     140 </span>            : 
-<span class="lineNum">     141 </span>            : #if TIDE_ENABLE_MOVIE_SUPPORT
-<span class="lineNum">     142 </span>            :     std::shared_ptr&lt;MovieUpdater&gt; _getOrCreateMovieSource(const QString&amp; uri,
-<span class="lineNum">     143 </span>            :                                                           const QUuid&amp; id);
-<span class="lineNum">     144 </span>            : #endif
-<span class="lineNum">     145 </span>            :     std::shared_ptr&lt;PixelStreamUpdater&gt; _getOrCreateStreamSource(
-<span class="lineNum">     146 </span>            :         const QString&amp; uri);
-<span class="lineNum">     147 </span>            :     void _load(DataSourcePtr source, const TileUpdateList&amp; tileList);
-<span class="lineNum">     148 </span>            :     void _handleFinished();
-<span class="lineNum">     149 </span>            :     std::unique_ptr&lt;ContentSynchronizer&gt; _makeSynchronizer(const Window&amp; window,
-<span class="lineNum">     150 </span>            :                                                            deflect::View view);
-<span class="lineNum">     151 </span>            : 
-<span class="lineNum">     152 </span>            :     template &lt;typename DataSources&gt;
-<span class="lineNum">     153 </span>            :     void _updateTiles(DataSources&amp; dataSources);
-<a name="154"><span class="lineNum">     154 </span>            : </a>
-<span class="lineNum">     155 </span>            :     template &lt;typename DataSource, typename URIType&gt;
-<span class="lineNum">     156 </span><span class="lineNoCov">          0 :     void _handleError(URIType, const std::exception&amp;)</span>
-<span class="lineNum">     157 </span>            :     {
-<span class="lineNum">     158 </span><span class="lineNoCov">          0 :     }</span>
-<span class="lineNum">     159 </span>            : };
-<span class="lineNum">     160 </span>            : 
-<span class="lineNum">     161 </span>            : #endif
+<span class="lineNum">     138 </span>            : #endif
 </pre>
       </td>
     </tr>

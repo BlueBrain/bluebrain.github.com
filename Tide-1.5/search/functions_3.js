@@ -1,8 +1,9 @@
 var searchData=
 [
-  ['canbezoomed',['canBeZoomed',['../class_content.html#af666fa7482f5c6a12c1e5b18f7076f4e',1,'Content::canBeZoomed()'],['../class_image_pyramid_content.html#abc29f748ebe89db580582e0f07dfb790',1,'ImagePyramidContent::canBeZoomed()'],['../class_texture_content.html#aa115d7589db49b1d719c5746f839b8b6',1,'TextureContent::canBeZoomed()'],['../class_vectorial_content.html#ab37d163ac4b16051baeab22c5d47e2f1',1,'VectorialContent::canBeZoomed()']]],
+  ['canbezoomed',['canBeZoomed',['../class_content.html#af666fa7482f5c6a12c1e5b18f7076f4e',1,'Content::canBeZoomed()'],['../class_image_content.html#afb0c6f9868c93e2ea174eadc9bbaaf34',1,'ImageContent::canBeZoomed()'],['../class_image_pyramid_content.html#abc29f748ebe89db580582e0f07dfb790',1,'ImagePyramidContent::canBeZoomed()'],['../class_vectorial_content.html#ab37d163ac4b16051baeab22c5d47e2f1',1,'VectorialContent::canBeZoomed()']]],
   ['cancelstreamacceptance',['cancelStreamAcceptance',['../class_screen_lock.html#a7ee060776830fcff6054b13ff589b16c',1,'ScreenLock']]],
   ['canswaptiles',['canSwapTiles',['../class_basic_synchronizer.html#a5176a9efe3c6b214f4a7de5c360d4693',1,'BasicSynchronizer::canSwapTiles()'],['../class_content_synchronizer.html#aa2bde05b6398c386c44914dfbf1e2a16',1,'ContentSynchronizer::canSwapTiles()'],['../class_tiled_synchronizer.html#a25d7a4e588651907f5de2a7d843590d9',1,'TiledSynchronizer::canSwapTiles()']]],
+  ['canvasnode',['CanvasNode',['../class_canvas_node.html#a28a1c18a90ff37432047381b41a74b44',1,'CanvasNode']]],
   ['check',['check',['../classtide_1_1_version.html#a6db9588b945925020747cffdfc464db7',1,'tide::Version::check()'],['../classtide_1_1_version.html#a6db9588b945925020747cffdfc464db7',1,'tide::Version::check()'],['../classtide_1_1_version.html#a6db9588b945925020747cffdfc464db7',1,'tide::Version::check()']]],
   ['checkversion',['checkVersion',['../class_wall_to_wall_channel.html#addd62ca5f6199f4ca0c31c23d282066d',1,'WallToWallChannel']]],
   ['clear',['clear',['../class_display_group.html#a0c10092c41d5dee217dd49f52c7e2302',1,'DisplayGroup']]],
@@ -16,7 +17,7 @@ var searchData=
   ['configuration',['Configuration',['../class_configuration.html#a71e212bc15ff2fc41055cb41a4884442',1,'Configuration::Configuration()=default'],['../class_configuration.html#a4f41abbe40c7e1345a325369c86aaaca',1,'Configuration::Configuration(const QString &amp;filename)']]],
   ['constrain',['constrain',['../namespacegeometry.html#a4a93d0fbf1c6449cb565e746734d5436',1,'geometry']]],
   ['constrainsize',['constrainSize',['../class_window_controller.html#a4e1806c3ab55a06c9862fa86a51a535f',1,'WindowController']]],
-  ['contains',['contains',['../class_cached_data_source.html#a02e027db47c9407a6235d391a015704b',1,'CachedDataSource']]],
+  ['contains',['contains',['../class_cached_data_source.html#a0b6e86e8d499c837286790aa778bdceb',1,'CachedDataSource']]],
   ['content',['Content',['../class_content.html#ae491288d2efce7fa63d3e777580630b4',1,'Content']]],
   ['contentcontroller',['ContentController',['../class_content_controller.html#ad47bedf89f88c7fc2d9b732732943901',1,'ContentController']]],
   ['contentloader',['ContentLoader',['../class_content_loader.html#aa0c01069db0ab311876995e8ef076bbd',1,'ContentLoader']]],

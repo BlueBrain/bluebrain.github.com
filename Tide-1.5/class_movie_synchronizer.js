@@ -6,7 +6,6 @@ var class_movie_synchronizer =
     [ "getStatistics", "class_movie_synchronizer.html#af222db1adfcfce06fc81ea433b85ebaa", null ],
     [ "getTilesArea", "class_movie_synchronizer.html#a228b8a12cba78d7a77e3af79192a5c27", null ],
     [ "getView", "class_movie_synchronizer.html#a6d10e765a71f67c962837263d985b41b", null ],
-    [ "hasVisibleTiles", "class_movie_synchronizer.html#acb015c4c36cbdc0823ef4d48314d55d5", null ],
     [ "sliderPositionChanged", "class_movie_synchronizer.html#aa1d8d8cafb31355778c5b5fc50b3680b", null ],
     [ "swapTiles", "class_movie_synchronizer.html#ae3234c1d2ea0e660e57cc019559b63ba", null ],
     [ "update", "class_movie_synchronizer.html#a607c2911b21f3f5aa3dcecfb7eab750b", null ],

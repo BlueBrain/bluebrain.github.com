@@ -1,6 +1,6 @@
 var class_layout_engine =
 [
-    [ "LayoutEngine", "class_layout_engine.html#a4b9abd8929a8e1e4d22c45dbfc6d18ae", null ],
-    [ "getFocusedCoord", "class_layout_engine.html#ac7d4c9df48851407c142f20499c84b52", null ],
-    [ "updateFocusedCoord", "class_layout_engine.html#a48bcfe6a051b42439369b623bb590528", null ]
+    [ "~LayoutEngine", "class_layout_engine.html#aed9a644cc30f7ded1bac7dedbf0366b6", null ],
+    [ "create", "class_layout_engine.html#a53e214b9facb6e1c5ae033bb7154c572", null ],
+    [ "updateFocusedCoord", "class_layout_engine.html#ab27c79a8e54970b5f62a355e35ed1642", null ]
 ];

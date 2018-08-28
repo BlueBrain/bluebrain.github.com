@@ -10,7 +10,7 @@ var searchData=
   ['hasfullscreenwindows',['hasFullscreenWindows',['../class_display_group.html#a4e9e08eed111cfe5e704ca5b68310ade',1,'DisplayGroup']]],
   ['hasmoved',['hasMoved',['../namespace_math_utils.html#a67e1c703df8094b68695378c074fb6d1',1,'MathUtils']]],
   ['hasvisiblepanels',['hasVisiblePanels',['../class_display_group.html#aa2857a09fb72669d48021f0cb30efeb5',1,'DisplayGroup']]],
-  ['hasvisibletiles',['hasVisibleTiles',['../class_movie_synchronizer.html#acb015c4c36cbdc0823ef4d48314d55d5',1,'MovieSynchronizer']]],
+  ['hasvisibletiles',['hasVisibleTiles',['../class_basic_synchronizer.html#a75785d0a9a4c6dc5ad7460531e753993',1,'BasicSynchronizer::hasVisibleTiles()'],['../class_content_synchronizer.html#ad8c06916ca169448c16b4a0b19bed24b',1,'ContentSynchronizer::hasVisibleTiles()'],['../class_tiled_synchronizer.html#a69da8a8e217091c199dff1d5753ded49',1,'TiledSynchronizer::hasVisibleTiles()']]],
   ['headless',['headless',['../struct_configuration_1_1_master.html#aa06184ddfe5fd6b2b75bd502392efa5a',1,'Configuration::Master']]],
   ['height',['height',['../class_content.html#a0ac15e1ba630bc6c6f98d47529f4c48c',1,'Content']]],
   ['hidelauncher',['hideLauncher',['../class_scene_controller.html#aa17cea719c50c3bb25e9ad2141b955a3',1,'SceneController']]],

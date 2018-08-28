@@ -32,16 +32,16 @@
             <td></td>
             <td class="headerItem">Lines:</td>
             <td class="headerCovTableEntry">0</td>
-            <td class="headerCovTableEntry">3</td>
+            <td class="headerCovTableEntry">7</td>
             <td class="headerCovTableEntryLo">0.0 %</td>
           </tr>
           <tr>
             <td class="headerItem">Date:</td>
-            <td class="headerValue">2018-07-21 06:33:22</td>
+            <td class="headerValue">2018-08-28 06:27:55</td>
             <td></td>
             <td class="headerItem">Functions:</td>
             <td class="headerCovTableEntry">0</td>
-            <td class="headerCovTableEntry">4</td>
+            <td class="headerCovTableEntry">7</td>
             <td class="headerCovTableEntryLo">0.0 %</td>
           </tr>
           <tr><td><img src="../../glass.png" width=3 height=3 alt=""></td></tr>
@@ -102,42 +102,53 @@
 <span class="lineNum">      40 </span>            : #ifndef DATASOURCE_H
 <span class="lineNum">      41 </span>            : #define DATASOURCE_H
 <span class="lineNum">      42 </span>            : 
-<span class="lineNum">      43 </span>            : #include &quot;types.h&quot;
-<span class="lineNum">      44 </span>            : 
-<span class="lineNum">      45 </span>            : /**
-<a name="46"><span class="lineNum">      46 </span>            :  * Base interface for shared data sources.</a>
-<span class="lineNum">      47 </span>            :  */
-<span class="lineNum">      48 </span><span class="lineNoCov">          0 : class DataSource</span>
-<a name="49"><span class="lineNum">      49 </span>            : {</a>
-<span class="lineNum">      50 </span>            : public:
-<span class="lineNum">      51 </span><span class="lineNoCov">          0 :     virtual ~DataSource() = default;</span>
-<a name="52"><span class="lineNum">      52 </span>            : </a>
-<span class="lineNum">      53 </span>            :     /** @return true if the data source produces dynamic contents. */
-<span class="lineNum">      54 </span><span class="lineNoCov">          0 :     virtual bool isDynamic() const { return false; }</span>
-<span class="lineNum">      55 </span>            :     /**
-<span class="lineNum">      56 </span>            :      * Get a tile image by its id for a given view.
-<span class="lineNum">      57 </span>            :      * Called asynchronously but not concurrently. threadsafe.
-<span class="lineNum">      58 </span>            :      */
-<span class="lineNum">      59 </span>            :     virtual ImagePtr getTileImage(uint tileId, deflect::View view) const = 0;
-<span class="lineNum">      60 </span>            : 
-<span class="lineNum">      61 </span>            :     /** Get the coordinates of a tile. */
-<span class="lineNum">      62 </span>            :     virtual QRect getTileRect(uint tileId) const = 0;
+<span class="lineNum">      43 </span>            : #include &quot;synchronizers/ContentSynchronizers.h&quot;
+<span class="lineNum">      44 </span>            : #include &quot;types.h&quot;
+<span class="lineNum">      45 </span>            : 
+<span class="lineNum">      46 </span>            : /**
+<a name="47"><span class="lineNum">      47 </span>            :  * Base interface for shared data sources.</a>
+<span class="lineNum">      48 </span>            :  */
+<span class="lineNum">      49 </span><span class="lineNoCov">          0 : class DataSource</span>
+<a name="50"><span class="lineNum">      50 </span>            : {</a>
+<span class="lineNum">      51 </span>            : public:
+<span class="lineNum">      52 </span><span class="lineNoCov">          0 :     virtual ~DataSource() = default;</span>
+<a name="53"><span class="lineNum">      53 </span>            : </a>
+<span class="lineNum">      54 </span>            :     /** @return true if the data source produces dynamic contents. */
+<a name="55"><span class="lineNum">      55 </span><span class="lineNoCov">          0 :     virtual bool isDynamic() const { return false; }</span></a>
+<span class="lineNum">      56 </span>            :     /** Update the state of the data source. */
+<span class="lineNum">      57 </span><span class="lineNoCov">          0 :     virtual void update(const Content&amp; content) { Q_UNUSED(content); }</span>
+<span class="lineNum">      58 </span>            :     /**
+<span class="lineNum">      59 </span>            :      * Get a tile image by its id for a given view.
+<span class="lineNum">      60 </span>            :      * Called asynchronously but not concurrently. threadsafe.
+<span class="lineNum">      61 </span>            :      */
+<span class="lineNum">      62 </span>            :     virtual ImagePtr getTileImage(uint tileId, deflect::View view) const = 0;
 <span class="lineNum">      63 </span>            : 
-<span class="lineNum">      64 </span>            :     /** @return the image size for the requested lod and channel. */
-<span class="lineNum">      65 </span>            :     virtual QSize getTilesArea(uint lod, uint channel) const = 0;
+<span class="lineNum">      64 </span>            :     /** Get the coordinates of a tile. */
+<span class="lineNum">      65 </span>            :     virtual QRect getTileRect(uint tileId) const = 0;
 <span class="lineNum">      66 </span>            : 
-<span class="lineNum">      67 </span>            :     /** Compute the indices of the tiles which are visible in the given area. */
-<span class="lineNum">      68 </span>            :     virtual Indices computeVisibleSet(const QRectF&amp; visibleTilesArea, uint lod,
-<span class="lineNum">      69 </span>            :                                       uint channel) const = 0;
-<span class="lineNum">      70 </span>            : 
-<span class="lineNum">      71 </span>            :     /** @return the max LOD level (top of pyramid, lowest resolution). */
-<span class="lineNum">      72 </span>            :     virtual uint getMaxLod() const = 0;
+<span class="lineNum">      67 </span>            :     /** @return the image size for the requested lod and channel. */
+<span class="lineNum">      68 </span>            :     virtual QSize getTilesArea(uint lod, uint channel) const = 0;
+<span class="lineNum">      69 </span>            : 
+<span class="lineNum">      70 </span>            :     /** Compute the indices of the tiles which are visible in the given area. */
+<span class="lineNum">      71 </span>            :     virtual Indices computeVisibleSet(const QRectF&amp; visibleTilesArea, uint lod,
+<span class="lineNum">      72 </span>            :                                       uint channel) const = 0;
 <span class="lineNum">      73 </span>            : 
-<span class="lineNum">      74 </span>            :     /** The synchronizers linked to this shared data source. */
-<span class="lineNum">      75 </span>            :     std::set&lt;ContentSynchronizer*&gt; synchronizers;
-<span class="lineNum">      76 </span>            : };
-<span class="lineNum">      77 </span>            : 
-<span class="lineNum">      78 </span>            : #endif
+<span class="lineNum">      74 </span>            :     /** @return the max LOD level (top of pyramid, lowest resolution). */
+<span class="lineNum">      75 </span>            :     virtual uint getMaxLod() const = 0;
+<a name="76"><span class="lineNum">      76 </span>            : </a>
+<span class="lineNum">      77 </span>            :     /** Allow advancing to the next frame (synchronization / flow control). */
+<a name="78"><span class="lineNum">      78 </span><span class="lineNoCov">          0 :     virtual void allowNextFrame() {}</span></a>
+<span class="lineNum">      79 </span>            :     /** Synchronize the advance to the next frame of the data. */
+<span class="lineNum">      80 </span><span class="lineNoCov">          0 :     virtual void synchronizeFrameAdvance(WallToWallChannel&amp; channel)</span>
+<span class="lineNum">      81 </span>            :     {
+<span class="lineNum">      82 </span>            :         Q_UNUSED(channel);
+<span class="lineNum">      83 </span><span class="lineNoCov">          0 :     }</span>
+<span class="lineNum">      84 </span>            : 
+<span class="lineNum">      85 </span>            :     /** The synchronizers linked to this shared data source. */
+<span class="lineNum">      86 </span>            :     ContentSynchronizers synchronizers;
+<span class="lineNum">      87 </span>            : };
+<span class="lineNum">      88 </span>            : 
+<span class="lineNum">      89 </span>            : #endif
 </pre>
       </td>
     </tr>

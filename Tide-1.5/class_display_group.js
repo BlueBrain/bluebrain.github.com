@@ -6,6 +6,7 @@ var class_display_group =
     [ "clear", "class_display_group.html#a0c10092c41d5dee217dd49f52c7e2302", null ],
     [ "create", "class_display_group.html#a9d756f999d8a22092db7ada9db587447", null ],
     [ "findWindow", "class_display_group.html#a63912f13ebfc2679af667b05c3744b8e", null ],
+    [ "getFocusableWindows", "class_display_group.html#ad3710cf8b1110264cd41afa2334e15e6", null ],
     [ "getFocusedWindows", "class_display_group.html#a262fa548b09e7896e892bbf1d96a972c", null ],
     [ "getFullscreenWindow", "class_display_group.html#a8823aace508dfd2e4cbc440348bfafc9", null ],
     [ "getPanels", "class_display_group.html#a868d9b5f98b360041979883bb306d5a8", null ],

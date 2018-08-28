@@ -10,6 +10,7 @@ var class_content_synchronizer =
     [ "getTilesArea", "class_content_synchronizer.html#a7494f7f7b89c9d981001b08c80379071", null ],
     [ "getView", "class_content_synchronizer.html#a83072124703f035d6dfa466cc1cf73d5", null ],
     [ "getZoomContextVisible", "class_content_synchronizer.html#a8abee6251a6c2f9a3640bf3a23d4332a", null ],
+    [ "hasVisibleTiles", "class_content_synchronizer.html#ad8c06916ca169448c16b4a0b19bed24b", null ],
     [ "onRequestNextFrame", "class_content_synchronizer.html#a134db7d6cbe00b6886e5d8c30c7ceac6", null ],
     [ "onSwapReady", "class_content_synchronizer.html#a6388e244907ebe33a267b47cf123b64c", null ],
     [ "removeTile", "class_content_synchronizer.html#a755db8af943fc6bd0aab4220320d3a89", null ],

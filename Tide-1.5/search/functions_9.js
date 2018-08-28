@@ -1,5 +1,6 @@
 var searchData=
 [
+  ['imagecontent',['ImageContent',['../class_image_content.html#a9d9fb1b1453b48e613fb474a0537e56f',1,'ImageContent']]],
   ['imagegrabbed',['imageGrabbed',['../class_wall_window.html#a594fe1a5cf3b0466ec8721110fad1726',1,'WallWindow']]],
   ['imageloaded',['imageLoaded',['../class_data_provider.html#aa9a946e0bc4a9b3198be15b159d3bc5b',1,'DataProvider']]],
   ['imagepyramidcontent',['ImagePyramidContent',['../class_image_pyramid_content.html#afc3b21948f6c00850d193980081aa11b',1,'ImagePyramidContent']]],
@@ -16,7 +17,6 @@ var searchData=
   ['isdynamic',['isDynamic',['../class_data_source.html#a54629350c073612b09217a9084b27951',1,'DataSource::isDynamic()'],['../class_movie_updater.html#acb9214e61207fb88a7b02f2a3e6f0c4e',1,'MovieUpdater::isDynamic()'],['../class_pixel_stream_updater.html#a6b6f0f98115ff72c07749519e8c82974',1,'PixelStreamUpdater::isDynamic()']]],
   ['isempty',['isEmpty',['../class_display_group.html#a2bd3c3a118c0a2be043c10bb6ca8c3dd',1,'DisplayGroup']]],
   ['isfocused',['isFocused',['../class_window.html#a60def4b725b043de2212a89f61dee968',1,'Window']]],
-  ['isfree',['isFree',['../class_canvas_node.html#a22d5f4b5651aa8c6543ebf407ba54b6f',1,'CanvasNode']]],
   ['isfullscreen',['isFullscreen',['../class_window.html#a0b62ec2815986e6412cd6cc388ac4fd7',1,'Window']]],
   ['isgpuimage',['isGpuImage',['../class_image.html#ac3e10f35fb8dd895bda5627f43d96907',1,'Image::isGpuImage()'],['../class_s_v_g_gpu_image.html#ac344a36d69cb8d45ea8103d8b752de02',1,'SVGGpuImage::isGpuImage()']]],
   ['ishidden',['isHidden',['../class_window.html#a44d30890d5e2db014bb477f80ad889f1',1,'Window']]],

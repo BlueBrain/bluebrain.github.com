@@ -4,7 +4,6 @@ var searchData=
   ['cairodeleter',['CairoDeleter',['../struct_cairo_deleter.html',1,'']]],
   ['cairosurfacedeleter',['CairoSurfaceDeleter',['../struct_cairo_surface_deleter.html',1,'']]],
   ['canvasnode',['CanvasNode',['../class_canvas_node.html',1,'']]],
-  ['canvastree',['CanvasTree',['../class_canvas_tree.html',1,'']]],
   ['commandlineoptions',['CommandLineOptions',['../class_command_line_options.html',1,'']]],
   ['commandlineparameters',['CommandLineParameters',['../class_command_line_parameters.html',1,'']]],
   ['commandlineparser',['CommandLineParser',['../class_command_line_parser.html',1,'']]],
@@ -15,6 +14,8 @@ var searchData=
   ['contentfactory',['ContentFactory',['../class_content_factory.html',1,'']]],
   ['contentloader',['ContentLoader',['../class_content_loader.html',1,'']]],
   ['contentsynchronizer',['ContentSynchronizer',['../class_content_synchronizer.html',1,'']]],
+  ['contentsynchronizerfactory',['ContentSynchronizerFactory',['../class_content_synchronizer_factory.html',1,'']]],
+  ['contentsynchronizers',['ContentSynchronizers',['../class_content_synchronizers.html',1,'']]],
   ['contextmenu',['ContextMenu',['../class_context_menu.html',1,'']]],
   ['contextmenucontroller',['ContextMenuController',['../class_context_menu_controller.html',1,'']]],
   ['countdownstatus',['CountdownStatus',['../class_countdown_status.html',1,'']]]

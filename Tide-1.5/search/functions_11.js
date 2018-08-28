@@ -4,6 +4,7 @@ var searchData=
   ['savebackgroundchanges',['saveBackgroundChanges',['../class_configuration.html#a7d5d7858b5b5432e184b5f32ab3e988e',1,'Configuration::saveBackgroundChanges() const '],['../class_configuration.html#a436e6cd803e747ba4126dd24bd656fa0',1,'Configuration::saveBackgroundChanges(const QString &amp;filename) const ']]],
   ['savetofile',['saveToFile',['../class_state_preview.html#ab9451a422ef3233febfffae46eb82b91',1,'StatePreview']]],
   ['scale',['scale',['../class_display_group_controller.html#aa76ed17f5cb0257daff3d77719edfd06',1,'DisplayGroupController::scale()'],['../class_window_controller.html#a3e86a0fd011d578220ba0c2e69162153',1,'WindowController::scale()']]],
+  ['scalearoundcenter',['scaleAroundCenter',['../namespacegeometry.html#aa0cdc7f2eabcfa601542b79799f09cbd',1,'geometry']]],
   ['scenecontroller',['SceneController',['../class_scene_controller.html#acc3732a60d89babdc9ce7ee338d420a5',1,'SceneController']]],
   ['sceneremotecontroller',['SceneRemoteController',['../class_scene_remote_controller.html#ae1b2170f25b6d7e1870fc09b752a37e3',1,'SceneRemoteController']]],
   ['screenshotassembler',['ScreenshotAssembler',['../class_screenshot_assembler.html#ae78678f1e8c50bf59a432666045bc453',1,'ScreenshotAssembler']]],
@@ -50,6 +51,7 @@ var searchData=
   ['setmipmapfiltering',['setMipmapFiltering',['../class_texture_node_r_g_b_a.html#ac4a363bee152d0a835484149ab345b5d',1,'TextureNodeRGBA']]],
   ['setmode',['setMode',['../class_window.html#a20eca8972fd9a5022076251ef57bb76a',1,'Window']]],
   ['setnewframe',['setNewFrame',['../class_data_provider.html#a8a9a823d69c1ae7d0e0fcbb93c364bc9',1,'DataProvider']]],
+  ['setnextframe',['setNextFrame',['../class_pixel_stream_updater.html#a7cfecc4a4ab470f5bee90d4c3a17cfdd',1,'PixelStreamUpdater']]],
   ['setnextimage',['setNextImage',['../class_texture_switcher.html#ac784139a06f8a3835f2b8c9d7770eb3b',1,'TextureSwitcher']]],
   ['setpage',['setPage',['../class_p_d_f_backend.html#a7b9125ff67c23db98c1c250ce332b252',1,'PDFBackend::setPage()'],['../class_p_d_f_poppler_qt_backend.html#ab31e13f95731115b36054c34dec64a05',1,'PDFPopplerQtBackend::setPage()']]],
   ['setrect',['setRect',['../class_quad_line_node.html#ad0422ea5f0d04a3a93de1236f810e34f',1,'QuadLineNode']]],
@@ -67,6 +69,7 @@ var searchData=
   ['setsurface',['setSurface',['../class_wall_surface_renderer.html#a1f995d932403205b74f4abbd8e291ea6',1,'WallSurfaceRenderer::setSurface()'],['../class_wall_window.html#a0e4575ac553893f15fbc8b4e49094311',1,'WallWindow::setSurface()']]],
   ['setswapsynchronizer',['setSwapSynchronizer',['../class_wall_window.html#a455fc5c47c63f83c1488f480de499f37',1,'WallWindow']]],
   ['setsymbolsactive',['setSymbolsActive',['../class_keyboard_state.html#a046f7ed57fb2df2279bb8aeb9ffe7c72',1,'KeyboardState']]],
+  ['settext',['setText',['../class_background.html#af06b190a1c11955d8cf6d7370f05f023',1,'Background']]],
   ['seturi',['setUri',['../class_background.html#a4fe1ff243b7624d5988ce4deffa9e68a',1,'Background']]],
   ['setvisible',['setVisible',['../class_keyboard_state.html#ad29cf00777bb60224403574120365250',1,'KeyboardState']]],
   ['setzoomcontextvisible',['setZoomContextVisible',['../class_content_synchronizer.html#a38b82b0163d7871040fa78bf8145a7b7',1,'ContentSynchronizer']]],
@@ -104,6 +107,7 @@ var searchData=
   ['swipeup',['swipeUp',['../class_multitouch_area.html#aca86b7d783c0f2db38665328608fada8',1,'MultitouchArea::swipeUp()'],['../class_swipe_detector.html#a56e9c96c90e6ceb4ddfea3f4638811e6',1,'SwipeDetector::swipeUp()']]],
   ['sync',['sync',['../class_swap_sync_object.html#a673c1ece088924c155add4a3dfa6d05c',1,'SwapSyncObject']]],
   ['synchronizeclock',['synchronizeClock',['../class_wall_to_wall_channel.html#a10fc64c27e001a7399fba31effaba473',1,'WallToWallChannel']]],
-  ['synchronizeframeadvance',['synchronizeFrameAdvance',['../class_movie_updater.html#adf47c4225a2ffedb118d7ff72e8f1535',1,'MovieUpdater::synchronizeFrameAdvance()'],['../class_pixel_stream_updater.html#a9cc592732bb9bbe26b161044ae1c308d',1,'PixelStreamUpdater::synchronizeFrameAdvance()']]],
-  ['synchronizetilesswap',['synchronizeTilesSwap',['../class_data_provider.html#ad297b0d00dcaf94dfb9d03de05139091',1,'DataProvider']]]
+  ['synchronizeframeadvance',['synchronizeFrameAdvance',['../class_data_source.html#ae31af1515d771beaa5b7e041d50de481',1,'DataSource::synchronizeFrameAdvance()'],['../class_movie_updater.html#af941b92c879ff640d7c89068fab4365b',1,'MovieUpdater::synchronizeFrameAdvance()'],['../class_pixel_stream_updater.html#a9b331733f44da57955119529951ed347',1,'PixelStreamUpdater::synchronizeFrameAdvance()']]],
+  ['synchronizetilesswap',['synchronizeTilesSwap',['../class_data_provider.html#ad297b0d00dcaf94dfb9d03de05139091',1,'DataProvider']]],
+  ['synchronizetilesupdate',['synchronizeTilesUpdate',['../class_data_provider.html#a0c3886c7bc8c4aebf24a4c8908e420ee',1,'DataProvider']]]
 ];

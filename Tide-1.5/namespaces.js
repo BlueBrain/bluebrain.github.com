@@ -8,5 +8,6 @@ var namespaces =
     [ "serialization", "namespaceserialization.html", "namespaceserialization" ],
     [ "textureUtils", "namespacetexture_utils.html", null ],
     [ "thumbnail", "namespacethumbnail.html", null ],
+    [ "ui", "namespaceui.html", null ],
     [ "yuv", "namespaceyuv.html", null ]
 ];

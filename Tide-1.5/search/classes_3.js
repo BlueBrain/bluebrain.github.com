@@ -2,6 +2,7 @@ var searchData=
 [
   ['dataprovider',['DataProvider',['../class_data_provider.html',1,'']]],
   ['datasource',['DataSource',['../class_data_source.html',1,'']]],
+  ['datasourcefactory',['DataSourceFactory',['../class_data_source_factory.html',1,'']]],
   ['defaultthumbnailgenerator',['DefaultThumbnailGenerator',['../class_default_thumbnail_generator.html',1,'']]],
   ['dimensions_5fmismatch',['dimensions_mismatch',['../classdimensions__mismatch.html',1,'']]],
   ['displaygroup',['DisplayGroup',['../class_display_group.html',1,'']]],

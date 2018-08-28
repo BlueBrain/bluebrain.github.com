@@ -7,7 +7,6 @@ var hierarchy =
     ] ],
     [ "CairoDeleter", "struct_cairo_deleter.html", null ],
     [ "CairoSurfaceDeleter", "struct_cairo_surface_deleter.html", null ],
-    [ "CanvasTree", "class_canvas_tree.html", null ],
     [ "CommandLineParser", "class_command_line_parser.html", [
       [ "CommandLineOptions", "class_command_line_options.html", null ],
       [ "CommandLineParameters", "class_command_line_parameters.html", null ]
@@ -23,6 +22,8 @@ var hierarchy =
     [ "ConfigurationWriter", "class_configuration_writer.html", null ],
     [ "ContentFactory", "class_content_factory.html", null ],
     [ "ContentLoader", "class_content_loader.html", null ],
+    [ "ContentSynchronizerFactory", "class_content_synchronizer_factory.html", null ],
+    [ "ContentSynchronizers", "class_content_synchronizers.html", null ],
     [ "DataSource", "class_data_source.html", [
       [ "CachedDataSource", "class_cached_data_source.html", [
         [ "ImageSource", "class_image_source.html", null ],
@@ -35,6 +36,7 @@ var hierarchy =
       [ "MovieUpdater", "class_movie_updater.html", null ],
       [ "PixelStreamUpdater", "class_pixel_stream_updater.html", null ]
     ] ],
+    [ "DataSourceFactory", "class_data_source_factory.html", null ],
     [ "DisplayGroupRenderer", "class_display_group_renderer.html", null ],
     [ "ElapsedTimer", "class_elapsed_timer.html", null ],
     [ "FFMPEGFrame", "class_f_f_m_p_e_g_frame.html", null ],
@@ -53,6 +55,7 @@ var hierarchy =
         [ "StreamImage", "class_stream_image.html", null ]
       ] ]
     ] ],
+    [ "ImageReader", "class_image_reader.html", null ],
     [ "is_bitwise_serializable", null, [
       [ "boost::serialization::is_bitwise_serializable< std::chrono::duration< Rep, Period > >", "structboost_1_1serialization_1_1is__bitwise__serializable_3_01std_1_1chrono_1_1duration_3_01_rep_00_01_period_01_4_01_4.html", null ],
       [ "boost::serialization::is_bitwise_serializable< std::chrono::time_point< C, D > >", "structboost_1_1serialization_1_1is__bitwise__serializable_3_01std_1_1chrono_1_1time__point_3_01_c_00_01_d_01_4_01_4.html", null ]
@@ -60,9 +63,9 @@ var hierarchy =
     [ "IterableSmartPtrCollection< ContainerT >", "class_iterable_smart_ptr_collection.html", null ],
     [ "IterableSmartPtrCollection< ContainerT >::smart_ptr_iterator_wrapper< is_const_iterator >", "struct_iterable_smart_ptr_collection_1_1smart__ptr__iterator__wrapper.html", null ],
     [ "LauncherPlacer", "class_launcher_placer.html", null ],
-    [ "LayoutPolicy", "class_layout_policy.html", [
+    [ "LayoutEngine", "class_layout_engine.html", [
       [ "AutomaticLayout", "class_automatic_layout.html", null ],
-      [ "LayoutEngine", "class_layout_engine.html", null ]
+      [ "LineLayout", "class_line_layout.html", null ]
     ] ],
     [ "LocalBarrier", "class_local_barrier.html", null ],
     [ "LodTools", "class_lod_tools.html", null ],
@@ -120,13 +123,13 @@ var hierarchy =
       [ "Background", "class_background.html", null ],
       [ "Content", "class_content.html", [
         [ "DynamicTextureContent", "class_dynamic_texture_content.html", null ],
+        [ "ImageContent", "class_image_content.html", [
+          [ "ErrorContent", "class_error_content.html", null ]
+        ] ],
         [ "ImagePyramidContent", "class_image_pyramid_content.html", null ],
         [ "MovieContent", "class_movie_content.html", null ],
         [ "MultiChannelContent", "class_multi_channel_content.html", [
           [ "PixelStreamContent", "class_pixel_stream_content.html", null ]
-        ] ],
-        [ "TextureContent", "class_texture_content.html", [
-          [ "ErrorContent", "class_error_content.html", null ]
         ] ],
         [ "VectorialContent", "class_vectorial_content.html", [
           [ "PDFContent", "class_p_d_f_content.html", null ],
@@ -247,7 +250,6 @@ var hierarchy =
     [ "StateSerializationHelper", "class_state_serialization_helper.html", null ],
     [ "enable_shared_from_this", null, [
       [ "Background", "class_background.html", null ],
-      [ "CanvasNode", "class_canvas_node.html", null ],
       [ "ContextMenu", "class_context_menu.html", null ],
       [ "DisplayGroup", "class_display_group.html", null ],
       [ "Markers", "class_markers.html", null ],
