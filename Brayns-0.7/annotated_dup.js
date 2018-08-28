@@ -21,8 +21,6 @@ var annotated_dup =
       [ "Camera", "classbrayns_1_1_camera.html", "classbrayns_1_1_camera" ],
       [ "Chunk", "structbrayns_1_1_chunk.html", "structbrayns_1_1_chunk" ],
       [ "CircuitConfiguration", "structbrayns_1_1_circuit_configuration.html", "structbrayns_1_1_circuit_configuration" ],
-      [ "Cone", "structbrayns_1_1_cone.html", "structbrayns_1_1_cone" ],
-      [ "Cylinder", "structbrayns_1_1_cylinder.html", "structbrayns_1_1_cylinder" ],
       [ "DeferredTask", "classbrayns_1_1_deferred_task.html", "classbrayns_1_1_deferred_task" ],
       [ "DirectionalLight", "classbrayns_1_1_directional_light.html", "classbrayns_1_1_directional_light" ],
       [ "Engine", "classbrayns_1_1_engine.html", "classbrayns_1_1_engine" ],
@@ -67,7 +65,6 @@ var annotated_dup =
       [ "SDFGeometry", "structbrayns_1_1_s_d_f_geometry.html", "structbrayns_1_1_s_d_f_geometry" ],
       [ "SharedDataVolume", "classbrayns_1_1_shared_data_volume.html", "classbrayns_1_1_shared_data_volume" ],
       [ "ShortcutInformation", "structbrayns_1_1_shortcut_information.html", "structbrayns_1_1_shortcut_information" ],
-      [ "Sphere", "structbrayns_1_1_sphere.html", "structbrayns_1_1_sphere" ],
       [ "SpikeSimulationHandler", "classbrayns_1_1_spike_simulation_handler.html", "classbrayns_1_1_spike_simulation_handler" ],
       [ "Statistics", "classbrayns_1_1_statistics.html", "classbrayns_1_1_statistics" ],
       [ "Streamline", "structbrayns_1_1_streamline.html", "structbrayns_1_1_streamline" ],
@@ -86,5 +83,8 @@ var annotated_dup =
       [ "VolumeLoader", "classbrayns_1_1_volume_loader.html", "classbrayns_1_1_volume_loader" ],
       [ "VolumeParameters", "classbrayns_1_1_volume_parameters.html", "classbrayns_1_1_volume_parameters" ],
       [ "XYZBLoader", "classbrayns_1_1_x_y_z_b_loader.html", "classbrayns_1_1_x_y_z_b_loader" ]
-    ] ]
+    ] ],
+    [ "Cone", "struct_cone.html", "struct_cone" ],
+    [ "Cylinder", "struct_cylinder.html", "struct_cylinder" ],
+    [ "Sphere", "struct_sphere.html", "struct_sphere" ]
 ];

@@ -17,7 +17,7 @@ var searchData=
   ['commitandrender',['commitAndRender',['../classbrayns_1_1_brayns.html#ab596057d6defd530d6d01819196646cc',1,'brayns::Brayns::commitAndRender(const RenderInput &amp;renderInput, RenderOutput &amp;renderOutput)'],['../classbrayns_1_1_brayns.html#a8a163f5e8f5d500465d62c0468dba7b1',1,'brayns::Brayns::commitAndRender()']]],
   ['commitlights',['commitLights',['../classbrayns_1_1_scene.html#a0319ce64948a242a206b8c7cdd7d0a2f',1,'brayns::Scene']]],
   ['committransferfunctiondata',['commitTransferFunctionData',['../classbrayns_1_1_scene.html#a1050f001aa9a33e578e634f5b46b20e4',1,'brayns::Scene']]],
-  ['cone',['Cone',['../structbrayns_1_1_cone.html',1,'brayns']]],
+  ['cone',['Cone',['../struct_cone.html',1,'']]],
   ['consume',['consume',['../classbrayns_1_1_progress.html#a3e56606ed9283c4e4189b0d5b3b6b7cf',1,'brayns::Progress']]],
   ['continuerendering',['continueRendering',['../classbrayns_1_1_engine.html#a84b7fb62801d98aa94c325dc8f725313',1,'brayns::Engine']]],
   ['create',['create',['../classbrayns_1_1_engine_factory.html#aef723cd747707f527ed156d6e48f5ee3',1,'brayns::EngineFactory']]],
@@ -28,7 +28,7 @@ var searchData=
   ['creatematerial',['createMaterial',['../classbrayns_1_1_model.html#a0156b8880c15bda28f3610fc36947f7c',1,'brayns::Model']]],
   ['createmissingmaterials',['createMissingMaterials',['../classbrayns_1_1_model.html#a423f628996f18f7e37b561c7ae78ca27',1,'brayns::Model']]],
   ['createshareddatavolume',['createSharedDataVolume',['../classbrayns_1_1_scene.html#a0dcf87268729de1293b666dc3ec0674d',1,'brayns::Scene']]],
-  ['cylinder',['Cylinder',['../structbrayns_1_1_cylinder.html',1,'brayns']]],
+  ['cylinder',['Cylinder',['../struct_cylinder.html',1,'']]],
   ['change_20log',['Change Log',['../md__jenkins_03_workspace_oss.Brayns.documentation_build_type_Debug_platform_cscsviz-vm_sources_Changelog.html',1,'']]],
   ['version_2eh',['version.h',['../common_2version_8h.html',1,'']]]
 ];

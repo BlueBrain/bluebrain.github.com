@@ -6,7 +6,7 @@ var searchData=
   ['sdfgeometrydata',['SDFGeometryData',['../structbrayns_1_1_model_1_1_s_d_f_geometry_data.html',1,'brayns::Model']]],
   ['shareddatavolume',['SharedDataVolume',['../classbrayns_1_1_shared_data_volume.html',1,'brayns']]],
   ['shortcutinformation',['ShortcutInformation',['../structbrayns_1_1_shortcut_information.html',1,'brayns']]],
-  ['sphere',['Sphere',['../structbrayns_1_1_sphere.html',1,'brayns']]],
+  ['sphere',['Sphere',['../struct_sphere.html',1,'']]],
   ['spikesimulationhandler',['SpikeSimulationHandler',['../classbrayns_1_1_spike_simulation_handler.html',1,'brayns']]],
   ['statistics',['Statistics',['../classbrayns_1_1_statistics.html',1,'brayns']]],
   ['streamline',['Streamline',['../structbrayns_1_1_streamline.html',1,'brayns']]],

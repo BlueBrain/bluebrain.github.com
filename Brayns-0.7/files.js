@@ -20,6 +20,7 @@ var files =
     [ "CADiffusionSimulationHandler.h", "_c_a_diffusion_simulation_handler_8h_source.html", null ],
     [ "Camera.h", "_camera_8h_source.html", null ],
     [ "common.h", "common_8h_source.html", null ],
+    [ "CommonDefines.h", "_common_defines_8h_source.html", null ],
     [ "Cone.h", "_cone_8h_source.html", null ],
     [ "Cylinder.h", "_cylinder_8h_source.html", null ],
     [ "defines.h", "defines_8h.html", null ],

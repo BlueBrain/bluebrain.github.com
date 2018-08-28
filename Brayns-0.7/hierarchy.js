@@ -55,8 +55,6 @@ var hierarchy =
     [ "brayns::CADiffusionSimulationHandler", "classbrayns_1_1_c_a_diffusion_simulation_handler.html", null ],
     [ "brayns::Chunk", "structbrayns_1_1_chunk.html", null ],
     [ "brayns::CircuitConfiguration", "structbrayns_1_1_circuit_configuration.html", null ],
-    [ "brayns::Cone", "structbrayns_1_1_cone.html", null ],
-    [ "brayns::Cylinder", "structbrayns_1_1_cylinder.html", null ],
     [ "brayns::Engine", "classbrayns_1_1_engine.html", null ],
     [ "brayns::EngineFactory", "classbrayns_1_1_engine_factory.html", null ],
     [ "brayns::ExtensionPlugin", "classbrayns_1_1_extension_plugin.html", null ],
@@ -92,7 +90,6 @@ var hierarchy =
     [ "brayns::RpcParameterDescription", "structbrayns_1_1_rpc_parameter_description.html", null ],
     [ "brayns::SDFGeometry", "structbrayns_1_1_s_d_f_geometry.html", null ],
     [ "brayns::ShortcutInformation", "structbrayns_1_1_shortcut_information.html", null ],
-    [ "brayns::Sphere", "structbrayns_1_1_sphere.html", null ],
     [ "brayns::Streamline", "structbrayns_1_1_streamline.html", null ],
     [ "brayns::StreamlinesData", "structbrayns_1_1_streamlines_data.html", null ],
     [ "brayns::TaskFunctor", "classbrayns_1_1_task_functor.html", [
@@ -102,6 +99,9 @@ var hierarchy =
     [ "brayns::Timer", "classbrayns_1_1_timer.html", null ],
     [ "brayns::TrianglesMesh", "structbrayns_1_1_triangles_mesh.html", null ],
     [ "brayns::Version", "classbrayns_1_1_version.html", null ],
+    [ "Cone", "struct_cone.html", null ],
+    [ "Cylinder", "struct_cylinder.html", null ],
+    [ "Sphere", "struct_sphere.html", null ],
     [ "std::exception", null, [
       [ "std::runtime_error", null, [
         [ "brayns::TaskRuntimeError", "classbrayns_1_1_task_runtime_error.html", [
