@@ -4,7 +4,7 @@ var NAVTREE =
     [ "Changelog", "Changelog.html", null ],
     [ "Data models", "data.html", "data" ],
     [ "RFCs", "rfcs.html", "rfcs" ],
-    [ "Caching support", "md__jenkins_02_workspace_oss.Brion.documentation_build_type_Debug_platform_cscsviz-vm_sources_doc_user_caching.html", null ],
+    [ "Caching support", "md__jenkins_01_workspace_oss.Brion.documentation_build_type_Debug_platform_cscsviz-vm_sources_doc_user_caching.html", null ],
     [ "Application Help", "apps.html", "apps" ],
     [ "Environment Variables", "env.html", null ],
     [ "Namespaces", null, [
