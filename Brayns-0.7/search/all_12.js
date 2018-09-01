@@ -12,7 +12,7 @@ var searchData=
   ['transferfunction',['TransferFunction',['../classbrayns_1_1_transfer_function.html',1,'brayns']]],
   ['transformation',['Transformation',['../classbrayns_1_1_transformation.html',1,'brayns']]],
   ['trianglesmesh',['TrianglesMesh',['../structbrayns_1_1_triangles_mesh.html',1,'brayns']]],
-  ['triggerrender',['triggerRender',['../classbrayns_1_1_engine.html#acc472e64b447113d098d54273244f4b6',1,'brayns::Engine']]],
+  ['triggerrender',['triggerRender',['../classbrayns_1_1_engine.html#acc472e64b447113d098d54273244f4b6',1,'brayns::Engine::triggerRender()'],['../classbrayns_1_1_plugin_a_p_i.html#a43e972666a64360189a030dfab7e39ce',1,'brayns::PluginAPI::triggerRender()']]],
   ['type',['type',['../structbrayns_1_1_binary_param.html#a8a398a1478bc43ad918b91be5d83ca0b',1,'brayns::BinaryParam']]],
   ['version_2eh',['version.h',['../tasks_2version_8h.html',1,'']]]
 ];

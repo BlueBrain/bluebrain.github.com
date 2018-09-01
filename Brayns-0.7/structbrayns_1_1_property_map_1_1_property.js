@@ -1,5 +1,6 @@
 var structbrayns_1_1_property_map_1_1_property =
 [
+    [ "ModifiedCallback", "structbrayns_1_1_property_map_1_1_property.html#ac42cf6360d9ec82acf28158d6350a5c4", null ],
     [ "Type", "structbrayns_1_1_property_map_1_1_property.html#a67843de31b28506a8bdfb9661b5881bd", [
       [ "Int", "structbrayns_1_1_property_map_1_1_property.html#a67843de31b28506a8bdfb9661b5881bda1686a6c336b71b36d77354cea19a8b52", null ],
       [ "Float", "structbrayns_1_1_property_map_1_1_property.html#a67843de31b28506a8bdfb9661b5881bda22ae0e2b89e5e3d477f988cc36d3272b", null ],
@@ -18,9 +19,9 @@ var structbrayns_1_1_property_map_1_1_property =
     [ "markReadOnly", "structbrayns_1_1_property_map_1_1_property.html#a2af337dab4513042f33958765272b73c", null ],
     [ "max", "structbrayns_1_1_property_map_1_1_property.html#acb5c40bc402a9ffaa19b00189ef77e80", null ],
     [ "min", "structbrayns_1_1_property_map_1_1_property.html#a7e86ba2945438fde4b5d35bb1de3cbc1", null ],
+    [ "onModified", "structbrayns_1_1_property_map_1_1_property.html#aa54eed2d392bd12505ea6c9b392b7e20", null ],
     [ "readOnly", "structbrayns_1_1_property_map_1_1_property.html#a3ec97fb552e32665d8eb577ad99c4daa", null ],
     [ "set", "structbrayns_1_1_property_map_1_1_property.html#aa26ddec1acb5ee7d35b29237a3948ccc", null ],
-    [ "setChangedCallback", "structbrayns_1_1_property_map_1_1_property.html#abbdd9ee79f75aaceb32e23b89ef66d17", null ],
     [ "PropertyMap", "structbrayns_1_1_property_map_1_1_property.html#a4c8018a0604445818ecd990fe449a63c", null ],
     [ "enums", "structbrayns_1_1_property_map_1_1_property.html#ad78a7ed871bdf8543a509b4739ee7db9", null ],
     [ "label", "structbrayns_1_1_property_map_1_1_property.html#abba00791cb38864ac81de9039337f41f", null ],

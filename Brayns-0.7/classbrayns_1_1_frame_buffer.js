@@ -15,7 +15,7 @@ var classbrayns_1_1_frame_buffer =
     [ "resize", "classbrayns_1_1_frame_buffer.html#ad299b7acc0823946c46d2d8c4c211921", null ],
     [ "setAccumulation", "classbrayns_1_1_frame_buffer.html#a6605b948db8ae2ab9c167a69e8d68b3f", null ],
     [ "unmap", "classbrayns_1_1_frame_buffer.html#a165f845d96342690001f987e39f5c411", null ],
-    [ "_accumFrames", "classbrayns_1_1_frame_buffer.html#a72c5d5b99510ce3b7f0fe25e552c5e64", null ],
+    [ "_accumFrames", "classbrayns_1_1_frame_buffer.html#abbcb945c2e690c936dccb5e19d3376fa", null ],
     [ "_accumulation", "classbrayns_1_1_frame_buffer.html#aac5ca090b769e5f9d46830006ebbe0d9", null ],
     [ "_frameBufferFormat", "classbrayns_1_1_frame_buffer.html#ace7f3fb77778420c9245aa6214d0f34c", null ],
     [ "_frameSize", "classbrayns_1_1_frame_buffer.html#af1537532242c4feeb402db5d436e6343", null ]
