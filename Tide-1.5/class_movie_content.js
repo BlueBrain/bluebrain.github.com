@@ -1,8 +1,8 @@
 var class_movie_content =
 [
     [ "MovieContent", "class_movie_content.html#a156808cda9a564dd70229ad2fe203e9c", null ],
-    [ "_getInteractionPolicy", "class_movie_content.html#a10211f89d6d29201a4c7ec139ea1e452", null ],
     [ "getDuration", "class_movie_content.html#aea9cc03ca7fd5d107a58c0f8cde3174f", null ],
+    [ "getFrameDuration", "class_movie_content.html#aa6450c21028d574c920d303bff4d3213", null ],
     [ "getPosition", "class_movie_content.html#a9a154c51d1610da6ea41e381fa5c0d73", null ],
     [ "getSupportedExtensions", "class_movie_content.html#a9768394f8669c363672ded77a93b19d9", null ],
     [ "getType", "class_movie_content.html#a679f4771c41df4c317aaa7493dff0ecd", null ],

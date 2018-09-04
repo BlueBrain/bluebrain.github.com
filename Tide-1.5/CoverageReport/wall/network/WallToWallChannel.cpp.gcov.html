@@ -32,17 +32,17 @@
             <td></td>
             <td class="headerItem">Lines:</td>
             <td class="headerCovTableEntry">1</td>
-            <td class="headerCovTableEntry">60</td>
-            <td class="headerCovTableEntryLo">1.7 %</td>
+            <td class="headerCovTableEntry">56</td>
+            <td class="headerCovTableEntryLo">1.8 %</td>
           </tr>
           <tr>
             <td class="headerItem">Date:</td>
-            <td class="headerValue">2018-08-28 06:27:55</td>
+            <td class="headerValue">2018-09-04 06:32:28</td>
             <td></td>
             <td class="headerItem">Functions:</td>
             <td class="headerCovTableEntry">2</td>
-            <td class="headerCovTableEntry">15</td>
-            <td class="headerCovTableEntryLo">13.3 %</td>
+            <td class="headerCovTableEntry">14</td>
+            <td class="headerCovTableEntryLo">14.3 %</td>
           </tr>
           <tr><td><img src="../../glass.png" width=3 height=3 alt=""></td></tr>
         </table>
@@ -61,8 +61,8 @@
 <pre class="sourceHeading">          Line data    Source code</pre>
 <pre class="source">
 <a name="1"><span class="lineNum">       1 </span>            : /*********************************************************************/</a>
-<span class="lineNum">       2 </span>            : /* Copyright (c) 2014, EPFL/Blue Brain Project                       */
-<span class="lineNum">       3 </span>            : /*                     Raphael Dumusc &lt;raphael.dumusc@epfl.ch&gt;       */
+<span class="lineNum">       2 </span>            : /* Copyright (c) 2014-2018, EPFL/Blue Brain Project                  */
+<span class="lineNum">       3 </span>            : /*                          Raphael Dumusc &lt;raphael.dumusc@epfl.ch&gt;  */
 <span class="lineNum">       4 </span>            : /* All rights reserved.                                              */
 <span class="lineNum">       5 </span>            : /*                                                                   */
 <span class="lineNum">       6 </span>            : /* Redistribution and use in source and binary forms, with or        */
@@ -101,31 +101,31 @@
 <span class="lineNum">      39 </span>            : 
 <span class="lineNum">      40 </span>            : #include &quot;WallToWallChannel.h&quot;
 <span class="lineNum">      41 </span>            : 
-<span class="lineNum">      42 </span>            : #include &quot;network/MPIChannel.h&quot;
+<span class="lineNum">      42 </span>            : #include &quot;network/MPICommunicator.h&quot;
 <span class="lineNum">      43 </span>            : #include &quot;serialization/chrono.h&quot;
 <span class="lineNum">      44 </span>            : #include &quot;serialization/utils.h&quot;
 <span class="lineNum">      45 </span>            : #include &quot;utils/log.h&quot;
 <span class="lineNum">      46 </span>            : 
 <a name="47"><span class="lineNum">      47 </span>            : #define RANK0 0</a>
 <span class="lineNum">      48 </span>            : 
-<span class="lineNum">      49 </span><span class="lineNoCov">          0 : WallToWallChannel::WallToWallChannel(MPIChannelPtr mpiChannel)</span>
-<span class="lineNum">      50 </span><span class="lineNoCov">          0 :     : _mpiChannel(mpiChannel)</span>
+<span class="lineNum">      49 </span><span class="lineNoCov">          0 : WallToWallChannel::WallToWallChannel(MPICommunicator&amp; communicator)</span>
+<span class="lineNum">      50 </span><span class="lineNoCov">          0 :     : _communicator{communicator}</span>
 <span class="lineNum">      51 </span>            : {
 <a name="52"><span class="lineNum">      52 </span><span class="lineNoCov">          0 : }</span></a>
 <span class="lineNum">      53 </span>            : 
 <span class="lineNum">      54 </span><span class="lineNoCov">          0 : int WallToWallChannel::getRank() const</span>
 <span class="lineNum">      55 </span>            : {
-<span class="lineNum">      56 </span><span class="lineNoCov">          0 :     return _mpiChannel-&gt;getRank();</span>
+<span class="lineNum">      56 </span><span class="lineNoCov">          0 :     return _communicator.getRank();</span>
 <a name="57"><span class="lineNum">      57 </span>            : }</a>
 <span class="lineNum">      58 </span>            : 
 <span class="lineNum">      59 </span><span class="lineNoCov">          0 : int WallToWallChannel::globalSum(const int localValue) const</span>
 <span class="lineNum">      60 </span>            : {
-<span class="lineNum">      61 </span><span class="lineNoCov">          0 :     return _mpiChannel-&gt;globalSum(localValue);</span>
+<span class="lineNum">      61 </span><span class="lineNoCov">          0 :     return _communicator.globalSum(localValue);</span>
 <a name="62"><span class="lineNum">      62 </span>            : }</a>
 <span class="lineNum">      63 </span>            : 
 <span class="lineNum">      64 </span><span class="lineNoCov">          0 : bool WallToWallChannel::allReady(const bool isReady) const</span>
 <span class="lineNum">      65 </span>            : {
-<span class="lineNum">      66 </span><span class="lineNoCov">          0 :     return _mpiChannel-&gt;globalSum(isReady ? 1 : 0) == _mpiChannel-&gt;getSize();</span>
+<span class="lineNum">      66 </span><span class="lineNoCov">          0 :     return _communicator.globalSum(isReady ? 1 : 0) == _communicator.getSize();</span>
 <a name="67"><span class="lineNum">      67 </span>            : }</a>
 <span class="lineNum">      68 </span>            : 
 <span class="lineNum">      69 </span><span class="lineNoCov">          0 : WallToWallChannel::clock::time_point WallToWallChannel::getTime() const</span>
@@ -135,86 +135,79 @@
 <span class="lineNum">      73 </span>            : 
 <span class="lineNum">      74 </span><span class="lineNoCov">          0 : void WallToWallChannel::synchronizeClock()</span>
 <span class="lineNum">      75 </span>            : {
-<span class="lineNum">      76 </span><span class="lineNoCov">          0 :     if (_mpiChannel-&gt;getRank() == RANK0)</span>
+<span class="lineNum">      76 </span><span class="lineNoCov">          0 :     if (_communicator.getRank() == RANK0)</span>
 <span class="lineNum">      77 </span><span class="lineNoCov">          0 :         _sendClock();</span>
 <span class="lineNum">      78 </span>            :     else
 <span class="lineNum">      79 </span><span class="lineNoCov">          0 :         _receiveClock();</span>
 <a name="80"><span class="lineNum">      80 </span><span class="lineNoCov">          0 : }</span></a>
 <span class="lineNum">      81 </span>            : 
-<span class="lineNum">      82 </span><span class="lineNoCov">          0 : void WallToWallChannel::globalBarrier() const</span>
+<span class="lineNum">      82 </span><span class="lineNoCov">          0 : bool WallToWallChannel::checkVersion(const uint64_t version) const</span>
 <span class="lineNum">      83 </span>            : {
-<span class="lineNum">      84 </span><span class="lineNoCov">          0 :     _mpiChannel-&gt;globalBarrier();</span>
-<a name="85"><span class="lineNum">      85 </span><span class="lineNoCov">          0 : }</span></a>
-<span class="lineNum">      86 </span>            : 
-<span class="lineNum">      87 </span><span class="lineNoCov">          0 : bool WallToWallChannel::checkVersion(const uint64_t version) const</span>
-<span class="lineNum">      88 </span>            : {
-<span class="lineNum">      89 </span><span class="lineNoCov">          0 :     std::vector&lt;uint64_t&gt; versions = _mpiChannel-&gt;gatherAll(version);</span>
-<span class="lineNum">      90 </span>            : 
-<span class="lineNum">      91 </span><span class="lineNoCov">          0 :     for (std::vector&lt;uint64_t&gt;::const_iterator it = versions.begin();</span>
-<span class="lineNum">      92 </span><span class="lineNoCov">          0 :          it != versions.end(); ++it)</span>
-<span class="lineNum">      93 </span>            :     {
-<span class="lineNum">      94 </span><span class="lineNoCov">          0 :         if (*it != version)</span>
-<span class="lineNum">      95 </span><span class="lineNoCov">          0 :             return false;</span>
-<span class="lineNum">      96 </span>            :     }
-<span class="lineNum">      97 </span><span class="lineNoCov">          0 :     return true;</span>
-<a name="98"><span class="lineNum">      98 </span>            : }</a>
-<span class="lineNum">      99 </span>            : 
-<span class="lineNum">     100 </span><span class="lineNoCov">          0 : int WallToWallChannel::electLeader(const bool isCandidate)</span>
-<span class="lineNum">     101 </span>            : {
-<span class="lineNum">     102 </span><span class="lineNoCov">          0 :     const int status = isCandidate ? (1 &lt;&lt; getRank()) : 0;</span>
-<span class="lineNum">     103 </span><span class="lineNoCov">          0 :     int globalStatus = globalSum(status);</span>
-<span class="lineNum">     104 </span>            : 
-<span class="lineNum">     105 </span><span class="lineNoCov">          0 :     if (globalStatus &lt;= 0)</span>
-<span class="lineNum">     106 </span><span class="lineNoCov">          0 :         return -1;</span>
-<span class="lineNum">     107 </span>            : 
-<span class="lineNum">     108 </span><span class="lineNoCov">          0 :     int leader = 0;</span>
-<span class="lineNum">     109 </span><span class="lineNoCov">          0 :     while (globalStatus &gt; 1)</span>
-<span class="lineNum">     110 </span>            :     {
-<span class="lineNum">     111 </span><span class="lineNoCov">          0 :         globalStatus = globalStatus &gt;&gt; 1;</span>
-<span class="lineNum">     112 </span><span class="lineNoCov">          0 :         ++leader;</span>
-<span class="lineNum">     113 </span>            :     }
-<span class="lineNum">     114 </span><span class="lineNoCov">          0 :     return leader;</span>
-<a name="115"><span class="lineNum">     115 </span>            : }</a>
-<span class="lineNum">     116 </span>            : 
-<span class="lineNum">     117 </span><span class="lineNoCov">          0 : void WallToWallChannel::broadcast(const double timestamp)</span>
-<span class="lineNum">     118 </span>            : {
-<span class="lineNum">     119 </span><span class="lineNoCov">          0 :     _mpiChannel-&gt;broadcast(MPIMessageType::TIMESTAMP,</span>
-<span class="lineNum">     120 </span><span class="lineNoCov">          0 :                            serialization::toBinary(timestamp));</span>
-<a name="121"><span class="lineNum">     121 </span><span class="lineNoCov">          0 : }</span></a>
-<span class="lineNum">     122 </span>            : 
-<span class="lineNum">     123 </span><span class="lineNoCov">          0 : double WallToWallChannel::receiveTimestampBroadcast(const int src)</span>
-<span class="lineNum">     124 </span>            : {
-<span class="lineNum">     125 </span><span class="lineNoCov">          0 :     MPIHeader header = _mpiChannel-&gt;receiveHeader(src);</span>
-<span class="lineNum">     126 </span><span class="lineNoCov">          0 :     assert(header.type == MPIMessageType::TIMESTAMP);</span>
-<span class="lineNum">     127 </span>            : 
-<span class="lineNum">     128 </span><span class="lineNoCov">          0 :     _buffer.setSize(header.size);</span>
-<span class="lineNum">     129 </span><span class="lineNoCov">          0 :     _mpiChannel-&gt;receiveBroadcast(_buffer.data(), _buffer.size(), src);</span>
+<span class="lineNum">      84 </span><span class="lineNoCov">          0 :     const auto versions = _communicator.gatherAll(version);</span>
+<span class="lineNum">      85 </span><span class="lineNoCov">          0 :     for (const auto&amp; v : versions)</span>
+<span class="lineNum">      86 </span>            :     {
+<span class="lineNum">      87 </span><span class="lineNoCov">          0 :         if (v != version)</span>
+<span class="lineNum">      88 </span><span class="lineNoCov">          0 :             return false;</span>
+<span class="lineNum">      89 </span>            :     }
+<span class="lineNum">      90 </span><span class="lineNoCov">          0 :     return true;</span>
+<a name="91"><span class="lineNum">      91 </span>            : }</a>
+<span class="lineNum">      92 </span>            : 
+<span class="lineNum">      93 </span><span class="lineNoCov">          0 : int WallToWallChannel::electLeader(const bool isCandidate)</span>
+<span class="lineNum">      94 </span>            : {
+<span class="lineNum">      95 </span><span class="lineNoCov">          0 :     const int status = isCandidate ? (1 &lt;&lt; getRank()) : 0;</span>
+<span class="lineNum">      96 </span><span class="lineNoCov">          0 :     int globalStatus = globalSum(status);</span>
+<span class="lineNum">      97 </span>            : 
+<span class="lineNum">      98 </span><span class="lineNoCov">          0 :     if (globalStatus &lt;= 0)</span>
+<span class="lineNum">      99 </span><span class="lineNoCov">          0 :         return -1;</span>
+<span class="lineNum">     100 </span>            : 
+<span class="lineNum">     101 </span><span class="lineNoCov">          0 :     int leader = 0;</span>
+<span class="lineNum">     102 </span><span class="lineNoCov">          0 :     while (globalStatus &gt; 1)</span>
+<span class="lineNum">     103 </span>            :     {
+<span class="lineNum">     104 </span><span class="lineNoCov">          0 :         globalStatus = globalStatus &gt;&gt; 1;</span>
+<span class="lineNum">     105 </span><span class="lineNoCov">          0 :         ++leader;</span>
+<span class="lineNum">     106 </span>            :     }
+<span class="lineNum">     107 </span><span class="lineNoCov">          0 :     return leader;</span>
+<a name="108"><span class="lineNum">     108 </span>            : }</a>
+<span class="lineNum">     109 </span>            : 
+<span class="lineNum">     110 </span><span class="lineNoCov">          0 : void WallToWallChannel::broadcast(const double timestamp)</span>
+<span class="lineNum">     111 </span>            : {
+<span class="lineNum">     112 </span><span class="lineNoCov">          0 :     _communicator.broadcast(MessageType::TIMESTAMP,</span>
+<span class="lineNum">     113 </span><span class="lineNoCov">          0 :                             serialization::toBinary(timestamp));</span>
+<a name="114"><span class="lineNum">     114 </span><span class="lineNoCov">          0 : }</span></a>
+<span class="lineNum">     115 </span>            : 
+<span class="lineNum">     116 </span><span class="lineNoCov">          0 : double WallToWallChannel::receiveTimestampBroadcast(const int src)</span>
+<span class="lineNum">     117 </span>            : {
+<span class="lineNum">     118 </span><span class="lineNoCov">          0 :     const auto header = _communicator.receiveBroadcastHeader(src);</span>
+<span class="lineNum">     119 </span><span class="lineNoCov">          0 :     assert(header.type == MessageType::TIMESTAMP);</span>
+<span class="lineNum">     120 </span>            : 
+<span class="lineNum">     121 </span><span class="lineNoCov">          0 :     _buffer.setSize(header.size);</span>
+<span class="lineNum">     122 </span><span class="lineNoCov">          0 :     _communicator.receiveBroadcast(src, _buffer.data(), _buffer.size());</span>
+<span class="lineNum">     123 </span>            : 
+<span class="lineNum">     124 </span><span class="lineNoCov">          0 :     return serialization::get&lt;double&gt;(_buffer);</span>
+<a name="125"><span class="lineNum">     125 </span>            : }</a>
+<span class="lineNum">     126 </span>            : 
+<span class="lineNum">     127 </span><span class="lineNoCov">          0 : void WallToWallChannel::_sendClock()</span>
+<span class="lineNum">     128 </span>            : {
+<span class="lineNum">     129 </span><span class="lineNoCov">          0 :     assert(_communicator.getRank() == RANK0);</span>
 <span class="lineNum">     130 </span>            : 
-<span class="lineNum">     131 </span><span class="lineNoCov">          0 :     return serialization::get&lt;double&gt;(_buffer);</span>
-<a name="132"><span class="lineNum">     132 </span>            : }</a>
-<span class="lineNum">     133 </span>            : 
-<span class="lineNum">     134 </span><span class="lineNoCov">          0 : void WallToWallChannel::_sendClock()</span>
-<span class="lineNum">     135 </span>            : {
-<span class="lineNum">     136 </span><span class="lineNoCov">          0 :     assert(_mpiChannel-&gt;getRank() == RANK0);</span>
-<span class="lineNum">     137 </span>            : 
-<span class="lineNum">     138 </span><span class="lineNoCov">          0 :     _timestamp = clock::now();</span>
-<span class="lineNum">     139 </span>            : 
-<span class="lineNum">     140 </span><span class="lineNoCov">          0 :     _mpiChannel-&gt;broadcast(MPIMessageType::FRAME_CLOCK,</span>
-<span class="lineNum">     141 </span><span class="lineNoCov">          0 :                            serialization::toBinary(_timestamp));</span>
-<a name="142"><span class="lineNum">     142 </span><span class="lineNoCov">          0 : }</span></a>
+<span class="lineNum">     131 </span><span class="lineNoCov">          0 :     _timestamp = clock::now();</span>
+<span class="lineNum">     132 </span>            : 
+<span class="lineNum">     133 </span><span class="lineNoCov">          0 :     _communicator.broadcast(MessageType::FRAME_CLOCK,</span>
+<span class="lineNum">     134 </span><span class="lineNoCov">          0 :                             serialization::toBinary(_timestamp));</span>
+<a name="135"><span class="lineNum">     135 </span><span class="lineNoCov">          0 : }</span></a>
+<span class="lineNum">     136 </span>            : 
+<span class="lineNum">     137 </span><span class="lineNoCov">          0 : void WallToWallChannel::_receiveClock()</span>
+<span class="lineNum">     138 </span>            : {
+<span class="lineNum">     139 </span><span class="lineNoCov">          0 :     assert(_communicator.getRank() != RANK0);</span>
+<span class="lineNum">     140 </span>            : 
+<span class="lineNum">     141 </span><span class="lineNoCov">          0 :     const auto header = _communicator.receiveBroadcastHeader(RANK0);</span>
+<span class="lineNum">     142 </span><span class="lineNoCov">          0 :     assert(header.type == MessageType::FRAME_CLOCK);</span>
 <span class="lineNum">     143 </span>            : 
-<span class="lineNum">     144 </span><span class="lineNoCov">          0 : void WallToWallChannel::_receiveClock()</span>
-<span class="lineNum">     145 </span>            : {
-<span class="lineNum">     146 </span><span class="lineNoCov">          0 :     assert(_mpiChannel-&gt;getRank() != RANK0);</span>
-<span class="lineNum">     147 </span>            : 
-<span class="lineNum">     148 </span><span class="lineNoCov">          0 :     MPIHeader header = _mpiChannel-&gt;receiveHeader(RANK0);</span>
-<span class="lineNum">     149 </span><span class="lineNoCov">          0 :     assert(header.type == MPIMessageType::FRAME_CLOCK);</span>
-<span class="lineNum">     150 </span>            : 
-<span class="lineNum">     151 </span><span class="lineNoCov">          0 :     _buffer.setSize(header.size);</span>
-<span class="lineNum">     152 </span><span class="lineNoCov">          0 :     _mpiChannel-&gt;receiveBroadcast(_buffer.data(), _buffer.size(), RANK0);</span>
-<a name="153"><span class="lineNum">     153 </span>            : </a>
-<span class="lineNum">     154 </span><span class="lineNoCov">          0 :     _timestamp = serialization::get&lt;clock::time_point&gt;(_buffer);</span>
-<span class="lineNum">     155 </span><span class="lineCov">        108 : }</span>
+<span class="lineNum">     144 </span><span class="lineNoCov">          0 :     _buffer.setSize(header.size);</span>
+<span class="lineNum">     145 </span><span class="lineNoCov">          0 :     _communicator.receiveBroadcast(RANK0, _buffer.data(), _buffer.size());</span>
+<a name="146"><span class="lineNum">     146 </span>            : </a>
+<span class="lineNum">     147 </span><span class="lineNoCov">          0 :     _timestamp = serialization::get&lt;clock::time_point&gt;(_buffer);</span>
+<span class="lineNum">     148 </span><span class="lineCov">        111 : }</span>
 </pre>
       </td>
     </tr>

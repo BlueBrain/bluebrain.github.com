@@ -1,6 +1,6 @@
 var class_master_to_wall_channel =
 [
-    [ "MasterToWallChannel", "class_master_to_wall_channel.html#a8f671d612ef52095bf7290d791df4fc0", null ],
+    [ "MasterToWallChannel", "class_master_to_wall_channel.html#a362aeed9d5665971165c8323e56ab7a4", null ],
     [ "send", "class_master_to_wall_channel.html#a0c568a19289def984f52c2f5956ecd1f", null ],
     [ "sendAsync", "class_master_to_wall_channel.html#a86f37ea730a79ee7221fe849cb659f45", null ],
     [ "sendAsync", "class_master_to_wall_channel.html#ab363eb3caaeb7c843c1bc2d3eae219f1", null ],

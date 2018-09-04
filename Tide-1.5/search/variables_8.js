@@ -1,4 +1,4 @@
 var searchData=
 [
-  ['message',['message',['../struct_probe_result.html#af15554a30e968ef7341d18a786899f95',1,'ProbeResult']]]
+  ['messagetype',['messageType',['../struct_probe_result.html#aee401525923644dceea785d9e782a85a',1,'ProbeResult']]]
 ];

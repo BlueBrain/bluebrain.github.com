@@ -33,7 +33,6 @@ var searchData=
   ['ishidden',['isHidden',['../class_window.html#a44d30890d5e2db014bb477f80ad889f1',1,'Window']]],
   ['isidle',['isIdle',['../class_window.html#a25700a700a654ec21d5879ed036dd7a9',1,'Window']]],
   ['islocked',['isLocked',['../class_screen_lock.html#a3631151869f8527fc72864a64f3212d9',1,'ScreenLock']]],
-  ['ismessageavailable',['isMessageAvailable',['../class_m_p_i_channel.html#aa1e0f4381789f23123aff7c8b5fb1b0d',1,'MPIChannel']]],
   ['ismoving',['isMoving',['../class_window.html#a2146c15461b88f71df97207a31805a7a',1,'Window']]],
   ['ispanel',['isPanel',['../class_window.html#ac9901f376045690b18c63f3ae2d69572',1,'Window']]],
   ['ispaused',['isPaused',['../class_movie_updater.html#a74c9e0d5a4e306db1b8e66c811e5ed03',1,'MovieUpdater']]],
@@ -41,7 +40,7 @@ var searchData=
   ['isselected',['isSelected',['../class_window.html#a8a3cf4d17caab70f2acc8df5417d3615',1,'Window']]],
   ['isskipping',['isSkipping',['../class_movie_updater.html#ae809aa76a298144ba0cf50e6de7ed566',1,'MovieUpdater']]],
   ['isstereo',['isStereo',['../class_f_f_m_p_e_g_movie.html#abf604197f855e57cfe19cc3c86fdba19',1,'FFMPEGMovie::isStereo()'],['../class_f_f_m_p_e_g_video_stream.html#a30b951ff4f3eaa8491c45e62f0748eda',1,'FFMPEGVideoStream::isStereo()']]],
-  ['isvalid',['isValid',['../class_f_f_m_p_e_g_movie.html#a0e0248f752f4b4fc318d3fc3b22069b4',1,'FFMPEGMovie::isValid()'],['../class_s_v_g.html#ad47f7ad5b8d6ceb973df825c07124dd8',1,'SVG::isValid()'],['../struct_probe_result.html#a63373d9b2c6353ad460b391f00b8fde0',1,'ProbeResult::isValid()']]],
+  ['isvalid',['isValid',['../struct_probe_result.html#a63373d9b2c6353ad460b391f00b8fde0',1,'ProbeResult']]],
   ['isvisible',['isVisible',['../class_context_menu.html#a9cd09a6bc018a48ff132b865da171dc7',1,'ContextMenu::isVisible()'],['../class_keyboard_state.html#a56d1826dcca6d6f0c46629db0f2432a0',1,'KeyboardState::isVisible()']]],
   ['iszoomed',['isZoomed',['../class_content.html#af9177091ab70e17f93b736d77e07bbee',1,'Content']]],
   ['iterablesmartptrcollection',['IterableSmartPtrCollection',['../class_iterable_smart_ptr_collection.html',1,'']]]

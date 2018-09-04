@@ -1,6 +1,6 @@
 var class_wall_from_master_channel =
 [
-    [ "WallFromMasterChannel", "class_wall_from_master_channel.html#a8f799726df2923051e9615728de8ed36", null ],
+    [ "WallFromMasterChannel", "class_wall_from_master_channel.html#a4a660a60e330c32cd0b212aacf9f97d0", null ],
     [ "processMessages", "class_wall_from_master_channel.html#ac31fbc2ac8f416a651cd24b736af42f9", null ],
     [ "receiveConfiguration", "class_wall_from_master_channel.html#ac4531ec33a0681e410ddd556966f1f56", null ],
     [ "received", "class_wall_from_master_channel.html#a2d2db5ceac6c3fe0dc8d602c56996b77", null ],

@@ -10,6 +10,5 @@ var class_f_f_m_p_e_g_movie =
     [ "getPosition", "class_f_f_m_p_e_g_movie.html#a1a4fccc1a7b190fd7ad462b0c568709a", null ],
     [ "getWidth", "class_f_f_m_p_e_g_movie.html#a9a0ec22f9170bb513afdce6b2095eb85", null ],
     [ "isStereo", "class_f_f_m_p_e_g_movie.html#abf604197f855e57cfe19cc3c86fdba19", null ],
-    [ "isValid", "class_f_f_m_p_e_g_movie.html#a0e0248f752f4b4fc318d3fc3b22069b4", null ],
     [ "setFormat", "class_f_f_m_p_e_g_movie.html#a204b39e3439a84cfa0309d82e5c8a9da", null ]
 ];

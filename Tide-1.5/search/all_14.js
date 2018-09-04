@@ -57,5 +57,5 @@ var searchData=
   ['toxmlfile',['toXmlFile',['../namespaceserialization.html#adcd3a4acf763ce23192c136ac0d816d7',1,'serialization']]],
   ['tracking_5flevel_3c_20std_3a_3achrono_3a_3aduration_3c_20rep_2c_20period_20_3e_20_3e',['tracking_level&lt; std::chrono::duration&lt; Rep, Period &gt; &gt;',['../structboost_1_1serialization_1_1tracking__level_3_01std_1_1chrono_1_1duration_3_01_rep_00_01_period_01_4_01_4.html',1,'boost::serialization']]],
   ['tracking_5flevel_3c_20std_3a_3achrono_3a_3atime_5fpoint_3c_20c_2c_20d_20_3e_20_3e',['tracking_level&lt; std::chrono::time_point&lt; C, D &gt; &gt;',['../structboost_1_1serialization_1_1tracking__level_3_01std_1_1chrono_1_1time__point_3_01_c_00_01_d_01_4_01_4.html',1,'boost::serialization']]],
-  ['type',['type',['../struct_m_p_i_header.html#a7ca055c78e7b26845b67f030e030136e',1,'MPIHeader']]]
+  ['type',['type',['../struct_message_header.html#a2a4adb8c6d8421cf2b3feed9527b2066',1,'MessageHeader']]]
 ];

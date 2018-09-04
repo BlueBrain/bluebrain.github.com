@@ -1,7 +1,7 @@
 var class_s_v_g_gpu_image =
 [
     [ "SVGGpuImage", "class_s_v_g_gpu_image.html#ae72dc82feae79c1109cc2bc77cb4368a", null ],
-    [ "generateGpuImage", "class_s_v_g_gpu_image.html#a6db44b92e6c465a0a5d9dc2ba7b90f83", null ],
+    [ "generateGpuImage", "class_s_v_g_gpu_image.html#aca473424cda4000f87c53a8e3ac35fde", null ],
     [ "getData", "class_s_v_g_gpu_image.html#aa89b823bd6af64e05318cfdf333b9132", null ],
     [ "getFormat", "class_s_v_g_gpu_image.html#a859d9f4504e7c78395a6292841c72d6d", null ],
     [ "getGLPixelFormat", "class_s_v_g_gpu_image.html#aba2f9f65ee362a80ffdfd547c435d295", null ],

@@ -71,8 +71,7 @@ var hierarchy =
     [ "LodTools", "class_lod_tools.html", null ],
     [ "LodTools::TileIndex", "struct_lod_tools_1_1_tile_index.html", null ],
     [ "LodTools::TileInfo", "struct_lod_tools_1_1_tile_info.html", null ],
-    [ "MPIChannel", "class_m_p_i_channel.html", null ],
-    [ "MPIHeader", "struct_m_p_i_header.html", null ],
+    [ "MessageHeader", "struct_message_header.html", null ],
     [ "int_", null, [
       [ "boost::serialization::implementation_level< std::chrono::duration< Rep, Period > >", "structboost_1_1serialization_1_1implementation__level_3_01std_1_1chrono_1_1duration_3_01_rep_00_01_period_01_4_01_4.html", null ],
       [ "boost::serialization::implementation_level< std::chrono::time_point< C, D > >", "structboost_1_1serialization_1_1implementation__level_3_01std_1_1chrono_1_1time__point_3_01_c_00_01_d_01_4_01_4.html", null ],
@@ -80,7 +79,7 @@ var hierarchy =
       [ "boost::serialization::tracking_level< std::chrono::time_point< C, D > >", "structboost_1_1serialization_1_1tracking__level_3_01std_1_1chrono_1_1time__point_3_01_c_00_01_d_01_4_01_4.html", null ]
     ] ],
     [ "NetworkBarrier", "class_network_barrier.html", [
-      [ "WallToWallChannel", "class_wall_to_wall_channel.html", null ]
+      [ "MPICommunicator", "class_m_p_i_communicator.html", null ]
     ] ],
     [ "PDFBackend", "class_p_d_f_backend.html", [
       [ "PDFPopplerQtBackend", "class_p_d_f_poppler_qt_backend.html", null ]
