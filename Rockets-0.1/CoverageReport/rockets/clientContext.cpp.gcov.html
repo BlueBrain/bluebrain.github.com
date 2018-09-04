@@ -31,18 +31,18 @@
             <td class="headerValue">Rockets</td>
             <td></td>
             <td class="headerItem">Lines:</td>
-            <td class="headerCovTableEntry">43</td>
-            <td class="headerCovTableEntry">47</td>
-            <td class="headerCovTableEntryHi">91.5 %</td>
+            <td class="headerCovTableEntry">84</td>
+            <td class="headerCovTableEntry">90</td>
+            <td class="headerCovTableEntryHi">93.3 %</td>
           </tr>
           <tr>
             <td class="headerItem">Date:</td>
-            <td class="headerValue">2018-06-07 04:19:23</td>
+            <td class="headerValue">2018-09-04 04:45:15</td>
             <td></td>
             <td class="headerItem">Functions:</td>
-            <td class="headerCovTableEntry">6</td>
-            <td class="headerCovTableEntry">7</td>
-            <td class="headerCovTableEntryHi">85.7 %</td>
+            <td class="headerCovTableEntry">10</td>
+            <td class="headerCovTableEntry">11</td>
+            <td class="headerCovTableEntryHi">90.9 %</td>
           </tr>
           <tr><td><img src="../glass.png" width=3 height=3 alt=""></td></tr>
         </table>
@@ -85,105 +85,188 @@
 <span class="lineNum">      23 </span>            : #include &quot;ws/channel.h&quot;
 <span class="lineNum">      24 </span>            : #include &quot;ws/connection.h&quot;
 <span class="lineNum">      25 </span>            : 
-<span class="lineNum">      26 </span>            : #include &lt;string.h&gt; // memset
-<span class="lineNum">      27 </span>            : 
-<span class="lineNum">      28 </span>            : namespace
-<span class="lineNum">      29 </span>            : {
-<span class="lineNum">      30 </span>            : const char* contextInitFailure = &quot;failed to initialize lws context&quot;;
-<span class="lineNum">      31 </span>            : const char* wsConnectionFailure = &quot;server unreachable&quot;;
-<span class="lineNum">      32 </span>            : const size_t maxQuerySize = 4096 - 196 /*padding determined empirically*/;
-<span class="lineNum">      33 </span>            : const char* uriTooLong = &quot;uri too long (max ~4000 char)&quot;;
-<span class="lineNum">      34 </span>            : #if LWS_LIBRARY_VERSION_NUMBER &lt; 2000000
-<span class="lineNum">      35 </span>            : const char* onlyGetSupported = &quot;Only GET is supported with lws &lt; 2.0&quot;;
-<span class="lineNum">      36 </span>            : #endif
-<span class="lineNum">      37 </span>            : }
-<span class="lineNum">      38 </span>            : 
-<a name="39"><span class="lineNum">      39 </span>            : namespace rockets</a>
-<span class="lineNum">      40 </span>            : {
-<span class="lineNum">      41 </span><span class="lineCov">        173 : ClientContext::ClientContext(lws_callback_function* callback, void* user)</span>
-<span class="lineNum">      42 </span><span class="lineCov">        173 :     : protocols{make_protocol(&quot;default&quot;, callback, user), null_protocol()}</span>
+<span class="lineNum">      26 </span>            : #include &lt;sstream&gt;
+<span class="lineNum">      27 </span>            : #include &lt;string.h&gt; // memset
+<span class="lineNum">      28 </span>            : 
+<span class="lineNum">      29 </span>            : namespace
+<span class="lineNum">      30 </span>            : {
+<span class="lineNum">      31 </span>            : const char* contextInitFailure = &quot;failed to initialize lws context&quot;;
+<span class="lineNum">      32 </span>            : #if CLIENT_USE_EXPLICIT_VHOST
+<span class="lineNum">      33 </span>            : const char* vhostInitFailure = &quot;failed to initialize lws vhost&quot;;
+<span class="lineNum">      34 </span>            : #endif
+<span class="lineNum">      35 </span>            : const char* wsConnectionFailure = &quot;server unreachable&quot;;
+<span class="lineNum">      36 </span>            : const size_t maxQuerySize = 4096 - 196 /*padding determined empirically*/;
+<span class="lineNum">      37 </span>            : const char* uriTooLong = &quot;uri too long (max ~4000 char)&quot;;
+<span class="lineNum">      38 </span>            : #if LWS_LIBRARY_VERSION_NUMBER &lt; 2000000
+<span class="lineNum">      39 </span>            : const char* onlyGetSupported = &quot;Only GET is supported with lws &lt; 2.0&quot;;
+<a name="40"><span class="lineNum">      40 </span>            : #endif</a>
+<span class="lineNum">      41 </span>            : 
+<span class="lineNum">      42 </span><span class="lineCov">         15 : bool hasEnding(const std::string&amp; string, const std::string&amp; ending)</span>
 <span class="lineNum">      43 </span>            : {
-<span class="lineNum">      44 </span><span class="lineCov">        173 :     memset(&amp;info, 0, sizeof(info));</span>
-<span class="lineNum">      45 </span><span class="lineCov">        173 :     info.port = CONTEXT_PORT_NO_LISTEN;</span>
-<span class="lineNum">      46 </span><span class="lineCov">        173 :     info.protocols = protocols.data();</span>
-<span class="lineNum">      47 </span><span class="lineCov">        173 :     info.gid = -1;</span>
-<span class="lineNum">      48 </span><span class="lineCov">        173 :     info.uid = -1;</span>
-<span class="lineNum">      49 </span><span class="lineCov">        173 :     info.max_http_header_data = 4096;</span>
-<span class="lineNum">      50 </span><span class="lineCov">        173 :     context = lws_create_context(&amp;info);</span>
-<span class="lineNum">      51 </span><span class="lineCov">        173 :     if (!context)</span>
-<span class="lineNum">      52 </span><span class="lineNoCov">          0 :         throw std::runtime_error(contextInitFailure);</span>
-<a name="53"><span class="lineNum">      53 </span><span class="lineCov">        173 : }</span></a>
-<span class="lineNum">      54 </span>            : 
-<span class="lineNum">      55 </span><span class="lineCov">        346 : ClientContext::~ClientContext()</span>
-<span class="lineNum">      56 </span>            : {
-<span class="lineNum">      57 </span><span class="lineCov">        173 :     lws_context_destroy(context);</span>
-<a name="58"><span class="lineNum">      58 </span><span class="lineCov">        173 : }</span></a>
-<span class="lineNum">      59 </span>            : 
-<span class="lineNum">      60 </span><span class="lineCov">        214 : lws* ClientContext::startHttpRequest(const http::Method method,</span>
-<span class="lineNum">      61 </span>            :                                      const std::string&amp; uri)
-<span class="lineNum">      62 </span>            : {
-<span class="lineNum">      63 </span><span class="lineCov">        214 :     if (uri.size() &gt; maxQuerySize)</span>
-<span class="lineNum">      64 </span><span class="lineCov">          3 :         throw std::invalid_argument(uriTooLong);</span>
-<span class="lineNum">      65 </span>            : 
-<span class="lineNum">      66 </span><span class="lineCov">        422 :     const auto parsedUri = parse(uri);</span>
-<span class="lineNum">      67 </span><span class="lineCov">        211 :     auto connectInfo = makeConnectInfo(parsedUri);</span>
-<span class="lineNum">      68 </span>            : 
-<span class="lineNum">      69 </span>            : #if LWS_LIBRARY_VERSION_NUMBER &lt; 2000000
-<span class="lineNum">      70 </span>            :     if (method != http::Method::GET)
-<span class="lineNum">      71 </span>            :         throw std::invalid_argument(onlyGetSupported);
-<span class="lineNum">      72 </span>            : #else
-<span class="lineNum">      73 </span><span class="lineCov">        211 :     connectInfo.method = http::to_cstring(method);</span>
-<span class="lineNum">      74 </span>            : #endif
-<span class="lineNum">      75 </span>            : 
-<span class="lineNum">      76 </span><span class="lineCov">        422 :     return lws_client_connect_via_info(&amp;connectInfo);</span>
-<a name="77"><span class="lineNum">      77 </span>            : }</a>
-<span class="lineNum">      78 </span>            : 
-<span class="lineNum">      79 </span><span class="lineCov">         56 : std::unique_ptr&lt;ws::Connection&gt; ClientContext::connect(</span>
-<span class="lineNum">      80 </span>            :     const std::string&amp; uri, const std::string&amp; protocol)
-<span class="lineNum">      81 </span>            : {
-<span class="lineNum">      82 </span><span class="lineCov">         56 :     wsProtocolName = protocol;</span>
-<span class="lineNum">      83 </span><span class="lineCov">         56 :     protocols[0].name = wsProtocolName.c_str();</span>
-<span class="lineNum">      84 </span>            : 
-<span class="lineNum">      85 </span><span class="lineCov">        112 :     const auto parsedUri = parse(uri);</span>
-<span class="lineNum">      86 </span><span class="lineCov">         56 :     auto connectInfo = makeConnectInfo(parsedUri);</span>
-<span class="lineNum">      87 </span><span class="lineCov">         56 :     connectInfo.protocol = wsProtocolName.c_str();</span>
-<span class="lineNum">      88 </span>            : 
-<span class="lineNum">      89 </span><span class="lineCov">         56 :     if (auto wsi = lws_client_connect_via_info(&amp;connectInfo))</span>
-<span class="lineNum">      90 </span>            :         return std::make_unique&lt;ws::Connection&gt;(
-<span class="lineNum">      91 </span><span class="lineCov">        110 :             std::make_unique&lt;ws::Channel&gt;(wsi));</span>
-<span class="lineNum">      92 </span>            : 
-<span class="lineNum">      93 </span><span class="lineCov">          1 :     throw std::runtime_error(wsConnectionFailure);</span>
-<a name="94"><span class="lineNum">      94 </span>            : }</a>
-<span class="lineNum">      95 </span>            : 
-<span class="lineNum">      96 </span><span class="lineCov">       2417 : void ClientContext::service(const int timeout_ms)</span>
-<span class="lineNum">      97 </span>            : {
-<span class="lineNum">      98 </span><span class="lineCov">       2417 :     lws_service(context, timeout_ms);</span>
-<a name="99"><span class="lineNum">      99 </span><span class="lineCov">       2417 : }</span></a>
-<span class="lineNum">     100 </span>            : 
-<span class="lineNum">     101 </span><span class="lineNoCov">          0 : void ClientContext::service(PollDescriptors&amp; pollDescriptors,</span>
-<span class="lineNum">     102 </span>            :                             const SocketDescriptor fd, const int events)
-<span class="lineNum">     103 </span>            : {
-<span class="lineNum">     104 </span><span class="lineNoCov">          0 :     pollDescriptors.service(context, fd, events);</span>
-<a name="105"><span class="lineNum">     105 </span><span class="lineNoCov">          0 : }</span></a>
-<span class="lineNum">     106 </span>            : 
-<span class="lineNum">     107 </span><span class="lineCov">        267 : lws_client_connect_info ClientContext::makeConnectInfo(const Uri&amp; uri) const</span>
-<span class="lineNum">     108 </span>            : {
-<span class="lineNum">     109 </span>            :     lws_client_connect_info c_info;
-<span class="lineNum">     110 </span><span class="lineCov">        267 :     memset(&amp;c_info, 0, sizeof(c_info));</span>
-<span class="lineNum">     111 </span>            : 
-<span class="lineNum">     112 </span><span class="lineCov">        267 :     c_info.context = context;</span>
-<span class="lineNum">     113 </span><span class="lineCov">        267 :     c_info.ietf_version_or_minus_one = -1;</span>
-<span class="lineNum">     114 </span>            : 
-<span class="lineNum">     115 </span><span class="lineCov">        267 :     c_info.address = uri.host.c_str();</span>
-<span class="lineNum">     116 </span><span class="lineCov">        267 :     c_info.port = uri.port ? uri.port : 80;</span>
-<span class="lineNum">     117 </span><span class="lineCov">        267 :     c_info.path = uri.path.c_str();</span>
-<span class="lineNum">     118 </span>            : 
-<span class="lineNum">     119 </span><span class="lineCov">        267 :     c_info.host = c_info.address;</span>
-<span class="lineNum">     120 </span><span class="lineCov">        267 :     c_info.origin = lws_canonical_hostname(context);</span>
-<span class="lineNum">     121 </span>            : 
-<span class="lineNum">     122 </span><span class="lineCov">        267 :     return c_info;</span>
-<span class="lineNum">     123 </span>            : }
-<span class="lineNum">     124 </span>            : }
+<span class="lineNum">      44 </span><span class="lineCov">         15 :     if (string.length() &lt; ending.length())</span>
+<span class="lineNum">      45 </span><span class="lineCov">          1 :         return false;</span>
+<span class="lineNum">      46 </span><span class="lineCov">         14 :     return string.compare(string.length() - ending.length(), ending.length(),</span>
+<span class="lineNum">      47 </span><span class="lineCov">         14 :                           ending) == 0;</span>
+<a name="48"><span class="lineNum">      48 </span>            : }</a>
+<span class="lineNum">      49 </span>            : 
+<span class="lineNum">      50 </span><span class="lineCov">        273 : bool isNoProxyHost(const std::string&amp; hostname)</span>
+<span class="lineNum">      51 </span>            : {
+<span class="lineNum">      52 </span><span class="lineCov">        273 :     auto no_proxy = getenv(&quot;no_proxy&quot;);</span>
+<span class="lineNum">      53 </span><span class="lineCov">        273 :     if (!no_proxy)</span>
+<span class="lineNum">      54 </span><span class="lineCov">        263 :         return false;</span>
+<span class="lineNum">      55 </span>            : 
+<span class="lineNum">      56 </span><span class="lineCov">         20 :     std::stringstream stream(no_proxy);</span>
+<span class="lineNum">      57 </span><span class="lineCov">         20 :     std::string host;</span>
+<span class="lineNum">      58 </span>            : 
+<span class="lineNum">      59 </span>            :     // no_proxy list is comma-separated, and can have wildcards
+<span class="lineNum">      60 </span><span class="lineCov">         90 :     while (std::getline(stream, host, ','))</span>
+<span class="lineNum">      61 </span>            :     {
+<span class="lineNum">      62 </span><span class="lineCov">         49 :         if (host.empty())</span>
+<span class="lineNum">      63 </span><span class="lineNoCov">          0 :             continue;</span>
+<span class="lineNum">      64 </span><span class="lineCov">         49 :         if (host == hostname)</span>
+<span class="lineNum">      65 </span><span class="lineCov">          2 :             return true;</span>
+<span class="lineNum">      66 </span><span class="lineCov">         47 :         if (host[0] == '*')</span>
+<span class="lineNum">      67 </span>            :         {
+<span class="lineNum">      68 </span><span class="lineCov">         15 :             host = host.substr(1);</span>
+<span class="lineNum">      69 </span><span class="lineCov">         15 :             if (hasEnding(hostname, host))</span>
+<span class="lineNum">      70 </span><span class="lineCov">          7 :                 return true;</span>
+<span class="lineNum">      71 </span>            :         }
+<span class="lineNum">      72 </span>            :     }
+<span class="lineNum">      73 </span><span class="lineCov">          1 :     return false;</span>
+<span class="lineNum">      74 </span>            : }
+<span class="lineNum">      75 </span>            : }
+<span class="lineNum">      76 </span>            : 
+<a name="77"><span class="lineNum">      77 </span>            : namespace rockets</a>
+<span class="lineNum">      78 </span>            : {
+<span class="lineNum">      79 </span><span class="lineCov">        179 : ClientContext::ClientContext(lws_callback_function* callback, void* user)</span>
+<span class="lineNum">      80 </span><span class="lineCov">        179 :     : protocols{make_protocol(wsProtocolName.c_str(), callback, user),</span>
+<span class="lineNum">      81 </span><span class="lineCov">        358 :                 null_protocol()}</span>
+<span class="lineNum">      82 </span>            : {
+<span class="lineNum">      83 </span><span class="lineCov">        179 :     memset(&amp;info, 0, sizeof(info));</span>
+<span class="lineNum">      84 </span><span class="lineCov">        179 :     info.port = CONTEXT_PORT_NO_LISTEN;</span>
+<span class="lineNum">      85 </span><span class="lineCov">        179 :     info.protocols = protocols.data();</span>
+<span class="lineNum">      86 </span><span class="lineCov">        179 :     info.gid = -1;</span>
+<span class="lineNum">      87 </span><span class="lineCov">        179 :     info.uid = -1;</span>
+<span class="lineNum">      88 </span><span class="lineCov">        179 :     info.max_http_header_data = 4096;</span>
+<span class="lineNum">      89 </span>            : #if CLIENT_USE_EXPLICIT_VHOST
+<span class="lineNum">      90 </span><span class="lineCov">        179 :     info.options = LWS_SERVER_OPTION_EXPLICIT_VHOSTS;</span>
+<span class="lineNum">      91 </span>            : #endif
+<span class="lineNum">      92 </span><span class="lineCov">        179 :     context = lws_create_context(&amp;info);</span>
+<span class="lineNum">      93 </span><span class="lineCov">        179 :     if (!context)</span>
+<span class="lineNum">      94 </span><span class="lineNoCov">          0 :         throw std::runtime_error(contextInitFailure);</span>
+<span class="lineNum">      95 </span><span class="lineCov">        179 :     createVhost();</span>
+<a name="96"><span class="lineNum">      96 </span><span class="lineCov">        179 : }</span></a>
+<span class="lineNum">      97 </span>            : 
+<span class="lineNum">      98 </span><span class="lineCov">        358 : ClientContext::~ClientContext()</span>
+<span class="lineNum">      99 </span>            : {
+<span class="lineNum">     100 </span><span class="lineCov">        179 :     lws_context_destroy(context);</span>
+<a name="101"><span class="lineNum">     101 </span><span class="lineCov">        179 : }</span></a>
+<span class="lineNum">     102 </span>            : 
+<span class="lineNum">     103 </span><span class="lineCov">        238 : void ClientContext::createVhost()</span>
+<span class="lineNum">     104 </span>            : {
+<span class="lineNum">     105 </span>            : #if CLIENT_USE_EXPLICIT_VHOST
+<span class="lineNum">     106 </span><span class="lineCov">        238 :     if (vhost)</span>
+<span class="lineNum">     107 </span>            :     {
+<span class="lineNum">     108 </span><span class="lineCov">         59 :         lws_vhost_destroy(vhost);</span>
+<span class="lineNum">     109 </span><span class="lineCov">         59 :         vhost = nullptr;</span>
+<span class="lineNum">     110 </span>            :     }
+<span class="lineNum">     111 </span><span class="lineCov">        238 :     if (!vhost)</span>
+<span class="lineNum">     112 </span>            :     {
+<span class="lineNum">     113 </span><span class="lineCov">        238 :         vhost = lws_create_vhost(context, &amp;info);</span>
+<span class="lineNum">     114 </span><span class="lineCov">        238 :         if (!vhost)</span>
+<span class="lineNum">     115 </span><span class="lineNoCov">          0 :             throw std::runtime_error(vhostInitFailure);</span>
+<span class="lineNum">     116 </span>            :     }
+<span class="lineNum">     117 </span>            : #endif
+<a name="118"><span class="lineNum">     118 </span><span class="lineCov">        238 : }</span></a>
+<span class="lineNum">     119 </span>            : 
+<span class="lineNum">     120 </span><span class="lineCov">        217 : lws* ClientContext::startHttpRequest(const http::Method method,</span>
+<span class="lineNum">     121 </span>            :                                      const std::string&amp; uri)
+<span class="lineNum">     122 </span>            : {
+<span class="lineNum">     123 </span><span class="lineCov">        217 :     if (uri.size() &gt; maxQuerySize)</span>
+<span class="lineNum">     124 </span><span class="lineCov">          3 :         throw std::invalid_argument(uriTooLong);</span>
+<span class="lineNum">     125 </span>            : 
+<span class="lineNum">     126 </span><span class="lineCov">        428 :     const auto parsedUri = parse(uri);</span>
+<span class="lineNum">     127 </span><span class="lineCov">        214 :     auto connectInfo = makeConnectInfo(parsedUri);</span>
+<span class="lineNum">     128 </span>            : 
+<span class="lineNum">     129 </span>            : #if LWS_LIBRARY_VERSION_NUMBER &lt; 2000000
+<span class="lineNum">     130 </span>            :     if (method != http::Method::GET)
+<span class="lineNum">     131 </span>            :         throw std::invalid_argument(onlyGetSupported);
+<span class="lineNum">     132 </span>            : #else
+<span class="lineNum">     133 </span><span class="lineCov">        214 :     connectInfo.method = http::to_cstring(method);</span>
+<span class="lineNum">     134 </span>            : #endif
+<span class="lineNum">     135 </span>            : 
+<span class="lineNum">     136 </span><span class="lineCov">        214 :     if (isNoProxyHost(parsedUri.host))</span>
+<span class="lineNum">     137 </span><span class="lineCov">          6 :         disableProxy();</span>
+<span class="lineNum">     138 </span>            : 
+<span class="lineNum">     139 </span><span class="lineCov">        428 :     return lws_client_connect_via_info(&amp;connectInfo);</span>
+<a name="140"><span class="lineNum">     140 </span>            : }</a>
+<span class="lineNum">     141 </span>            : 
+<span class="lineNum">     142 </span><span class="lineCov">         59 : std::unique_ptr&lt;ws::Connection&gt; ClientContext::connect(</span>
+<span class="lineNum">     143 </span>            :     const std::string&amp; uri, const std::string&amp; protocol)
+<span class="lineNum">     144 </span>            : {
+<span class="lineNum">     145 </span>            : #if LWS_LIBRARY_VERSION_NUMBER &lt; 2004000
+<span class="lineNum">     146 </span><span class="lineCov">         59 :     const bool recreateVhost = wsProtocolName != protocol;</span>
+<span class="lineNum">     147 </span>            : #endif
+<span class="lineNum">     148 </span><span class="lineCov">         59 :     wsProtocolName = protocol;</span>
+<span class="lineNum">     149 </span>            : 
+<span class="lineNum">     150 </span>            : #if LWS_LIBRARY_VERSION_NUMBER &lt; 2004000
+<span class="lineNum">     151 </span><span class="lineCov">         59 :     protocols[0].name = wsProtocolName.c_str();</span>
+<span class="lineNum">     152 </span><span class="lineCov">         59 :     if (recreateVhost)</span>
+<span class="lineNum">     153 </span><span class="lineCov">         59 :         createVhost();</span>
+<span class="lineNum">     154 </span>            : #endif
+<span class="lineNum">     155 </span>            : 
+<span class="lineNum">     156 </span><span class="lineCov">        118 :     const auto parsedUri = parse(uri);</span>
+<span class="lineNum">     157 </span><span class="lineCov">         59 :     auto connectInfo = makeConnectInfo(parsedUri);</span>
+<span class="lineNum">     158 </span><span class="lineCov">         59 :     connectInfo.protocol = wsProtocolName.c_str();</span>
+<span class="lineNum">     159 </span>            : 
+<span class="lineNum">     160 </span><span class="lineCov">         59 :     if (isNoProxyHost(parsedUri.host))</span>
+<span class="lineNum">     161 </span><span class="lineCov">          3 :         disableProxy();</span>
+<span class="lineNum">     162 </span>            : 
+<span class="lineNum">     163 </span><span class="lineCov">         59 :     if (auto wsi = lws_client_connect_via_info(&amp;connectInfo))</span>
+<span class="lineNum">     164 </span>            :         return std::make_unique&lt;ws::Connection&gt;(
+<span class="lineNum">     165 </span><span class="lineCov">        114 :             std::make_unique&lt;ws::Channel&gt;(wsi));</span>
+<span class="lineNum">     166 </span>            : 
+<span class="lineNum">     167 </span><span class="lineCov">          2 :     throw std::runtime_error(wsConnectionFailure);</span>
+<a name="168"><span class="lineNum">     168 </span>            : }</a>
+<span class="lineNum">     169 </span>            : 
+<span class="lineNum">     170 </span><span class="lineCov">       2478 : void ClientContext::service(const int timeout_ms)</span>
+<span class="lineNum">     171 </span>            : {
+<span class="lineNum">     172 </span><span class="lineCov">       2478 :     lws_service(context, timeout_ms);</span>
+<a name="173"><span class="lineNum">     173 </span><span class="lineCov">       2478 : }</span></a>
+<span class="lineNum">     174 </span>            : 
+<span class="lineNum">     175 </span><span class="lineNoCov">          0 : void ClientContext::service(PollDescriptors&amp; pollDescriptors,</span>
+<span class="lineNum">     176 </span>            :                             const SocketDescriptor fd, const int events)
+<span class="lineNum">     177 </span>            : {
+<span class="lineNum">     178 </span><span class="lineNoCov">          0 :     pollDescriptors.service(context, fd, events);</span>
+<a name="179"><span class="lineNum">     179 </span><span class="lineNoCov">          0 : }</span></a>
+<span class="lineNum">     180 </span>            : 
+<span class="lineNum">     181 </span><span class="lineCov">        273 : lws_client_connect_info ClientContext::makeConnectInfo(const Uri&amp; uri) const</span>
+<span class="lineNum">     182 </span>            : {
+<span class="lineNum">     183 </span>            :     lws_client_connect_info c_info;
+<span class="lineNum">     184 </span><span class="lineCov">        273 :     memset(&amp;c_info, 0, sizeof(c_info));</span>
+<span class="lineNum">     185 </span>            : 
+<span class="lineNum">     186 </span><span class="lineCov">        273 :     c_info.context = context;</span>
+<span class="lineNum">     187 </span><span class="lineCov">        273 :     c_info.ietf_version_or_minus_one = -1;</span>
+<span class="lineNum">     188 </span>            : 
+<span class="lineNum">     189 </span><span class="lineCov">        273 :     c_info.address = uri.host.c_str();</span>
+<span class="lineNum">     190 </span><span class="lineCov">        273 :     c_info.port = uri.port ? uri.port : 80;</span>
+<span class="lineNum">     191 </span><span class="lineCov">        273 :     c_info.path = uri.path.c_str();</span>
+<span class="lineNum">     192 </span>            : 
+<span class="lineNum">     193 </span><span class="lineCov">        273 :     c_info.host = c_info.address;</span>
+<span class="lineNum">     194 </span><span class="lineCov">        273 :     c_info.origin = lws_canonical_hostname(context);</span>
+<span class="lineNum">     195 </span>            : 
+<span class="lineNum">     196 </span><span class="lineCov">        273 :     return c_info;</span>
+<a name="197"><span class="lineNum">     197 </span>            : }</a>
+<span class="lineNum">     198 </span>            : 
+<span class="lineNum">     199 </span><span class="lineCov">          9 : void ClientContext::disableProxy()</span>
+<span class="lineNum">     200 </span>            : {
+<span class="lineNum">     201 </span>            : #if CLIENT_USE_EXPLICIT_VHOST
+<span class="lineNum">     202 </span><span class="lineCov">          9 :     lws_set_proxy(vhost, &quot;:0&quot;);</span>
+<span class="lineNum">     203 </span>            : #else
+<span class="lineNum">     204 </span>            :     lws_set_proxy(context, &quot;:0&quot;);
+<span class="lineNum">     205 </span>            : #endif
+<span class="lineNum">     206 </span><span class="lineCov">          9 : }</span>
+<span class="lineNum">     207 </span>            : }
 </pre>
       </td>
     </tr>
