@@ -40,7 +40,7 @@ var searchData=
   ['resettime',['resetTime',['../class_elapsed_timer.html#a3dd7ad8a34c58a3651887db99a74d553',1,'ElapsedTimer']]],
   ['resetzoom',['resetZoom',['../class_content.html#ad7e55aa12c354279dbe776de66a5635f',1,'Content']]],
   ['reshape',['reshape',['../class_display_group_controller.html#a7a1d92a21f52d11526f4f145e865fc9d',1,'DisplayGroupController']]],
-  ['resize',['resize',['../class_window_controller.html#aa9a9e9497b93edd14f75b3162a960924',1,'WindowController']]],
+  ['resize',['resize',['../class_window_controller.html#aea03fdb778650743150ac0ee34e1e8ed',1,'WindowController']]],
   ['resizearoundposition',['resizeAroundPosition',['../namespacegeometry.html#a954a0cdcba05798d7ba90fa47dcf175b',1,'geometry']]],
   ['resizerelative',['resizeRelative',['../class_window_controller.html#a4429d850a12a9c000c4e926a45527b8f',1,'WindowController']]],
   ['restart',['restart',['../class_inactivity_timer.html#a01e02d85e1598dd9cdb0fb39fa394c12',1,'InactivityTimer']]],

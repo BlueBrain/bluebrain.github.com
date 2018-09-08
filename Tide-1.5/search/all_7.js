@@ -83,6 +83,7 @@ var searchData=
   ['getminor',['getMinor',['../classtide_1_1_version.html#ae38ec59f6d1c305d5737a21e3e574394',1,'tide::Version::getMinor()'],['../classtide_1_1_version.html#ae38ec59f6d1c305d5737a21e3e574394',1,'tide::Version::getMinor()'],['../classtide_1_1_version.html#ae38ec59f6d1c305d5737a21e3e574394',1,'tide::Version::getMinor()']]],
   ['getminsize',['getMinSize',['../class_window_controller.html#a8767d7223b14ced711721a7ed1803f6b',1,'WindowController']]],
   ['getminsizeaspectratiocorrect',['getMinSizeAspectRatioCorrect',['../class_window_controller.html#a632e255ad4acb1a4ff13bc8d33df4b54',1,'WindowController']]],
+  ['getminwindowsize',['getMinWindowSize',['../namespaceui.html#ade7b9b127ed6b4687361519c93623e3f',1,'ui']]],
   ['getminwindowspacing',['getMinWindowSpacing',['../namespaceui.html#a9e2f53d672e2ea5121c73d251807e69d',1,'ui']]],
   ['getmode',['getMode',['../class_window.html#ad8f8b6359089f93facb342c98650dac4',1,'Window']]],
   ['getnormalizedtilerect',['getNormalizedTileRect',['../class_lod_tiler.html#a085c9b2df8260fb774572242b411fdd3',1,'LodTiler']]],

@@ -15,7 +15,7 @@ var class_window_controller =
     [ "moveBy", "class_window_controller.html#a332bba0bbee2ef1ea786b0cf6affd159", null ],
     [ "moveCenterTo", "class_window_controller.html#aca2e4de9d33e9f041bb564212667c601", null ],
     [ "moveTo", "class_window_controller.html#a056f9372e1fd66c3c573b80f72b3bd62", null ],
-    [ "resize", "class_window_controller.html#aa9a9e9497b93edd14f75b3162a960924", null ],
+    [ "resize", "class_window_controller.html#aea03fdb778650743150ac0ee34e1e8ed", null ],
     [ "resizeRelative", "class_window_controller.html#a4429d850a12a9c000c4e926a45527b8f", null ],
     [ "scale", "class_window_controller.html#a3e86a0fd011d578220ba0c2e69162153", null ],
     [ "scale", "class_window_controller.html#adb29f6b4750f9ddb98b352b7e7a1903c", null ],
