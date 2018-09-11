@@ -4,7 +4,7 @@ version: "0.8"
 major: 0
 minor: 8
 description: OSG library for transparency rendering algorithms
-updated: 06/06/18
+updated: 11/09/18
 homepage: https://github.com/BlueBrain/osgTransparency
 repository: https://github.com/BlueBrain/osgTransparency.git
 issuesurl: https://github.com/BlueBrain/osgTransparency/issues
