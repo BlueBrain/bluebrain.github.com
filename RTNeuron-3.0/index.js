@@ -8,6 +8,7 @@ var index =
         [ "New in this release", "release_notes.html#New_in_this_release_master", [
           [ "New Features", "release_notes.html#New_Features_master", null ],
           [ "Optimizations", "release_notes.html#Optimizations_master", null ],
+          [ "CLI Changes", "release_notes.html#CLI_Changes_master", null ],
           [ "Bug fixes", "release_notes.html#Bug_fixes_master", null ]
         ] ]
       ] ],
