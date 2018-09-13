@@ -25,7 +25,6 @@ var annotated_dup =
       [ "DeferredTask", "classbrayns_1_1_deferred_task.html", "classbrayns_1_1_deferred_task" ],
       [ "DirectionalLight", "classbrayns_1_1_directional_light.html", "classbrayns_1_1_directional_light" ],
       [ "Engine", "classbrayns_1_1_engine.html", "classbrayns_1_1_engine" ],
-      [ "EngineFactory", "classbrayns_1_1_engine_factory.html", "classbrayns_1_1_engine_factory" ],
       [ "ExtensionPlugin", "classbrayns_1_1_extension_plugin.html", "classbrayns_1_1_extension_plugin" ],
       [ "FlyingModeManipulator", "classbrayns_1_1_flying_mode_manipulator.html", "classbrayns_1_1_flying_mode_manipulator" ],
       [ "FrameBuffer", "classbrayns_1_1_frame_buffer.html", "classbrayns_1_1_frame_buffer" ],

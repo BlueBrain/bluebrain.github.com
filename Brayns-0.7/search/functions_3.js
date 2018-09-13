@@ -15,7 +15,6 @@ var searchData=
   ['committransferfunctiondata',['commitTransferFunctionData',['../classbrayns_1_1_scene.html#a1050f001aa9a33e578e634f5b46b20e4',1,'brayns::Scene']]],
   ['consume',['consume',['../classbrayns_1_1_progress.html#a3e56606ed9283c4e4189b0d5b3b6b7cf',1,'brayns::Progress']]],
   ['continuerendering',['continueRendering',['../classbrayns_1_1_engine.html#a84b7fb62801d98aa94c325dc8f725313',1,'brayns::Engine']]],
-  ['create',['create',['../classbrayns_1_1_engine_factory.html#aef723cd747707f527ed156d6e48f5ee3',1,'brayns::EngineFactory']]],
   ['createbrickedvolume',['createBrickedVolume',['../classbrayns_1_1_scene.html#a6798df0c86c13dc9c611a09c8455707e',1,'brayns::Scene']]],
   ['createcamera',['createCamera',['../classbrayns_1_1_engine.html#af4b41c12e75c19f4ce9160c4a8484330',1,'brayns::Engine']]],
   ['createframebuffer',['createFrameBuffer',['../classbrayns_1_1_engine.html#a3ad20ce149c67448d40110da4f573f35',1,'brayns::Engine']]],

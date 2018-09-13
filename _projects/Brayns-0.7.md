@@ -4,7 +4,7 @@ version: "0.7"
 major: 0
 minor: 7
 description: Hardware Agnostic Ray-Tracer
-updated: 04/09/18
+updated: 14/09/18
 homepage: https://github.com/BlueBrain/Brayns
 repository: https://github.com/BlueBrain/Brayns.git
 issuesurl: https://github.com/BlueBrain/Brayns/issues
@@ -164,6 +164,18 @@ cmake .. -DBRAYNS_DEFLECT_ENABLED=ON:OFF
  See documentation for REST API details.
 ```
 cmake .. -DBRAYNS_NETWORKING_ENABLED=ON:OFF
+```
+
+#### Enable/Disable [VRPN](https://github.com/vrpn/vrpn) tracking plugin.
+```
+cmake .. -DBRAYNS_VRPN_ENABLED=ON:OFF
+```
+
+#### Enable/Disable optional OSPRay modules.
+```
+cmake .. -DBRAYNS_OPTIX_ENABLED=ON:OFF
+cmake .. -DBRAYNS_OPENDECK_ENABLED=ON:OFF
+cmake .. -DBRAYNS_STEREOSCOPY_ENABLED=ON:OFF
 ```
 
 ## Running Brayns viewer
