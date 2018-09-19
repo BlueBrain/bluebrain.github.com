@@ -99,12 +99,13 @@ var NAVTREEINDEX0 =
 "classbrayns_1_1_abstract_manipulator.html#aebf99bbf0d33362e18902eb89b332986":[3,0,0,0,6],
 "classbrayns_1_1_abstract_manipulator.html#aec34602fb7b12622cf73febc34a5640a":[3,0,0,0,8],
 "classbrayns_1_1_abstract_parameters.html":[3,0,0,1],
-"classbrayns_1_1_abstract_parameters.html#a26266de9ad202855a31e167a16524f9e":[3,0,0,1,3],
+"classbrayns_1_1_abstract_parameters.html#a26266de9ad202855a31e167a16524f9e":[3,0,0,1,4],
+"classbrayns_1_1_abstract_parameters.html#a4cb149f6da3abd3f3c676c57bfd401f4":[3,0,0,1,2],
 "classbrayns_1_1_abstract_parameters.html#a5bbddd98b776b82fb6ad6450b823d440":[3,0,0,1,1],
-"classbrayns_1_1_abstract_parameters.html#a998b0175fc8d8a20c08d1e5ee4bb147e":[3,0,0,1,4],
-"classbrayns_1_1_abstract_parameters.html#ac4011bce73f7ae6e78f04d552c0bcf48":[3,0,0,1,5],
-"classbrayns_1_1_abstract_parameters.html#ae0c3bc8dd5fd3dd12b240efb3719c260":[3,0,0,1,6],
-"classbrayns_1_1_abstract_parameters.html#aebf12bf2db98f54fa85b8f08be0102d4":[3,0,0,1,2],
+"classbrayns_1_1_abstract_parameters.html#a998b0175fc8d8a20c08d1e5ee4bb147e":[3,0,0,1,5],
+"classbrayns_1_1_abstract_parameters.html#ac4011bce73f7ae6e78f04d552c0bcf48":[3,0,0,1,6],
+"classbrayns_1_1_abstract_parameters.html#ae0c3bc8dd5fd3dd12b240efb3719c260":[3,0,0,1,7],
+"classbrayns_1_1_abstract_parameters.html#aebf12bf2db98f54fa85b8f08be0102d4":[3,0,0,1,3],
 "classbrayns_1_1_abstract_parameters.html#af8c4e3e33c6d75a71893d7d48f0e4fec":[3,0,0,1,0],
 "classbrayns_1_1_abstract_simulation_handler.html":[3,0,0,2],
 "classbrayns_1_1_abstract_simulation_handler.html#a003c5a99b9c1d0d1f2cd0794d231fc8b":[3,0,0,2,22],
@@ -248,6 +249,5 @@ var NAVTREEINDEX0 =
 "classbrayns_1_1_base_window.html#a0f1b442c7a84d9aaed069f1d221776d1":[3,0,0,10,28],
 "classbrayns_1_1_base_window.html#a1046950e5b0e05474c81514e3b68accc":[3,0,0,10,2],
 "classbrayns_1_1_base_window.html#a1914bb6f4e9eae8da584d013cd2837be":[3,0,0,10,44],
-"classbrayns_1_1_base_window.html#a1be84537c702138c4b1af159bdef0cc9":[3,0,0,10,4],
-"classbrayns_1_1_base_window.html#a208c67ca70e740a759191c16b9a100e6":[3,0,0,10,14]
+"classbrayns_1_1_base_window.html#a1be84537c702138c4b1af159bdef0cc9":[3,0,0,10,4]
 };

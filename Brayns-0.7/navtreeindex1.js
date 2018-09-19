@@ -1,5 +1,6 @@
 var NAVTREEINDEX1 =
 {
+"classbrayns_1_1_base_window.html#a208c67ca70e740a759191c16b9a100e6":[3,0,0,10,14],
 "classbrayns_1_1_base_window.html#a2170eb9efe128ca8ab7e19ff5b0bbf53":[3,0,0,10,27],
 "classbrayns_1_1_base_window.html#a2424df86e37a3ecc9032511153b27855":[3,0,0,10,7],
 "classbrayns_1_1_base_window.html#a26b64123995d136bfcd13fe7ef36f20b":[3,0,0,10,1],
@@ -248,6 +249,5 @@ var NAVTREEINDEX1 =
 "classbrayns_1_1_light.html#ae85ee4e91b17d58357a9ec56c5947be0":[3,0,0,32,7],
 "classbrayns_1_1_load_model_functor.html":[3,0,0,35],
 "classbrayns_1_1_load_model_functor.html#a05514c9d706e6fc6c018d16c1aed2b65":[3,0,0,35,2],
-"classbrayns_1_1_load_model_functor.html#a15fc62a8d980c7d5f8ce499f91c03c0d":[3,0,0,35,1],
-"classbrayns_1_1_load_model_functor.html#a6bbd2d550a9339089bfd6517698d8c6b":[3,0,0,35,3]
+"classbrayns_1_1_load_model_functor.html#a15fc62a8d980c7d5f8ce499f91c03c0d":[3,0,0,35,1]
 };

@@ -1,5 +1,8 @@
 var NAVTREEINDEX5 =
 {
+"structbrayns_1_1_loader_registry_1_1_loader_info.html":[3,0,0,34,0],
+"structbrayns_1_1_loader_registry_1_1_loader_info.html#a55a2aff0dc2f65cc3fd2ca6f6a66f8c1":[3,0,0,34,0,1],
+"structbrayns_1_1_loader_registry_1_1_loader_info.html#a71049e352f80543c166129fc8b153885":[3,0,0,34,0,0],
 "structbrayns_1_1_model_1_1_s_d_f_geometry_data.html":[3,0,0,39,0],
 "structbrayns_1_1_model_1_1_s_d_f_geometry_data.html#a1a8484faca33ed648a021bf0c0b6d790":[3,0,0,39,0,2],
 "structbrayns_1_1_model_1_1_s_d_f_geometry_data.html#a65b4e15c7d86fe445be74686a01958fa":[3,0,0,39,0,1],
