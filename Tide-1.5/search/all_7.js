@@ -86,6 +86,7 @@ var searchData=
   ['getminwindowsize',['getMinWindowSize',['../namespaceui.html#ade7b9b127ed6b4687361519c93623e3f',1,'ui']]],
   ['getminwindowspacing',['getMinWindowSpacing',['../namespaceui.html#a9e2f53d672e2ea5121c73d251807e69d',1,'ui']]],
   ['getmode',['getMode',['../class_window.html#ad8f8b6359089f93facb342c98650dac4',1,'Window']]],
+  ['getmonosize',['getMonoSize',['../namespacestereoimage.html#abbdc5be9aad30dbef13f0e1ee58b2386',1,'stereoimage']]],
   ['getnormalizedtilerect',['getNormalizedTileRect',['../class_lod_tiler.html#a085c9b2df8260fb774572242b411fdd3',1,'LodTiler']]],
   ['getpage',['getPage',['../class_p_d_f_content.html#a7593da6369ce1925bcd1a98e96bf3f52',1,'PDFContent']]],
   ['getpagecount',['getPageCount',['../class_p_d_f_backend.html#af4a14dab029a9f1e70f99e7852664965',1,'PDFBackend::getPageCount()'],['../class_p_d_f_poppler_qt_backend.html#a07edfc5c14f20bec17868e6b21f513b3',1,'PDFPopplerQtBackend::getPageCount()'],['../class_p_d_f_content.html#ae10df3325d44dee3e4b0dfec6334bb09',1,'PDFContent::getPageCount()']]],

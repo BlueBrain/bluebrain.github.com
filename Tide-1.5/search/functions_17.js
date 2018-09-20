@@ -7,7 +7,6 @@ var searchData=
   ['_7edataprovider',['~DataProvider',['../class_data_provider.html#a1c76c2428e3e3f2c96401a3693366e2a',1,'DataProvider']]],
   ['_7edisplaygroup',['~DisplayGroup',['../class_display_group.html#ae621c03bd2408c8ece4a61237efca355',1,'DisplayGroup']]],
   ['_7effmpegframe',['~FFMPEGFrame',['../class_f_f_m_p_e_g_frame.html#ad233e8ca905bf16f4361665ba24a7661',1,'FFMPEGFrame']]],
-  ['_7effmpegmovie',['~FFMPEGMovie',['../class_f_f_m_p_e_g_movie.html#ada29015e30fd77182119418abe0356cd',1,'FFMPEGMovie']]],
   ['_7effmpegvideoframeconverter',['~FFMPEGVideoFrameConverter',['../class_f_f_m_p_e_g_video_frame_converter.html#aeefb0051a145deb3d6b6fd58bb4906ac',1,'FFMPEGVideoFrameConverter']]],
   ['_7effmpegvideostream',['~FFMPEGVideoStream',['../class_f_f_m_p_e_g_video_stream.html#ac156456c4ed8b05d38a475d562de746e',1,'FFMPEGVideoStream']]],
   ['_7eimagepyramiddatasource',['~ImagePyramidDataSource',['../class_image_pyramid_data_source.html#a929e7600b33730841d2320820d84a1c6',1,'ImagePyramidDataSource']]],

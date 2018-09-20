@@ -98,6 +98,7 @@ var searchData=
   ['stateserializationhelper',['StateSerializationHelper',['../class_state_serialization_helper.html',1,'StateSerializationHelper'],['../class_state_serialization_helper.html#a5c8e58fa1def3fb07d1d070f64c69d77',1,'StateSerializationHelper::StateSerializationHelper()']]],
   ['statethumbnailgenerator',['StateThumbnailGenerator',['../class_state_thumbnail_generator.html',1,'StateThumbnailGenerator'],['../class_state_thumbnail_generator.html#a8bee70cf435944ca72d74d3cf15c497d',1,'StateThumbnailGenerator::StateThumbnailGenerator()']]],
   ['statisticschanged',['statisticsChanged',['../class_content_synchronizer.html#a8b2131d6b3874d8d932a101ec3dcde05',1,'ContentSynchronizer']]],
+  ['stereoimage',['stereoimage',['../namespacestereoimage.html',1,'']]],
   ['stereomode',['stereoMode',['../struct_screen.html#a0acf984a93505e508f947e0afb8cd61d',1,'Screen']]],
   ['stop',['stop',['../class_inactivity_timer.html#a936109b125da6d67baccc2eda68a85b8',1,'InactivityTimer']]],
   ['streamaccepted',['streamAccepted',['../class_screen_lock.html#a4e4d0c1d7933a7fc4ef2483f1e3aa89b',1,'ScreenLock']]],

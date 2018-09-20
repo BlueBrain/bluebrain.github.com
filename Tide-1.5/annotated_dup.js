@@ -17,6 +17,7 @@ var annotated_dup =
     [ "ActivityLogger", "class_activity_logger.html", "class_activity_logger" ],
     [ "AppRemoteController", "class_app_remote_controller.html", "class_app_remote_controller" ],
     [ "AutomaticLayout", "class_automatic_layout.html", "class_automatic_layout" ],
+    [ "AVFormatContextDeleter", "struct_a_v_format_context_deleter.html", "struct_a_v_format_context_deleter" ],
     [ "Background", "class_background.html", "class_background" ],
     [ "BackgroundRenderer", "class_background_renderer.html", "class_background_renderer" ],
     [ "BackgroundWidget", "class_background_widget.html", "class_background_widget" ],

@@ -8,5 +8,6 @@ var searchData=
   ['exitbarrier',['exitBarrier',['../class_swap_synchronizer.html#ac8e109b619414fe465304ea1410ff1da',1,'SwapSynchronizer::exitBarrier()'],['../class_swap_synchronizer_hardware.html#affb955bf49dd296204acb21750c29b6c',1,'SwapSynchronizerHardware::exitBarrier()'],['../class_swap_synchronizer_software.html#a215cfd770e5bfed101ea79935ea168d4',1,'SwapSynchronizerSoftware::exitBarrier()']]],
   ['exitfullscreen',['exitFullscreen',['../class_display_group_controller.html#a5cdced79d2dd58ecfdd076eab5ef0af9',1,'DisplayGroupController']]],
   ['exposestatistics',['exposeStatistics',['../class_rest_interface.html#ad275168fe19ee55cf5127ed8699bb935',1,'RestInterface']]],
-  ['externalstreamopening',['externalStreamOpening',['../class_pixel_stream_window_manager.html#a1990873d8c39ec3cd1c72f9403330e7d',1,'PixelStreamWindowManager']]]
+  ['externalstreamopening',['externalStreamOpening',['../class_pixel_stream_window_manager.html#a1990873d8c39ec3cd1c72f9403330e7d',1,'PixelStreamWindowManager']]],
+  ['extract',['extract',['../namespacestereoimage.html#a026fec9c33e67aa4204ffea8e2c7f26a',1,'stereoimage']]]
 ];

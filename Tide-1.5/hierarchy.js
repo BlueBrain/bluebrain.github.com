@@ -1,5 +1,6 @@
 var hierarchy =
 [
+    [ "AVFormatContextDeleter", "struct_a_v_format_context_deleter.html", null ],
     [ "BackgroundRenderer", "class_background_renderer.html", null ],
     [ "noncopyable", null, [
       [ "MPIContext", "class_m_p_i_context.html", null ],

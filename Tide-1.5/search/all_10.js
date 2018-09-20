@@ -36,7 +36,7 @@ var searchData=
   ['planarserialport',['planarSerialPort',['../struct_configuration_1_1_master.html#a68b9e488dac6cd002cb58d7580d3508f',1,'Configuration::Master']]],
   ['pos_5fdesc',['pos_desc',['../class_command_line_parser.html#a670b2fb53d37943a4d3f891299498c91',1,'CommandLineParser']]],
   ['position',['position',['../struct_screen.html#a63888802e102faabfde9a0722176731c',1,'Screen']]],
-  ['poweroff',['powerOff',['../class_app_remote_controller.html#a626d6ee47d619bf49a8cbc0da26a7651',1,'AppRemoteController::powerOff()'],['../class_inactivity_timer.html#a3e2636328fd2b726744449398164d0d3',1,'InactivityTimer::poweroff()']]],
+  ['poweroff',['poweroff',['../class_inactivity_timer.html#a3e2636328fd2b726744449398164d0d3',1,'InactivityTimer::poweroff()'],['../class_app_remote_controller.html#a626d6ee47d619bf49a8cbc0da26a7651',1,'AppRemoteController::powerOff()']]],
   ['prepareupload',['prepareUpload',['../class_file_receiver.html#a9c7f1cbb703d9b51f25a388387fc3f60',1,'FileReceiver']]],
   ['previouspage',['previousPage',['../class_p_d_f_content.html#a0d52e1a8ee7954872bcad5a9d74c342b',1,'PDFContent']]],
   ['probe',['probe',['../class_m_p_i_communicator.html#a211508bf548e1a22853507bea2a1fbc8',1,'MPICommunicator']]],
