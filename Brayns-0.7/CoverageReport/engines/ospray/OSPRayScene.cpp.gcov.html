@@ -37,7 +37,7 @@
           </tr>
           <tr>
             <td class="headerItem">Date:</td>
-            <td class="headerValue">2018-09-21 01:29:23</td>
+            <td class="headerValue">2018-09-25 01:28:02</td>
             <td></td>
             <td class="headerItem">Functions:</td>
             <td class="headerCovTableEntry">10</td>
@@ -139,29 +139,29 @@
 <span class="lineNum">      77 </span><span class="lineNoCov">          0 :         ospRelease(_rootSimulationModel);</span>
 <a name="78"><span class="lineNum">      78 </span><span class="lineCov">         23 : }</span></a>
 <span class="lineNum">      79 </span>            : 
-<span class="lineNum">      80 </span><span class="lineCov">        555 : void OSPRayScene::commit()</span>
+<span class="lineNum">      80 </span><span class="lineCov">        587 : void OSPRayScene::commit()</span>
 <span class="lineNum">      81 </span>            : {
-<span class="lineNum">      82 </span><span class="lineCov">        555 :     const bool rebuildScene = isModified();</span>
-<span class="lineNum">      83 </span><span class="lineCov">        555 :     const bool addRemoveVolumes = _commitVolumeData();</span>
+<span class="lineNum">      82 </span><span class="lineCov">        587 :     const bool rebuildScene = isModified();</span>
+<span class="lineNum">      83 </span><span class="lineCov">        587 :     const bool addRemoveVolumes = _commitVolumeData();</span>
 <span class="lineNum">      84 </span>            : 
-<span class="lineNum">      85 </span><span class="lineCov">        555 :     _commitSimulationData();</span>
-<span class="lineNum">      86 </span><span class="lineCov">        555 :     commitTransferFunctionData();</span>
+<span class="lineNum">      85 </span><span class="lineCov">        587 :     _commitSimulationData();</span>
+<span class="lineNum">      86 </span><span class="lineCov">        587 :     commitTransferFunctionData();</span>
 <span class="lineNum">      87 </span>            : 
 <span class="lineNum">      88 </span>            :     // copy the list to avoid locking the mutex
-<span class="lineNum">      89 </span><span class="lineCov">        614 :     ModelDescriptors modelDescriptors;</span>
+<span class="lineNum">      89 </span><span class="lineCov">        645 :     ModelDescriptors modelDescriptors;</span>
 <span class="lineNum">      90 </span>            :     {
-<span class="lineNum">      91 </span><span class="lineCov">       1110 :         std::shared_lock&lt;std::shared_timed_mutex&gt; lock(_modelMutex);</span>
-<span class="lineNum">      92 </span><span class="lineCov">        555 :         modelDescriptors = _modelDescriptors;</span>
+<span class="lineNum">      91 </span><span class="lineCov">       1174 :         auto lock = acquireReadAccess();</span>
+<span class="lineNum">      92 </span><span class="lineCov">        587 :         modelDescriptors = _modelDescriptors;</span>
 <span class="lineNum">      93 </span>            :     }
 <span class="lineNum">      94 </span>            : 
-<span class="lineNum">      95 </span><span class="lineCov">        555 :     if (!rebuildScene &amp;&amp; !addRemoveVolumes)</span>
+<span class="lineNum">      95 </span><span class="lineCov">        587 :     if (!rebuildScene &amp;&amp; !addRemoveVolumes)</span>
 <span class="lineNum">      96 </span>            :     {
 <span class="lineNum">      97 </span>            :         // check for dirty models aka their geometry has been altered
-<span class="lineNum">      98 </span><span class="lineCov">        500 :         bool doUpdate = false;</span>
-<span class="lineNum">      99 </span><span class="lineCov">       1531 :         for (auto&amp; modelDescriptor : modelDescriptors)</span>
+<span class="lineNum">      98 </span><span class="lineCov">        533 :         bool doUpdate = false;</span>
+<span class="lineNum">      99 </span><span class="lineCov">       1794 :         for (auto&amp; modelDescriptor : modelDescriptors)</span>
 <span class="lineNum">     100 </span>            :         {
-<span class="lineNum">     101 </span><span class="lineCov">       1031 :             auto&amp; model = modelDescriptor-&gt;getModel();</span>
-<span class="lineNum">     102 </span><span class="lineCov">       1031 :             if (model.dirty())</span>
+<span class="lineNum">     101 </span><span class="lineCov">       1261 :             auto&amp; model = modelDescriptor-&gt;getModel();</span>
+<span class="lineNum">     102 </span><span class="lineCov">       1261 :             if (model.dirty())</span>
 <span class="lineNum">     103 </span>            :             {
 <span class="lineNum">     104 </span><span class="lineCov">          4 :                 model.commit();</span>
 <span class="lineNum">     105 </span>            :                 // need to continue re-adding the models to update the bounding
@@ -169,36 +169,36 @@
 <span class="lineNum">     107 </span><span class="lineCov">          4 :                 doUpdate = true;</span>
 <span class="lineNum">     108 </span>            :             }
 <span class="lineNum">     109 </span>            :         }
-<span class="lineNum">     110 </span><span class="lineCov">        500 :         if (!doUpdate)</span>
-<span class="lineNum">     111 </span><span class="lineCov">        496 :             return;</span>
+<span class="lineNum">     110 </span><span class="lineCov">        533 :         if (!doUpdate)</span>
+<span class="lineNum">     111 </span><span class="lineCov">        529 :             return;</span>
 <span class="lineNum">     112 </span>            :     }
 <span class="lineNum">     113 </span>            : 
-<span class="lineNum">     114 </span><span class="lineCov">         59 :     _activeModels.clear();</span>
+<span class="lineNum">     114 </span><span class="lineCov">         58 :     _activeModels.clear();</span>
 <span class="lineNum">     115 </span>            : 
-<span class="lineNum">     116 </span><span class="lineCov">         59 :     if (_rootModel)</span>
-<span class="lineNum">     117 </span><span class="lineCov">         36 :         ospRelease(_rootModel);</span>
-<span class="lineNum">     118 </span><span class="lineCov">         59 :     _rootModel = ospNewModel();</span>
+<span class="lineNum">     116 </span><span class="lineCov">         58 :     if (_rootModel)</span>
+<span class="lineNum">     117 </span><span class="lineCov">         35 :         ospRelease(_rootModel);</span>
+<span class="lineNum">     118 </span><span class="lineCov">         58 :     _rootModel = ospNewModel();</span>
 <span class="lineNum">     119 </span>            : 
-<span class="lineNum">     120 </span><span class="lineCov">         59 :     if (_rootSimulationModel)</span>
+<span class="lineNum">     120 </span><span class="lineCov">         58 :     if (_rootSimulationModel)</span>
 <span class="lineNum">     121 </span><span class="lineNoCov">          0 :         ospRelease(_rootSimulationModel);</span>
-<span class="lineNum">     122 </span><span class="lineCov">         59 :     _rootSimulationModel = nullptr;</span>
+<span class="lineNum">     122 </span><span class="lineCov">         58 :     _rootSimulationModel = nullptr;</span>
 <span class="lineNum">     123 </span>            : 
-<span class="lineNum">     124 </span><span class="lineCov">        150 :     for (auto modelDescriptor : modelDescriptors)</span>
+<span class="lineNum">     124 </span><span class="lineCov">        147 :     for (auto modelDescriptor : modelDescriptors)</span>
 <span class="lineNum">     125 </span>            :     {
-<span class="lineNum">     126 </span><span class="lineCov">         99 :         if (!modelDescriptor-&gt;getEnabled())</span>
-<span class="lineNum">     127 </span><span class="lineCov">          8 :             continue;</span>
+<span class="lineNum">     126 </span><span class="lineCov">         96 :         if (!modelDescriptor-&gt;getEnabled())</span>
+<span class="lineNum">     127 </span><span class="lineCov">          7 :             continue;</span>
 <span class="lineNum">     128 </span>            : 
 <span class="lineNum">     129 </span>            :         // keep models from being deleted via removeModel() as long as we use
 <span class="lineNum">     130 </span>            :         // them here
-<span class="lineNum">     131 </span><span class="lineCov">         91 :         _activeModels.push_back(modelDescriptor);</span>
+<span class="lineNum">     131 </span><span class="lineCov">         89 :         _activeModels.push_back(modelDescriptor);</span>
 <span class="lineNum">     132 </span>            : 
-<span class="lineNum">     133 </span><span class="lineCov">         91 :         auto&amp; impl = static_cast&lt;OSPRayModel&amp;&gt;(modelDescriptor-&gt;getModel());</span>
-<span class="lineNum">     134 </span><span class="lineCov">         91 :         const auto&amp; transformation = modelDescriptor-&gt;getTransformation();</span>
+<span class="lineNum">     133 </span><span class="lineCov">         89 :         auto&amp; impl = static_cast&lt;OSPRayModel&amp;&gt;(modelDescriptor-&gt;getModel());</span>
+<span class="lineNum">     134 </span><span class="lineCov">         89 :         const auto&amp; transformation = modelDescriptor-&gt;getTransformation();</span>
 <span class="lineNum">     135 </span>            : 
-<span class="lineNum">     136 </span><span class="lineCov">         91 :         BRAYNS_DEBUG &lt;&lt; &quot;Committing &quot; &lt;&lt; modelDescriptor-&gt;getName()</span>
-<span class="lineNum">     137 </span><span class="lineCov">         91 :                      &lt;&lt; std::endl;</span>
+<span class="lineNum">     136 </span><span class="lineCov">         89 :         BRAYNS_DEBUG &lt;&lt; &quot;Committing &quot; &lt;&lt; modelDescriptor-&gt;getName()</span>
+<span class="lineNum">     137 </span><span class="lineCov">         89 :                      &lt;&lt; std::endl;</span>
 <span class="lineNum">     138 </span>            : 
-<span class="lineNum">     139 </span><span class="lineCov">         91 :         if (modelDescriptor-&gt;getVisible() &amp;&amp; impl.getUseSimulationModel())</span>
+<span class="lineNum">     139 </span><span class="lineCov">         89 :         if (modelDescriptor-&gt;getVisible() &amp;&amp; impl.getUseSimulationModel())</span>
 <span class="lineNum">     140 </span>            :         {
 <span class="lineNum">     141 </span><span class="lineNoCov">          0 :             if (!_rootSimulationModel)</span>
 <span class="lineNum">     142 </span><span class="lineNoCov">          0 :                 _rootSimulationModel = ospNewModel();</span>
@@ -208,9 +208,9 @@
 <span class="lineNum">     146 </span>            : 
 <span class="lineNum">     147 </span>            :         // add volumes to root model, because scivis renderer does not consider
 <span class="lineNum">     148 </span>            :         // volumes from instances
-<span class="lineNum">     149 </span><span class="lineCov">         91 :         if (modelDescriptor-&gt;getVisible())</span>
+<span class="lineNum">     149 </span><span class="lineCov">         89 :         if (modelDescriptor-&gt;getVisible())</span>
 <span class="lineNum">     150 </span>            :         {
-<span class="lineNum">     151 </span><span class="lineCov">         87 :             for (auto volume : modelDescriptor-&gt;getModel().getVolumes())</span>
+<span class="lineNum">     151 </span><span class="lineCov">         85 :             for (auto volume : modelDescriptor-&gt;getModel().getVolumes())</span>
 <span class="lineNum">     152 </span>            :             {
 <span class="lineNum">     153 </span>            :                 auto ospVolume =
 <span class="lineNum">     154 </span><span class="lineNoCov">          0 :                     std::dynamic_pointer_cast&lt;OSPRayVolume&gt;(volume);</span>
@@ -218,12 +218,12 @@
 <span class="lineNum">     156 </span>            :             }
 <span class="lineNum">     157 </span>            :         }
 <span class="lineNum">     158 </span>            : 
-<span class="lineNum">     159 </span><span class="lineCov">        184 :         for (const auto&amp; instance : modelDescriptor-&gt;getInstances())</span>
+<span class="lineNum">     159 </span><span class="lineCov">        180 :         for (const auto&amp; instance : modelDescriptor-&gt;getInstances())</span>
 <span class="lineNum">     160 </span>            :         {
 <span class="lineNum">     161 </span>            :             const auto instanceTransform =
-<span class="lineNum">     162 </span><span class="lineCov">        186 :                 transformation * instance.getTransformation();</span>
+<span class="lineNum">     162 </span><span class="lineCov">        182 :                 transformation * instance.getTransformation();</span>
 <span class="lineNum">     163 </span>            : 
-<span class="lineNum">     164 </span><span class="lineCov">         93 :             if (modelDescriptor-&gt;getBoundingBox() &amp;&amp; instance.getBoundingBox())</span>
+<span class="lineNum">     164 </span><span class="lineCov">         91 :             if (modelDescriptor-&gt;getBoundingBox() &amp;&amp; instance.getBoundingBox())</span>
 <span class="lineNum">     165 </span>            :             {
 <span class="lineNum">     166 </span>            :                 // scale and move the unit-sized bounding box geometry to the
 <span class="lineNum">     167 </span>            :                 // model size/scale first, then apply the instance transform
@@ -240,49 +240,49 @@
 <span class="lineNum">     178 </span><span class="lineCov">         15 :                                 transformationToAffine3f(modelTransform));</span>
 <span class="lineNum">     179 </span>            :             }
 <span class="lineNum">     180 </span>            : 
-<span class="lineNum">     181 </span><span class="lineCov">         93 :             if (modelDescriptor-&gt;getVisible() &amp;&amp; instance.getVisible())</span>
-<span class="lineNum">     182 </span><span class="lineCov">         87 :                 addInstance(_rootModel, impl.getModel(), instanceTransform);</span>
+<span class="lineNum">     181 </span><span class="lineCov">         91 :             if (modelDescriptor-&gt;getVisible() &amp;&amp; instance.getVisible())</span>
+<span class="lineNum">     182 </span><span class="lineCov">         85 :                 addInstance(_rootModel, impl.getModel(), instanceTransform);</span>
 <span class="lineNum">     183 </span>            :         }
 <span class="lineNum">     184 </span>            : 
-<span class="lineNum">     185 </span><span class="lineCov">         91 :         impl.markInstancesClean();</span>
-<span class="lineNum">     186 </span><span class="lineCov">         91 :         impl.logInformation();</span>
+<span class="lineNum">     185 </span><span class="lineCov">         89 :         impl.markInstancesClean();</span>
+<span class="lineNum">     186 </span><span class="lineCov">         89 :         impl.logInformation();</span>
 <span class="lineNum">     187 </span>            :     }
-<span class="lineNum">     188 </span><span class="lineCov">         59 :     BRAYNS_DEBUG &lt;&lt; &quot;Committing root models&quot; &lt;&lt; std::endl;</span>
+<span class="lineNum">     188 </span><span class="lineCov">         58 :     BRAYNS_DEBUG &lt;&lt; &quot;Committing root models&quot; &lt;&lt; std::endl;</span>
 <span class="lineNum">     189 </span>            : 
-<span class="lineNum">     190 </span><span class="lineCov">         59 :     ospSet1i(_rootModel, &quot;isRootModel&quot;, 1); // Needed for OptiX</span>
-<span class="lineNum">     191 </span><span class="lineCov">         59 :     ospCommit(_rootModel);</span>
-<span class="lineNum">     192 </span><span class="lineCov">         59 :     if (_rootSimulationModel)</span>
+<span class="lineNum">     190 </span><span class="lineCov">         58 :     ospSet1i(_rootModel, &quot;isRootModel&quot;, 1); // Needed for OptiX</span>
+<span class="lineNum">     191 </span><span class="lineCov">         58 :     ospCommit(_rootModel);</span>
+<span class="lineNum">     192 </span><span class="lineCov">         58 :     if (_rootSimulationModel)</span>
 <span class="lineNum">     193 </span><span class="lineNoCov">          0 :         ospCommit(_rootSimulationModel);</span>
 <span class="lineNum">     194 </span>            : 
-<span class="lineNum">     195 </span><span class="lineCov">         59 :     _computeBounds();</span>
+<span class="lineNum">     195 </span><span class="lineCov">         58 :     _computeBounds();</span>
 <span class="lineNum">     196 </span>            : 
 <span class="lineNum">     197 </span>            :     // TODO: triggers the change callback to re-broadcast the scene if the clip
 <span class="lineNum">     198 </span>            :     // planes have changed. Provide an RPC to update/set clip planes.
-<span class="lineNum">     199 </span><span class="lineCov">         59 :     markModified();</span>
+<span class="lineNum">     199 </span><span class="lineCov">         58 :     markModified();</span>
 <a name="200"><span class="lineNum">     200 </span>            : }</a>
 <span class="lineNum">     201 </span>            : 
-<span class="lineNum">     202 </span><span class="lineCov">         43 : bool OSPRayScene::commitLights()</span>
+<span class="lineNum">     202 </span><span class="lineCov">         44 : bool OSPRayScene::commitLights()</span>
 <span class="lineNum">     203 </span>            : {
-<span class="lineNum">     204 </span><span class="lineCov">         43 :     size_t lightCount = 0;</span>
-<span class="lineNum">     205 </span><span class="lineCov">         86 :     for (const auto&amp; light : _lights)</span>
+<span class="lineNum">     204 </span><span class="lineCov">         44 :     size_t lightCount = 0;</span>
+<span class="lineNum">     205 </span><span class="lineCov">         88 :     for (const auto&amp; light : _lights)</span>
 <span class="lineNum">     206 </span>            :     {
 <span class="lineNum">     207 </span>            :         DirectionalLight* directionalLight =
-<span class="lineNum">     208 </span><span class="lineCov">         43 :             dynamic_cast&lt;DirectionalLight*&gt;(light.get());</span>
-<span class="lineNum">     209 </span><span class="lineCov">         43 :         if (directionalLight)</span>
+<span class="lineNum">     208 </span><span class="lineCov">         44 :             dynamic_cast&lt;DirectionalLight*&gt;(light.get());</span>
+<span class="lineNum">     209 </span><span class="lineCov">         44 :         if (directionalLight)</span>
 <span class="lineNum">     210 </span>            :         {
-<span class="lineNum">     211 </span><span class="lineCov">         43 :             if (_ospLights.size() &lt;= lightCount)</span>
+<span class="lineNum">     211 </span><span class="lineCov">         44 :             if (_ospLights.size() &lt;= lightCount)</span>
 <span class="lineNum">     212 </span><span class="lineCov">         23 :                 _ospLights.push_back(ospNewLight(nullptr, &quot;DirectionalLight&quot;));</span>
 <span class="lineNum">     213 </span>            : 
-<span class="lineNum">     214 </span><span class="lineCov">         43 :             const Vector3f color = directionalLight-&gt;getColor();</span>
-<span class="lineNum">     215 </span><span class="lineCov">         43 :             ospSet3f(_ospLights[lightCount], &quot;color&quot;, color.x(), color.y(),</span>
-<span class="lineNum">     216 </span><span class="lineCov">         86 :                      color.z());</span>
-<span class="lineNum">     217 </span><span class="lineCov">         43 :             const Vector3f direction = directionalLight-&gt;getDirection();</span>
-<span class="lineNum">     218 </span><span class="lineCov">         86 :             ospSet3f(_ospLights[lightCount], &quot;direction&quot;, direction.x(),</span>
-<span class="lineNum">     219 </span><span class="lineCov">        129 :                      direction.y(), direction.z());</span>
-<span class="lineNum">     220 </span><span class="lineCov">         43 :             ospSet1f(_ospLights[lightCount], &quot;intensity&quot;,</span>
-<span class="lineNum">     221 </span><span class="lineCov">         43 :                      directionalLight-&gt;getIntensity());</span>
-<span class="lineNum">     222 </span><span class="lineCov">         43 :             ospCommit(_ospLights[lightCount]);</span>
-<span class="lineNum">     223 </span><span class="lineCov">         43 :             ++lightCount;</span>
+<span class="lineNum">     214 </span><span class="lineCov">         44 :             const Vector3f color = directionalLight-&gt;getColor();</span>
+<span class="lineNum">     215 </span><span class="lineCov">         44 :             ospSet3f(_ospLights[lightCount], &quot;color&quot;, color.x(), color.y(),</span>
+<span class="lineNum">     216 </span><span class="lineCov">         88 :                      color.z());</span>
+<span class="lineNum">     217 </span><span class="lineCov">         44 :             const Vector3f direction = directionalLight-&gt;getDirection();</span>
+<span class="lineNum">     218 </span><span class="lineCov">         88 :             ospSet3f(_ospLights[lightCount], &quot;direction&quot;, direction.x(),</span>
+<span class="lineNum">     219 </span><span class="lineCov">        132 :                      direction.y(), direction.z());</span>
+<span class="lineNum">     220 </span><span class="lineCov">         44 :             ospSet1f(_ospLights[lightCount], &quot;intensity&quot;,</span>
+<span class="lineNum">     221 </span><span class="lineCov">         44 :                      directionalLight-&gt;getIntensity());</span>
+<span class="lineNum">     222 </span><span class="lineCov">         44 :             ospCommit(_ospLights[lightCount]);</span>
+<span class="lineNum">     223 </span><span class="lineCov">         44 :             ++lightCount;</span>
 <span class="lineNum">     224 </span>            :         }
 <span class="lineNum">     225 </span>            :         else
 <span class="lineNum">     226 </span>            :         {
@@ -308,19 +308,19 @@
 <span class="lineNum">     246 </span>            :         }
 <span class="lineNum">     247 </span>            :     }
 <span class="lineNum">     248 </span>            : 
-<span class="lineNum">     249 </span><span class="lineCov">         43 :     if (!_ospLightData)</span>
+<span class="lineNum">     249 </span><span class="lineCov">         44 :     if (!_ospLightData)</span>
 <span class="lineNum">     250 </span>            :     {
 <span class="lineNum">     251 </span><span class="lineCov">         46 :         _ospLightData = ospNewData(_ospLights.size(), OSP_OBJECT,</span>
 <span class="lineNum">     252 </span><span class="lineCov">         46 :                                    &amp;_ospLights[0], _memoryManagementFlags);</span>
 <span class="lineNum">     253 </span><span class="lineCov">         23 :         ospCommit(_ospLightData);</span>
 <span class="lineNum">     254 </span>            :     }
-<span class="lineNum">     255 </span><span class="lineCov">         43 :     return true;</span>
+<span class="lineNum">     255 </span><span class="lineCov">         44 :     return true;</span>
 <a name="256"><span class="lineNum">     256 </span>            : }</a>
 <span class="lineNum">     257 </span>            : 
-<span class="lineNum">     258 </span><span class="lineCov">        555 : bool OSPRayScene::commitTransferFunctionData()</span>
+<span class="lineNum">     258 </span><span class="lineCov">        587 : bool OSPRayScene::commitTransferFunctionData()</span>
 <span class="lineNum">     259 </span>            : {
-<span class="lineNum">     260 </span><span class="lineCov">        555 :     if (!_transferFunction.isModified())</span>
-<span class="lineNum">     261 </span><span class="lineCov">        532 :         return false;</span>
+<span class="lineNum">     260 </span><span class="lineCov">        587 :     if (!_transferFunction.isModified())</span>
+<span class="lineNum">     261 </span><span class="lineCov">        564 :         return false;</span>
 <span class="lineNum">     262 </span>            : 
 <span class="lineNum">     263 </span><span class="lineCov">         23 :     if (_ospTransferFunction)</span>
 <span class="lineNum">     264 </span>            :     {
@@ -375,19 +375,19 @@
 <span class="lineNum">     313 </span><span class="lineCov">         23 :     return true;</span>
 <a name="314"><span class="lineNum">     314 </span>            : }</a>
 <span class="lineNum">     315 </span>            : 
-<span class="lineNum">     316 </span><span class="lineCov">        555 : bool OSPRayScene::_commitVolumeData()</span>
+<span class="lineNum">     316 </span><span class="lineCov">        587 : bool OSPRayScene::_commitVolumeData()</span>
 <span class="lineNum">     317 </span>            : {
-<span class="lineNum">     318 </span><span class="lineCov">        555 :     bool rebuildScene = false;</span>
-<span class="lineNum">     319 </span><span class="lineCov">       1110 :     std::shared_lock&lt;std::shared_timed_mutex&gt; lock(_modelMutex);</span>
-<span class="lineNum">     320 </span><span class="lineCov">       1679 :     for (auto modelDescriptor : _modelDescriptors)</span>
+<span class="lineNum">     318 </span><span class="lineCov">        587 :     bool rebuildScene = false;</span>
+<span class="lineNum">     319 </span><span class="lineCov">       1174 :     auto lock = acquireReadAccess();</span>
+<span class="lineNum">     320 </span><span class="lineCov">       1938 :     for (auto modelDescriptor : _modelDescriptors)</span>
 <span class="lineNum">     321 </span>            :     {
-<span class="lineNum">     322 </span><span class="lineCov">       1124 :         auto&amp; model = modelDescriptor-&gt;getModel();</span>
-<span class="lineNum">     323 </span><span class="lineCov">       1124 :         if (model.isVolumesDirty())</span>
+<span class="lineNum">     322 </span><span class="lineCov">       1351 :         auto&amp; model = modelDescriptor-&gt;getModel();</span>
+<span class="lineNum">     323 </span><span class="lineCov">       1351 :         if (model.isVolumesDirty())</span>
 <span class="lineNum">     324 </span>            :         {
 <span class="lineNum">     325 </span><span class="lineNoCov">          0 :             rebuildScene = true;</span>
 <span class="lineNum">     326 </span><span class="lineNoCov">          0 :             model.resetVolumesDirty();</span>
 <span class="lineNum">     327 </span>            :         }
-<span class="lineNum">     328 </span><span class="lineCov">       1124 :         for (auto volume : model.getVolumes())</span>
+<span class="lineNum">     328 </span><span class="lineCov">       1351 :         for (auto volume : model.getVolumes())</span>
 <span class="lineNum">     329 </span>            :         {
 <span class="lineNum">     330 </span><span class="lineNoCov">          0 :             if (volume-&gt;isModified() || rebuildScene ||</span>
 <span class="lineNum">     331 </span><span class="lineNoCov">          0 :                 _parametersManager.getVolumeParameters().isModified())</span>
@@ -397,15 +397,15 @@
 <span class="lineNum">     335 </span><span class="lineNoCov">          0 :                 markModified(false);</span>
 <span class="lineNum">     336 </span>            :             }
 <span class="lineNum">     337 </span>            :         }
-<span class="lineNum">     338 </span><span class="lineCov">       1124 :         modelDescriptor-&gt;getModel().updateSizeInBytes();</span>
+<span class="lineNum">     338 </span><span class="lineCov">       1351 :         modelDescriptor-&gt;getModel().updateSizeInBytes();</span>
 <span class="lineNum">     339 </span>            :     }
-<span class="lineNum">     340 </span><span class="lineCov">       1110 :     return rebuildScene;</span>
+<span class="lineNum">     340 </span><span class="lineCov">       1174 :     return rebuildScene;</span>
 <a name="341"><span class="lineNum">     341 </span>            : }</a>
 <span class="lineNum">     342 </span>            : 
-<span class="lineNum">     343 </span><span class="lineCov">        555 : void OSPRayScene::_commitSimulationData()</span>
+<span class="lineNum">     343 </span><span class="lineCov">        587 : void OSPRayScene::_commitSimulationData()</span>
 <span class="lineNum">     344 </span>            : {
-<span class="lineNum">     345 </span><span class="lineCov">        555 :     if (!_simulationHandler)</span>
-<span class="lineNum">     346 </span><span class="lineCov">        551 :         return;</span>
+<span class="lineNum">     345 </span><span class="lineCov">        587 :     if (!_simulationHandler)</span>
+<span class="lineNum">     346 </span><span class="lineCov">        583 :         return;</span>
 <span class="lineNum">     347 </span>            : 
 <span class="lineNum">     348 </span>            :     const auto animationFrame =
 <span class="lineNum">     349 </span><span class="lineCov">          4 :         _parametersManager.getAnimationParameters().getFrame();</span>

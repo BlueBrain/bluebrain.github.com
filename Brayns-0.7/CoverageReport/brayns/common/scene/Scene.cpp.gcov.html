@@ -37,7 +37,7 @@
           </tr>
           <tr>
             <td class="headerItem">Date:</td>
-            <td class="headerValue">2018-09-21 01:29:23</td>
+            <td class="headerValue">2018-09-25 01:28:02</td>
             <td></td>
             <td class="headerItem">Functions:</td>
             <td class="headerCovTableEntry">27</td>
@@ -143,19 +143,19 @@
 <span class="lineNum">      81 </span><span class="lineCov">          8 :     return *this;</span>
 <a name="82"><span class="lineNum">      82 </span>            : }</a>
 <span class="lineNum">      83 </span>            : 
-<span class="lineNum">      84 </span><span class="lineCov">       1064 : size_t Scene::getSizeInBytes() const</span>
+<span class="lineNum">      84 </span><span class="lineCov">       1128 : size_t Scene::getSizeInBytes() const</span>
 <span class="lineNum">      85 </span>            : {
-<span class="lineNum">      86 </span><span class="lineCov">       2128 :     std::shared_lock&lt;std::shared_timed_mutex&gt; lock(_modelMutex);</span>
-<span class="lineNum">      87 </span><span class="lineCov">       1064 :     size_t sizeInBytes = 0;</span>
-<span class="lineNum">      88 </span><span class="lineCov">       3270 :     for (auto modelDescriptor : _modelDescriptors)</span>
-<span class="lineNum">      89 </span><span class="lineCov">       2206 :         sizeInBytes += modelDescriptor-&gt;getModel().getSizeInBytes();</span>
-<span class="lineNum">      90 </span><span class="lineCov">       2128 :     return sizeInBytes;</span>
+<span class="lineNum">      86 </span><span class="lineCov">       2256 :     auto lock = acquireReadAccess();</span>
+<span class="lineNum">      87 </span><span class="lineCov">       1128 :     size_t sizeInBytes = 0;</span>
+<span class="lineNum">      88 </span><span class="lineCov">       3788 :     for (auto modelDescriptor : _modelDescriptors)</span>
+<span class="lineNum">      89 </span><span class="lineCov">       2660 :         sizeInBytes += modelDescriptor-&gt;getModel().getSizeInBytes();</span>
+<span class="lineNum">      90 </span><span class="lineCov">       2256 :     return sizeInBytes;</span>
 <a name="91"><span class="lineNum">      91 </span>            : }</a>
 <span class="lineNum">      92 </span>            : 
-<span class="lineNum">      93 </span><span class="lineCov">         14 : size_t Scene::getNumModels() const</span>
+<span class="lineNum">      93 </span><span class="lineCov">         16 : size_t Scene::getNumModels() const</span>
 <span class="lineNum">      94 </span>            : {
-<span class="lineNum">      95 </span><span class="lineCov">         28 :     std::shared_lock&lt;std::shared_timed_mutex&gt; lock(_modelMutex);</span>
-<span class="lineNum">      96 </span><span class="lineCov">         28 :     return _modelDescriptors.size();</span>
+<span class="lineNum">      95 </span><span class="lineCov">         32 :     auto lock = acquireReadAccess();</span>
+<span class="lineNum">      96 </span><span class="lineCov">         32 :     return _modelDescriptors.size();</span>
 <a name="97"><span class="lineNum">      97 </span>            : }</a>
 <span class="lineNum">      98 </span>            : 
 <span class="lineNum">      99 </span><span class="lineCov">         38 : void Scene::addLight(LightPtr light)</span>
@@ -171,10 +171,10 @@
 <span class="lineNum">     109 </span><span class="lineNoCov">          0 :         _lights.erase(it);</span>
 <a name="110"><span class="lineNum">     110 </span><span class="lineCov">         38 : }</span></a>
 <span class="lineNum">     111 </span>            : 
-<span class="lineNum">     112 </span><span class="lineCov">       1064 : LightPtr Scene::getLight(const size_t index)</span>
+<span class="lineNum">     112 </span><span class="lineCov">       1128 : LightPtr Scene::getLight(const size_t index)</span>
 <span class="lineNum">     113 </span>            : {
-<span class="lineNum">     114 </span><span class="lineCov">       1064 :     if (index &lt; _lights.size())</span>
-<span class="lineNum">     115 </span><span class="lineCov">       1064 :         return _lights[index];</span>
+<span class="lineNum">     114 </span><span class="lineCov">       1128 :     if (index &lt; _lights.size())</span>
+<span class="lineNum">     115 </span><span class="lineCov">       1128 :         return _lights[index];</span>
 <span class="lineNum">     116 </span><span class="lineNoCov">          0 :     return 0;</span>
 <a name="117"><span class="lineNum">     117 </span>            : }</a>
 <span class="lineNum">     118 </span>            : 
@@ -209,7 +209,7 @@
 <span class="lineNum">     147 </span>            : {
 <span class="lineNum">     148 </span>            :     {
 <a name="149"><span class="lineNum">     149 </span><span class="lineCov">          8 :         std::unique_lock&lt;std::shared_timed_mutex&gt; lock(_modelMutex);</span></a>
-<span class="lineNum">     150 </span>            :         auto i = std::remove_if(_modelDescriptors.begin(),
+<span class="lineNum">     150 </span>            :         auto i = std::find_if(_modelDescriptors.begin(),
 <span class="lineNum">     151 </span><span class="lineCov">         24 :                                 _modelDescriptors.end(), [id](auto desc) {</span>
 <span class="lineNum">     152 </span><span class="lineCov">         12 :                                     return id == desc-&gt;getModelID();</span>
 <span class="lineNum">     153 </span><span class="lineCov">         16 :                                 });</span>
@@ -218,17 +218,17 @@
 <span class="lineNum">     156 </span>            : 
 <span class="lineNum">     157 </span><span class="lineCov">          4 :         (*i)-&gt;callOnRemoved();</span>
 <span class="lineNum">     158 </span>            : 
-<span class="lineNum">     159 </span><span class="lineCov">          4 :         _modelDescriptors.erase(i, _modelDescriptors.end());</span>
+<span class="lineNum">     159 </span><span class="lineCov">          4 :         _modelDescriptors.erase(i);</span>
 <span class="lineNum">     160 </span>            :     }
 <span class="lineNum">     161 </span><span class="lineCov">          4 :     markModified();</span>
 <a name="162"><span class="lineNum">     162 </span>            : }</a>
 <span class="lineNum">     163 </span>            : 
-<span class="lineNum">     164 </span><span class="lineCov">         18 : ModelDescriptorPtr Scene::getModel(const size_t id) const</span>
+<span class="lineNum">     164 </span><span class="lineCov">         34 : ModelDescriptorPtr Scene::getModel(const size_t id) const</span>
 <span class="lineNum">     165 </span>            : {
-<a name="166"><span class="lineNum">     166 </span><span class="lineCov">         36 :     std::shared_lock&lt;std::shared_timed_mutex&gt; lock(_modelMutex);</span></a>
+<a name="166"><span class="lineNum">     166 </span><span class="lineCov">         68 :     auto lock = acquireReadAccess();</span></a>
 <span class="lineNum">     167 </span>            :     auto i = std::find_if(_modelDescriptors.begin(), _modelDescriptors.end(),
-<span class="lineNum">     168 </span><span class="lineCov">         36 :                           [id](auto desc) { return id == desc-&gt;getModelID(); });</span>
-<span class="lineNum">     169 </span><span class="lineCov">         36 :     return i == _modelDescriptors.end() ? ModelDescriptorPtr{} : *i;</span>
+<span class="lineNum">     168 </span><span class="lineCov">         68 :                           [id](auto desc) { return id == desc-&gt;getModelID(); });</span>
+<span class="lineNum">     169 </span><span class="lineCov">         68 :     return i == _modelDescriptors.end() ? ModelDescriptorPtr{} : *i;</span>
 <a name="170"><span class="lineNum">     170 </span>            : }</a>
 <span class="lineNum">     171 </span>            : 
 <span class="lineNum">     172 </span><span class="lineCov">          4 : void Scene::setSimulationHandler(AbstractSimulationHandlerPtr handler)</span>
@@ -245,9 +245,9 @@
 <span class="lineNum">     183 </span><span class="lineNoCov">          0 :         ap.reset();</span>
 <a name="184"><span class="lineNum">     184 </span><span class="lineCov">          4 : }</span></a>
 <span class="lineNum">     185 </span>            : 
-<span class="lineNum">     186 </span><span class="lineCov">       1074 : AbstractSimulationHandlerPtr Scene::getSimulationHandler() const</span>
+<span class="lineNum">     186 </span><span class="lineCov">       1138 : AbstractSimulationHandlerPtr Scene::getSimulationHandler() const</span>
 <span class="lineNum">     187 </span>            : {
-<span class="lineNum">     188 </span><span class="lineCov">       1074 :     return _simulationHandler;</span>
+<span class="lineNum">     188 </span><span class="lineCov">       1138 :     return _simulationHandler;</span>
 <a name="189"><span class="lineNum">     189 </span>            : }</a>
 <span class="lineNum">     190 </span>            : 
 <span class="lineNum">     191 </span><span class="lineNoCov">          0 : void Scene::setCADiffusionSimulationHandler(</span>
@@ -268,7 +268,7 @@
 <span class="lineNum">     206 </span>            : 
 <span class="lineNum">     207 </span><span class="lineNoCov">          0 : bool Scene::empty() const</span>
 <span class="lineNum">     208 </span>            : {
-<span class="lineNum">     209 </span><span class="lineNoCov">          0 :     std::shared_lock&lt;std::shared_timed_mutex&gt; lock(_modelMutex);</span>
+<span class="lineNum">     209 </span><span class="lineNoCov">          0 :     auto lock = acquireReadAccess();</span>
 <span class="lineNum">     210 </span><span class="lineNoCov">          0 :     for (auto modelDescriptor : _modelDescriptors)</span>
 <span class="lineNum">     211 </span><span class="lineNoCov">          0 :         if (!modelDescriptor-&gt;getModel().empty())</span>
 <span class="lineNum">     212 </span><span class="lineNoCov">          0 :             return false;</span>
@@ -372,7 +372,7 @@
 <span class="lineNum">     310 </span><span class="lineNoCov">          0 :     BRAYNS_INFO &lt;&lt; &quot;Version: &quot; &lt;&lt; version &lt;&lt; std::endl;</span>
 <span class="lineNum">     311 </span>            : 
 <span class="lineNum">     312 </span>            :     // Save geometry
-<span class="lineNum">     313 </span><span class="lineNoCov">          0 :     std::shared_lock&lt;std::shared_timed_mutex&gt; lock(_modelMutex);</span>
+<span class="lineNum">     313 </span><span class="lineNoCov">          0 :     auto lock = acquireReadAccess();</span>
 <span class="lineNum">     314 </span><span class="lineNoCov">          0 :     size_t nbElements = _modelDescriptors.size();</span>
 <span class="lineNum">     315 </span><span class="lineNoCov">          0 :     file.write((char*)&amp;nbElements, sizeof(size_t));</span>
 <span class="lineNum">     316 </span><span class="lineNoCov">          0 :     for (auto modelDescriptor : _modelDescriptors)</span>
@@ -839,27 +839,27 @@
 <span class="lineNum">     777 </span><span class="lineNoCov">          0 : void Scene::setMaterialsColorMap(MaterialsColorMap colorMap)</span>
 <span class="lineNum">     778 </span>            : {
 <span class="lineNum">     779 </span>            :     {
-<span class="lineNum">     780 </span><span class="lineNoCov">          0 :         std::shared_lock&lt;std::shared_timed_mutex&gt; lock(_modelMutex);</span>
+<span class="lineNum">     780 </span><span class="lineNoCov">          0 :         auto lock = acquireReadAccess();</span>
 <span class="lineNum">     781 </span><span class="lineNoCov">          0 :         for (auto modelDescriptors : _modelDescriptors)</span>
 <span class="lineNum">     782 </span><span class="lineNoCov">          0 :             modelDescriptors-&gt;getModel().setMaterialsColorMap(colorMap);</span>
 <span class="lineNum">     783 </span>            :     }
 <span class="lineNum">     784 </span><span class="lineNoCov">          0 :     markModified();</span>
 <a name="785"><span class="lineNum">     785 </span><span class="lineNoCov">          0 : }</span></a>
 <span class="lineNum">     786 </span>            : 
-<span class="lineNum">     787 </span><span class="lineCov">        118 : void Scene::_computeBounds()</span>
+<span class="lineNum">     787 </span><span class="lineCov">        116 : void Scene::_computeBounds()</span>
 <span class="lineNum">     788 </span>            : {
-<span class="lineNum">     789 </span><span class="lineCov">        236 :     std::unique_lock&lt;std::shared_timed_mutex&gt; lock(_modelMutex);</span>
-<span class="lineNum">     790 </span><span class="lineCov">        118 :     _bounds.reset();</span>
-<span class="lineNum">     791 </span><span class="lineCov">        316 :     for (auto modelDescriptor : _modelDescriptors)</span>
+<span class="lineNum">     789 </span><span class="lineCov">        232 :     std::unique_lock&lt;std::shared_timed_mutex&gt; lock(_modelMutex);</span>
+<span class="lineNum">     790 </span><span class="lineCov">        116 :     _bounds.reset();</span>
+<span class="lineNum">     791 </span><span class="lineCov">        308 :     for (auto modelDescriptor : _modelDescriptors)</span>
 <span class="lineNum">     792 </span>            :     {
-<span class="lineNum">     793 </span><span class="lineCov">        198 :         modelDescriptor-&gt;computeBounds();</span>
-<span class="lineNum">     794 </span><span class="lineCov">        198 :         _bounds.merge(modelDescriptor-&gt;getBounds());</span>
+<span class="lineNum">     793 </span><span class="lineCov">        192 :         modelDescriptor-&gt;computeBounds();</span>
+<span class="lineNum">     794 </span><span class="lineCov">        192 :         _bounds.merge(modelDescriptor-&gt;getBounds());</span>
 <span class="lineNum">     795 </span>            :     }
 <span class="lineNum">     796 </span>            : 
-<span class="lineNum">     797 </span><span class="lineCov">        118 :     if (_bounds.isEmpty())</span>
+<span class="lineNum">     797 </span><span class="lineCov">        116 :     if (_bounds.isEmpty())</span>
 <span class="lineNum">     798 </span>            :         // If no model is enabled. return empty bounding box
 <span class="lineNum">     799 </span><span class="lineCov">          6 :         _bounds.merge({0, 0, 0});</span>
-<a name="800"><span class="lineNum">     800 </span><span class="lineCov">        118 : }</span></a>
+<a name="800"><span class="lineNum">     800 </span><span class="lineCov">        116 : }</span></a>
 <span class="lineNum">     801 </span>            : 
 <span class="lineNum">     802 </span><span class="lineCov">         52 : void Scene::buildEnvironmentMap()</span>
 <span class="lineNum">     803 </span>            : {

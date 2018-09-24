@@ -32,7 +32,7 @@ var NAVTREEINDEX =
 "classbrayns_1_1_load_model_functor.html#a6bbd2d550a9339089bfd6517698d8c6b",
 "classbrayns_1_1_property_object.html#a9d0d4a64b6c56f5e6391bc7ff9d7097b",
 "classbrayns_1_1_version.html#ac28a55327f904d62ab90dc172be1b440",
-"structbrayns_1_1_loader_registry_1_1_loader_info.html"
+"structbrayns_1_1_loader_registry_1_1_loader_info.html#a55a2aff0dc2f65cc3fd2ca6f6a66f8c1"
 ];
 
 var SYNCONMSG = 'click to disable panel synchronisation';
