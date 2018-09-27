@@ -4,5 +4,6 @@ var class_pixel_stream_processor =
     [ "computeVisibleSet", "class_pixel_stream_processor.html#a1f7b7c5df0908def3248c848516d7174", null ],
     [ "getTileImage", "class_pixel_stream_processor.html#a7ede982ba08ea7123804498e1ec0e1b0", null ],
     [ "getTileRect", "class_pixel_stream_processor.html#abb3a7f8ebb276908b9e98a35ba256f9a", null ],
+    [ "getTilesCount", "class_pixel_stream_processor.html#a98bf1651492a1de7d54a942ba1740001", null ],
     [ "toRect", "class_pixel_stream_processor.html#ada6838869e35b3364858b2bf6440e76f", null ]
 ];

@@ -24,6 +24,7 @@ var class_content =
     [ "getUri", "class_content.html#a0ca4482bc84b9be50eb4bbc4a2c4ecac", null ],
     [ "getZoomRect", "class_content.html#a461bb62d3989d0eb5b4d1f824e7a66c0", null ],
     [ "hasFixedAspectRatio", "class_content.html#adceac372a702843a1e0bd207f670680a", null ],
+    [ "hasTransparency", "class_content.html#a69339830ade4567c27e430814bc1db95", null ],
     [ "height", "class_content.html#a0ac15e1ba630bc6c6f98d47529f4c48c", null ],
     [ "interactionPolicyChanged", "class_content.html#a74b1cb77a06a23e1862b40a1225d32bd", null ],
     [ "isZoomed", "class_content.html#af9177091ab70e17f93b736d77e07bbee", null ],
@@ -44,6 +45,7 @@ var class_content =
     [ "hasFixedAspectRatio", "class_content.html#ad1066ba29aa2771542a3a1ea39b05081", null ],
     [ "keyboard", "class_content.html#aded8c9d6721e9c52f57204937dfa0cf5", null ],
     [ "title", "class_content.html#afd9a0166b0789cdba7eed8070f2c429e", null ],
+    [ "transparency", "class_content.html#ab520bf4ba349d9946ac0d41164c50164", null ],
     [ "uri", "class_content.html#a5b58244b063efb428c8a7dad21a04004", null ],
     [ "zoomed", "class_content.html#a9fcacaa6a620b36458a6a387ae30ab02", null ],
     [ "zoomRect", "class_content.html#ade1377306703c28f2977e0d308b3c09a", null ]

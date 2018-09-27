@@ -19,7 +19,6 @@ var searchData=
   ['infoname',['infoName',['../struct_configuration_1_1_settings.html#adf47774c0ab4bddfbcc56313f932b5f0',1,'Configuration::Settings']]],
   ['interaction',['Interaction',['../class_content.html#a696d2c945254b9d37928253bc5159cc6',1,'Content']]],
   ['invalid_5fsurface_5findex_5ferror',['invalid_surface_index_error',['../classinvalid__surface__index__error.html',1,'']]],
-  ['is32bits',['is32Bits',['../class_qt_image.html#abd7d2845d3a9ec14bc3627c939627570',1,'QtImage']]],
   ['is_5fbitwise_5fserializable_3c_20std_3a_3achrono_3a_3aduration_3c_20rep_2c_20period_20_3e_20_3e',['is_bitwise_serializable&lt; std::chrono::duration&lt; Rep, Period &gt; &gt;',['../structboost_1_1serialization_1_1is__bitwise__serializable_3_01std_1_1chrono_1_1duration_3_01_rep_00_01_period_01_4_01_4.html',1,'boost::serialization']]],
   ['is_5fbitwise_5fserializable_3c_20std_3a_3achrono_3a_3atime_5fpoint_3c_20c_2c_20d_20_3e_20_3e',['is_bitwise_serializable&lt; std::chrono::time_point&lt; C, D &gt; &gt;',['../structboost_1_1serialization_1_1is__bitwise__serializable_3_01std_1_1chrono_1_1time__point_3_01_c_00_01_d_01_4_01_4.html',1,'boost::serialization']]],
   ['isactive',['isActive',['../class_countdown_status.html#a54ffebbef4ac66a59f092a765ce35b56',1,'CountdownStatus']]],

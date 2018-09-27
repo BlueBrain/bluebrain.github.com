@@ -6,5 +6,5 @@ var class_qt_image =
     [ "getGLPixelFormat", "class_qt_image.html#aff6b4c1fd77cc162ad618ac291baf829", null ],
     [ "getHeight", "class_qt_image.html#aa86a39ee9e130a789e714ce8520cc197", null ],
     [ "getWidth", "class_qt_image.html#a394cd230b7f62af815ca3f6f73c17b81", null ],
-    [ "is32Bits", "class_qt_image.html#abd7d2845d3a9ec14bc3627c939627570", null ]
+    [ "toGlCompatibleFormat", "class_qt_image.html#a911415f62bed148bbc9bd42c272906db", null ]
 ];

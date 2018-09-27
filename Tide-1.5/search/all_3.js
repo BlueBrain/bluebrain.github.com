@@ -51,6 +51,6 @@ var searchData=
   ['createtexture',['createTexture',['../namespacetexture_utils.html#a593fcc0a15b3ec21947711e4fee04eb1',1,'textureUtils']]],
   ['createtexturergba',['createTextureRgba',['../namespacetexture_utils.html#aa01b9fd9e3e04a6ad049904d93eb853f',1,'textureUtils']]],
   ['createwindows',['createWindows',['../class_wall_window.html#a8cd2691a136c83caaf46be1969cbb3c6',1,'WallWindow']]],
-  ['createzoomcontexttile',['createZoomContextTile',['../class_basic_synchronizer.html#a15dcd739415c558f6e039866f20905c6',1,'BasicSynchronizer::createZoomContextTile()'],['../class_content_synchronizer.html#a41e88f5e830d43f281b3a938ee664f39',1,'ContentSynchronizer::createZoomContextTile()'],['../class_lod_synchronizer.html#a1573080783047998fd073bf45d73e681',1,'LodSynchronizer::createZoomContextTile()'],['../class_p_d_f_synchronizer.html#a841cecf334ef2673f768ab72e01275c3',1,'PDFSynchronizer::createZoomContextTile()']]],
+  ['createzoomcontexttile',['createZoomContextTile',['../class_basic_synchronizer.html#a15dcd739415c558f6e039866f20905c6',1,'BasicSynchronizer::createZoomContextTile()'],['../class_content_synchronizer.html#a41e88f5e830d43f281b3a938ee664f39',1,'ContentSynchronizer::createZoomContextTile()'],['../class_lod_synchronizer.html#a1573080783047998fd073bf45d73e681',1,'LodSynchronizer::createZoomContextTile()']]],
   ['version_2eh',['version.h',['../core_2version_8h.html',1,'']]]
 ];

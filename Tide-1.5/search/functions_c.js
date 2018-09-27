@@ -1,10 +1,7 @@
 var searchData=
 [
-  ['onrequestnextframe',['onRequestNextFrame',['../class_content_synchronizer.html#a134db7d6cbe00b6886e5d8c30c7ceac6',1,'ContentSynchronizer']]],
-  ['onswapready',['onSwapReady',['../class_basic_synchronizer.html#abd26eebc223e5d5dc5f0442f51fce2fd',1,'BasicSynchronizer::onSwapReady()'],['../class_content_synchronizer.html#a6388e244907ebe33a267b47cf123b64c',1,'ContentSynchronizer::onSwapReady()'],['../class_tiled_synchronizer.html#a8ae5165f31bd9575d16a2849c46eb256',1,'TiledSynchronizer::onSwapReady()']]],
-  ['open',['open',['../class_master_surface_renderer.html#ad13ab6f7dc9c3e81d218f0a5fff5920b',1,'MasterSurfaceRenderer::open()'],['../class_app_remote_controller.html#a0c0509c879b1add3adeb4a1d7316e9f6',1,'AppRemoteController::open()'],['../class_file_receiver.html#ab92425d340f89e1a7e35405e717bcfa6',1,'FileReceiver::open()']]],
-  ['openlauncher',['openLauncher',['../class_pixel_streamer_launcher.html#abec11d7adeb5d7afb60c5e08000f4b2b',1,'PixelStreamerLauncher::openLauncher()'],['../class_master_surface_renderer.html#a289e78440fcd155db6d72e929e4155ad',1,'MasterSurfaceRenderer::openLauncher()']]],
-  ['openwebbrowser',['openWebBrowser',['../class_master_window.html#a9607ceea62dcdd68727eed519c9860ae',1,'MasterWindow::openWebBrowser()'],['../class_pixel_streamer_launcher.html#a8c1379998ca7b8e33f56d92591821882',1,'PixelStreamerLauncher::openWebbrowser()']]],
-  ['openwhiteboard',['openWhiteboard',['../class_master_window.html#ac0a920175719368d86fe0753b7a75e2f',1,'MasterWindow::openWhiteboard()'],['../class_pixel_streamer_launcher.html#aca79846378293231db934ecb4241be48',1,'PixelStreamerLauncher::openWhiteboard()'],['../class_app_remote_controller.html#a5301bee74276dcbca1525587f8c1fc22',1,'AppRemoteController::openWhiteboard()']]],
-  ['openwindow',['openWindow',['../class_pixel_stream_window_manager.html#a63ed623223d9406c5c71c0e13f929eac',1,'PixelStreamWindowManager']]]
+  ['needredraw',['needRedraw',['../class_wall_surface_renderer.html#a16badebcf2c48f17481d237173bbc5d9',1,'WallSurfaceRenderer']]],
+  ['needtochangenodetype',['needToChangeNodeType',['../class_texture_node_factory.html#af550078d8c9595e1d294f6e0c178665a',1,'TextureNodeFactory::needToChangeNodeType()'],['../class_texture_node_factory_impl.html#a83eaf1e2dc94582ce1c905c7c69052a4',1,'TextureNodeFactoryImpl::needToChangeNodeType()']]],
+  ['nextpage',['nextPage',['../class_p_d_f_content.html#a1e83cbc2b1b7845c39e42fb9076803f1',1,'PDFContent']]],
+  ['notify',['notify',['../class_pixel_stream_content.html#aabb9d7f23b5d94bff82a85f5d9f08ffa',1,'PixelStreamContent::notify()'],['../class_pixel_stream_controller.html#a45096746ef886b792ac4e94d806037dd',1,'PixelStreamController::notify()']]]
 ];

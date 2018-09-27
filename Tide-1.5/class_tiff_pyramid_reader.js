@@ -7,6 +7,7 @@ var class_tiff_pyramid_reader =
     [ "getBytesPerPixel", "class_tiff_pyramid_reader.html#ad6cfb76c30597cd6dacc05e27d4a3ecd", null ],
     [ "getImageSize", "class_tiff_pyramid_reader.html#a109fa3d3565fff1364da1d64522ddd65", null ],
     [ "getTileSize", "class_tiff_pyramid_reader.html#a21feb217c322e2281cebdb8de02cb800", null ],
+    [ "hasAlphaChannel", "class_tiff_pyramid_reader.html#af22b72ad376703b8b930eaf24f3f2478", null ],
     [ "readImage", "class_tiff_pyramid_reader.html#a187c3d86df808c3f5c925f91a5762a0b", null ],
     [ "readSize", "class_tiff_pyramid_reader.html#a5db70eed319606338693298a76079b07", null ],
     [ "readTile", "class_tiff_pyramid_reader.html#a3548956fee327c134918fb05fbb65ac5", null ],
