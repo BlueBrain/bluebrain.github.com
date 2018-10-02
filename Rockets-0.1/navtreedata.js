@@ -1,7 +1,6 @@
 var NAVTREE =
 [
   [ "Rockets", "index.html", [
-    [ "Introduction", "index.html", null ],
     [ "Changelog", "Changelog.html", null ],
     [ "Application Help", "apps.html", "apps" ],
     [ "Classes", "annotated.html", [

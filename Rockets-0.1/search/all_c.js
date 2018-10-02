@@ -1,5 +1,6 @@
 var searchData=
 [
+  ['rockets',['Rockets',['../index.html',1,'']]],
   ['readwritesocketnotifier',['ReadWriteSocketNotifier',['../classrockets_1_1qt_1_1_read_write_socket_notifier.html',1,'rockets::qt']]],
   ['receiver',['Receiver',['../classrockets_1_1jsonrpc_1_1_receiver.html#a970aba4cab0b8b7a8a9d2d03debd15f4',1,'rockets::jsonrpc::Receiver']]],
   ['receiver',['Receiver',['../classrockets_1_1jsonrpc_1_1_receiver.html',1,'rockets::jsonrpc']]],
