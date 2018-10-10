@@ -1,11 +1,11 @@
 var user_guide =
 [
-    [ "TABLE OF CONTENTS", "user_guide.html#TABLE_OF_CONTENTS", null ],
     [ "Introduction", "user_guide.html#Introduction", [
       [ "Quick start", "user_guide.html#quick_start", null ]
     ] ],
     [ "Building RTNeuron", "compilation.html", [
-      [ "Building from source.", "compilation.html#rtneuron_compilation", null ]
+      [ "Dependencies", "compilation.html#rtneuron_dependencies", null ],
+      [ "Building", "compilation.html#rtneuron_compilation", null ]
     ] ],
     [ "Basic usage", "basics.html", [
       [ "Starting RTNeuron", "basics.html#starting_rtneuron", null ],

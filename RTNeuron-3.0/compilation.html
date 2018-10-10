@@ -101,200 +101,288 @@ pre {
     padding: 5px; }
 </style>
 </p>
-<h1><a class="anchor" id="rtneuron_compilation"></a>
-Building from source.</h1>
-<p>This guide has been written for Ubuntu and RHEL distributions, nonetheless, except for the installation of the dependencies (which should be very similar for all Debian or Red Hat based distributions), the rest of the steps should be very similar for any UNIX style operating system. The code is platform independent but due to lack of demand from Windows users it is not guaranteed to compile in MSVC.</p>
-<p>RTNeuron depends on several in-house and third party libraries. Some of these dependencies are optional when compiling from source. The basic dependencies are:</p>
+<p>The only officially supported operating systems is Ubuntu and its derivates, for which this guide is written. For any other Linux distribution the instructions are almost the same, the biggest difference being the installation of dependencies.Windows and OS/X are not officially supported.</p>
+<h1><a class="anchor" id="rtneuron_dependencies"></a>
+Dependencies</h1>
+<p>RTNeuron dependencies are split into two groups, those that need to be preinstalled by the user and those that can be built by RTNeuron's compilation scripts. Only dependencies that require manual installation are listed, for all the others the instructions will rely on the automatic dependency building. Dependencies for experimental or unmaintained features are not considered in this guide.</p>
+<p>For convenience the complete apt-get command to use in Ubuntu with Python3 to install the required and some recommended optional dependencies is the following:</p>
+<pre class="fragment">sudo apt-get install cmake g++ git bison flex libboost-dev libboost-filesystem-dev libboost-iostreams-dev \
+    libboost-regex-dev libboost-program-options-dev libboost-python-dev libboost-system-dev libboost-serialization-dev \
+    libboost-test-dev libboost-thread-dev libhdf5-serial-dev libopenscenegraph-dev mesa-common-dev qtdeclarative5-dev \
+    qml-module-qtquick-controls qml-module-qtquick-layouts qml-module-qtquick-dialogs libpython3-dev python3-numpy \
+    python3-decorator python3-opengl doxygen python3-sphinx python3-lxml ipython3
+</pre><p>If your system is Ubuntu (or compatible) and you are not interested in further details you can jump down to building at this point.</p>
+<p>The table below details all the build and runtime dependencies. For Python related packages, only the package names for version 3 are provided. For reference, the names of the rpm packages for Centos with the EPEL repository extensions are also provided (in this case all Python packages are 2.7).</p>
 <p> 
-<table id="depends_table" style="width: 90%;">
+<table id="depends_table" style="width: 80%;">
+<col style="width: 12%; valign: top;"/>
+<col style="width: 12%; valign: top;"/>
+<col style="width: 12%; valign: top;"/>
 <col style="width: 20%; valign: top;"/>
-<col style="width: 18%; valign: top;"/>
-<col style="width: 18%; valign: top;"/>
+<col style="width: 20%; valign: top;"/>
 <col style="width: 24%; valign: top;"/>
 <tr>
 <th>Dependency</th>
-<th>Official Ubuntu package</th>
-<th>Official Redhat package</th>
-<th>Other software channel</th>
+<th>Version</th>
+<th>Type</th>
+<th>Ubuntu package</th>
+<th>Redhat package</th>
+<th>Notes</th>
 </tr>
 
 <tr class="even">
-<td>CMake 2.8 (preferably > 2.8.7)</td>
+<td>CMake</td>
+<td>>=3.1</td>
+<td>build tool</td>
 <td>cmake</td>
-<td>cmake28</td>
-<td>-</td>
+<td>cmake3 (EPEL)</td>
+<td>See </td>
 </tr>
 
 <tr>
-<td>Boost = 1.58, with:<ul style="margin: 0px">
+<td>g++</td>
+<td>>=4.8.5</td>
+<td>build tool</td>
+<td>g++</td>
+<td>gcc-g++</td>
+<td>clang may also be used</td>
+</tr>
+
+<tr>
+<td>bison</td>
+<td>>=3.0</td>
+<td>build tool</td>
+<td>bison</td>
+<td>bison</td>
+<td></td>
+</tr>
+
+<tr>
+<td>flex</td>
+<td>>=3.0</td>
+<td>build tool</td>
+<td>flex</td>
+<td>flex</td>
+<td></td>
+</tr>
+
+<tr class="even">
+<td>Git</td>
+<td>>=2.7.4</td>
+<td>build tool</td>
+<td>git</td>
+<td>git</td>
+<td></td>
+</tr>
+
+<tr>
+<td>Boost, with:<ul style="margin: 0px">
+  <li>date_time</li>
   <li>filesystem</li>
+  <li>iostreams</li>
   <li>regex</li>
   <li>python</li>
+  <li>program_options</li>
   <li>system</li>
   <li>serialization</li>
   <li>thread</li>
   <li>unit_test_framework</li>
 </ul></td>
-<td>libboost-dev, libboost-filesystem-dev,
-  libboost-regex-dev, libboost-python-dev, libboost-system-dev,
-  libboost-serialization-dev, libboost-test-dev, libboost-thread-dev</td>
+<td>>=1.58</td>
+<td>C++ library</td>
+<td>libboost&#8209;dev libboost&#8209;filesystem&#8209;dev
+  libboost&#8209;iostreams&#8209;dev libboost&#8209;regex&#8209;dev
+  libboost&#8209;python&#8209;dev libboost&#8209;program&#8209;options&#8209;dev
+  libboost&#8209;system&#8209;dev libboost&#8209;serialization&#8209;dev
+  libboost&#8209;test&#8209;dev libboost&#8209;thread&#8209;dev</td>
 <td>boost-devel</td>
-<td>-</td>
-</tr>
-
-<tr>
-<td>Brion </td>
-<td>-</td>
-<td>-</td>
-<td>Git: ssh://bbpcode.epfl.ch/common/Brion.git</td>
+<td></td>
 </tr>
 
 <tr class="even">
-<td>Collage </td>
-<td>-</td>
-<td>-</td>
-<td>Git: https://github.com/Eyescale/Collage.git</td>
+<td>HDF5</td>
+<td>>=1.8.10 </td>
+<td>C library</td>
+<td>libhdf5-serial-dev</td>
+<td>hdf5-devel (EPEL)</td>
+<td></td>
 </tr>
 
 <tr>
-<td>Equalizer </td>
-<td>-</td>
-<td>-</td>
-<td>Git: https://github.com/Eyescale/Equalizer.git</td>
+<td>OpenGL</td>
+<td>>=2.0</td>
+<td>C library</td>
+<td>mesa&#8209;common&#8209;dev or nvidia&#8209;<em>driver_version</em>&#8209;dev</td>
+<td>mesa-libGL-devel</td>
+<td>Depends on the OpenGL driver used</td>
 </tr>
 
 <tr class="even">
-<td>Git</td>
-<td>git</td>
-<td>git</td>
-<td>-</td>
+<td>Qt with QML and QtQuick</td>
+<td>>=5.4, >2 for QtQuick</td>
+<td>C++/QML library</td>
+<td>qtdeclarative5-dev qml&#8209;module&#8209;qtquick&#8209;controls
+  qml&#8209;module&#8209;qtquick&#8209;layouts
+  qml&#8209;module&#8209;qtquick&#8209;dialogs</td>
+<td>qt5-base-devel qt5-qtquickcontrols2-devel</td>
+<td></td>
 </tr>
 
 <tr>
-<td>Lunchbox  (optionally with zeronconf support)</td>
-<td>libavahi-client-dev for zeroconf</td>
-<td>avahi-client-devel for zeroconf</td>
-<td>Git: https://github.com/Eyescale/Lunchbox.git</td>
+<td>Python</td>
+<td>2.7 or >=3.4</td>
+<td>C runtime and libraries</td>
+<td>libpython3-dev</td>
+<td>python-devel</td>
+<td></td>
+</tr>
+
+<tr class="even">
+<td>PyQt5</td>
+<td>==<em>Qt-version</em></td>
+<td>Python module</td>
+<td>python3-pyqt5.qtquick python3-pyqt5</td>
+<td><em>not available</em></td>
+<td></td>
+</tr>
+
+<tr>
+<td>PyOpenGL</td>
+<td>>=3.0 </td>
+<td>Python module</td>
+<td>python3-opengl</td>
+<td>PyOpenGL</td>
+<td>Required at runtime by Qt GUIs</td>
 </tr>
 
 <tr class="even">
 <td>Numpy</td>
-<td>python-numpy</td>
+<td>>=1.11.0</td>
+<td>Python module</td>
+<td>python3-numpy</td>
 <td>numpy</td>
-<td>-</td>
+<td></td>
 </tr>
 
-<tr>
-<td>OpenSceneGraph >= 3.2</td>
+<td>OpenSceneGraph</td>
+<td> >=3.2, <3.5 </td>
+<td>C++ library</td>
 <td>libopenscenegraph-dev</td>
-<td>OpenSceneGraph-devel</td>
-<td>-</td>
+<td><em>not available<em></td>
+<td></td>
 </tr>
 
 <tr class="even">
-<td>osgTransparency </td>
-<td>-</td>
-<td>-</td>
-<td>Git: ssh://bbpcode.epfl.ch/viz/osgTransparency.git</td>
+<td>decorator</td>
+<td>>=4.0</td>
+<td>Python module</td>
+<td>python3-decorator</td>
+<td>python-decorator</td>
+<td></td>
 </tr>
-
-<tr>
-<td>Python >= 2.7</td>
-<td>libpython2.7-dev</td>
-<td>python-devel</td>
-<td>-</td>
-</tr>
-
-<tr class="even">
-<td>vmmlib </td>
-<td>-</td>
-<td>-</td>
-<td>Git: https://github.com/Eyescale/vmmlib.git</td>
-</tr>
-
 </table>
 </p>
-<p>Optional dependencies are:</p>
+<p>The optional dependencies are:</p>
 <p> 
-<table id="depends_table" style="width: 90%;">
+<table id="depends_table" style="width: 80%;">
+<col style="width: 12%; valign: top;"/>
+<col style="width: 12%; valign: top;"/>
+<col style="width: 12%; valign: top;"/>
 <col style="width: 20%; valign: top;"/>
-<col style="width: 18%; valign: top;"/>
-<col style="width: 18%; valign: top;"/>
+<col style="width: 20%; valign: top;"/>
 <col style="width: 24%; valign: top;"/>
 <tr>
 <th>Dependency</th>
-<th>Official Ubuntu package</th>
-<th>Official Redhat package</th>
-<th>Other software channel</th>
+<th>Version</th>
+<th>Type</th>
+<th>Ubuntu package</th>
+<th>Redhat package</th>
+<th>Notes</th>
 </tr>
 
 <tr class="even">
 <td>CUDA SDK</td>
+<td>>=6</td>
+<td>C library and driver</td>
 <td>nvidia-cuda-dev</td>
 <td>cudatoolkit</td>
-<td>-</td>
+<td>For faster view frustum culling</td>
 </tr>
 
 <tr>
-<td>Doxygen 1.8: to build the documentation</td>
 <td>doxygen</td>
-<td>dpxygen</td>
-<td>-</td>
+<td>>=1.8</td>
+<td>application</td>
+<td>doxygen</td>
+<td>doxygen</td>
+<td>For in-shell help and Python html documentation</td>
 </tr>
 
 <tr class="even">
-<td>Sphinx >= 0.6.6: for Python console help</td>
-<td>python-sphinx</td>
-<td>python-sphinx</td>
-<td>-</td>
+<td>dot</td>
+<td>>=2</td>
+<td>application</td>
+<td>graphviz</td>
+<td>graphviz</td>
+<td>For html documentation generation</td>
 </tr>
 
 <tr>
-<td>VRPN</td>
-<td>-</td>
-<td>-</td>
-<td><a href="http://www.cs.unc.edu/Research/vrpn/obtaining_vrpn.html">Official page</a></td>
+<td>IPython</td>
+<td>>= 2.4</td>
+<td>Python module</td>
+<td>python3-ipython</td>
+<td>python-ipython</td>
+<td>Recommended for interactive console</td>
 </tr>
 
 <tr class="even">
-<td>Wiiuse 0.14: for Wiimote support</td>
-<td>-</td>
-<td>-</td>
-<td>Git: https://github.com/jafyvilla/wiiuse.git</td>
+<td>lxml</td>
+<td>>=3.5</td>
+<td>Python module</td>
+<td>python3-lxml</td>
+<td>python-lxml</td>
+<td>For in-shell help and Python html documentation</td>
 </tr>
 
 <tr>
-<td>Bluez</td>
-<td>bluez</td>
-<td>bluez-libs-devel</td>
-<td>-</td>
+<td>ninja</td>
+<td></td>
+<td>build tool</td>
+<td>ninja-build</td>
+<td>ninja-build</td>
+<td>For faster building</td>
 </tr>
 
 <tr class="even">
-<!-- No automatic versioning as this is not part of the release process yet -->
-<td>ZeroEQ 0.1: for network communication support</td>
-<td>-</td>
-<td>-</td>
-<td>Git: https://github.com/HBPVis/ZeroEQ.git</td>
+<td>Sphinx</td>
+<td>==1.3.x</td>
+<td>application</td>
+<td>python3-sphinx</td>
+<td><em>version too old</em></td>
+<td>For Python documentation and in-shell help. Install with pip if in doubt about version number</td>
 </tr>
+
 </table>
 </p>
-<p>The whole dependency tree (including optional dependencies) can be found <a href="https://bbpcode.epfl.ch/code/gitweb?p=common/Documentation.git;a=blob;f=images/RTNeuron.png">here</a>.</p>
-<p>The process for building from source is the following:</p>
-<pre class="fragment">git clone --recursive ssh://bbpcode.epfl.ch/viz/RTNeuron.git
+<h1><a class="anchor" id="rtneuron_compilation"></a>
+Building</h1>
+<p>For building from source, first make sure that all non-automatic dependencies are installed and then type the following commands inside a shell:</p>
+<pre class="fragment">git clone --recursive https://github.com/BlueBrain/RTNeuron.git
 mkdir RTNeuron/build
 cd RTNeuron/build
 cmake .. -DCLONE_SUBPROJECTS=ON -DCMAKE_BUILD_TYPE=Release
 make
-</pre><p>Once the build finishes, the <code>rtneuron</code> application will be available in RTNeuron/build/bin.</p>
-<p>The configuration will try to find the dependencies as system installed packages automatically. For some of the dependencies which, the configuration will download the source code and build them if they are not available. If the configuration process fails to find the system wide version of a dependency, first of all verify that you have installed the right version. If you still need to build the dependency (e.g. you are working on an unsupported platform or there's no binary package available as with VPRN), you will probably need to install additional libraries and headers in order to successfully build it from source. Explaining the whole dependency tree is out of scope of this guide. </p>
+</pre><p>If you have installed ninja add <code>-GNinja</code> to the cmake invokation to enjoy a shorter build time. Once the build finishes, the <code>rtneuron</code> application will be available under RTNeuron/build/bin.</p>
+<p>The configuration will try to find the all dependencies as system installed packages automatically. For all required dependencies not listed before, the configuration step will download their source code to build them if they are not detected by CMake.</p>
+<p>Once the build is finished you can find the main <code>rtneuron</code> application at RTNeuron/build/bin/rtneuron. If you want to write your own Python scripts, add RTNeuron/build/lib to your <code>PYTHONPATH</code> variable. Alternatively you can install everything to any preferred location adding <code>-DCMAKE_INSTALL_PREFIX</code> to the cmake invocation and then running make install. </p>
 </div></div><!-- contents -->
 </div><!-- doc-content -->
 <!-- start footer part -->
 <div id="nav-path" class="navpath"><!-- id is needed for treeview function! -->
   <ul>
     <li class="navelem"><a class="el" href="index.html">Documentation</a></li><li class="navelem"><a class="el" href="user_guide.html">User Guide</a></li>
-    <li class="footer">Generated on Thu Sep 13 2018 07:24:01 for RTNeuron by
+    <li class="footer">Generated on Wed Oct 10 2018 14:33:12 for RTNeuron by
     <a href="http://www.doxygen.org/index.html">
     <img class="footer" src="doxygen.png" alt="doxygen"/></a> 1.8.11 </li>
   </ul>
