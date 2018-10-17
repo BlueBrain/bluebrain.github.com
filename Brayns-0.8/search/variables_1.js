@@ -1,4 +1,4 @@
 var searchData=
 [
-  ['createloader',['createLoader',['../structbrayns_1_1_loader_registry_1_1_loader_info.html#a71049e352f80543c166129fc8b153885',1,'brayns::LoaderRegistry::LoaderInfo']]]
+  ['enums',['enums',['../structbrayns_1_1_property_map_1_1_property.html#ad78a7ed871bdf8543a509b4739ee7db9',1,'brayns::PropertyMap::Property']]]
 ];

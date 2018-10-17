@@ -1,9 +1,9 @@
 var classbrayns_1_1_loader_registry =
 [
-    [ "LoaderInfo", "structbrayns_1_1_loader_registry_1_1_loader_info.html", "structbrayns_1_1_loader_registry_1_1_loader_info" ],
-    [ "createLoader", "classbrayns_1_1_loader_registry.html#a8691c54eefd2046b9c717094d60dd121", null ],
-    [ "isSupported", "classbrayns_1_1_loader_registry.html#a0b906f66a2a61c3cee2b04d6877e3b32", null ],
-    [ "load", "classbrayns_1_1_loader_registry.html#af7043cedcdd7a515ca26c9bad3720918", null ],
-    [ "registerLoader", "classbrayns_1_1_loader_registry.html#a9f965b62e7ea55f296e921c58e81d062", null ],
-    [ "supportedTypes", "classbrayns_1_1_loader_registry.html#a44b725bbc98952a99e69feb9fb362820", null ]
+    [ "getLoaderFromFilename", "classbrayns_1_1_loader_registry.html#a514bfcbf9cb36646ad6a7b70e9698c2e", null ],
+    [ "getLoaderFromFiletype", "classbrayns_1_1_loader_registry.html#aae92cdd8903cbec233cfbdaa3e4a0317", null ],
+    [ "isSupportedFile", "classbrayns_1_1_loader_registry.html#a8db8487e443905f2d1e95a5de050b95c", null ],
+    [ "isSupportedType", "classbrayns_1_1_loader_registry.html#a813352165402a89627da301dc5134410", null ],
+    [ "load", "classbrayns_1_1_loader_registry.html#a9fd05d8a7b669b15fad4abf8e8d270b8", null ],
+    [ "registerLoader", "classbrayns_1_1_loader_registry.html#ad97da244840fb0449ffc11114e90df5a", null ]
 ];

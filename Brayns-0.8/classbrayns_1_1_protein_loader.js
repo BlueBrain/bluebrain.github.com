@@ -1,7 +1,7 @@
 var classbrayns_1_1_protein_loader =
 [
     [ "ProteinLoader", "classbrayns_1_1_protein_loader.html#aad78e727a22a97d5372f2552d0763d2d", null ],
-    [ "getSupportedDataTypes", "classbrayns_1_1_protein_loader.html#a7b20bd9f81baadf86daabf01e7aacd4f", null ],
-    [ "importFromBlob", "classbrayns_1_1_protein_loader.html#af9fa69b7ca4483360322d0e0205325b2", null ],
-    [ "importFromFile", "classbrayns_1_1_protein_loader.html#a0f3cf4e5744684102a5ae2adff8df53d", null ]
+    [ "importFromBlob", "classbrayns_1_1_protein_loader.html#a6150747dc7a5962adbafaf25d5fc4095", null ],
+    [ "importFromFile", "classbrayns_1_1_protein_loader.html#abdc4eff1e719168b0f83e48dd17af020", null ],
+    [ "isSupported", "classbrayns_1_1_protein_loader.html#a5bce1264df58d6ee83d07c30fdf732bb", null ]
 ];

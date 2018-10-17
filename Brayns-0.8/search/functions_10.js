@@ -24,7 +24,6 @@ var searchData=
   ['setmaxaccumframes',['setMaxAccumFrames',['../classbrayns_1_1_rendering_parameters.html#a98779393dd60f8ed99638cdb049a1f9a',1,'brayns::RenderingParameters']]],
   ['setnbframes',['setNbFrames',['../classbrayns_1_1_abstract_simulation_handler.html#a6d97bbea1b840d24c754068d0b6c2cd8',1,'brayns::AbstractSimulationHandler']]],
   ['setposition',['setPosition',['../classbrayns_1_1_camera.html#a6e4b5133301f4956bc2a8f63bdac63fb',1,'brayns::Camera::setPosition()'],['../classbrayns_1_1_point_light.html#a14c49779d4e61b944511e07c7f7cad13',1,'brayns::PointLight::setPosition()']]],
-  ['setprogresscallback',['setProgressCallback',['../classbrayns_1_1_loader.html#ac957d6047e9738bd7995827825024771',1,'brayns::Loader']]],
   ['setprogressfunc',['setProgressFunc',['../classbrayns_1_1_task_functor.html#ad8283ae7984fbd41e7d5e61e57238ad3',1,'brayns::TaskFunctor']]],
   ['setproperties',['setProperties',['../classbrayns_1_1_property_object.html#a9d0d4a64b6c56f5e6391bc7ff9d7097b',1,'brayns::PropertyObject::setProperties(const PropertyMap &amp;properties)'],['../classbrayns_1_1_property_object.html#ae47c1492190d22b89eeecce803eed03c',1,'brayns::PropertyObject::setProperties(const std::string &amp;type, const PropertyMap &amp;properties)']]],
   ['setproperty',['setProperty',['../classbrayns_1_1_property_map.html#a9ec43c008e2aa8f72aba98136559bea2',1,'brayns::PropertyMap']]],
@@ -37,6 +36,5 @@ var searchData=
   ['setvariancethreshold',['setVarianceThreshold',['../classbrayns_1_1_rendering_parameters.html#a087247fdb304016359646ed7c07fedcc',1,'brayns::RenderingParameters']]],
   ['spikesimulationhandler',['SpikeSimulationHandler',['../classbrayns_1_1_spike_simulation_handler.html#aae5dc41c31d6b1a5473075eaf0c54fc9',1,'brayns::SpikeSimulationHandler']]],
   ['start',['start',['../classbrayns_1_1_timer.html#aa4b955ae78d2e06e444eb7b4ecba62d4',1,'brayns::Timer']]],
-  ['stop',['stop',['../classbrayns_1_1_timer.html#ab45e9548afa774cc5eaf70cb6c54975d',1,'brayns::Timer']]],
-  ['supportedtypes',['supportedTypes',['../classbrayns_1_1_loader_registry.html#a44b725bbc98952a99e69feb9fb362820',1,'brayns::LoaderRegistry']]]
+  ['stop',['stop',['../classbrayns_1_1_timer.html#ab45e9548afa774cc5eaf70cb6c54975d',1,'brayns::Timer']]]
 ];

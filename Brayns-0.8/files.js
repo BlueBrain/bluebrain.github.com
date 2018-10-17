@@ -13,6 +13,7 @@ var files =
     [ "pluginapi/api.h", "pluginapi_2api_8h.html", "pluginapi_2api_8h" ],
     [ "tasks/api.h", "tasks_2api_8h.html", "tasks_2api_8h" ],
     [ "ApplicationParameters.h", "_application_parameters_8h_source.html", null ],
+    [ "ArchiveLoader.h", "_archive_loader_8h_source.html", null ],
     [ "BaseObject.h", "_base_object_8h_source.html", null ],
     [ "BaseWindow.h", "_base_window_8h_source.html", null ],
     [ "brayns.h", "brayns_8h_source.html", null ],

@@ -51,7 +51,6 @@ var hierarchy =
       ] ]
     ] ],
     [ "brayns::BaseWindow", "classbrayns_1_1_base_window.html", null ],
-    [ "brayns::BinaryError", "structbrayns_1_1_binary_error.html", null ],
     [ "brayns::Blob", "structbrayns_1_1_blob.html", null ],
     [ "brayns::Brayns", "classbrayns_1_1_brayns.html", null ],
     [ "brayns::CADiffusionSimulationHandler", "classbrayns_1_1_c_a_diffusion_simulation_handler.html", null ],
@@ -67,14 +66,15 @@ var hierarchy =
       [ "brayns::PointLight", "classbrayns_1_1_point_light.html", null ]
     ] ],
     [ "brayns::Loader", "classbrayns_1_1_loader.html", [
+      [ "brayns::ArchiveLoader", "classbrayns_1_1_archive_loader.html", null ],
       [ "brayns::MeshLoader", "classbrayns_1_1_mesh_loader.html", null ],
       [ "brayns::MolecularSystemReader", "classbrayns_1_1_molecular_system_reader.html", null ],
       [ "brayns::ProteinLoader", "classbrayns_1_1_protein_loader.html", null ],
       [ "brayns::VolumeLoader", "classbrayns_1_1_volume_loader.html", null ],
       [ "brayns::XYZBLoader", "classbrayns_1_1_x_y_z_b_loader.html", null ]
     ] ],
+    [ "brayns::LoaderProgress", "classbrayns_1_1_loader_progress.html", null ],
     [ "brayns::LoaderRegistry", "classbrayns_1_1_loader_registry.html", null ],
-    [ "brayns::LoaderRegistry::LoaderInfo", "structbrayns_1_1_loader_registry_1_1_loader_info.html", null ],
     [ "brayns::MetaballsGenerator", "classbrayns_1_1_metaballs_generator.html", null ],
     [ "brayns::Model", "classbrayns_1_1_model.html", null ],
     [ "brayns::Model::SDFGeometryData", "structbrayns_1_1_model_1_1_s_d_f_geometry_data.html", null ],
@@ -87,8 +87,9 @@ var hierarchy =
     [ "brayns::Renderer::PickResult", "structbrayns_1_1_renderer_1_1_pick_result.html", null ],
     [ "brayns::RenderInput", "structbrayns_1_1_render_input.html", null ],
     [ "brayns::RenderOutput", "structbrayns_1_1_render_output.html", null ],
-    [ "brayns::RpcDescription", "structbrayns_1_1_rpc_description.html", null ],
-    [ "brayns::RpcParameterDescription", "structbrayns_1_1_rpc_parameter_description.html", null ],
+    [ "brayns::RpcDescription", "structbrayns_1_1_rpc_description.html", [
+      [ "brayns::RpcParameterDescription", "structbrayns_1_1_rpc_parameter_description.html", null ]
+    ] ],
     [ "brayns::ScreenSpaceProcessor", "classbrayns_1_1_screen_space_processor.html", null ],
     [ "brayns::ScreenSpaceProcessorData", "structbrayns_1_1_screen_space_processor_data.html", null ],
     [ "brayns::SDFGeometry", "structbrayns_1_1_s_d_f_geometry.html", null ],
@@ -107,9 +108,7 @@ var hierarchy =
     [ "Sphere", "struct_sphere.html", null ],
     [ "std::exception", null, [
       [ "std::runtime_error", null, [
-        [ "brayns::TaskRuntimeError", "classbrayns_1_1_task_runtime_error.html", [
-          [ "brayns::BinaryTaskError", "classbrayns_1_1_binary_task_error.html", null ]
-        ] ]
+        [ "brayns::TaskRuntimeError", "classbrayns_1_1_task_runtime_error.html", null ]
       ] ]
     ] ]
 ];

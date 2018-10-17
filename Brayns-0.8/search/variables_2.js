@@ -1,4 +1,4 @@
 var searchData=
 [
-  ['enums',['enums',['../structbrayns_1_1_property_map_1_1_property.html#ad78a7ed871bdf8543a509b4739ee7db9',1,'brayns::PropertyMap::Property']]]
+  ['label',['label',['../structbrayns_1_1_property_map_1_1_property.html#abba00791cb38864ac81de9039337f41f',1,'brayns::PropertyMap::Property']]]
 ];

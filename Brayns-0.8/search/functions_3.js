@@ -18,7 +18,6 @@ var searchData=
   ['createbrickedvolume',['createBrickedVolume',['../classbrayns_1_1_scene.html#a6798df0c86c13dc9c611a09c8455707e',1,'brayns::Scene']]],
   ['createcamera',['createCamera',['../classbrayns_1_1_engine.html#af4b41c12e75c19f4ce9160c4a8484330',1,'brayns::Engine']]],
   ['createframebuffer',['createFrameBuffer',['../classbrayns_1_1_engine.html#a3ad20ce149c67448d40110da4f573f35',1,'brayns::Engine']]],
-  ['createloader',['createLoader',['../classbrayns_1_1_loader_registry.html#a8691c54eefd2046b9c717094d60dd121',1,'brayns::LoaderRegistry']]],
   ['creatematerial',['createMaterial',['../classbrayns_1_1_model.html#a0156b8880c15bda28f3610fc36947f7c',1,'brayns::Model']]],
   ['createmissingmaterials',['createMissingMaterials',['../classbrayns_1_1_model.html#a423f628996f18f7e37b561c7ae78ca27',1,'brayns::Model']]],
   ['createshareddatavolume',['createSharedDataVolume',['../classbrayns_1_1_scene.html#a0dcf87268729de1293b666dc3ec0674d',1,'brayns::Scene']]]

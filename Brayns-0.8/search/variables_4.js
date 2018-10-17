@@ -1,4 +1,4 @@
 var searchData=
 [
-  ['progress',['progress',['../classbrayns_1_1_abstract_task.html#a9c4958935de14f9db7480e9bb3566735',1,'brayns::AbstractTask']]]
+  ['size',['size',['../structbrayns_1_1_binary_param.html#a50964aa1d6ec351c6f186ffe924da95b',1,'brayns::BinaryParam']]]
 ];
