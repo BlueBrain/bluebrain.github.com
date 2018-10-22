@@ -4,9 +4,7 @@ var hierarchy =
       [ "brayns::FlyingModeManipulator", "classbrayns_1_1_flying_mode_manipulator.html", null ],
       [ "brayns::InspectCenterManipulator", "classbrayns_1_1_inspect_center_manipulator.html", null ]
     ] ],
-    [ "brayns::AbstractSimulationHandler", "classbrayns_1_1_abstract_simulation_handler.html", [
-      [ "brayns::SpikeSimulationHandler", "classbrayns_1_1_spike_simulation_handler.html", null ]
-    ] ],
+    [ "brayns::AbstractSimulationHandler", "classbrayns_1_1_abstract_simulation_handler.html", null ],
     [ "brayns::AbstractTask", "classbrayns_1_1_abstract_task.html", [
       [ "brayns::Task< T >", "classbrayns_1_1_task.html", [
         [ "brayns::DeferredTask< T >", "classbrayns_1_1_deferred_task.html", null ]
@@ -56,9 +54,9 @@ var hierarchy =
     [ "brayns::CADiffusionSimulationHandler", "classbrayns_1_1_c_a_diffusion_simulation_handler.html", null ],
     [ "brayns::Chunk", "structbrayns_1_1_chunk.html", null ],
     [ "brayns::CircuitConfiguration", "structbrayns_1_1_circuit_configuration.html", null ],
+    [ "brayns::ColorMap", "structbrayns_1_1_color_map.html", null ],
     [ "brayns::Engine", "classbrayns_1_1_engine.html", null ],
     [ "brayns::ExtensionPlugin", "classbrayns_1_1_extension_plugin.html", null ],
-    [ "brayns::Histogram", "structbrayns_1_1_histogram.html", null ],
     [ "brayns::ImageManager", "classbrayns_1_1_image_manager.html", null ],
     [ "brayns::KeyboardHandler", "classbrayns_1_1_keyboard_handler.html", null ],
     [ "brayns::Light", "classbrayns_1_1_light.html", [
@@ -66,9 +64,6 @@ var hierarchy =
       [ "brayns::PointLight", "classbrayns_1_1_point_light.html", null ]
     ] ],
     [ "brayns::Loader", "classbrayns_1_1_loader.html", [
-      [ "brayns::ArchiveLoader", "classbrayns_1_1_archive_loader.html", null ],
-      [ "brayns::MeshLoader", "classbrayns_1_1_mesh_loader.html", null ],
-      [ "brayns::MolecularSystemReader", "classbrayns_1_1_molecular_system_reader.html", null ],
       [ "brayns::ProteinLoader", "classbrayns_1_1_protein_loader.html", null ],
       [ "brayns::VolumeLoader", "classbrayns_1_1_volume_loader.html", null ],
       [ "brayns::XYZBLoader", "classbrayns_1_1_x_y_z_b_loader.html", null ]

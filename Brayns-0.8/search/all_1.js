@@ -23,6 +23,5 @@ var searchData=
   ['api_2eh',['api.h',['../api_8h.html',1,'']]],
   ['applicationparameters',['ApplicationParameters',['../classbrayns_1_1_application_parameters.html',1,'brayns']]],
   ['application_20help',['Application Help',['../apps.html',1,'']]],
-  ['archiveloader',['ArchiveLoader',['../classbrayns_1_1_archive_loader.html',1,'brayns']]],
   ['attachsimulationtocachefile',['attachSimulationToCacheFile',['../classbrayns_1_1_abstract_simulation_handler.html#afbda00e17fa6bd162a4263f89a55c379',1,'brayns::AbstractSimulationHandler']]]
 ];

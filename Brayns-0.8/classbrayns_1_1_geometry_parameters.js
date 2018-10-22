@@ -9,7 +9,6 @@ var classbrayns_1_1_geometry_parameters =
     [ "getCircuitMeshTransformation", "classbrayns_1_1_geometry_parameters.html#af79071ad6af5da63b76f6117c7abe56f", null ],
     [ "getCircuitRandomSeed", "classbrayns_1_1_geometry_parameters.html#a6f7bfdd45f28384b26d759580251e4f8", null ],
     [ "getCircuitReport", "classbrayns_1_1_geometry_parameters.html#a5e8e6c69f07fa54bcb6a9f6b3d68e190", null ],
-    [ "getCircuitSimulationHistogramSize", "classbrayns_1_1_geometry_parameters.html#afced4e2eecd722d9e420ff31f39310cb", null ],
     [ "getCircuitSimulationStep", "classbrayns_1_1_geometry_parameters.html#abcca722c2ef6336018298b16ad036884", null ],
     [ "getCircuitSimulationValuesRange", "classbrayns_1_1_geometry_parameters.html#acabc503e9e30079d27a90da1209132e0", null ],
     [ "getCircuitStartSimulationTime", "classbrayns_1_1_geometry_parameters.html#ab3fce9bbaa45185a6d49fafedfd23e62", null ],

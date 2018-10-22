@@ -5,6 +5,7 @@ var searchData=
   ['chunk',['Chunk',['../structbrayns_1_1_chunk.html',1,'brayns']]],
   ['circuitconfiguration',['CircuitConfiguration',['../structbrayns_1_1_circuit_configuration.html',1,'brayns']]],
   ['clipplane',['ClipPlane',['../classbrayns_1_1_clip_plane.html',1,'brayns']]],
+  ['colormap',['ColorMap',['../structbrayns_1_1_color_map.html',1,'brayns']]],
   ['cone',['Cone',['../struct_cone.html',1,'']]],
   ['cylinder',['Cylinder',['../struct_cylinder.html',1,'']]]
 ];

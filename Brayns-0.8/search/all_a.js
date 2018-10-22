@@ -1,4 +1,4 @@
 var searchData=
 [
-  ['keyboardhandler',['KeyboardHandler',['../classbrayns_1_1_keyboard_handler.html',1,'brayns']]]
+  ['jumpframes',['jumpFrames',['../classbrayns_1_1_animation_parameters.html#a200419599ede2850b35be72896300e1a',1,'brayns::AnimationParameters']]]
 ];

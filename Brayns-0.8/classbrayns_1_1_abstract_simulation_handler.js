@@ -8,10 +8,8 @@ var classbrayns_1_1_abstract_simulation_handler =
     [ "getDt", "classbrayns_1_1_abstract_simulation_handler.html#a85da5dd39cdbcffec3e93effe92d64ec", null ],
     [ "getFrameData", "classbrayns_1_1_abstract_simulation_handler.html#a42ef39d3b16dc58751231d4e027b731c", null ],
     [ "getFrameSize", "classbrayns_1_1_abstract_simulation_handler.html#a94eb882faba3d4a6f4cecdfa7f3af5d8", null ],
-    [ "getHistogram", "classbrayns_1_1_abstract_simulation_handler.html#a6c6ce62b4615c1e9f24199d43ef7542b", null ],
     [ "getNbFrames", "classbrayns_1_1_abstract_simulation_handler.html#a63756f6adb15211c556a20a04d651536", null ],
     [ "getUnit", "classbrayns_1_1_abstract_simulation_handler.html#a40e02361912fd67a9cae1afd91210f8a", null ],
-    [ "histogramChanged", "classbrayns_1_1_abstract_simulation_handler.html#acb55af876243483839a70e8d0d8d98ac", null ],
     [ "isReady", "classbrayns_1_1_abstract_simulation_handler.html#aad7e9c57e1a9095c0f3c05b3fc33d332", null ],
     [ "operator=", "classbrayns_1_1_abstract_simulation_handler.html#ac32c4fa392febd3176669e3472c7a7a3", null ],
     [ "setFrameSize", "classbrayns_1_1_abstract_simulation_handler.html#a8fa6e6c15ed6b6aad1e30004cf2c2983", null ],
@@ -25,7 +23,6 @@ var classbrayns_1_1_abstract_simulation_handler =
     [ "_frameSize", "classbrayns_1_1_abstract_simulation_handler.html#a003c5a99b9c1d0d1f2cd0794d231fc8b", null ],
     [ "_geometryParameters", "classbrayns_1_1_abstract_simulation_handler.html#ae74cdef039fd8630e189f453afbb0067", null ],
     [ "_headerSize", "classbrayns_1_1_abstract_simulation_handler.html#a7d8682d296cac3db1182363747a369e7", null ],
-    [ "_histogram", "classbrayns_1_1_abstract_simulation_handler.html#a69c7b9914ff699938f08fee7db24a3e9", null ],
     [ "_memoryMapPtr", "classbrayns_1_1_abstract_simulation_handler.html#a647855887e58464df3531eb6c3449ba3", null ],
     [ "_nbFrames", "classbrayns_1_1_abstract_simulation_handler.html#ab212c9c459d88905440de310d89c6fcb", null ],
     [ "_unit", "classbrayns_1_1_abstract_simulation_handler.html#ac500b5fe23a4da4382a128bec456dfd2", null ]

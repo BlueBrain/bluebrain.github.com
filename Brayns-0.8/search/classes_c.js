@@ -1,13 +1,9 @@
 var searchData=
 [
-  ['parametersmanager',['ParametersManager',['../classbrayns_1_1_parameters_manager.html',1,'brayns']]],
-  ['pickresult',['PickResult',['../structbrayns_1_1_renderer_1_1_pick_result.html',1,'brayns::Renderer']]],
-  ['pluginapi',['PluginAPI',['../classbrayns_1_1_plugin_a_p_i.html',1,'brayns']]],
-  ['pluginparam',['PluginParam',['../structbrayns_1_1_plugin_param.html',1,'brayns']]],
-  ['pointlight',['PointLight',['../classbrayns_1_1_point_light.html',1,'brayns']]],
-  ['progress',['Progress',['../classbrayns_1_1_progress.html',1,'brayns']]],
-  ['property',['Property',['../structbrayns_1_1_property_map_1_1_property.html',1,'brayns::PropertyMap']]],
-  ['propertymap',['PropertyMap',['../classbrayns_1_1_property_map.html',1,'brayns']]],
-  ['propertyobject',['PropertyObject',['../classbrayns_1_1_property_object.html',1,'brayns']]],
-  ['proteinloader',['ProteinLoader',['../classbrayns_1_1_protein_loader.html',1,'brayns']]]
+  ['renderer',['Renderer',['../classbrayns_1_1_renderer.html',1,'brayns']]],
+  ['renderingparameters',['RenderingParameters',['../classbrayns_1_1_rendering_parameters.html',1,'brayns']]],
+  ['renderinput',['RenderInput',['../structbrayns_1_1_render_input.html',1,'brayns']]],
+  ['renderoutput',['RenderOutput',['../structbrayns_1_1_render_output.html',1,'brayns']]],
+  ['rpcdescription',['RpcDescription',['../structbrayns_1_1_rpc_description.html',1,'brayns']]],
+  ['rpcparameterdescription',['RpcParameterDescription',['../structbrayns_1_1_rpc_parameter_description.html',1,'brayns']]]
 ];

@@ -8,7 +8,6 @@ var structbrayns_1_1_circuit_configuration =
     [ "meshTransformation", "structbrayns_1_1_circuit_configuration.html#a2d3aa43a247df5c28bb66f3ca37d09a3", null ],
     [ "randomSeed", "structbrayns_1_1_circuit_configuration.html#afcb19577eb87a3e553778329489ae189", null ],
     [ "report", "structbrayns_1_1_circuit_configuration.html#aabff701863928db83b179b4f0172f922", null ],
-    [ "simulationHistogramSize", "structbrayns_1_1_circuit_configuration.html#ad25b802cee4b844d1cf212b84a2fe837", null ],
     [ "simulationStep", "structbrayns_1_1_circuit_configuration.html#a1ed3253f391baa41b9ae3f9e6fcd84c4", null ],
     [ "simulationValuesRange", "structbrayns_1_1_circuit_configuration.html#a780c8be8dc3e6f3c8517530b320eb7db", null ],
     [ "startSimulationTime", "structbrayns_1_1_circuit_configuration.html#a9b97c6bc21ff97e17c26f8c3678504f8", null ],

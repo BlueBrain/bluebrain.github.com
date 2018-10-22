@@ -1,4 +1,5 @@
 var searchData=
 [
-  ['histogram',['Histogram',['../structbrayns_1_1_histogram.html',1,'brayns']]]
+  ['imagemanager',['ImageManager',['../classbrayns_1_1_image_manager.html',1,'brayns']]],
+  ['inspectcentermanipulator',['InspectCenterManipulator',['../classbrayns_1_1_inspect_center_manipulator.html',1,'brayns']]]
 ];

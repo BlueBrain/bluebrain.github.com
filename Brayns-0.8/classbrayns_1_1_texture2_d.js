@@ -6,6 +6,7 @@ var classbrayns_1_1_texture2_d =
     [ "getHeight", "classbrayns_1_1_texture2_d.html#a2a002ff5c9ca023e79d09df0da8f0b4d", null ],
     [ "getNbChannels", "classbrayns_1_1_texture2_d.html#af5b9062ea3fdf1624ffcec8864145ce9", null ],
     [ "getRawData", "classbrayns_1_1_texture2_d.html#a63884c727d3840f77e4f64e1d9e66125", null ],
+    [ "getSizeInBytes", "classbrayns_1_1_texture2_d.html#a89949846236168f79f99a03101210701", null ],
     [ "getWidth", "classbrayns_1_1_texture2_d.html#a0fe61d697b5bf71b5f57d48b79e03b1b", null ],
     [ "setDepth", "classbrayns_1_1_texture2_d.html#a1d6f2f2deedb4d4bab804018ca46563c", null ],
     [ "setFilename", "classbrayns_1_1_texture2_d.html#aabd2e2a3ebcf11edf67bbf2827870a87", null ],
