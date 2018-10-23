@@ -98,6 +98,7 @@ var searchData=
   ['getstring',['getString',['../classbrayns_1_1_version.html#a7230a3f09fc682b33cf1cfff19bebce7',1,'brayns::Version::getString()'],['../classbrayns_1_1_version.html#a7230a3f09fc682b33cf1cfff19bebce7',1,'brayns::Version::getString()'],['../classbrayns_1_1_version.html#a7230a3f09fc682b33cf1cfff19bebce7',1,'brayns::Version::getString()'],['../classbrayns_1_1_version.html#a7230a3f09fc682b33cf1cfff19bebce7',1,'brayns::Version::getString()'],['../classbrayns_1_1_version.html#a7230a3f09fc682b33cf1cfff19bebce7',1,'brayns::Version::getString()']]],
   ['getsupportedframesize',['getSupportedFrameSize',['../classbrayns_1_1_engine.html#a8b9003e3d1a9349f3212d3cf4f5945e6',1,'brayns::Engine']]],
   ['getsynchronousmode',['getSynchronousMode',['../classbrayns_1_1_application_parameters.html#adad26e22e52a305f855514bfe011bf28',1,'brayns::ApplicationParameters']]],
+  ['gettarget',['getTarget',['../classbrayns_1_1_camera.html#aab4e601f431bcdb17620626463a253d9',1,'brayns::Camera']]],
   ['gettmpfolder',['getTmpFolder',['../classbrayns_1_1_application_parameters.html#a4c2e7a22aad865a23b1be1eb8b1d6175',1,'brayns::ApplicationParameters']]],
   ['gettransferfunction',['getTransferFunction',['../classbrayns_1_1_model.html#afbc989c6cdc1a9ce350112599dc9eb51',1,'brayns::Model::getTransferFunction()'],['../classbrayns_1_1_model.html#aadac31108c958c76147c1b69041c124c',1,'brayns::Model::getTransferFunction() const ']]],
   ['gettrianglesmeshes',['getTrianglesMeshes',['../classbrayns_1_1_model.html#a72aaed48d0f52416cb3576b3f5958f9f',1,'brayns::Model']]],

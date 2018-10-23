@@ -18,6 +18,6 @@ var classbrayns_1_1_abstract_manipulator =
     [ "wheel", "classbrayns_1_1_abstract_manipulator.html#a2d43b2e4c78a2db5bcf74c0d828eedbb", null ],
     [ "_camera", "classbrayns_1_1_abstract_manipulator.html#aae08537e81adbbd7275c7d6fd9ec8ed6", null ],
     [ "_keyboardHandler", "classbrayns_1_1_abstract_manipulator.html#a1ddb4ed7cefbbb93422d8f26b5911245", null ],
-    [ "_motionSpeed", "classbrayns_1_1_abstract_manipulator.html#a3b110bb323f6163f82855d55c32ff177", null ],
-    [ "_rotationSpeed", "classbrayns_1_1_abstract_manipulator.html#ac0ee65066a75352e0c5f550e1b1a0cd6", null ]
+    [ "_motionSpeed", "classbrayns_1_1_abstract_manipulator.html#a8097c2eedefc3455aa6fef5da8e37c86", null ],
+    [ "_rotationSpeed", "classbrayns_1_1_abstract_manipulator.html#a24eb133da465bb9d841a18cf58a72a34", null ]
 ];
