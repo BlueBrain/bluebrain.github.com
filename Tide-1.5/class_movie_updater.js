@@ -11,6 +11,7 @@ var class_movie_updater =
     [ "getTileImage", "class_movie_updater.html#a0aa9322f1546c8f17434fa001c954beb", null ],
     [ "getTileRect", "class_movie_updater.html#a2c2b493c9444d43315476f966a270d5e", null ],
     [ "getTilesArea", "class_movie_updater.html#a74dafe530a139c21eb772a4e1ea24a61", null ],
+    [ "getUri", "class_movie_updater.html#a5ff6a034dab0b9e47dd7926eb58d88d2", null ],
     [ "isDynamic", "class_movie_updater.html#acb9214e61207fb88a7b02f2a3e6f0c4e", null ],
     [ "isPaused", "class_movie_updater.html#a74c9e0d5a4e306db1b8e66c811e5ed03", null ],
     [ "isSkipping", "class_movie_updater.html#ae809aa76a298144ba0cf50e6de7ed566", null ],

@@ -15,7 +15,6 @@ var searchData=
   ['hasvisibletiles',['hasVisibleTiles',['../class_basic_synchronizer.html#a75785d0a9a4c6dc5ad7460531e753993',1,'BasicSynchronizer::hasVisibleTiles()'],['../class_content_synchronizer.html#ad8c06916ca169448c16b4a0b19bed24b',1,'ContentSynchronizer::hasVisibleTiles()'],['../class_tiled_synchronizer.html#a69da8a8e217091c199dff1d5753ded49',1,'TiledSynchronizer::hasVisibleTiles()']]],
   ['headless',['headless',['../struct_configuration_1_1_master.html#aa06184ddfe5fd6b2b75bd502392efa5a',1,'Configuration::Master']]],
   ['height',['height',['../class_content.html#a0ac15e1ba630bc6c6f98d47529f4c48c',1,'Content']]],
-  ['hidelauncher',['hideLauncher',['../class_scene_controller.html#aa17cea719c50c3bb25e9ad2141b955a3',1,'SceneController']]],
   ['hidepanels',['hidePanels',['../class_display_group_controller.html#a30c12fa5deb6859f9304b47ab7bc7722',1,'DisplayGroupController']]],
   ['hidewindows',['hideWindows',['../class_pixel_stream_window_manager.html#aaa0472063b87b5ad26e14e04afeba879',1,'PixelStreamWindowManager']]],
   ['host',['host',['../struct_process.html#ad66e481c67a2c46c0dba898558352794',1,'Process']]],

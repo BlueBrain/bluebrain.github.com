@@ -8,7 +8,7 @@ var class_pixel_stream_updater =
     [ "getTileImage", "class_pixel_stream_updater.html#adaae2a27994e9657acc9651915a8c933", null ],
     [ "getTileRect", "class_pixel_stream_updater.html#aa0b73862b89356276beb0933913afe65", null ],
     [ "getTilesArea", "class_pixel_stream_updater.html#af1275ebac9c1acad63a0fc66e761f5d8", null ],
-    [ "getUri", "class_pixel_stream_updater.html#a561dd2b287247efa5e7df6f79f839595", null ],
+    [ "getUri", "class_pixel_stream_updater.html#aa1ba5ed1d5ee05cec9b293f66f7867c8", null ],
     [ "isDynamic", "class_pixel_stream_updater.html#a6b6f0f98115ff72c07749519e8c82974", null ],
     [ "pictureUpdated", "class_pixel_stream_updater.html#a3fb5e7ef6ef99b1edcc1671712501dc9", null ],
     [ "requestFrame", "class_pixel_stream_updater.html#aa7a5c7435ad6f310bfc66096f9dea7ee", null ],

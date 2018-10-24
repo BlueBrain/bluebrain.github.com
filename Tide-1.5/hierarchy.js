@@ -25,6 +25,7 @@ var hierarchy =
     [ "ContentLoader", "class_content_loader.html", null ],
     [ "ContentSynchronizerFactory", "class_content_synchronizer_factory.html", null ],
     [ "ContentSynchronizers", "class_content_synchronizers.html", null ],
+    [ "ContentValidator", "class_content_validator.html", null ],
     [ "DataSource", "class_data_source.html", [
       [ "CachedDataSource", "class_cached_data_source.html", [
         [ "ImageSource", "class_image_source.html", null ],
@@ -188,6 +189,8 @@ var hierarchy =
       [ "SceneController", "class_scene_controller.html", null ],
       [ "ScreenLock", "class_screen_lock.html", null ],
       [ "ScreenshotAssembler", "class_screenshot_assembler.html", null ],
+      [ "SessionController", "class_session_controller.html", null ],
+      [ "SideController", "class_side_controller.html", null ],
       [ "Surface", "class_surface.html", null ],
       [ "SwipeDetector", "class_swipe_detector.html", null ],
       [ "TapAndHoldDetector", "class_tap_and_hold_detector.html", null ],
@@ -242,12 +245,16 @@ var hierarchy =
     [ "Screen", "struct_screen.html", null ],
     [ "serialization::detail::serialize< N >", "structserialization_1_1detail_1_1serialize.html", null ],
     [ "serialization::detail::serialize< 0 >", "structserialization_1_1detail_1_1serialize_3_010_01_4.html", null ],
+    [ "Session", "class_session.html", null ],
+    [ "SessionInfo", "struct_session_info.html", null ],
+    [ "SessionLoader", "class_session_loader.html", null ],
+    [ "SessionLoaderLegacyXml", "class_session_loader_legacy_xml.html", null ],
+    [ "SessionPreview", "class_session_preview.html", null ],
+    [ "SessionPreviewGenerator", "class_session_preview_generator.html", null ],
+    [ "SessionSaver", "class_session_saver.html", null ],
     [ "SharedNetworkBarrier", "class_shared_network_barrier.html", [
       [ "SwapSynchronizerSoftware", "class_swap_synchronizer_software.html", null ]
     ] ],
-    [ "State", "class_state.html", null ],
-    [ "StatePreview", "class_state_preview.html", null ],
-    [ "StateSerializationHelper", "class_state_serialization_helper.html", null ],
     [ "enable_shared_from_this", null, [
       [ "Background", "class_background.html", null ],
       [ "ContextMenu", "class_context_menu.html", null ],
@@ -301,7 +308,7 @@ var hierarchy =
       [ "ImagePyramidThumbnailGenerator", "class_image_pyramid_thumbnail_generator.html", null ],
       [ "ImageThumbnailGenerator", "class_image_thumbnail_generator.html", null ],
       [ "MovieThumbnailGenerator", "class_movie_thumbnail_generator.html", null ],
-      [ "StateThumbnailGenerator", "class_state_thumbnail_generator.html", null ],
+      [ "SessionThumbnailGenerator", "class_session_thumbnail_generator.html", null ],
       [ "StreamThumbnailGenerator", "class_stream_thumbnail_generator.html", null ]
     ] ],
     [ "ThumbnailGeneratorFactory", "class_thumbnail_generator_factory.html", null ],

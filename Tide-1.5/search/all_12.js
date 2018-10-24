@@ -49,7 +49,7 @@ var searchData=
   ['resizepolicy',['ResizePolicy',['../class_window.html#aeb1859257200693416452d6ffda0a556',1,'Window']]],
   ['resizerelative',['resizeRelative',['../class_window_controller.html#a4429d850a12a9c000c4e926a45527b8f',1,'WindowController']]],
   ['restart',['restart',['../class_inactivity_timer.html#a01e02d85e1598dd9cdb0fb39fa394c12',1,'InactivityTimer']]],
-  ['restinterface',['RestInterface',['../class_rest_interface.html',1,'RestInterface'],['../class_rest_interface.html#a81682f8408e904fe54ae1942648eb24d',1,'RestInterface::RestInterface()']]],
+  ['restinterface',['RestInterface',['../class_rest_interface.html',1,'RestInterface'],['../class_rest_interface.html#ab0094f6cc136107defb8ff906510354b',1,'RestInterface::RestInterface()']]],
   ['restoremodeandzoom',['restoreModeAndZoom',['../class_window.html#a1ee0e91879205515ca3737523e8048df',1,'Window']]],
   ['restserver',['RestServer',['../class_rest_server.html',1,'RestServer'],['../class_rest_server.html#a688fd7a30878aea6036b459cfebf657c',1,'RestServer::RestServer()'],['../class_rest_server.html#a4b44a7efc2c7580ae5ff8e0136b4fa93',1,'RestServer::RestServer(uint16_t port)']]],
   ['run',['run',['../class_process_forker.html#ad1528d488d2aa41dec482bbadb431cd3',1,'ProcessForker']]]

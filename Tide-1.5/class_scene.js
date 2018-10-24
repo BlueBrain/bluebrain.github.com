@@ -1,6 +1,8 @@
 var class_scene =
 [
     [ "~Scene", "class_scene.html#a3b8cec2e32546713915f8c6303c951f1", null ],
+    [ "assign", "class_scene.html#ada06f976a89bea30f42f83fdb548cabe", null ],
+    [ "clear", "class_scene.html#a70e5b1218abb729d70d9f41b107017f9", null ],
     [ "create", "class_scene.html#afed2f188a8f77d3d16abe38644c153e7", null ],
     [ "create", "class_scene.html#a1c127ce255a1cb7b0163b2062e57bc4c", null ],
     [ "create", "class_scene.html#a7b2f8eb42afae3e7a665e89a442359d0", null ],
@@ -17,6 +19,8 @@ var class_scene =
     [ "getSurfaces", "class_scene.html#a5887dfd2a768a4aeb4c91eb5cbe44093", null ],
     [ "getSurfaces", "class_scene.html#a68a7306bc1d223eea14793a899c88b1f", null ],
     [ "getWindows", "class_scene.html#a81fb5a5003c6ffb1226ca674e2f1aaf1", null ],
+    [ "isEmpty", "class_scene.html#a7f80ae6398188abf948763d1c0cee16e", null ],
+    [ "isEmptyChanged", "class_scene.html#a079b441872dac12fc72aacbe608fc419", null ],
     [ "modified", "class_scene.html#a3c60cb673a1d49a67d983946fb0ebe18", null ],
     [ "moveToThread", "class_scene.html#a9383c1dc960bd4cf312640c99b6a6314", null ],
     [ "boost::serialization::access", "class_scene.html#ac98d07dd8f7b70e16ccb9a01abf56b9c", null ]

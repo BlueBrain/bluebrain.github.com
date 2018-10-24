@@ -32,12 +32,12 @@
             <td></td>
             <td class="headerItem">Lines:</td>
             <td class="headerCovTableEntry">1</td>
-            <td class="headerCovTableEntry">125</td>
+            <td class="headerCovTableEntry">123</td>
             <td class="headerCovTableEntryLo">0.8 %</td>
           </tr>
           <tr>
             <td class="headerItem">Date:</td>
-            <td class="headerValue">2018-09-27 06:28:12</td>
+            <td class="headerValue">2018-10-24 06:23:10</td>
             <td></td>
             <td class="headerItem">Functions:</td>
             <td class="headerCovTableEntry">2</td>
@@ -269,95 +269,91 @@
 <span class="lineNum">     207 </span><span class="lineNoCov">          0 :             auto source = it-&gt;second;</span>
 <span class="lineNum">     208 </span><span class="lineNoCov">          0 :             source-&gt;synchronizers.updateTiles(); // may throw</span>
 <span class="lineNum">     209 </span>            : 
-<span class="lineNum">     210 </span>            :             // Start the asynchronous loading of images for this data source
-<span class="lineNum">     211 </span>            :             // and clear the list of requests for the next data source.
-<span class="lineNum">     212 </span><span class="lineNoCov">          0 :             _startTileImageRequests(source);</span>
-<span class="lineNum">     213 </span><span class="lineNoCov">          0 :             ++it;</span>
-<span class="lineNum">     214 </span>            :         }
-<span class="lineNum">     215 </span><span class="lineNoCov">          0 :         catch (const std::exception&amp; e)</span>
-<span class="lineNum">     216 </span>            :         {
-<span class="lineNum">     217 </span><span class="lineNoCov">          0 :             print_log(LOG_ERROR, LOG_GENERAL,</span>
-<span class="lineNum">     218 </span><span class="lineNoCov">          0 :                       &quot;closing data source due to exception: %s&quot;, e.what());</span>
-<span class="lineNum">     219 </span><span class="lineNoCov">          0 :             it = _dataSources.erase(it);</span>
-<span class="lineNum">     220 </span>            : 
-<span class="lineNum">     221 </span><span class="lineNoCov">          0 :             if (auto stream = cast_to_stream_source(it-&gt;second))</span>
-<span class="lineNum">     222 </span><span class="lineNoCov">          0 :                 _handleStreamError(stream-&gt;getUri());</span>
-<span class="lineNum">     223 </span>            :         }
-<span class="lineNum">     224 </span>            :     }
-<a name="225"><span class="lineNum">     225 </span><span class="lineNoCov">          0 : }</span></a>
-<span class="lineNum">     226 </span>            : 
-<span class="lineNum">     227 </span><span class="lineNoCov">          0 : void DataProvider::_startTileImageRequests(DataSourceSharedPtr source)</span>
-<span class="lineNum">     228 </span>            : {
-<span class="lineNum">     229 </span><span class="lineNoCov">          0 :     for (const auto&amp; tileRequest : _tileImageRequests)</span>
-<span class="lineNum">     230 </span>            :     {
-<span class="lineNum">     231 </span><span class="lineNoCov">          0 :         auto watcher = new Watcher;</span>
-<span class="lineNum">     232 </span><span class="lineNoCov">          0 :         _watchers.append(watcher);</span>
-<span class="lineNum">     233 </span>            :         connect(watcher, &amp;Watcher::finished, this,
-<a name="234"><span class="lineNum">     234 </span><span class="lineNoCov">          0 :                 &amp;DataProvider::_handleFinished);</span></a>
-<span class="lineNum">     235 </span><span class="lineNoCov">          0 :         watcher-&gt;setFuture(QtConcurrent::run(</span>
-<span class="lineNum">     236 </span><span class="lineNoCov">          0 :             [ this, source, tilesToUpdate = tileRequest.second ] {</span>
-<span class="lineNum">     237 </span><span class="lineNoCov">          0 :                 _load(source, tilesToUpdate);</span>
-<span class="lineNum">     238 </span><span class="lineNoCov">          0 :             }));</span>
-<span class="lineNum">     239 </span>            :     }
-<a name="240"><span class="lineNum">     240 </span><span class="lineNoCov">          0 : }</span></a>
-<span class="lineNum">     241 </span>            : 
-<span class="lineNum">     242 </span><span class="lineNoCov">          0 : void DataProvider::_handleStreamError(const QString&amp; uri)</span>
-<span class="lineNum">     243 </span>            : {
-<span class="lineNum">     244 </span><span class="lineNoCov">          0 :     print_log(LOG_ERROR, LOG_STREAM, &quot;closing pixel stream %s&quot;,</span>
-<span class="lineNum">     245 </span><span class="lineNoCov">          0 :               uri.toLocal8Bit().constData());</span>
-<span class="lineNum">     246 </span><span class="lineNoCov">          0 :     _streamSources.erase(uri);</span>
-<span class="lineNum">     247 </span><span class="lineNoCov">          0 :     emit closePixelStream(uri);</span>
-<a name="248"><span class="lineNum">     248 </span><span class="lineNoCov">          0 : }</span></a>
-<span class="lineNum">     249 </span>            : 
-<span class="lineNum">     250 </span><span class="lineNoCov">          0 : void DataProvider::_load(DataSourceSharedPtr source,</span>
-<span class="lineNum">     251 </span>            :                          const TileUpdateList&amp; tiles)
-<span class="lineNum">     252 </span>            : {
-<span class="lineNum">     253 </span>            :     // Request image only once for each view
-<span class="lineNum">     254 </span><span class="lineNoCov">          0 :     std::map&lt;deflect::View, ImagePtr&gt; image;</span>
-<span class="lineNum">     255 </span>            : 
-<span class="lineNum">     256 </span><span class="lineNoCov">          0 :     for (const auto&amp; it : tiles)</span>
-<span class="lineNum">     257 </span>            :     {
-<span class="lineNum">     258 </span><span class="lineNoCov">          0 :         if (auto tile = it.tile.lock())</span>
-<span class="lineNum">     259 </span>            :         {
-<span class="lineNum">     260 </span><span class="lineNoCov">          0 :             const auto view = it.view;</span>
-<span class="lineNum">     261 </span><span class="lineNoCov">          0 :             const auto id = tile-&gt;getId();</span>
-<span class="lineNum">     262 </span><span class="lineNoCov">          0 :             if (!image[view])</span>
-<span class="lineNum">     263 </span>            :             {
-<span class="lineNum">     264 </span>            :                 try
-<span class="lineNum">     265 </span>            :                 {
-<span class="lineNum">     266 </span><span class="lineNoCov">          0 :                     image[view] = source-&gt;getTileImage(id, view);</span>
+<span class="lineNum">     210 </span><span class="lineNoCov">          0 :             _startAsyncTileImageRequests(std::move(source));</span>
+<span class="lineNum">     211 </span><span class="lineNoCov">          0 :             ++it;</span>
+<span class="lineNum">     212 </span>            :         }
+<span class="lineNum">     213 </span><span class="lineNoCov">          0 :         catch (const std::exception&amp; e)</span>
+<span class="lineNum">     214 </span>            :         {
+<span class="lineNum">     215 </span><span class="lineNoCov">          0 :             print_log(LOG_ERROR, LOG_GENERAL,</span>
+<span class="lineNum">     216 </span><span class="lineNoCov">          0 :                       &quot;closing data source due to exception: %s&quot;, e.what());</span>
+<span class="lineNum">     217 </span><span class="lineNoCov">          0 :             it = _dataSources.erase(it);</span>
+<span class="lineNum">     218 </span>            : 
+<span class="lineNum">     219 </span><span class="lineNoCov">          0 :             if (auto stream = cast_to_stream_source(it-&gt;second))</span>
+<span class="lineNum">     220 </span><span class="lineNoCov">          0 :                 _handleStreamError(stream-&gt;getUri());</span>
+<span class="lineNum">     221 </span>            :         }
+<span class="lineNum">     222 </span>            :     }
+<a name="223"><span class="lineNum">     223 </span><span class="lineNoCov">          0 : }</span></a>
+<span class="lineNum">     224 </span>            : 
+<span class="lineNum">     225 </span><span class="lineNoCov">          0 : void DataProvider::_startAsyncTileImageRequests(DataSourceSharedPtr source)</span>
+<span class="lineNum">     226 </span>            : {
+<span class="lineNum">     227 </span><span class="lineNoCov">          0 :     for (const auto&amp; tileRequest : _tileImageRequests)</span>
+<span class="lineNum">     228 </span>            :     {
+<span class="lineNum">     229 </span><span class="lineNoCov">          0 :         auto watcher = new Watcher;</span>
+<span class="lineNum">     230 </span><span class="lineNoCov">          0 :         _watchers.append(watcher);</span>
+<span class="lineNum">     231 </span>            :         connect(watcher, &amp;Watcher::finished, this,
+<a name="232"><span class="lineNum">     232 </span><span class="lineNoCov">          0 :                 &amp;DataProvider::_handleFinished);</span></a>
+<span class="lineNum">     233 </span><span class="lineNoCov">          0 :         watcher-&gt;setFuture(QtConcurrent::run(</span>
+<span class="lineNum">     234 </span><span class="lineNoCov">          0 :             [ this, source, tilesToUpdate = tileRequest.second ] {</span>
+<span class="lineNum">     235 </span><span class="lineNoCov">          0 :                 _load(std::move(source), tilesToUpdate);</span>
+<span class="lineNum">     236 </span><span class="lineNoCov">          0 :             }));</span>
+<span class="lineNum">     237 </span>            :     }
+<a name="238"><span class="lineNum">     238 </span><span class="lineNoCov">          0 : }</span></a>
+<span class="lineNum">     239 </span>            : 
+<span class="lineNum">     240 </span><span class="lineNoCov">          0 : void DataProvider::_handleStreamError(const QString&amp; uri)</span>
+<span class="lineNum">     241 </span>            : {
+<span class="lineNum">     242 </span><span class="lineNoCov">          0 :     print_log(LOG_ERROR, LOG_STREAM, &quot;closing pixel stream %s&quot;,</span>
+<span class="lineNum">     243 </span><span class="lineNoCov">          0 :               uri.toLocal8Bit().constData());</span>
+<span class="lineNum">     244 </span><span class="lineNoCov">          0 :     _streamSources.erase(uri);</span>
+<span class="lineNum">     245 </span><span class="lineNoCov">          0 :     emit closePixelStream(uri);</span>
+<a name="246"><span class="lineNum">     246 </span><span class="lineNoCov">          0 : }</span></a>
+<span class="lineNum">     247 </span>            : 
+<span class="lineNum">     248 </span><span class="lineNoCov">          0 : void DataProvider::_load(DataSourceSharedPtr source,</span>
+<span class="lineNum">     249 </span>            :                          const TileUpdateList&amp; tilesToUpdate)
+<span class="lineNum">     250 </span>            : {
+<span class="lineNum">     251 </span>            :     // Request image only once for each view
+<span class="lineNum">     252 </span><span class="lineNoCov">          0 :     std::map&lt;deflect::View, ImagePtr&gt; image;</span>
+<span class="lineNum">     253 </span>            : 
+<span class="lineNum">     254 </span><span class="lineNoCov">          0 :     for (const auto&amp; it : tilesToUpdate)</span>
+<span class="lineNum">     255 </span>            :     {
+<span class="lineNum">     256 </span><span class="lineNoCov">          0 :         if (auto tile = it.tile.lock())</span>
+<span class="lineNum">     257 </span>            :         {
+<span class="lineNum">     258 </span><span class="lineNoCov">          0 :             const auto view = it.view;</span>
+<span class="lineNum">     259 </span><span class="lineNoCov">          0 :             const auto id = tile-&gt;getId();</span>
+<span class="lineNum">     260 </span>            :             try
+<span class="lineNum">     261 </span>            :             {
+<span class="lineNum">     262 </span><span class="lineNoCov">          0 :                 if (!image.count(view))</span>
+<span class="lineNum">     263 </span>            :                 {
+<span class="lineNum">     264 </span><span class="lineNoCov">          0 :                     image[view] = source-&gt;getTileImage(id, view);</span>
+<span class="lineNum">     265 </span><span class="lineNoCov">          0 :                     if (!image[view])</span>
+<span class="lineNum">     266 </span><span class="lineNoCov">          0 :                         throw std::logic_error(&quot;Unexpected empty image&quot;);</span>
 <span class="lineNum">     267 </span>            :                 }
-<span class="lineNum">     268 </span><span class="lineNoCov">          0 :                 catch (const std::exception&amp; e)</span>
-<span class="lineNum">     269 </span>            :                 {
-<span class="lineNum">     270 </span><span class="lineNoCov">          0 :                     print_log(LOG_ERROR, LOG_GENERAL,</span>
-<span class="lineNum">     271 </span>            :                               &quot;An error occured with tile: %d - %s&quot;, id,
-<span class="lineNum">     272 </span><span class="lineNoCov">          0 :                               e.what());</span>
-<span class="lineNum">     273 </span><span class="lineNoCov">          0 :                     return;</span>
-<span class="lineNum">     274 </span>            :                 }
-<span class="lineNum">     275 </span><span class="lineNoCov">          0 :                 if (!image[view])</span>
-<span class="lineNum">     276 </span>            :                 {
-<span class="lineNum">     277 </span><span class="lineNoCov">          0 :                     print_log(LOG_DEBUG, LOG_GENERAL,</span>
-<span class="lineNum">     278 </span><span class="lineNoCov">          0 :                               &quot;Empty image for tile: %d&quot;, id);</span>
-<span class="lineNum">     279 </span><span class="lineNoCov">          0 :                     return;</span>
-<span class="lineNum">     280 </span>            :                 }
-<span class="lineNum">     281 </span><span class="lineNoCov">          0 :                 emit imageLoaded(); // Keep RenderController active</span>
-<span class="lineNum">     282 </span>            :             }
-<span class="lineNum">     283 </span><span class="lineNoCov">          0 :             QMetaObject::invokeMethod(tile.get(), &quot;updateBackTexture&quot;,</span>
-<span class="lineNum">     284 </span>            :                                       Qt::QueuedConnection,
-<span class="lineNum">     285 </span><span class="lineNoCov">          0 :                                       Q_ARG(ImagePtr, image[view]),</span>
-<span class="lineNum">     286 </span><span class="lineNoCov">          0 :                                       Q_ARG(TilePtr, tile));</span>
-<span class="lineNum">     287 </span>            :         }
-<span class="lineNum">     288 </span>            :         else
-<span class="lineNum">     289 </span><span class="lineNoCov">          0 :             print_log(LOG_DEBUG, LOG_GENERAL, &quot;Tile expired&quot;);</span>
-<span class="lineNum">     290 </span>            :     }
-<a name="291"><span class="lineNum">     291 </span>            : }</a>
-<span class="lineNum">     292 </span>            : 
-<span class="lineNum">     293 </span><span class="lineNoCov">          0 : void DataProvider::_handleFinished()</span>
-<span class="lineNum">     294 </span>            : {
-<span class="lineNum">     295 </span><span class="lineNoCov">          0 :     auto watcher = static_cast&lt;Watcher*&gt;(sender());</span>
-<a name="296"><span class="lineNum">     296 </span><span class="lineNoCov">          0 :     _watchers.removeOne(watcher);</span></a>
-<span class="lineNum">     297 </span><span class="lineNoCov">          0 :     watcher-&gt;deleteLater();</span>
-<span class="lineNum">     298 </span><span class="lineCov">        111 : }</span>
+<span class="lineNum">     268 </span><span class="lineNoCov">          0 :                 QMetaObject::invokeMethod(tile.get(), &quot;updateBackTexture&quot;,</span>
+<span class="lineNum">     269 </span>            :                                           Qt::QueuedConnection,
+<span class="lineNum">     270 </span><span class="lineNoCov">          0 :                                           Q_ARG(ImagePtr, image[view]),</span>
+<span class="lineNum">     271 </span><span class="lineNoCov">          0 :                                           Q_ARG(TilePtr, tile));</span>
+<span class="lineNum">     272 </span><span class="lineNoCov">          0 :                 emit imageLoaded(); // Keep RenderController active</span>
+<span class="lineNum">     273 </span>            :             }
+<span class="lineNum">     274 </span><span class="lineNoCov">          0 :             catch (const std::exception&amp; e)</span>
+<span class="lineNum">     275 </span>            :             {
+<span class="lineNum">     276 </span><span class="lineNoCov">          0 :                 print_log(LOG_ERROR, LOG_GENERAL,</span>
+<span class="lineNum">     277 </span>            :                           &quot;An error occured for content '%s' with tile %d: %s&quot;,
+<span class="lineNum">     278 </span>            :                           source-&gt;getUri().toLocal8Bit().constData(), id,
+<span class="lineNum">     279 </span><span class="lineNoCov">          0 :                           e.what());</span>
+<span class="lineNum">     280 </span>            :             }
+<span class="lineNum">     281 </span>            :         }
+<span class="lineNum">     282 </span>            :         else
+<span class="lineNum">     283 </span>            :         {
+<span class="lineNum">     284 </span><span class="lineNoCov">          0 :             print_log(LOG_DEBUG, LOG_GENERAL, &quot;Tile expired&quot;);</span>
+<span class="lineNum">     285 </span>            :         }
+<span class="lineNum">     286 </span>            :     }
+<a name="287"><span class="lineNum">     287 </span><span class="lineNoCov">          0 : }</span></a>
+<span class="lineNum">     288 </span>            : 
+<span class="lineNum">     289 </span><span class="lineNoCov">          0 : void DataProvider::_handleFinished()</span>
+<span class="lineNum">     290 </span>            : {
+<span class="lineNum">     291 </span><span class="lineNoCov">          0 :     auto watcher = static_cast&lt;Watcher*&gt;(sender());</span>
+<a name="292"><span class="lineNum">     292 </span><span class="lineNoCov">          0 :     _watchers.removeOne(watcher);</span></a>
+<span class="lineNum">     293 </span><span class="lineNoCov">          0 :     watcher-&gt;deleteLater();</span>
+<span class="lineNum">     294 </span><span class="lineCov">        111 : }</span>
 </pre>
       </td>
     </tr>

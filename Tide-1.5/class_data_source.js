@@ -8,6 +8,7 @@ var class_data_source =
     [ "getTileImage", "class_data_source.html#a60b8f9f5fa35e406afad9eb320a6f484", null ],
     [ "getTileRect", "class_data_source.html#ae90b6ac012313220258d79a06d24b0cf", null ],
     [ "getTilesArea", "class_data_source.html#ad5f46f736ac7222416f59bd2406e566e", null ],
+    [ "getUri", "class_data_source.html#aff462c9a7069ef3475c5be991ff2d4a1", null ],
     [ "isDynamic", "class_data_source.html#a54629350c073612b09217a9084b27951", null ],
     [ "synchronizeFrameAdvance", "class_data_source.html#ae31af1515d771beaa5b7e041d50de481", null ],
     [ "update", "class_data_source.html#aae2de21df344a7fbcbb5f843bad01545", null ],
