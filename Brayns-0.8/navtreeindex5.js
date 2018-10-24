@@ -1,5 +1,10 @@
 var NAVTREEINDEX5 =
 {
+"structbrayns_1_1_plugin_param.html#a11ed6342be6b7d910e850f058a0c560b":[3,0,0,45,0],
+"structbrayns_1_1_plugin_param.html#ae5b28592624b68dc583e87b76aa74c33":[3,0,0,45,1],
+"structbrayns_1_1_property_map_1_1_property.html":[3,0,0,48,0],
+"structbrayns_1_1_property_map_1_1_property.html#a27e38a559b53ee0c43517c893bd19408":[3,0,0,48,0,4],
+"structbrayns_1_1_property_map_1_1_property.html#a2af337dab4513042f33958765272b73c":[3,0,0,48,0,6],
 "structbrayns_1_1_property_map_1_1_property.html#a3ec97fb552e32665d8eb577ad99c4daa":[3,0,0,48,0,10],
 "structbrayns_1_1_property_map_1_1_property.html#a45ca8395f82675b7c03b4081b96b4a78":[3,0,0,48,0,16],
 "structbrayns_1_1_property_map_1_1_property.html#a496da11bd2ad17ad80cd9308abab9750":[3,0,0,48,0,15],
