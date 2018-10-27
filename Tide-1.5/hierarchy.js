@@ -73,6 +73,7 @@ var hierarchy =
     [ "LodTools", "class_lod_tools.html", null ],
     [ "LodTools::TileIndex", "struct_lod_tools_1_1_tile_index.html", null ],
     [ "LodTools::TileInfo", "struct_lod_tools_1_1_tile_info.html", null ],
+    [ "MarkersUpdater", "class_markers_updater.html", null ],
     [ "MessageHeader", "struct_message_header.html", null ],
     [ "int_", null, [
       [ "boost::serialization::implementation_level< std::chrono::duration< Rep, Period > >", "structboost_1_1serialization_1_1implementation__level_3_01std_1_1chrono_1_1duration_3_01_rep_00_01_period_01_4_01_4.html", null ],
@@ -120,6 +121,7 @@ var hierarchy =
     [ "QmlKeyInjector", "class_qml_key_injector.html", null ],
     [ "QObject", null, [
       [ "ActivityLogger", "class_activity_logger.html", null ],
+      [ "AppController", "class_app_controller.html", null ],
       [ "AppRemoteController", "class_app_remote_controller.html", null ],
       [ "Background", "class_background.html", null ],
       [ "Content", "class_content.html", [

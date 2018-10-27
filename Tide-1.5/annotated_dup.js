@@ -15,6 +15,7 @@ var annotated_dup =
       [ "Version", "classtide_1_1_version.html", "classtide_1_1_version" ]
     ] ],
     [ "ActivityLogger", "class_activity_logger.html", "class_activity_logger" ],
+    [ "AppController", "class_app_controller.html", "class_app_controller" ],
     [ "AppRemoteController", "class_app_remote_controller.html", "class_app_remote_controller" ],
     [ "AutomaticLayout", "class_automatic_layout.html", "class_automatic_layout" ],
     [ "AVFormatContextDeleter", "struct_a_v_format_context_deleter.html", "struct_a_v_format_context_deleter" ],
@@ -89,6 +90,7 @@ var annotated_dup =
     [ "LodTiler", "class_lod_tiler.html", "class_lod_tiler" ],
     [ "LodTools", "class_lod_tools.html", "class_lod_tools" ],
     [ "Markers", "class_markers.html", "class_markers" ],
+    [ "MarkersUpdater", "class_markers_updater.html", "class_markers_updater" ],
     [ "MasterApplication", "class_master_application.html", "class_master_application" ],
     [ "MasterDisplayGroupRenderer", "class_master_display_group_renderer.html", "class_master_display_group_renderer" ],
     [ "MasterFromWallChannel", "class_master_from_wall_channel.html", "class_master_from_wall_channel" ],

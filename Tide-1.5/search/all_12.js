@@ -52,5 +52,6 @@ var searchData=
   ['restinterface',['RestInterface',['../class_rest_interface.html',1,'RestInterface'],['../class_rest_interface.html#ab0094f6cc136107defb8ff906510354b',1,'RestInterface::RestInterface()']]],
   ['restoremodeandzoom',['restoreModeAndZoom',['../class_window.html#a1ee0e91879205515ca3737523e8048df',1,'Window']]],
   ['restserver',['RestServer',['../class_rest_server.html',1,'RestServer'],['../class_rest_server.html#a688fd7a30878aea6036b459cfebf657c',1,'RestServer::RestServer()'],['../class_rest_server.html#a4b44a7efc2c7580ae5ff8e0136b4fa93',1,'RestServer::RestServer(uint16_t port)']]],
+  ['resume',['resume',['../class_app_controller.html#acf05183a1bc0e17f932a6ebdfa52bbdb',1,'AppController']]],
   ['run',['run',['../class_process_forker.html#ad1528d488d2aa41dec482bbadb431cd3',1,'ProcessForker']]]
 ];

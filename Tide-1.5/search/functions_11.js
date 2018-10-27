@@ -1,6 +1,6 @@
 var searchData=
 [
-  ['save',['save',['../class_master_window.html#ac0cb8c59041df28d772aaa33bc9e79b2',1,'MasterWindow::save()'],['../class_app_remote_controller.html#a2d825499b64fccac70fec5ac2f0449ba',1,'AppRemoteController::save()'],['../class_session_saver.html#a91fde2cc5d9408b88889041432d7622e',1,'SessionSaver::save()']]],
+  ['save',['save',['../class_app_controller.html#a147072a6a1e46111a30e4e7e75799930',1,'AppController::save()'],['../class_master_window.html#ac0cb8c59041df28d772aaa33bc9e79b2',1,'MasterWindow::save()'],['../class_app_remote_controller.html#a2d825499b64fccac70fec5ac2f0449ba',1,'AppRemoteController::save()'],['../class_session_saver.html#a91fde2cc5d9408b88889041432d7622e',1,'SessionSaver::save()']]],
   ['savebackgroundchanges',['saveBackgroundChanges',['../class_configuration.html#a7d5d7858b5b5432e184b5f32ab3e988e',1,'Configuration::saveBackgroundChanges() const '],['../class_configuration.html#a436e6cd803e747ba4126dd24bd656fa0',1,'Configuration::saveBackgroundChanges(const QString &amp;filename) const ']]],
   ['savetofile',['saveToFile',['../class_session_preview.html#a7c05773db21484e67e92497801226ed6',1,'SessionPreview']]],
   ['scale',['scale',['../class_display_group_controller.html#aa76ed17f5cb0257daff3d77719edfd06',1,'DisplayGroupController::scale()'],['../class_window_controller.html#a3e86a0fd011d578220ba0c2e69162153',1,'WindowController::scale()']]],
@@ -8,6 +8,7 @@ var searchData=
   ['sceneremotecontroller',['SceneRemoteController',['../class_scene_remote_controller.html#ae1b2170f25b6d7e1870fc09b752a37e3',1,'SceneRemoteController']]],
   ['screenshotassembler',['ScreenshotAssembler',['../class_screenshot_assembler.html#ae78678f1e8c50bf59a432666045bc453',1,'ScreenshotAssembler']]],
   ['screenshotcomplete',['screenshotComplete',['../class_screenshot_assembler.html#a41adce15c84e64d6c0f9bf9afcb79cac',1,'ScreenshotAssembler']]],
+  ['screenstatechanged',['screenStateChanged',['../class_app_controller.html#ace1db16ec6644b1605a02f8967602fa9',1,'AppController']]],
   ['seektonearestfullframe',['seekToNearestFullframe',['../class_f_f_m_p_e_g_video_stream.html#ab78b40e3d19ec1de95c31ea52163937c',1,'FFMPEGVideoStream']]],
   ['send',['send',['../class_m_p_i_communicator.html#a89e7ad5aab3cd1d85c2c7f0fb5915ac3',1,'MPICommunicator::send()'],['../class_qml_key_injector.html#a891f852bcd32456b07173fbe87853187',1,'QmlKeyInjector::send()'],['../class_master_to_wall_channel.html#a0c568a19289def984f52c2f5956ecd1f',1,'MasterToWallChannel::send()']]],
   ['sendasync',['sendAsync',['../class_master_to_wall_channel.html#a86f37ea730a79ee7221fe849cb659f45',1,'MasterToWallChannel::sendAsync(ScenePtr scene)'],['../class_master_to_wall_channel.html#ab363eb3caaeb7c843c1bc2d3eae219f1',1,'MasterToWallChannel::sendAsync(OptionsPtr options)'],['../class_master_to_wall_channel.html#ae6decbc8adba8ad54d9a9f8412d98935',1,'MasterToWallChannel::sendAsync(CountdownStatusPtr status)'],['../class_master_to_wall_channel.html#aaf9ac18a037e5eca708fbf3a10329deb',1,'MasterToWallChannel::sendAsync(ScreenLockPtr lock)'],['../class_master_to_wall_channel.html#a14f4b381b5a30ceb29d5bc24a977878f',1,'MasterToWallChannel::sendAsync(MarkersPtr markers)']]],
@@ -84,7 +85,7 @@ var searchData=
   ['showwindows',['showWindows',['../class_pixel_stream_window_manager.html#a3048f8a2af3bf95cf1c916ba8f940762',1,'PixelStreamWindowManager']]],
   ['sidecontroller',['SideController',['../class_side_controller.html#a5d2a3af0bd8ba598c980049092bc5d61',1,'SideController']]],
   ['size',['size',['../class_receive_buffer.html#ac318a09ddc49c104cb9c02c853fe947d',1,'ReceiveBuffer']]],
-  ['start',['start',['../class_pixel_streamer_launcher.html#a8723160ae4f5cba40778e9e727c1f52c',1,'PixelStreamerLauncher']]],
+  ['start',['start',['../class_app_controller.html#a44569b557937e6c5f86b7dd104aac1ef',1,'AppController::start()'],['../class_pixel_streamer_launcher.html#a8723160ae4f5cba40778e9e727c1f52c',1,'PixelStreamerLauncher::start()']]],
   ['statisticschanged',['statisticsChanged',['../class_content_synchronizer.html#a8b2131d6b3874d8d932a101ec3dcde05',1,'ContentSynchronizer']]],
   ['stop',['stop',['../class_inactivity_timer.html#a936109b125da6d67baccc2eda68a85b8',1,'InactivityTimer']]],
   ['streamaccepted',['streamAccepted',['../class_screen_lock.html#a4e4d0c1d7933a7fc4ef2483f1e3aa89b',1,'ScreenLock']]],
@@ -93,6 +94,7 @@ var searchData=
   ['streamrejected',['streamRejected',['../class_screen_lock.html#a5f26f2a2c5f0e60538cffaf3a6099c52',1,'ScreenLock']]],
   ['streamthumbnailgenerator',['StreamThumbnailGenerator',['../class_stream_thumbnail_generator.html#ae3cf7031ee0ff78ee6bc18d374e270f3',1,'StreamThumbnailGenerator']]],
   ['streamwindowclosed',['streamWindowClosed',['../class_pixel_stream_window_manager.html#a7ddea42df9209eb399a2844bb36bd97e',1,'PixelStreamWindowManager']]],
+  ['suspend',['suspend',['../class_app_controller.html#a3f1ed2333e707f5e16f3a2aff99817a4',1,'AppController']]],
   ['svg',['SVG',['../class_s_v_g.html#a3474f26fa7ac0b471564acd9c7b13721',1,'SVG::SVG(const QString &amp;uri)'],['../class_s_v_g.html#af34129c53df4a18f880e4f2ebfcb9cd8',1,'SVG::SVG(const QByteArray &amp;svgData)']]],
   ['svgcontent',['SVGContent',['../class_s_v_g_content.html#a9813e8e86203ad9d19507fbc0ef7b6fb',1,'SVGContent']]],
   ['svggpuimage',['SVGGpuImage',['../class_s_v_g_gpu_image.html#ae72dc82feae79c1109cc2bc77cb4368a',1,'SVGGpuImage']]],

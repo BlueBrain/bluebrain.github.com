@@ -5,6 +5,7 @@ var searchData=
   ['tapandhold',['tapAndHold',['../class_multitouch_area.html#a968c008c352f09cb24486ed8257b0968',1,'MultitouchArea::tapAndHold()'],['../class_tap_and_hold_detector.html#ac74ae2cad949de85e7983238d1794634',1,'TapAndHoldDetector::tapAndHold()']]],
   ['tapandholddetector',['TapAndHoldDetector',['../class_tap_and_hold_detector.html',1,'']]],
   ['tapdetector',['TapDetector',['../class_tap_detector.html',1,'']]],
+  ['terminatestream',['terminateStream',['../class_app_controller.html#a184a651987fa94e336f16a00f8de59ef',1,'AppController']]],
   ['testpattern',['TestPattern',['../class_test_pattern.html',1,'TestPattern'],['../class_test_pattern.html#aa9a87351a6bc76073c704d7b120dca9f',1,'TestPattern::TestPattern()']]],
   ['textureborderswitcher',['TextureBorderSwitcher',['../class_texture_border_switcher.html',1,'']]],
   ['texturenode',['TextureNode',['../class_texture_node.html',1,'']]],

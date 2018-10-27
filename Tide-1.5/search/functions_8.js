@@ -2,6 +2,7 @@ var searchData=
 [
   ['handlestreamend',['handleStreamEnd',['../class_pixel_stream_window_manager.html#a46b8f7dcd44849d8bd12102735f0fa5e',1,'PixelStreamWindowManager']]],
   ['handlestreamstart',['handleStreamStart',['../class_pixel_stream_window_manager.html#afb4053fccb1b44819a93955de4eedd77',1,'PixelStreamWindowManager']]],
+  ['handletouchevent',['handleTouchEvent',['../class_app_controller.html#a81097dd49df97a908c65e4e468d755ed',1,'AppController']]],
   ['handleupload',['handleUpload',['../class_file_receiver.html#a9a259a04ed09125eb77253a5b138a020',1,'FileReceiver']]],
   ['hasalphachannel',['hasAlphaChannel',['../class_tiff_pyramid_reader.html#af22b72ad376703b8b930eaf24f3f2478',1,'TiffPyramidReader']]],
   ['haseventreceivers',['hasEventReceivers',['../class_pixel_stream_content.html#a0e40610bb7d62536fcce4a31f268098e',1,'PixelStreamContent']]],

@@ -1,6 +1,7 @@
 var searchData=
 [
   ['markers',['Markers',['../class_markers.html',1,'']]],
+  ['markersupdater',['MarkersUpdater',['../class_markers_updater.html',1,'']]],
   ['master',['Master',['../struct_configuration_1_1_master.html',1,'Configuration']]],
   ['masterapplication',['MasterApplication',['../class_master_application.html',1,'']]],
   ['masterdisplaygrouprenderer',['MasterDisplayGroupRenderer',['../class_master_display_group_renderer.html',1,'']]],

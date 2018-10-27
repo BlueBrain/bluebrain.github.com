@@ -2,6 +2,7 @@ var searchData=
 [
   ['api_2eh',['api.h',['../master_2api_8h.html',1,'']]],
   ['markers',['Markers',['../class_markers.html',1,'']]],
+  ['markersupdater',['MarkersUpdater',['../class_markers_updater.html',1,'MarkersUpdater'],['../class_markers_updater.html#a30fd075ba404c5d0aca0ed9b2675c09a',1,'MarkersUpdater::MarkersUpdater()']]],
   ['markexistingtilesdirty',['markExistingTilesDirty',['../class_tiled_synchronizer.html#aea78efa8211d3811f014780accff7d9b',1,'TiledSynchronizer']]],
   ['marktilesdirty',['markTilesDirty',['../class_tiled_synchronizer.html#a06aea9e65d661a993f8ffdb7153d9a48',1,'TiledSynchronizer']]],
   ['master',['Master',['../struct_configuration_1_1_master.html',1,'Configuration']]],

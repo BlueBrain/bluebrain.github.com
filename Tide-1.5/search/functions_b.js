@@ -1,5 +1,6 @@
 var searchData=
 [
+  ['markersupdater',['MarkersUpdater',['../class_markers_updater.html#a30fd075ba404c5d0aca0ed9b2675c09a',1,'MarkersUpdater']]],
   ['markexistingtilesdirty',['markExistingTilesDirty',['../class_tiled_synchronizer.html#aea78efa8211d3811f014780accff7d9b',1,'TiledSynchronizer']]],
   ['marktilesdirty',['markTilesDirty',['../class_tiled_synchronizer.html#a06aea9e65d661a993f8ffdb7153d9a48',1,'TiledSynchronizer']]],
   ['masterapplication',['MasterApplication',['../class_master_application.html#a1600e719529430f25bf10fea039182b2',1,'MasterApplication']]],

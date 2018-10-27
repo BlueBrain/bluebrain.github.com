@@ -6,7 +6,8 @@ var class_app_remote_controller =
     [ "load", "class_app_remote_controller.html#a7f703ba6d6d7a77a431370c692732ee2", null ],
     [ "open", "class_app_remote_controller.html#a0c0509c879b1add3adeb4a1d7316e9f6", null ],
     [ "openWhiteboard", "class_app_remote_controller.html#a5301bee74276dcbca1525587f8c1fc22", null ],
-    [ "powerOff", "class_app_remote_controller.html#a626d6ee47d619bf49a8cbc0da26a7651", null ],
+    [ "powerOff", "class_app_remote_controller.html#ae865c57aef55d7d81c34ec1e105388ab", null ],
+    [ "powerOn", "class_app_remote_controller.html#aaf8dff252cfafd20e7aaad2bd12cb621", null ],
     [ "save", "class_app_remote_controller.html#a2d825499b64fccac70fec5ac2f0449ba", null ],
     [ "takeScreenshot", "class_app_remote_controller.html#a5eaf77e43de754ce7bee11734e2c6795", null ]
 ];
