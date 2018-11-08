@@ -5,7 +5,7 @@ var searchData=
   ['savebackgroundchanges',['saveBackgroundChanges',['../class_configuration.html#a7d5d7858b5b5432e184b5f32ab3e988e',1,'Configuration::saveBackgroundChanges() const '],['../class_configuration.html#a436e6cd803e747ba4126dd24bd656fa0',1,'Configuration::saveBackgroundChanges(const QString &amp;filename) const ']]],
   ['savedir',['saveDir',['../struct_configuration_1_1_whiteboard.html#aecf3e89979811970bb9d63e8dcb18545',1,'Configuration::Whiteboard']]],
   ['savetofile',['saveToFile',['../class_session_preview.html#a7c05773db21484e67e92497801226ed6',1,'SessionPreview']]],
-  ['scale',['scale',['../class_display_group_controller.html#aa76ed17f5cb0257daff3d77719edfd06',1,'DisplayGroupController::scale()'],['../class_window_controller.html#a3e86a0fd011d578220ba0c2e69162153',1,'WindowController::scale()']]],
+  ['scale',['scale',['../class_display_group_controller.html#aa76ed17f5cb0257daff3d77719edfd06',1,'DisplayGroupController::scale()'],['../class_window_controller.html#a5acf4275a9cade14b9d110964e4a10d6',1,'WindowController::scale()']]],
   ['scalearoundcenter',['scaleAroundCenter',['../namespacegeometry.html#aa0cdc7f2eabcfa601542b79799f09cbd',1,'geometry']]],
   ['scene',['Scene',['../class_scene.html',1,'']]],
   ['scenecontroller',['SceneController',['../class_scene_controller.html',1,'']]],

@@ -25,6 +25,7 @@ var searchData=
   ['windowmovedtofront',['windowMovedToFront',['../class_display_group.html#a2030d8c3a652c717fe8bb4073f79331f',1,'DisplayGroup']]],
   ['windowremoved',['windowRemoved',['../class_display_group.html#a9f6df462f2f2b66d19e9c3a74b59943f',1,'DisplayGroup']]],
   ['windowrenderer',['WindowRenderer',['../class_window_renderer.html',1,'WindowRenderer'],['../class_window_renderer.html#ace9faa98cf93f02468421d7c70dab12f',1,'WindowRenderer::WindowRenderer()']]],
+  ['windowresizehandlescontroller',['WindowResizeHandlesController',['../class_window_resize_handles_controller.html',1,'WindowResizeHandlesController'],['../class_window_resize_handles_controller.html#ab88d7c7835085c11432254e5b5b0a8dc',1,'WindowResizeHandlesController::WindowResizeHandlesController()']]],
   ['windowstate',['WindowState',['../class_window.html#adaf783476a94b5122e6c01a5003efc21',1,'Window']]],
   ['windowtouchcontroller',['WindowTouchController',['../class_window_touch_controller.html',1,'WindowTouchController'],['../class_window_touch_controller.html#a15012ee2fc61260d3a9f05647b4936ea',1,'WindowTouchController::WindowTouchController()']]],
   ['windowtype',['WindowType',['../class_window.html#af334e9ffc511fb6b24db90a1a5c56007',1,'Window']]],

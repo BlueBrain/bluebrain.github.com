@@ -207,6 +207,7 @@ var annotated_dup =
     [ "WindowController", "class_window_controller.html", "class_window_controller" ],
     [ "WindowListWidgetItem", "class_window_list_widget_item.html", "class_window_list_widget_item" ],
     [ "WindowRenderer", "class_window_renderer.html", "class_window_renderer" ],
+    [ "WindowResizeHandlesController", "class_window_resize_handles_controller.html", "class_window_resize_handles_controller" ],
     [ "WindowTouchController", "class_window_touch_controller.html", "class_window_touch_controller" ],
     [ "XmlParser", "class_xml_parser.html", "class_xml_parser" ],
     [ "YUVImage", "class_y_u_v_image.html", "class_y_u_v_image" ],

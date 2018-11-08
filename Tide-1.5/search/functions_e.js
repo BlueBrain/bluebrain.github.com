@@ -27,7 +27,7 @@ var searchData=
   ['pixelstreamsynchronizer',['PixelStreamSynchronizer',['../class_pixel_stream_synchronizer.html#a85e426d30f4726b4a9715da18affd34b',1,'PixelStreamSynchronizer']]],
   ['pixelstreamupdater',['PixelStreamUpdater',['../class_pixel_stream_updater.html#a3e0bb94ace342b7c80c932a43e96815a',1,'PixelStreamUpdater']]],
   ['pixelstreamwindowmanager',['PixelStreamWindowManager',['../class_pixel_stream_window_manager.html#a835e4815253d8b8e51263f9d803a61e2',1,'PixelStreamWindowManager']]],
-  ['poweroff',['powerOff',['../class_app_remote_controller.html#ae865c57aef55d7d81c34ec1e105388ab',1,'AppRemoteController::powerOff()'],['../class_inactivity_timer.html#a3e2636328fd2b726744449398164d0d3',1,'InactivityTimer::poweroff()']]],
+  ['poweroff',['poweroff',['../class_inactivity_timer.html#a3e2636328fd2b726744449398164d0d3',1,'InactivityTimer::poweroff()'],['../class_app_remote_controller.html#ae865c57aef55d7d81c34ec1e105388ab',1,'AppRemoteController::powerOff()']]],
   ['poweron',['powerOn',['../class_app_remote_controller.html#aaf8dff252cfafd20e7aaad2bd12cb621',1,'AppRemoteController']]],
   ['prepareupload',['prepareUpload',['../class_file_receiver.html#a9c7f1cbb703d9b51f25a388387fc3f60',1,'FileReceiver']]],
   ['previouspage',['previousPage',['../class_p_d_f_content.html#a0d52e1a8ee7954872bcad5a9d74c342b',1,'PDFContent']]],

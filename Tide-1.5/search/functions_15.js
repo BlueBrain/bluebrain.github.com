@@ -16,6 +16,7 @@ var searchData=
   ['windowmovedtofront',['windowMovedToFront',['../class_display_group.html#a2030d8c3a652c717fe8bb4073f79331f',1,'DisplayGroup']]],
   ['windowremoved',['windowRemoved',['../class_display_group.html#a9f6df462f2f2b66d19e9c3a74b59943f',1,'DisplayGroup']]],
   ['windowrenderer',['WindowRenderer',['../class_window_renderer.html#ace9faa98cf93f02468421d7c70dab12f',1,'WindowRenderer']]],
+  ['windowresizehandlescontroller',['WindowResizeHandlesController',['../class_window_resize_handles_controller.html#ab88d7c7835085c11432254e5b5b0a8dc',1,'WindowResizeHandlesController']]],
   ['windowtouchcontroller',['WindowTouchController',['../class_window_touch_controller.html#a15012ee2fc61260d3a9f05647b4936ea',1,'WindowTouchController']]],
   ['write',['write',['../class_configuration_writer.html#a780b77cafacb0474ddc8c44f9e284b56',1,'ConfigurationWriter::write()'],['../namespacejson.html#a18a89d3140c6db399e296fa9b9e9d71f',1,'json::write()']]]
 ];

@@ -4,6 +4,7 @@ var class_display_group =
     [ "add", "class_display_group.html#a159b27f545c4eac2ca9c726364a2b25f", null ],
     [ "addFocusedWindow", "class_display_group.html#aec4cbf74b144c1a54eeebff01907b2cf", null ],
     [ "clear", "class_display_group.html#a0c10092c41d5dee217dd49f52c7e2302", null ],
+    [ "cleared", "class_display_group.html#a7995284d64d4cac6554fe45e33ecf0bb", null ],
     [ "create", "class_display_group.html#a9d756f999d8a22092db7ada9db587447", null ],
     [ "findWindow", "class_display_group.html#a63912f13ebfc2679af667b05c3744b8e", null ],
     [ "getFocusableWindows", "class_display_group.html#ad3710cf8b1110264cd41afa2334e15e6", null ],

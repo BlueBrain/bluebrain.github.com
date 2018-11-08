@@ -3,7 +3,7 @@ var searchData=
   ['save',['save',['../class_app_controller.html#a147072a6a1e46111a30e4e7e75799930',1,'AppController::save()'],['../class_master_window.html#ac0cb8c59041df28d772aaa33bc9e79b2',1,'MasterWindow::save()'],['../class_app_remote_controller.html#a2d825499b64fccac70fec5ac2f0449ba',1,'AppRemoteController::save()'],['../class_session_saver.html#a91fde2cc5d9408b88889041432d7622e',1,'SessionSaver::save()']]],
   ['savebackgroundchanges',['saveBackgroundChanges',['../class_configuration.html#a7d5d7858b5b5432e184b5f32ab3e988e',1,'Configuration::saveBackgroundChanges() const '],['../class_configuration.html#a436e6cd803e747ba4126dd24bd656fa0',1,'Configuration::saveBackgroundChanges(const QString &amp;filename) const ']]],
   ['savetofile',['saveToFile',['../class_session_preview.html#a7c05773db21484e67e92497801226ed6',1,'SessionPreview']]],
-  ['scale',['scale',['../class_display_group_controller.html#aa76ed17f5cb0257daff3d77719edfd06',1,'DisplayGroupController::scale()'],['../class_window_controller.html#a3e86a0fd011d578220ba0c2e69162153',1,'WindowController::scale()']]],
+  ['scale',['scale',['../class_display_group_controller.html#aa76ed17f5cb0257daff3d77719edfd06',1,'DisplayGroupController::scale()'],['../class_window_controller.html#a5acf4275a9cade14b9d110964e4a10d6',1,'WindowController::scale()']]],
   ['scalearoundcenter',['scaleAroundCenter',['../namespacegeometry.html#aa0cdc7f2eabcfa601542b79799f09cbd',1,'geometry']]],
   ['sceneremotecontroller',['SceneRemoteController',['../class_scene_remote_controller.html#ae1b2170f25b6d7e1870fc09b752a37e3',1,'SceneRemoteController']]],
   ['screenshotassembler',['ScreenshotAssembler',['../class_screenshot_assembler.html#ae78678f1e8c50bf59a432666045bc453',1,'ScreenshotAssembler']]],

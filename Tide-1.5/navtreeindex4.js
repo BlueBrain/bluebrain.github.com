@@ -1,5 +1,10 @@
 var NAVTREEINDEX4 =
 {
+"class_movie_synchronizer.html#a06c65503b945231682c50825c0dc2f26":[7,0,91,9],
+"class_movie_synchronizer.html#a572cd81a07a0a8c3ee946f0eed766b2a":[7,0,91,3],
+"class_movie_synchronizer.html#a607c2911b21f3f5aa3dcecfb7eab750b":[7,0,91,8],
+"class_movie_synchronizer.html#a6d10e765a71f67c962837263d985b41b":[7,0,91,5],
+"class_movie_synchronizer.html#a916cbc692ebe85fc5e917596ad11d0ee":[7,0,91,0],
 "class_movie_synchronizer.html#a9e587b29e557f0254ec92a9c0a259c45":[7,0,91,2],
 "class_movie_synchronizer.html#aa1d8d8cafb31355778c5b5fc50b3680b":[7,0,91,6],
 "class_movie_synchronizer.html#ae3234c1d2ea0e660e57cc019559b63ba":[7,0,91,7],
@@ -244,10 +249,5 @@ var NAVTREEINDEX4 =
 "class_pixel_stream_updater.html#abec2decfa2660dc4c37523b31dd30892":[7,0,117,1],
 "class_pixel_stream_updater.html#adaae2a27994e9657acc9651915a8c933":[7,0,117,5],
 "class_pixel_stream_updater.html#af09431e47795288b4ec61c0a3680877a":[7,0,117,2],
-"class_pixel_stream_updater.html#af1275ebac9c1acad63a0fc66e761f5d8":[7,0,117,7],
-"class_pixel_stream_window_manager.html":[7,0,118],
-"class_pixel_stream_window_manager.html#a0766b8b0cde56e30de923b786009f612":[7,0,118,9],
-"class_pixel_stream_window_manager.html#a1990873d8c39ec3cd1c72f9403330e7d":[7,0,118,1],
-"class_pixel_stream_window_manager.html#a1b8b7f1d0c05b2661b7893f52778a1b3":[7,0,118,3],
-"class_pixel_stream_window_manager.html#a22fcff539e065134b0dce6d07bf3872f":[7,0,118,2]
+"class_pixel_stream_updater.html#af1275ebac9c1acad63a0fc66e761f5d8":[7,0,117,7]
 };

@@ -201,8 +201,8 @@ var hierarchy =
       [ "WallSurfaceRenderer", "class_wall_surface_renderer.html", null ],
       [ "WallToMasterChannel", "class_wall_to_master_channel.html", null ],
       [ "WallToWallChannel", "class_wall_to_wall_channel.html", null ],
-      [ "WindowController", "class_window_controller.html", null ],
       [ "WindowRenderer", "class_window_renderer.html", null ],
+      [ "WindowResizeHandlesController", "class_window_resize_handles_controller.html", null ],
       [ "WindowTouchController", "class_window_touch_controller.html", null ]
     ] ],
     [ "QQuickImageProvider", null, [
@@ -318,6 +318,7 @@ var hierarchy =
     [ "TiffPyramidReader", "class_tiff_pyramid_reader.html", null ],
     [ "VisibilityHelper", "class_visibility_helper.html", null ],
     [ "WallRenderContext", "struct_wall_render_context.html", null ],
+    [ "WindowController", "class_window_controller.html", null ],
     [ "XmlParser", "class_xml_parser.html", null ],
     [ "ZoomHelper", "class_zoom_helper.html", null ]
 ];

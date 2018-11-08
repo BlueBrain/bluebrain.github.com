@@ -9,6 +9,7 @@ var searchData=
   ['addtile',['addTile',['../class_content_synchronizer.html#ab9b2487c54a43e341db0eb6c6c87808c',1,'ContentSynchronizer']]],
   ['adjust',['adjust',['../class_display_group_controller.html#aca22819db57854ca08f7b91b4ed12929',1,'DisplayGroupController']]],
   ['adjustandcenter',['adjustAndCenter',['../namespacegeometry.html#a0c0237eb8f534c1d4e055e7a61cc7b1c',1,'geometry']]],
+  ['adjustaspectratio',['adjustAspectRatio',['../namespacegeometry.html#a801498a1da888746fec16b2be8efc3d9',1,'geometry']]],
   ['adjustsize',['adjustSize',['../class_window_controller.html#a1d69530b741e45286e7f505232ff83c6',1,'WindowController']]],
   ['adjustsizeonetoone',['adjustSizeOneToOne',['../class_display_group_controller.html#a3a7c54ae20b837513d4e928aa242924f',1,'DisplayGroupController']]],
   ['adjustwindowsaspectratiotocontent',['adjustWindowsAspectRatioToContent',['../class_display_group_controller.html#a9505e0a188ddbd55d0fc145e45c2690f',1,'DisplayGroupController']]],
