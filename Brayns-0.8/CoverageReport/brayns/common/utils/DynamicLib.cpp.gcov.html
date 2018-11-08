@@ -1,0 +1,165 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+
+<html lang="en">
+
+<head>
+  <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+  <title>LCOV - Brayns - brayns/common/utils/DynamicLib.cpp</title>
+  <link rel="stylesheet" type="text/css" href="../../../gcov.css">
+</head>
+
+<body>
+
+  <table width="100%" border=0 cellspacing=0 cellpadding=0>
+    <tr><td class="title">LCOV - code coverage report</td></tr>
+    <tr><td class="ruler"><img src="../../../glass.png" width=3 height=3 alt=""></td></tr>
+
+    <tr>
+      <td width="100%">
+        <table cellpadding=1 border=0 width="100%">
+          <tr>
+            <td width="10%" class="headerItem">Current view:</td>
+            <td width="35%" class="headerValue"><a href="../../../index.html">top level</a> - <a href="index.html">brayns/common/utils</a> - DynamicLib.cpp<span style="font-size: 80%;"> (source / <a href="DynamicLib.cpp.func-sort-c.html">functions</a>)</span></td>
+            <td width="5%"></td>
+            <td width="15%"></td>
+            <td width="10%" class="headerCovTableHead">Hit</td>
+            <td width="10%" class="headerCovTableHead">Total</td>
+            <td width="15%" class="headerCovTableHead">Coverage</td>
+          </tr>
+          <tr>
+            <td class="headerItem">Test:</td>
+            <td class="headerValue">Brayns</td>
+            <td></td>
+            <td class="headerItem">Lines:</td>
+            <td class="headerCovTableEntry">1</td>
+            <td class="headerCovTableEntry">31</td>
+            <td class="headerCovTableEntryLo">3.2 %</td>
+          </tr>
+          <tr>
+            <td class="headerItem">Date:</td>
+            <td class="headerValue">2018-11-08 01:21:16</td>
+            <td></td>
+            <td class="headerItem">Functions:</td>
+            <td class="headerCovTableEntry">2</td>
+            <td class="headerCovTableEntry">7</td>
+            <td class="headerCovTableEntryLo">28.6 %</td>
+          </tr>
+          <tr><td><img src="../../../glass.png" width=3 height=3 alt=""></td></tr>
+        </table>
+      </td>
+    </tr>
+
+    <tr><td class="ruler"><img src="../../../glass.png" width=3 height=3 alt=""></td></tr>
+  </table>
+
+  <table cellpadding=0 cellspacing=0 border=0>
+    <tr>
+      <td><br></td>
+    </tr>
+    <tr>
+      <td>
+<pre class="sourceHeading">          Line data    Source code</pre>
+<pre class="source">
+<a name="1"><span class="lineNum">       1 </span>            : #ifdef _WIN32</a>
+<span class="lineNum">       2 </span>            : #ifndef WIN32_LEAN_AND_MEAN
+<span class="lineNum">       3 </span>            : #define WIN32_LEAN_AND_MEAN
+<span class="lineNum">       4 </span>            : #endif
+<span class="lineNum">       5 </span>            : #include &lt;windows.h&gt;
+<span class="lineNum">       6 </span>            : #else
+<span class="lineNum">       7 </span>            : #include &lt;dlfcn.h&gt;
+<span class="lineNum">       8 </span>            : #include &lt;sys/times.h&gt;
+<span class="lineNum">       9 </span>            : #endif
+<span class="lineNum">      10 </span>            : 
+<span class="lineNum">      11 </span>            : #include &quot;DynamicLib.h&quot;
+<span class="lineNum">      12 </span>            : 
+<a name="13"><span class="lineNum">      13 </span>            : namespace brayns</a>
+<span class="lineNum">      14 </span>            : {
+<span class="lineNum">      15 </span><span class="lineNoCov">          0 : DynamicLib::DynamicLib(const std::string&amp; name)</span>
+<span class="lineNum">      16 </span>            : {
+<span class="lineNum">      17 </span><span class="lineNoCov">          0 :     std::string file = name;</span>
+<span class="lineNum">      18 </span><span class="lineNoCov">          0 :     std::string errorMessage;</span>
+<span class="lineNum">      19 </span>            : #ifdef _WIN32
+<span class="lineNum">      20 </span>            :     std::string filename = name + &quot;.dll&quot;;
+<span class="lineNum">      21 </span>            :     _handler = LoadLibrary(fullName.c_str());
+<span class="lineNum">      22 </span>            :     if (!_handler)
+<span class="lineNum">      23 </span>            :     {
+<span class="lineNum">      24 </span>            :         DWORD err = GetLastError();
+<span class="lineNum">      25 </span>            :         LPTSTR buffer;
+<span class="lineNum">      26 </span>            :         FormatMessage(FORMAT_MESSAGE_ALLOCATE_BUFFER |
+<span class="lineNum">      27 </span>            :                           FORMAT_MESSAGE_FROM_SYSTEM |
+<span class="lineNum">      28 </span>            :                           FORMAT_MESSAGE_IGNORE_INSERTS,
+<span class="lineNum">      29 </span>            :                       NULL, err, MAKELANGID(LANG_NEUTRAL, SUBLANG_DEFAULT),
+<span class="lineNum">      30 </span>            :                       (LPTSTR)&amp;buffer, 0, NULL);
+<span class="lineNum">      31 </span>            :         errorMessage = buffer;
+<span class="lineNum">      32 </span>            :         LocalFree(buffer);
+<span class="lineNum">      33 </span>            :     }
+<span class="lineNum">      34 </span>            : 
+<span class="lineNum">      35 </span>            : #else
+<span class="lineNum">      36 </span>            : #if defined(__MACOSX__) || defined(__APPLE__)
+<span class="lineNum">      37 </span>            :     std::string filename = &quot;lib&quot; + file + &quot;.dylib&quot;;
+<span class="lineNum">      38 </span>            : #else
+<span class="lineNum">      39 </span><span class="lineNoCov">          0 :     std::string filename = &quot;lib&quot; + file + &quot;.so&quot;;</span>
+<span class="lineNum">      40 </span>            : #endif
+<span class="lineNum">      41 </span><span class="lineNoCov">          0 :     _handler = dlopen(filename.c_str(), RTLD_LAZY | RTLD_GLOBAL);</span>
+<span class="lineNum">      42 </span><span class="lineNoCov">          0 :     if (!_handler)</span>
+<span class="lineNum">      43 </span><span class="lineNoCov">          0 :         errorMessage = dlerror();</span>
+<span class="lineNum">      44 </span>            : #endif
+<span class="lineNum">      45 </span><span class="lineNoCov">          0 :     if (!_handler)</span>
+<span class="lineNum">      46 </span><span class="lineNoCov">          0 :         throw std::runtime_error(&quot;Error opening dynamic library: &quot; + filename +</span>
+<span class="lineNum">      47 </span><span class="lineNoCov">          0 :                                  &quot;: &quot; + errorMessage);</span>
+<a name="48"><span class="lineNum">      48 </span><span class="lineNoCov">          0 : }</span></a>
+<span class="lineNum">      49 </span>            : 
+<span class="lineNum">      50 </span><span class="lineNoCov">          0 : DynamicLib::~DynamicLib()</span>
+<span class="lineNum">      51 </span>            : {
+<span class="lineNum">      52 </span><span class="lineNoCov">          0 :     if (!_handler)</span>
+<span class="lineNum">      53 </span><span class="lineNoCov">          0 :         return;</span>
+<span class="lineNum">      54 </span>            : 
+<span class="lineNum">      55 </span>            : #ifdef _WIN32
+<span class="lineNum">      56 </span>            :     if (_handler != GetModuleHandle(0))
+<span class="lineNum">      57 </span>            :         FreeLibrary(_handler);
+<span class="lineNum">      58 </span>            : #else
+<span class="lineNum">      59 </span><span class="lineNoCov">          0 :     if (_handler != RTLD_DEFAULT)</span>
+<span class="lineNum">      60 </span><span class="lineNoCov">          0 :         dlclose(_handler);</span>
+<span class="lineNum">      61 </span>            : #endif
+<span class="lineNum">      62 </span><span class="lineNoCov">          0 :     _handler = 0;</span>
+<a name="63"><span class="lineNum">      63 </span><span class="lineNoCov">          0 : }</span></a>
+<span class="lineNum">      64 </span>            : 
+<span class="lineNum">      65 </span><span class="lineNoCov">          0 : DynamicLib::DynamicLib(DynamicLib&amp;&amp; other)</span>
+<span class="lineNum">      66 </span>            : {
+<span class="lineNum">      67 </span><span class="lineNoCov">          0 :     _handler = other._handler;</span>
+<span class="lineNum">      68 </span><span class="lineNoCov">          0 :     other._handler = nullptr;</span>
+<a name="69"><span class="lineNum">      69 </span><span class="lineNoCov">          0 : }</span></a>
+<span class="lineNum">      70 </span>            : 
+<span class="lineNum">      71 </span><span class="lineNoCov">          0 : DynamicLib&amp; DynamicLib::operator=(DynamicLib&amp;&amp; other)</span>
+<span class="lineNum">      72 </span>            : {
+<span class="lineNum">      73 </span><span class="lineNoCov">          0 :     _handler = other._handler;</span>
+<span class="lineNum">      74 </span><span class="lineNoCov">          0 :     other._handler = nullptr;</span>
+<span class="lineNum">      75 </span><span class="lineNoCov">          0 :     return *this;</span>
+<a name="76"><span class="lineNum">      76 </span>            : }</a>
+<span class="lineNum">      77 </span>            : 
+<span class="lineNum">      78 </span><span class="lineNoCov">          0 : void* DynamicLib::getSymbolAddress(const std::string&amp; name) const</span>
+<span class="lineNum">      79 </span>            : {
+<span class="lineNum">      80 </span><span class="lineNoCov">          0 :     if (!_handler)</span>
+<span class="lineNum">      81 </span><span class="lineNoCov">          0 :         return nullptr;</span>
+<span class="lineNum">      82 </span>            : 
+<span class="lineNum">      83 </span>            : #ifdef _WIN32 //_MSC_VER
+<span class="lineNum">      84 </span>            :     return GetProcAddress((HMODULE)_handler, name.c_str());
+<span class="lineNum">      85 </span>            : #else
+<span class="lineNum">      86 </span><span class="lineNoCov">          0 :     return dlsym(_handler, name.c_str());</span>
+<a name="87"><span class="lineNum">      87 </span>            : #endif</a>
+<span class="lineNum">      88 </span>            : }
+<span class="lineNum">      89 </span><span class="lineCov">         12 : }</span>
+</pre>
+      </td>
+    </tr>
+  </table>
+  <br>
+
+  <table width="100%" border=0 cellspacing=0 cellpadding=0>
+    <tr><td class="ruler"><img src="../../../glass.png" width=3 height=3 alt=""></td></tr>
+    <tr><td class="versionInfo">Generated by: <a href="http://ltp.sourceforge.net/coverage/lcov.php" target="_parent">LCOV version 1.11</a></td></tr>
+  </table>
+  <br>
+
+</body>
+</html>

@@ -1,7 +1,6 @@
 var searchData=
 [
   ['api_2eh',['api.h',['../parameters_2api_8h.html',1,'']]],
-  ['api_2eh',['api.h',['../pluginapi_2api_8h.html',1,'']]],
   ['parametersmanager',['ParametersManager',['../classbrayns_1_1_parameters_manager.html',1,'brayns']]],
   ['parse',['parse',['../classbrayns_1_1_abstract_parameters.html#a26266de9ad202855a31e167a16524f9e',1,'brayns::AbstractParameters::parse()'],['../classbrayns_1_1_application_parameters.html#a5be6af2d2178a0a5c6696692e5a1f394',1,'brayns::ApplicationParameters::parse()'],['../classbrayns_1_1_geometry_parameters.html#a73ac7de16c966b974774c339df0cc881',1,'brayns::GeometryParameters::parse()'],['../classbrayns_1_1_parameters_manager.html#a512452ae6195a30b5c733f75c7ea1c54',1,'brayns::ParametersManager::parse()'],['../classbrayns_1_1_rendering_parameters.html#a0597328ac9cf2d922dde652eeb1f8eb9',1,'brayns::RenderingParameters::parse()'],['../classbrayns_1_1_scene_parameters.html#a60f38dbe23eabee57fb2b4d8db149260',1,'brayns::SceneParameters::parse()'],['../classbrayns_1_1_volume_parameters.html#a1452a93f050be72357eaca1098a4db25',1,'brayns::VolumeParameters::parse()']]],
   ['persecond',['perSecond',['../classbrayns_1_1_timer.html#a293726bf5766ee48ee904a157c0dde3a',1,'brayns::Timer']]],
@@ -17,11 +16,10 @@ var searchData=
   ['progress',['Progress',['../classbrayns_1_1_progress.html',1,'brayns']]],
   ['progress',['progress',['../classbrayns_1_1_abstract_task.html#a9c4958935de14f9db7480e9bb3566735',1,'brayns::AbstractTask::progress()'],['../classbrayns_1_1_task_functor.html#a0dab436f8eb57c24de929b894069f2cd',1,'brayns::TaskFunctor::progress()']]],
   ['progressfunc',['ProgressFunc',['../classbrayns_1_1_task_functor.html#af5ae54477aeecf3b89c696867171a980',1,'brayns::TaskFunctor']]],
-  ['property',['Property',['../structbrayns_1_1_property_map_1_1_property.html#a27e38a559b53ee0c43517c893bd19408',1,'brayns::PropertyMap::Property']]],
   ['property',['Property',['../structbrayns_1_1_property_map_1_1_property.html',1,'brayns::PropertyMap']]],
+  ['property',['Property',['../structbrayns_1_1_property_map_1_1_property.html#a27e38a559b53ee0c43517c893bd19408',1,'brayns::PropertyMap::Property']]],
   ['propertymap',['PropertyMap',['../classbrayns_1_1_property_map.html',1,'brayns']]],
   ['propertyobject',['PropertyObject',['../classbrayns_1_1_property_object.html',1,'brayns']]],
   ['proteinloader',['ProteinLoader',['../classbrayns_1_1_protein_loader.html',1,'brayns']]],
-  ['version_2eh',['version.h',['../pluginapi_2version_8h.html',1,'']]],
   ['version_2eh',['version.h',['../parameters_2version_8h.html',1,'']]]
 ];
