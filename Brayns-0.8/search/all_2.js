@@ -5,6 +5,7 @@ var searchData=
   ['basewindow',['BaseWindow',['../classbrayns_1_1_base_window.html',1,'brayns']]],
   ['binaryparam',['BinaryParam',['../structbrayns_1_1_binary_param.html',1,'brayns']]],
   ['blob',['Blob',['../structbrayns_1_1_blob.html',1,'brayns']]],
+  ['brayns',['Brayns',['../classbrayns_1_1_brayns.html#ab1202cd9f6bcc02bd8f25f9d269be53d',1,'brayns::Brayns']]],
   ['brayns',['Brayns',['../classbrayns_1_1_brayns.html',1,'brayns']]],
   ['brayns_5frev_5fstring',['BRAYNS_REV_STRING',['../common_2version_8h.html#abdfd5d63377bd1606cf51a0437943637',1,'BRAYNS_REV_STRING():&#160;version.h'],['../parameters_2version_8h.html#abdfd5d63377bd1606cf51a0437943637',1,'BRAYNS_REV_STRING():&#160;version.h'],['../tasks_2version_8h.html#abdfd5d63377bd1606cf51a0437943637',1,'BRAYNS_REV_STRING():&#160;version.h'],['../version_8h.html#abdfd5d63377bd1606cf51a0437943637',1,'BRAYNS_REV_STRING():&#160;version.h']]],
   ['brayns_5fversion_5fabi',['BRAYNS_VERSION_ABI',['../common_2version_8h.html#a689d3561485abd45ee50411137295ee0',1,'BRAYNS_VERSION_ABI():&#160;version.h'],['../parameters_2version_8h.html#a689d3561485abd45ee50411137295ee0',1,'BRAYNS_VERSION_ABI():&#160;version.h'],['../tasks_2version_8h.html#a689d3561485abd45ee50411137295ee0',1,'BRAYNS_VERSION_ABI():&#160;version.h'],['../version_8h.html#a689d3561485abd45ee50411137295ee0',1,'BRAYNS_VERSION_ABI():&#160;version.h']]],

@@ -9,7 +9,6 @@ var classbrayns_1_1_brayns =
     [ "getEngine", "classbrayns_1_1_brayns.html#acc8b3d8d54f59a2b5bb1ca70c07c7047", null ],
     [ "getKeyboardHandler", "classbrayns_1_1_brayns.html#a8af015ef5e738482177f3e4a9dfc4699", null ],
     [ "getParametersManager", "classbrayns_1_1_brayns.html#ad68939e00e940e6df3255bbf9e8a761f", null ],
-    [ "loadPlugins", "classbrayns_1_1_brayns.html#a13ee3507d5f761f803383c0993bc8035", null ],
     [ "postRender", "classbrayns_1_1_brayns.html#add9f68bde6583471ac00f32f20e53933", null ],
     [ "render", "classbrayns_1_1_brayns.html#a422f64427d348600f7ad59f9041f8248", null ]
 ];
