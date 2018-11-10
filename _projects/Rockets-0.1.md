@@ -4,7 +4,7 @@ version: "0.1"
 major: 0
 minor: 1
 description: Rockets - REST and websockets C++ library
-updated: 03/10/18
+updated: 10/11/18
 homepage: https://github.com/BlueBrain/Rockets
 repository: https://github.com/BlueBrain/Rockets.git
 issuesurl: https://github.com/BlueBrain/Rockets/issues
@@ -12,14 +12,14 @@ packageurl:
 license: LGPL
 maturity: EP
 maintainers: Blue Brain Project (bbp-open-source@googlegroups.com)
-contributors: Roland Groza
+contributors: Raphael Dumusc
 readmetype: text/x-markdown
 ---
 # Rockets
 
 > A library for easy HTTP and websockets messaging in C++ applications.
 
-[![Travis (.org) branch](https://img.shields.io/travis/BlueBrain/Rockets/master.svg?style=flat-square)](https://github.com/BlueBrain/Rockets)
+[![Travis CI](https://img.shields.io/travis/BlueBrain/Rockets/master.svg?style=flat-square)](https://travis-ci.org/BlueBrain/Rockets)
 
 
 # Table of Contents
@@ -69,6 +69,7 @@ ninja
 -----------
 Rockets provides client libraries for the following languages:
 
+* [Python](./python/README.md)
 * [JavaScript](./js/README.md)
 
 
