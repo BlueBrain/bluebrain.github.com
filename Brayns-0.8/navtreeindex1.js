@@ -136,8 +136,9 @@ var NAVTREEINDEX1 =
 "classbrayns_1_1_engine.html#af961a55c58767fdc61b67497abcbf7bb":[3,0,0,23,17],
 "classbrayns_1_1_extension_plugin.html":[3,0,0,24],
 "classbrayns_1_1_extension_plugin.html#a09d8737b173c012890515c456e6f4176":[3,0,0,24,0],
-"classbrayns_1_1_extension_plugin.html#a67dab4a796a7de090ff4c28e8be39bc9":[3,0,0,24,2],
-"classbrayns_1_1_extension_plugin.html#a6e17e99715fadee1d5a883168b3c9764":[3,0,0,24,1],
+"classbrayns_1_1_extension_plugin.html#a67dab4a796a7de090ff4c28e8be39bc9":[3,0,0,24,3],
+"classbrayns_1_1_extension_plugin.html#a6e17e99715fadee1d5a883168b3c9764":[3,0,0,24,2],
+"classbrayns_1_1_extension_plugin.html#a96647a3a0a342c3c14a4dab14f67a777":[3,0,0,24,1],
 "classbrayns_1_1_flying_mode_manipulator.html":[3,0,0,25],
 "classbrayns_1_1_flying_mode_manipulator.html#a100311b33f9f76d6cf4ac643b34f5b40":[3,0,0,25,1],
 "classbrayns_1_1_flying_mode_manipulator.html#a9ab7d7c72fb909712b2f5c144e3f3b2b":[3,0,0,25,0],
@@ -245,9 +246,8 @@ var NAVTREEINDEX1 =
 "classbrayns_1_1_load_model_functor.html":[3,0,0,35],
 "classbrayns_1_1_load_model_functor.html#a05514c9d706e6fc6c018d16c1aed2b65":[3,0,0,35,2],
 "classbrayns_1_1_load_model_functor.html#a15fc62a8d980c7d5f8ce499f91c03c0d":[3,0,0,35,1],
-"classbrayns_1_1_load_model_functor.html#a417d0e666ec7d997bed32b7d90f5432d":[3,0,0,35,0],
 "classbrayns_1_1_load_model_functor.html#a8335cc9fcb6f466fff5c8f51716dfb40":[3,0,0,35,3],
+"classbrayns_1_1_load_model_functor.html#a9fef9f8eac1f5e00a449a97f031c26bb":[3,0,0,35,0],
 "classbrayns_1_1_loader.html":[3,0,0,32],
-"classbrayns_1_1_loader.html#a0a133f3883dc43088753f0de797ee0dd":[3,0,0,32,2],
-"classbrayns_1_1_loader.html#a5a47618542c6227389de50ccbfe26dfc":[3,0,0,32,0]
+"classbrayns_1_1_loader.html#a0a133f3883dc43088753f0de797ee0dd":[3,0,0,32,2]
 };

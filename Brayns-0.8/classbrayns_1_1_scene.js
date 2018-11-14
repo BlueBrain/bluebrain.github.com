@@ -35,6 +35,7 @@ var classbrayns_1_1_scene =
     [ "saveToCacheFile", "classbrayns_1_1_scene.html#a0d835b82330c961a0d7967ac08f96567", null ],
     [ "setCADiffusionSimulationHandler", "classbrayns_1_1_scene.html#a6dd8458feefbd6d61c5e9a44b477acdd", null ],
     [ "setMaterialsColorMap", "classbrayns_1_1_scene.html#a52fa731a8e9151be10333853a44aad0d", null ],
+    [ "visitModels", "classbrayns_1_1_scene.html#a9e8e33e1c4d7c3f1d807b51565512b86", null ],
     [ "_backgroundMaterial", "classbrayns_1_1_scene.html#ab22d553156ad8e0ff8766990817199ee", null ],
     [ "_bounds", "classbrayns_1_1_scene.html#a22f90c054368ff2e9822642cbe4173bc", null ],
     [ "_caDiffusionSimulationHandler", "classbrayns_1_1_scene.html#a860b65fe982aacd77e6d70df0855d660", null ],

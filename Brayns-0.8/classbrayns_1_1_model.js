@@ -15,7 +15,7 @@ var classbrayns_1_1_model =
     [ "commitTransferFunction", "classbrayns_1_1_model.html#a4cb4f34d0217d9d897019ac97e07efb0", null ],
     [ "createBrickedVolume", "classbrayns_1_1_model.html#a71564e34f8fd96859bf99d1f1934e3b9", null ],
     [ "createMaterial", "classbrayns_1_1_model.html#a0156b8880c15bda28f3610fc36947f7c", null ],
-    [ "createMissingMaterials", "classbrayns_1_1_model.html#a423f628996f18f7e37b561c7ae78ca27", null ],
+    [ "createMissingMaterials", "classbrayns_1_1_model.html#a560bb63289ddf5e2aa4e8bf717aff7bf", null ],
     [ "createSharedDataVolume", "classbrayns_1_1_model.html#af0e267adcb93f5b76dd59b2061ba9d91", null ],
     [ "empty", "classbrayns_1_1_model.html#aa686c6b25b25c7664f2a020c0b5d4f3a", null ],
     [ "getBounds", "classbrayns_1_1_model.html#adc147e65d2322a8cf68a0045f27cf394", null ],

@@ -46,7 +46,6 @@ var annotated_dup =
       [ "MorphologyLayout", "structbrayns_1_1_morphology_layout.html", "structbrayns_1_1_morphology_layout" ],
       [ "ParametersManager", "classbrayns_1_1_parameters_manager.html", "classbrayns_1_1_parameters_manager" ],
       [ "PluginAPI", "classbrayns_1_1_plugin_a_p_i.html", "classbrayns_1_1_plugin_a_p_i" ],
-      [ "PluginParam", "structbrayns_1_1_plugin_param.html", "structbrayns_1_1_plugin_param" ],
       [ "PointLight", "classbrayns_1_1_point_light.html", "classbrayns_1_1_point_light" ],
       [ "Progress", "classbrayns_1_1_progress.html", "classbrayns_1_1_progress" ],
       [ "PropertyMap", "classbrayns_1_1_property_map.html", "classbrayns_1_1_property_map" ],

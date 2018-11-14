@@ -27,7 +27,6 @@ var hierarchy =
       ] ],
       [ "brayns::ClipPlane", "classbrayns_1_1_clip_plane.html", null ],
       [ "brayns::FrameBuffer", "classbrayns_1_1_frame_buffer.html", null ],
-      [ "brayns::Material", "classbrayns_1_1_material.html", null ],
       [ "brayns::ModelInstance", "classbrayns_1_1_model_instance.html", [
         [ "brayns::ModelParams", "classbrayns_1_1_model_params.html", [
           [ "brayns::BinaryParam", "structbrayns_1_1_binary_param.html", null ],
@@ -37,6 +36,7 @@ var hierarchy =
       [ "brayns::Progress", "classbrayns_1_1_progress.html", null ],
       [ "brayns::PropertyObject", "classbrayns_1_1_property_object.html", [
         [ "brayns::Camera", "classbrayns_1_1_camera.html", null ],
+        [ "brayns::Material", "classbrayns_1_1_material.html", null ],
         [ "brayns::Renderer", "classbrayns_1_1_renderer.html", null ]
       ] ],
       [ "brayns::Scene", "classbrayns_1_1_scene.html", null ],
@@ -76,7 +76,6 @@ var hierarchy =
     [ "brayns::MorphologyLayout", "structbrayns_1_1_morphology_layout.html", null ],
     [ "brayns::ParametersManager", "classbrayns_1_1_parameters_manager.html", null ],
     [ "brayns::PluginAPI", "classbrayns_1_1_plugin_a_p_i.html", null ],
-    [ "brayns::PluginParam", "structbrayns_1_1_plugin_param.html", null ],
     [ "brayns::PropertyMap", "classbrayns_1_1_property_map.html", null ],
     [ "brayns::PropertyMap::Property", "structbrayns_1_1_property_map_1_1_property.html", null ],
     [ "brayns::Renderer::PickResult", "structbrayns_1_1_renderer_1_1_pick_result.html", null ],

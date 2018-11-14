@@ -7,7 +7,6 @@ var structbrayns_1_1_s_d_f_geometry =
     [ "p1", "structbrayns_1_1_s_d_f_geometry.html#a4bd8502a7be879ef776c6b449b3b69fc", null ],
     [ "radius", "structbrayns_1_1_s_d_f_geometry.html#a6b27e193a60a8925555fad4fa788d0a0", null ],
     [ "radius_tip", "structbrayns_1_1_s_d_f_geometry.html#ae90b4b03a84ccfc1b0ac5e2c778e1df6", null ],
-    [ "textureCoords", "structbrayns_1_1_s_d_f_geometry.html#a8f08baad06577ba156afbd8dbfe9e269", null ],
-    [ "timestamp", "structbrayns_1_1_s_d_f_geometry.html#a3b1a08c2c2dfb1ba343cd76bb4c2f52d", null ],
-    [ "type", "structbrayns_1_1_s_d_f_geometry.html#adc302a3a40f77cbd519c76bb469d26e7", null ]
+    [ "type", "structbrayns_1_1_s_d_f_geometry.html#adc302a3a40f77cbd519c76bb469d26e7", null ],
+    [ "userData", "structbrayns_1_1_s_d_f_geometry.html#a9b3dcacea5169fa6aab764359c3e9b9f", null ]
 ];

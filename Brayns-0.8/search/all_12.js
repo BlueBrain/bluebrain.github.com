@@ -12,6 +12,7 @@ var searchData=
   ['sdfgeometrydata',['SDFGeometryData',['../structbrayns_1_1_model_1_1_s_d_f_geometry_data.html',1,'brayns::Model']]],
   ['seconds',['seconds',['../classbrayns_1_1_timer.html#a0a291f3215e7fb699f15e634bcbde374',1,'brayns::Timer']]],
   ['set',['set',['../classbrayns_1_1_camera.html#a9cf7494323dd49d8edec85979221dad9',1,'brayns::Camera::set()'],['../classbrayns_1_1_parameters_manager.html#a1d25e34639dbb420f9a3405b556a88b0',1,'brayns::ParametersManager::set()']]],
+  ['setactioninterface',['setActionInterface',['../classbrayns_1_1_plugin_a_p_i.html#a742986a27ab0594d779804f798249bcb',1,'brayns::PluginAPI']]],
   ['setcadiffusionsimulationhandler',['setCADiffusionSimulationHandler',['../classbrayns_1_1_scene.html#a6dd8458feefbd6d61c5e9a44b477acdd',1,'brayns::Scene']]],
   ['setcanceltoken',['setCancelToken',['../classbrayns_1_1_task_functor.html#a0463073aa21dd20ffa10309757d2e52b',1,'brayns::TaskFunctor']]],
   ['setcolor',['setColor',['../classbrayns_1_1_light.html#ac418f89179bfb0698b73c001729d9423',1,'brayns::Light']]],

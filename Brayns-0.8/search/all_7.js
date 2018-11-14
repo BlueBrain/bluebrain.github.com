@@ -73,7 +73,6 @@ var searchData=
   ['getospraymodules',['getOsprayModules',['../classbrayns_1_1_application_parameters.html#aec9000eed1c924e9a1681e1ba3bd7b73',1,'brayns::ApplicationParameters']]],
   ['getparametersmanager',['getParametersManager',['../classbrayns_1_1_brayns.html#ad68939e00e940e6df3255bbf9e8a761f',1,'brayns::Brayns::getParametersManager()'],['../classbrayns_1_1_plugin_a_p_i.html#aaea89cf1573db310a3622430159680ee',1,'brayns::PluginAPI::getParametersManager()']]],
   ['getpatch',['getPatch',['../classbrayns_1_1_version.html#a74c8402e7ceed27e0c773cf39e8e01b0',1,'brayns::Version::getPatch()'],['../classbrayns_1_1_version.html#a74c8402e7ceed27e0c773cf39e8e01b0',1,'brayns::Version::getPatch()'],['../classbrayns_1_1_version.html#a74c8402e7ceed27e0c773cf39e8e01b0',1,'brayns::Version::getPatch()'],['../classbrayns_1_1_version.html#a74c8402e7ceed27e0c773cf39e8e01b0',1,'brayns::Version::getPatch()']]],
-  ['getplugins',['getPlugins',['../classbrayns_1_1_application_parameters.html#ae4da77a030c9dab348a6e90063d5f86f',1,'brayns::ApplicationParameters']]],
   ['getport',['getPort',['../classbrayns_1_1_stream_parameters.html#a0ac4da4e8b03ecfa7d60e3c1a3fb0c86',1,'brayns::StreamParameters']]],
   ['getposition',['getPosition',['../classbrayns_1_1_camera.html#aaf1f10807d52ba440e45a24b1f8cc832',1,'brayns::Camera']]],
   ['getproperties',['getProperties',['../classbrayns_1_1_property_map.html#a7a198b621bb18514984930624e199d23',1,'brayns::PropertyMap']]],

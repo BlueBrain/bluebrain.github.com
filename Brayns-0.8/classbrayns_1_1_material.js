@@ -1,8 +1,8 @@
 var classbrayns_1_1_material =
 [
+    [ "Material", "classbrayns_1_1_material.html#ade43c500674c6ad2e0f269cd7a5f995f", null ],
     [ "_loadTexture", "classbrayns_1_1_material.html#a1978498301ea772932b42dc6266a04f9", null ],
     [ "commit", "classbrayns_1_1_material.html#a09778f0633b347188536eeb0c9634761", null ],
-    [ "getCastSimulationData", "classbrayns_1_1_material.html#ad6759031f5c25cf21af3dc5e7e37ec3c", null ],
     [ "getDiffuseColor", "classbrayns_1_1_material.html#a480b15ddbbf928bc209d7bdf4ac403b9", null ],
     [ "getEmission", "classbrayns_1_1_material.html#a93aaebbd36af4fe46ee8d7852c5988ab", null ],
     [ "getGlossiness", "classbrayns_1_1_material.html#a168296ae98fbdce27948c5f28b8e5725", null ],
@@ -14,7 +14,6 @@ var classbrayns_1_1_material =
     [ "getSpecularExponent", "classbrayns_1_1_material.html#a47e6ea5acfbee83cdb24457824a4e83d", null ],
     [ "getTexture", "classbrayns_1_1_material.html#a897dadef85f7537e4cb6b3f929b5b2b9", null ],
     [ "getTextureDescriptors", "classbrayns_1_1_material.html#a229549e4b1e5e466fd5b9aa4b7fb21a0", null ],
-    [ "setCastSimulationData", "classbrayns_1_1_material.html#a6cbbeb19403be487833ed3cbba9bac14", null ],
     [ "setDiffuseColor", "classbrayns_1_1_material.html#a1d6add0b41d5dfa224d728dc3392c30d", null ],
     [ "setEmission", "classbrayns_1_1_material.html#a1849c1328670a2190e1ccef78872552c", null ],
     [ "setGlossiness", "classbrayns_1_1_material.html#a0d044edb3af08d43cff58786fc60b599", null ],
@@ -25,7 +24,6 @@ var classbrayns_1_1_material =
     [ "setSpecularColor", "classbrayns_1_1_material.html#a129bdf49e3c93a583c906977b7512377", null ],
     [ "setSpecularExponent", "classbrayns_1_1_material.html#af52e6da5515dcc072820a75b3d4b2e71", null ],
     [ "setTexture", "classbrayns_1_1_material.html#a1575ee6d4361aa7a25935c1c2fefe1d8", null ],
-    [ "_castSimulationData", "classbrayns_1_1_material.html#a01dc228b31251b6fd6e62e84ae330a9f", null ],
     [ "_diffuseColor", "classbrayns_1_1_material.html#a1dfdb0d4c8343c3c5b54ee8fe2237390", null ],
     [ "_emission", "classbrayns_1_1_material.html#a5c6eb473897664f8f3f6f11d80ea40bb", null ],
     [ "_glossiness", "classbrayns_1_1_material.html#a920b422b3488b0dc62f8b468263175e2", null ],
