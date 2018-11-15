@@ -45,6 +45,7 @@ var files =
     [ "mathTypes.h", "math_types_8h_source.html", null ],
     [ "MetaballsGenerator.h", "_metaballs_generator_8h_source.html", null ],
     [ "Model.h", "_model_8h_source.html", null ],
+    [ "MolecularSystemReader.h", "_molecular_system_reader_8h_source.html", null ],
     [ "parameters.h", "parameters_8h_source.html", null ],
     [ "ParametersManager.h", "_parameters_manager_8h_source.html", null ],
     [ "pluginapi.h", "pluginapi_8h_source.html", null ],

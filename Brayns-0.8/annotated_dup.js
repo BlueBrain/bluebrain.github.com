@@ -43,6 +43,7 @@ var annotated_dup =
       [ "ModelDescriptor", "classbrayns_1_1_model_descriptor.html", "classbrayns_1_1_model_descriptor" ],
       [ "ModelInstance", "classbrayns_1_1_model_instance.html", "classbrayns_1_1_model_instance" ],
       [ "ModelParams", "classbrayns_1_1_model_params.html", "classbrayns_1_1_model_params" ],
+      [ "MolecularSystemReader", "classbrayns_1_1_molecular_system_reader.html", "classbrayns_1_1_molecular_system_reader" ],
       [ "MorphologyLayout", "structbrayns_1_1_morphology_layout.html", "structbrayns_1_1_morphology_layout" ],
       [ "ParametersManager", "classbrayns_1_1_parameters_manager.html", "classbrayns_1_1_parameters_manager" ],
       [ "PluginAPI", "classbrayns_1_1_plugin_a_p_i.html", "classbrayns_1_1_plugin_a_p_i" ],
