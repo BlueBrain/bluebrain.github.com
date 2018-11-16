@@ -4,7 +4,7 @@ version: "0.8"
 major: 0
 minor: 8
 description: Hardware Agnostic Ray-Tracer
-updated: 15/11/18
+updated: 16/11/18
 homepage: https://github.com/BlueBrain/Brayns
 repository: https://github.com/BlueBrain/Brayns.git
 issuesurl: https://github.com/BlueBrain/Brayns/issues
@@ -150,7 +150,7 @@ cmake .. -DBRAYNS_ASSIMP_ENABLED=ON:OFF
 
 #### Enable/Disable [Brion](https://github.com/BlueBrain/Brion) supported morphology file loader (.h5, .swc, BlueConfig, CircuitConfig)
 ```
-cmake .. -DBRAYNS_BRION_ENABLED=ON:OFF
+cmake .. -DBRAYNS_CIRCUITVIEWER_ENABLED=ON:OFF
 ```
 
 #### Enable/Disable [Deflect](https://github.com/BlueBrain/Deflect) for streaming to [Tide](https://github.com/BlueBrain/Tide), the Tiled Interactive DisplayWall environment.
