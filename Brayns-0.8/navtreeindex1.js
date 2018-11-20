@@ -1,5 +1,6 @@
 var NAVTREEINDEX1 =
 {
+"classbrayns_1_1_base_window.html#a0f04d1ff95efb3d262b238c23cf93862":[3,0,0,10,34],
 "classbrayns_1_1_base_window.html#a0f1b442c7a84d9aaed069f1d221776d1":[3,0,0,10,26],
 "classbrayns_1_1_base_window.html#a1046950e5b0e05474c81514e3b68accc":[3,0,0,10,2],
 "classbrayns_1_1_base_window.html#a15b635c30320bdf1aac75e09f23f641f":[3,0,0,10,35],
@@ -140,8 +141,8 @@ var NAVTREEINDEX1 =
 "classbrayns_1_1_extension_plugin.html#a6e17e99715fadee1d5a883168b3c9764":[3,0,0,24,2],
 "classbrayns_1_1_extension_plugin.html#a96647a3a0a342c3c14a4dab14f67a777":[3,0,0,24,1],
 "classbrayns_1_1_flying_mode_manipulator.html":[3,0,0,25],
+"classbrayns_1_1_flying_mode_manipulator.html#a0222600bd54e1a9dc0b9d3308c7cf607":[3,0,0,25,0],
 "classbrayns_1_1_flying_mode_manipulator.html#a100311b33f9f76d6cf4ac643b34f5b40":[3,0,0,25,1],
-"classbrayns_1_1_flying_mode_manipulator.html#a9ab7d7c72fb909712b2f5c144e3f3b2b":[3,0,0,25,0],
 "classbrayns_1_1_frame_buffer.html":[3,0,0,26],
 "classbrayns_1_1_frame_buffer.html#a165f845d96342690001f987e39f5c411":[3,0,0,26,15],
 "classbrayns_1_1_frame_buffer.html#a1edf0c6ad75ec3102cc5549391844125":[3,0,0,26,10],
@@ -224,7 +225,7 @@ var NAVTREEINDEX1 =
 "classbrayns_1_1_image_manager.html#a839c00f53751fd524c2ac4d8c1d1bf24":[3,0,0,28,0],
 "classbrayns_1_1_image_manager.html#a99321a976fee5f2efddd773066b2a55d":[3,0,0,28,1],
 "classbrayns_1_1_inspect_center_manipulator.html":[3,0,0,29],
-"classbrayns_1_1_inspect_center_manipulator.html#a8b09c49afd3a9f5d01785c82e44e481b":[3,0,0,29,0],
+"classbrayns_1_1_inspect_center_manipulator.html#a600010c4634e16a54db7732e2befeffa":[3,0,0,29,0],
 "classbrayns_1_1_inspect_center_manipulator.html#aa9de0f2f759d0c6889dd4c44501e677f":[3,0,0,29,1],
 "classbrayns_1_1_keyboard_handler.html":[3,0,0,30],
 "classbrayns_1_1_keyboard_handler.html#a05f9071eb3e65a35c06290071cdccfae":[3,0,0,30,0],
@@ -248,6 +249,5 @@ var NAVTREEINDEX1 =
 "classbrayns_1_1_load_model_functor.html#a05514c9d706e6fc6c018d16c1aed2b65":[3,0,0,35,2],
 "classbrayns_1_1_load_model_functor.html#a15fc62a8d980c7d5f8ce499f91c03c0d":[3,0,0,35,1],
 "classbrayns_1_1_load_model_functor.html#a8335cc9fcb6f466fff5c8f51716dfb40":[3,0,0,35,3],
-"classbrayns_1_1_load_model_functor.html#a9fef9f8eac1f5e00a449a97f031c26bb":[3,0,0,35,0],
-"classbrayns_1_1_loader.html":[3,0,0,32]
+"classbrayns_1_1_load_model_functor.html#a9fef9f8eac1f5e00a449a97f031c26bb":[3,0,0,35,0]
 };
