@@ -25,7 +25,7 @@ var searchData=
   ['continuerendering',['continueRendering',['../classbrayns_1_1_engine.html#a84b7fb62801d98aa94c325dc8f725313',1,'brayns::Engine']]],
   ['createbrickedvolume',['createBrickedVolume',['../classbrayns_1_1_model.html#a71564e34f8fd96859bf99d1f1934e3b9',1,'brayns::Model']]],
   ['createcamera',['createCamera',['../classbrayns_1_1_engine.html#af4b41c12e75c19f4ce9160c4a8484330',1,'brayns::Engine']]],
-  ['createframebuffer',['createFrameBuffer',['../classbrayns_1_1_engine.html#a3ad20ce149c67448d40110da4f573f35',1,'brayns::Engine']]],
+  ['createframebuffer',['createFrameBuffer',['../classbrayns_1_1_engine.html#a30016254d497b6f75afe1592fd75b95c',1,'brayns::Engine']]],
   ['creatematerial',['createMaterial',['../classbrayns_1_1_model.html#a0156b8880c15bda28f3610fc36947f7c',1,'brayns::Model']]],
   ['createmissingmaterials',['createMissingMaterials',['../classbrayns_1_1_model.html#a560bb63289ddf5e2aa4e8bf717aff7bf',1,'brayns::Model']]],
   ['createshareddatavolume',['createSharedDataVolume',['../classbrayns_1_1_model.html#af0e267adcb93f5b76dd59b2061ba9d91',1,'brayns::Model']]],

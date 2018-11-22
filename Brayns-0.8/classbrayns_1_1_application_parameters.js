@@ -17,6 +17,7 @@ var classbrayns_1_1_application_parameters =
     [ "getTmpFolder", "classbrayns_1_1_application_parameters.html#a4c2e7a22aad865a23b1be1eb8b1d6175", null ],
     [ "getWindowSize", "classbrayns_1_1_application_parameters.html#a1ee6735655020055be53a2140348d353", null ],
     [ "isBenchmarking", "classbrayns_1_1_application_parameters.html#a0baa53fd46c9a6aecddeec70d2546ce2", null ],
+    [ "isStereo", "classbrayns_1_1_application_parameters.html#ac08a841782dd253ae75dce2fc666a8a2", null ],
     [ "parse", "classbrayns_1_1_application_parameters.html#a5be6af2d2178a0a5c6696692e5a1f394", null ],
     [ "posArgs", "classbrayns_1_1_application_parameters.html#a3e85226e20848e1be363cd6ec0cb8b49", null ],
     [ "print", "classbrayns_1_1_application_parameters.html#aa2e0d98422af63c78df7f14a65fa4b6c", null ],
@@ -42,6 +43,7 @@ var classbrayns_1_1_application_parameters =
     [ "_parallelRendering", "classbrayns_1_1_application_parameters.html#ae620d5295e005edf931e1dfdbdeefd4c", null ],
     [ "_pluginsRaw", "classbrayns_1_1_application_parameters.html#ae471d0adfcb6cc6b8bdcf1a7064b200c", null ],
     [ "_positionalArgs", "classbrayns_1_1_application_parameters.html#ace25f094de3f50303d288a4e00bd8029", null ],
+    [ "_stereo", "classbrayns_1_1_application_parameters.html#a1806255005aa51657df7f70edb329442", null ],
     [ "_synchronousMode", "classbrayns_1_1_application_parameters.html#a009b3f6f47312cea14345ea4e3973706", null ],
     [ "_tmpFolder", "classbrayns_1_1_application_parameters.html#a63a6ca2aa1ef2abd0b7adb00cccfa53c", null ],
     [ "_windowSize", "classbrayns_1_1_application_parameters.html#aa556af11079356c6139899073886b4ff", null ]

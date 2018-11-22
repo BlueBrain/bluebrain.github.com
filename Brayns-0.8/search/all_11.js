@@ -5,6 +5,7 @@ var searchData=
   ['registerparameters',['registerParameters',['../classbrayns_1_1_parameters_manager.html#af1446cfbea9a2fb9348a8625bd69bb18',1,'brayns::ParametersManager']]],
   ['registerrequest',['registerRequest',['../classbrayns_1_1_action_interface.html#a0da0eee98242370652ed2e454f5e3076',1,'brayns::ActionInterface::registerRequest(const RpcParameterDescription &amp;desc, const PropertyMap &amp;input, const PropertyMap &amp;output, const std::function&lt; PropertyMap(PropertyMap)&gt; &amp;action)=0'],['../classbrayns_1_1_action_interface.html#a55dbc4122e6d3a27c77b7683f38a75ba',1,'brayns::ActionInterface::registerRequest(const RpcDescription &amp;desc, const PropertyMap &amp;output, const std::function&lt; PropertyMap()&gt; &amp;action)=0'],['../classbrayns_1_1_action_interface.html#aa848f4a0c303b0686ccdcc72c9e1d6c7',1,'brayns::ActionInterface::registerRequest(const std::string &amp;name, const std::function&lt; RetVal(Params)&gt; &amp;action)'],['../classbrayns_1_1_action_interface.html#a67f15a5be2bc8ece423e2bb494dee99c',1,'brayns::ActionInterface::registerRequest(const std::string &amp;name, const std::function&lt; RetVal()&gt; &amp;action)']]],
   ['removeclipplane',['removeClipPlane',['../classbrayns_1_1_scene.html#a81bc82673b624f1fd0eab1d93e3bf1f3',1,'brayns::Scene']]],
+  ['removeframebuffer',['removeFrameBuffer',['../classbrayns_1_1_engine.html#a7cadd61211f72e89c60a1f099e5fc6dd',1,'brayns::Engine']]],
   ['removeisreadycallback',['removeIsReadyCallback',['../classbrayns_1_1_animation_parameters.html#a21695789a923fd71b81bf09ebf069e25',1,'brayns::AnimationParameters']]],
   ['removelight',['removeLight',['../classbrayns_1_1_scene.html#a681a8a7e95f279226a0ac02f2b8f4201',1,'brayns::Scene']]],
   ['removemodel',['removeModel',['../classbrayns_1_1_scene.html#afb25f042c88d717e0c1ab46f35055bdc',1,'brayns::Scene']]],
@@ -16,7 +17,6 @@ var searchData=
   ['renderoutput',['RenderOutput',['../structbrayns_1_1_render_output.html',1,'brayns']]],
   ['reset',['reset',['../classbrayns_1_1_camera.html#a0378b8d85d011a5b524746f4e23e34e6',1,'brayns::Camera::reset()'],['../classbrayns_1_1_animation_parameters.html#ad02a32b00ac4b5eee7638ab207e2c821',1,'brayns::AnimationParameters::reset()']]],
   ['resetmodified',['resetModified',['../classbrayns_1_1_base_object.html#a9ab1fecf6b6f5259defb3080198a4587',1,'brayns::BaseObject::resetModified()'],['../classbrayns_1_1_parameters_manager.html#a0c96d24bee61aaa727c92db0aeeeb0c0',1,'brayns::ParametersManager::resetModified()']]],
-  ['reshape',['reshape',['../classbrayns_1_1_engine.html#a840980ce1525d0e767140ca591deafb0',1,'brayns::Engine']]],
   ['result',['result',['../classbrayns_1_1_task.html#a9a6c0675ba8c6321bff7ffbf044fdc99',1,'brayns::Task']]],
   ['rpcdescription',['RpcDescription',['../structbrayns_1_1_rpc_description.html',1,'brayns']]],
   ['rpcparameterdescription',['RpcParameterDescription',['../structbrayns_1_1_rpc_parameter_description.html',1,'brayns']]]

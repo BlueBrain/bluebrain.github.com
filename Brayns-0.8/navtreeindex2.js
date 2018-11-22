@@ -1,5 +1,14 @@
 var NAVTREEINDEX2 =
 {
+"classbrayns_1_1_light.html#ac418f89179bfb0698b73c001729d9423":[3,0,0,31,4],
+"classbrayns_1_1_light.html#ac80b8df5aebf3cd2821ededbffcbfc67":[3,0,0,31,1],
+"classbrayns_1_1_light.html#ac9c3a048b5e51245c89d96031087fd99":[3,0,0,31,2],
+"classbrayns_1_1_light.html#ae85ee4e91b17d58357a9ec56c5947be0":[3,0,0,31,7],
+"classbrayns_1_1_load_model_functor.html":[3,0,0,35],
+"classbrayns_1_1_load_model_functor.html#a05514c9d706e6fc6c018d16c1aed2b65":[3,0,0,35,2],
+"classbrayns_1_1_load_model_functor.html#a15fc62a8d980c7d5f8ce499f91c03c0d":[3,0,0,35,1],
+"classbrayns_1_1_load_model_functor.html#a8335cc9fcb6f466fff5c8f51716dfb40":[3,0,0,35,3],
+"classbrayns_1_1_load_model_functor.html#a9fef9f8eac1f5e00a449a97f031c26bb":[3,0,0,35,0],
 "classbrayns_1_1_loader.html":[3,0,0,32],
 "classbrayns_1_1_loader.html#a0a133f3883dc43088753f0de797ee0dd":[3,0,0,32,2],
 "classbrayns_1_1_loader.html#a5a47618542c6227389de50ccbfe26dfc":[3,0,0,32,0],
@@ -240,14 +249,5 @@ var NAVTREEINDEX2 =
 "classbrayns_1_1_progress.html#a11abbe394dc77f68ce0d5c4fd3a366d6":[3,0,0,47,4],
 "classbrayns_1_1_progress.html#a3e56606ed9283c4e4189b0d5b3b6b7cf":[3,0,0,47,2],
 "classbrayns_1_1_progress.html#a58e7a783e1ec6d1750038d6aba3f6219":[3,0,0,47,1],
-"classbrayns_1_1_progress.html#ae1a9b81348399d0ae9f1dfafc2416c78":[3,0,0,47,0],
-"classbrayns_1_1_property_map.html":[3,0,0,48],
-"classbrayns_1_1_property_map.html#a174cd634dd8a1be505b80cf522db3ccf":[3,0,0,48,2],
-"classbrayns_1_1_property_map.html#a1817d24daf0744629c11dc8d74f2bf72":[3,0,0,48,6],
-"classbrayns_1_1_property_map.html#a51f4f901871fb74afb72df99c12f02cc":[3,0,0,48,1],
-"classbrayns_1_1_property_map.html#a7a198b621bb18514984930624e199d23":[3,0,0,48,3],
-"classbrayns_1_1_property_map.html#a9ec43c008e2aa8f72aba98136559bea2":[3,0,0,48,8],
-"classbrayns_1_1_property_map.html#abff4d982f13851b7ade090d65fd57ff2":[3,0,0,48,4],
-"classbrayns_1_1_property_map.html#ad18c6f4de0f7670e4dc95b253de0d1e2":[3,0,0,48,9],
-"classbrayns_1_1_property_map.html#ae7867c0a4185bbf8178b7ef5fcb068d8":[3,0,0,48,5]
+"classbrayns_1_1_progress.html#ae1a9b81348399d0ae9f1dfafc2416c78":[3,0,0,47,0]
 };

@@ -32,17 +32,17 @@
             <td></td>
             <td class="headerItem">Lines:</td>
             <td class="headerCovTableEntry">1</td>
-            <td class="headerCovTableEntry">50</td>
-            <td class="headerCovTableEntryLo">2.0 %</td>
+            <td class="headerCovTableEntry">68</td>
+            <td class="headerCovTableEntryLo">1.5 %</td>
           </tr>
           <tr>
             <td class="headerItem">Date:</td>
-            <td class="headerValue">2018-11-20 01:19:08</td>
+            <td class="headerValue">2018-11-22 01:23:40</td>
             <td></td>
             <td class="headerItem">Functions:</td>
             <td class="headerCovTableEntry">2</td>
-            <td class="headerCovTableEntry">9</td>
-            <td class="headerCovTableEntryLo">22.2 %</td>
+            <td class="headerCovTableEntry">14</td>
+            <td class="headerCovTableEntryLo">14.3 %</td>
           </tr>
           <tr><td><img src="../../../glass.png" width=3 height=3 alt=""></td></tr>
         </table>
@@ -143,39 +143,70 @@
 <span class="lineNum">      81 </span><span class="lineNoCov">          0 :     return image;</span>
 <a name="82"><span class="lineNum">      82 </span>            : }</a>
 <span class="lineNum">      83 </span>            : 
-<span class="lineNum">      84 </span><span class="lineNoCov">          0 : std::string getBase64Image(FrameBuffer&amp; frameBuffer, const std::string&amp; format,</span>
+<span class="lineNum">      84 </span><span class="lineNoCov">          0 : std::string getBase64Image(ImagePtr image, const std::string&amp; format,</span>
 <a name="85"><span class="lineNum">      85 </span>            :                            const int quality)</a>
 <span class="lineNum">      86 </span>            : {
 <span class="lineNum">      87 </span><span class="lineNoCov">          0 :     FreeImage_SetOutputMessage([](FREE_IMAGE_FORMAT, const char* message) {</span>
 <span class="lineNum">      88 </span><span class="lineNoCov">          0 :         throw std::runtime_error(message);</span>
 <span class="lineNum">      89 </span><span class="lineNoCov">          0 :     });</span>
 <span class="lineNum">      90 </span>            : 
-<span class="lineNum">      91 </span><span class="lineNoCov">          0 :     auto image = freeimage::getImageFromFrameBuffer(frameBuffer);</span>
-<span class="lineNum">      92 </span>            : 
-<span class="lineNum">      93 </span>            :     auto fif =
-<span class="lineNum">      94 </span><span class="lineNoCov">          0 :         format == &quot;jpg&quot; ? FIF_JPEG : FreeImage_GetFIFFromFormat(format.c_str());</span>
-<span class="lineNum">      95 </span><span class="lineNoCov">          0 :     if (fif == FIF_JPEG)</span>
-<span class="lineNum">      96 </span><span class="lineNoCov">          0 :         image.reset(FreeImage_ConvertTo24Bits(image.get()));</span>
-<span class="lineNum">      97 </span><span class="lineNoCov">          0 :     else if (fif == FIF_UNKNOWN)</span>
-<span class="lineNum">      98 </span><span class="lineNoCov">          0 :         throw std::runtime_error(&quot;Unknown format: &quot; + format);</span>
-<span class="lineNum">      99 </span>            : 
-<span class="lineNum">     100 </span><span class="lineNoCov">          0 :     int flags = quality;</span>
-<span class="lineNum">     101 </span><span class="lineNoCov">          0 :     if (fif == FIF_TIFF)</span>
-<span class="lineNum">     102 </span><span class="lineNoCov">          0 :         flags = TIFF_NONE;</span>
+<span class="lineNum">      91 </span>            :     auto fif =
+<span class="lineNum">      92 </span><span class="lineNoCov">          0 :         format == &quot;jpg&quot; ? FIF_JPEG : FreeImage_GetFIFFromFormat(format.c_str());</span>
+<span class="lineNum">      93 </span><span class="lineNoCov">          0 :     if (fif == FIF_JPEG)</span>
+<span class="lineNum">      94 </span><span class="lineNoCov">          0 :         image.reset(FreeImage_ConvertTo24Bits(image.get()));</span>
+<span class="lineNum">      95 </span><span class="lineNoCov">          0 :     else if (fif == FIF_UNKNOWN)</span>
+<span class="lineNum">      96 </span><span class="lineNoCov">          0 :         throw std::runtime_error(&quot;Unknown format: &quot; + format);</span>
+<span class="lineNum">      97 </span>            : 
+<span class="lineNum">      98 </span><span class="lineNoCov">          0 :     int flags = quality;</span>
+<span class="lineNum">      99 </span><span class="lineNoCov">          0 :     if (fif == FIF_TIFF)</span>
+<span class="lineNum">     100 </span><span class="lineNoCov">          0 :         flags = TIFF_NONE;</span>
+<span class="lineNum">     101 </span>            : 
+<span class="lineNum">     102 </span><span class="lineNoCov">          0 :     freeimage::MemoryPtr memory(FreeImage_OpenMemory());</span>
 <span class="lineNum">     103 </span>            : 
-<span class="lineNum">     104 </span><span class="lineNoCov">          0 :     freeimage::MemoryPtr memory(FreeImage_OpenMemory());</span>
+<span class="lineNum">     104 </span><span class="lineNoCov">          0 :     FreeImage_SaveToMemory(fif, image.get(), memory.get(), flags);</span>
 <span class="lineNum">     105 </span>            : 
-<span class="lineNum">     106 </span><span class="lineNoCov">          0 :     FreeImage_SaveToMemory(fif, image.get(), memory.get(), flags);</span>
-<span class="lineNum">     107 </span>            : 
-<span class="lineNum">     108 </span><span class="lineNoCov">          0 :     BYTE* pixels = NULL;</span>
-<span class="lineNum">     109 </span><span class="lineNoCov">          0 :     DWORD numPixels = 0;</span>
-<span class="lineNum">     110 </span><span class="lineNoCov">          0 :     FreeImage_AcquireMemory(memory.get(), &amp;pixels, &amp;numPixels);</span>
-<span class="lineNum">     111 </span><span class="lineNoCov">          0 :     return {base64_encode(pixels, numPixels)};</span>
-<a name="112"><span class="lineNum">     112 </span>            : }</a>
-<span class="lineNum">     113 </span>            : }
-<span class="lineNum">     114 </span><span class="lineCov">         12 : }</span>
-<span class="lineNum">     115 </span>            : 
-<span class="lineNum">     116 </span>            : #endif
+<span class="lineNum">     106 </span><span class="lineNoCov">          0 :     BYTE* pixels = NULL;</span>
+<span class="lineNum">     107 </span><span class="lineNoCov">          0 :     DWORD numPixels = 0;</span>
+<span class="lineNum">     108 </span><span class="lineNoCov">          0 :     FreeImage_AcquireMemory(memory.get(), &amp;pixels, &amp;numPixels);</span>
+<span class="lineNum">     109 </span><span class="lineNoCov">          0 :     return {base64_encode(pixels, numPixels)};</span>
+<a name="110"><span class="lineNum">     110 </span>            : }</a>
+<span class="lineNum">     111 </span>            : 
+<span class="lineNum">     112 </span><span class="lineNoCov">          0 : std::string getBase64Image(FrameBuffer&amp; frameBuffer, const std::string&amp; format,</span>
+<span class="lineNum">     113 </span>            :                            const int quality)
+<span class="lineNum">     114 </span>            : {
+<span class="lineNum">     115 </span><span class="lineNoCov">          0 :     return getBase64Image(freeimage::getImageFromFrameBuffer(frameBuffer),</span>
+<span class="lineNum">     116 </span><span class="lineNoCov">          0 :                           format, quality);</span>
+<a name="117"><span class="lineNum">     117 </span>            : }</a>
+<span class="lineNum">     118 </span>            : 
+<span class="lineNum">     119 </span><span class="lineNoCov">          0 : ImagePtr mergeImages(const std::vector&lt;ImagePtr&gt;&amp; images)</span>
+<span class="lineNum">     120 </span>            : {
+<span class="lineNum">     121 </span>            :     int width, height, bbp;
+<span class="lineNum">     122 </span><span class="lineNoCov">          0 :     width = height = bbp = 0;</span>
+<span class="lineNum">     123 </span><span class="lineNoCov">          0 :     for (const auto&amp; image : images)</span>
+<span class="lineNum">     124 </span>            :     {
+<span class="lineNum">     125 </span><span class="lineNoCov">          0 :         width += FreeImage_GetWidth(image.get());</span>
+<span class="lineNum">     126 </span><span class="lineNoCov">          0 :         height = FreeImage_GetHeight(image.get());</span>
+<span class="lineNum">     127 </span><span class="lineNoCov">          0 :         bbp = FreeImage_GetBPP(image.get());</span>
+<a name="128"><span class="lineNum">     128 </span>            :     }</a>
+<span class="lineNum">     129 </span>            : 
+<span class="lineNum">     130 </span><span class="lineNoCov">          0 :     FreeImage_SetOutputMessage([](FREE_IMAGE_FORMAT, const char* message) {</span>
+<span class="lineNum">     131 </span><span class="lineNoCov">          0 :         throw std::runtime_error(message);</span>
+<span class="lineNum">     132 </span><span class="lineNoCov">          0 :     });</span>
+<span class="lineNum">     133 </span>            : 
+<span class="lineNum">     134 </span><span class="lineNoCov">          0 :     ImagePtr mergedImage{FreeImage_Allocate(width, height, bbp)};</span>
+<span class="lineNum">     135 </span><span class="lineNoCov">          0 :     int offset = 0;</span>
+<span class="lineNum">     136 </span><span class="lineNoCov">          0 :     for (const auto&amp; image : images)</span>
+<span class="lineNum">     137 </span>            :     {
+<span class="lineNum">     138 </span><span class="lineNoCov">          0 :         const auto imageWidth = FreeImage_GetWidth(image.get());</span>
+<span class="lineNum">     139 </span><span class="lineNoCov">          0 :         FreeImage_Paste(mergedImage.get(), image.get(), offset, 0, 255);</span>
+<span class="lineNum">     140 </span><span class="lineNoCov">          0 :         offset += imageWidth;</span>
+<span class="lineNum">     141 </span>            :     }
+<span class="lineNum">     142 </span><span class="lineNoCov">          0 :     return mergedImage;</span>
+<a name="143"><span class="lineNum">     143 </span>            : }</a>
+<span class="lineNum">     144 </span>            : }
+<span class="lineNum">     145 </span><span class="lineCov">         12 : }</span>
+<span class="lineNum">     146 </span>            : 
+<span class="lineNum">     147 </span>            : #endif
 </pre>
       </td>
     </tr>

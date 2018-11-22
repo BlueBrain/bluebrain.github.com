@@ -6,6 +6,7 @@ var searchData=
   ['addclipplane',['addClipPlane',['../classbrayns_1_1_scene.html#af7e90042add8f01ded6e8c5c972c23a5',1,'brayns::Scene']]],
   ['addcone',['addCone',['../classbrayns_1_1_model.html#a3d2d006a3ee2f20a1ac875faa7039e83',1,'brayns::Model']]],
   ['addcylinder',['addCylinder',['../classbrayns_1_1_model.html#a11568ec350edbaa36305f927e1eb2178',1,'brayns::Model']]],
+  ['addframebuffer',['addFrameBuffer',['../classbrayns_1_1_engine.html#a2ad8874dab6dc4964a5c158af39d087d',1,'brayns::Engine']]],
   ['addlight',['addLight',['../classbrayns_1_1_scene.html#a7d89afe05548c882153522a0a4f751ac',1,'brayns::Scene']]],
   ['addmodel',['addModel',['../classbrayns_1_1_scene.html#ae7ff498e3f3fa699b087577959af8f5a',1,'brayns::Scene']]],
   ['addsdfgeometry',['addSDFGeometry',['../classbrayns_1_1_model.html#a884fb214767b5ca7700e05e49d66f615',1,'brayns::Model']]],
