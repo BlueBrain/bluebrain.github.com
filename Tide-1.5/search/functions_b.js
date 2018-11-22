@@ -25,7 +25,7 @@ var searchData=
   ['moviethumbnailgenerator',['MovieThumbnailGenerator',['../class_movie_thumbnail_generator.html#a600c5485ccb796ef25b8d8a160e2904f',1,'MovieThumbnailGenerator']]],
   ['mpicommunicator',['MPICommunicator',['../class_m_p_i_communicator.html#a6396afec69b673115bd8ad91de958fc8',1,'MPICommunicator::MPICommunicator(int argc, char *argv[])'],['../class_m_p_i_communicator.html#a42bfab7891c7d697eb89e8b08ccf5e4e',1,'MPICommunicator::MPICommunicator(const MPICommunicator &amp;parent, int color)']]],
   ['mpicontext',['MPIContext',['../class_m_p_i_context.html#a1fc58d205deca92b9a9a307d49a124cb',1,'MPIContext']]],
-  ['multichannelcontent',['MultiChannelContent',['../class_multi_channel_content.html#a324183e85e7cf08e6a021c034b4003a1',1,'MultiChannelContent']]],
+  ['multichannelcontent',['MultiChannelContent',['../class_multi_channel_content.html#a3f0cbf371c4e5b4df562ea9ff3743324',1,'MultiChannelContent']]],
   ['multichannelwindowcontroller',['MultiChannelWindowController',['../class_multi_channel_window_controller.html#abb1766b901c6aa93d6bdb41545ae29fa',1,'MultiChannelWindowController']]],
   ['multitoucharea',['MultitouchArea',['../class_multitouch_area.html#a9dc4b134e58f75bcb697f0d3452f98de',1,'MultitouchArea']]]
 ];

@@ -3,6 +3,7 @@ var class_pixel_stream_content =
     [ "PixelStreamContent", "class_pixel_stream_content.html#a48c6b1f647a5ed3acaaec920046b3a3f", null ],
     [ "PixelStreamContent", "class_pixel_stream_content.html#ad6f757d8bf09e8bd9b31564167557083", null ],
     [ "getKeyboardState", "class_pixel_stream_content.html#aa002bb21734a5e973d201609c16dcf3e", null ],
+    [ "getStreamId", "class_pixel_stream_content.html#aa77c7a9318326507741667a0f0ded3de", null ],
     [ "getType", "class_pixel_stream_content.html#a58dabce75d367d4abafed2b97e125e4c", null ],
     [ "hasEventReceivers", "class_pixel_stream_content.html#a0e40610bb7d62536fcce4a31f268098e", null ],
     [ "incrementEventReceiverCount", "class_pixel_stream_content.html#a5109f320daef0181de2110d271cd545c", null ],

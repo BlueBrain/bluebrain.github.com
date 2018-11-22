@@ -1,5 +1,9 @@
 var NAVTREEINDEX8 =
 {
+"functions_s.html":[7,3,0,17],
+"functions_t.html":[7,3,0,18],
+"functions_type.html":[7,3,3],
+"functions_u.html":[7,3,0,19],
 "functions_v.html":[7,3,0,20],
 "functions_vars.html":[7,3,2],
 "functions_w.html":[7,3,0,21],
@@ -44,10 +48,10 @@ var NAVTREEINDEX8 =
 "namespaceqml.html":[6,0,3],
 "namespaceqscreens.html":[6,0,4],
 "namespaces.html":[6,0],
-"namespaceserialization.html":[6,0,5],
 "namespaceserialization.html":[7,0,1],
-"namespaceserialization_1_1detail.html":[6,0,5,0],
+"namespaceserialization.html":[6,0,5],
 "namespaceserialization_1_1detail.html":[7,0,1,0],
+"namespaceserialization_1_1detail.html":[6,0,5,0],
 "namespacestereoimage.html":[6,0,6],
 "namespacetexture_utils.html":[6,0,7],
 "namespacethumbnail.html":[6,0,8],

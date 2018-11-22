@@ -6,6 +6,7 @@ var class_content =
       [ "off", "class_content.html#a696d2c945254b9d37928253bc5159cc6a3262d48df5d75e3452f0f16b313b7808", null ]
     ] ],
     [ "Content", "class_content.html#ae491288d2efce7fa63d3e777580630b4", null ],
+    [ "Content", "class_content.html#a9661341de4ae2b5e572678589d4f0d0d", null ],
     [ "Content", "class_content.html#af14b7b5ebc756686ecde73dc09b57c56", null ],
     [ "canBeZoomed", "class_content.html#af666fa7482f5c6a12c1e5b18f7076f4e", null ],
     [ "captureInteractionChanged", "class_content.html#a7345ff57894c33fda32fe9f2961e168f", null ],
@@ -14,6 +15,7 @@ var class_content =
     [ "getCaptureInteraction", "class_content.html#a7e7c36edf987322675eea81f27e8017d", null ],
     [ "getDimensions", "class_content.html#aa4681ca97acea99fbe88e20f0e664bc0", null ],
     [ "getFilePath", "class_content.html#a234f77ec77f331f409d65e348a86fb73", null ],
+    [ "getId", "class_content.html#a4f5e3790f6dab930908636c6450db37b", null ],
     [ "getKeyboardState", "class_content.html#a41cdb80d25bbb1f3f9e1b36bfb6b2515", null ],
     [ "getMaxDimensions", "class_content.html#a70fbc6b9c9dfd95c426819a1c14464f9", null ],
     [ "getMaxScale", "class_content.html#a04642ff3171681aa5fd2c8c8291a7949", null ],
@@ -36,6 +38,7 @@ var class_content =
     [ "resetZoom", "class_content.html#ad7e55aa12c354279dbe776de66a5635f", null ],
     [ "setCaptureInteraction", "class_content.html#a18477814caa57d8f9aa0330fd19487ab", null ],
     [ "setDimensions", "class_content.html#a1b7a6f49f447c124b497b0a844fd6ea6", null ],
+    [ "setId", "class_content.html#aab904dc362bc329db1a65ef51f714588", null ],
     [ "setMaxScale", "class_content.html#a87465efbfaf4e2e5b0a5e7e8af0985f2", null ],
     [ "setSizeHints", "class_content.html#a70292d652fb37ee21640801fce53c186", null ],
     [ "setZoomRect", "class_content.html#a0f3e5f9203b97450e3856d39a12807e3", null ],
