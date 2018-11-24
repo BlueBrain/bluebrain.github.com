@@ -2,12 +2,10 @@ var searchData=
 [
   ['saveframetodisk',['saveFrameToDisk',['../classbrayns_1_1_base_window.html#a8ce72982bdec9284b615da1e19cbe60f',1,'brayns::BaseWindow']]],
   ['savetocachefile',['saveToCacheFile',['../classbrayns_1_1_scene.html#a0d835b82330c961a0d7967ac08f96567',1,'brayns::Scene']]],
-  ['scene',['Scene',['../classbrayns_1_1_scene.html#afa8438c41871f9d73e10968182a9c53f',1,'brayns::Scene']]],
   ['scene',['Scene',['../classbrayns_1_1_scene.html',1,'brayns']]],
+  ['scene',['Scene',['../classbrayns_1_1_scene.html#afa8438c41871f9d73e10968182a9c53f',1,'brayns::Scene']]],
   ['sceneparameters',['SceneParameters',['../classbrayns_1_1_scene_parameters.html',1,'brayns']]],
   ['schedule',['schedule',['../classbrayns_1_1_abstract_task.html#ad0836f14b82f490ec6d12a043f9f7cee',1,'brayns::AbstractTask::schedule()'],['../classbrayns_1_1_task.html#abfc3f1e06d95e8923df75e9651b1f0f4',1,'brayns::Task::schedule()'],['../classbrayns_1_1_deferred_task.html#aa0c6a2de0df76b4bcf74c80413514bd0',1,'brayns::DeferredTask::schedule()']]],
-  ['screenspaceprocessor',['ScreenSpaceProcessor',['../classbrayns_1_1_screen_space_processor.html',1,'brayns']]],
-  ['screenspaceprocessordata',['ScreenSpaceProcessorData',['../structbrayns_1_1_screen_space_processor_data.html',1,'brayns']]],
   ['sdfgeometry',['SDFGeometry',['../structbrayns_1_1_s_d_f_geometry.html',1,'brayns']]],
   ['sdfgeometrydata',['SDFGeometryData',['../structbrayns_1_1_model_1_1_s_d_f_geometry_data.html',1,'brayns::Model']]],
   ['seconds',['seconds',['../classbrayns_1_1_timer.html#a0a291f3215e7fb699f15e634bcbde374',1,'brayns::Timer']]],

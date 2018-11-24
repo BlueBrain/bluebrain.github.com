@@ -6,5 +6,5 @@ var searchData=
   ['_5fmotionspeed',['_motionSpeed',['../classbrayns_1_1_abstract_manipulator.html#a8097c2eedefc3455aa6fef5da8e37c86',1,'brayns::AbstractManipulator']]],
   ['_5fmouse',['_mouse',['../classbrayns_1_1_base_window.html#aadc33e9b2cec154eefd08b1179426e02',1,'brayns::BaseWindow']]],
   ['_5frotationspeed',['_rotationSpeed',['../classbrayns_1_1_abstract_manipulator.html#a24eb133da465bb9d841a18cf58a72a34',1,'brayns::AbstractManipulator']]],
-  ['_5fupdatevalue',['_updateValue',['../classbrayns_1_1_base_object.html#a74ec06119ffce28516d53565d9c39fe1',1,'brayns::BaseObject']]]
+  ['_5fupdatevalue',['_updateValue',['../classbrayns_1_1_base_object.html#a2109985c05194082bc6e0b5a64478530',1,'brayns::BaseObject']]]
 ];

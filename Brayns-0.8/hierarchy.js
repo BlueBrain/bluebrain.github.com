@@ -85,8 +85,6 @@ var hierarchy =
     [ "brayns::RpcDescription", "structbrayns_1_1_rpc_description.html", [
       [ "brayns::RpcParameterDescription", "structbrayns_1_1_rpc_parameter_description.html", null ]
     ] ],
-    [ "brayns::ScreenSpaceProcessor", "classbrayns_1_1_screen_space_processor.html", null ],
-    [ "brayns::ScreenSpaceProcessorData", "structbrayns_1_1_screen_space_processor_data.html", null ],
     [ "brayns::SDFGeometry", "structbrayns_1_1_s_d_f_geometry.html", null ],
     [ "brayns::ShortcutInformation", "structbrayns_1_1_shortcut_information.html", null ],
     [ "brayns::Streamline", "structbrayns_1_1_streamline.html", null ],

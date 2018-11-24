@@ -60,8 +60,6 @@ var annotated_dup =
       [ "RpcParameterDescription", "structbrayns_1_1_rpc_parameter_description.html", "structbrayns_1_1_rpc_parameter_description" ],
       [ "Scene", "classbrayns_1_1_scene.html", "classbrayns_1_1_scene" ],
       [ "SceneParameters", "classbrayns_1_1_scene_parameters.html", "classbrayns_1_1_scene_parameters" ],
-      [ "ScreenSpaceProcessor", "classbrayns_1_1_screen_space_processor.html", "classbrayns_1_1_screen_space_processor" ],
-      [ "ScreenSpaceProcessorData", "structbrayns_1_1_screen_space_processor_data.html", "structbrayns_1_1_screen_space_processor_data" ],
       [ "SDFGeometry", "structbrayns_1_1_s_d_f_geometry.html", "structbrayns_1_1_s_d_f_geometry" ],
       [ "SharedDataVolume", "classbrayns_1_1_shared_data_volume.html", "classbrayns_1_1_shared_data_volume" ],
       [ "ShortcutInformation", "structbrayns_1_1_shortcut_information.html", "structbrayns_1_1_shortcut_information" ],

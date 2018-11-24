@@ -42,7 +42,6 @@ var classbrayns_1_1_base_window =
     [ "_lastButtonState", "classbrayns_1_1_base_window.html#af38cceaac3ea5f5da0de91661e217b66", null ],
     [ "_lastMousePos", "classbrayns_1_1_base_window.html#af085195f3b46d738811ec8be61a58fc2", null ],
     [ "_mouse", "classbrayns_1_1_base_window.html#aadc33e9b2cec154eefd08b1179426e02", null ],
-    [ "_screenSpaceProcessor", "classbrayns_1_1_base_window.html#a0268a074e231c0d209defc9ca6924181", null ],
     [ "_timer", "classbrayns_1_1_base_window.html#a1914bb6f4e9eae8da584d013cd2837be", null ],
     [ "_windowID", "classbrayns_1_1_base_window.html#a929db69c63d769d84b2a7e91d7e564e7", null ],
     [ "_windowPosition", "classbrayns_1_1_base_window.html#ac19852b2fd09963997a6387ab14fbc2c", null ],
