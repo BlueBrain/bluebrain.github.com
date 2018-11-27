@@ -271,6 +271,7 @@ var hierarchy =
       [ "std::runtime_error", null, [
         [ "dimensions_mismatch", "classdimensions__mismatch.html", null ],
         [ "invalid_surface_index_error", "classinvalid__surface__index__error.html", null ],
+        [ "load_error", "classload__error.html", null ],
         [ "window_not_found_error", "classwindow__not__found__error.html", null ]
       ] ]
     ] ],

@@ -85,6 +85,7 @@ var annotated_dup =
     [ "LauncherPlacer", "class_launcher_placer.html", "class_launcher_placer" ],
     [ "LayoutEngine", "class_layout_engine.html", "class_layout_engine" ],
     [ "LineLayout", "class_line_layout.html", "class_line_layout" ],
+    [ "load_error", "classload__error.html", null ],
     [ "LocalBarrier", "class_local_barrier.html", "class_local_barrier" ],
     [ "LodSynchronizer", "class_lod_synchronizer.html", "class_lod_synchronizer" ],
     [ "LodTiler", "class_lod_tiler.html", "class_lod_tiler" ],

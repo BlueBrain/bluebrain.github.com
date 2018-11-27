@@ -6,7 +6,7 @@ var class_app_controller =
     [ "countdownUpdated", "class_app_controller.html#a3dada4381c4f72a29e0fe7fab8c5f8ff", null ],
     [ "handleTouchEvent", "class_app_controller.html#a81097dd49df97a908c65e4e468d755ed", null ],
     [ "load", "class_app_controller.html#ae0232bc6f3f8d9bcaeabb099af430960", null ],
-    [ "open", "class_app_controller.html#ac10b7e49700f641af36c6da646acec34", null ],
+    [ "open", "class_app_controller.html#a7817a4958bcfe1e850444e645068961a", null ],
     [ "openAll", "class_app_controller.html#a4d9f30c9a353d6e21a027513a3001870", null ],
     [ "openLauncher", "class_app_controller.html#a8cf0a41545ad642b0cd8b5f12d78db2a", null ],
     [ "openWebbrowser", "class_app_controller.html#a3f4c06dad41ae1f34da388fc3db59746", null ],
