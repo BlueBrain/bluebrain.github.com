@@ -8,6 +8,7 @@ var classbrayns_1_1_property_map =
     [ "getProperty", "classbrayns_1_1_property_map.html#ae7867c0a4185bbf8178b7ef5fcb068d8", null ],
     [ "getPropertyType", "classbrayns_1_1_property_map.html#a1817d24daf0744629c11dc8d74f2bf72", null ],
     [ "hasProperty", "classbrayns_1_1_property_map.html#afc2b3657e822d98ea96880376cbf40df", null ],
+    [ "merge", "classbrayns_1_1_property_map.html#ac50e51254d784da34ccff6e61ddd2fa1", null ],
     [ "setProperty", "classbrayns_1_1_property_map.html#a9ec43c008e2aa8f72aba98136559bea2", null ],
     [ "updateProperty", "classbrayns_1_1_property_map.html#ad18c6f4de0f7670e4dc95b253de0d1e2", null ]
 ];

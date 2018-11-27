@@ -1,7 +1,10 @@
 var classbrayns_1_1_molecular_system_reader =
 [
-    [ "MolecularSystemReader", "classbrayns_1_1_molecular_system_reader.html#ab796ef403b0cab880a9e6407930ddad0", null ],
-    [ "importFromBlob", "classbrayns_1_1_molecular_system_reader.html#a00f2b7291d9d94ac0c1d44b7bd1e9131", null ],
-    [ "importFromFile", "classbrayns_1_1_molecular_system_reader.html#af049a61f02c7ef20138bfdff6ac27545", null ],
+    [ "MolecularSystemReader", "classbrayns_1_1_molecular_system_reader.html#a93e0fe6333cabc47dc8bdc99071a4601", null ],
+    [ "getName", "classbrayns_1_1_molecular_system_reader.html#ae6198a69584e8c571ea17af8078a0dee", null ],
+    [ "getProperties", "classbrayns_1_1_molecular_system_reader.html#a8277e28e598f4149dbf4274e09a6e01c", null ],
+    [ "getSupportedExtensions", "classbrayns_1_1_molecular_system_reader.html#a5039274831622ebfd8eff3812abd4c6d", null ],
+    [ "importFromBlob", "classbrayns_1_1_molecular_system_reader.html#a3b4603f385fa9087a9401f81cf3f65be", null ],
+    [ "importFromFile", "classbrayns_1_1_molecular_system_reader.html#a6659fda15dc5db90b039a74a3256574c", null ],
     [ "isSupported", "classbrayns_1_1_molecular_system_reader.html#a540361ac6951ad0feeecba584e594ee5", null ]
 ];

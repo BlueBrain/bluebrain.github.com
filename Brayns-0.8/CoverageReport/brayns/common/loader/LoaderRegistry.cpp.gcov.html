@@ -32,12 +32,12 @@
             <td></td>
             <td class="headerItem">Lines:</td>
             <td class="headerCovTableEntry">1</td>
-            <td class="headerCovTableEntry">35</td>
-            <td class="headerCovTableEntryLo">2.9 %</td>
+            <td class="headerCovTableEntry">44</td>
+            <td class="headerCovTableEntryLo">2.3 %</td>
           </tr>
           <tr>
             <td class="headerItem">Date:</td>
-            <td class="headerValue">2018-11-24 01:22:33</td>
+            <td class="headerValue">2018-11-27 01:22:32</td>
             <td></td>
             <td class="headerItem">Functions:</td>
             <td class="headerCovTableEntry">2</td>
@@ -82,76 +82,101 @@
 <span class="lineNum">      20 </span>            : 
 <span class="lineNum">      21 </span>            : #include &quot;LoaderRegistry.h&quot;
 <span class="lineNum">      22 </span>            : 
-<span class="lineNum">      23 </span>            : #include &lt;brayns/common/utils/Utils.h&gt;
-<span class="lineNum">      24 </span>            : 
-<span class="lineNum">      25 </span>            : #include &lt;boost/filesystem.hpp&gt;
-<span class="lineNum">      26 </span>            : #include &lt;boost/range/iterator_range_core.hpp&gt;
-<span class="lineNum">      27 </span>            : namespace fs = boost::filesystem;
+<span class="lineNum">      23 </span>            : #ifdef BRAYNS_USE_LIBARCHIVE
+<span class="lineNum">      24 </span>            : #include &lt;brayns/io/ArchiveLoader.h&gt;
+<span class="lineNum">      25 </span>            : #endif
+<span class="lineNum">      26 </span>            : 
+<span class="lineNum">      27 </span>            : #include &lt;brayns/common/utils/Utils.h&gt;
 <span class="lineNum">      28 </span>            : 
-<a name="29"><span class="lineNum">      29 </span>            : namespace</a>
-<span class="lineNum">      30 </span>            : {
-<span class="lineNum">      31 </span><span class="lineNoCov">          0 : std::string extract_extension(const std::string&amp; filename)</span>
-<span class="lineNum">      32 </span>            : {
-<span class="lineNum">      33 </span><span class="lineNoCov">          0 :     auto extension = fs::extension(filename);</span>
-<span class="lineNum">      34 </span><span class="lineNoCov">          0 :     if (!extension.empty())</span>
-<span class="lineNum">      35 </span><span class="lineNoCov">          0 :         extension = extension.erase(0, 1);</span>
-<span class="lineNum">      36 </span>            : 
-<span class="lineNum">      37 </span><span class="lineNoCov">          0 :     return extension;</span>
-<span class="lineNum">      38 </span>            : }
-<span class="lineNum">      39 </span>            : }
-<span class="lineNum">      40 </span>            : 
-<a name="41"><span class="lineNum">      41 </span>            : namespace brayns</a>
-<span class="lineNum">      42 </span>            : {
-<span class="lineNum">      43 </span><span class="lineNoCov">          0 : void LoaderRegistry::registerLoader(std::unique_ptr&lt;Loader&gt; loader)</span>
-<span class="lineNum">      44 </span>            : {
-<span class="lineNum">      45 </span><span class="lineNoCov">          0 :     _loaders.push_front(std::move(loader));</span>
-<a name="46"><span class="lineNum">      46 </span><span class="lineNoCov">          0 : }</span></a>
-<span class="lineNum">      47 </span>            : 
-<span class="lineNum">      48 </span><span class="lineNoCov">          0 : bool LoaderRegistry::isSupportedFile(const std::string&amp; filename) const</span>
-<span class="lineNum">      49 </span>            : {
-<span class="lineNum">      50 </span><span class="lineNoCov">          0 :     if (fs::is_directory(filename))</span>
-<span class="lineNum">      51 </span><span class="lineNoCov">          0 :         return false;</span>
-<span class="lineNum">      52 </span>            : 
-<span class="lineNum">      53 </span><span class="lineNoCov">          0 :     const auto extension = extract_extension(filename);</span>
-<span class="lineNum">      54 </span><span class="lineNoCov">          0 :     for (const auto&amp; loader : _loaders)</span>
-<span class="lineNum">      55 </span><span class="lineNoCov">          0 :         if (loader-&gt;isSupported(filename, extension))</span>
-<span class="lineNum">      56 </span><span class="lineNoCov">          0 :             return true;</span>
-<span class="lineNum">      57 </span><span class="lineNoCov">          0 :     return false;</span>
-<a name="58"><span class="lineNum">      58 </span>            : }</a>
-<span class="lineNum">      59 </span>            : 
-<span class="lineNum">      60 </span><span class="lineNoCov">          0 : bool LoaderRegistry::isSupportedType(const std::string&amp; type) const</span>
-<span class="lineNum">      61 </span>            : {
+<span class="lineNum">      29 </span>            : #include &lt;boost/filesystem.hpp&gt;
+<span class="lineNum">      30 </span>            : #include &lt;boost/range/iterator_range_core.hpp&gt;
+<span class="lineNum">      31 </span>            : namespace fs = boost::filesystem;
+<span class="lineNum">      32 </span>            : 
+<a name="33"><span class="lineNum">      33 </span>            : namespace brayns</a>
+<span class="lineNum">      34 </span>            : {
+<span class="lineNum">      35 </span><span class="lineNoCov">          0 : void LoaderRegistry::registerLoader(std::unique_ptr&lt;Loader&gt; loader)</span>
+<span class="lineNum">      36 </span>            : {
+<span class="lineNum">      37 </span>            : #ifdef BRAYNS_USE_LIBARCHIVE
+<span class="lineNum">      38 </span>            :     if (dynamic_cast&lt;ArchiveLoader*&gt;(loader.get()) != nullptr)
+<span class="lineNum">      39 </span>            :     {
+<span class="lineNum">      40 </span>            :         _archiveLoader = std::move(loader);
+<span class="lineNum">      41 </span>            :         return;
+<span class="lineNum">      42 </span>            :     }
+<span class="lineNum">      43 </span>            : #endif
+<span class="lineNum">      44 </span><span class="lineNoCov">          0 :     _loaderInfos.push_back({loader-&gt;getName(), loader-&gt;getSupportedExtensions(),</span>
+<span class="lineNum">      45 </span><span class="lineNoCov">          0 :                             loader-&gt;getProperties()});</span>
+<span class="lineNum">      46 </span><span class="lineNoCov">          0 :     _loaders.push_front(std::move(loader));</span>
+<a name="47"><span class="lineNum">      47 </span><span class="lineNoCov">          0 : }</span></a>
+<span class="lineNum">      48 </span>            : 
+<span class="lineNum">      49 </span><span class="lineNoCov">          0 : const std::vector&lt;LoaderInfo&gt;&amp; LoaderRegistry::getLoaderInfos() const</span>
+<span class="lineNum">      50 </span>            : {
+<span class="lineNum">      51 </span><span class="lineNoCov">          0 :     return _loaderInfos;</span>
+<a name="52"><span class="lineNum">      52 </span>            : }</a>
+<span class="lineNum">      53 </span>            : 
+<span class="lineNum">      54 </span><span class="lineNoCov">          0 : bool LoaderRegistry::isSupportedFile(const std::string&amp; filename) const</span>
+<span class="lineNum">      55 </span>            : {
+<span class="lineNum">      56 </span><span class="lineNoCov">          0 :     if (fs::is_directory(filename))</span>
+<span class="lineNum">      57 </span><span class="lineNoCov">          0 :         return false;</span>
+<span class="lineNum">      58 </span>            : 
+<span class="lineNum">      59 </span><span class="lineNoCov">          0 :     const auto extension = extractExtension(filename);</span>
+<span class="lineNum">      60 </span><span class="lineNoCov">          0 :     if (_archiveSupported(filename, extension))</span>
+<span class="lineNum">      61 </span><span class="lineNoCov">          0 :         return true;</span>
 <span class="lineNum">      62 </span><span class="lineNoCov">          0 :     for (const auto&amp; loader : _loaders)</span>
-<span class="lineNum">      63 </span><span class="lineNoCov">          0 :         if (loader-&gt;isSupported(&quot;&quot;, type))</span>
+<span class="lineNum">      63 </span><span class="lineNoCov">          0 :         if (loader-&gt;isSupported(filename, extension))</span>
 <span class="lineNum">      64 </span><span class="lineNoCov">          0 :             return true;</span>
 <span class="lineNum">      65 </span><span class="lineNoCov">          0 :     return false;</span>
 <a name="66"><span class="lineNum">      66 </span>            : }</a>
 <span class="lineNum">      67 </span>            : 
-<span class="lineNum">      68 </span><span class="lineNoCov">          0 : const Loader&amp; LoaderRegistry::getLoaderFromFilename(</span>
-<span class="lineNum">      69 </span>            :     const std::string&amp; filename) const
-<span class="lineNum">      70 </span>            : {
-<span class="lineNum">      71 </span><span class="lineNoCov">          0 :     if (fs::is_directory(filename))</span>
-<span class="lineNum">      72 </span><span class="lineNoCov">          0 :         throw std::runtime_error(&quot;'&quot; + filename + &quot;' is a directory&quot;);</span>
-<span class="lineNum">      73 </span>            : 
-<span class="lineNum">      74 </span><span class="lineNoCov">          0 :     const auto extension = extract_extension(filename);</span>
-<span class="lineNum">      75 </span>            : 
-<span class="lineNum">      76 </span><span class="lineNoCov">          0 :     for (const auto&amp; loader : _loaders)</span>
-<span class="lineNum">      77 </span><span class="lineNoCov">          0 :         if (loader-&gt;isSupported(filename, extension))</span>
-<span class="lineNum">      78 </span><span class="lineNoCov">          0 :             return *loader;</span>
-<span class="lineNum">      79 </span>            : 
-<span class="lineNum">      80 </span><span class="lineNoCov">          0 :     throw std::runtime_error(&quot;No loader found for filename '&quot; + filename + &quot;'&quot;);</span>
-<a name="81"><span class="lineNum">      81 </span>            : }</a>
-<span class="lineNum">      82 </span>            : 
-<span class="lineNum">      83 </span><span class="lineNoCov">          0 : const Loader&amp; LoaderRegistry::getLoaderFromFiletype(</span>
-<span class="lineNum">      84 </span>            :     const std::string&amp; filetype) const
-<span class="lineNum">      85 </span>            : {
-<span class="lineNum">      86 </span><span class="lineNoCov">          0 :     for (const auto&amp; loader : _loaders)</span>
-<span class="lineNum">      87 </span><span class="lineNoCov">          0 :         if (loader-&gt;isSupported(&quot;&quot;, filetype))</span>
-<span class="lineNum">      88 </span><span class="lineNoCov">          0 :             return *loader;</span>
-<span class="lineNum">      89 </span>            : 
-<a name="90"><span class="lineNum">      90 </span><span class="lineNoCov">          0 :     throw std::runtime_error(&quot;No loader found for type '&quot; + filetype + &quot;'&quot;);</span></a>
-<span class="lineNum">      91 </span>            : }
-<span class="lineNum">      92 </span><span class="lineCov">         12 : }</span>
+<span class="lineNum">      68 </span><span class="lineNoCov">          0 : bool LoaderRegistry::isSupportedType(const std::string&amp; type) const</span>
+<span class="lineNum">      69 </span>            : {
+<span class="lineNum">      70 </span><span class="lineNoCov">          0 :     if (_archiveSupported(&quot;&quot;, type))</span>
+<span class="lineNum">      71 </span><span class="lineNoCov">          0 :         return true;</span>
+<span class="lineNum">      72 </span><span class="lineNoCov">          0 :     for (const auto&amp; loader : _loaders)</span>
+<span class="lineNum">      73 </span><span class="lineNoCov">          0 :         if (loader-&gt;isSupported(&quot;&quot;, type))</span>
+<span class="lineNum">      74 </span><span class="lineNoCov">          0 :             return true;</span>
+<span class="lineNum">      75 </span><span class="lineNoCov">          0 :     return false;</span>
+<a name="76"><span class="lineNum">      76 </span>            : }</a>
+<span class="lineNum">      77 </span>            : 
+<span class="lineNum">      78 </span><span class="lineNoCov">          0 : const Loader&amp; LoaderRegistry::getSuitableLoader(</span>
+<span class="lineNum">      79 </span>            :     const std::string&amp; filename, const std::string&amp; filetype,
+<span class="lineNum">      80 </span>            :     const std::string&amp; loaderName) const
+<span class="lineNum">      81 </span>            : {
+<span class="lineNum">      82 </span><span class="lineNoCov">          0 :     if (fs::is_directory(filename))</span>
+<span class="lineNum">      83 </span><span class="lineNoCov">          0 :         throw std::runtime_error(&quot;'&quot; + filename + &quot;' is a directory&quot;);</span>
+<span class="lineNum">      84 </span>            : 
+<span class="lineNum">      85 </span>            :     const auto extension =
+<span class="lineNum">      86 </span><span class="lineNoCov">          0 :         filetype.empty() ? extractExtension(filename) : filetype;</span>
+<span class="lineNum">      87 </span>            : 
+<span class="lineNum">      88 </span>            :     // If we have an archive we always use the archive loader even if a specific
+<span class="lineNum">      89 </span>            :     // loader is specified
+<span class="lineNum">      90 </span><span class="lineNoCov">          0 :     if (_archiveSupported(filename, extension))</span>
+<span class="lineNum">      91 </span><span class="lineNoCov">          0 :         return *_archiveLoader;</span>
+<span class="lineNum">      92 </span>            : 
+<span class="lineNum">      93 </span>            :     // Find specific loader
+<span class="lineNum">      94 </span><span class="lineNoCov">          0 :     if (!loaderName.empty())</span>
+<span class="lineNum">      95 </span>            :     {
+<span class="lineNum">      96 </span><span class="lineNoCov">          0 :         for (const auto&amp; loader : _loaders)</span>
+<span class="lineNum">      97 </span><span class="lineNoCov">          0 :             if (loader-&gt;getName() == loaderName)</span>
+<span class="lineNum">      98 </span><span class="lineNoCov">          0 :                 return *loader.get();</span>
+<span class="lineNum">      99 </span>            : 
+<span class="lineNum">     100 </span><span class="lineNoCov">          0 :         throw std::runtime_error(&quot;No loader found with name '&quot; + loaderName +</span>
+<span class="lineNum">     101 </span><span class="lineNoCov">          0 :                                  &quot;'&quot;);</span>
+<span class="lineNum">     102 </span>            :     }
+<span class="lineNum">     103 </span>            : 
+<span class="lineNum">     104 </span><span class="lineNoCov">          0 :     for (const auto&amp; loader : _loaders)</span>
+<span class="lineNum">     105 </span><span class="lineNoCov">          0 :         if (loader-&gt;isSupported(filename, extension))</span>
+<span class="lineNum">     106 </span><span class="lineNoCov">          0 :             return *loader;</span>
+<span class="lineNum">     107 </span>            : 
+<span class="lineNum">     108 </span><span class="lineNoCov">          0 :     throw std::runtime_error(&quot;No loader found for filename '&quot; + filename +</span>
+<span class="lineNum">     109 </span><span class="lineNoCov">          0 :                              &quot;' and filetype '&quot; + filetype + &quot;'&quot;);</span>
+<a name="110"><span class="lineNum">     110 </span>            : }</a>
+<span class="lineNum">     111 </span>            : 
+<span class="lineNum">     112 </span><span class="lineNoCov">          0 : bool LoaderRegistry::_archiveSupported(const std::string&amp; filename,</span>
+<span class="lineNum">     113 </span>            :                                        const std::string&amp; filetype) const
+<span class="lineNum">     114 </span>            : {
+<a name="115"><span class="lineNum">     115 </span><span class="lineNoCov">          0 :     return _archiveLoader &amp;&amp; _archiveLoader-&gt;isSupported(filename, filetype);</span></a>
+<span class="lineNum">     116 </span>            : }
+<span class="lineNum">     117 </span><span class="lineCov">         12 : }</span>
 </pre>
       </td>
     </tr>

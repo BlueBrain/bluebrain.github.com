@@ -64,11 +64,13 @@ var hierarchy =
       [ "brayns::PointLight", "classbrayns_1_1_point_light.html", null ]
     ] ],
     [ "brayns::Loader", "classbrayns_1_1_loader.html", [
+      [ "brayns::MHDVolumeLoader", "classbrayns_1_1_m_h_d_volume_loader.html", null ],
       [ "brayns::MolecularSystemReader", "classbrayns_1_1_molecular_system_reader.html", null ],
       [ "brayns::ProteinLoader", "classbrayns_1_1_protein_loader.html", null ],
-      [ "brayns::VolumeLoader", "classbrayns_1_1_volume_loader.html", null ],
+      [ "brayns::RawVolumeLoader", "classbrayns_1_1_raw_volume_loader.html", null ],
       [ "brayns::XYZBLoader", "classbrayns_1_1_x_y_z_b_loader.html", null ]
     ] ],
+    [ "brayns::LoaderInfo", "structbrayns_1_1_loader_info.html", null ],
     [ "brayns::LoaderProgress", "classbrayns_1_1_loader_progress.html", null ],
     [ "brayns::LoaderRegistry", "classbrayns_1_1_loader_registry.html", null ],
     [ "brayns::MetaballsGenerator", "classbrayns_1_1_metaballs_generator.html", null ],

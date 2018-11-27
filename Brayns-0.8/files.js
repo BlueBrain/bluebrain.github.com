@@ -28,6 +28,7 @@ var files =
     [ "definesLinux.h", "defines_linux_8h_source.html", null ],
     [ "DirectionalLight.h", "_directional_light_8h_source.html", null ],
     [ "Engine.h", "_engine_8h_source.html", null ],
+    [ "EnumUtils.h", "_enum_utils_8h_source.html", null ],
     [ "errors.h", "errors_8h_source.html", null ],
     [ "ExtensionPlugin.h", "_extension_plugin_8h_source.html", null ],
     [ "FlyingModeManipulator.h", "_flying_mode_manipulator_8h_source.html", null ],

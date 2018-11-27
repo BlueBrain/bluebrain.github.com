@@ -1,5 +1,6 @@
 var searchData=
 [
+  ['rawvolumeloader',['RawVolumeLoader',['../classbrayns_1_1_raw_volume_loader.html',1,'brayns']]],
   ['registerloader',['registerLoader',['../classbrayns_1_1_loader_registry.html#ad97da244840fb0449ffc11114e90df5a',1,'brayns::LoaderRegistry']]],
   ['registernotification',['registerNotification',['../classbrayns_1_1_action_interface.html#aacd58476c54ade7d0d8ed55256008878',1,'brayns::ActionInterface::registerNotification(const RpcDescription &amp;desc, const std::function&lt; void()&gt; &amp;action)=0'],['../classbrayns_1_1_action_interface.html#a4c0fb32efb1cb55e86ac6aa7e71aadea',1,'brayns::ActionInterface::registerNotification(const RpcParameterDescription &amp;desc, const PropertyMap &amp;input, const std::function&lt; void(PropertyMap)&gt; &amp;action)=0'],['../classbrayns_1_1_action_interface.html#a95e883e26046da3bb55228e683826fcd',1,'brayns::ActionInterface::registerNotification(const std::string &amp;name, const std::function&lt; void()&gt; &amp;action)'],['../classbrayns_1_1_action_interface.html#ae77375d7cf3277aa2a876d58bb519c59',1,'brayns::ActionInterface::registerNotification(const std::string &amp;name, const std::function&lt; void(Params)&gt; &amp;action)']]],
   ['registerparameters',['registerParameters',['../classbrayns_1_1_parameters_manager.html#af1446cfbea9a2fb9348a8625bd69bb18',1,'brayns::ParametersManager']]],

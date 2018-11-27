@@ -1,6 +1,6 @@
 var classbrayns_1_1_abstract_simulation_handler =
 [
-    [ "AbstractSimulationHandler", "classbrayns_1_1_abstract_simulation_handler.html#a17cee8a8500abfebc5f9783bb92ec48d", null ],
+    [ "AbstractSimulationHandler", "classbrayns_1_1_abstract_simulation_handler.html#a79535edc8d8e4dac3114a5d9a739f841", null ],
     [ "~AbstractSimulationHandler", "classbrayns_1_1_abstract_simulation_handler.html#a60e89a35d6ca992d20697637d8b7560c", null ],
     [ "_getBoundedFrame", "classbrayns_1_1_abstract_simulation_handler.html#a121b6fd1a95d18a9f57a5f3f7ecf2073", null ],
     [ "attachSimulationToCacheFile", "classbrayns_1_1_abstract_simulation_handler.html#afbda00e17fa6bd162a4263f89a55c379", null ],
@@ -24,7 +24,6 @@ var classbrayns_1_1_abstract_simulation_handler =
     [ "_dt", "classbrayns_1_1_abstract_simulation_handler.html#aa9aad50ae332a3aacc0edccbaeeed38a", null ],
     [ "_frameData", "classbrayns_1_1_abstract_simulation_handler.html#a09caed1ea19c11e6dbe164f5f084feb5", null ],
     [ "_frameSize", "classbrayns_1_1_abstract_simulation_handler.html#a003c5a99b9c1d0d1f2cd0794d231fc8b", null ],
-    [ "_geometryParameters", "classbrayns_1_1_abstract_simulation_handler.html#ae74cdef039fd8630e189f453afbb0067", null ],
     [ "_headerSize", "classbrayns_1_1_abstract_simulation_handler.html#a7d8682d296cac3db1182363747a369e7", null ],
     [ "_memoryMapPtr", "classbrayns_1_1_abstract_simulation_handler.html#a647855887e58464df3531eb6c3449ba3", null ],
     [ "_nbFrames", "classbrayns_1_1_abstract_simulation_handler.html#ab212c9c459d88905440de310d89c6fcb", null ],

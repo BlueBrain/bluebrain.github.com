@@ -2,7 +2,7 @@ var classbrayns_1_1_geometry_parameters =
 [
     [ "GeometryParameters", "classbrayns_1_1_geometry_parameters.html#a96a7875f7d452448da35b193921725dc", null ],
     [ "getCircuitBoundingBox", "classbrayns_1_1_geometry_parameters.html#a83782bbc10222c23110d44f2b16ddd60", null ],
-    [ "getCircuitDensity", "classbrayns_1_1_geometry_parameters.html#a997c8833a1dbc94925bf051f4bd25292", null ],
+    [ "getCircuitDensity", "classbrayns_1_1_geometry_parameters.html#a581ab4b7f519a26552b2855b4d35a808", null ],
     [ "getCircuitEndSimulationTime", "classbrayns_1_1_geometry_parameters.html#a81db92e082e45cf5f00eaf82bf46b2a6", null ],
     [ "getCircuitMeshFilenamePattern", "classbrayns_1_1_geometry_parameters.html#abfd90a72db2701ab4cc8fbef0906d2ea", null ],
     [ "getCircuitMeshFolder", "classbrayns_1_1_geometry_parameters.html#a1b417a74dbc460c91c08fec66a3073a0", null ],
@@ -28,7 +28,7 @@ var classbrayns_1_1_geometry_parameters =
     [ "getMorphologyDampenBranchThicknessChangerate", "classbrayns_1_1_geometry_parameters.html#a2016c324b34b276fe2eabb04a604bacc", null ],
     [ "getMorphologyLayout", "classbrayns_1_1_geometry_parameters.html#a6ff28e9ddeb7faf36d074fd7538a7a80", null ],
     [ "getMorphologySectionTypes", "classbrayns_1_1_geometry_parameters.html#a8e659f352d620e67764b3721aa478934", null ],
-    [ "getMorphologyUseSDFGeometries", "classbrayns_1_1_geometry_parameters.html#a2fbdab40d554eec5824c6856ba1bb6ae", null ],
+    [ "getMorphologyUseSdfGeometries", "classbrayns_1_1_geometry_parameters.html#aabd9085f13578f79a350131bed2c58aa", null ],
     [ "getRadiusCorrection", "classbrayns_1_1_geometry_parameters.html#a9692b5115e51135d82cfd73cecaa57ea", null ],
     [ "getRadiusMultiplier", "classbrayns_1_1_geometry_parameters.html#aa30da0183d6105d77c165273d8ea7e2a", null ],
     [ "getSaveCacheFile", "classbrayns_1_1_geometry_parameters.html#a714f28f1069bc6ea579b96300214f23f", null ],
@@ -52,7 +52,7 @@ var classbrayns_1_1_geometry_parameters =
     [ "_morphologyDampenBranchThicknessChangerate", "classbrayns_1_1_geometry_parameters.html#aa885a603122cb2b2eb03ecf3177e49c5", null ],
     [ "_morphologyLayout", "classbrayns_1_1_geometry_parameters.html#ab8276c45346d1b13cfe87e018a10a8d9", null ],
     [ "_morphologySectionTypes", "classbrayns_1_1_geometry_parameters.html#a2cde5b4815970c58a349645c93c19c40", null ],
-    [ "_morphologyUseSDFGeometries", "classbrayns_1_1_geometry_parameters.html#ae288917576997c8aa943cd84424b5246", null ],
+    [ "_morphologyUseSdfGeometries", "classbrayns_1_1_geometry_parameters.html#aeb4983164a97413036bc5dbfd060bd04", null ],
     [ "_radiusCorrection", "classbrayns_1_1_geometry_parameters.html#a1475d03f548abf61f54b286db7d4bdf3", null ],
     [ "_radiusMultiplier", "classbrayns_1_1_geometry_parameters.html#ae1bdb65074988e108d6b3a7410bf3155", null ],
     [ "_saveCacheFile", "classbrayns_1_1_geometry_parameters.html#ac1a61eaf6ac1efe0d75f80b5ed1a7a65", null ]
