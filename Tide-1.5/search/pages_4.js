@@ -1,4 +1,5 @@
 var searchData=
 [
-  ['introduction',['Introduction',['../index.html',1,'']]]
+  ['pyramidify',['pyramidify',['../pyramidify.html',1,'apps']]],
+  ['pyramidmaker',['pyramidmaker',['../pyramidmaker.html',1,'apps']]]
 ];

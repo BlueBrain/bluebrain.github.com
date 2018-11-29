@@ -1,5 +1,6 @@
 var searchData=
 [
+  ['tide',['Tide',['../index.html',1,'']]],
   ['takescreenshot',['takeScreenshot',['../class_app_remote_controller.html#a5eaf77e43de754ce7bee11734e2c6795',1,'AppRemoteController']]],
   ['tap',['tap',['../class_multitouch_area.html#ad10f067038cca27820ec0da46630b7ec',1,'MultitouchArea::tap()'],['../class_tap_detector.html#afc2bca5d6d510c1a573cfac31a4d295e',1,'TapDetector::tap()']]],
   ['tapandhold',['tapAndHold',['../class_multitouch_area.html#a968c008c352f09cb24486ed8257b0968',1,'MultitouchArea::tapAndHold()'],['../class_tap_and_hold_detector.html#ac74ae2cad949de85e7983238d1794634',1,'TapAndHoldDetector::tapAndHold()']]],
