@@ -1,6 +1,5 @@
 var searchData=
 [
-  ['generatemesh',['generateMesh',['../classbrayns_1_1_metaballs_generator.html#a8377721da02038259ab534e4337f95f8',1,'brayns::MetaballsGenerator']]],
   ['geometryparameters',['GeometryParameters',['../classbrayns_1_1_geometry_parameters.html',1,'brayns']]],
   ['geometryparameters',['GeometryParameters',['../classbrayns_1_1_geometry_parameters.html#a96a7875f7d452448da35b193921725dc',1,'brayns::GeometryParameters']]],
   ['get',['get',['../classbrayns_1_1_task.html#aa4f761290010bd3a0c7a026629524042',1,'brayns::Task']]],
@@ -59,12 +58,8 @@ var searchData=
   ['getmaterials',['getMaterials',['../classbrayns_1_1_model.html#a42395676f75406327be584ce89e1f296',1,'brayns::Model']]],
   ['getmaxrenderfps',['getMaxRenderFPS',['../classbrayns_1_1_application_parameters.html#a2948987f88eb8e73b3ff6b37f816cc8d',1,'brayns::ApplicationParameters']]],
   ['getmemorymode',['getMemoryMode',['../classbrayns_1_1_geometry_parameters.html#a42ed816fb28e78cdb9322c70f1ac4ff4',1,'brayns::GeometryParameters']]],
-  ['getmetaballsgridsize',['getMetaballsGridSize',['../classbrayns_1_1_geometry_parameters.html#af08fd8f25c3ad8caf65c121fad5c5419',1,'brayns::GeometryParameters']]],
-  ['getmetaballssamplesfromsoma',['getMetaballsSamplesFromSoma',['../classbrayns_1_1_geometry_parameters.html#ac1a28b8320f3b27633cdc5621f259ae8',1,'brayns::GeometryParameters']]],
-  ['getmetaballsthreshold',['getMetaballsThreshold',['../classbrayns_1_1_geometry_parameters.html#aa81c5eec8288be8852085101d48d9832',1,'brayns::GeometryParameters']]],
   ['getminimumframesize',['getMinimumFrameSize',['../classbrayns_1_1_engine.html#aa8ae6d776485d6b2275cc16fb1032e2f',1,'brayns::Engine']]],
   ['getminor',['getMinor',['../classbrayns_1_1_version.html#ac28a55327f904d62ab90dc172be1b440',1,'brayns::Version::getMinor()'],['../classbrayns_1_1_version.html#ac28a55327f904d62ab90dc172be1b440',1,'brayns::Version::getMinor()'],['../classbrayns_1_1_version.html#ac28a55327f904d62ab90dc172be1b440',1,'brayns::Version::getMinor()'],['../classbrayns_1_1_version.html#ac28a55327f904d62ab90dc172be1b440',1,'brayns::Version::getMinor()']]],
-  ['getmorphologylayout',['getMorphologyLayout',['../classbrayns_1_1_geometry_parameters.html#a6ff28e9ddeb7faf36d074fd7538a7a80',1,'brayns::GeometryParameters']]],
   ['getmorphologysectiontypes',['getMorphologySectionTypes',['../classbrayns_1_1_geometry_parameters.html#a8e659f352d620e67764b3721aa478934',1,'brayns::GeometryParameters']]],
   ['getname',['getName',['../classbrayns_1_1_loader.html#a818d5fa887de7da6238f32abff665909',1,'brayns::Loader::getName()'],['../classbrayns_1_1_molecular_system_reader.html#ae6198a69584e8c571ea17af8078a0dee',1,'brayns::MolecularSystemReader::getName()'],['../classbrayns_1_1_protein_loader.html#ae1a871c4be039490de994979cff8a2af',1,'brayns::ProteinLoader::getName()'],['../classbrayns_1_1_m_h_d_volume_loader.html#aa8835692b61b4a0bf590806249145c9c',1,'brayns::MHDVolumeLoader::getName()'],['../classbrayns_1_1_raw_volume_loader.html#aa33f933fbe1cff099f5ba0caa146ba72',1,'brayns::RawVolumeLoader::getName()'],['../classbrayns_1_1_x_y_z_b_loader.html#aa73dc9a8c877f4c09adf5313d5bf5cf1',1,'brayns::XYZBLoader::getName()']]],
   ['getnbframes',['getNbFrames',['../classbrayns_1_1_abstract_simulation_handler.html#a63756f6adb15211c556a20a04d651536',1,'brayns::AbstractSimulationHandler::getNbFrames()'],['../classbrayns_1_1_c_a_diffusion_simulation_handler.html#ad5c1e8fb12d05ae0b40b8dbca0f7a422',1,'brayns::CADiffusionSimulationHandler::getNbFrames()']]],
