@@ -1,4 +1,4 @@
 var searchData=
 [
-  ['label',['label',['../structbrayns_1_1_property_map_1_1_property.html#abba00791cb38864ac81de9039337f41f',1,'brayns::PropertyMap::Property']]]
+  ['metadata',['metaData',['../structbrayns_1_1_property.html#ab2bda51d57ae1f5a6daf294628c1c816',1,'brayns::Property']]]
 ];

@@ -21,7 +21,6 @@ var NAVTREEINDEX0 =
 "_cylinder_8h_source.html":[4,0,23],
 "_directional_light_8h_source.html":[4,0,26],
 "_engine_8h_source.html":[4,0,27],
-"_enum_utils_8h_source.html":[4,0,28],
 "_extension_plugin_8h_source.html":[4,0,30],
 "_flying_mode_manipulator_8h_source.html":[4,0,31],
 "_frame_buffer_8h_source.html":[4,0,32],
@@ -61,7 +60,6 @@ var NAVTREEINDEX0 =
 "_transfer_function_8h_source.html":[4,0,71],
 "_transformation_8h_source.html":[4,0,72],
 "_triangles_mesh_8h_source.html":[4,0,73],
-"_utils_8h_source.html":[4,0,75],
 "_volume_8h_source.html":[4,0,80],
 "_volume_loader_8h_source.html":[4,0,81],
 "_volume_parameters_8h_source.html":[4,0,82],
@@ -249,5 +247,7 @@ var NAVTREEINDEX0 =
 "classbrayns_1_1_base_window.html#a1046950e5b0e05474c81514e3b68accc":[3,0,0,10,3],
 "classbrayns_1_1_base_window.html#a136aedf92d126cc6d48cdc25e4439785":[3,0,0,10,2],
 "classbrayns_1_1_base_window.html#a15b635c30320bdf1aac75e09f23f641f":[3,0,0,10,35],
-"classbrayns_1_1_base_window.html#a1914bb6f4e9eae8da584d013cd2837be":[3,0,0,10,42]
+"classbrayns_1_1_base_window.html#a1914bb6f4e9eae8da584d013cd2837be":[3,0,0,10,42],
+"classbrayns_1_1_base_window.html#a1be84537c702138c4b1af159bdef0cc9":[3,0,0,10,5],
+"classbrayns_1_1_base_window.html#a208c67ca70e740a759191c16b9a100e6":[3,0,0,10,13]
 };

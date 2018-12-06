@@ -49,6 +49,7 @@ var annotated_dup =
       [ "PluginAPI", "classbrayns_1_1_plugin_a_p_i.html", "classbrayns_1_1_plugin_a_p_i" ],
       [ "PointLight", "classbrayns_1_1_point_light.html", "classbrayns_1_1_point_light" ],
       [ "Progress", "classbrayns_1_1_progress.html", "classbrayns_1_1_progress" ],
+      [ "Property", "structbrayns_1_1_property.html", "structbrayns_1_1_property" ],
       [ "PropertyMap", "classbrayns_1_1_property_map.html", "classbrayns_1_1_property_map" ],
       [ "PropertyObject", "classbrayns_1_1_property_object.html", "classbrayns_1_1_property_object" ],
       [ "ProteinLoader", "classbrayns_1_1_protein_loader.html", "classbrayns_1_1_protein_loader" ],

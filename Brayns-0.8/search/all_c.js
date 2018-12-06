@@ -1,6 +1,5 @@
 var searchData=
 [
-  ['label',['label',['../structbrayns_1_1_property_map_1_1_property.html#abba00791cb38864ac81de9039337f41f',1,'brayns::PropertyMap::Property']]],
   ['light',['Light',['../classbrayns_1_1_light.html',1,'brayns']]],
   ['load',['load',['../classbrayns_1_1_loader_registry.html#a9fd05d8a7b669b15fad4abf8e8d270b8',1,'brayns::LoaderRegistry']]],
   ['loader',['Loader',['../classbrayns_1_1_loader.html',1,'brayns']]],
