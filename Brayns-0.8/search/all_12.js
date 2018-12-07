@@ -49,6 +49,5 @@ var searchData=
   ['statistics',['Statistics',['../classbrayns_1_1_statistics.html',1,'brayns']]],
   ['stop',['stop',['../classbrayns_1_1_timer.html#ab45e9548afa774cc5eaf70cb6c54975d',1,'brayns::Timer']]],
   ['streamline',['Streamline',['../structbrayns_1_1_streamline.html',1,'brayns']]],
-  ['streamlinesdata',['StreamlinesData',['../structbrayns_1_1_streamlines_data.html',1,'brayns']]],
-  ['streamparameters',['StreamParameters',['../classbrayns_1_1_stream_parameters.html',1,'brayns']]]
+  ['streamlinesdata',['StreamlinesData',['../structbrayns_1_1_streamlines_data.html',1,'brayns']]]
 ];

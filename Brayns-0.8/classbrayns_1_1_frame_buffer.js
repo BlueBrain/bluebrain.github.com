@@ -1,8 +1,9 @@
 var classbrayns_1_1_frame_buffer =
 [
     [ "FrameBuffer", "classbrayns_1_1_frame_buffer.html#ab280529a837af051800d0230f8e71170", null ],
-    [ "~FrameBuffer", "classbrayns_1_1_frame_buffer.html#a37921157b719539453f1f8068f9052fe", null ],
+    [ "~FrameBuffer", "classbrayns_1_1_frame_buffer.html#a7f481c93aa6d57b4b26ddfcd58a0ff1d", null ],
     [ "clear", "classbrayns_1_1_frame_buffer.html#a26020260d167648635258c46d0195f63", null ],
+    [ "createPixelOp", "classbrayns_1_1_frame_buffer.html#a83734dc1bc6bc16831b3b07b549142d7", null ],
     [ "getAccumulation", "classbrayns_1_1_frame_buffer.html#a75a51892de5c1eee5cd92f96da557b3e", null ],
     [ "getColorBuffer", "classbrayns_1_1_frame_buffer.html#a418dbda7c744b66e05c9b738bfa66096", null ],
     [ "getColorDepth", "classbrayns_1_1_frame_buffer.html#a4ac9f776c81f853a915a34d09f4b2571", null ],
@@ -16,11 +17,13 @@ var classbrayns_1_1_frame_buffer =
     [ "numAccumFrames", "classbrayns_1_1_frame_buffer.html#a434c0ecaf569460c0b45998b2a672cc1", null ],
     [ "resize", "classbrayns_1_1_frame_buffer.html#ad299b7acc0823946c46d2d8c4c211921", null ],
     [ "setAccumulation", "classbrayns_1_1_frame_buffer.html#a6605b948db8ae2ab9c167a69e8d68b3f", null ],
+    [ "setFormat", "classbrayns_1_1_frame_buffer.html#aa50c87acdec36475d72b9b4eba7dbcda", null ],
     [ "setSubsampling", "classbrayns_1_1_frame_buffer.html#a7210bb16ceda4d2e334ad9fd7628aaf8", null ],
     [ "unmap", "classbrayns_1_1_frame_buffer.html#a165f845d96342690001f987e39f5c411", null ],
+    [ "updatePixelOp", "classbrayns_1_1_frame_buffer.html#a21060175c080dadcdda5a40fe197b2d6", null ],
     [ "_accumFrames", "classbrayns_1_1_frame_buffer.html#abbcb945c2e690c936dccb5e19d3376fa", null ],
     [ "_accumulation", "classbrayns_1_1_frame_buffer.html#aac5ca090b769e5f9d46830006ebbe0d9", null ],
-    [ "_frameBufferFormat", "classbrayns_1_1_frame_buffer.html#a4bcb03c476835a2d93054b287b466b9e", null ],
+    [ "_frameBufferFormat", "classbrayns_1_1_frame_buffer.html#ace7f3fb77778420c9245aa6214d0f34c", null ],
     [ "_frameSize", "classbrayns_1_1_frame_buffer.html#af1537532242c4feeb402db5d436e6343", null ],
     [ "_name", "classbrayns_1_1_frame_buffer.html#a80aea61d48024fe375e28ccab7ebbb50", null ]
 ];

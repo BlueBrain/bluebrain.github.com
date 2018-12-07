@@ -23,7 +23,6 @@ var classbrayns_1_1_engine =
     [ "getScene", "classbrayns_1_1_engine.html#aa7447c013f31279eecf99d3420ce641d", null ],
     [ "getScenePtr", "classbrayns_1_1_engine.html#abced92d31a9118471b8962bdb5a9be8d", null ],
     [ "getStatistics", "classbrayns_1_1_engine.html#a6b6be996e7313e3f83097c41e3affa15", null ],
-    [ "haveDeflectPixelOp", "classbrayns_1_1_engine.html#a49c13d75aac81d4ce47e50ceb95a7b1a", null ],
     [ "initializeMaterials", "classbrayns_1_1_engine.html#a4d39c844e28b872a2513edf2df42f9c0", null ],
     [ "name", "classbrayns_1_1_engine.html#ae0c323db5ffc02b9c774038d2a3305a2", null ],
     [ "postRender", "classbrayns_1_1_engine.html#a75dcc0f335ea1f2b268d0085ad2f4ce1", null ],

@@ -68,7 +68,6 @@ var annotated_dup =
       [ "Statistics", "classbrayns_1_1_statistics.html", "classbrayns_1_1_statistics" ],
       [ "Streamline", "structbrayns_1_1_streamline.html", "structbrayns_1_1_streamline" ],
       [ "StreamlinesData", "structbrayns_1_1_streamlines_data.html", "structbrayns_1_1_streamlines_data" ],
-      [ "StreamParameters", "classbrayns_1_1_stream_parameters.html", "classbrayns_1_1_stream_parameters" ],
       [ "Task", "classbrayns_1_1_task.html", "classbrayns_1_1_task" ],
       [ "TaskFunctor", "classbrayns_1_1_task_functor.html", "classbrayns_1_1_task_functor" ],
       [ "TaskRuntimeError", "classbrayns_1_1_task_runtime_error.html", "classbrayns_1_1_task_runtime_error" ],

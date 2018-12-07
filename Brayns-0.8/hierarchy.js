@@ -22,7 +22,6 @@ var hierarchy =
         [ "brayns::GeometryParameters", "classbrayns_1_1_geometry_parameters.html", null ],
         [ "brayns::RenderingParameters", "classbrayns_1_1_rendering_parameters.html", null ],
         [ "brayns::SceneParameters", "classbrayns_1_1_scene_parameters.html", null ],
-        [ "brayns::StreamParameters", "classbrayns_1_1_stream_parameters.html", null ],
         [ "brayns::VolumeParameters", "classbrayns_1_1_volume_parameters.html", null ]
       ] ],
       [ "brayns::ClipPlane", "classbrayns_1_1_clip_plane.html", null ],

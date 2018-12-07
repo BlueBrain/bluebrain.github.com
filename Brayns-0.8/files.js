@@ -64,7 +64,6 @@ var files =
     [ "Sphere.h", "_sphere_8h_source.html", null ],
     [ "Statistics.h", "_statistics_8h_source.html", null ],
     [ "Streamline.h", "_streamline_8h_source.html", null ],
-    [ "StreamParameters.h", "_stream_parameters_8h_source.html", null ],
     [ "Task.h", "_task_8h_source.html", null ],
     [ "TaskFunctor.h", "_task_functor_8h_source.html", null ],
     [ "TaskRuntimeError.h", "_task_runtime_error_8h_source.html", null ],
