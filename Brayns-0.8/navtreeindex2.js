@@ -1,5 +1,6 @@
 var NAVTREEINDEX2 =
 {
+"classbrayns_1_1_loader.html#afd2486c4bea4c2ecc224046a714c5777":[3,0,0,32,4],
 "classbrayns_1_1_loader_progress.html":[3,0,0,34],
 "classbrayns_1_1_loader_progress.html#a56b7694c77639af3a66e9d03cd6188ab":[3,0,0,34,3],
 "classbrayns_1_1_loader_progress.html#a5ef2f54fc5077cb6dbcceebd3790c8fa":[3,0,0,34,1],
@@ -248,6 +249,5 @@ var NAVTREEINDEX2 =
 "classbrayns_1_1_progress.html#ae1a9b81348399d0ae9f1dfafc2416c78":[3,0,0,47,0],
 "classbrayns_1_1_property_map.html":[3,0,0,49],
 "classbrayns_1_1_property_map.html#a174cd634dd8a1be505b80cf522db3ccf":[3,0,0,49,2],
-"classbrayns_1_1_property_map.html#a1817d24daf0744629c11dc8d74f2bf72":[3,0,0,49,8],
-"classbrayns_1_1_property_map.html#a2ff573dc730bc349b0bfc62458281109":[3,0,0,49,4]
+"classbrayns_1_1_property_map.html#a1817d24daf0744629c11dc8d74f2bf72":[3,0,0,49,8]
 };

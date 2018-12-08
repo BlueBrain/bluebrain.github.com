@@ -1,5 +1,6 @@
 var NAVTREEINDEX5 =
 {
+"structbrayns_1_1_property.html#aec62978eb5d2b03a6900d97764b8270f":[3,0,0,48,8],
 "structbrayns_1_1_property_1_1_meta_data.html":[3,0,0,48,0],
 "structbrayns_1_1_property_1_1_meta_data.html#a606f9496bc857eddec40699c194d458a":[3,0,0,48,0,0],
 "structbrayns_1_1_property_1_1_meta_data.html#ab4c67f05cc92d9ed6a96a0a1a989ab3d":[3,0,0,48,0,2],

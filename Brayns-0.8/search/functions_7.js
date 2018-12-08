@@ -11,6 +11,7 @@ var searchData=
   ['getcadiffusionsimulationhandler',['getCADiffusionSimulationHandler',['../classbrayns_1_1_scene.html#ae18fcfd7021a6ef3c5624c0e466dbc3c',1,'brayns::Scene']]],
   ['getcamera',['getCamera',['../classbrayns_1_1_engine.html#a05478fdf6ae8dd3b0716bc8be93c83f9',1,'brayns::Engine::getCamera()'],['../classbrayns_1_1_plugin_a_p_i.html#a434a7c355627ff17f36a71d054ee0914',1,'brayns::PluginAPI::getCamera()']]],
   ['getcameramanipulator',['getCameraManipulator',['../classbrayns_1_1_brayns.html#a86278a6f267a457c0473e85cef65c54f',1,'brayns::Brayns::getCameraManipulator()'],['../classbrayns_1_1_plugin_a_p_i.html#a62b48682ae9c377730c78af26e02d232',1,'brayns::PluginAPI::getCameraManipulator()']]],
+  ['getcameratype',['getCameraType',['../classbrayns_1_1_rendering_parameters.html#a74e6326a536463c36e16c60d4316d84c',1,'brayns::RenderingParameters']]],
   ['getcircuitboundingbox',['getCircuitBoundingBox',['../classbrayns_1_1_geometry_parameters.html#a83782bbc10222c23110d44f2b16ddd60',1,'brayns::GeometryParameters']]],
   ['getcircuitdensity',['getCircuitDensity',['../classbrayns_1_1_geometry_parameters.html#a581ab4b7f519a26552b2855b4d35a808',1,'brayns::GeometryParameters']]],
   ['getcircuitendsimulationtime',['getCircuitEndSimulationTime',['../classbrayns_1_1_geometry_parameters.html#a81db92e082e45cf5f00eaf82bf46b2a6',1,'brayns::GeometryParameters']]],

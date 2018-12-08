@@ -9,6 +9,7 @@ var searchData=
   ['addframebuffer',['addFrameBuffer',['../classbrayns_1_1_engine.html#a2ad8874dab6dc4964a5c158af39d087d',1,'brayns::Engine']]],
   ['addlight',['addLight',['../classbrayns_1_1_scene.html#a7d89afe05548c882153522a0a4f751ac',1,'brayns::Scene']]],
   ['addmodel',['addModel',['../classbrayns_1_1_scene.html#ae7ff498e3f3fa699b087577959af8f5a',1,'brayns::Scene']]],
+  ['addrenderer',['addRenderer',['../classbrayns_1_1_engine.html#ac00f9deaf9a3b4ba40d307112627ee5d',1,'brayns::Engine']]],
   ['addsdfgeometry',['addSDFGeometry',['../classbrayns_1_1_model.html#a884fb214767b5ca7700e05e49d66f615',1,'brayns::Model']]],
   ['addsphere',['addSphere',['../classbrayns_1_1_model.html#a850d89a566652c7194081aae85773aa7',1,'brayns::Model']]],
   ['addstreamline',['addStreamline',['../classbrayns_1_1_model.html#a4120048ceaf47ad3e72303c48e5bc967',1,'brayns::Model']]],

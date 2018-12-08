@@ -5,6 +5,7 @@ var classbrayns_1_1_engine =
     [ "_render", "classbrayns_1_1_engine.html#a17d6eb48cac43da08959d562c4b3f06a", null ],
     [ "_render", "classbrayns_1_1_engine.html#a6389a561193bca223f1dda33a77b7439", null ],
     [ "addFrameBuffer", "classbrayns_1_1_engine.html#a2ad8874dab6dc4964a5c158af39d087d", null ],
+    [ "addRenderer", "classbrayns_1_1_engine.html#ac00f9deaf9a3b4ba40d307112627ee5d", null ],
     [ "clearFrameBuffers", "classbrayns_1_1_engine.html#a1b129a77c355a8f5c1c13aa69fe71a29", null ],
     [ "commit", "classbrayns_1_1_engine.html#aa0652f4c99164ea4127d8db5ad5fe502", null ],
     [ "continueRendering", "classbrayns_1_1_engine.html#a84b7fb62801d98aa94c325dc8f725313", null ],

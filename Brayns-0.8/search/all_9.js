@@ -6,7 +6,6 @@ var searchData=
   ['importtexturefromfile',['importTextureFromFile',['../classbrayns_1_1_image_manager.html#a99321a976fee5f2efddd773066b2a55d',1,'brayns::ImageManager']]],
   ['increment',['increment',['../classbrayns_1_1_progress.html#a040143c55476623a620e1f28c2fdc903',1,'brayns::Progress']]],
   ['init',['init',['../classbrayns_1_1_extension_plugin.html#a96647a3a0a342c3c14a4dab14f67a777',1,'brayns::ExtensionPlugin']]],
-  ['initializedefaultcameras',['initializeDefaultCameras',['../classbrayns_1_1_rendering_parameters.html#aae0ed47a19b6f78280ec32e6c190598f',1,'brayns::RenderingParameters']]],
   ['initializematerials',['initializeMaterials',['../classbrayns_1_1_engine.html#a4d39c844e28b872a2513edf2df42f9c0',1,'brayns::Engine']]],
   ['inspectcentermanipulator',['InspectCenterManipulator',['../classbrayns_1_1_inspect_center_manipulator.html',1,'brayns']]],
   ['isanymodified',['isAnyModified',['../classbrayns_1_1_parameters_manager.html#a56137d99df36dc76edb3ffd9d285c88e',1,'brayns::ParametersManager']]],
