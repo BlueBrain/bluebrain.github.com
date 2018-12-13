@@ -32,12 +32,12 @@
             <td></td>
             <td class="headerItem">Lines:</td>
             <td class="headerCovTableEntry">37</td>
-            <td class="headerCovTableEntry">848</td>
+            <td class="headerCovTableEntry">849</td>
             <td class="headerCovTableEntryLo">4.4 %</td>
           </tr>
           <tr>
             <td class="headerItem">Date:</td>
-            <td class="headerValue">2018-12-08 01:22:37</td>
+            <td class="headerValue">2018-12-13 01:22:19</td>
             <td></td>
             <td class="headerItem">Functions:</td>
             <td class="headerCovTableEntry">2</td>
@@ -826,7 +826,7 @@
 <a name="764"><span class="lineNum">     764 </span>            :         // - wire the cancel request from rockets to the task</a>
 <a name="765"><span class="lineNum">     765 </span>            : </a>
 <span class="lineNum">     766 </span><span class="lineNoCov">          0 :         auto action = [&amp;, createTask](P params, auto clientID, auto respond,</span>
-<a name="767"><span class="lineNum">     767 </span><span class="lineNoCov">          0 :                                       auto progressCb) {</span></a>
+<a name="767"><span class="lineNum">     767 </span><span class="lineNoCov">          0 :                                       auto progressCb BRAYNS_UNUSED) {</span></a>
 <span class="lineNum">     768 </span>            :             // transform task error to rockets error response
 <span class="lineNum">     769 </span><span class="lineNoCov">          0 :             auto errorCallback = [&amp;, respond](const TaskRuntimeError&amp; error) {</span>
 <span class="lineNum">     770 </span>            :                 const Response response(
@@ -1058,607 +1058,610 @@
 <span class="lineNum">     996 </span><span class="lineNoCov">          0 :     void _broadcastImageJpeg()</span>
 <span class="lineNum">     997 </span>            :     {
 <span class="lineNum">     998 </span><span class="lineNoCov">          0 :         auto&amp; frameBuffer = _engine.getFrameBuffer();</span>
-<span class="lineNum">     999 </span><span class="lineNoCov">          0 :         if (!frameBuffer.isModified())</span>
-<span class="lineNum">    1000 </span><span class="lineNoCov">          0 :             return;</span>
-<span class="lineNum">    1001 </span>            : 
-<span class="lineNum">    1002 </span><span class="lineNoCov">          0 :         const auto&amp; params = _parametersManager.getApplicationParameters();</span>
-<span class="lineNum">    1003 </span><span class="lineNoCov">          0 :         const auto fps = params.getImageStreamFPS();</span>
-<span class="lineNum">    1004 </span><span class="lineNoCov">          0 :         if (fps == 0)</span>
-<span class="lineNum">    1005 </span><span class="lineNoCov">          0 :             return;</span>
-<span class="lineNum">    1006 </span>            : 
-<span class="lineNum">    1007 </span><span class="lineNoCov">          0 :         const auto elapsed = _timer.elapsed() + _leftover;</span>
-<span class="lineNum">    1008 </span><span class="lineNoCov">          0 :         const auto duration = 1.0 / fps;</span>
-<span class="lineNum">    1009 </span><span class="lineNoCov">          0 :         if (elapsed &lt; duration)</span>
-<span class="lineNum">    1010 </span><span class="lineNoCov">          0 :             return;</span>
-<span class="lineNum">    1011 </span>            : 
-<span class="lineNum">    1012 </span><span class="lineNoCov">          0 :         _leftover = elapsed - duration;</span>
-<span class="lineNum">    1013 </span><span class="lineNoCov">          0 :         for (; _leftover &gt; duration;)</span>
-<span class="lineNum">    1014 </span><span class="lineNoCov">          0 :             _leftover -= duration;</span>
-<span class="lineNum">    1015 </span><span class="lineNoCov">          0 :         _timer.start();</span>
-<span class="lineNum">    1016 </span>            : 
-<span class="lineNum">    1017 </span>            :         const auto image =
-<span class="lineNum">    1018 </span>            :             _imageGenerator.createJPEG(frameBuffer,
-<span class="lineNum">    1019 </span><span class="lineNoCov">          0 :                                        params.getJpegCompression());</span>
-<span class="lineNum">    1020 </span><span class="lineNoCov">          0 :         if (image.size &gt; 0)</span>
-<span class="lineNum">    1021 </span><span class="lineNoCov">          0 :             _rocketsServer-&gt;broadcastBinary((const char*)image.data.get(),</span>
-<span class="lineNum">    1022 </span><span class="lineNoCov">          0 :                                             image.size);</span>
-<a name="1023"><span class="lineNum">    1023 </span>            :     }</a>
-<span class="lineNum">    1024 </span>            : 
-<span class="lineNum">    1025 </span><span class="lineNoCov">          0 :     void _handleVersion()</span>
-<span class="lineNum">    1026 </span>            :     {
-<span class="lineNum">    1027 </span>            :         static brayns::Version version;
-<span class="lineNum">    1028 </span>            :         using namespace rockets::http;
-<a name="1029"><span class="lineNum">    1029 </span><span class="lineNoCov">          0 :         _rocketsServer-&gt;handleGET(ENDPOINT_VERSION, version);</span></a>
-<span class="lineNum">    1030 </span><span class="lineNoCov">          0 :         _rocketsServer-&gt;handle(</span>
-<span class="lineNum">    1031 </span><span class="lineNoCov">          0 :             Method::GET, ENDPOINT_VERSION + &quot;/schema&quot;, [&amp;](const Request&amp;) {</span>
-<span class="lineNum">    1032 </span><span class="lineNoCov">          0 :                 return make_ready_response(Code::OK, version.getSchema(),</span>
-<span class="lineNum">    1033 </span>            :                                            JSON_TYPE);
-<span class="lineNum">    1034 </span><span class="lineNoCov">          0 :             });</span>
-<a name="1035"><span class="lineNum">    1035 </span>            : </a>
-<span class="lineNum">    1036 </span><span class="lineNoCov">          0 :         _jsonrpcServer-&gt;bind(getRequestEndpointName(ENDPOINT_VERSION),</span>
-<span class="lineNum">    1037 </span><span class="lineNoCov">          0 :                              (std::function&lt;brayns::Version()&gt;)[] {</span>
-<span class="lineNum">    1038 </span>            :                                  return brayns::Version();
-<span class="lineNum">    1039 </span><span class="lineNoCov">          0 :                              });</span>
-<span class="lineNum">    1040 </span>            : 
-<span class="lineNum">    1041 </span><span class="lineNoCov">          0 :         _handleSchema(ENDPOINT_VERSION, version.getSchema());</span>
-<a name="1042"><span class="lineNum">    1042 </span><span class="lineNoCov">          0 :     }</span></a>
+<span class="lineNum">     999 </span><span class="lineNoCov">          0 :         if (frameBuffer.getFrameBufferFormat() == FrameBufferFormat::none ||</span>
+<span class="lineNum">    1000 </span><span class="lineNoCov">          0 :             !frameBuffer.isModified())</span>
+<span class="lineNum">    1001 </span>            :         {
+<span class="lineNum">    1002 </span><span class="lineNoCov">          0 :             return;</span>
+<span class="lineNum">    1003 </span>            :         }
+<span class="lineNum">    1004 </span>            : 
+<span class="lineNum">    1005 </span><span class="lineNoCov">          0 :         const auto&amp; params = _parametersManager.getApplicationParameters();</span>
+<span class="lineNum">    1006 </span><span class="lineNoCov">          0 :         const auto fps = params.getImageStreamFPS();</span>
+<span class="lineNum">    1007 </span><span class="lineNoCov">          0 :         if (fps == 0)</span>
+<span class="lineNum">    1008 </span><span class="lineNoCov">          0 :             return;</span>
+<span class="lineNum">    1009 </span>            : 
+<span class="lineNum">    1010 </span><span class="lineNoCov">          0 :         const auto elapsed = _timer.elapsed() + _leftover;</span>
+<span class="lineNum">    1011 </span><span class="lineNoCov">          0 :         const auto duration = 1.0 / fps;</span>
+<span class="lineNum">    1012 </span><span class="lineNoCov">          0 :         if (elapsed &lt; duration)</span>
+<span class="lineNum">    1013 </span><span class="lineNoCov">          0 :             return;</span>
+<span class="lineNum">    1014 </span>            : 
+<span class="lineNum">    1015 </span><span class="lineNoCov">          0 :         _leftover = elapsed - duration;</span>
+<span class="lineNum">    1016 </span><span class="lineNoCov">          0 :         for (; _leftover &gt; duration;)</span>
+<span class="lineNum">    1017 </span><span class="lineNoCov">          0 :             _leftover -= duration;</span>
+<span class="lineNum">    1018 </span><span class="lineNoCov">          0 :         _timer.start();</span>
+<span class="lineNum">    1019 </span>            : 
+<span class="lineNum">    1020 </span>            :         const auto image =
+<span class="lineNum">    1021 </span>            :             _imageGenerator.createJPEG(frameBuffer,
+<span class="lineNum">    1022 </span><span class="lineNoCov">          0 :                                        params.getJpegCompression());</span>
+<span class="lineNum">    1023 </span><span class="lineNoCov">          0 :         if (image.size &gt; 0)</span>
+<span class="lineNum">    1024 </span><span class="lineNoCov">          0 :             _rocketsServer-&gt;broadcastBinary((const char*)image.data.get(),</span>
+<span class="lineNum">    1025 </span><span class="lineNoCov">          0 :                                             image.size);</span>
+<a name="1026"><span class="lineNum">    1026 </span>            :     }</a>
+<span class="lineNum">    1027 </span>            : 
+<span class="lineNum">    1028 </span><span class="lineNoCov">          0 :     void _handleVersion()</span>
+<span class="lineNum">    1029 </span>            :     {
+<span class="lineNum">    1030 </span>            :         static brayns::Version version;
+<span class="lineNum">    1031 </span>            :         using namespace rockets::http;
+<a name="1032"><span class="lineNum">    1032 </span><span class="lineNoCov">          0 :         _rocketsServer-&gt;handleGET(ENDPOINT_VERSION, version);</span></a>
+<span class="lineNum">    1033 </span><span class="lineNoCov">          0 :         _rocketsServer-&gt;handle(</span>
+<span class="lineNum">    1034 </span><span class="lineNoCov">          0 :             Method::GET, ENDPOINT_VERSION + &quot;/schema&quot;, [&amp;](const Request&amp;) {</span>
+<span class="lineNum">    1035 </span><span class="lineNoCov">          0 :                 return make_ready_response(Code::OK, version.getSchema(),</span>
+<span class="lineNum">    1036 </span>            :                                            JSON_TYPE);
+<span class="lineNum">    1037 </span><span class="lineNoCov">          0 :             });</span>
+<a name="1038"><span class="lineNum">    1038 </span>            : </a>
+<span class="lineNum">    1039 </span><span class="lineNoCov">          0 :         _jsonrpcServer-&gt;bind(getRequestEndpointName(ENDPOINT_VERSION),</span>
+<span class="lineNum">    1040 </span><span class="lineNoCov">          0 :                              (std::function&lt;brayns::Version()&gt;)[] {</span>
+<span class="lineNum">    1041 </span>            :                                  return brayns::Version();
+<span class="lineNum">    1042 </span><span class="lineNoCov">          0 :                              });</span>
 <span class="lineNum">    1043 </span>            : 
-<span class="lineNum">    1044 </span><span class="lineNoCov">          0 :     void _handleCamera()</span>
-<a name="1045"><span class="lineNum">    1045 </span>            :     {</a>
-<span class="lineNum">    1046 </span><span class="lineNoCov">          0 :         auto&amp; camera = _engine.getCamera();</span>
-<span class="lineNum">    1047 </span><span class="lineNoCov">          0 :         auto preUpdate = [types = camera.getTypes()](const Camera&amp; obj)</span>
-<span class="lineNum">    1048 </span>            :         {
-<span class="lineNum">    1049 </span><span class="lineNoCov">          0 :             if (obj.getCurrentType().empty())</span>
-<span class="lineNum">    1050 </span><span class="lineNoCov">          0 :                 return true;</span>
-<span class="lineNum">    1051 </span><span class="lineNoCov">          0 :             return std::find(types.begin(), types.end(),</span>
-<span class="lineNum">    1052 </span><span class="lineNoCov">          0 :                              obj.getCurrentType()) != types.end();</span>
-<span class="lineNum">    1053 </span><span class="lineNoCov">          0 :         };</span>
-<span class="lineNum">    1054 </span><span class="lineNoCov">          0 :         _handleGET(ENDPOINT_CAMERA, camera);</span>
-<span class="lineNum">    1055 </span><span class="lineNoCov">          0 :         _handlePUT(ENDPOINT_CAMERA, camera, preUpdate,</span>
-<span class="lineNum">    1056 </span><span class="lineNoCov">          0 :                    std::function&lt;void(Camera&amp;)&gt;());</span>
-<a name="1057"><span class="lineNum">    1057 </span><span class="lineNoCov">          0 :     }</span></a>
-<span class="lineNum">    1058 </span>            : 
-<span class="lineNum">    1059 </span><span class="lineNoCov">          0 :     void _handleRenderer()</span>
-<a name="1060"><span class="lineNum">    1060 </span>            :     {</a>
-<span class="lineNum">    1061 </span><span class="lineNoCov">          0 :         auto&amp; params = _parametersManager.getRenderingParameters();</span>
-<span class="lineNum">    1062 </span><span class="lineNoCov">          0 :         auto preUpdate = [&amp;params](const auto&amp; rp) {</span>
-<span class="lineNum">    1063 </span><span class="lineNoCov">          0 :             return std::find(params.getRenderers().begin(),</span>
-<span class="lineNum">    1064 </span><span class="lineNoCov">          0 :                              params.getRenderers().end(),</span>
-<span class="lineNum">    1065 </span>            :                              rp.getCurrentRenderer()) !=
-<a name="1066"><span class="lineNum">    1066 </span><span class="lineNoCov">          0 :                    params.getRenderers().end();</span></a>
-<span class="lineNum">    1067 </span><span class="lineNoCov">          0 :         };</span>
-<span class="lineNum">    1068 </span><span class="lineNoCov">          0 :         auto postUpdate = [&amp; renderer = _engine.getRenderer()](auto&amp; rp)</span>
-<span class="lineNum">    1069 </span><span class="lineNoCov">          0 :         {</span>
-<span class="lineNum">    1070 </span><span class="lineNoCov">          0 :             renderer.setCurrentType(rp.getCurrentRenderer());</span>
-<span class="lineNum">    1071 </span><span class="lineNoCov">          0 :         };</span>
-<span class="lineNum">    1072 </span><span class="lineNoCov">          0 :         _handleGET(ENDPOINT_RENDERER, params);</span>
-<span class="lineNum">    1073 </span><span class="lineNoCov">          0 :         _handlePUT(ENDPOINT_RENDERER, params, preUpdate, postUpdate);</span>
-<a name="1074"><span class="lineNum">    1074 </span><span class="lineNoCov">          0 :     }</span></a>
-<span class="lineNum">    1075 </span>            : 
-<span class="lineNum">    1076 </span><span class="lineNoCov">          0 :     void _handleSchemaRPC()</span>
-<span class="lineNum">    1077 </span>            :     {
-<span class="lineNum">    1078 </span>            :         const RpcParameterDescription desc{
-<span class="lineNum">    1079 </span>            :             METHOD_SCHEMA, &quot;Get the schema of the given endpoint&quot;,
-<span class="lineNum">    1080 </span>            :             Execution::sync, &quot;endpoint&quot;,
-<span class="lineNum">    1081 </span><span class="lineNoCov">          0 :             &quot;name of the endpoint to get its schema&quot;};</span>
-<a name="1082"><span class="lineNum">    1082 </span>            : </a>
-<span class="lineNum">    1083 </span><span class="lineNoCov">          0 :         _jsonrpcServer-&gt;bind(METHOD_SCHEMA, [&amp; schemas = _schemas](</span>
-<span class="lineNum">    1084 </span><span class="lineNoCov">          0 :                                                 const auto&amp; request) {</span>
-<span class="lineNum">    1085 </span><span class="lineNoCov">          0 :             SchemaParam param;</span>
-<span class="lineNum">    1086 </span><span class="lineNoCov">          0 :             if (::from_json(param, request.message))</span>
-<span class="lineNum">    1087 </span>            :             {
-<span class="lineNum">    1088 </span><span class="lineNoCov">          0 :                 if (schemas.count(param.endpoint) == 0)</span>
-<span class="lineNum">    1089 </span>            :                     return Response{
-<span class="lineNum">    1090 </span>            :                         Response::Error{&quot;Endpoint not found&quot;,
-<span class="lineNum">    1091 </span><span class="lineNoCov">          0 :                                         SCHEMA_RPC_ENDPOINT_NOT_FOUND}};</span>
-<span class="lineNum">    1092 </span>            : 
-<span class="lineNum">    1093 </span><span class="lineNoCov">          0 :                 auto schema = schemas[param.endpoint];</span>
-<span class="lineNum">    1094 </span><span class="lineNoCov">          0 :                 return Response{std::move(schema)};</span>
-<span class="lineNum">    1095 </span>            :             }
-<span class="lineNum">    1096 </span><span class="lineNoCov">          0 :             return Response::invalidParams();</span>
-<span class="lineNum">    1097 </span><span class="lineNoCov">          0 :         });</span>
-<span class="lineNum">    1098 </span>            : 
-<span class="lineNum">    1099 </span>            :         _handleSchema(METHOD_SCHEMA,
-<span class="lineNum">    1100 </span><span class="lineNoCov">          0 :                       buildJsonRpcSchemaRequest&lt;SchemaParam, std::string&gt;(</span>
-<span class="lineNum">    1101 </span><span class="lineNoCov">          0 :                           desc));</span>
-<a name="1102"><span class="lineNum">    1102 </span><span class="lineNoCov">          0 :     }</span></a>
-<span class="lineNum">    1103 </span>            : 
-<span class="lineNum">    1104 </span><span class="lineNoCov">          0 :     void _handleInspect()</span>
-<span class="lineNum">    1105 </span>            :     {
-<span class="lineNum">    1106 </span>            :         using Position = std::array&lt;double, 2&gt;;
-<span class="lineNum">    1107 </span>            :         const RpcParameterDescription desc{
-<span class="lineNum">    1108 </span>            :             METHOD_INSPECT, &quot;Inspect the scene at x-y position&quot;,
-<span class="lineNum">    1109 </span>            :             Execution::sync, &quot;position&quot;,
-<a name="1110"><span class="lineNum">    1110 </span><span class="lineNoCov">          0 :             &quot;x-y position in normalized coordinates&quot;};</span></a>
-<span class="lineNum">    1111 </span><span class="lineNoCov">          0 :         _handleRPC&lt;Position, Renderer::PickResult&gt;(</span>
-<span class="lineNum">    1112 </span><span class="lineNoCov">          0 :             desc, [&amp; engine = _engine](const auto&amp; position) {</span>
-<span class="lineNum">    1113 </span><span class="lineNoCov">          0 :                 return engine.getRenderer().pick(</span>
-<span class="lineNum">    1114 </span><span class="lineNoCov">          0 :                     {float(position[0]), float(position[1])});</span>
-<span class="lineNum">    1115 </span><span class="lineNoCov">          0 :             });</span>
-<a name="1116"><span class="lineNum">    1116 </span><span class="lineNoCov">          0 :     }</span></a>
-<span class="lineNum">    1117 </span>            : 
-<span class="lineNum">    1118 </span><span class="lineNoCov">          0 :     void _handleQuit()</span>
-<a name="1119"><span class="lineNum">    1119 </span>            :     {</a>
-<span class="lineNum">    1120 </span><span class="lineNoCov">          0 :         _handleRPC({METHOD_QUIT, &quot;Quit the application&quot;},</span>
-<span class="lineNum">    1121 </span><span class="lineNoCov">          0 :                    [&amp; engine = _engine] {</span>
-<span class="lineNum">    1122 </span><span class="lineNoCov">          0 :                        engine.setKeepRunning(false);</span>
-<span class="lineNum">    1123 </span><span class="lineNoCov">          0 :                        engine.triggerRender();</span>
-<span class="lineNum">    1124 </span><span class="lineNoCov">          0 :                    });</span>
-<a name="1125"><span class="lineNum">    1125 </span><span class="lineNoCov">          0 :     }</span></a>
-<span class="lineNum">    1126 </span>            : 
-<span class="lineNum">    1127 </span><span class="lineNoCov">          0 :     void _handleResetCamera()</span>
-<span class="lineNum">    1128 </span>            :     {
-<a name="1129"><span class="lineNum">    1129 </span><span class="lineNoCov">          0 :         _handleRPC({METHOD_RESET_CAMERA,</span></a>
-<span class="lineNum">    1130 </span>            :                     &quot;Resets the camera to its initial values&quot;},
-<span class="lineNum">    1131 </span><span class="lineNoCov">          0 :                    [&amp; engine = _engine] {</span>
-<span class="lineNum">    1132 </span><span class="lineNoCov">          0 :                        engine.getCamera().reset();</span>
-<span class="lineNum">    1133 </span><span class="lineNoCov">          0 :                        engine.triggerRender();</span>
-<span class="lineNum">    1134 </span><span class="lineNoCov">          0 :                    });</span>
-<a name="1135"><span class="lineNum">    1135 </span><span class="lineNoCov">          0 :     }</span></a>
-<span class="lineNum">    1136 </span>            : 
-<span class="lineNum">    1137 </span><span class="lineNoCov">          0 :     void _handleSnapshot()</span>
-<span class="lineNum">    1138 </span>            :     {
-<span class="lineNum">    1139 </span>            :         const RpcParameterDescription desc{
-<span class="lineNum">    1140 </span>            :             METHOD_SNAPSHOT, &quot;Make a snapshot of the current view&quot;,
-<span class="lineNum">    1141 </span>            :             Execution::async, &quot;settings&quot;,
-<span class="lineNum">    1142 </span><span class="lineNoCov">          0 :             &quot;Snapshot settings for quality and size&quot;};</span>
-<a name="1143"><span class="lineNum">    1143 </span>            :         auto func =</a>
-<span class="lineNum">    1144 </span><span class="lineNoCov">          0 :             [&amp; engine = _engine,</span>
-<span class="lineNum">    1145 </span><span class="lineNoCov">          0 :              &amp;imageGenerator = _imageGenerator ](auto&amp;&amp; params, const auto)</span>
-<span class="lineNum">    1146 </span><span class="lineNoCov">          0 :         {</span>
-<span class="lineNum">    1147 </span>            :             using SnapshotTask = DeferredTask&lt;ImageGenerator::ImageBase64&gt;;
-<span class="lineNum">    1148 </span>            :             return std::make_shared&lt;SnapshotTask&gt;(
-<span class="lineNum">    1149 </span><span class="lineNoCov">          0 :                 SnapshotFunctor{engine, std::move(params), imageGenerator});</span>
-<span class="lineNum">    1150 </span><span class="lineNoCov">          0 :         };</span>
-<span class="lineNum">    1151 </span><span class="lineNoCov">          0 :         _handleTask&lt;SnapshotParams, ImageGenerator::ImageBase64&gt;(desc, func);</span>
-<a name="1152"><span class="lineNum">    1152 </span><span class="lineNoCov">          0 :     }</span></a>
-<span class="lineNum">    1153 </span>            : 
-<span class="lineNum">    1154 </span><span class="lineNoCov">          0 :     void _handleRequestModelUpload()</span>
-<span class="lineNum">    1155 </span>            :     {
-<span class="lineNum">    1156 </span>            :         const RpcParameterDescription desc{
-<span class="lineNum">    1157 </span>            :             METHOD_REQUEST_MODEL_UPLOAD,
-<span class="lineNum">    1158 </span>            :             &quot;Request upload of blob to trigger adding of model after blob has &quot;
-<span class="lineNum">    1159 </span>            :             &quot;been received; returns model descriptor on success&quot;,
-<span class="lineNum">    1160 </span>            :             Execution::async, &quot;param&quot;,
-<span class="lineNum">    1161 </span><span class="lineNoCov">          0 :             &quot;size, type, name, transformation, etc.&quot;};</span>
-<span class="lineNum">    1162 </span>            : 
-<span class="lineNum">    1163 </span><span class="lineNoCov">          0 :         _handleTask&lt;BinaryParam, ModelDescriptorPtr&gt;(</span>
-<span class="lineNum">    1164 </span><span class="lineNoCov">          0 :             desc, std::bind(&amp;BinaryRequests::createTask,</span>
-<span class="lineNum">    1165 </span><span class="lineNoCov">          0 :                             std::ref(_binaryRequests), std::placeholders::_1,</span>
-<span class="lineNum">    1166 </span><span class="lineNoCov">          0 :                             std::placeholders::_2, std::ref(_engine)));</span>
-<a name="1167"><span class="lineNum">    1167 </span><span class="lineNoCov">          0 :     }</span></a>
-<span class="lineNum">    1168 </span>            : 
-<span class="lineNum">    1169 </span><span class="lineNoCov">          0 :     void _handleChunk()</span>
-<span class="lineNum">    1170 </span>            :     {
-<span class="lineNum">    1171 </span>            :         const RpcParameterDescription desc{
-<span class="lineNum">    1172 </span>            :             METHOD_CHUNK,
-<span class="lineNum">    1173 </span>            :             &quot;Indicate sending of a binary chunk after this message&quot;, &quot;chunk&quot;,
-<a name="1174"><span class="lineNum">    1174 </span><span class="lineNoCov">          0 :             &quot;object with an ID of the chunk&quot;};</span></a>
-<span class="lineNum">    1175 </span>            : 
-<span class="lineNum">    1176 </span><span class="lineNoCov">          0 :         _handleRPC&lt;Chunk&gt;(desc, [&amp; req = _binaryRequests](const auto&amp; chunk) {</span>
-<span class="lineNum">    1177 </span><span class="lineNoCov">          0 :             req.setNextChunkID(chunk.id);</span>
-<span class="lineNum">    1178 </span><span class="lineNoCov">          0 :         });</span>
-<a name="1179"><span class="lineNum">    1179 </span><span class="lineNoCov">          0 :     }</span></a>
-<span class="lineNum">    1180 </span>            : 
-<span class="lineNum">    1181 </span><span class="lineNoCov">          0 :     void _handleSetModelTransferFunction()</span>
-<span class="lineNum">    1182 </span>            :     {
-<span class="lineNum">    1183 </span>            :         const RpcParameterDescription desc{
-<span class="lineNum">    1184 </span>            :             METHOD_SET_MODEL_TRANSFER_FUNCTION,
-<span class="lineNum">    1185 </span>            :             &quot;Set the transfer function of the given model&quot;, &quot;param&quot;,
-<span class="lineNum">    1186 </span><span class="lineNoCov">          0 :             &quot;model ID and the new transfer function&quot;};</span>
-<span class="lineNum">    1187 </span>            : 
-<a name="1188"><span class="lineNum">    1188 </span><span class="lineNoCov">          0 :         _bindModelEndpoint(METHOD_SET_MODEL_TRANSFER_FUNCTION,</span></a>
-<span class="lineNum">    1189 </span>            :                            &quot;transfer_function&quot;, [&amp;](const std::string&amp; json,
-<span class="lineNum">    1190 </span><span class="lineNoCov">          0 :                                                     ModelDescriptorPtr model) {</span>
-<span class="lineNum">    1191 </span>            :                                auto&amp; tf =
-<span class="lineNum">    1192 </span><span class="lineNoCov">          0 :                                    model-&gt;getModel().getTransferFunction();</span>
-<span class="lineNum">    1193 </span><span class="lineNoCov">          0 :                                if (!::from_json(tf, json))</span>
-<span class="lineNum">    1194 </span><span class="lineNoCov">          0 :                                    return false;</span>
-<span class="lineNum">    1195 </span>            : 
-<span class="lineNum">    1196 </span><span class="lineNoCov">          0 :                                tf.markModified();</span>
-<span class="lineNum">    1197 </span><span class="lineNoCov">          0 :                                return true;</span>
-<span class="lineNum">    1198 </span><span class="lineNoCov">          0 :                            });</span>
-<span class="lineNum">    1199 </span>            : 
-<span class="lineNum">    1200 </span>            :         _handleSchema(METHOD_SET_MODEL_TRANSFER_FUNCTION,
-<span class="lineNum">    1201 </span><span class="lineNoCov">          0 :                       buildJsonRpcSchemaRequest&lt;ModelTransferFunction, bool&gt;(</span>
-<span class="lineNum">    1202 </span><span class="lineNoCov">          0 :                           desc));</span>
-<a name="1203"><span class="lineNum">    1203 </span><span class="lineNoCov">          0 :     }</span></a>
-<span class="lineNum">    1204 </span>            : 
-<span class="lineNum">    1205 </span><span class="lineNoCov">          0 :     void _handleGetModelTransferFunction()</span>
-<span class="lineNum">    1206 </span>            :     {
-<span class="lineNum">    1207 </span>            :         const RpcParameterDescription desc{
-<span class="lineNum">    1208 </span>            :             METHOD_GET_MODEL_TRANSFER_FUNCTION,
-<span class="lineNum">    1209 </span>            :             &quot;Get the transfer function of the given model&quot;, &quot;id&quot;,
-<span class="lineNum">    1210 </span><span class="lineNoCov">          0 :             &quot;the model ID&quot;};</span>
-<a name="1211"><span class="lineNum">    1211 </span>            : </a>
-<span class="lineNum">    1212 </span><span class="lineNoCov">          0 :         _jsonrpcServer-&gt;bind&lt;ObjectID, TransferFunction&gt;(</span>
-<span class="lineNum">    1213 </span><span class="lineNoCov">          0 :             desc.methodName, [&amp; engine = _engine](const ObjectID&amp; id) {</span>
-<span class="lineNum">    1214 </span><span class="lineNoCov">          0 :                 auto model = engine.getScene().getModel(id.id);</span>
-<span class="lineNum">    1215 </span><span class="lineNoCov">          0 :                 if (!model)</span>
-<span class="lineNum">    1216 </span>            :                     throw rockets::jsonrpc::response_error(&quot;Model not found&quot;,
-<span class="lineNum">    1217 </span><span class="lineNoCov">          0 :                                                            MODEL_NOT_FOUND);</span>
-<span class="lineNum">    1218 </span><span class="lineNoCov">          0 :                 return model-&gt;getModel().getTransferFunction();</span>
-<span class="lineNum">    1219 </span><span class="lineNoCov">          0 :             });</span>
-<span class="lineNum">    1220 </span>            : 
-<span class="lineNum">    1221 </span>            :         _handleSchema(METHOD_GET_MODEL_TRANSFER_FUNCTION,
-<span class="lineNum">    1222 </span><span class="lineNoCov">          0 :                       buildJsonRpcSchemaRequest&lt;ObjectID, TransferFunction&gt;(</span>
-<span class="lineNum">    1223 </span><span class="lineNoCov">          0 :                           desc));</span>
-<a name="1224"><span class="lineNum">    1224 </span><span class="lineNoCov">          0 :     }</span></a>
-<span class="lineNum">    1225 </span>            : 
-<span class="lineNum">    1226 </span><span class="lineNoCov">          0 :     void _handleAddClipPlane()</span>
-<span class="lineNum">    1227 </span>            :     {
-<span class="lineNum">    1228 </span>            :         const RpcParameterDescription desc{
-<span class="lineNum">    1229 </span>            :             METHOD_ADD_CLIP_PLANE,
-<span class="lineNum">    1230 </span>            :             &quot;Add a clip plane; returns the clip plane descriptor&quot;, &quot;plane&quot;,
-<a name="1231"><span class="lineNum">    1231 </span><span class="lineNoCov">          0 :             &quot;An array of 4 floats&quot;};</span></a>
-<span class="lineNum">    1232 </span>            : 
-<span class="lineNum">    1233 </span><span class="lineNoCov">          0 :         _handleRPC&lt;Plane, ClipPlanePtr&gt;(desc, [&amp;](const Plane&amp; plane) {</span>
-<span class="lineNum">    1234 </span><span class="lineNoCov">          0 :             auto&amp; scene = _engine.getScene();</span>
-<span class="lineNum">    1235 </span><span class="lineNoCov">          0 :             auto clipPlane = scene.getClipPlane(scene.addClipPlane(plane));</span>
-<span class="lineNum">    1236 </span><span class="lineNoCov">          0 :             _rebroadcast(METHOD_UPDATE_CLIP_PLANE, to_json(clipPlane),</span>
-<span class="lineNum">    1237 </span><span class="lineNoCov">          0 :                          {_currentClientID});</span>
-<span class="lineNum">    1238 </span><span class="lineNoCov">          0 :             return clipPlane;</span>
-<span class="lineNum">    1239 </span><span class="lineNoCov">          0 :         });</span>
-<a name="1240"><span class="lineNum">    1240 </span><span class="lineNoCov">          0 :     }</span></a>
-<span class="lineNum">    1241 </span>            : 
-<span class="lineNum">    1242 </span><span class="lineNoCov">          0 :     void _handleGetClipPlanes()</span>
-<a name="1243"><span class="lineNum">    1243 </span>            :     {</a>
-<span class="lineNum">    1244 </span><span class="lineNoCov">          0 :         _handleRPC&lt;ClipPlanes&gt;({METHOD_GET_CLIP_PLANES, &quot;Get all clip planes&quot;},</span>
-<span class="lineNum">    1245 </span><span class="lineNoCov">          0 :                                [&amp; engine = _engine]() {</span>
-<span class="lineNum">    1246 </span><span class="lineNoCov">          0 :                                    auto&amp; scene = engine.getScene();</span>
-<span class="lineNum">    1247 </span><span class="lineNoCov">          0 :                                    return scene.getClipPlanes();</span>
-<span class="lineNum">    1248 </span><span class="lineNoCov">          0 :                                });</span>
-<a name="1249"><span class="lineNum">    1249 </span><span class="lineNoCov">          0 :     }</span></a>
-<span class="lineNum">    1250 </span>            : 
-<span class="lineNum">    1251 </span><span class="lineNoCov">          0 :     void _handleUpdateClipPlane()</span>
-<span class="lineNum">    1252 </span>            :     {
-<span class="lineNum">    1253 </span>            :         const RpcParameterDescription desc{
-<span class="lineNum">    1254 </span>            :             METHOD_UPDATE_CLIP_PLANE,
-<a name="1255"><span class="lineNum">    1255 </span>            :             &quot;Update a clip plane with the given coefficients&quot;, &quot;clip_plane&quot;,</a>
-<span class="lineNum">    1256 </span><span class="lineNoCov">          0 :             &quot;Plane id and equation&quot;};</span>
-<span class="lineNum">    1257 </span><span class="lineNoCov">          0 :         _handleRPC&lt;ClipPlane, bool&gt;(desc, [&amp;](const ClipPlane&amp; newPlane) {</span>
-<span class="lineNum">    1258 </span><span class="lineNoCov">          0 :             auto&amp; scene = _engine.getScene();</span>
-<span class="lineNum">    1259 </span><span class="lineNoCov">          0 :             if (auto plane = scene.getClipPlane(newPlane.getID()))</span>
-<span class="lineNum">    1260 </span>            :             {
-<span class="lineNum">    1261 </span><span class="lineNoCov">          0 :                 plane-&gt;setPlane(newPlane.getPlane());</span>
-<span class="lineNum">    1262 </span><span class="lineNoCov">          0 :                 _rebroadcast(METHOD_UPDATE_CLIP_PLANE, to_json(newPlane),</span>
-<span class="lineNum">    1263 </span><span class="lineNoCov">          0 :                              {_currentClientID});</span>
-<span class="lineNum">    1264 </span><span class="lineNoCov">          0 :                 _engine.triggerRender();</span>
-<span class="lineNum">    1265 </span><span class="lineNoCov">          0 :                 return true;</span>
-<span class="lineNum">    1266 </span>            :             }
-<span class="lineNum">    1267 </span><span class="lineNoCov">          0 :             return false;</span>
-<span class="lineNum">    1268 </span><span class="lineNoCov">          0 :         });</span>
-<a name="1269"><span class="lineNum">    1269 </span><span class="lineNoCov">          0 :     }</span></a>
-<span class="lineNum">    1270 </span>            : 
-<span class="lineNum">    1271 </span><span class="lineNoCov">          0 :     void _handleRemoveClipPlanes()</span>
-<span class="lineNum">    1272 </span>            :     {
-<span class="lineNum">    1273 </span>            :         const RpcParameterDescription desc{
-<span class="lineNum">    1274 </span>            :             METHOD_REMOVE_CLIP_PLANES,
-<a name="1275"><span class="lineNum">    1275 </span>            :             &quot;Remove clip planes from the scene given their gids&quot;, &quot;ids&quot;,</a>
-<span class="lineNum">    1276 </span><span class="lineNoCov">          0 :             &quot;Array of clip planes IDs&quot;};</span>
-<span class="lineNum">    1277 </span><span class="lineNoCov">          0 :         _handleRPC&lt;size_ts, bool&gt;(desc, [&amp;](const size_ts&amp; ids) {</span>
-<span class="lineNum">    1278 </span><span class="lineNoCov">          0 :             for (const auto id : ids)</span>
-<span class="lineNum">    1279 </span><span class="lineNoCov">          0 :                 _engine.getScene().removeClipPlane(id);</span>
-<span class="lineNum">    1280 </span><span class="lineNoCov">          0 :             _rebroadcast(METHOD_REMOVE_CLIP_PLANES, to_json(ids),</span>
-<span class="lineNum">    1281 </span><span class="lineNoCov">          0 :                          {_currentClientID});</span>
-<span class="lineNum">    1282 </span><span class="lineNoCov">          0 :             _engine.triggerRender();</span>
-<span class="lineNum">    1283 </span><span class="lineNoCov">          0 :             return true;</span>
-<span class="lineNum">    1284 </span><span class="lineNoCov">          0 :         });</span>
-<a name="1285"><span class="lineNum">    1285 </span><span class="lineNoCov">          0 :     }</span></a>
-<span class="lineNum">    1286 </span>            : 
-<span class="lineNum">    1287 </span><span class="lineNoCov">          0 :     void _handleAddModel()</span>
-<span class="lineNum">    1288 </span>            :     {
-<span class="lineNum">    1289 </span>            :         const RpcParameterDescription desc{
-<span class="lineNum">    1290 </span>            :             METHOD_ADD_MODEL,
-<span class="lineNum">    1291 </span>            :             &quot;Add model from remote path; returns model descriptor on success&quot;,
-<span class="lineNum">    1292 </span>            :             Execution::async, &quot;model_param&quot;,
-<a name="1293"><span class="lineNum">    1293 </span><span class="lineNoCov">          0 :             &quot;Model parameters including name, path, transformation, etc.&quot;};</span></a>
-<span class="lineNum">    1294 </span>            : 
-<span class="lineNum">    1295 </span><span class="lineNoCov">          0 :         auto func = [&amp;](const ModelParams&amp; modelParams, const auto) {</span>
-<span class="lineNum">    1296 </span><span class="lineNoCov">          0 :             return std::make_shared&lt;AddModelTask&gt;(modelParams, _engine);</span>
-<span class="lineNum">    1297 </span><span class="lineNoCov">          0 :         };</span>
-<span class="lineNum">    1298 </span><span class="lineNoCov">          0 :         _handleTask&lt;ModelParams, ModelDescriptorPtr&gt;(desc, func);</span>
-<a name="1299"><span class="lineNum">    1299 </span><span class="lineNoCov">          0 :     }</span></a>
-<span class="lineNum">    1300 </span>            : 
-<span class="lineNum">    1301 </span><span class="lineNoCov">          0 :     void _handleRemoveModel()</span>
-<span class="lineNum">    1302 </span>            :     {
-<span class="lineNum">    1303 </span>            :         const RpcParameterDescription desc{
-<span class="lineNum">    1304 </span>            :             METHOD_REMOVE_MODEL,
-<span class="lineNum">    1305 </span>            :             &quot;Remove the model(s) with the given ID(s) from the scene&quot;, &quot;ids&quot;,
-<a name="1306"><span class="lineNum">    1306 </span><span class="lineNoCov">          0 :             &quot;Array of model IDs&quot;};</span></a>
-<span class="lineNum">    1307 </span><span class="lineNoCov">          0 :         _handleRPC&lt;size_ts, bool&gt;(desc,</span>
-<span class="lineNum">    1308 </span><span class="lineNoCov">          0 :                                   [&amp; engine = _engine](const size_ts&amp; ids) {</span>
-<span class="lineNum">    1309 </span><span class="lineNoCov">          0 :                                       for (const auto id : ids)</span>
-<span class="lineNum">    1310 </span><span class="lineNoCov">          0 :                                           engine.getScene().removeModel(id);</span>
-<span class="lineNum">    1311 </span><span class="lineNoCov">          0 :                                       engine.getScene().markModified();</span>
-<span class="lineNum">    1312 </span><span class="lineNoCov">          0 :                                       engine.triggerRender();</span>
-<span class="lineNum">    1313 </span><span class="lineNoCov">          0 :                                       return true;</span>
-<span class="lineNum">    1314 </span><span class="lineNoCov">          0 :                                   });</span>
-<a name="1315"><span class="lineNum">    1315 </span><span class="lineNoCov">          0 :     }</span></a>
-<span class="lineNum">    1316 </span>            : 
-<span class="lineNum">    1317 </span><span class="lineNoCov">          0 :     void _handleUpdateModel()</span>
-<span class="lineNum">    1318 </span>            :     {
-<a name="1319"><span class="lineNum">    1319 </span><span class="lineNoCov">          0 :         _bindEndpoint(METHOD_UPDATE_MODEL,</span></a>
-<span class="lineNum">    1320 </span>            :                       [&amp; engine =
-<span class="lineNum">    1321 </span><span class="lineNoCov">          0 :                            _engine](const rockets::jsonrpc::Request&amp; request) {</span>
-<span class="lineNum">    1322 </span><span class="lineNoCov">          0 :                           ModelDescriptor newDesc;</span>
-<span class="lineNum">    1323 </span><span class="lineNoCov">          0 :                           if (!::from_json(newDesc, request.message))</span>
-<span class="lineNum">    1324 </span><span class="lineNoCov">          0 :                               return Response::invalidParams();</span>
-<span class="lineNum">    1325 </span>            : 
-<span class="lineNum">    1326 </span><span class="lineNoCov">          0 :                           auto&amp; scene = engine.getScene();</span>
-<span class="lineNum">    1327 </span><span class="lineNoCov">          0 :                           if (auto model = scene.getModel(newDesc.getModelID()))</span>
-<span class="lineNum">    1328 </span>            :                           {
-<span class="lineNum">    1329 </span><span class="lineNoCov">          0 :                               ::from_json(*model, request.message);</span>
-<span class="lineNum">    1330 </span><span class="lineNoCov">          0 :                               scene.markModified();</span>
-<span class="lineNum">    1331 </span><span class="lineNoCov">          0 :                               engine.triggerRender();</span>
-<span class="lineNum">    1332 </span><span class="lineNoCov">          0 :                               return Response{to_json(true)};</span>
-<span class="lineNum">    1333 </span>            :                           }
-<span class="lineNum">    1334 </span><span class="lineNoCov">          0 :                           return Response{to_json(false)};</span>
-<span class="lineNum">    1335 </span><span class="lineNoCov">          0 :                       });</span>
-<span class="lineNum">    1336 </span>            :         const RpcParameterDescription desc{
-<span class="lineNum">    1337 </span>            :             METHOD_UPDATE_MODEL, &quot;Update the model with the given values&quot;,
-<span class="lineNum">    1338 </span><span class="lineNoCov">          0 :             &quot;model&quot;, &quot;Model descriptor&quot;};</span>
-<span class="lineNum">    1339 </span>            :         _handleSchema(METHOD_UPDATE_MODEL,
-<span class="lineNum">    1340 </span><span class="lineNoCov">          0 :                       buildJsonRpcSchemaRequest&lt;ModelDescriptor, bool&gt;(desc));</span>
-<a name="1341"><span class="lineNum">    1341 </span><span class="lineNoCov">          0 :     }</span></a>
-<span class="lineNum">    1342 </span>            : 
-<span class="lineNum">    1343 </span><span class="lineNoCov">          0 :     void _handleGetModelProperties()</span>
-<span class="lineNum">    1344 </span>            :     {
-<span class="lineNum">    1345 </span>            :         const RpcParameterDescription desc{
-<span class="lineNum">    1346 </span>            :             METHOD_GET_MODEL_PROPERTIES,
-<span class="lineNum">    1347 </span><span class="lineNoCov">          0 :             &quot;Get the properties of the given model&quot;, &quot;id&quot;, &quot;the model ID&quot;};</span>
-<a name="1348"><span class="lineNum">    1348 </span>            : </a>
-<span class="lineNum">    1349 </span><span class="lineNoCov">          0 :         _jsonrpcServer-&gt;bind&lt;ObjectID, PropertyMap&gt;(</span>
-<span class="lineNum">    1350 </span><span class="lineNoCov">          0 :             desc.methodName, [&amp; engine = _engine](const ObjectID&amp; id) {</span>
-<span class="lineNum">    1351 </span><span class="lineNoCov">          0 :                 auto model = engine.getScene().getModel(id.id);</span>
-<span class="lineNum">    1352 </span><span class="lineNoCov">          0 :                 if (!model)</span>
-<span class="lineNum">    1353 </span>            :                     throw rockets::jsonrpc::response_error(&quot;Model not found&quot;,
-<span class="lineNum">    1354 </span><span class="lineNoCov">          0 :                                                            MODEL_NOT_FOUND);</span>
-<span class="lineNum">    1355 </span><span class="lineNoCov">          0 :                 return model-&gt;getProperties();</span>
-<span class="lineNum">    1356 </span><span class="lineNoCov">          0 :             });</span>
-<span class="lineNum">    1357 </span>            : 
-<span class="lineNum">    1358 </span>            :         _handleSchema(METHOD_GET_MODEL_PROPERTIES,
-<span class="lineNum">    1359 </span><span class="lineNoCov">          0 :                       buildJsonRpcSchemaRequest&lt;ObjectID, PropertyMap&gt;(desc));</span>
-<a name="1360"><span class="lineNum">    1360 </span><span class="lineNoCov">          0 :     }</span></a>
-<span class="lineNum">    1361 </span>            : 
-<span class="lineNum">    1362 </span><span class="lineNoCov">          0 :     void _handleSetModelProperties()</span>
-<span class="lineNum">    1363 </span>            :     {
-<span class="lineNum">    1364 </span>            :         const RpcParameterDescription desc{
-<span class="lineNum">    1365 </span>            :             METHOD_SET_MODEL_PROPERTIES,
-<span class="lineNum">    1366 </span>            :             &quot;Set the properties of the given model&quot;, &quot;param&quot;,
-<span class="lineNum">    1367 </span><span class="lineNoCov">          0 :             &quot;model ID and its properties&quot;};</span>
-<span class="lineNum">    1368 </span>            : 
-<a name="1369"><span class="lineNum">    1369 </span><span class="lineNoCov">          0 :         _bindModelEndpoint(METHOD_SET_MODEL_PROPERTIES, &quot;properties&quot;,</span></a>
-<span class="lineNum">    1370 </span>            :                            [&amp;](const std::string&amp; json,
-<span class="lineNum">    1371 </span><span class="lineNoCov">          0 :                                ModelDescriptorPtr model) {</span>
-<span class="lineNum">    1372 </span><span class="lineNoCov">          0 :                                auto props = model-&gt;getProperties();</span>
-<span class="lineNum">    1373 </span><span class="lineNoCov">          0 :                                props.merge(jsonToPropertyMap(json));</span>
-<span class="lineNum">    1374 </span><span class="lineNoCov">          0 :                                model-&gt;setProperties(props);</span>
-<span class="lineNum">    1375 </span><span class="lineNoCov">          0 :                                return true;</span>
-<span class="lineNum">    1376 </span><span class="lineNoCov">          0 :                            });</span>
-<span class="lineNum">    1377 </span>            : 
-<span class="lineNum">    1378 </span>            :         _handleSchema(METHOD_SET_MODEL_PROPERTIES,
-<span class="lineNum">    1379 </span><span class="lineNoCov">          0 :                       buildJsonRpcSchemaRequest&lt;ModelProperties, bool&gt;(desc));</span>
-<a name="1380"><span class="lineNum">    1380 </span><span class="lineNoCov">          0 :     }</span></a>
-<span class="lineNum">    1381 </span>            : 
-<span class="lineNum">    1382 </span><span class="lineNoCov">          0 :     void _handleModelPropertiesSchema()</span>
-<span class="lineNum">    1383 </span>            :     {
-<span class="lineNum">    1384 </span>            :         const RpcParameterDescription desc{
-<span class="lineNum">    1385 </span>            :             METHOD_MODEL_PROPERTIES_SCHEMA,
-<span class="lineNum">    1386 </span>            :             &quot;Get the property schema of the model&quot;, &quot;id&quot;,
-<span class="lineNum">    1387 </span><span class="lineNoCov">          0 :             &quot;ID of the model get its properties schema&quot;};</span>
-<span class="lineNum">    1388 </span>            : 
-<a name="1389"><span class="lineNum">    1389 </span><span class="lineNoCov">          0 :         _jsonrpcServer-&gt;bind(</span></a>
-<span class="lineNum">    1390 </span>            :             METHOD_MODEL_PROPERTIES_SCHEMA,
-<span class="lineNum">    1391 </span><span class="lineNoCov">          0 :             [&amp; engine = _engine](const auto&amp; request) {</span>
-<span class="lineNum">    1392 </span>            :                 ObjectID modelID;
-<span class="lineNum">    1393 </span><span class="lineNoCov">          0 :                 if (::from_json(modelID, request.message))</span>
-<span class="lineNum">    1394 </span>            :                 {
-<span class="lineNum">    1395 </span><span class="lineNoCov">          0 :                     auto model = engine.getScene().getModel(modelID.id);</span>
-<span class="lineNum">    1396 </span><span class="lineNoCov">          0 :                     if (!model)</span>
-<span class="lineNum">    1397 </span>            :                         return Response{Response::Error{&quot;Model not found&quot;,
-<span class="lineNum">    1398 </span><span class="lineNoCov">          0 :                                                         MODEL_NOT_FOUND}};</span>
-<span class="lineNum">    1399 </span>            : 
-<span class="lineNum">    1400 </span>            :                     return Response{buildJsonSchema(model-&gt;getProperties(),
-<span class="lineNum">    1401 </span><span class="lineNoCov">          0 :                                                     &quot;ModelProperties&quot;)};</span>
-<span class="lineNum">    1402 </span>            :                 }
-<span class="lineNum">    1403 </span><span class="lineNoCov">          0 :                 return Response::invalidParams();</span>
-<span class="lineNum">    1404 </span><span class="lineNoCov">          0 :             });</span>
-<span class="lineNum">    1405 </span>            : 
-<span class="lineNum">    1406 </span>            :         _handleSchema(METHOD_MODEL_PROPERTIES_SCHEMA,
-<span class="lineNum">    1407 </span><span class="lineNoCov">          0 :                       buildJsonRpcSchemaRequest&lt;ObjectID, std::string&gt;(desc));</span>
-<a name="1408"><span class="lineNum">    1408 </span><span class="lineNoCov">          0 :     }</span></a>
-<span class="lineNum">    1409 </span>            : 
-<span class="lineNum">    1410 </span><span class="lineNoCov">          0 :     void _handleGetInstances()</span>
-<span class="lineNum">    1411 </span>            :     {
-<span class="lineNum">    1412 </span>            :         const RpcParameterDescription desc{METHOD_GET_INSTANCES,
-<span class="lineNum">    1413 </span>            :                                            &quot;Get instances&quot;, &quot;id, range&quot;,
-<span class="lineNum">    1414 </span><span class="lineNoCov">          0 :                                            &quot;Model id and result range&quot;};</span>
-<a name="1415"><span class="lineNum">    1415 </span><span class="lineNoCov">          0 :         _handleRPC&lt;GetInstances, ModelInstances&gt;(</span></a>
-<span class="lineNum">    1416 </span>            :             desc,
-<span class="lineNum">    1417 </span><span class="lineNoCov">          0 :             [&amp; engine = _engine](const GetInstances&amp; param)-&gt;ModelInstances {</span>
-<span class="lineNum">    1418 </span><span class="lineNoCov">          0 :                 auto id = param.modelID;</span>
-<span class="lineNum">    1419 </span><span class="lineNoCov">          0 :                 auto&amp; scene = engine.getScene();</span>
-<span class="lineNum">    1420 </span><span class="lineNoCov">          0 :                 auto model = scene.getModel(id);</span>
-<span class="lineNum">    1421 </span><span class="lineNoCov">          0 :                 if (!model)</span>
-<span class="lineNum">    1422 </span>            :                     throw rockets::jsonrpc::response_error(&quot;Model not found&quot;,
-<span class="lineNum">    1423 </span><span class="lineNoCov">          0 :                                                            MODEL_NOT_FOUND);</span>
-<span class="lineNum">    1424 </span>            : 
-<span class="lineNum">    1425 </span><span class="lineNoCov">          0 :                 const auto&amp; instances = model-&gt;getInstances();</span>
-<span class="lineNum">    1426 </span>            :                 const Vector2ui range{std::min(param.resultRange.x(),
-<span class="lineNum">    1427 </span><span class="lineNoCov">          0 :                                                unsigned(instances.size())),</span>
-<span class="lineNum">    1428 </span>            :                                       std::min(param.resultRange.y(),
-<span class="lineNum">    1429 </span><span class="lineNoCov">          0 :                                                unsigned(instances.size()))};</span>
-<span class="lineNum">    1430 </span><span class="lineNoCov">          0 :                 return {instances.begin() + range.x(),</span>
-<span class="lineNum">    1431 </span><span class="lineNoCov">          0 :                         instances.begin() + range.y()};</span>
-<span class="lineNum">    1432 </span><span class="lineNoCov">          0 :             });</span>
-<a name="1433"><span class="lineNum">    1433 </span><span class="lineNoCov">          0 :     }</span></a>
-<span class="lineNum">    1434 </span>            : 
-<span class="lineNum">    1435 </span><span class="lineNoCov">          0 :     void _handleGetLoaders()</span>
-<span class="lineNum">    1436 </span>            :     {
-<a name="1437"><span class="lineNum">    1437 </span><span class="lineNoCov">          0 :         _handleRPC&lt;std::vector&lt;LoaderInfo&gt;&gt;(</span></a>
-<span class="lineNum">    1438 </span>            :             {METHOD_GET_LOADERS, &quot;Get all loaders&quot;},
-<span class="lineNum">    1439 </span><span class="lineNoCov">          0 :             [&amp;]() {</span>
-<span class="lineNum">    1440 </span><span class="lineNoCov">          0 :                 auto&amp; scene = _engine.getScene();</span>
-<span class="lineNum">    1441 </span><span class="lineNoCov">          0 :                 return scene.getLoaderRegistry().getLoaderInfos();</span>
-<span class="lineNum">    1442 </span><span class="lineNoCov">          0 :             });</span>
-<a name="1443"><span class="lineNum">    1443 </span><span class="lineNoCov">          0 :     }</span></a>
-<span class="lineNum">    1444 </span>            : 
-<span class="lineNum">    1445 </span><span class="lineNoCov">          0 :     void _handleUpdateInstance()</span>
-<span class="lineNum">    1446 </span>            :     {
-<a name="1447"><span class="lineNum">    1447 </span><span class="lineNoCov">          0 :         _bindEndpoint(</span></a>
-<span class="lineNum">    1448 </span>            :             METHOD_UPDATE_INSTANCE,
-<span class="lineNum">    1449 </span><span class="lineNoCov">          0 :             [&amp;](const rockets::jsonrpc::Request&amp; request) {</span>
-<span class="lineNum">    1450 </span><span class="lineNoCov">          0 :                 ModelInstance newDesc;</span>
-<span class="lineNum">    1451 </span><span class="lineNoCov">          0 :                 if (!::from_json(newDesc, request.message))</span>
-<span class="lineNum">    1452 </span><span class="lineNoCov">          0 :                     return Response::invalidParams();</span>
-<span class="lineNum">    1453 </span>            : 
-<span class="lineNum">    1454 </span><span class="lineNoCov">          0 :                 auto&amp; scene = _engine.getScene();</span>
-<span class="lineNum">    1455 </span><span class="lineNoCov">          0 :                 auto model = scene.getModel(newDesc.getModelID());</span>
-<span class="lineNum">    1456 </span><span class="lineNoCov">          0 :                 if (!model)</span>
-<span class="lineNum">    1457 </span>            :                     throw rockets::jsonrpc::response_error(&quot;Model not found&quot;,
-<span class="lineNum">    1458 </span><span class="lineNoCov">          0 :                                                            MODEL_NOT_FOUND);</span>
-<span class="lineNum">    1459 </span>            : 
-<span class="lineNum">    1460 </span><span class="lineNoCov">          0 :                 auto instance = model-&gt;getInstance(newDesc.getInstanceID());</span>
-<span class="lineNum">    1461 </span><span class="lineNoCov">          0 :                 if (!instance)</span>
-<span class="lineNum">    1462 </span>            :                     throw rockets::jsonrpc::response_error(&quot;Instance not found&quot;,
-<span class="lineNum">    1463 </span><span class="lineNoCov">          0 :                                                            INSTANCE_NOT_FOUND);</span>
-<span class="lineNum">    1464 </span>            : 
-<span class="lineNum">    1465 </span><span class="lineNoCov">          0 :                 ::from_json(*instance, request.message);</span>
-<span class="lineNum">    1466 </span><span class="lineNoCov">          0 :                 model-&gt;getModel().markInstancesDirty();</span>
-<span class="lineNum">    1467 </span><span class="lineNoCov">          0 :                 scene.markModified(false);</span>
-<span class="lineNum">    1468 </span>            : 
-<span class="lineNum">    1469 </span><span class="lineNoCov">          0 :                 _engine.triggerRender();</span>
-<span class="lineNum">    1470 </span><span class="lineNoCov">          0 :                 _rebroadcast(METHOD_UPDATE_INSTANCE, request.message,</span>
-<span class="lineNum">    1471 </span><span class="lineNoCov">          0 :                              {request.clientID});</span>
-<span class="lineNum">    1472 </span>            : 
-<span class="lineNum">    1473 </span><span class="lineNoCov">          0 :                 return Response{to_json(true)};</span>
-<span class="lineNum">    1474 </span><span class="lineNoCov">          0 :             });</span>
-<span class="lineNum">    1475 </span>            :         const RpcParameterDescription desc{
-<span class="lineNum">    1476 </span>            :             METHOD_UPDATE_INSTANCE, &quot;Update the instance with the given values&quot;,
-<span class="lineNum">    1477 </span><span class="lineNoCov">          0 :             &quot;model_instance&quot;, &quot;Model instance&quot;};</span>
-<span class="lineNum">    1478 </span>            :         _handleSchema(METHOD_UPDATE_INSTANCE,
-<span class="lineNum">    1479 </span><span class="lineNoCov">          0 :                       buildJsonRpcSchemaRequest&lt;ModelInstance, bool&gt;(desc));</span>
-<a name="1480"><span class="lineNum">    1480 </span><span class="lineNoCov">          0 :     }</span></a>
-<span class="lineNum">    1481 </span>            : 
-<span class="lineNum">    1482 </span><span class="lineNoCov">          0 :     void _handlePropertyObject(PropertyObject&amp; object,</span>
-<span class="lineNum">    1483 </span>            :                                const std::string&amp; endpoint,
-<span class="lineNum">    1484 </span>            :                                const std::string objectName)
-<span class="lineNum">    1485 </span>            :     {
-<span class="lineNum">    1486 </span><span class="lineNoCov">          0 :         const auto requestEndpoint = getRequestEndpointName(endpoint);</span>
-<a name="1487"><span class="lineNum">    1487 </span><span class="lineNoCov">          0 :         const auto notifyEndpoint = getNotificationEndpointName(endpoint);</span></a>
-<span class="lineNum">    1488 </span>            : 
-<span class="lineNum">    1489 </span><span class="lineNoCov">          0 :         _jsonrpcServer-&gt;bind&lt;PropertyMap&gt;(requestEndpoint, [&amp; object = object] {</span>
-<span class="lineNum">    1490 </span>            :             return object.getPropertyMap();
-<a name="1491"><span class="lineNum">    1491 </span><span class="lineNoCov">          0 :         });</span></a>
-<span class="lineNum">    1492 </span>            : 
-<span class="lineNum">    1493 </span><span class="lineNoCov">          0 :         _bindEndpoint(notifyEndpoint, [&amp;, notifyEndpoint](const auto&amp; request) {</span>
-<span class="lineNum">    1494 </span><span class="lineNoCov">          0 :             object.updateProperties(jsonToPropertyMap(request.message));</span>
-<span class="lineNum">    1495 </span><span class="lineNoCov">          0 :             _engine.triggerRender();</span>
-<span class="lineNum">    1496 </span><span class="lineNoCov">          0 :             this-&gt;_rebroadcast(notifyEndpoint, request.message,</span>
-<span class="lineNum">    1497 </span><span class="lineNoCov">          0 :                                {request.clientID});</span>
-<span class="lineNum">    1498 </span><span class="lineNoCov">          0 :             return Response{to_json(true)};</span>
-<span class="lineNum">    1499 </span><span class="lineNoCov">          0 :         });</span>
-<span class="lineNum">    1500 </span>            : 
-<span class="lineNum">    1501 </span><span class="lineNoCov">          0 :         std::vector&lt;std::pair&lt;std::string, PropertyMap&gt;&gt; props;</span>
-<span class="lineNum">    1502 </span><span class="lineNoCov">          0 :         for (const auto&amp; type : object.getTypes())</span>
-<span class="lineNum">    1503 </span><span class="lineNoCov">          0 :             props.push_back(std::make_pair(type, object.getPropertyMap(type)));</span>
-<span class="lineNum">    1504 </span>            : 
-<span class="lineNum">    1505 </span>            :         // get-&lt;object&gt;-params RPC schema
-<span class="lineNum">    1506 </span>            :         _handleSchema(requestEndpoint,
-<span class="lineNum">    1507 </span><span class="lineNoCov">          0 :                       buildJsonRpcSchemaRequestPropertyMaps(</span>
-<span class="lineNum">    1508 </span>            :                           {requestEndpoint,
-<span class="lineNum">    1509 </span>            :                            &quot;Get the params of the current &quot; + objectName},
-<span class="lineNum">    1510 </span><span class="lineNoCov">          0 :                           props));</span>
-<span class="lineNum">    1511 </span>            : 
-<span class="lineNum">    1512 </span>            :         // set-&lt;object&gt;-params RPC schema
-<span class="lineNum">    1513 </span>            :         const RpcParameterDescription desc{notifyEndpoint,
-<span class="lineNum">    1514 </span><span class="lineNoCov">          0 :                                            &quot;Set the params on the current &quot; +</span>
-<span class="lineNum">    1515 </span>            :                                                objectName,
-<span class="lineNum">    1516 </span>            :                                            &quot;params&quot;,
-<span class="lineNum">    1517 </span><span class="lineNoCov">          0 :                                            &quot;new &quot; + objectName + &quot; params&quot;};</span>
-<span class="lineNum">    1518 </span>            :         _handleSchema(notifyEndpoint,
-<span class="lineNum">    1519 </span><span class="lineNoCov">          0 :                       buildJsonRpcSchemaNotifyPropertyMaps(desc, props));</span>
-<span class="lineNum">    1520 </span>            : 
-<span class="lineNum">    1521 </span>            :         // &lt;object&gt;-params object schema
-<span class="lineNum">    1522 </span>            :         _handleSchema(endpoint,
-<span class="lineNum">    1523 </span><span class="lineNoCov">          0 :                       buildJsonSchema(props, hyphenatedToCamelCase(endpoint)));</span>
-<a name="1524"><span class="lineNum">    1524 </span><span class="lineNoCov">          0 :     }</span></a>
-<span class="lineNum">    1525 </span>            : 
-<span class="lineNum">    1526 </span><span class="lineNoCov">          0 :     void _handleLoadersSchema()</span>
-<span class="lineNum">    1527 </span>            :     {
-<span class="lineNum">    1528 </span>            :         const RpcDescription desc{LOADERS_SCHEMA,
-<span class="lineNum">    1529 </span><span class="lineNoCov">          0 :                                   &quot;Get the schema for all loaders&quot;};</span>
-<a name="1530"><span class="lineNum">    1530 </span>            : </a>
-<span class="lineNum">    1531 </span><span class="lineNoCov">          0 :         _bindEndpoint(</span>
-<span class="lineNum">    1532 </span><span class="lineNoCov">          0 :             LOADERS_SCHEMA, [&amp;](const rockets::jsonrpc::Request&amp; /*request*/) {</span>
-<span class="lineNum">    1533 </span>            :                 const auto&amp; loaderInfos =
-<span class="lineNum">    1534 </span><span class="lineNoCov">          0 :                     _engine.getScene().getLoaderRegistry().getLoaderInfos();</span>
-<span class="lineNum">    1535 </span>            : 
-<span class="lineNum">    1536 </span><span class="lineNoCov">          0 :                 std::vector&lt;std::pair&lt;std::string, PropertyMap&gt;&gt; props;</span>
-<span class="lineNum">    1537 </span><span class="lineNoCov">          0 :                 for (const LoaderInfo&amp; li : loaderInfos)</span>
-<span class="lineNum">    1538 </span><span class="lineNoCov">          0 :                     props.emplace_back(li.name, li.properties);</span>
-<span class="lineNum">    1539 </span>            : 
-<span class="lineNum">    1540 </span><span class="lineNoCov">          0 :                 return Response{buildJsonSchema(props, &quot;loaders&quot;)};</span>
-<span class="lineNum">    1541 </span><span class="lineNoCov">          0 :             });</span>
+<span class="lineNum">    1044 </span><span class="lineNoCov">          0 :         _handleSchema(ENDPOINT_VERSION, version.getSchema());</span>
+<a name="1045"><span class="lineNum">    1045 </span><span class="lineNoCov">          0 :     }</span></a>
+<span class="lineNum">    1046 </span>            : 
+<span class="lineNum">    1047 </span><span class="lineNoCov">          0 :     void _handleCamera()</span>
+<a name="1048"><span class="lineNum">    1048 </span>            :     {</a>
+<span class="lineNum">    1049 </span><span class="lineNoCov">          0 :         auto&amp; camera = _engine.getCamera();</span>
+<span class="lineNum">    1050 </span><span class="lineNoCov">          0 :         auto preUpdate = [types = camera.getTypes()](const Camera&amp; obj)</span>
+<span class="lineNum">    1051 </span>            :         {
+<span class="lineNum">    1052 </span><span class="lineNoCov">          0 :             if (obj.getCurrentType().empty())</span>
+<span class="lineNum">    1053 </span><span class="lineNoCov">          0 :                 return true;</span>
+<span class="lineNum">    1054 </span><span class="lineNoCov">          0 :             return std::find(types.begin(), types.end(),</span>
+<span class="lineNum">    1055 </span><span class="lineNoCov">          0 :                              obj.getCurrentType()) != types.end();</span>
+<span class="lineNum">    1056 </span><span class="lineNoCov">          0 :         };</span>
+<span class="lineNum">    1057 </span><span class="lineNoCov">          0 :         _handleGET(ENDPOINT_CAMERA, camera);</span>
+<span class="lineNum">    1058 </span><span class="lineNoCov">          0 :         _handlePUT(ENDPOINT_CAMERA, camera, preUpdate,</span>
+<span class="lineNum">    1059 </span><span class="lineNoCov">          0 :                    std::function&lt;void(Camera&amp;)&gt;());</span>
+<a name="1060"><span class="lineNum">    1060 </span><span class="lineNoCov">          0 :     }</span></a>
+<span class="lineNum">    1061 </span>            : 
+<span class="lineNum">    1062 </span><span class="lineNoCov">          0 :     void _handleRenderer()</span>
+<a name="1063"><span class="lineNum">    1063 </span>            :     {</a>
+<span class="lineNum">    1064 </span><span class="lineNoCov">          0 :         auto&amp; params = _parametersManager.getRenderingParameters();</span>
+<span class="lineNum">    1065 </span><span class="lineNoCov">          0 :         auto preUpdate = [&amp;params](const auto&amp; rp) {</span>
+<span class="lineNum">    1066 </span><span class="lineNoCov">          0 :             return std::find(params.getRenderers().begin(),</span>
+<span class="lineNum">    1067 </span><span class="lineNoCov">          0 :                              params.getRenderers().end(),</span>
+<span class="lineNum">    1068 </span>            :                              rp.getCurrentRenderer()) !=
+<a name="1069"><span class="lineNum">    1069 </span><span class="lineNoCov">          0 :                    params.getRenderers().end();</span></a>
+<span class="lineNum">    1070 </span><span class="lineNoCov">          0 :         };</span>
+<span class="lineNum">    1071 </span><span class="lineNoCov">          0 :         auto postUpdate = [&amp; renderer = _engine.getRenderer()](auto&amp; rp)</span>
+<span class="lineNum">    1072 </span><span class="lineNoCov">          0 :         {</span>
+<span class="lineNum">    1073 </span><span class="lineNoCov">          0 :             renderer.setCurrentType(rp.getCurrentRenderer());</span>
+<span class="lineNum">    1074 </span><span class="lineNoCov">          0 :         };</span>
+<span class="lineNum">    1075 </span><span class="lineNoCov">          0 :         _handleGET(ENDPOINT_RENDERER, params);</span>
+<span class="lineNum">    1076 </span><span class="lineNoCov">          0 :         _handlePUT(ENDPOINT_RENDERER, params, preUpdate, postUpdate);</span>
+<a name="1077"><span class="lineNum">    1077 </span><span class="lineNoCov">          0 :     }</span></a>
+<span class="lineNum">    1078 </span>            : 
+<span class="lineNum">    1079 </span><span class="lineNoCov">          0 :     void _handleSchemaRPC()</span>
+<span class="lineNum">    1080 </span>            :     {
+<span class="lineNum">    1081 </span>            :         const RpcParameterDescription desc{
+<span class="lineNum">    1082 </span>            :             METHOD_SCHEMA, &quot;Get the schema of the given endpoint&quot;,
+<span class="lineNum">    1083 </span>            :             Execution::sync, &quot;endpoint&quot;,
+<span class="lineNum">    1084 </span><span class="lineNoCov">          0 :             &quot;name of the endpoint to get its schema&quot;};</span>
+<a name="1085"><span class="lineNum">    1085 </span>            : </a>
+<span class="lineNum">    1086 </span><span class="lineNoCov">          0 :         _jsonrpcServer-&gt;bind(METHOD_SCHEMA, [&amp; schemas = _schemas](</span>
+<span class="lineNum">    1087 </span><span class="lineNoCov">          0 :                                                 const auto&amp; request) {</span>
+<span class="lineNum">    1088 </span><span class="lineNoCov">          0 :             SchemaParam param;</span>
+<span class="lineNum">    1089 </span><span class="lineNoCov">          0 :             if (::from_json(param, request.message))</span>
+<span class="lineNum">    1090 </span>            :             {
+<span class="lineNum">    1091 </span><span class="lineNoCov">          0 :                 if (schemas.count(param.endpoint) == 0)</span>
+<span class="lineNum">    1092 </span>            :                     return Response{
+<span class="lineNum">    1093 </span>            :                         Response::Error{&quot;Endpoint not found&quot;,
+<span class="lineNum">    1094 </span><span class="lineNoCov">          0 :                                         SCHEMA_RPC_ENDPOINT_NOT_FOUND}};</span>
+<span class="lineNum">    1095 </span>            : 
+<span class="lineNum">    1096 </span><span class="lineNoCov">          0 :                 auto schema = schemas[param.endpoint];</span>
+<span class="lineNum">    1097 </span><span class="lineNoCov">          0 :                 return Response{std::move(schema)};</span>
+<span class="lineNum">    1098 </span>            :             }
+<span class="lineNum">    1099 </span><span class="lineNoCov">          0 :             return Response::invalidParams();</span>
+<span class="lineNum">    1100 </span><span class="lineNoCov">          0 :         });</span>
+<span class="lineNum">    1101 </span>            : 
+<span class="lineNum">    1102 </span>            :         _handleSchema(METHOD_SCHEMA,
+<span class="lineNum">    1103 </span><span class="lineNoCov">          0 :                       buildJsonRpcSchemaRequest&lt;SchemaParam, std::string&gt;(</span>
+<span class="lineNum">    1104 </span><span class="lineNoCov">          0 :                           desc));</span>
+<a name="1105"><span class="lineNum">    1105 </span><span class="lineNoCov">          0 :     }</span></a>
+<span class="lineNum">    1106 </span>            : 
+<span class="lineNum">    1107 </span><span class="lineNoCov">          0 :     void _handleInspect()</span>
+<span class="lineNum">    1108 </span>            :     {
+<span class="lineNum">    1109 </span>            :         using Position = std::array&lt;double, 2&gt;;
+<span class="lineNum">    1110 </span>            :         const RpcParameterDescription desc{
+<span class="lineNum">    1111 </span>            :             METHOD_INSPECT, &quot;Inspect the scene at x-y position&quot;,
+<span class="lineNum">    1112 </span>            :             Execution::sync, &quot;position&quot;,
+<a name="1113"><span class="lineNum">    1113 </span><span class="lineNoCov">          0 :             &quot;x-y position in normalized coordinates&quot;};</span></a>
+<span class="lineNum">    1114 </span><span class="lineNoCov">          0 :         _handleRPC&lt;Position, Renderer::PickResult&gt;(</span>
+<span class="lineNum">    1115 </span><span class="lineNoCov">          0 :             desc, [&amp; engine = _engine](const auto&amp; position) {</span>
+<span class="lineNum">    1116 </span><span class="lineNoCov">          0 :                 return engine.getRenderer().pick(</span>
+<span class="lineNum">    1117 </span><span class="lineNoCov">          0 :                     {float(position[0]), float(position[1])});</span>
+<span class="lineNum">    1118 </span><span class="lineNoCov">          0 :             });</span>
+<a name="1119"><span class="lineNum">    1119 </span><span class="lineNoCov">          0 :     }</span></a>
+<span class="lineNum">    1120 </span>            : 
+<span class="lineNum">    1121 </span><span class="lineNoCov">          0 :     void _handleQuit()</span>
+<a name="1122"><span class="lineNum">    1122 </span>            :     {</a>
+<span class="lineNum">    1123 </span><span class="lineNoCov">          0 :         _handleRPC({METHOD_QUIT, &quot;Quit the application&quot;},</span>
+<span class="lineNum">    1124 </span><span class="lineNoCov">          0 :                    [&amp; engine = _engine] {</span>
+<span class="lineNum">    1125 </span><span class="lineNoCov">          0 :                        engine.setKeepRunning(false);</span>
+<span class="lineNum">    1126 </span><span class="lineNoCov">          0 :                        engine.triggerRender();</span>
+<span class="lineNum">    1127 </span><span class="lineNoCov">          0 :                    });</span>
+<a name="1128"><span class="lineNum">    1128 </span><span class="lineNoCov">          0 :     }</span></a>
+<span class="lineNum">    1129 </span>            : 
+<span class="lineNum">    1130 </span><span class="lineNoCov">          0 :     void _handleResetCamera()</span>
+<span class="lineNum">    1131 </span>            :     {
+<a name="1132"><span class="lineNum">    1132 </span><span class="lineNoCov">          0 :         _handleRPC({METHOD_RESET_CAMERA,</span></a>
+<span class="lineNum">    1133 </span>            :                     &quot;Resets the camera to its initial values&quot;},
+<span class="lineNum">    1134 </span><span class="lineNoCov">          0 :                    [&amp; engine = _engine] {</span>
+<span class="lineNum">    1135 </span><span class="lineNoCov">          0 :                        engine.getCamera().reset();</span>
+<span class="lineNum">    1136 </span><span class="lineNoCov">          0 :                        engine.triggerRender();</span>
+<span class="lineNum">    1137 </span><span class="lineNoCov">          0 :                    });</span>
+<a name="1138"><span class="lineNum">    1138 </span><span class="lineNoCov">          0 :     }</span></a>
+<span class="lineNum">    1139 </span>            : 
+<span class="lineNum">    1140 </span><span class="lineNoCov">          0 :     void _handleSnapshot()</span>
+<span class="lineNum">    1141 </span>            :     {
+<span class="lineNum">    1142 </span>            :         const RpcParameterDescription desc{
+<span class="lineNum">    1143 </span>            :             METHOD_SNAPSHOT, &quot;Make a snapshot of the current view&quot;,
+<span class="lineNum">    1144 </span>            :             Execution::async, &quot;settings&quot;,
+<span class="lineNum">    1145 </span><span class="lineNoCov">          0 :             &quot;Snapshot settings for quality and size&quot;};</span>
+<a name="1146"><span class="lineNum">    1146 </span>            :         auto func =</a>
+<span class="lineNum">    1147 </span><span class="lineNoCov">          0 :             [&amp; engine = _engine,</span>
+<span class="lineNum">    1148 </span><span class="lineNoCov">          0 :              &amp;imageGenerator = _imageGenerator ](auto&amp;&amp; params, const auto)</span>
+<span class="lineNum">    1149 </span><span class="lineNoCov">          0 :         {</span>
+<span class="lineNum">    1150 </span>            :             using SnapshotTask = DeferredTask&lt;ImageGenerator::ImageBase64&gt;;
+<span class="lineNum">    1151 </span>            :             return std::make_shared&lt;SnapshotTask&gt;(
+<span class="lineNum">    1152 </span><span class="lineNoCov">          0 :                 SnapshotFunctor{engine, std::move(params), imageGenerator});</span>
+<span class="lineNum">    1153 </span><span class="lineNoCov">          0 :         };</span>
+<span class="lineNum">    1154 </span><span class="lineNoCov">          0 :         _handleTask&lt;SnapshotParams, ImageGenerator::ImageBase64&gt;(desc, func);</span>
+<a name="1155"><span class="lineNum">    1155 </span><span class="lineNoCov">          0 :     }</span></a>
+<span class="lineNum">    1156 </span>            : 
+<span class="lineNum">    1157 </span><span class="lineNoCov">          0 :     void _handleRequestModelUpload()</span>
+<span class="lineNum">    1158 </span>            :     {
+<span class="lineNum">    1159 </span>            :         const RpcParameterDescription desc{
+<span class="lineNum">    1160 </span>            :             METHOD_REQUEST_MODEL_UPLOAD,
+<span class="lineNum">    1161 </span>            :             &quot;Request upload of blob to trigger adding of model after blob has &quot;
+<span class="lineNum">    1162 </span>            :             &quot;been received; returns model descriptor on success&quot;,
+<span class="lineNum">    1163 </span>            :             Execution::async, &quot;param&quot;,
+<span class="lineNum">    1164 </span><span class="lineNoCov">          0 :             &quot;size, type, name, transformation, etc.&quot;};</span>
+<span class="lineNum">    1165 </span>            : 
+<span class="lineNum">    1166 </span><span class="lineNoCov">          0 :         _handleTask&lt;BinaryParam, ModelDescriptorPtr&gt;(</span>
+<span class="lineNum">    1167 </span><span class="lineNoCov">          0 :             desc, std::bind(&amp;BinaryRequests::createTask,</span>
+<span class="lineNum">    1168 </span><span class="lineNoCov">          0 :                             std::ref(_binaryRequests), std::placeholders::_1,</span>
+<span class="lineNum">    1169 </span><span class="lineNoCov">          0 :                             std::placeholders::_2, std::ref(_engine)));</span>
+<a name="1170"><span class="lineNum">    1170 </span><span class="lineNoCov">          0 :     }</span></a>
+<span class="lineNum">    1171 </span>            : 
+<span class="lineNum">    1172 </span><span class="lineNoCov">          0 :     void _handleChunk()</span>
+<span class="lineNum">    1173 </span>            :     {
+<span class="lineNum">    1174 </span>            :         const RpcParameterDescription desc{
+<span class="lineNum">    1175 </span>            :             METHOD_CHUNK,
+<span class="lineNum">    1176 </span>            :             &quot;Indicate sending of a binary chunk after this message&quot;, &quot;chunk&quot;,
+<a name="1177"><span class="lineNum">    1177 </span><span class="lineNoCov">          0 :             &quot;object with an ID of the chunk&quot;};</span></a>
+<span class="lineNum">    1178 </span>            : 
+<span class="lineNum">    1179 </span><span class="lineNoCov">          0 :         _handleRPC&lt;Chunk&gt;(desc, [&amp; req = _binaryRequests](const auto&amp; chunk) {</span>
+<span class="lineNum">    1180 </span><span class="lineNoCov">          0 :             req.setNextChunkID(chunk.id);</span>
+<span class="lineNum">    1181 </span><span class="lineNoCov">          0 :         });</span>
+<a name="1182"><span class="lineNum">    1182 </span><span class="lineNoCov">          0 :     }</span></a>
+<span class="lineNum">    1183 </span>            : 
+<span class="lineNum">    1184 </span><span class="lineNoCov">          0 :     void _handleSetModelTransferFunction()</span>
+<span class="lineNum">    1185 </span>            :     {
+<span class="lineNum">    1186 </span>            :         const RpcParameterDescription desc{
+<span class="lineNum">    1187 </span>            :             METHOD_SET_MODEL_TRANSFER_FUNCTION,
+<span class="lineNum">    1188 </span>            :             &quot;Set the transfer function of the given model&quot;, &quot;param&quot;,
+<span class="lineNum">    1189 </span><span class="lineNoCov">          0 :             &quot;model ID and the new transfer function&quot;};</span>
+<span class="lineNum">    1190 </span>            : 
+<a name="1191"><span class="lineNum">    1191 </span><span class="lineNoCov">          0 :         _bindModelEndpoint(METHOD_SET_MODEL_TRANSFER_FUNCTION,</span></a>
+<span class="lineNum">    1192 </span>            :                            &quot;transfer_function&quot;, [&amp;](const std::string&amp; json,
+<span class="lineNum">    1193 </span><span class="lineNoCov">          0 :                                                     ModelDescriptorPtr model) {</span>
+<span class="lineNum">    1194 </span>            :                                auto&amp; tf =
+<span class="lineNum">    1195 </span><span class="lineNoCov">          0 :                                    model-&gt;getModel().getTransferFunction();</span>
+<span class="lineNum">    1196 </span><span class="lineNoCov">          0 :                                if (!::from_json(tf, json))</span>
+<span class="lineNum">    1197 </span><span class="lineNoCov">          0 :                                    return false;</span>
+<span class="lineNum">    1198 </span>            : 
+<span class="lineNum">    1199 </span><span class="lineNoCov">          0 :                                tf.markModified();</span>
+<span class="lineNum">    1200 </span><span class="lineNoCov">          0 :                                return true;</span>
+<span class="lineNum">    1201 </span><span class="lineNoCov">          0 :                            });</span>
+<span class="lineNum">    1202 </span>            : 
+<span class="lineNum">    1203 </span>            :         _handleSchema(METHOD_SET_MODEL_TRANSFER_FUNCTION,
+<span class="lineNum">    1204 </span><span class="lineNoCov">          0 :                       buildJsonRpcSchemaRequest&lt;ModelTransferFunction, bool&gt;(</span>
+<span class="lineNum">    1205 </span><span class="lineNoCov">          0 :                           desc));</span>
+<a name="1206"><span class="lineNum">    1206 </span><span class="lineNoCov">          0 :     }</span></a>
+<span class="lineNum">    1207 </span>            : 
+<span class="lineNum">    1208 </span><span class="lineNoCov">          0 :     void _handleGetModelTransferFunction()</span>
+<span class="lineNum">    1209 </span>            :     {
+<span class="lineNum">    1210 </span>            :         const RpcParameterDescription desc{
+<span class="lineNum">    1211 </span>            :             METHOD_GET_MODEL_TRANSFER_FUNCTION,
+<span class="lineNum">    1212 </span>            :             &quot;Get the transfer function of the given model&quot;, &quot;id&quot;,
+<span class="lineNum">    1213 </span><span class="lineNoCov">          0 :             &quot;the model ID&quot;};</span>
+<a name="1214"><span class="lineNum">    1214 </span>            : </a>
+<span class="lineNum">    1215 </span><span class="lineNoCov">          0 :         _jsonrpcServer-&gt;bind&lt;ObjectID, TransferFunction&gt;(</span>
+<span class="lineNum">    1216 </span><span class="lineNoCov">          0 :             desc.methodName, [&amp; engine = _engine](const ObjectID&amp; id) {</span>
+<span class="lineNum">    1217 </span><span class="lineNoCov">          0 :                 auto model = engine.getScene().getModel(id.id);</span>
+<span class="lineNum">    1218 </span><span class="lineNoCov">          0 :                 if (!model)</span>
+<span class="lineNum">    1219 </span>            :                     throw rockets::jsonrpc::response_error(&quot;Model not found&quot;,
+<span class="lineNum">    1220 </span><span class="lineNoCov">          0 :                                                            MODEL_NOT_FOUND);</span>
+<span class="lineNum">    1221 </span><span class="lineNoCov">          0 :                 return model-&gt;getModel().getTransferFunction();</span>
+<span class="lineNum">    1222 </span><span class="lineNoCov">          0 :             });</span>
+<span class="lineNum">    1223 </span>            : 
+<span class="lineNum">    1224 </span>            :         _handleSchema(METHOD_GET_MODEL_TRANSFER_FUNCTION,
+<span class="lineNum">    1225 </span><span class="lineNoCov">          0 :                       buildJsonRpcSchemaRequest&lt;ObjectID, TransferFunction&gt;(</span>
+<span class="lineNum">    1226 </span><span class="lineNoCov">          0 :                           desc));</span>
+<a name="1227"><span class="lineNum">    1227 </span><span class="lineNoCov">          0 :     }</span></a>
+<span class="lineNum">    1228 </span>            : 
+<span class="lineNum">    1229 </span><span class="lineNoCov">          0 :     void _handleAddClipPlane()</span>
+<span class="lineNum">    1230 </span>            :     {
+<span class="lineNum">    1231 </span>            :         const RpcParameterDescription desc{
+<span class="lineNum">    1232 </span>            :             METHOD_ADD_CLIP_PLANE,
+<span class="lineNum">    1233 </span>            :             &quot;Add a clip plane; returns the clip plane descriptor&quot;, &quot;plane&quot;,
+<a name="1234"><span class="lineNum">    1234 </span><span class="lineNoCov">          0 :             &quot;An array of 4 floats&quot;};</span></a>
+<span class="lineNum">    1235 </span>            : 
+<span class="lineNum">    1236 </span><span class="lineNoCov">          0 :         _handleRPC&lt;Plane, ClipPlanePtr&gt;(desc, [&amp;](const Plane&amp; plane) {</span>
+<span class="lineNum">    1237 </span><span class="lineNoCov">          0 :             auto&amp; scene = _engine.getScene();</span>
+<span class="lineNum">    1238 </span><span class="lineNoCov">          0 :             auto clipPlane = scene.getClipPlane(scene.addClipPlane(plane));</span>
+<span class="lineNum">    1239 </span><span class="lineNoCov">          0 :             _rebroadcast(METHOD_UPDATE_CLIP_PLANE, to_json(clipPlane),</span>
+<span class="lineNum">    1240 </span><span class="lineNoCov">          0 :                          {_currentClientID});</span>
+<span class="lineNum">    1241 </span><span class="lineNoCov">          0 :             return clipPlane;</span>
+<span class="lineNum">    1242 </span><span class="lineNoCov">          0 :         });</span>
+<a name="1243"><span class="lineNum">    1243 </span><span class="lineNoCov">          0 :     }</span></a>
+<span class="lineNum">    1244 </span>            : 
+<span class="lineNum">    1245 </span><span class="lineNoCov">          0 :     void _handleGetClipPlanes()</span>
+<a name="1246"><span class="lineNum">    1246 </span>            :     {</a>
+<span class="lineNum">    1247 </span><span class="lineNoCov">          0 :         _handleRPC&lt;ClipPlanes&gt;({METHOD_GET_CLIP_PLANES, &quot;Get all clip planes&quot;},</span>
+<span class="lineNum">    1248 </span><span class="lineNoCov">          0 :                                [&amp; engine = _engine]() {</span>
+<span class="lineNum">    1249 </span><span class="lineNoCov">          0 :                                    auto&amp; scene = engine.getScene();</span>
+<span class="lineNum">    1250 </span><span class="lineNoCov">          0 :                                    return scene.getClipPlanes();</span>
+<span class="lineNum">    1251 </span><span class="lineNoCov">          0 :                                });</span>
+<a name="1252"><span class="lineNum">    1252 </span><span class="lineNoCov">          0 :     }</span></a>
+<span class="lineNum">    1253 </span>            : 
+<span class="lineNum">    1254 </span><span class="lineNoCov">          0 :     void _handleUpdateClipPlane()</span>
+<span class="lineNum">    1255 </span>            :     {
+<span class="lineNum">    1256 </span>            :         const RpcParameterDescription desc{
+<span class="lineNum">    1257 </span>            :             METHOD_UPDATE_CLIP_PLANE,
+<a name="1258"><span class="lineNum">    1258 </span>            :             &quot;Update a clip plane with the given coefficients&quot;, &quot;clip_plane&quot;,</a>
+<span class="lineNum">    1259 </span><span class="lineNoCov">          0 :             &quot;Plane id and equation&quot;};</span>
+<span class="lineNum">    1260 </span><span class="lineNoCov">          0 :         _handleRPC&lt;ClipPlane, bool&gt;(desc, [&amp;](const ClipPlane&amp; newPlane) {</span>
+<span class="lineNum">    1261 </span><span class="lineNoCov">          0 :             auto&amp; scene = _engine.getScene();</span>
+<span class="lineNum">    1262 </span><span class="lineNoCov">          0 :             if (auto plane = scene.getClipPlane(newPlane.getID()))</span>
+<span class="lineNum">    1263 </span>            :             {
+<span class="lineNum">    1264 </span><span class="lineNoCov">          0 :                 plane-&gt;setPlane(newPlane.getPlane());</span>
+<span class="lineNum">    1265 </span><span class="lineNoCov">          0 :                 _rebroadcast(METHOD_UPDATE_CLIP_PLANE, to_json(newPlane),</span>
+<span class="lineNum">    1266 </span><span class="lineNoCov">          0 :                              {_currentClientID});</span>
+<span class="lineNum">    1267 </span><span class="lineNoCov">          0 :                 _engine.triggerRender();</span>
+<span class="lineNum">    1268 </span><span class="lineNoCov">          0 :                 return true;</span>
+<span class="lineNum">    1269 </span>            :             }
+<span class="lineNum">    1270 </span><span class="lineNoCov">          0 :             return false;</span>
+<span class="lineNum">    1271 </span><span class="lineNoCov">          0 :         });</span>
+<a name="1272"><span class="lineNum">    1272 </span><span class="lineNoCov">          0 :     }</span></a>
+<span class="lineNum">    1273 </span>            : 
+<span class="lineNum">    1274 </span><span class="lineNoCov">          0 :     void _handleRemoveClipPlanes()</span>
+<span class="lineNum">    1275 </span>            :     {
+<span class="lineNum">    1276 </span>            :         const RpcParameterDescription desc{
+<span class="lineNum">    1277 </span>            :             METHOD_REMOVE_CLIP_PLANES,
+<a name="1278"><span class="lineNum">    1278 </span>            :             &quot;Remove clip planes from the scene given their gids&quot;, &quot;ids&quot;,</a>
+<span class="lineNum">    1279 </span><span class="lineNoCov">          0 :             &quot;Array of clip planes IDs&quot;};</span>
+<span class="lineNum">    1280 </span><span class="lineNoCov">          0 :         _handleRPC&lt;size_ts, bool&gt;(desc, [&amp;](const size_ts&amp; ids) {</span>
+<span class="lineNum">    1281 </span><span class="lineNoCov">          0 :             for (const auto id : ids)</span>
+<span class="lineNum">    1282 </span><span class="lineNoCov">          0 :                 _engine.getScene().removeClipPlane(id);</span>
+<span class="lineNum">    1283 </span><span class="lineNoCov">          0 :             _rebroadcast(METHOD_REMOVE_CLIP_PLANES, to_json(ids),</span>
+<span class="lineNum">    1284 </span><span class="lineNoCov">          0 :                          {_currentClientID});</span>
+<span class="lineNum">    1285 </span><span class="lineNoCov">          0 :             _engine.triggerRender();</span>
+<span class="lineNum">    1286 </span><span class="lineNoCov">          0 :             return true;</span>
+<span class="lineNum">    1287 </span><span class="lineNoCov">          0 :         });</span>
+<a name="1288"><span class="lineNum">    1288 </span><span class="lineNoCov">          0 :     }</span></a>
+<span class="lineNum">    1289 </span>            : 
+<span class="lineNum">    1290 </span><span class="lineNoCov">          0 :     void _handleAddModel()</span>
+<span class="lineNum">    1291 </span>            :     {
+<span class="lineNum">    1292 </span>            :         const RpcParameterDescription desc{
+<span class="lineNum">    1293 </span>            :             METHOD_ADD_MODEL,
+<span class="lineNum">    1294 </span>            :             &quot;Add model from remote path; returns model descriptor on success&quot;,
+<span class="lineNum">    1295 </span>            :             Execution::async, &quot;model_param&quot;,
+<a name="1296"><span class="lineNum">    1296 </span><span class="lineNoCov">          0 :             &quot;Model parameters including name, path, transformation, etc.&quot;};</span></a>
+<span class="lineNum">    1297 </span>            : 
+<span class="lineNum">    1298 </span><span class="lineNoCov">          0 :         auto func = [&amp;](const ModelParams&amp; modelParams, const auto) {</span>
+<span class="lineNum">    1299 </span><span class="lineNoCov">          0 :             return std::make_shared&lt;AddModelTask&gt;(modelParams, _engine);</span>
+<span class="lineNum">    1300 </span><span class="lineNoCov">          0 :         };</span>
+<span class="lineNum">    1301 </span><span class="lineNoCov">          0 :         _handleTask&lt;ModelParams, ModelDescriptorPtr&gt;(desc, func);</span>
+<a name="1302"><span class="lineNum">    1302 </span><span class="lineNoCov">          0 :     }</span></a>
+<span class="lineNum">    1303 </span>            : 
+<span class="lineNum">    1304 </span><span class="lineNoCov">          0 :     void _handleRemoveModel()</span>
+<span class="lineNum">    1305 </span>            :     {
+<span class="lineNum">    1306 </span>            :         const RpcParameterDescription desc{
+<span class="lineNum">    1307 </span>            :             METHOD_REMOVE_MODEL,
+<span class="lineNum">    1308 </span>            :             &quot;Remove the model(s) with the given ID(s) from the scene&quot;, &quot;ids&quot;,
+<a name="1309"><span class="lineNum">    1309 </span><span class="lineNoCov">          0 :             &quot;Array of model IDs&quot;};</span></a>
+<span class="lineNum">    1310 </span><span class="lineNoCov">          0 :         _handleRPC&lt;size_ts, bool&gt;(desc,</span>
+<span class="lineNum">    1311 </span><span class="lineNoCov">          0 :                                   [&amp; engine = _engine](const size_ts&amp; ids) {</span>
+<span class="lineNum">    1312 </span><span class="lineNoCov">          0 :                                       for (const auto id : ids)</span>
+<span class="lineNum">    1313 </span><span class="lineNoCov">          0 :                                           engine.getScene().removeModel(id);</span>
+<span class="lineNum">    1314 </span><span class="lineNoCov">          0 :                                       engine.getScene().markModified();</span>
+<span class="lineNum">    1315 </span><span class="lineNoCov">          0 :                                       engine.triggerRender();</span>
+<span class="lineNum">    1316 </span><span class="lineNoCov">          0 :                                       return true;</span>
+<span class="lineNum">    1317 </span><span class="lineNoCov">          0 :                                   });</span>
+<a name="1318"><span class="lineNum">    1318 </span><span class="lineNoCov">          0 :     }</span></a>
+<span class="lineNum">    1319 </span>            : 
+<span class="lineNum">    1320 </span><span class="lineNoCov">          0 :     void _handleUpdateModel()</span>
+<span class="lineNum">    1321 </span>            :     {
+<a name="1322"><span class="lineNum">    1322 </span><span class="lineNoCov">          0 :         _bindEndpoint(METHOD_UPDATE_MODEL,</span></a>
+<span class="lineNum">    1323 </span>            :                       [&amp; engine =
+<span class="lineNum">    1324 </span><span class="lineNoCov">          0 :                            _engine](const rockets::jsonrpc::Request&amp; request) {</span>
+<span class="lineNum">    1325 </span><span class="lineNoCov">          0 :                           ModelDescriptor newDesc;</span>
+<span class="lineNum">    1326 </span><span class="lineNoCov">          0 :                           if (!::from_json(newDesc, request.message))</span>
+<span class="lineNum">    1327 </span><span class="lineNoCov">          0 :                               return Response::invalidParams();</span>
+<span class="lineNum">    1328 </span>            : 
+<span class="lineNum">    1329 </span><span class="lineNoCov">          0 :                           auto&amp; scene = engine.getScene();</span>
+<span class="lineNum">    1330 </span><span class="lineNoCov">          0 :                           if (auto model = scene.getModel(newDesc.getModelID()))</span>
+<span class="lineNum">    1331 </span>            :                           {
+<span class="lineNum">    1332 </span><span class="lineNoCov">          0 :                               ::from_json(*model, request.message);</span>
+<span class="lineNum">    1333 </span><span class="lineNoCov">          0 :                               scene.markModified();</span>
+<span class="lineNum">    1334 </span><span class="lineNoCov">          0 :                               engine.triggerRender();</span>
+<span class="lineNum">    1335 </span><span class="lineNoCov">          0 :                               return Response{to_json(true)};</span>
+<span class="lineNum">    1336 </span>            :                           }
+<span class="lineNum">    1337 </span><span class="lineNoCov">          0 :                           return Response{to_json(false)};</span>
+<span class="lineNum">    1338 </span><span class="lineNoCov">          0 :                       });</span>
+<span class="lineNum">    1339 </span>            :         const RpcParameterDescription desc{
+<span class="lineNum">    1340 </span>            :             METHOD_UPDATE_MODEL, &quot;Update the model with the given values&quot;,
+<span class="lineNum">    1341 </span><span class="lineNoCov">          0 :             &quot;model&quot;, &quot;Model descriptor&quot;};</span>
+<span class="lineNum">    1342 </span>            :         _handleSchema(METHOD_UPDATE_MODEL,
+<span class="lineNum">    1343 </span><span class="lineNoCov">          0 :                       buildJsonRpcSchemaRequest&lt;ModelDescriptor, bool&gt;(desc));</span>
+<a name="1344"><span class="lineNum">    1344 </span><span class="lineNoCov">          0 :     }</span></a>
+<span class="lineNum">    1345 </span>            : 
+<span class="lineNum">    1346 </span><span class="lineNoCov">          0 :     void _handleGetModelProperties()</span>
+<span class="lineNum">    1347 </span>            :     {
+<span class="lineNum">    1348 </span>            :         const RpcParameterDescription desc{
+<span class="lineNum">    1349 </span>            :             METHOD_GET_MODEL_PROPERTIES,
+<span class="lineNum">    1350 </span><span class="lineNoCov">          0 :             &quot;Get the properties of the given model&quot;, &quot;id&quot;, &quot;the model ID&quot;};</span>
+<a name="1351"><span class="lineNum">    1351 </span>            : </a>
+<span class="lineNum">    1352 </span><span class="lineNoCov">          0 :         _jsonrpcServer-&gt;bind&lt;ObjectID, PropertyMap&gt;(</span>
+<span class="lineNum">    1353 </span><span class="lineNoCov">          0 :             desc.methodName, [&amp; engine = _engine](const ObjectID&amp; id) {</span>
+<span class="lineNum">    1354 </span><span class="lineNoCov">          0 :                 auto model = engine.getScene().getModel(id.id);</span>
+<span class="lineNum">    1355 </span><span class="lineNoCov">          0 :                 if (!model)</span>
+<span class="lineNum">    1356 </span>            :                     throw rockets::jsonrpc::response_error(&quot;Model not found&quot;,
+<span class="lineNum">    1357 </span><span class="lineNoCov">          0 :                                                            MODEL_NOT_FOUND);</span>
+<span class="lineNum">    1358 </span><span class="lineNoCov">          0 :                 return model-&gt;getProperties();</span>
+<span class="lineNum">    1359 </span><span class="lineNoCov">          0 :             });</span>
+<span class="lineNum">    1360 </span>            : 
+<span class="lineNum">    1361 </span>            :         _handleSchema(METHOD_GET_MODEL_PROPERTIES,
+<span class="lineNum">    1362 </span><span class="lineNoCov">          0 :                       buildJsonRpcSchemaRequest&lt;ObjectID, PropertyMap&gt;(desc));</span>
+<a name="1363"><span class="lineNum">    1363 </span><span class="lineNoCov">          0 :     }</span></a>
+<span class="lineNum">    1364 </span>            : 
+<span class="lineNum">    1365 </span><span class="lineNoCov">          0 :     void _handleSetModelProperties()</span>
+<span class="lineNum">    1366 </span>            :     {
+<span class="lineNum">    1367 </span>            :         const RpcParameterDescription desc{
+<span class="lineNum">    1368 </span>            :             METHOD_SET_MODEL_PROPERTIES,
+<span class="lineNum">    1369 </span>            :             &quot;Set the properties of the given model&quot;, &quot;param&quot;,
+<span class="lineNum">    1370 </span><span class="lineNoCov">          0 :             &quot;model ID and its properties&quot;};</span>
+<span class="lineNum">    1371 </span>            : 
+<a name="1372"><span class="lineNum">    1372 </span><span class="lineNoCov">          0 :         _bindModelEndpoint(METHOD_SET_MODEL_PROPERTIES, &quot;properties&quot;,</span></a>
+<span class="lineNum">    1373 </span>            :                            [&amp;](const std::string&amp; json,
+<span class="lineNum">    1374 </span><span class="lineNoCov">          0 :                                ModelDescriptorPtr model) {</span>
+<span class="lineNum">    1375 </span><span class="lineNoCov">          0 :                                auto props = model-&gt;getProperties();</span>
+<span class="lineNum">    1376 </span><span class="lineNoCov">          0 :                                props.merge(jsonToPropertyMap(json));</span>
+<span class="lineNum">    1377 </span><span class="lineNoCov">          0 :                                model-&gt;setProperties(props);</span>
+<span class="lineNum">    1378 </span><span class="lineNoCov">          0 :                                return true;</span>
+<span class="lineNum">    1379 </span><span class="lineNoCov">          0 :                            });</span>
+<span class="lineNum">    1380 </span>            : 
+<span class="lineNum">    1381 </span>            :         _handleSchema(METHOD_SET_MODEL_PROPERTIES,
+<span class="lineNum">    1382 </span><span class="lineNoCov">          0 :                       buildJsonRpcSchemaRequest&lt;ModelProperties, bool&gt;(desc));</span>
+<a name="1383"><span class="lineNum">    1383 </span><span class="lineNoCov">          0 :     }</span></a>
+<span class="lineNum">    1384 </span>            : 
+<span class="lineNum">    1385 </span><span class="lineNoCov">          0 :     void _handleModelPropertiesSchema()</span>
+<span class="lineNum">    1386 </span>            :     {
+<span class="lineNum">    1387 </span>            :         const RpcParameterDescription desc{
+<span class="lineNum">    1388 </span>            :             METHOD_MODEL_PROPERTIES_SCHEMA,
+<span class="lineNum">    1389 </span>            :             &quot;Get the property schema of the model&quot;, &quot;id&quot;,
+<span class="lineNum">    1390 </span><span class="lineNoCov">          0 :             &quot;ID of the model get its properties schema&quot;};</span>
+<span class="lineNum">    1391 </span>            : 
+<a name="1392"><span class="lineNum">    1392 </span><span class="lineNoCov">          0 :         _jsonrpcServer-&gt;bind(</span></a>
+<span class="lineNum">    1393 </span>            :             METHOD_MODEL_PROPERTIES_SCHEMA,
+<span class="lineNum">    1394 </span><span class="lineNoCov">          0 :             [&amp; engine = _engine](const auto&amp; request) {</span>
+<span class="lineNum">    1395 </span>            :                 ObjectID modelID;
+<span class="lineNum">    1396 </span><span class="lineNoCov">          0 :                 if (::from_json(modelID, request.message))</span>
+<span class="lineNum">    1397 </span>            :                 {
+<span class="lineNum">    1398 </span><span class="lineNoCov">          0 :                     auto model = engine.getScene().getModel(modelID.id);</span>
+<span class="lineNum">    1399 </span><span class="lineNoCov">          0 :                     if (!model)</span>
+<span class="lineNum">    1400 </span>            :                         return Response{Response::Error{&quot;Model not found&quot;,
+<span class="lineNum">    1401 </span><span class="lineNoCov">          0 :                                                         MODEL_NOT_FOUND}};</span>
+<span class="lineNum">    1402 </span>            : 
+<span class="lineNum">    1403 </span>            :                     return Response{buildJsonSchema(model-&gt;getProperties(),
+<span class="lineNum">    1404 </span><span class="lineNoCov">          0 :                                                     &quot;ModelProperties&quot;)};</span>
+<span class="lineNum">    1405 </span>            :                 }
+<span class="lineNum">    1406 </span><span class="lineNoCov">          0 :                 return Response::invalidParams();</span>
+<span class="lineNum">    1407 </span><span class="lineNoCov">          0 :             });</span>
+<span class="lineNum">    1408 </span>            : 
+<span class="lineNum">    1409 </span>            :         _handleSchema(METHOD_MODEL_PROPERTIES_SCHEMA,
+<span class="lineNum">    1410 </span><span class="lineNoCov">          0 :                       buildJsonRpcSchemaRequest&lt;ObjectID, std::string&gt;(desc));</span>
+<a name="1411"><span class="lineNum">    1411 </span><span class="lineNoCov">          0 :     }</span></a>
+<span class="lineNum">    1412 </span>            : 
+<span class="lineNum">    1413 </span><span class="lineNoCov">          0 :     void _handleGetInstances()</span>
+<span class="lineNum">    1414 </span>            :     {
+<span class="lineNum">    1415 </span>            :         const RpcParameterDescription desc{METHOD_GET_INSTANCES,
+<span class="lineNum">    1416 </span>            :                                            &quot;Get instances&quot;, &quot;id, range&quot;,
+<span class="lineNum">    1417 </span><span class="lineNoCov">          0 :                                            &quot;Model id and result range&quot;};</span>
+<a name="1418"><span class="lineNum">    1418 </span><span class="lineNoCov">          0 :         _handleRPC&lt;GetInstances, ModelInstances&gt;(</span></a>
+<span class="lineNum">    1419 </span>            :             desc,
+<span class="lineNum">    1420 </span><span class="lineNoCov">          0 :             [&amp; engine = _engine](const GetInstances&amp; param)-&gt;ModelInstances {</span>
+<span class="lineNum">    1421 </span><span class="lineNoCov">          0 :                 auto id = param.modelID;</span>
+<span class="lineNum">    1422 </span><span class="lineNoCov">          0 :                 auto&amp; scene = engine.getScene();</span>
+<span class="lineNum">    1423 </span><span class="lineNoCov">          0 :                 auto model = scene.getModel(id);</span>
+<span class="lineNum">    1424 </span><span class="lineNoCov">          0 :                 if (!model)</span>
+<span class="lineNum">    1425 </span>            :                     throw rockets::jsonrpc::response_error(&quot;Model not found&quot;,
+<span class="lineNum">    1426 </span><span class="lineNoCov">          0 :                                                            MODEL_NOT_FOUND);</span>
+<span class="lineNum">    1427 </span>            : 
+<span class="lineNum">    1428 </span><span class="lineNoCov">          0 :                 const auto&amp; instances = model-&gt;getInstances();</span>
+<span class="lineNum">    1429 </span>            :                 const Vector2ui range{std::min(param.resultRange.x(),
+<span class="lineNum">    1430 </span><span class="lineNoCov">          0 :                                                unsigned(instances.size())),</span>
+<span class="lineNum">    1431 </span>            :                                       std::min(param.resultRange.y(),
+<span class="lineNum">    1432 </span><span class="lineNoCov">          0 :                                                unsigned(instances.size()))};</span>
+<span class="lineNum">    1433 </span><span class="lineNoCov">          0 :                 return {instances.begin() + range.x(),</span>
+<span class="lineNum">    1434 </span><span class="lineNoCov">          0 :                         instances.begin() + range.y()};</span>
+<span class="lineNum">    1435 </span><span class="lineNoCov">          0 :             });</span>
+<a name="1436"><span class="lineNum">    1436 </span><span class="lineNoCov">          0 :     }</span></a>
+<span class="lineNum">    1437 </span>            : 
+<span class="lineNum">    1438 </span><span class="lineNoCov">          0 :     void _handleGetLoaders()</span>
+<span class="lineNum">    1439 </span>            :     {
+<a name="1440"><span class="lineNum">    1440 </span><span class="lineNoCov">          0 :         _handleRPC&lt;std::vector&lt;LoaderInfo&gt;&gt;(</span></a>
+<span class="lineNum">    1441 </span>            :             {METHOD_GET_LOADERS, &quot;Get all loaders&quot;},
+<span class="lineNum">    1442 </span><span class="lineNoCov">          0 :             [&amp;]() {</span>
+<span class="lineNum">    1443 </span><span class="lineNoCov">          0 :                 auto&amp; scene = _engine.getScene();</span>
+<span class="lineNum">    1444 </span><span class="lineNoCov">          0 :                 return scene.getLoaderRegistry().getLoaderInfos();</span>
+<span class="lineNum">    1445 </span><span class="lineNoCov">          0 :             });</span>
+<a name="1446"><span class="lineNum">    1446 </span><span class="lineNoCov">          0 :     }</span></a>
+<span class="lineNum">    1447 </span>            : 
+<span class="lineNum">    1448 </span><span class="lineNoCov">          0 :     void _handleUpdateInstance()</span>
+<span class="lineNum">    1449 </span>            :     {
+<a name="1450"><span class="lineNum">    1450 </span><span class="lineNoCov">          0 :         _bindEndpoint(</span></a>
+<span class="lineNum">    1451 </span>            :             METHOD_UPDATE_INSTANCE,
+<span class="lineNum">    1452 </span><span class="lineNoCov">          0 :             [&amp;](const rockets::jsonrpc::Request&amp; request) {</span>
+<span class="lineNum">    1453 </span><span class="lineNoCov">          0 :                 ModelInstance newDesc;</span>
+<span class="lineNum">    1454 </span><span class="lineNoCov">          0 :                 if (!::from_json(newDesc, request.message))</span>
+<span class="lineNum">    1455 </span><span class="lineNoCov">          0 :                     return Response::invalidParams();</span>
+<span class="lineNum">    1456 </span>            : 
+<span class="lineNum">    1457 </span><span class="lineNoCov">          0 :                 auto&amp; scene = _engine.getScene();</span>
+<span class="lineNum">    1458 </span><span class="lineNoCov">          0 :                 auto model = scene.getModel(newDesc.getModelID());</span>
+<span class="lineNum">    1459 </span><span class="lineNoCov">          0 :                 if (!model)</span>
+<span class="lineNum">    1460 </span>            :                     throw rockets::jsonrpc::response_error(&quot;Model not found&quot;,
+<span class="lineNum">    1461 </span><span class="lineNoCov">          0 :                                                            MODEL_NOT_FOUND);</span>
+<span class="lineNum">    1462 </span>            : 
+<span class="lineNum">    1463 </span><span class="lineNoCov">          0 :                 auto instance = model-&gt;getInstance(newDesc.getInstanceID());</span>
+<span class="lineNum">    1464 </span><span class="lineNoCov">          0 :                 if (!instance)</span>
+<span class="lineNum">    1465 </span>            :                     throw rockets::jsonrpc::response_error(&quot;Instance not found&quot;,
+<span class="lineNum">    1466 </span><span class="lineNoCov">          0 :                                                            INSTANCE_NOT_FOUND);</span>
+<span class="lineNum">    1467 </span>            : 
+<span class="lineNum">    1468 </span><span class="lineNoCov">          0 :                 ::from_json(*instance, request.message);</span>
+<span class="lineNum">    1469 </span><span class="lineNoCov">          0 :                 model-&gt;getModel().markInstancesDirty();</span>
+<span class="lineNum">    1470 </span><span class="lineNoCov">          0 :                 scene.markModified(false);</span>
+<span class="lineNum">    1471 </span>            : 
+<span class="lineNum">    1472 </span><span class="lineNoCov">          0 :                 _engine.triggerRender();</span>
+<span class="lineNum">    1473 </span><span class="lineNoCov">          0 :                 _rebroadcast(METHOD_UPDATE_INSTANCE, request.message,</span>
+<span class="lineNum">    1474 </span><span class="lineNoCov">          0 :                              {request.clientID});</span>
+<span class="lineNum">    1475 </span>            : 
+<span class="lineNum">    1476 </span><span class="lineNoCov">          0 :                 return Response{to_json(true)};</span>
+<span class="lineNum">    1477 </span><span class="lineNoCov">          0 :             });</span>
+<span class="lineNum">    1478 </span>            :         const RpcParameterDescription desc{
+<span class="lineNum">    1479 </span>            :             METHOD_UPDATE_INSTANCE, &quot;Update the instance with the given values&quot;,
+<span class="lineNum">    1480 </span><span class="lineNoCov">          0 :             &quot;model_instance&quot;, &quot;Model instance&quot;};</span>
+<span class="lineNum">    1481 </span>            :         _handleSchema(METHOD_UPDATE_INSTANCE,
+<span class="lineNum">    1482 </span><span class="lineNoCov">          0 :                       buildJsonRpcSchemaRequest&lt;ModelInstance, bool&gt;(desc));</span>
+<a name="1483"><span class="lineNum">    1483 </span><span class="lineNoCov">          0 :     }</span></a>
+<span class="lineNum">    1484 </span>            : 
+<span class="lineNum">    1485 </span><span class="lineNoCov">          0 :     void _handlePropertyObject(PropertyObject&amp; object,</span>
+<span class="lineNum">    1486 </span>            :                                const std::string&amp; endpoint,
+<span class="lineNum">    1487 </span>            :                                const std::string objectName)
+<span class="lineNum">    1488 </span>            :     {
+<span class="lineNum">    1489 </span><span class="lineNoCov">          0 :         const auto requestEndpoint = getRequestEndpointName(endpoint);</span>
+<a name="1490"><span class="lineNum">    1490 </span><span class="lineNoCov">          0 :         const auto notifyEndpoint = getNotificationEndpointName(endpoint);</span></a>
+<span class="lineNum">    1491 </span>            : 
+<span class="lineNum">    1492 </span><span class="lineNoCov">          0 :         _jsonrpcServer-&gt;bind&lt;PropertyMap&gt;(requestEndpoint, [&amp; object = object] {</span>
+<span class="lineNum">    1493 </span>            :             return object.getPropertyMap();
+<a name="1494"><span class="lineNum">    1494 </span><span class="lineNoCov">          0 :         });</span></a>
+<span class="lineNum">    1495 </span>            : 
+<span class="lineNum">    1496 </span><span class="lineNoCov">          0 :         _bindEndpoint(notifyEndpoint, [&amp;, notifyEndpoint](const auto&amp; request) {</span>
+<span class="lineNum">    1497 </span><span class="lineNoCov">          0 :             object.updateProperties(jsonToPropertyMap(request.message));</span>
+<span class="lineNum">    1498 </span><span class="lineNoCov">          0 :             _engine.triggerRender();</span>
+<span class="lineNum">    1499 </span><span class="lineNoCov">          0 :             this-&gt;_rebroadcast(notifyEndpoint, request.message,</span>
+<span class="lineNum">    1500 </span><span class="lineNoCov">          0 :                                {request.clientID});</span>
+<span class="lineNum">    1501 </span><span class="lineNoCov">          0 :             return Response{to_json(true)};</span>
+<span class="lineNum">    1502 </span><span class="lineNoCov">          0 :         });</span>
+<span class="lineNum">    1503 </span>            : 
+<span class="lineNum">    1504 </span><span class="lineNoCov">          0 :         std::vector&lt;std::pair&lt;std::string, PropertyMap&gt;&gt; props;</span>
+<span class="lineNum">    1505 </span><span class="lineNoCov">          0 :         for (const auto&amp; type : object.getTypes())</span>
+<span class="lineNum">    1506 </span><span class="lineNoCov">          0 :             props.push_back(std::make_pair(type, object.getPropertyMap(type)));</span>
+<span class="lineNum">    1507 </span>            : 
+<span class="lineNum">    1508 </span>            :         // get-&lt;object&gt;-params RPC schema
+<span class="lineNum">    1509 </span>            :         _handleSchema(requestEndpoint,
+<span class="lineNum">    1510 </span><span class="lineNoCov">          0 :                       buildJsonRpcSchemaRequestPropertyMaps(</span>
+<span class="lineNum">    1511 </span>            :                           {requestEndpoint,
+<span class="lineNum">    1512 </span>            :                            &quot;Get the params of the current &quot; + objectName},
+<span class="lineNum">    1513 </span><span class="lineNoCov">          0 :                           props));</span>
+<span class="lineNum">    1514 </span>            : 
+<span class="lineNum">    1515 </span>            :         // set-&lt;object&gt;-params RPC schema
+<span class="lineNum">    1516 </span>            :         const RpcParameterDescription desc{notifyEndpoint,
+<span class="lineNum">    1517 </span><span class="lineNoCov">          0 :                                            &quot;Set the params on the current &quot; +</span>
+<span class="lineNum">    1518 </span>            :                                                objectName,
+<span class="lineNum">    1519 </span>            :                                            &quot;params&quot;,
+<span class="lineNum">    1520 </span><span class="lineNoCov">          0 :                                            &quot;new &quot; + objectName + &quot; params&quot;};</span>
+<span class="lineNum">    1521 </span>            :         _handleSchema(notifyEndpoint,
+<span class="lineNum">    1522 </span><span class="lineNoCov">          0 :                       buildJsonRpcSchemaNotifyPropertyMaps(desc, props));</span>
+<span class="lineNum">    1523 </span>            : 
+<span class="lineNum">    1524 </span>            :         // &lt;object&gt;-params object schema
+<span class="lineNum">    1525 </span>            :         _handleSchema(endpoint,
+<span class="lineNum">    1526 </span><span class="lineNoCov">          0 :                       buildJsonSchema(props, hyphenatedToCamelCase(endpoint)));</span>
+<a name="1527"><span class="lineNum">    1527 </span><span class="lineNoCov">          0 :     }</span></a>
+<span class="lineNum">    1528 </span>            : 
+<span class="lineNum">    1529 </span><span class="lineNoCov">          0 :     void _handleLoadersSchema()</span>
+<span class="lineNum">    1530 </span>            :     {
+<span class="lineNum">    1531 </span>            :         const RpcDescription desc{LOADERS_SCHEMA,
+<span class="lineNum">    1532 </span><span class="lineNoCov">          0 :                                   &quot;Get the schema for all loaders&quot;};</span>
+<a name="1533"><span class="lineNum">    1533 </span>            : </a>
+<span class="lineNum">    1534 </span><span class="lineNoCov">          0 :         _bindEndpoint(</span>
+<span class="lineNum">    1535 </span><span class="lineNoCov">          0 :             LOADERS_SCHEMA, [&amp;](const rockets::jsonrpc::Request&amp; /*request*/) {</span>
+<span class="lineNum">    1536 </span>            :                 const auto&amp; loaderInfos =
+<span class="lineNum">    1537 </span><span class="lineNoCov">          0 :                     _engine.getScene().getLoaderRegistry().getLoaderInfos();</span>
+<span class="lineNum">    1538 </span>            : 
+<span class="lineNum">    1539 </span><span class="lineNoCov">          0 :                 std::vector&lt;std::pair&lt;std::string, PropertyMap&gt;&gt; props;</span>
+<span class="lineNum">    1540 </span><span class="lineNoCov">          0 :                 for (const LoaderInfo&amp; li : loaderInfos)</span>
+<span class="lineNum">    1541 </span><span class="lineNoCov">          0 :                     props.emplace_back(li.name, li.properties);</span>
 <span class="lineNum">    1542 </span>            : 
-<span class="lineNum">    1543 </span>            :         _handleSchema(
-<span class="lineNum">    1544 </span>            :             LOADERS_SCHEMA,
-<span class="lineNum">    1545 </span><span class="lineNoCov">          0 :             buildJsonRpcSchemaRequestReturnOnly&lt;std::vector&lt;PropertyMap&gt;&gt;(</span>
-<span class="lineNum">    1546 </span><span class="lineNoCov">          0 :                 desc));</span>
-<span class="lineNum">    1547 </span><span class="lineNoCov">          0 :     }</span>
-<span class="lineNum">    1548 </span>            : 
-<span class="lineNum">    1549 </span>            :     Engine&amp; _engine;
-<span class="lineNum">    1550 </span>            : 
-<span class="lineNum">    1551 </span>            :     std::unordered_map&lt;std::string, std::pair&lt;std::mutex, Throttle&gt;&gt; _throttle;
-<span class="lineNum">    1552 </span>            :     std::vector&lt;std::function&lt;void()&gt;&gt; _delayedNotifies;
-<span class="lineNum">    1553 </span>            :     std::mutex _delayedNotifiesMutex;
-<span class="lineNum">    1554 </span>            :     static constexpr uintptr_t NO_CURRENT_CLIENT{0};
-<span class="lineNum">    1555 </span>            :     uintptr_t _currentClientID{NO_CURRENT_CLIENT};
-<span class="lineNum">    1556 </span>            : 
-<span class="lineNum">    1557 </span>            : #ifdef BRAYNS_USE_LIBUV
-<span class="lineNum">    1558 </span>            :     std::shared_ptr&lt;uvw::AsyncHandle&gt; _processDelayedNotifies;
-<span class="lineNum">    1559 </span>            : #endif
-<span class="lineNum">    1560 </span>            : 
-<span class="lineNum">    1561 </span>            :     std::unordered_map&lt;std::string, std::string&gt; _schemas;
-<span class="lineNum">    1562 </span>            : 
-<span class="lineNum">    1563 </span>            :     ParametersManager&amp; _parametersManager;
-<span class="lineNum">    1564 </span>            : 
-<span class="lineNum">    1565 </span>            :     std::unique_ptr&lt;rockets::Server&gt; _rocketsServer;
-<span class="lineNum">    1566 </span>            :     using JsonRpcServer = rockets::jsonrpc::Server&lt;rockets::Server&gt;;
-<span class="lineNum">    1567 </span>            :     std::unique_ptr&lt;JsonRpcServer&gt; _jsonrpcServer;
-<span class="lineNum">    1568 </span>            : 
-<span class="lineNum">    1569 </span>            :     bool _manualProcessing{true};
-<span class="lineNum">    1570 </span>            : 
-<span class="lineNum">    1571 </span>            :     ImageGenerator _imageGenerator;
-<span class="lineNum">    1572 </span>            : 
-<span class="lineNum">    1573 </span>            :     Timer _timer;
-<span class="lineNum">    1574 </span>            :     float _leftover{0.f};
+<span class="lineNum">    1543 </span><span class="lineNoCov">          0 :                 return Response{buildJsonSchema(props, &quot;loaders&quot;)};</span>
+<span class="lineNum">    1544 </span><span class="lineNoCov">          0 :             });</span>
+<span class="lineNum">    1545 </span>            : 
+<span class="lineNum">    1546 </span>            :         _handleSchema(
+<span class="lineNum">    1547 </span>            :             LOADERS_SCHEMA,
+<span class="lineNum">    1548 </span><span class="lineNoCov">          0 :             buildJsonRpcSchemaRequestReturnOnly&lt;std::vector&lt;PropertyMap&gt;&gt;(</span>
+<span class="lineNum">    1549 </span><span class="lineNoCov">          0 :                 desc));</span>
+<span class="lineNum">    1550 </span><span class="lineNoCov">          0 :     }</span>
+<span class="lineNum">    1551 </span>            : 
+<span class="lineNum">    1552 </span>            :     Engine&amp; _engine;
+<span class="lineNum">    1553 </span>            : 
+<span class="lineNum">    1554 </span>            :     std::unordered_map&lt;std::string, std::pair&lt;std::mutex, Throttle&gt;&gt; _throttle;
+<span class="lineNum">    1555 </span>            :     std::vector&lt;std::function&lt;void()&gt;&gt; _delayedNotifies;
+<span class="lineNum">    1556 </span>            :     std::mutex _delayedNotifiesMutex;
+<span class="lineNum">    1557 </span>            :     static constexpr uintptr_t NO_CURRENT_CLIENT{0};
+<span class="lineNum">    1558 </span>            :     uintptr_t _currentClientID{NO_CURRENT_CLIENT};
+<span class="lineNum">    1559 </span>            : 
+<span class="lineNum">    1560 </span>            : #ifdef BRAYNS_USE_LIBUV
+<span class="lineNum">    1561 </span>            :     std::shared_ptr&lt;uvw::AsyncHandle&gt; _processDelayedNotifies;
+<span class="lineNum">    1562 </span>            : #endif
+<span class="lineNum">    1563 </span>            : 
+<span class="lineNum">    1564 </span>            :     std::unordered_map&lt;std::string, std::string&gt; _schemas;
+<span class="lineNum">    1565 </span>            : 
+<span class="lineNum">    1566 </span>            :     ParametersManager&amp; _parametersManager;
+<span class="lineNum">    1567 </span>            : 
+<span class="lineNum">    1568 </span>            :     std::unique_ptr&lt;rockets::Server&gt; _rocketsServer;
+<span class="lineNum">    1569 </span>            :     using JsonRpcServer = rockets::jsonrpc::Server&lt;rockets::Server&gt;;
+<span class="lineNum">    1570 </span>            :     std::unique_ptr&lt;JsonRpcServer&gt; _jsonrpcServer;
+<span class="lineNum">    1571 </span>            : 
+<span class="lineNum">    1572 </span>            :     bool _manualProcessing{true};
+<span class="lineNum">    1573 </span>            : 
+<span class="lineNum">    1574 </span>            :     ImageGenerator _imageGenerator;
 <span class="lineNum">    1575 </span>            : 
-<span class="lineNum">    1576 </span>            :     std::map&lt;TaskPtr, std::shared_ptr&lt;async::task&lt;void&gt;&gt;&gt; _tasks;
-<span class="lineNum">    1577 </span>            :     std::mutex _tasksMutex;
+<span class="lineNum">    1576 </span>            :     Timer _timer;
+<span class="lineNum">    1577 </span>            :     float _leftover{0.f};
 <span class="lineNum">    1578 </span>            : 
-<span class="lineNum">    1579 </span>            :     BinaryRequests _binaryRequests;
-<span class="lineNum">    1580 </span>            :     // need to delay those as we are initialized first, but other plugins might
-<span class="lineNum">    1581 </span>            :     // alter the list of renderers for instance
-<span class="lineNum">    1582 </span>            :     bool _endpointsRegistered{false};
-<a name="1583"><span class="lineNum">    1583 </span>            : };</a>
-<span class="lineNum">    1584 </span>            : 
-<span class="lineNum">    1585 </span><span class="lineNoCov">          0 : void RocketsPlugin::init(PluginAPI* api)</span>
-<span class="lineNum">    1586 </span>            : {
-<span class="lineNum">    1587 </span><span class="lineNoCov">          0 :     _impl = std::make_shared&lt;Impl&gt;(api);</span>
-<span class="lineNum">    1588 </span><span class="lineNoCov">          0 :     api-&gt;setActionInterface(_impl);</span>
-<a name="1589"><span class="lineNum">    1589 </span><span class="lineNoCov">          0 : }</span></a>
-<span class="lineNum">    1590 </span>            : 
-<span class="lineNum">    1591 </span><span class="lineNoCov">          0 : void RocketsPlugin::preRender()</span>
-<span class="lineNum">    1592 </span>            : {
-<a name="1593"><span class="lineNum">    1593 </span><span class="lineNoCov">          0 :     _impl-&gt;preRender();</span></a>
-<span class="lineNum">    1594 </span><span class="lineNoCov">          0 : }</span>
-<span class="lineNum">    1595 </span><span class="lineNoCov">          0 : void RocketsPlugin::postRender()</span>
-<span class="lineNum">    1596 </span>            : {
-<a name="1597"><span class="lineNum">    1597 </span><span class="lineNoCov">          0 :     _impl-&gt;postRender();</span></a>
-<span class="lineNum">    1598 </span><span class="lineNoCov">          0 : }</span>
-<span class="lineNum">    1599 </span><span class="lineCov">          6 : }</span>
+<span class="lineNum">    1579 </span>            :     std::map&lt;TaskPtr, std::shared_ptr&lt;async::task&lt;void&gt;&gt;&gt; _tasks;
+<span class="lineNum">    1580 </span>            :     std::mutex _tasksMutex;
+<span class="lineNum">    1581 </span>            : 
+<span class="lineNum">    1582 </span>            :     BinaryRequests _binaryRequests;
+<span class="lineNum">    1583 </span>            :     // need to delay those as we are initialized first, but other plugins might
+<span class="lineNum">    1584 </span>            :     // alter the list of renderers for instance
+<span class="lineNum">    1585 </span>            :     bool _endpointsRegistered{false};
+<a name="1586"><span class="lineNum">    1586 </span>            : };</a>
+<span class="lineNum">    1587 </span>            : 
+<span class="lineNum">    1588 </span><span class="lineNoCov">          0 : void RocketsPlugin::init(PluginAPI* api)</span>
+<span class="lineNum">    1589 </span>            : {
+<span class="lineNum">    1590 </span><span class="lineNoCov">          0 :     _impl = std::make_shared&lt;Impl&gt;(api);</span>
+<span class="lineNum">    1591 </span><span class="lineNoCov">          0 :     api-&gt;setActionInterface(_impl);</span>
+<a name="1592"><span class="lineNum">    1592 </span><span class="lineNoCov">          0 : }</span></a>
+<span class="lineNum">    1593 </span>            : 
+<span class="lineNum">    1594 </span><span class="lineNoCov">          0 : void RocketsPlugin::preRender()</span>
+<span class="lineNum">    1595 </span>            : {
+<a name="1596"><span class="lineNum">    1596 </span><span class="lineNoCov">          0 :     _impl-&gt;preRender();</span></a>
+<span class="lineNum">    1597 </span><span class="lineNoCov">          0 : }</span>
+<span class="lineNum">    1598 </span><span class="lineNoCov">          0 : void RocketsPlugin::postRender()</span>
+<span class="lineNum">    1599 </span>            : {
+<a name="1600"><span class="lineNum">    1600 </span><span class="lineNoCov">          0 :     _impl-&gt;postRender();</span></a>
+<span class="lineNum">    1601 </span><span class="lineNoCov">          0 : }</span>
+<span class="lineNum">    1602 </span><span class="lineCov">          6 : }</span>
 </pre>
       </td>
     </tr>
