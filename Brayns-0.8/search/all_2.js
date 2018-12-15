@@ -23,7 +23,6 @@ var searchData=
   ['braynsviewer',['braynsViewer',['../braynsViewer.html',1,'apps']]],
   ['brickedvolume',['BrickedVolume',['../classbrayns_1_1_bricked_volume.html',1,'brayns']]],
   ['builddefault',['buildDefault',['../classbrayns_1_1_scene.html#a13667f2db068b46530102270f3b0e0ce',1,'brayns::Scene']]],
-  ['buildenvironmentmap',['buildEnvironmentMap',['../classbrayns_1_1_scene.html#a9c1e23cc6a44d8ead66774d7846d3a39',1,'brayns::Scene']]],
   ['brayns',['Brayns',['../index.html',1,'']]],
   ['brayns_20user_20guide',['Brayns user guide',['../md__jenkins_03_workspace_oss.Brayns.documentation_build_type_Debug_platform_cscsviz-vm_sources_doc_UserGuide.html',1,'']]]
 ];

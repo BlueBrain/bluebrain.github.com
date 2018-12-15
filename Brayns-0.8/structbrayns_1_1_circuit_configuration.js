@@ -1,6 +1,5 @@
 var structbrayns_1_1_circuit_configuration =
 [
-    [ "boundingBox", "structbrayns_1_1_circuit_configuration.html#a5f81c2b4199c6efc47cfabece3909a54", null ],
     [ "density", "structbrayns_1_1_circuit_configuration.html#aacc9a9233d4dfee08029e61e8b67f736", null ],
     [ "endSimulationTime", "structbrayns_1_1_circuit_configuration.html#a7f9c3f4d8e86a548ecd1dc1c3234f351", null ],
     [ "meshFilenamePattern", "structbrayns_1_1_circuit_configuration.html#a2b37c8945d09eba422dea9896015a900", null ],

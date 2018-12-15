@@ -4,7 +4,7 @@ version: "0.8"
 major: 0
 minor: 8
 description: Hardware Agnostic Ray-Tracer
-updated: 13/12/18
+updated: 15/12/18
 homepage: https://github.com/BlueBrain/Brayns
 repository: https://github.com/BlueBrain/Brayns.git
 issuesurl: https://github.com/BlueBrain/Brayns/issues

@@ -1,7 +1,6 @@
 var classbrayns_1_1_geometry_parameters =
 [
     [ "GeometryParameters", "classbrayns_1_1_geometry_parameters.html#a96a7875f7d452448da35b193921725dc", null ],
-    [ "getCircuitBoundingBox", "classbrayns_1_1_geometry_parameters.html#a83782bbc10222c23110d44f2b16ddd60", null ],
     [ "getCircuitDensity", "classbrayns_1_1_geometry_parameters.html#a581ab4b7f519a26552b2855b4d35a808", null ],
     [ "getCircuitEndSimulationTime", "classbrayns_1_1_geometry_parameters.html#a81db92e082e45cf5f00eaf82bf46b2a6", null ],
     [ "getCircuitMeshFilenamePattern", "classbrayns_1_1_geometry_parameters.html#abfd90a72db2701ab4cc8fbef0906d2ea", null ],
@@ -30,7 +29,6 @@ var classbrayns_1_1_geometry_parameters =
     [ "getSaveCacheFile", "classbrayns_1_1_geometry_parameters.html#a714f28f1069bc6ea579b96300214f23f", null ],
     [ "parse", "classbrayns_1_1_geometry_parameters.html#a73ac7de16c966b974774c339df0cc881", null ],
     [ "print", "classbrayns_1_1_geometry_parameters.html#a8c92a909fef870a14d015a6e838f3f63", null ],
-    [ "setCircuitBoundingBox", "classbrayns_1_1_geometry_parameters.html#a9cc850f5425947acf7c18c729ef07b16", null ],
     [ "setCircuitUseSimulationModel", "classbrayns_1_1_geometry_parameters.html#a29c758e75fbd1708056cbb699b4b472c", null ],
     [ "setColorScheme", "classbrayns_1_1_geometry_parameters.html#ac3d56648894b68b774500ac58c4eb2c1", null ],
     [ "setRadiusCorrection", "classbrayns_1_1_geometry_parameters.html#a6bbfa8e688f9395347b8d3d535b93834", null ],

@@ -14,7 +14,7 @@ var structbrayns_1_1_property =
       [ "Vec4d", "structbrayns_1_1_property.html#a59382bc3b0f82196f14346c5410f89cfa6344916c470b2c1e9fb91cbdff70b601", null ]
     ] ],
     [ "Property", "structbrayns_1_1_property.html#acb1b05d2152124f5d1d5643ea0289910", null ],
-    [ "Property", "structbrayns_1_1_property.html#ac8555cc4443d6f8819eef3499eb545c2", null ],
+    [ "Property", "structbrayns_1_1_property.html#af9d9f33fb11ac82a0d4714a603fdb6b6", null ],
     [ "Property", "structbrayns_1_1_property.html#a80a6714d1c783c0b6e34a916a24f688e", null ],
     [ "assertValidEnumType", "structbrayns_1_1_property.html#a5f2cd0b20d8aa9e6f64de4b6f46139a4", null ],
     [ "assertValidType", "structbrayns_1_1_property.html#a7a49551dc1fd6584528e316e8aeaf8dc", null ],
