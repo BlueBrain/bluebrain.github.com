@@ -19,7 +19,6 @@ var annotated_dup =
       [ "CADiffusionSimulationHandler", "classbrayns_1_1_c_a_diffusion_simulation_handler.html", "classbrayns_1_1_c_a_diffusion_simulation_handler" ],
       [ "Camera", "classbrayns_1_1_camera.html", "classbrayns_1_1_camera" ],
       [ "Chunk", "structbrayns_1_1_chunk.html", "structbrayns_1_1_chunk" ],
-      [ "CircuitConfiguration", "structbrayns_1_1_circuit_configuration.html", "structbrayns_1_1_circuit_configuration" ],
       [ "ClipPlane", "classbrayns_1_1_clip_plane.html", "classbrayns_1_1_clip_plane" ],
       [ "ColorMap", "structbrayns_1_1_color_map.html", "structbrayns_1_1_color_map" ],
       [ "DeferredTask", "classbrayns_1_1_deferred_task.html", "classbrayns_1_1_deferred_task" ],

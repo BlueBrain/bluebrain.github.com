@@ -52,7 +52,6 @@ var hierarchy =
     [ "brayns::Brayns", "classbrayns_1_1_brayns.html", null ],
     [ "brayns::CADiffusionSimulationHandler", "classbrayns_1_1_c_a_diffusion_simulation_handler.html", null ],
     [ "brayns::Chunk", "structbrayns_1_1_chunk.html", null ],
-    [ "brayns::CircuitConfiguration", "structbrayns_1_1_circuit_configuration.html", null ],
     [ "brayns::ColorMap", "structbrayns_1_1_color_map.html", null ],
     [ "brayns::Engine", "classbrayns_1_1_engine.html", null ],
     [ "brayns::ExtensionPlugin", "classbrayns_1_1_extension_plugin.html", null ],

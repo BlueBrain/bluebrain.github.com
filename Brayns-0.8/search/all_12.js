@@ -34,8 +34,6 @@ var searchData=
   ['setprogressfunc',['setProgressFunc',['../classbrayns_1_1_task_functor.html#ad8283ae7984fbd41e7d5e61e57238ad3',1,'brayns::TaskFunctor']]],
   ['setproperties',['setProperties',['../classbrayns_1_1_property_object.html#a9d0d4a64b6c56f5e6391bc7ff9d7097b',1,'brayns::PropertyObject::setProperties(const PropertyMap &amp;properties)'],['../classbrayns_1_1_property_object.html#ae47c1492190d22b89eeecce803eed03c',1,'brayns::PropertyObject::setProperties(const std::string &amp;type, const PropertyMap &amp;properties)']]],
   ['setproperty',['setProperty',['../classbrayns_1_1_property_map.html#a9ec43c008e2aa8f72aba98136559bea2',1,'brayns::PropertyMap']]],
-  ['setradiuscorrection',['setRadiusCorrection',['../classbrayns_1_1_geometry_parameters.html#a6bbfa8e688f9395347b8d3d535b93834',1,'brayns::GeometryParameters']]],
-  ['setradiusmultiplier',['setRadiusMultiplier',['../classbrayns_1_1_geometry_parameters.html#a39e145c39048b4ae3c8be29999bb89a4',1,'brayns::GeometryParameters']]],
   ['setsimulationhandler',['setSimulationHandler',['../classbrayns_1_1_model.html#af56361ad6a7852418d44edc0a0064c95',1,'brayns::Model']]],
   ['settarget',['setTarget',['../classbrayns_1_1_camera.html#af878100b0ef7dc7d9eec47918073be89',1,'brayns::Camera']]],
   ['settitle',['setTitle',['../classbrayns_1_1_base_window.html#a8f917d5d11eb4d7dc70cb49b6d808920',1,'brayns::BaseWindow::setTitle(const char *title)'],['../classbrayns_1_1_base_window.html#a3e56ecff8226f4585ea9cf0b79e1a198',1,'brayns::BaseWindow::setTitle(const std::string &amp;title)']]],

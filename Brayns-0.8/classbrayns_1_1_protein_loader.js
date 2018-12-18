@@ -1,6 +1,6 @@
 var classbrayns_1_1_protein_loader =
 [
-    [ "ProteinLoader", "classbrayns_1_1_protein_loader.html#a450889eca6387fdd726b8bac61b9c991", null ],
+    [ "ProteinLoader", "classbrayns_1_1_protein_loader.html#a812cb100f7abed290424a58f85993880", null ],
     [ "getName", "classbrayns_1_1_protein_loader.html#ae1a871c4be039490de994979cff8a2af", null ],
     [ "getProperties", "classbrayns_1_1_protein_loader.html#a00440e65f4bfe14881564b502a98215c", null ],
     [ "getSupportedExtensions", "classbrayns_1_1_protein_loader.html#a1efcc42fee259a9289deb39d6c5cdcc5", null ],
