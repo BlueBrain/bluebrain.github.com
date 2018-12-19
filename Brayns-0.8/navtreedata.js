@@ -30,8 +30,8 @@ var NAVTREEINDEX =
 ".html",
 "classbrayns_1_1_base_window.html#a2424df86e37a3ecc9032511153b27855",
 "classbrayns_1_1_material.html#a168296ae98fbdce27948c5f28b8e5725",
-"classbrayns_1_1_property_object.html#aa734499cbc7b731d3067febc6404c547",
-"classbrayns_1_1_volume_parameters.html#a1452a93f050be72357eaca1098a4db25",
+"classbrayns_1_1_property_object.html#ae47c1492190d22b89eeecce803eed03c",
+"classbrayns_1_1_volume_parameters.html#a304f204959c5d9f67f8a2890596b9988",
 "structbrayns_1_1_s_d_f_geometry.html#ae90b4b03a84ccfc1b0ac5e2c778e1df6"
 ];
 

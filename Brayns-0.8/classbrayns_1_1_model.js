@@ -34,7 +34,6 @@ var classbrayns_1_1_model =
     [ "getTransferFunction", "classbrayns_1_1_model.html#aadac31108c958c76147c1b69041c124c", null ],
     [ "getTrianglesMeshes", "classbrayns_1_1_model.html#a72aaed48d0f52416cb3576b3f5958f9f", null ],
     [ "getTrianglesMeshes", "classbrayns_1_1_model.html#a98411416e2520f56676805606102f46b", null ],
-    [ "getUseSimulationModel", "classbrayns_1_1_model.html#a549f7385b33b53feea188d0b131f451d", null ],
     [ "getVolumes", "classbrayns_1_1_model.html#acf09a4eb31a1915aee68579fae0a8287", null ],
     [ "isDirty", "classbrayns_1_1_model.html#a4680a60790707b4fd9b843aa4b961ccf", null ],
     [ "isVolumesDirty", "classbrayns_1_1_model.html#a42c4f4aad645034c50140885baad3803", null ],
@@ -48,7 +47,6 @@ var classbrayns_1_1_model =
     [ "setSimulationHandler", "classbrayns_1_1_model.html#af56361ad6a7852418d44edc0a0064c95", null ],
     [ "updateSDFGeometryNeighbours", "classbrayns_1_1_model.html#ad81368b78bef55126b476fc3bc439557", null ],
     [ "updateSizeInBytes", "classbrayns_1_1_model.html#ab864588ed9d5fb77b39712f02497b58d", null ],
-    [ "useSimulationModel", "classbrayns_1_1_model.html#aeef10f12ac9d2c8746ed8be021711327", null ],
     [ "_bounds", "classbrayns_1_1_model.html#a9c1dff2dd9bf330e372b194ded005dd5", null ],
     [ "_bvhFlags", "classbrayns_1_1_model.html#a3c42ccdb6c33d7b54de8a1a914e2c6b8", null ],
     [ "_cones", "classbrayns_1_1_model.html#ae4c98c033b9009fa1ca0cfedd7e9d5da", null ],
@@ -74,7 +72,6 @@ var classbrayns_1_1_model =
     [ "_trianglesMeshes", "classbrayns_1_1_model.html#a69c8dc6e04668d81ef7adf289c64fb67", null ],
     [ "_trianglesMeshesBounds", "classbrayns_1_1_model.html#a9958e3c5f56a92b00f7613c3ec36b9e1", null ],
     [ "_trianglesMeshesDirty", "classbrayns_1_1_model.html#a8b8f1db5ede9add3033b479d7934c740", null ],
-    [ "_useSimulationModel", "classbrayns_1_1_model.html#a9648511d583385a6ecc14d1d56eba18e", null ],
     [ "_volumes", "classbrayns_1_1_model.html#aae7e2fea9dfc202dd45e736c20338a45", null ],
     [ "_volumesBounds", "classbrayns_1_1_model.html#a170dc301060b848dc6853225ea474671", null ],
     [ "_volumesDirty", "classbrayns_1_1_model.html#add906bd5531d93ecd23be10859cc5a39", null ]
