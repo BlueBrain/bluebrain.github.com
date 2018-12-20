@@ -11,7 +11,6 @@ var classbrayns_1_1_camera =
     [ "reset", "classbrayns_1_1_camera.html#a0378b8d85d011a5b524746f4e23e34e6", null ],
     [ "set", "classbrayns_1_1_camera.html#a54be005b2f472fe6e8d20c24e96f16fd", null ],
     [ "setBufferTarget", "classbrayns_1_1_camera.html#a4dc3329ab7cbc53a6dfe68f20483b16c", null ],
-    [ "setEnvironmentMap", "classbrayns_1_1_camera.html#ab15da040b0164a18d30faed9740237b5", null ],
     [ "setInitialState", "classbrayns_1_1_camera.html#afb7d1dc4e2fdbb7ddd580805e4923bb4", null ],
     [ "setOrientation", "classbrayns_1_1_camera.html#a7298e558e81b36b6b1b60661ee258973", null ],
     [ "setPosition", "classbrayns_1_1_camera.html#a6e4b5133301f4956bc2a8f63bdac63fb", null ],

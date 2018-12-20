@@ -72,7 +72,6 @@ var hierarchy =
     [ "brayns::LoaderProgress", "classbrayns_1_1_loader_progress.html", null ],
     [ "brayns::LoaderRegistry", "classbrayns_1_1_loader_registry.html", null ],
     [ "brayns::Model", "classbrayns_1_1_model.html", null ],
-    [ "brayns::Model::SDFGeometryData", "structbrayns_1_1_model_1_1_s_d_f_geometry_data.html", null ],
     [ "brayns::ParametersManager", "classbrayns_1_1_parameters_manager.html", null ],
     [ "brayns::PluginAPI", "classbrayns_1_1_plugin_a_p_i.html", null ],
     [ "brayns::Property", "structbrayns_1_1_property.html", null ],
@@ -85,6 +84,7 @@ var hierarchy =
       [ "brayns::RpcParameterDescription", "structbrayns_1_1_rpc_parameter_description.html", null ]
     ] ],
     [ "brayns::SDFGeometry", "structbrayns_1_1_s_d_f_geometry.html", null ],
+    [ "brayns::SDFGeometryData", "structbrayns_1_1_s_d_f_geometry_data.html", null ],
     [ "brayns::ShortcutInformation", "structbrayns_1_1_shortcut_information.html", null ],
     [ "brayns::Streamline", "structbrayns_1_1_streamline.html", null ],
     [ "brayns::StreamlinesData", "structbrayns_1_1_streamlines_data.html", null ],

@@ -32,17 +32,17 @@
             <td></td>
             <td class="headerItem">Lines:</td>
             <td class="headerCovTableEntry">1</td>
-            <td class="headerCovTableEntry">7</td>
-            <td class="headerCovTableEntryLo">14.3 %</td>
+            <td class="headerCovTableEntry">30</td>
+            <td class="headerCovTableEntryLo">3.3 %</td>
           </tr>
           <tr>
             <td class="headerItem">Date:</td>
-            <td class="headerValue">2018-12-19 01:22:36</td>
+            <td class="headerValue">2018-12-20 01:21:29</td>
             <td></td>
             <td class="headerItem">Functions:</td>
             <td class="headerCovTableEntry">2</td>
-            <td class="headerCovTableEntry">4</td>
-            <td class="headerCovTableEntryMed">50.0 %</td>
+            <td class="headerCovTableEntry">5</td>
+            <td class="headerCovTableEntryMed">40.0 %</td>
           </tr>
           <tr><td><img src="../glass.png" width=3 height=3 alt=""></td></tr>
         </table>
@@ -82,43 +82,70 @@
 <span class="lineNum">      20 </span>            : 
 <span class="lineNum">      21 </span>            : #include &quot;EngineFactory.h&quot;
 <span class="lineNum">      22 </span>            : 
-<span class="lineNum">      23 </span>            : #include &lt;brayns/common/engine/Engine.h&gt;
-<span class="lineNum">      24 </span>            : #include &lt;brayns/common/log.h&gt;
-<span class="lineNum">      25 </span>            : 
-<span class="lineNum">      26 </span>            : #if (BRAYNS_USE_OSPRAY)
-<span class="lineNum">      27 </span>            : #include &lt;engines/ospray/OSPRayEngine.h&gt;
-<span class="lineNum">      28 </span>            : #endif
-<span class="lineNum">      29 </span>            : 
-<a name="30"><span class="lineNum">      30 </span>            : namespace brayns</a>
-<span class="lineNum">      31 </span>            : {
-<span class="lineNum">      32 </span><span class="lineNoCov">          0 : EngineFactory::EngineFactory(const int argc, const char** argv,</span>
-<span class="lineNum">      33 </span><span class="lineNoCov">          0 :                              ParametersManager&amp; parametersManager)</span>
-<span class="lineNum">      34 </span>            :     : _argc{argc}
-<span class="lineNum">      35 </span>            :     , _argv{argv}
-<span class="lineNum">      36 </span><span class="lineNoCov">          0 :     , _parametersManager{parametersManager}</span>
-<span class="lineNum">      37 </span>            : {
-<span class="lineNum">      38 </span>            :     BRAYNS_UNUSED_VAR(_argc);
-<span class="lineNum">      39 </span>            :     BRAYNS_UNUSED_VAR(_argv);
-<span class="lineNum">      40 </span>            :     BRAYNS_UNUSED_VAR(_parametersManager);
-<a name="41"><span class="lineNum">      41 </span><span class="lineNoCov">          0 : }</span></a>
-<span class="lineNum">      42 </span>            : 
-<span class="lineNum">      43 </span><span class="lineNoCov">          0 : std::unique_ptr&lt;Engine&gt; EngineFactory::create(</span>
-<span class="lineNum">      44 </span>            :     const EngineType name BRAYNS_UNUSED)
-<span class="lineNum">      45 </span>            : {
-<span class="lineNum">      46 </span>            :     try
-<span class="lineNum">      47 </span>            :     {
-<span class="lineNum">      48 </span>            : #if (BRAYNS_USE_OSPRAY)
-<span class="lineNum">      49 </span>            :         if (name == EngineType::ospray || name == EngineType::optix)
-<span class="lineNum">      50 </span>            :             return std::make_unique&lt;OSPRayEngine&gt;(_parametersManager);
-<span class="lineNum">      51 </span>            : #endif
-<span class="lineNum">      52 </span>            :     }
-<span class="lineNum">      53 </span>            :     catch (const std::runtime_error&amp; e)
-<span class="lineNum">      54 </span>            :     {
-<span class="lineNum">      55 </span>            :         BRAYNS_ERROR &lt;&lt; &quot;Engine creation failed: &quot; &lt;&lt; e.what() &lt;&lt; std::endl;
-<span class="lineNum">      56 </span>            :     }
-<a name="57"><span class="lineNum">      57 </span><span class="lineNoCov">          0 :     return std::unique_ptr&lt;Engine&gt;();</span></a>
-<span class="lineNum">      58 </span>            : }
-<span class="lineNum">      59 </span><span class="lineCov">          6 : } // namespace brayns</span>
+<span class="lineNum">      23 </span>            : #include &lt;brayns/common/log.h&gt;
+<span class="lineNum">      24 </span>            : #include &lt;brayns/engine/Engine.h&gt;
+<span class="lineNum">      25 </span>            : #include &lt;brayns/parameters/ParametersManager.h&gt;
+<span class="lineNum">      26 </span>            : 
+<span class="lineNum">      27 </span>            : #if (BRAYNS_USE_OSPRAY)
+<span class="lineNum">      28 </span>            : #include &lt;engines/ospray/OSPRayEngine.h&gt;
+<span class="lineNum">      29 </span>            : #endif
+<span class="lineNum">      30 </span>            : 
+<span class="lineNum">      31 </span>            : namespace brayns
+<span class="lineNum">      32 </span>            : {
+<a name="33"><span class="lineNum">      33 </span>            : typedef Engine* (*CreateFuncType)(int, const char**, ParametersManager&amp;);</a>
+<span class="lineNum">      34 </span>            : 
+<span class="lineNum">      35 </span><span class="lineNoCov">          0 : EngineFactory::EngineFactory(const int argc, const char** argv,</span>
+<span class="lineNum">      36 </span><span class="lineNoCov">          0 :                              ParametersManager&amp; parametersManager)</span>
+<span class="lineNum">      37 </span>            :     : _argc{argc}
+<span class="lineNum">      38 </span>            :     , _argv{argv}
+<span class="lineNum">      39 </span><span class="lineNoCov">          0 :     , _parametersManager{parametersManager}</span>
+<span class="lineNum">      40 </span>            : {
+<span class="lineNum">      41 </span><span class="lineNoCov">          0 :     auto name = _parametersManager.getApplicationParameters().getEngine();</span>
+<span class="lineNum">      42 </span>            :     // TODO: remove after braynsOptixEngine is available
+<span class="lineNum">      43 </span><span class="lineNoCov">          0 :     if (name == &quot;optix&quot;)</span>
+<span class="lineNum">      44 </span><span class="lineNoCov">          0 :         name = &quot;braynsOSPRayEngine&quot;;</span>
+<span class="lineNum">      45 </span><span class="lineNoCov">          0 :     _loadEngine(name, _argc, _argv);</span>
+<a name="46"><span class="lineNum">      46 </span><span class="lineNoCov">          0 : }</span></a>
+<span class="lineNum">      47 </span>            : 
+<span class="lineNum">      48 </span><span class="lineNoCov">          0 : Engine* EngineFactory::create(const std::string&amp; name)</span>
+<span class="lineNum">      49 </span>            : {
+<span class="lineNum">      50 </span><span class="lineNoCov">          0 :     if (_engines.count(name) == 0)</span>
+<span class="lineNum">      51 </span><span class="lineNoCov">          0 :         return _loadEngine(name.c_str(), _argc, _argv);</span>
+<span class="lineNum">      52 </span><span class="lineNoCov">          0 :     return _engines[name].get();</span>
+<a name="53"><span class="lineNum">      53 </span>            : }</a>
+<span class="lineNum">      54 </span>            : 
+<span class="lineNum">      55 </span><span class="lineNoCov">          0 : Engine* EngineFactory::_loadEngine(const std::string&amp; name, int argc,</span>
+<span class="lineNum">      56 </span>            :                                    const char* argv[])
+<span class="lineNum">      57 </span>            : {
+<span class="lineNum">      58 </span>            :     try
+<span class="lineNum">      59 </span>            :     {
+<span class="lineNum">      60 </span><span class="lineNoCov">          0 :         DynamicLib library(name);</span>
+<span class="lineNum">      61 </span><span class="lineNoCov">          0 :         auto createSym = library.getSymbolAddress(&quot;brayns_engine_create&quot;);</span>
+<span class="lineNum">      62 </span><span class="lineNoCov">          0 :         if (!createSym)</span>
+<span class="lineNum">      63 </span>            :         {
+<span class="lineNum">      64 </span>            :             throw std::runtime_error(
+<span class="lineNum">      65 </span><span class="lineNoCov">          0 :                 std::string(&quot;Plugin '&quot;) + name +</span>
+<span class="lineNum">      66 </span><span class="lineNoCov">          0 :                 &quot;' is not a valid Brayns engine; missing &quot; +</span>
+<span class="lineNum">      67 </span><span class="lineNoCov">          0 :                 &quot;brayns_engine_create()&quot;);</span>
+<span class="lineNum">      68 </span>            :         }
+<span class="lineNum">      69 </span>            : 
+<span class="lineNum">      70 </span><span class="lineNoCov">          0 :         CreateFuncType createFunc = (CreateFuncType)createSym;</span>
+<span class="lineNum">      71 </span><span class="lineNoCov">          0 :         if (auto plugin = createFunc(argc, argv, _parametersManager))</span>
+<span class="lineNum">      72 </span>            :         {
+<span class="lineNum">      73 </span><span class="lineNoCov">          0 :             _engines.emplace(name, std::unique_ptr&lt;Engine&gt;(plugin));</span>
+<span class="lineNum">      74 </span><span class="lineNoCov">          0 :             _libs.push_back(std::move(library));</span>
+<span class="lineNum">      75 </span><span class="lineNoCov">          0 :             BRAYNS_INFO &lt;&lt; &quot;Loaded engine '&quot; &lt;&lt; name &lt;&lt; &quot;'&quot; &lt;&lt; std::endl;</span>
+<span class="lineNum">      76 </span><span class="lineNoCov">          0 :             return plugin;</span>
+<span class="lineNum">      77 </span>            :         }
+<span class="lineNum">      78 </span>            :     }
+<span class="lineNum">      79 </span><span class="lineNoCov">          0 :     catch (const std::runtime_error&amp; exc)</span>
+<span class="lineNum">      80 </span>            :     {
+<span class="lineNum">      81 </span><span class="lineNoCov">          0 :         BRAYNS_ERROR &lt;&lt; &quot;Failed to load engine &quot; &lt;&lt; std::quoted(name) &lt;&lt; &quot;: &quot;</span>
+<span class="lineNum">      82 </span><span class="lineNoCov">          0 :                      &lt;&lt; exc.what() &lt;&lt; std::endl;</span>
+<span class="lineNum">      83 </span>            :     }
+<a name="84"><span class="lineNum">      84 </span><span class="lineNoCov">          0 :     return nullptr;</span></a>
+<span class="lineNum">      85 </span>            : }
+<span class="lineNum">      86 </span><span class="lineCov">          6 : }</span>
 </pre>
       </td>
     </tr>

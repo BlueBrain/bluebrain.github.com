@@ -1,6 +1,5 @@
 var classbrayns_1_1_model =
 [
-    [ "SDFGeometryData", "structbrayns_1_1_model_1_1_s_d_f_geometry_data.html", "structbrayns_1_1_model_1_1_s_d_f_geometry_data" ],
     [ "Model", "classbrayns_1_1_model.html#a27c90fb2cc6a02be48a9dec2a7fc447b", null ],
     [ "~Model", "classbrayns_1_1_model.html#a0abda0575ce63dda8b3b878a51744fe8", null ],
     [ "_updateBounds", "classbrayns_1_1_model.html#a7439290f54998675ec0753b65d47026e", null ],
@@ -12,7 +11,6 @@ var classbrayns_1_1_model =
     [ "addVolume", "classbrayns_1_1_model.html#a0cf2f3bd716ddcb9e68701b9b9ce41b0", null ],
     [ "buildBoundingBox", "classbrayns_1_1_model.html#a8d35f831b0bdf4dc8abfc8fe9cf852a6", null ],
     [ "commitGeometry", "classbrayns_1_1_model.html#a220cec976ed134aa6e5b93bef3bea4be", null ],
-    [ "commitTransferFunction", "classbrayns_1_1_model.html#a4cb4f34d0217d9d897019ac97e07efb0", null ],
     [ "createBrickedVolume", "classbrayns_1_1_model.html#a71564e34f8fd96859bf99d1f1934e3b9", null ],
     [ "createMaterial", "classbrayns_1_1_model.html#a0156b8880c15bda28f3610fc36947f7c", null ],
     [ "createMissingMaterials", "classbrayns_1_1_model.html#a560bb63289ddf5e2aa4e8bf717aff7bf", null ],
@@ -26,10 +24,12 @@ var classbrayns_1_1_model =
     [ "getCylinders", "classbrayns_1_1_model.html#a661a78b3060a811b6f53ddde23085430", null ],
     [ "getMaterial", "classbrayns_1_1_model.html#a857aaf14d279e72aa3f1c2d640b70847", null ],
     [ "getMaterials", "classbrayns_1_1_model.html#a42395676f75406327be584ce89e1f296", null ],
+    [ "getSDFGeometryData", "classbrayns_1_1_model.html#a9a0810aa9ea857a7690d5d05e4851d71", null ],
     [ "getSimulationHandler", "classbrayns_1_1_model.html#a6e8a4711e1287dcb9bc67e641fa2013d", null ],
     [ "getSizeInBytes", "classbrayns_1_1_model.html#a029cbe6154b1ca5903486132c414cfe5", null ],
     [ "getSpheres", "classbrayns_1_1_model.html#ae7035d942be429cbb3848ffd09ed5c4b", null ],
     [ "getSpheres", "classbrayns_1_1_model.html#a26c668d1fd31350700654ee3853d2f0b", null ],
+    [ "getStreamlines", "classbrayns_1_1_model.html#a23291b6358f1e564cca698f5667f04f0", null ],
     [ "getTransferFunction", "classbrayns_1_1_model.html#afbc989c6cdc1a9ce350112599dc9eb51", null ],
     [ "getTransferFunction", "classbrayns_1_1_model.html#aadac31108c958c76147c1b69041c124c", null ],
     [ "getTrianglesMeshes", "classbrayns_1_1_model.html#a72aaed48d0f52416cb3576b3f5958f9f", null ],

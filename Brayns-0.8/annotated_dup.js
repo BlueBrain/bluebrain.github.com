@@ -62,6 +62,7 @@ var annotated_dup =
       [ "Scene", "classbrayns_1_1_scene.html", "classbrayns_1_1_scene" ],
       [ "SceneParameters", "classbrayns_1_1_scene_parameters.html", "classbrayns_1_1_scene_parameters" ],
       [ "SDFGeometry", "structbrayns_1_1_s_d_f_geometry.html", "structbrayns_1_1_s_d_f_geometry" ],
+      [ "SDFGeometryData", "structbrayns_1_1_s_d_f_geometry_data.html", "structbrayns_1_1_s_d_f_geometry_data" ],
       [ "SharedDataVolume", "classbrayns_1_1_shared_data_volume.html", "classbrayns_1_1_shared_data_volume" ],
       [ "ShortcutInformation", "structbrayns_1_1_shortcut_information.html", "structbrayns_1_1_shortcut_information" ],
       [ "Statistics", "classbrayns_1_1_statistics.html", "classbrayns_1_1_statistics" ],

@@ -1,15 +1,15 @@
 var classbrayns_1_1_frame_buffer =
 [
     [ "FrameBuffer", "classbrayns_1_1_frame_buffer.html#ab280529a837af051800d0230f8e71170", null ],
-    [ "~FrameBuffer", "classbrayns_1_1_frame_buffer.html#a7f481c93aa6d57b4b26ddfcd58a0ff1d", null ],
     [ "clear", "classbrayns_1_1_frame_buffer.html#a26020260d167648635258c46d0195f63", null ],
     [ "createPixelOp", "classbrayns_1_1_frame_buffer.html#a83734dc1bc6bc16831b3b07b549142d7", null ],
     [ "getAccumulation", "classbrayns_1_1_frame_buffer.html#a75a51892de5c1eee5cd92f96da557b3e", null ],
     [ "getColorBuffer", "classbrayns_1_1_frame_buffer.html#a418dbda7c744b66e05c9b738bfa66096", null ],
-    [ "getColorDepth", "classbrayns_1_1_frame_buffer.html#a4ac9f776c81f853a915a34d09f4b2571", null ],
+    [ "getColorDepth", "classbrayns_1_1_frame_buffer.html#a4a4fef2e35d881de82e0ab9f782d6e07", null ],
     [ "getDepthBuffer", "classbrayns_1_1_frame_buffer.html#aacc8e430570cb44a84ffb611d511c333", null ],
     [ "getFrameBufferFormat", "classbrayns_1_1_frame_buffer.html#aa49d3af204d40cbe205573ebd632448b", null ],
     [ "getFrameSize", "classbrayns_1_1_frame_buffer.html#a0d55da509dfe76faf879b31f51363635", null ],
+    [ "getImage", "classbrayns_1_1_frame_buffer.html#a35f59cf67fb9a6901a04ad58ccadbfff", null ],
     [ "getName", "classbrayns_1_1_frame_buffer.html#a8ee98b32ba2635cc05617d9f2c5fb84e", null ],
     [ "getSize", "classbrayns_1_1_frame_buffer.html#a53d98142da0a61ca49bde29eac059b53", null ],
     [ "incrementAccumFrames", "classbrayns_1_1_frame_buffer.html#a9f6a921da7e7a7def50b960aa74e3880", null ],

@@ -2,7 +2,6 @@ var classbrayns_1_1_renderer =
 [
     [ "PickResult", "structbrayns_1_1_renderer_1_1_pick_result.html", "structbrayns_1_1_renderer_1_1_pick_result" ],
     [ "Renderer", "classbrayns_1_1_renderer.html#a5cbbc2b09e2bbfa953bbe91f22a8ccd4", null ],
-    [ "~Renderer", "classbrayns_1_1_renderer.html#a90961e4a0bf6e4aae8127660ba989626", null ],
     [ "commit", "classbrayns_1_1_renderer.html#aef2788be943e1ea431b6621508f244ce", null ],
     [ "getVariance", "classbrayns_1_1_renderer.html#ab4e9a833c165e3e679d8eb7fe9eb18e6", null ],
     [ "pick", "classbrayns_1_1_renderer.html#a720decaa61e05b332f87d6fc8b922789", null ],

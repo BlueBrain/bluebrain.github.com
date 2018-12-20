@@ -1,7 +1,6 @@
 var classbrayns_1_1_scene =
 [
     [ "Scene", "classbrayns_1_1_scene.html#afa8438c41871f9d73e10968182a9c53f", null ],
-    [ "~Scene", "classbrayns_1_1_scene.html#a1e5503a978c5b47384870b527b5dd02b", null ],
     [ "_computeBounds", "classbrayns_1_1_scene.html#a416942f4946636cf465f57abe49a68e1", null ],
     [ "_updateEnvironmentMap", "classbrayns_1_1_scene.html#a0b93150b5ed1599f6af0450c5f975356", null ],
     [ "acquireReadAccess", "classbrayns_1_1_scene.html#afc71b5721fa74388c9c2efe8bded8b6c", null ],
@@ -23,7 +22,6 @@ var classbrayns_1_1_scene =
     [ "getLoaderRegistry", "classbrayns_1_1_scene.html#a654d1a0eb616ba1e7e1f95c672b9cfac", null ],
     [ "getModel", "classbrayns_1_1_scene.html#a582f1a49ab0f9a16b415658b7114f46e", null ],
     [ "getNumModels", "classbrayns_1_1_scene.html#a1bb0d2bf02bd495f33cdcb8b3c0d7ad2", null ],
-    [ "getParametersManager", "classbrayns_1_1_scene.html#a78801988c9aa9821747bb2c9a5af0295", null ],
     [ "getSizeInBytes", "classbrayns_1_1_scene.html#a361219416ee29d355f3c8e2101a449c7", null ],
     [ "loadFromCacheFile", "classbrayns_1_1_scene.html#ade17e86cbdea01b469f9ad6fbaa4a794", null ],
     [ "loadModel", "classbrayns_1_1_scene.html#a902709b60ac0a1f861b23591ae3a3864", null ],

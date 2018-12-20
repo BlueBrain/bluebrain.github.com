@@ -17,6 +17,7 @@ var classbrayns_1_1_animation_parameters =
     [ "setEnd", "classbrayns_1_1_animation_parameters.html#a78fff837156b61cb2289b146a756aa37", null ],
     [ "setFrame", "classbrayns_1_1_animation_parameters.html#a5f1e6be0449b3580a19b499bada01665", null ],
     [ "setIsReadyCallback", "classbrayns_1_1_animation_parameters.html#a6de92c1166679c8876cd77d6658cf87b", null ],
+    [ "setStart", "classbrayns_1_1_animation_parameters.html#a1f4180e44b12b2122dc2672a4e9710d2", null ],
     [ "setUnit", "classbrayns_1_1_animation_parameters.html#a12336a99cdeb76802b4f795d22290873", null ],
     [ "update", "classbrayns_1_1_animation_parameters.html#a1bfe4fd272a873fd9a1fe1655a7956c3", null ]
 ];
