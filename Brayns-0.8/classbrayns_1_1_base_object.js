@@ -7,6 +7,7 @@ var classbrayns_1_1_base_object =
     [ "_isEqual", "classbrayns_1_1_base_object.html#acc5396127dc7892f57ec6c326cee140d", null ],
     [ "_isEqual", "classbrayns_1_1_base_object.html#ac4345d04036cd56f16ebe10f81e832cb", null ],
     [ "_updateValue", "classbrayns_1_1_base_object.html#a2109985c05194082bc6e0b5a64478530", null ],
+    [ "clearModifiedCallback", "classbrayns_1_1_base_object.html#a4e7aa4042548aa4da28a2cffd060b7a6", null ],
     [ "isModified", "classbrayns_1_1_base_object.html#ad5e3f16c81e260c2fdfcf5aa00fca6fd", null ],
     [ "markModified", "classbrayns_1_1_base_object.html#ab30107fa6f3e996185ffe4df15e1201d", null ],
     [ "onModified", "classbrayns_1_1_base_object.html#ad1df6f6092c696b75304d8863fd3dfaa", null ],

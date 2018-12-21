@@ -62,6 +62,7 @@ var hierarchy =
       [ "brayns::PointLight", "classbrayns_1_1_point_light.html", null ]
     ] ],
     [ "brayns::Loader", "classbrayns_1_1_loader.html", [
+      [ "brayns::MeshLoader", "classbrayns_1_1_mesh_loader.html", null ],
       [ "brayns::MHDVolumeLoader", "classbrayns_1_1_m_h_d_volume_loader.html", null ],
       [ "brayns::MolecularSystemReader", "classbrayns_1_1_molecular_system_reader.html", null ],
       [ "brayns::ProteinLoader", "classbrayns_1_1_protein_loader.html", null ],

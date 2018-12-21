@@ -1,5 +1,6 @@
 var classbrayns_1_1_loader_registry =
 [
+    [ "clear", "classbrayns_1_1_loader_registry.html#a3046ff9ac9718107ccc13de22556090d", null ],
     [ "getLoaderInfos", "classbrayns_1_1_loader_registry.html#a603009f8361944a8026d393dbd41e210", null ],
     [ "getSuitableLoader", "classbrayns_1_1_loader_registry.html#afc111ab0db886f6355e5ff6c64bb92ed", null ],
     [ "isSupportedFile", "classbrayns_1_1_loader_registry.html#a8db8487e443905f2d1e95a5de050b95c", null ],

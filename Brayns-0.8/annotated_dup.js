@@ -38,6 +38,7 @@ var annotated_dup =
       [ "LoaderRegistry", "classbrayns_1_1_loader_registry.html", "classbrayns_1_1_loader_registry" ],
       [ "LoadModelFunctor", "classbrayns_1_1_load_model_functor.html", "classbrayns_1_1_load_model_functor" ],
       [ "Material", "classbrayns_1_1_material.html", "classbrayns_1_1_material" ],
+      [ "MeshLoader", "classbrayns_1_1_mesh_loader.html", "classbrayns_1_1_mesh_loader" ],
       [ "MHDVolumeLoader", "classbrayns_1_1_m_h_d_volume_loader.html", "classbrayns_1_1_m_h_d_volume_loader" ],
       [ "Model", "classbrayns_1_1_model.html", "classbrayns_1_1_model" ],
       [ "ModelDescriptor", "classbrayns_1_1_model_descriptor.html", "classbrayns_1_1_model_descriptor" ],
