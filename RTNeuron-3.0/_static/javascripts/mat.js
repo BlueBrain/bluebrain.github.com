@@ -11,6 +11,12 @@
   $("div.highlight")
     .children("pre")
     .wrap("<div class='codehilite'></div>");
+  $("div[class^='highlight-'], div[class*=' highlight-']")
+    .children()
+    .unwrap();
+  $("div.highlight")
+    .children()
+    .unwrap();
   // Tables are incorrectly rendered as the js/css requires they have no class.
   $("table.docutils").not(".field-list")
     .removeAttr("border")
@@ -20,7 +26,6 @@
   //    :language: js
   // and use like :js:`return target`
   $("code.code")
-    .addClass("highlight")
     .addClass("codehilite");
   // Add the required id attribute to headings so that they receive the correct
   // offsets. This also removes the id of the wrapping div from Sphinx.
