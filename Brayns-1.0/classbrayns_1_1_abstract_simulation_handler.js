@@ -1,0 +1,25 @@
+var classbrayns_1_1_abstract_simulation_handler =
+[
+    [ "~AbstractSimulationHandler", "classbrayns_1_1_abstract_simulation_handler.html#a60e89a35d6ca992d20697637d8b7560c", null ],
+    [ "_getBoundedFrame", "classbrayns_1_1_abstract_simulation_handler.html#ac44fc7c7042b708f977512c74b378bcb", null ],
+    [ "bind", "classbrayns_1_1_abstract_simulation_handler.html#a4e78e84ebe0b8415733f33004eb6a802", null ],
+    [ "clone", "classbrayns_1_1_abstract_simulation_handler.html#a3e443173bac7bb3e30a437efe9754f1f", null ],
+    [ "getCurrentFrame", "classbrayns_1_1_abstract_simulation_handler.html#ae08f73c8a95156f6c9f2643271203a2f", null ],
+    [ "getDt", "classbrayns_1_1_abstract_simulation_handler.html#aab4be1355be9dd9a9bd8d8dcd1afed7f", null ],
+    [ "getFrameData", "classbrayns_1_1_abstract_simulation_handler.html#a42ef39d3b16dc58751231d4e027b731c", null ],
+    [ "getFrameSize", "classbrayns_1_1_abstract_simulation_handler.html#a6c9f4a49a0a63c27b7842cf2bc0ba900", null ],
+    [ "getNbFrames", "classbrayns_1_1_abstract_simulation_handler.html#a9f1760951cc486a62540ccf98135d47f", null ],
+    [ "getUnit", "classbrayns_1_1_abstract_simulation_handler.html#a0512d398b490aa39fe43be84eaaa0bf8", null ],
+    [ "isReady", "classbrayns_1_1_abstract_simulation_handler.html#a47d4da935f9790748f913fa35e7f91e0", null ],
+    [ "operator=", "classbrayns_1_1_abstract_simulation_handler.html#ac32c4fa392febd3176669e3472c7a7a3", null ],
+    [ "setFrameSize", "classbrayns_1_1_abstract_simulation_handler.html#a8fa6e6c15ed6b6aad1e30004cf2c2983", null ],
+    [ "setNbFrames", "classbrayns_1_1_abstract_simulation_handler.html#a6d97bbea1b840d24c754068d0b6c2cd8", null ],
+    [ "unbind", "classbrayns_1_1_abstract_simulation_handler.html#a8ae0e0ba7fb09f511d289565befb01f0", null ],
+    [ "waitReady", "classbrayns_1_1_abstract_simulation_handler.html#aa469c2f4b34c9c1df94a0f4d7cd5826f", null ],
+    [ "_currentFrame", "classbrayns_1_1_abstract_simulation_handler.html#a9b8e8b6362648e7c34e9551e02d1f1ad", null ],
+    [ "_dt", "classbrayns_1_1_abstract_simulation_handler.html#aa9aad50ae332a3aacc0edccbaeeed38a", null ],
+    [ "_frameData", "classbrayns_1_1_abstract_simulation_handler.html#a09caed1ea19c11e6dbe164f5f084feb5", null ],
+    [ "_frameSize", "classbrayns_1_1_abstract_simulation_handler.html#a003c5a99b9c1d0d1f2cd0794d231fc8b", null ],
+    [ "_nbFrames", "classbrayns_1_1_abstract_simulation_handler.html#ab212c9c459d88905440de310d89c6fcb", null ],
+    [ "_unit", "classbrayns_1_1_abstract_simulation_handler.html#ac500b5fe23a4da4382a128bec456dfd2", null ]
+];
