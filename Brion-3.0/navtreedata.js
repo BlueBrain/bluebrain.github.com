@@ -1,14 +1,37 @@
+/*
+@ @licstart  The following is the entire license notice for the
+JavaScript code in this file.
+
+Copyright (C) 1997-2017 by Dimitri van Heesch
+
+This program is free software; you can redistribute it and/or modify
+it under the terms of the GNU General Public License as published by
+the Free Software Foundation; either version 2 of the License, or
+(at your option) any later version.
+
+This program is distributed in the hope that it will be useful,
+but WITHOUT ANY WARRANTY; without even the implied warranty of
+ MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+ GNU General Public License for more details.
+
+You should have received a copy of the GNU General Public License along
+with this program; if not, write to the Free Software Foundation, Inc.,
+51 Franklin Street, Fifth Floor, Boston, MA 02110-1301 USA.
+
+@licend  The above is the entire license notice
+for the JavaScript code in this file
+*/
 var NAVTREE =
 [
   [ "Brion", "index.html", [
-    [ "Changelog", "Changelog.html", null ],
+    [ "Changelog", "_changelog.html", null ],
     [ "Data models", "data.html", "data" ],
     [ "RFCs", "rfcs.html", "rfcs" ],
-    [ "Caching support", "md__jenkins_02_workspace_oss.Brion.documentation_build_type_Debug_platform_cscsviz-vm_sources_doc_user_caching.html", null ],
+    [ "Caching support", "md__jenkins_07_workspace_oss_8_brion_8documentation_build_type__debug_platform_bb5_sources_doc_user_caching.html", null ],
     [ "Application Help", "apps.html", "apps" ],
     [ "Environment Variables", "env.html", null ],
-    [ "Namespaces", null, [
-      [ "Namespace List", "namespaces.html", "namespaces" ],
+    [ "Namespaces", "namespaces.html", [
+      [ "Namespace List", "namespaces.html", "namespaces_dup" ],
       [ "Namespace Members", "namespacemembers.html", [
         [ "All", "namespacemembers.html", null ],
         [ "Functions", "namespacemembers_func.html", null ],
@@ -29,8 +52,8 @@ var NAVTREE =
         [ "Related Functions", "functions_rela.html", null ]
       ] ]
     ] ],
-    [ "Files", null, [
-      [ "File List", "files.html", "files" ],
+    [ "Files", "files.html", [
+      [ "File List", "files.html", "files_dup" ],
       [ "File Members", "globals.html", [
         [ "All", "globals.html", null ],
         [ "Macros", "globals_defs.html", null ]
@@ -41,10 +64,10 @@ var NAVTREE =
 
 var NAVTREEINDEX =
 [
-".html",
-"classbrain_1_1_version.html#a02712f5fb5e479153827acb235bb59d4",
-"classbrion_1_1_morphology_plugin.html#a63adc722f3aa5b5c6c3626649faf2413",
-"enums_8h.html#ad023e746676d235c53853a69c9c1c454a5a1e37e4be1b2c520ce357f4f2e7a614"
+"_changelog.html",
+"classbrain_1_1neuron_1_1_morphology.html#a2d183d09c1e4e0d842d6f1e7dcf92d26",
+"classbrion_1_1_node_group.html#abbba824e01677d43ca7d5fa838519764",
+"enums_8h.html#adbb154f3c78c0209ce2f3d33b628b5a1a7fe6b8c60c2b98a4904245a74e19d654"
 ];
 
 var SYNCONMSG = 'click to disable panel synchronisation';

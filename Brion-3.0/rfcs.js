@@ -6,5 +6,5 @@ var rfcs =
     [ "Implementing Morphology version 1.1, support for glia cells", "morphology11.html", null ],
     [ "Redesign of the SpikeReport and Spikes container", "spike_reports.html", null ],
     [ "Synapse support in Brain", "brain_synapses.html", null ],
-    [ "Modification of the brion::Morphology read API", "morphologyRead.html", null ]
+    [ "Modification of the brion::Morphology read API", "morphology_read.html", null ]
 ];

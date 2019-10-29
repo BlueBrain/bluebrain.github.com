@@ -1,6 +1,6 @@
 var apps =
 [
-    [ "spikeConverter", "spikeConverter.html", null ],
-    [ "morphologyConverter", "morphologyConverter.html", null ],
-    [ "compartmentConverter", "compartmentConverter.html", null ]
+    [ "spikeConverter", "spike_converter.html", null ],
+    [ "morphologyConverter", "morphology_converter.html", null ],
+    [ "compartmentConverter", "compartment_converter.html", null ]
 ];

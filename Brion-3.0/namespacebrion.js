@@ -16,6 +16,7 @@ var namespacebrion =
     [ "NodeGroup", "classbrion_1_1_node_group.html", "classbrion_1_1_node_group" ],
     [ "Nodes", "classbrion_1_1_nodes.html", "classbrion_1_1_nodes" ],
     [ "PluginInitData", "classbrion_1_1_plugin_init_data.html", "classbrion_1_1_plugin_init_data" ],
+    [ "SimulationConfig", "classbrion_1_1_simulation_config.html", "classbrion_1_1_simulation_config" ],
     [ "SpikeReport", "classbrion_1_1_spike_report.html", "classbrion_1_1_spike_report" ],
     [ "SpikeReportPlugin", "classbrion_1_1_spike_report_plugin.html", "classbrion_1_1_spike_report_plugin" ],
     [ "Synapse", "classbrion_1_1_synapse.html", "classbrion_1_1_synapse" ],

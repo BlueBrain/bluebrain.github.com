@@ -26,7 +26,6 @@ var hierarchy =
     [ "brain::Synapses::BaseImpl", "structbrain_1_1_synapses_1_1_base_impl.html", null ],
     [ "brain::SynapsesStream", "classbrain_1_1_synapses_stream.html", null ],
     [ "brain::Version", "classbrain_1_1_version.html", null ],
-    [ "brain_python::Version", "classbrain__python_1_1_version.html", null ],
     [ "brion::BlueConfig", "classbrion_1_1_blue_config.html", null ],
     [ "brion::CircuitConfig", "classbrion_1_1_circuit_config.html", null ],
     [ "brion::CircuitConfig::SubnetworkFiles", "structbrion_1_1_circuit_config_1_1_subnetwork_files.html", null ],
@@ -40,6 +39,7 @@ var hierarchy =
       [ "brion::CompartmentReportInitData", "classbrion_1_1_compartment_report_init_data.html", null ],
       [ "brion::MorphologyInitData", "classbrion_1_1_morphology_init_data.html", null ]
     ] ],
+    [ "brion::SimulationConfig", "classbrion_1_1_simulation_config.html", null ],
     [ "brion::SpikeReport", "classbrion_1_1_spike_report.html", null ],
     [ "brion::Target", "classbrion_1_1_target.html", null ],
     [ "brion::Version", "classbrion_1_1_version.html", null ],
